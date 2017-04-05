@@ -29,7 +29,10 @@ var config = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+  ]
 };
 
 module.exports = config;
