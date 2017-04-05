@@ -1,0 +1,21 @@
+{
+  "name": "webtracking-sdk",
+  "version": "0.0.1",
+  "description": "hyperTrack webtracking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "keywords": [
+    "HyperTrack",
+    "webtracking"
+  ],
+  "author": "Gaurav Mukherjee",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "webpack": "^2.3.3"
+  }
+}
