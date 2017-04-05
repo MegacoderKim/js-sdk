@@ -26,3 +26,4 @@ export declare class TrackAction {
     private fitExtended(polylineMvc);
     private extendedLocation(position, y);
 }
+export declare function trackAction(action: IAction, pk: string, options: ITrackOption): TrackAction;

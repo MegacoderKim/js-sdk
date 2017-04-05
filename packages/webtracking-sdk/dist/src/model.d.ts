@@ -57,8 +57,10 @@ export interface IPlace {
     zip_code: string;
 }
 export interface ITrackOption {
-    originLatLng: [number, number];
+    originLatLng?: [number, number];
     mapId: string;
     bottomPadding: number;
     onError: (any) => void;
+    onActionReady: (action: IAction) => void;
+    onActionUpdate: (action: IAction) => void;
 }
