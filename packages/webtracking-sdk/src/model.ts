@@ -63,8 +63,10 @@ export interface IPlace {
 }
 
 export interface ITrackOption {
-    originLatLng: [number, number],
-    mapId: string,
+    originLatLng?: [number, number], //optional, to set default map center
+    mapId: string, //id of DOM where map is to be rendered
     bottomPadding: number,
-    onError: (any) => void
+    onError: (any) => void,
+    onActionReady: (action: IAction) => void,
+    onActionUpdate: (action: IAction) => void
 }

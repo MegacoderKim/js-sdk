@@ -22,7 +22,8 @@ export class TrackAction {
 
     private renderMap() {
         this.makeMap();
-        this.trace()
+        this.trace();
+        this.options.onActionReady && this.options.onActionReady(this.action)
         // this.resetBounds()
     }
 
@@ -82,7 +83,8 @@ export class TrackAction {
         } else {
             this.anim.update(action)
         };
-        this.traceDestination()
+        this.traceDestination();
+        this.options.onActionUpdate && this.options.onActionUpdate(action)
     }
 
     private traceDestination() {
@@ -193,4 +195,8 @@ export class TrackAction {
         return position;
     }
 
+}
+
+export function trackAction(action: IAction, pk: string, options: ITrackOption) {
+    return new TrackAction(action, pk, options)
 }
