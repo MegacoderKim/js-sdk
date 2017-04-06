@@ -88,7 +88,7 @@ export class TrackAction {
     }
 
     private traceDestination() {
-        let finalPlace = this.action.completed_at || this.action.expected_place;
+        let finalPlace = this.action.completed_place || this.action.expected_place;
         if(finalPlace) {
             this.destination.setPosition(GetLatLng(finalPlace));
             SetMap(this.destination, this.map)
