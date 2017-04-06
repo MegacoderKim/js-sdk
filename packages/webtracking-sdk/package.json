@@ -16,6 +16,7 @@
   "author": "Gaurav Mukherjee",
   "license": "ISC",
   "devDependencies": {
+    "@types/googlemaps": "^3.26.8",
     "@types/moment": "^2.13.0",
     "@types/underscore": "^1.8.0",
     "ts-loader": "^2.0.3",
