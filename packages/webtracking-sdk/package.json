@@ -2,7 +2,7 @@
   "name": "ht-webtracking-sdk",
   "version": "0.0.2",
   "description": "hyperTrack webtracking",
-  "main": "dist/src/track.js",
+  "main": "dist/track.js",
   "typings": "dist/src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
