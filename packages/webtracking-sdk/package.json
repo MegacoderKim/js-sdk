@@ -1,8 +1,9 @@
 {
-  "name": "webtracking-sdk",
+  "name": "ht-webtracking-sdk",
   "version": "0.0.1",
   "description": "hyperTrack webtracking",
   "main": "index.js",
+  "typings": "dist/src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
