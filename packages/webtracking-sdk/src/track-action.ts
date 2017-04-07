@@ -3,12 +3,13 @@ import {FetchAction, GetBaseUrl, GetLatLng, GetReqOpt, SetMap} from "./helpers";
 import * as $ from "jquery";
 import {TimeAwareAnim} from "./trace/time-aware-anim";
 import {Color} from "./color";
-
+import {Destination} from "./trace/destination";
+var GoogleMapsLoader = require('google-maps');
 export class TrackAction {
     map: google.maps.Map;
     anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
     actionPoll;
-    destination: google.maps.Marker = new google.maps.Marker();
+    destination: Destination = new Destination();
     constructor(public action: IAction, private pk: string, public options: ITrackOption) {
         this.renderMap();
     }
@@ -53,12 +54,12 @@ export class TrackAction {
 
     private trace() {
         if(this.action.display.show_summary) {
-            this.showSummary()
+            this.showSummary();
         } else {
             this.anim.start(this.action, this.map);
-            this.startActionPoll()
+            this.startActionPoll();
+            this.traceDestination()
         }
-        this.traceDestination()
     }
 
     private startActionPoll() {
@@ -81,20 +82,14 @@ export class TrackAction {
         if(this.action.display.show_summary) {
             this.showSummary()
         } else {
-            this.anim.update(action)
+            this.anim.update(action);
+            this.traceDestination();
         };
-        this.traceDestination();
         this.options.onActionUpdate && this.options.onActionUpdate(action)
     }
 
     private traceDestination() {
-        let finalPlace = this.action.completed_place || this.action.expected_place;
-        if(finalPlace) {
-            this.destination.setPosition(GetLatLng(finalPlace));
-            SetMap(this.destination, this.map)
-        } else {
-
-        }
+        this.destination.update(this.action, this.map)
     }
 
     private showSummary() {
@@ -104,7 +99,7 @@ export class TrackAction {
 
     private clear() {
         this.anim.clear();
-        this.destination.setMap(null);
+        this.destination.clear();
     }
 
     private drawAndFitPolyline(polylineEncoded) {
