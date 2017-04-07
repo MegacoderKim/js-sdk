@@ -12,6 +12,7 @@ export declare class TrackAction {
     destination: Destination;
     constructor(action: IAction, pk: string, options: ITrackOption);
     resetBounds(): void;
+    setOptions(options: ITrackOption): void;
     private renderMap();
     private getFirstOrigin();
     private makeMap();

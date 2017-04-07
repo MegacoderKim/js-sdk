@@ -31,9 +31,14 @@ export class TrackAction {
 
     }
 
-    private renderMap() {
+    setOptions(options: ITrackOption) {
+        this.options = {...this.options, ...options}
+    }
+
+    private renderMap(): void {
         this.makeMap();
         this.trace();
+        this.options.onReady && this.options.onReady(this);
         this.options.onActionReady && this.options.onActionReady(this.action)
         // this.resetBounds()
     }
@@ -110,6 +115,7 @@ export class TrackAction {
     private clear() {
         this.anim.clear();
         this.destination.clear();
+        if(this.actionPoll) clearTimeout(this.actionPoll)
     }
 
     private drawAndFitPolyline(polylineEncoded) {

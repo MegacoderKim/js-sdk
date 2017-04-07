@@ -61,6 +61,7 @@ export interface ITrackOption {
     mapId: string;
     bottomPadding: number;
     onError: (any) => void;
+    onReady: (TrackAction) => void;
     onActionReady: (action: IAction) => void;
     onActionUpdate: (action: IAction) => void;
 }

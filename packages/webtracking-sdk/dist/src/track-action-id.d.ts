@@ -7,4 +7,4 @@ export declare class TrackActionId {
     constructor(actionId: string, pk: string, options: any);
     private getActionFromId(actionId);
 }
-export declare function trackActionId(actionId: string, pk: string, options: any): TrackAction;
+export declare function trackActionId(actionId: string, pk: string, options: any): TrackActionId;
