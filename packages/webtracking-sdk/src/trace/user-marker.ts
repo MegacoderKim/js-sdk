@@ -7,7 +7,7 @@ export class UserMarker {
     constructor() {
         this.marker = Richmarker({
             flat: true
-        }, true)
+        }, 'MIDDLE')
 
     }
 

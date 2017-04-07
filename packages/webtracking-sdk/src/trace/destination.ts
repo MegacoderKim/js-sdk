@@ -32,6 +32,10 @@ export class Destination {
         this.marker.setMap(null)
     }
 
+    getMap() {
+        return this.marker.getMap()
+    }
+
     private getContent(action: IAction): string {
         if(action.eta) {
             let img = Assets.destination;

@@ -33,4 +33,5 @@ export declare class TimeAwareAnim {
     private capTime(callback?);
     private clearAnimPoll();
     getBounds(bounds?: google.maps.LatLngBounds): google.maps.LatLngBounds;
+    getPosition(): any;
 }
