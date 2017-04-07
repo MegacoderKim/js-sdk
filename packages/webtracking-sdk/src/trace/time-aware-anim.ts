@@ -158,6 +158,10 @@ export class TimeAwareAnim {
         bounds.extend(this.userMarker.getPosition());
         return bounds
     }
+
+    getPosition() {
+        return this.userMarker.getPosition()
+    }
 }
 
 interface AnimProps {

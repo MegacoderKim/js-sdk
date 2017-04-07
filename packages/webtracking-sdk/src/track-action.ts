@@ -1,10 +1,10 @@
 import {IAction, ITrackOption} from "./model";
-import {FetchAction, GetBaseUrl, GetLatLng, GetReqOpt, SetMap} from "./helpers";
+import {FetchAction, GetLatLng} from "./helpers";
 import * as $ from "jquery";
 import {TimeAwareAnim} from "./trace/time-aware-anim";
 import {Color} from "./color";
 import {Destination} from "./trace/destination";
-var GoogleMapsLoader = require('google-maps');
+
 export class TrackAction {
     map: google.maps.Map;
     anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
@@ -15,10 +15,20 @@ export class TrackAction {
     }
 
     resetBounds() {
-        let bounds = this.anim.getBounds();
-        bounds.extend(this.destination.getPosition());
-        this.map.fitBounds(bounds);
-        this.map.panToBounds(bounds);
+        if(this.action.display.show_summary) {
+            this.showSummary()
+        } else {
+            if(this.destination.getMap()) {
+                let bounds = this.anim.getBounds();
+                bounds.extend(this.destination.getPosition());
+                this.map.fitBounds(bounds);
+                this.map.panToBounds(bounds);
+            } else {
+                this.map.setCenter(this.anim.getPosition())
+            }
+
+        }
+
     }
 
     private renderMap() {
