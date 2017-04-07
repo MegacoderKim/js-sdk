@@ -7,4 +7,4 @@ export declare class TrackShortCode {
     constructor(shortCode: string, pk: string, options: any);
     private getActionFromShortCode(shortCode);
 }
-export declare function trackShortCode(shortCode: string, pk: string, options: any): TrackShortCode;
+export declare function trackShortCode(shortCode: string, pk: string, options: any): TrackAction;
