@@ -7,10 +7,20 @@ import {Destination} from "./trace/destination";
 
 export class TrackAction {
     map: google.maps.Map;
-    anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
-    actionPoll;
+    private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
+    private actionPoll;
     destination: Destination = new Destination();
-    constructor(public action: IAction, private pk: string, public options: ITrackOption) {
+    action: IAction;
+    options: ITrackOption;
+    private pk: string;
+    constructor() {
+
+    }
+
+    init(action: IAction, pk: string, options: ITrackOption) {
+        this.action = action;
+        this.pk = pk;
+        this.options = options;
         this.renderMap();
     }
 
@@ -209,5 +219,7 @@ export class TrackAction {
 }
 
 export function trackAction(action: IAction, pk: string, options: ITrackOption) {
-    return new TrackAction(action, pk, options)
+    let track = new TrackAction();
+    track.init(action, pk, options);
+    return track;
 }

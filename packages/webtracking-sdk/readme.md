@@ -37,6 +37,7 @@ interface ITrackOption {
     onActionUpdate?: (IAction) => void,
     onReady?: (TrackAction) => void
 }
+//parameters with `?` are optional
 ```
 
 ##### Action
@@ -85,5 +86,32 @@ interface TrackAction {
 }
 ```
 
-parameters with `?` are optional
+#### Example
 
+```
+var shortCode = "q0oxyWr";
+var actionId = "1735bd06-db99-4acf-be3b-a9f17cc0a262";
+
+var pk = pk_xxxxxxxxxxxxxxx;
+
+var trackOptions = {
+  mapId: 'map',
+  onReady: function(trackAction){ 
+     console.log(trackAction)
+     trackAction.map // map object
+     trackAction.action //action
+     trackAction.resetBounds() //to reset bounds
+     trackAction.setOptions(newTrackOptions) //override trackOptions params
+  },
+  onActionReady: function(action) {
+    console.log(action)
+  }
+}
+
+var track = ht.trackShortCode(shortCode, pk, trackOptions)
+//or
+var track = ht.trackActionId(actionId, pk, trackOptions)
+
+```
+
+Note: `track` has ITrackAction interface, but before onReady event, map object and action object is not be available.

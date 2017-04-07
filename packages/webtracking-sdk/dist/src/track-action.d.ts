@@ -1,16 +1,16 @@
 /// <reference types="googlemaps" />
 import { IAction, ITrackOption } from "./model";
-import { TimeAwareAnim } from "./trace/time-aware-anim";
 import { Destination } from "./trace/destination";
 export declare class TrackAction {
-    action: IAction;
-    private pk;
-    options: ITrackOption;
     map: google.maps.Map;
-    anim: TimeAwareAnim;
-    actionPoll: any;
+    private anim;
+    private actionPoll;
     destination: Destination;
-    constructor(action: IAction, pk: string, options: ITrackOption);
+    action: IAction;
+    options: ITrackOption;
+    private pk;
+    constructor();
+    init(action: IAction, pk: string, options: ITrackOption): void;
     resetBounds(): void;
     setOptions(options: ITrackOption): void;
     private renderMap();
