@@ -19,7 +19,13 @@ Add `dist/track.js` as a script tag in the html
 2. pk: Publishable key
 3. trackingOptions: Options that can be passed to customize tracking experience
 
-##### Tracking options interface
+#### Interfaces
+
+1. `ITrackingOption`: Options that is passed to the sdk to customize the tracking.
+2. `IAction`: HyperTrack Action object. This is passed as `onActionReady` callback passed in the options.
+3. `TrackAction`: Class which exposes methods to tracking action. It also exposes map object and action object.
+
+##### Tracking options
 
 ```
 interface ITrackOption {
