@@ -1,6 +1,7 @@
 /// <reference types="googlemaps" />
 import { IAction, ITrackOption } from "./model";
 import { TimeAwareAnim } from "./trace/time-aware-anim";
+import { Destination } from "./trace/destination";
 export declare class TrackAction {
     action: IAction;
     private pk;
@@ -8,7 +9,7 @@ export declare class TrackAction {
     map: google.maps.Map;
     anim: TimeAwareAnim;
     actionPoll: any;
-    destination: google.maps.Marker;
+    destination: Destination;
     constructor(action: IAction, pk: string, options: ITrackOption);
     resetBounds(): void;
     private renderMap();

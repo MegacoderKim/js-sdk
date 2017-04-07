@@ -3,11 +3,14 @@ import {Color} from "../color";
 import {IAction, IUser} from "../model";
 import * as moment from "moment";
 import * as _ from "underscore";
+import {UserMarker} from "./user-marker";
+import {VehicleAssets} from "../assets";
 
 export class TimeAwareAnim {
     timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
     map: google.maps.Map;
-    marker: google.maps.Marker = new google.maps.Marker();
+    userMarker: UserMarker = new UserMarker();
+    // marker: google.maps.Marker = new google.maps.Marker();
     started: boolean = false;
     // marker: google.maps.Marker = new RichMarker({flat: true, anchor: RichMarkerPosition.MIDDLE});
     polyline: google.maps.Polyline = new google.maps.Polyline();
@@ -53,8 +56,9 @@ export class TimeAwareAnim {
             strokeOpacity: 1,
             // path: polylineData.path
         });
-        this.marker.setPosition(_.last(polylineData.path));
-        this.marker.setMap(this.map);
+        this.userMarker.render(_.last(polylineData.path), this.map);
+        // this.marker.setPosition(_.last(polylineData.path));
+        // this.marker.setMap(this.map);
 
     }
 
@@ -67,10 +71,11 @@ export class TimeAwareAnim {
                 this.clearAnimPoll()
             });
             let polylineData = this.currentPolylineData();
-            this.marker.setPosition(_.last(polylineData.path));
-            this.setMarker(this.action.user, polylineData.bearing, this.action.vehicle_type);
+            this.userMarker.setPosition(_.last(polylineData.path))
+            // this.marker.setPosition(_.last(polylineData.path));
+            this.setMarker(polylineData.bearing);
             if(this.positionUpdateCallback && typeof this.positionUpdateCallback == 'function') {
-                this.positionUpdateCallback(this.marker.getPosition(), this.currentTime)
+                this.positionUpdateCallback(this.userMarker.getPosition(), this.currentTime)
             }
             this.polyline.setOptions({path: polylineData.path})
         }, this.animSpeed)
@@ -87,7 +92,8 @@ export class TimeAwareAnim {
     clear() {
         if(this.started) {
             this.clearAnimPoll();
-            this.marker.setMap(null);
+            this.userMarker.clear();
+            // this.marker.setMap(null);
             this.polyline.setMap(null);
             this.positionUpdateCallback = null;
         }
@@ -108,24 +114,16 @@ export class TimeAwareAnim {
         return factor * this.animProps.interval;
     }
 
-    private setMarker(user: IUser, bearing, vehicleType) {
+    private setMarker(bearing) {
         //todo
-        // let content: string = 'images/new/marker_normal.png';
-        // if(driver.ontime == true || driver.ontime == false) {
-        //     content = !driver.ontime ? 'images/new/marker_late.png' : 'images/new/marker_green.png';
-        // } else {
-        //     content = 'images/new/marker_normal.png';
-        // }
-        // let angle = bearing || this.action.driver.last_known_location.bearing;
-        // // let vehicleType = driver.vehicle_type || 'car';
-        // content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
-        //     angle +
-        //     "deg)' height='50px' src='" +
-        //     VehicleIcon[vehicleType] +
-        //     "'>";
-        // //content = 'images/new/marker_late.png';
-        // let imageUrl = driver.photo || 'images/missing.png';
-        // this.marker.setContent(content)
+        let angle = bearing || 0;
+        // let vehicleType = driver.vehicle_type || 'car';
+        let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
+            angle +
+            "deg)' height='50px' src='" +
+            VehicleAssets['car'] +
+            "'>";
+        this.userMarker.setMarkerDiv(content)
     }
 
     private setColor(action: IAction) : void {
@@ -157,7 +155,7 @@ export class TimeAwareAnim {
     }
 
     getBounds(bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds()): google.maps.LatLngBounds {
-        bounds.extend(this.marker.getPosition());
+        bounds.extend(this.userMarker.getPosition());
         return bounds
     }
 }

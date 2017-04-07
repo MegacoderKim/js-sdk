@@ -1,10 +1,11 @@
 /// <reference types="googlemaps" />
 import { TimeAwarePolyline } from "./time-aware-polyline";
 import { IAction } from "../model";
+import { UserMarker } from "./user-marker";
 export declare class TimeAwareAnim {
     timeAwarePolyline: TimeAwarePolyline;
     map: google.maps.Map;
-    marker: google.maps.Marker;
+    userMarker: UserMarker;
     started: boolean;
     polyline: google.maps.Polyline;
     currentTime: string;
@@ -26,7 +27,7 @@ export declare class TimeAwareAnim {
     hide(): void;
     clear(): void;
     private getTimeToAdd();
-    private setMarker(user, bearing, vehicleType);
+    private setMarker(bearing);
     private setColor(action);
     private currentPolylineData();
     private capTime(callback?);
