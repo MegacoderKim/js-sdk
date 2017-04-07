@@ -1,3 +1,4 @@
+import {TrackAction} from "./track-action";
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
@@ -67,6 +68,7 @@ export interface ITrackOption {
     mapId: string, //id of DOM where map is to be rendered
     bottomPadding: number,
     onError: (any) => void,
+    onReady: (TrackAction) => void,
     onActionReady: (action: IAction) => void,
     onActionUpdate: (action: IAction) => void
 }

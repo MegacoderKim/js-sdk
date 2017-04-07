@@ -26,5 +26,5 @@ export class TrackShortCode {
 }
 
 export function trackShortCode (shortCode: string, pk: string, options) {
-    return new TrackShortCode(shortCode, pk, options).trackAction
+    return new TrackShortCode(shortCode, pk, options)
 }
