@@ -2,59 +2,102 @@ import * as React from 'react';
 import './App.css';
 const logo = require('./logo.png');
 
-import {trackShortCode} from 'ht-webtracking-sdk';
+import {TrackAction, trackShortCode} from 'ht-webtracking-sdk';
+import {IAction} from 'ht-webtracking-sdk/dist/src/model';
 
-class App extends React.Component<{}, {}> {
-    render() {
-        const divStyle = {
-            backgroundImage: 'url(https://hypertrack-api-v2-prod.s3.amazonaws.com/default_drivers/v2/b4.png)'
+const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
+
+class App extends React.Component<{}, AppState> {
+    HTTrack: TrackAction;
+    constructor() {
+        super();
+        let shortCode = window.location.pathname.slice(1);
+        console.log('Short code', shortCode);
+        this.setupTrackingSDK(shortCode);
+        this.state = {
+            action: null
         };
+    }
+
+    render() {
+        return this.createTrackingView();
+    }
+
+    createTrackingView() {
+        let action = this.state.action;
         return (
             <div className="app-container">
-                <div className="status-bar">
-                    <img src={logo} className="logo" alt="logo" />
-                    <div className="status-bar-info-container">
-                        <div className="status">On the way</div>
-                        <div className="substatus">2 mins delayed</div>
-                    </div>
-                </div>
-                <div className="status-bar">
-                    <img src={logo} className="logo" alt="logo" />
-                    <div className="status-bar-info-container">
-                        <div className="status">On the way</div>
-                        <div className="substatus">2 mins delayed</div>
-                    </div>
-                </div>
+                {this.createStatusBar(action)}
                 <div className="map-container">
                     <div id="map" />
-                    <div className="driver-info-container">
-                        <div className ="pic" id="pic" style={divStyle} />
-                        <div className ="name"> Rishabh Garg </div>
-                    </div>
+                    {this.createDriverInfo(action)}
                 </div>
             </div>
         );
     }
 
-    componentDidMount() {
-        let code = 'fR2vtsAl';
-        let pk = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
-        let tAction: any;
-        trackShortCode(code, pk, {
+    createLogo() {
+        return (
+            <img src={logo} className="logo" alt="logo" />
+        );
+    }
+
+    createStatusBar(action: IAction | null) {
+        if (!action) {
+            return null;
+        }
+        let statusText = action.display.status_text;
+        let subStatusText = action.display.sub_status_text;
+        return (
+            <div className="status-bar">
+                {this.createLogo()}
+                <div className="status-bar-info-container">
+                    <div className="status">{statusText}</div>
+                    <div className="substatus">{subStatusText}</div>
+                </div>
+            </div>
+        );
+    }
+
+    createDriverInfo(action: IAction | null) {
+        if (!action || !action.user) {
+            return null;
+        }
+        let userName = action.user ? action.user.name : '';
+        let photo = action.user ? action.user.photo : '';
+        const divStyle = {
+            backgroundImage: `url(${photo})`
+        };
+        return (
+            <div className="driver-info-container">
+                <div className ="pic" id="pic" style={divStyle} />
+                <div className ="name">{userName}</div>
+            </div>
+        );
+    }
+
+    setupTrackingSDK(shortCode: string) {
+        trackShortCode(shortCode, HTPublishableKey, {
             mapId: 'map',
             bottomPadding: 50,
-            onReady: (trackAction: any) => {
-                tAction = trackAction;
-                console.log('onReady', trackAction);
+            onReady: (trackAction: TrackAction) => {
+                this.HTTrack = trackAction;
+                console.log('Ready track Action', trackAction);
             },
-            onActionReady: (action: any) => {
+            onActionReady: (action: IAction) => {
                 console.log('On Action ready', action);
-                if (tAction) {
-                    tAction.resetBounds();
+                this.setState({
+                    action: action
+                });
+                if (this.HTTrack) {
+                    this.HTTrack.resetBounds();
                 }
             },
-            onActionUpdate: (action: any) => {
-                // console.log('On Action update', action);
+            onActionUpdate: (action: IAction) => {
+                this.setState({
+                    action: action
+                });
+                console.log('On Action update', action);
             }
         });
     }
@@ -72,6 +115,10 @@ class App extends React.Component<{}, {}> {
             </div>
         );
     }
+}
+
+interface AppState {
+    action: IAction | null;
 }
 
 export default App;
