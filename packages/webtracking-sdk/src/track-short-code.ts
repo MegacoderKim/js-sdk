@@ -12,7 +12,7 @@ export class TrackShortCode {
 
     private getActionFromShortCode(shortCode: string) {
         $.ajax({
-            url: `${GetBaseUrl()}decoder/${shortCode}`,
+            url: `${GetBaseUrl()}decoder/${shortCode}/`,
             ...GetReqOpt(this.pk)
         }).then((data: IDecoded) => {
             console.log(data);
