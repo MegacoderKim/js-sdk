@@ -1,3 +1,4 @@
+import { TrackAction } from "./track-action";
 export interface IDecoded {
     action: IAction;
     sub_account: ISubAccount;
@@ -60,8 +61,8 @@ export interface ITrackOption {
     originLatLng?: [number, number];
     mapId: string;
     bottomPadding: number;
-    onError: (any) => void;
-    onReady: (TrackAction) => void;
+    onError: (error: any) => void;
+    onReady: (trackAction: TrackAction) => void;
     onActionReady: (action: IAction) => void;
     onActionUpdate: (action: IAction) => void;
 }
