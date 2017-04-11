@@ -1,0 +1,82 @@
+.app-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  background: black;
+  color: white;
+  padding-top: 9px;
+  padding-left: 9px;
+  padding-bottom: 9px;
+}
+
+.status-bar-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.status-bar-info-container .status {
+  font-size: 16px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-bar-info-container .substatus {
+  font-size: 12px;
+}
+
+.logo {
+  height: 30px;
+}
+
+.driver-info-container {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  height: 58px;
+  bottom: 0;
+  width: 94%;
+  background: #fff;
+  margin: 0 3% 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.19);
+  border-radius: 29px;
+}
+
+.pic {
+  background-repeat: no-repeat;
+  height: 58px;
+  width: 58px;
+  background-size: cover;
+  border-radius: 50%;
+  left: 2%;
+  border: 1px solid rgb(238, 238, 238);
+  z-index: 2;
+}
+
+.driver-info-container .name {
+  margin: auto;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.map-container {
+  flex-grow: 1;
+  display: flex;
+}
+
+#map {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
