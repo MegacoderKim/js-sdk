@@ -39,6 +39,7 @@ export interface IUser {
     name: string;
     phone: number | string | null;
     last_heartbeat_at: string | null;
+    photo: string;
     last_location: {
         geojson: IPlace;
     };
