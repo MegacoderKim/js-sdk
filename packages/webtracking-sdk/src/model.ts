@@ -67,8 +67,8 @@ export interface ITrackOption {
     originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
     bottomPadding: number,
-    onError: (any) => void,
-    onReady: (TrackAction) => void,
+    onError: (error: any) => void,
+    onReady: (trackAction: TrackAction) => void,
     onActionReady: (action: IAction) => void,
     onActionUpdate: (action: IAction) => void
 }
