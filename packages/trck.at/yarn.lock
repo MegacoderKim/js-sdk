@@ -1670,9 +1670,9 @@ hosted-git-info@^2.1.4:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.4.1.tgz#4b0445e41c004a8bd1337773a4ff790ca40318c8"
 
-ht-webtracking-sdk@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/ht-webtracking-sdk/-/ht-webtracking-sdk-0.0.7.tgz#3d1ebfdd00d05bee41d898786c0283b13ec9e440"
+ht-webtracking-sdk@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/ht-webtracking-sdk/-/ht-webtracking-sdk-0.0.10.tgz#101ff01ddc11af127e967d479a153d2a8769ddd9"
   dependencies:
     "@types/googlemaps" "^3.26.8"
     "@types/moment" "^2.13.0"
