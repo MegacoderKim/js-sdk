@@ -3,3 +3,4 @@ test.html
 test.js
 .DS_Store
 .idea
+npm-debug.log
