@@ -1670,9 +1670,9 @@ hosted-git-info@^2.1.4:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.4.1.tgz#4b0445e41c004a8bd1337773a4ff790ca40318c8"
 
-ht-webtracking-sdk@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/ht-webtracking-sdk/-/ht-webtracking-sdk-0.0.6.tgz#7dd5f71a737c2b8034b4357bb14103a57cf461f7"
+ht-webtracking-sdk@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/ht-webtracking-sdk/-/ht-webtracking-sdk-0.0.7.tgz#3d1ebfdd00d05bee41d898786c0283b13ec9e440"
   dependencies:
     "@types/googlemaps" "^3.26.8"
     "@types/moment" "^2.13.0"
@@ -4482,13 +4482,9 @@ whatwg-encoding@^1.0.1:
   dependencies:
     iconv-lite "0.4.13"
 
-whatwg-fetch@2.0.2:
+whatwg-fetch@2.0.2, whatwg-fetch@>=0.10.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.2.tgz#fe294d1d89e36c5be8b3195057f2e4bc74fc980e"
-
-whatwg-fetch@>=0.10.0:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
 
 whatwg-url@^4.3.0:
   version "4.7.0"
