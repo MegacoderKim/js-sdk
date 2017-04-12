@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Live Tracking</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Google Maps Script with <API KEY>-->
+	<script src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIza***"></script>
+	<style>
+		body {
+			margin: 0;
+			font-family: Roboto, helvetica, sans-serif;
+			font-weight: 100;
+			color: rgb(74, 74, 74);
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+		#map {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+	
+	</style>
+</head>
+<body>
+<div id="map"></div>
+</body>
+<script src="https://unpkg.com/ht-webtracking-sdk@0.0.10/dist/track.js"></script>
+</html>
