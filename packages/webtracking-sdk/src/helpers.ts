@@ -22,7 +22,7 @@ export function GetLatLng(place: IPlace | any, key: string = 'location') {
 
 export function FetchAction(actionId: string, pk: string) {
     return $.ajax({
-        url: `${GetBaseUrl()}actions/${actionId}/detailed`,
+        url: `${GetBaseUrl()}actions/${actionId}/detailed/`,
         ...GetReqOpt(pk)
     })
 }
