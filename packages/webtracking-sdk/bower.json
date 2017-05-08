@@ -1,0 +1,21 @@
+{
+  "name": "ht-webtracking-sdk",
+  "description": "hyperTrack webtracking",
+  "main": "dist/track.js",
+  "authors": [
+    "Gaurav Mukherjee"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "HyperTrack",
+    "webtracking"
+  ],
+  "homepage": "https://github.com/hypertrack/webtracking-sdk",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

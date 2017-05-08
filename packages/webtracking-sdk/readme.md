@@ -1,5 +1,22 @@
 # Webtracking SDK
 
+Javascript library to power live tracking experience of HyperTrack actions.
+ 
+### How to install
+
+***npm***
+
+`npm install ht-webtracking-sdk --save`
+
+then `require('ht-webtracking-sdk')`
+or
+
+use `dist/track.js` in `node_module` folder
+
+***Bower***
+
+`bower install ht-webtracking-sdk --save`
+
 ### How to use
 Add `dist/track.js` as a script tag in the html
 
