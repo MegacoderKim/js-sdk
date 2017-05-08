@@ -60,7 +60,7 @@ Call `var track = ht.trackShortCode(shortCode: string, pk: string, trackingOptio
 
 E.g `var tracking  = ht.trackShortCode("xdBtyxs", "pk_xxxxxxxxxxxxxxxxx", {mapId: "map", onActionReady: onActionReady, onActionUpdate: onActionUpdate})`, where `"xdBtyxs"` is the shortCode, `"pk_xxxxxxxxxxxxxxxxx"` is HyperTrack public key and `onActionReady` and `onActionUpdate` are callbacks for `ready` and `update` events.
 
-###References ###
+###References 
 #### Interfaces
 
 1. `ITrackingOption`: Options that is passed to the sdk to customize the tracking.
