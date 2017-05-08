@@ -1,6 +1,6 @@
 # Webtracking SDK
 
-Javascript library to power live tracking experience of HyperTrack actions.
+Javascript library to power live tracking experience of HyperTrack actions. This library is written in Typescript and ships with the typing information. This Doc is written in typescript style to highlight the interfaces and types of each entity, functions and argument
  
 ### How to install
 
@@ -8,34 +8,59 @@ Javascript library to power live tracking experience of HyperTrack actions.
 
 `npm install ht-webtracking-sdk --save`
 
-then `require('ht-webtracking-sdk')`
-or
-
-use `dist/track.js` in `node_module` folder
-
 ***Bower***
 
 `bower install ht-webtracking-sdk --save`
 
-### How to use
+### Setup
 Add `dist/track.js` as a script tag in the html
 
-`ht` is global object exposed by the library
+`ht` is global object exposed by the library.
 
-### Usage
+`ht` exposes 3 ways to track an action
 
-1. `ht.trackShortCode(shortCode, pk, trackingOptions)`
+**`ht.trackShortCode(shortCode: string, pk: string, trackingOptions: ITrackOption)`:** 
+To be used when short code of the action is known. The first argument is the `action.short_code`, this code is also part of `action.tracking_url` generated for each action, which is a default tracking link for the action.
 
-2. `ht.trackActionId(actionId, pk, trackingOptions)`
+**`ht.trackActionId(actionId: string, pk: string, trackingOptions: ITrackOption)`:**
+To be used when `action.id`, i.e. ID of the action is known.
 
-3. `ht.trackAction(action, pk, trackingOptions)`
+**`ht.trackAction(action: IAction, pk: string, trackingOptions: ITrackOption)`:**
+To be used when `action` object is known.
 
-#### Entities
+#### Other Entities
 
-1. shortCode: `action.short_code`
-2. pk: Publishable key
-3. trackingOptions: Options that can be passed to customize tracking experience
+1. pk: Publishable key
+2. trackingOptions: Options that can be passed to customize tracking experience
 
+
+***HINT:*** `function example(a: string, b: number, c: IAction) => void` means example function takes 3 arguments of type string, number and `action` object respectively and returns `void`. `IAction` is an interface for `action` object, which defines the key and value types of the object. Refer interfaces definitions in the end`.
+
+### How to use
+
+#####Tracking using shortCode #####
+
+****1. Create Map DOM container:****
+In the html file create a DOM which would contain the map. Give it a unique id. 
+
+E.g. `<div id="map" style="height: 300px; width: 500px"></div>`
+
+****2. Create onActionReady callback:****
+Create a `onActionReady` which will take `action` object as an argument. This is a callback which is fired when tracking it initialized. 
+
+E.g `var onActionReady =  function(action) { //do anything with action here}`
+
+****3. Create onActionUpdate callback:****
+Create a `onActionUpdate` which will take `action` object as an argument. This is a callback fired when the `action` object gets updated. Use this to update ETA, etc. 
+
+E.g. `var onActionUpdate = function(action) { //do anything with updated action here}`
+
+****4. Call `trackShortCode` function:****
+Call `var track = ht.trackShortCode(shortCode: string, pk: string, trackingOptions: ITrackOption)`. `trackingOptions` is an object with `mapId` as a required field. There are other optional fields for customizing the tracking experience. `track` object is of type `TrackAction` (detail in reference section). This provides additional functionality like obtaining map object, reseting bounds function, etc.
+
+E.g `var tracking  = ht.trackShortCode("xdBtyxs", "pk_xxxxxxxxxxxxxxxxx", {mapId: "map", onActionReady: onActionReady, onActionUpdate: onActionUpdate})`, where `"xdBtyxs"` is the shortCode, `"pk_xxxxxxxxxxxxxxxxx"` is HyperTrack public key and `onActionReady` and `onActionUpdate` are callbacks for `ready` and `update` events.
+
+###References ###
 #### Interfaces
 
 1. `ITrackingOption`: Options that is passed to the sdk to customize the tracking.
@@ -48,7 +73,6 @@ Add `dist/track.js` as a script tag in the html
 interface ITrackOption {
     originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
-    bottomPadding?: number, //keep it 50 for current like web tracking interface
     onError?: (any) => void,
     onActionReady?: (IAction) => void,
     onActionUpdate?: (IAction) => void,
@@ -129,6 +153,10 @@ var track = ht.trackShortCode(shortCode, pk, trackOptions)
 //or
 var track = ht.trackActionId(actionId, pk, trackOptions)
 
+var map = track.map //google map object
+track.resetBounds() //to reset bounds to bring all map items in view
+var action = track.action //get action object in sync. 
+
 ```
 
-Note: `track` has ITrackAction interface, but before onReady event, map object and action object is not be available.
+Note: Map object and action object is available in `track` object only after `onActionReady` callback is fired.
