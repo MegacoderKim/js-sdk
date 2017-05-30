@@ -65,13 +65,20 @@ class App extends React.Component<{}, AppState> {
         }
         let userName = action.user ? action.user.name : '';
         let photo = action.user ? action.user.photo : '';
+        let phone = (action.user && action.user.phone) ? `tel:${action.user.phone}` : '';
         const divStyle = {
             backgroundImage: `url(${photo})`
         };
+        console.log('Action user', action.user);
+        let phoneClass = 'call-button-container';
+        phoneClass += !phone ? 'disabled' : '';
         return (
             <div className="driver-info-container">
-                <div className ="pic" id="pic" style={divStyle} />
-                <div className ="name">{userName}</div>
+                <div className="pic" id="pic" style={divStyle} />
+                <div className="name">{userName}</div>
+                <a className={phoneClass} href={phone}>
+                    <i className="fa fa-phone call-button" />
+                </a>
             </div>
         );
     }

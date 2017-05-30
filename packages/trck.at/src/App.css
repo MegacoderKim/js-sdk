@@ -70,6 +70,25 @@
   text-overflow: ellipsis;
 }
 
+.driver-info-container .call-button-container {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 12px;
+  text-decoration: none;
+  color: black;
+}
+
+.call-button-container.disabled {
+  color: slategray;
+}
+
+.call-button-container .call-button {
+  font-size: 33px;
+}
+
 .map-container {
   flex-grow: 1;
   display: flex;
