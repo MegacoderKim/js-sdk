@@ -28,6 +28,7 @@ class App extends React.Component<{}, AppState> {
         return (
             <div className="app-container">
                 {this.createStatusBar(action)}
+                {this.createSummaryContainer(action)}
                 <div className="map-container">
                     <div id="map" />
                     {this.createDriverInfo(action)}
@@ -56,6 +57,24 @@ class App extends React.Component<{}, AppState> {
                     <div className="substatus">{subStatusText}</div>
                 </div>
             </div>
+        );
+    }
+
+    createSummaryContainer(action: IAction | null) {
+        if (!action) {
+            return null;
+        }
+        return (
+          <div className="summary-container">
+              <div className="distance-time-container">
+                  <span className="time-container">24 MINs</span>
+                  <b>•</b>
+                  <span className="distance-container">6.4 KMs</span>
+              </div>
+              <div className="date-container">
+                  <span className="date">May 30 2017</span>
+              </div>
+          </div>
         );
     }
 
