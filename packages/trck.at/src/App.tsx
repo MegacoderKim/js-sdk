@@ -191,9 +191,9 @@ class App extends React.Component<{}, AppState> {
             return '-';
         }
         let minutes = '-';
-        if (action.completed_at && action.started_at) {
+        if (action.completed_at && action.assigned_at) {
             let completionTime = new Date(action.completed_at).getTime();
-            let startTime = new Date(action.started_at).getTime();
+            let startTime = new Date(action.assigned_at).getTime();
             let duration = completionTime - startTime;
             minutes = Math.floor(duration / (1000 * 60)).toString();
         }
@@ -205,8 +205,8 @@ class App extends React.Component<{}, AppState> {
             return '-';
         }
         let date = '-';
-        if (action.started_at) {
-            date = new Date(action.started_at).toDateString().substr(4);
+        if (action.assigned_at) {
+            date = new Date(action.assigned_at).toDateString().substr(4);
         }
         return date;
     }
