@@ -9,9 +9,7 @@
   align-items: center;
   background: black;
   color: white;
-  padding-top: 9px;
-  padding-left: 9px;
-  padding-bottom: 9px;
+  padding: 9px;
 }
 
 .status-bar-info-container {
@@ -35,6 +33,7 @@
 
 .logo {
   height: 20px;
+  display: none;
 }
 
 .driver-info-container {
@@ -105,7 +104,7 @@
   flex-direction: row;
   justify-content: space-between;
   background: rgb(238, 238, 238);
-  padding: 9px 10px;
+  padding: 6px 10px;
   font-size: 13px;
 }
 
@@ -117,3 +116,67 @@
   padding-left: 3px;
   padding-right: 3px;
 }
+
+.address-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.from-address-container, .to-address-container {
+  display: flex;
+  align-items: center;
+}
+.dot {
+  height: 7px;
+  width: 7px;
+  margin: 11px;
+  border-radius: 50%;
+}
+
+.dot.green {
+  background-color: #1DA71D;
+}
+
+.dot.red {
+  background-color: #EA4C4C;
+}
+
+.address-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
+  font-size: 13px;
+  padding-right: 12px;
+}
+
+.address-bar .address-value {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 230px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.address-border {
+  position: relative;
+  margin: 0 9px 0 30px;
+  height: 1px;
+  background: rgb(244, 244, 244);
+}
+
+.address-border-vertical {
+  height: 16px;
+  width: 2px;
+  position: absolute;
+  left: -16px;
+  top: -7.3px;
+  background: rgb(244, 244, 244);
+}
+
+.address-time {
+  color: rgb(146, 146, 146);
+}
+

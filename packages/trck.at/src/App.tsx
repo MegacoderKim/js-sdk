@@ -29,6 +29,7 @@ class App extends React.Component<{}, AppState> {
             <div className="app-container">
                 {this.createStatusBar(action)}
                 {this.createSummaryContainer(action)}
+                {this.createAddressContainer(action)}
                 <div className="map-container">
                     <div id="map" />
                     {this.createDriverInfo(action)}
@@ -64,18 +65,108 @@ class App extends React.Component<{}, AppState> {
         if (!action) {
             return null;
         }
+        console.log('Action', action);
         return (
           <div className="summary-container">
               <div className="distance-time-container">
-                  <span className="time-container">24 MINs</span>
-                  <b>•</b>
-                  <span className="distance-container">6.4 KMs</span>
+                  <span className="time-container">{this.getTimeDisplay(action)}</span>
+                  <b>&bull;</b>
+                  <span className="distance-container">{this.getDistanceDisplay(action)}</span>
               </div>
               <div className="date-container">
-                  <span className="date">May 30 2017</span>
+                  <span className="date">{this.getDateDisplay(action)}</span>
               </div>
           </div>
         );
+    }
+
+    createAddressContainer(action: IAction | null) {
+        if (!action) {
+            return null;
+        }
+        let startAddress = action.started_place ? action.started_place.address : '';
+        let startTime = action.started_at ? this.formatTime(new Date(action.started_at)) : '';
+        let completionTime = action.completed_at ? this.formatTime(new Date(action.completed_at)) : '';
+        let completionAddress = action.completed_place ? action.completed_place.address : '';
+        return (
+          <div className="address-container">
+              <div className="from-address-container">
+                  <div className="dot-container">
+                      <div className="dot green" />
+                  </div>
+                  <div className="address-bar">
+                      <span className="address-value">
+                          {startAddress}
+                      </span>
+                      <span className="address-time">
+                          {startTime}
+                      </span>
+                  </div>
+              </div>
+              <div className="address-border">
+                  <div className="address-border-vertical" />
+              </div>
+              <div className="to-address-container">
+                  <div className="dot-container">
+                      <div className="dot red" />
+                  </div>
+                  <div className="address-bar">
+                      <span className="address-value">
+                          {completionAddress}
+                      </span>
+                      <span className="address-time">
+                          {completionTime}
+                      </span>
+                  </div>
+              </div>
+          </div>
+        );
+    }
+
+    formatTime(date: Date) {
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        let period = hours < 12 ? 'AM' : 'PM';
+        let displayHours = hours > 12 ? hours - 12 : hours;
+        return displayHours + ':' + this.pad(minutes, 2) + ' ' + period;
+    };
+
+    pad(n: number, width: number, z: string = '0') {
+        let nString = n + '';
+        return nString.length >= width ? n : new Array(width - nString.length + 1).join(z) + n;
+    }
+
+    getDistanceDisplay(action: IAction | null) {
+        if (!action) {
+            return '-';
+        }
+        let distance = (action.distance / 1000).toFixed(1);
+        return `${distance} KMs`;
+    }
+
+    getTimeDisplay(action: IAction | null) {
+        if (!action) {
+            return '-';
+        }
+        let minutes = '-';
+        if (action.completed_at && action.started_at) {
+            let completionTime = new Date(action.completed_at).getTime();
+            let startTime = new Date(action.started_at).getTime();
+            let duration = completionTime - startTime;
+            minutes = Math.floor(duration / (1000 * 60)).toString();
+        }
+        return `${minutes} MINs`;
+    }
+
+    getDateDisplay(action: IAction | null) {
+        if (!action) {
+            return '-';
+        }
+        let date = '-';
+        if (action.started_at) {
+            date = new Date(action.started_at).toDateString().substr(4);
+        }
+        return date;
     }
 
     createDriverInfo(action: IAction | null) {
