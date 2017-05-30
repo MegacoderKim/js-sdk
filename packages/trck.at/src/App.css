@@ -99,3 +99,21 @@
   display: flex;
   flex-direction: column;
 }
+
+.summary-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: rgb(238, 238, 238);
+  padding: 9px 10px;
+  font-size: 13px;
+}
+
+.summary-container .distance-time-container {
+  display: flex;
+}
+
+.distance-time-container .time-container, .distance-time-container .distance-container {
+  padding-left: 3px;
+  padding-right: 3px;
+}
