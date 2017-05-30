@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 const logo = require('./logo.png');
+import {checkUserAgent} from './helper';
 
 import {TrackAction, trackShortCode} from 'ht-webtracking-sdk';
 import {IAction} from 'ht-webtracking-sdk/dist/src/model';
@@ -259,6 +260,20 @@ class App extends React.Component<{}, AppState> {
                 console.log('On Action update', action);
             }
         });
+    }
+
+    getQueryStringValue (key: string) {
+        return decodeURIComponent(window.location.search.replace(
+          new RegExp(
+            '^(?:.*[&\\?]'
+            + encodeURIComponent(key).replace(/[\.\+\*]/g, '\\$&')
+            + '(?:\\=([^&]*))?)?.*$',
+            'i'),
+          '$1'));
+    }
+
+    getUserAgent() {
+        return window.navigator.userAgent;
     }
 
     createExample() {
