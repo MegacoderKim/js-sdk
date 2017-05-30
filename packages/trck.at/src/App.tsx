@@ -129,7 +129,7 @@ class App extends React.Component<{}, AppState> {
             return null;
         }
         let startAddress = action.started_place ? action.started_place.address : '';
-        let startTime = action.started_at ? this.formatTime(new Date(action.started_at)) : '';
+        let startTime = action.assigned_at ? this.formatTime(new Date(action.assigned_at)) : '';
         return (
           <div className="from-address-container">
               <div className="dot-container">
