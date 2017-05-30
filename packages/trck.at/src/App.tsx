@@ -65,6 +65,9 @@ class App extends React.Component<{}, AppState> {
         if (!action) {
             return null;
         }
+        if (!this.showSummary(action)) {
+            return null;
+        }
         console.log('Action', action);
         return (
           <div className="summary-container">
@@ -84,41 +87,73 @@ class App extends React.Component<{}, AppState> {
         if (!action) {
             return null;
         }
-        let startAddress = action.started_place ? action.started_place.address : '';
-        let startTime = action.started_at ? this.formatTime(new Date(action.started_at)) : '';
-        let completionTime = action.completed_at ? this.formatTime(new Date(action.completed_at)) : '';
-        let completionAddress = action.completed_place ? action.completed_place.address : '';
         return (
           <div className="address-container">
-              <div className="from-address-container">
-                  <div className="dot-container">
-                      <div className="dot green" />
-                  </div>
-                  <div className="address-bar">
-                      <span className="address-value">
-                          {startAddress}
-                      </span>
-                      <span className="address-time">
+              {this.getFromAddress(action)}
+              {this.getAddressBorder(action)}
+              {this.getToAddress(action)}
+          </div>
+        );
+    }
+
+    getToAddress(action: IAction | null) {
+        if (!action) {
+            return null;
+        }
+        let completionTime = action.completed_at ? this.formatTime(new Date(action.completed_at)) : '';
+        let completionAddress = action.completed_place ? action.completed_place.address : '';
+        let expectedAddress = action.expected_place ? action.expected_place.address : '';
+        let toAddress = this.showSummary(action) ? completionAddress : expectedAddress;
+        return (
+          <div className="to-address-container">
+              <div className="dot-container">
+                  <div className="dot red" />
+              </div>
+              <div className="address-bar">
+                  <span className="address-value">
+                      {toAddress}
+                  </span>
+                  <span className="address-time">
+                      {completionTime}
+                  </span>
+              </div>
+          </div>
+        );
+    }
+
+    getFromAddress(action: IAction | null) {
+        if (!action) {
+            return null;
+        }
+        if (!this.showSummary(action)) {
+            return null;
+        }
+        let startAddress = action.started_place ? action.started_place.address : '';
+        let startTime = action.started_at ? this.formatTime(new Date(action.started_at)) : '';
+        return (
+          <div className="from-address-container">
+              <div className="dot-container">
+                  <div className="dot green" />
+              </div>
+              <div className="address-bar">
+                  <span className="address-value">
+                      {startAddress}
+                  </span>
+                  <span className="address-time">
                           {startTime}
                       </span>
-                  </div>
               </div>
-              <div className="address-border">
-                  <div className="address-border-vertical" />
-              </div>
-              <div className="to-address-container">
-                  <div className="dot-container">
-                      <div className="dot red" />
-                  </div>
-                  <div className="address-bar">
-                      <span className="address-value">
-                          {completionAddress}
-                      </span>
-                      <span className="address-time">
-                          {completionTime}
-                      </span>
-                  </div>
-              </div>
+          </div>
+        );
+    }
+
+    getAddressBorder(action: IAction | null) {
+        if (!this.getFromAddress(action)) {
+            return null;
+        }
+        return (
+          <div className="address-border">
+              <div className="address-border-vertical" />
           </div>
         );
     }
@@ -130,6 +165,13 @@ class App extends React.Component<{}, AppState> {
         let displayHours = hours > 12 ? hours - 12 : hours;
         return displayHours + ':' + this.pad(minutes, 2) + ' ' + period;
     };
+
+    showSummary(action: IAction | null) {
+        if (!action) {
+            return false;
+        }
+        return action.display.show_summary;
+    }
 
     pad(n: number, width: number, z: string = '0') {
         let nString = n + '';
