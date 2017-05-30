@@ -1,7 +1,6 @@
 import * as React from 'react';
 import './App.css';
 const logo = require('./logo.png');
-import {checkUserAgent} from './helper';
 
 import {TrackAction, trackShortCode} from 'ht-webtracking-sdk';
 import {IAction} from 'ht-webtracking-sdk/dist/src/model';
