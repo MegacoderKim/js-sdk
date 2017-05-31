@@ -24,3 +24,22 @@ export const checkUserAgent = {
     return /Firefox/i.test(userAgent);
   }
 };
+
+export const getQueryStringValue = (key: string) => {
+  return decodeURIComponent(window.location.search.replace(
+    new RegExp(
+      '^(?:.*[&\\?]'
+      + encodeURIComponent(key).replace(/[\.\+\*]/g, '\\$&')
+      + '(?:\\=([^&]*))?)?.*$',
+      'i'),
+    '$1'));
+};
+
+export const getUserAgent = () => {
+  return window.navigator.userAgent;
+};
+
+export const isRedirectedUrl = () => {
+  console.log('Redirected url', getQueryStringValue('redirect'));
+  return (getQueryStringValue('redirect') === 'true');
+};

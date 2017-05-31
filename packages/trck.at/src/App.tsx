@@ -3,8 +3,8 @@ import './App.css';
 const logo = require('./logo.png');
 
 import {TrackAction, trackShortCode} from 'ht-webtracking-sdk';
-import {IAction} from 'ht-webtracking-sdk/dist/src/model';
-
+import {IAction, ISubAccount} from 'ht-webtracking-sdk/dist/src/model';
+import {isRedirectedUrl, checkUserAgent, getUserAgent} from './helper';
 const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
 
 class App extends React.Component<{}, AppState> {
@@ -257,8 +257,29 @@ class App extends React.Component<{}, AppState> {
                     action: action
                 });
                 console.log('On Action update', action);
+            },
+            onAccountReady: (subAccount: ISubAccount, action: IAction) => {
+                console.log('subAccount', subAccount);
+                this.handleDeepLinkRedirect(subAccount, action);
             }
         });
+    }
+
+    handleDeepLinkRedirect(subAccount: ISubAccount, action: IAction) {
+        let userAgent = getUserAgent();
+        let iosDeepLinkUrl = subAccount.account.ios_deeplink_url;
+        if (!isRedirectedUrl()
+          && checkUserAgent.iOS(userAgent)
+          && iosDeepLinkUrl
+          && iosDeepLinkUrl !== '' && action.id)  {
+            let iosIntent = iosDeepLinkUrl + '?task_id=' + action.id;
+            let originalUrl = window.location.protocol + '://' + window.location.host + window.location.pathname;
+            window.location.href = iosIntent;
+            setTimeout(function() {
+                window.location.href = originalUrl + '?redirect=true';
+                },
+                       5000);
+        }
     }
 
     getQueryStringValue (key: string) {
@@ -269,10 +290,6 @@ class App extends React.Component<{}, AppState> {
             + '(?:\\=([^&]*))?)?.*$',
             'i'),
           '$1'));
-    }
-
-    getUserAgent() {
-        return window.navigator.userAgent;
     }
 
     createExample() {
