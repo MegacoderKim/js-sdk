@@ -7,7 +7,7 @@
     "@types/node": "^7.0.12",
     "@types/react": "^15.0.21",
     "@types/react-dom": "^0.14.23",
-    "ht-webtracking-sdk": "^0.0.10",
+    "ht-webtracking-sdk": "^0.0.14",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },
