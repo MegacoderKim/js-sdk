@@ -6,8 +6,8 @@
 # testing
 /coverage
 
-# production
-/build
+# production (Removed to make push easier)
+#/build
 
 # misc
 .DS_Store
