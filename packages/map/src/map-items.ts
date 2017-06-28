@@ -1,15 +1,17 @@
 import {HtMap, MapUtils} from "../interfaces";
 import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
+import {LeafletUtils} from "./leaflet-map-utils";
 
 export class HtMapItems {
   itemEntities: {[id: string]: HtMapItem} = {};
   defaultStyle = {};
   fadeStyle = {};
   map;
-
-  constructor(private mapUtils: MapUtils, defaultStyle) {
-    if(this.defaultStyle) this.defaultStyle = defaultStyle
+  mapUtils: MapUtils;
+  constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {
+    if(this.defaultStyle) this.defaultStyle = defaultStyle;
+    this.mapUtils = mapUtils;
   }
 
   trace(items: any[], map: HtMap, setMap: boolean = false) {
@@ -80,7 +82,7 @@ export class HtMapItems {
     this.updateItem(data, setMap)
   }
 
-  private removeItem(item) {
+  removeItem(item) {
     item.clear();
     let id = item.id;
     if(this.itemEntities[id]) delete this.itemEntities[id];

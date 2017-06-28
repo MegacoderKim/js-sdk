@@ -12,7 +12,7 @@ export class HtMapItem {
 
   constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {
     if(defaultStyle) this.defaultStyle = defaultStyle;
-
+    this.mapUtils = mapUtils
   }
 
   update(item, map: HtMap) {
