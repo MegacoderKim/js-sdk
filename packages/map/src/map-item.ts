@@ -5,6 +5,7 @@ export class HtMapItem {
   item: any;
   data: any;
   isFaded: boolean = false;
+  isHighlighted: boolean = false;
   isOld: boolean = false;
   id: string | number;
   defaultStyle = {};
@@ -18,7 +19,7 @@ export class HtMapItem {
   update(item, map: HtMap) {
 
   }
-
+  //todo update data rename
   updateItem(data) {
     this.id = data.id;
     this.data = data;
@@ -37,8 +38,59 @@ export class HtMapItem {
     this.mapUtils.clearItem(this.item)
   }
 
+  resetHighlight(map) {
+    this.reset()
+  }
+
+  reset() {
+    this.item.isFaded = false;
+    this.resetItem();
+    this.closeTooltip();
+    this.closePopup();
+  }
+
+  resetItem() {
+    this.setStyle(this.defaultStyle);
+  }
+
   setStyle(style) {
-    this.mapUtils.setStyle(this.item, {...this.defaultStyle, style})
+    this.mapUtils.setStyle(this.item, {...this.defaultStyle, ...style})
+  }
+
+  getItemInfoContent() {
+    return this.getInfoContent(this.data)
+  }
+
+  getInfoContent(item) {
+    return ""
+  }
+
+  openPopup(item, content?: string){
+    this.mapUtils.openPopup(item, content)
+  }
+
+  closePopup() {
+    this.mapUtils.closePopup(this.item)
+  }
+
+  openTooltip(content?: string){
+    this.mapUtils.openTooltip(this.item, content)
+  }
+
+  closeTooltip() {
+    this.mapUtils.closeTooltip(this.item)
+  }
+
+  bringToFront() {
+    this.mapUtils.bringToFront(this.item)
+  }
+
+  highlight(map: HtMap) {
+
+  }
+
+  unHighlight(map: HtMap) {
+
   }
 
 }

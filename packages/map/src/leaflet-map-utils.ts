@@ -1,3 +1,4 @@
+import {HtMarker, MapUtils} from "../interfaces";
 var polyUtil = require('polyline-encoded');
 
 export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBounds([])) {
@@ -47,9 +48,9 @@ export function HtUpdatePopup(marker, infoContent, defaultOption) {
   }
 }
 
-export function HtUpdatePositionTooltip(marker, position, infoContent: string, defaultOption: L.TooltipOptions = {}) {
+export function HtUpdatePositionTooltip(marker, position, infoContent: string = "", defaultOption: L.TooltipOptions = {}) {
   marker.setLatLng(position);
-  HtUpdateTooltip(marker, infoContent, defaultOption)
+  if(infoContent) HtUpdateTooltip(marker, infoContent, defaultOption)
 }
 
 export function HtUpdateTooltip(marker, infoContent, defaultOption) {
@@ -60,11 +61,40 @@ export function HtUpdateTooltip(marker, infoContent, defaultOption) {
   }
 }
 
-export const LeafletUtils = {
+function openTooltip (item: L.Marker, content?: string) {
+  if(content) item.setTooltipContent(content);
+  item.openTooltip()
+}
+
+function closeTooltip(item) {
+  item.closeTooltip()
+}
+
+function openPopup(item, content?: string) {
+  if(content) item.setPopupContent(content);
+  item.openPopup()
+}
+
+function closePopup(item) {
+  item.closePopup()
+}
+
+function bringToFront (item) {
+  item.bringToFront()
+}
+
+
+export const LeafletUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
   clearItem: ClearItem,
   extendBounds: ExtendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
-  getLatlng: GetLatlng
-}
+  getLatlng: GetLatlng,
+  updatePosition: HtUpdatePositionTooltip,
+  openTooltip,
+  closeTooltip,
+  openPopup,
+  closePopup,
+  bringToFront
+};
