@@ -1,8 +1,8 @@
 {
   "name": "ht-js-utils",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "HyperTrack utils library",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js"

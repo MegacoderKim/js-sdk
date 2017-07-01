@@ -1,3 +1,6 @@
 export * from "./src/map-item"
 export * from "./src/map-items"
 export * from "./src/leaflet-map-utils"
+export * from "./src/action-marker"
+export * from "./src/marker-item"
+export * from "./src/segments-trace"

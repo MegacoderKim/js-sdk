@@ -18,7 +18,7 @@ export const SetStyle = (item, style) => {
 };
 
 export const SetMap = (item, map: L.Map) => {
-  if(item && !item.getElement()) item.addTo(map)
+  if((item && !item.getElement()) || (item && !item.getElement)) item.addTo(map)
 };
 
 export const ClearItem = (item) => {
@@ -83,6 +83,17 @@ function bringToFront (item) {
   item.bringToFront()
 }
 
+function setFocus(item, map: L.Map) {
+  if(item && item.getElement()) {
+    let center =  getItemLatlng(item);
+    map.panTo(center, {animate: true, duration: 1})
+  }
+}
+
+function getItemLatlng(item) {
+  return item.getLatLng()
+}
+
 
 export const LeafletUtils: MapUtils = {
   setMap: SetMap,
@@ -96,5 +107,6 @@ export const LeafletUtils: MapUtils = {
   closeTooltip,
   openPopup,
   closePopup,
-  bringToFront
+  bringToFront,
+  setFocus
 };

@@ -9,11 +9,22 @@ export class HtMapItems {
   fadeStyle = {};
   map;
   mapUtils: MapUtils;
+  defaultOptions = {
+    mapType: 'leaflet',
+    defaultStyle: {}
+  };
 
-  constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {
-    if(this.defaultStyle) this.defaultStyle = defaultStyle;
-    this.mapUtils = mapUtils;
+  constructor(options = {}) {
+    let newoptions = {...this.defaultOptions, ...options};
+    var {defaultStyle, mapType} = newoptions;
+    if(defaultStyle) this.defaultStyle = defaultStyle;
+    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : LeafletUtils;
   }
+
+  // constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {
+  //   if(this.defaultStyle) this.defaultStyle = defaultStyle;
+  //   this.mapUtils = mapUtils;
+  // }
 
   traceOnMap(items: any[], map: HtMap) {
     this.trace(items, map, true)

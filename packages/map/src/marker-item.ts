@@ -3,18 +3,16 @@ import {HtMapItem} from "./map-item";
 export class HtMarkerItem extends HtMapItem{
   tooltipOption = {};
 
-  updateMarker(item) {
-    let position = this.getPosition(item);
-    let content = this.getInfoContent(item);
+  updatePosition(item, position, content) {
+    console.log(this.mapUtils);
     if(position) this.mapUtils.updatePosition(item, position, content, this.tooltipOption)
   }
 
-  getInfoContent(item) {
-    return ""
-  }
-
-  getPosition(item) {
-    return this.mapUtils.getLatlng()
+  setFocus(map: L.Map) {
+    if(this.item.getElement()) {
+      let center =  this.item.getLatLng();
+      map.panTo(center, {animate: true, duration: 1})
+    }
   }
 
 }

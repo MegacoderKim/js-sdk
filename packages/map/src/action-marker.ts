@@ -1,13 +1,16 @@
 import {HtMapItem} from "./map-item";
-import {IActionMap} from "../../model/action";
-import {NameCase} from "../../utils/src/name-case";
-import {HtShow} from "../../utils/src/html-helpers";
-import {HMString} from "../../utils/src/hm-string";
-import {TimeString} from "../../utils/dist/src/time-string";
-import {DateString} from "../../utils/src/date-string";
-import {Color} from "../../utils/src/color";
+import {IActionMap} from "../model/action";
+import {DateString, HMString, HtShow, NameCase, TimeString, Color} from "ht-js-utils";
 
 export class HtActionMarker extends HtMapItem{
+
+  showExpected: boolean;
+  hasExpected: boolean;
+
+  constructor(showExpected: boolean = false, options = {}) {
+    super(options);
+    this.showExpected = showExpected;
+  }
 
   getInfoContent(item: IActionMap) {
     let userName = item.user ? item.user.name : '';

@@ -10,7 +10,8 @@ export interface MapUtils {
   closeTooltip: (item: HtMapItem) => void
   openPopup: (item: HtMapItem, content?: string) => void
   closePopup: (item: HtMapItem) => void
-  bringToFront: (item: HtMapItem) => void
+  bringToFront: (item: HtMapItem) => void,
+  setFocus: (item: HtMapItem, map: HtMap) =>  void
 }
 
 export type HtMap = L.Map | google.maps.Map

@@ -10,10 +10,16 @@ export class HtMapItem {
   id: string | number;
   defaultStyle = {};
   mapUtils: MapUtils;
+  defaultOptions = {
+    mapType: 'leaflet',
+    defaultStyle: {}
+  };
 
-  constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {
+  constructor(options = {}) {
+    let newoptions = {...this.defaultOptions, ...options};
+    var {defaultStyle, mapType} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
-    this.mapUtils = mapUtils
+    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : LeafletUtils;
   }
 
   update(item, map: HtMap) {
@@ -91,6 +97,10 @@ export class HtMapItem {
 
   unHighlight(map: HtMap) {
 
+  }
+
+  setFocus(map) {
+    this.mapUtils.setFocus(this.item, map)
   }
 
 }
