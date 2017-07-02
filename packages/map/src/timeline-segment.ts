@@ -8,7 +8,7 @@ export class TimelineSegment extends TimeAwarePolyline {
   segments: IDecodedSegment[];
   allSegments: IDecodedSegment[];
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
-  timeAwareArray: ITimeAwarePoint[];
+  // timeAwareArray: ITimeAwarePoint[];
   stats;
   tripDuration: number;
   stopDuration: number;

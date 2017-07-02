@@ -10,18 +10,18 @@ export class TimelineReplay extends TimelineSegment {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
   polyline: L.Polyline = L.polyline([]);
   map;
-  timelineSegment = new TimelineSegment();
+  // timelineSegment = new TimelineSegment();
   playSegmentCallback = (segmentId: string) => {
 
   };
   debug: boolean = false;
 
   update(userData: IUserData) {
-    this.timelineSegment.update(userData);
+    this.update(userData);
   };
 
   clearTimeline() {
-    this.timelineSegment.clear()
+    this.clear()
   }
 
   debugTimeAwareArray(map) {
@@ -78,18 +78,6 @@ export class TimelineReplay extends TimelineSegment {
     }
     return {position, bearing}
 
-  }
-
-  get stats() {
-    return this.timelineSegment.stats
-  }
-
-  get timeAwareArray(): ITimeAwarePoint[] {
-    return this.timelineSegment.timeAwareArray
-  }
-
-  get segments() {
-    return this.timelineSegment.segments
   }
 
   private getCurrentSegment(time) {
