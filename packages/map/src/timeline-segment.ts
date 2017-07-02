@@ -1,18 +1,21 @@
 import {ISegment, IUserData} from "../model/user";
 import {ITimeAwarePoint, Partial} from "../model/common";
 import {TimeAwarePolyline} from "./time-aware-polyline";
-import {IDecodedSegment} from "./timeline-replay";
+import {IDecodedSegment, TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
 
-export class TimelineSegment extends TimeAwarePolyline {
+export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
   allSegments: IDecodedSegment[];
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
   // timeAwareArray: ITimeAwarePoint[];
-  stats;
+
   tripDuration: number;
   stopDuration: number;
   duration: number;
+  playSegmentCallback = (segmentId: string) => {
+
+  };
   update(userData: any) {
     let segments = userData.segments;
     // let noTrackingSegments = this.getNoTrackingSegments(userData.events);
@@ -57,6 +60,19 @@ export class TimelineSegment extends TimeAwarePolyline {
     this.segments = this.getSegmentsWithPercentMarks(this.allSegments, duration);
     this.stats = this.getStats(this.segments);
     console.log(this.segments, "deco");
+  }
+
+  currentTimeEffects(time) {
+    let segment = this.getCurrentSegment(time);
+    let segmentId = segment ? segment.id : '';
+    this.playSegmentCallback(segmentId);
+  }
+
+  private getCurrentSegment(time) {
+    // console.log(time, "segment time", this.segments);
+    return _.find(this.segments, (segment) => {
+      return segment.start <= time && segment.end > time
+    })
   }
 
   private getSegmentsWithPercentMarks(segments, duration): IDecodedSegment[] {
@@ -166,6 +182,10 @@ export class TimelineSegment extends TimeAwarePolyline {
       return null;
     }
 
+  }
+
+  clearTimeline() {
+    this.clear()
   }
 
   clear() {

@@ -6,23 +6,18 @@ import {ITimelineEvent} from "../model/event";
 import {TimelineSegment} from "./timeline-segment";
 import {TimeString} from "ht-js-utils/dist";
 
-export class TimelineReplay extends TimelineSegment {
+export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
   polyline: L.Polyline = L.polyline([]);
   map;
+  stats;
   // timelineSegment = new TimelineSegment();
-  playSegmentCallback = (segmentId: string) => {
 
-  };
   debug: boolean = false;
 
   update(userData: IUserData) {
     this.update(userData);
   };
-
-  clearTimeline() {
-    this.clear()
-  }
 
   debugTimeAwareArray(map) {
     if(this.debug && !map) return false;
@@ -60,9 +55,7 @@ export class TimelineReplay extends TimelineSegment {
     let currentTimeValue = (timePercent * (this.stats.duration) / 100) + new Date(this.stats.start).getTime();
     let time = new Date(currentTimeValue).toISOString();
     // console.log(TimeString(time));
-    let segment = this.getCurrentSegment(currentTimeValue);
-    let segmentId = segment ? segment.id : '';
-    this.playSegmentCallback(segmentId);
+    this.currentTimeEffects(currentTimeValue);
     // if(segment) console.log(segment.type, "segment", TimeString(segment.started_at), TimeString(segment.ended_at));
     var position: any;
     var bearing;
@@ -80,11 +73,8 @@ export class TimelineReplay extends TimelineSegment {
 
   }
 
-  private getCurrentSegment(time) {
-    // console.log(time, "segment time", this.segments);
-    return _.find(this.segments, (segment) => {
-      return segment.start <= time && segment.end > time
-    })
+  currentTimeEffects(time) {
+
   }
 
   getHeadFromCurrentSegmnet(segment: IDecodedSegment, timePercent) {
