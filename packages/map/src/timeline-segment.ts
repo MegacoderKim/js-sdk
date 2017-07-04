@@ -9,11 +9,6 @@ import { IDecodedSegment } from "./interface";
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
   allSegments: IDecodedSegment[];
-  // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
-  // timeAwareArray: ITimeAwarePoint[];
-
-  tripDuration: number;
-  stopDuration: number;
   duration: number;
   playSegmentCallback;
   update(userData: any) {
@@ -33,12 +28,8 @@ export class TimelineSegment extends TimelineReplay {
         duration = duration + segmentData.durationSeg;
         totalTimeAwareArray = [...totalTimeAwareArray, ...segmentData.timeAwareArray];
         currentSegment = {...segment, ...segmentData}
-        // return[...acc, {...segment, ...segmentData}];
-      } else {
-        // return acc;
       }
       gapSegment = acc.length && currentSegment ? this.getGapSegment(currentSegment, _.last(acc)) : null;
-      // console.log(gapSegment, "gap");
       if(gapSegment) {
         let gapSegmentData =  this.getSegmentData(gapSegment, segmentLastUpdatedAt);
         duration = duration + gapSegmentData.durationSeg;
@@ -46,9 +37,7 @@ export class TimelineSegment extends TimelineReplay {
       }
       acc = gapSegment ? [...acc, gapSegment] : acc;
       acc = currentSegment ? [...acc, currentSegment] : acc;
-      // console.log(acc);
       return acc
-      // return segmentData ? [...acc, {...segment, ...segmentData}] : acc;
     }, []);
     this.timeAwareArray = totalTimeAwareArray;
     // this.timeAwareArray = _.sortBy(totalTimeAwareArray, (array => {
@@ -58,7 +47,8 @@ export class TimelineSegment extends TimelineReplay {
     //sorting messes up stop end and trip start points.
     this.duration = duration;
     this.segments = this.getSegmentsWithPercentMarks(this.allSegments, duration);
-    this.stats = this.getStats(this.segments);
+    let stats = this.getStats(this.segments);
+    this.setStats(stats);
     console.log(this.segments, "deco");
   }
 
@@ -134,7 +124,8 @@ export class TimelineSegment extends TimelineReplay {
         end: new Date(end).toISOString(),
         duration: end - start,
         distance: 0,
-        timeAwarePolylineArray: this.timeAwareArray
+        timeAwarePolylineArray: this.timeAwareArray,
+        segments
       };
       return stats;
     }
@@ -190,43 +181,4 @@ export class TimelineSegment extends TimelineReplay {
   clearTimeline() {
     this.clear()
   }
-
-  clear() {
-    this.timeAwareArray = null;
-    this.stats = null;
-  }
 }
-//
-// export interface IReplayStats {
-//   start: string,
-//   end: string,
-//   duration: number,
-//   distance: number,
-//   timeAwarePolylineArray?: ITimeAwarePoint[],
-// }
-
-// export interface IDecodedSegment extends  Partial<ISegment> {
-//   startPercent: number,
-//   endPercent: number,
-//   timeAwareArray?: ITimeAwarePoint[],
-//   start?: number,
-//   end?: number,
-//   bearing?: number,
-//   position?: number[],
-//   durationSeg: number,
-//   pstart?: string,
-//   pend?: string
-// }
-
-// export interface IDecodedSegment extends  Partial<any> {
-//   startPercent: number,
-//   endPercent: number,
-//   timeAwareArray?: any[],
-//   start?: number,
-//   end?: number,
-//   bearing?: number,
-//   position?: number[],
-//   durationSeg: number,
-//   pstart?: string,
-//   pend?: string
-// }

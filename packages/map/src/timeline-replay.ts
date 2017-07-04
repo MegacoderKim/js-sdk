@@ -5,49 +5,48 @@ import { IPathSegment} from "../model/common";
 import {ITimelineEvent} from "../model/event";
 import {TimeString} from "ht-js-utils";
 import {IDecodedSegment} from "./interface";
+import {Subject} from "rxjs/Subject";
+import {Subscription} from "rxjs/Subscription";
+import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/timer";
+import 'rxjs/add/operator/switchMap';
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/share";
+import "rxjs/add/operator/takeUntil";
+import {IReplayHead, IReplayPlayer, IReplayStats} from "../interfaces";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
   polyline: L.Polyline = L.polyline([]);
   map;
   stats;
+  stats$: Subject<any> = new Subject();
+  head;
+  head$: Subject<any> = new Subject();
+  playerSub: Subscription;
+  player$: BehaviorSubject<IReplayPlayer> = new BehaviorSubject({isPlaying: false, isStopped: true, speed: 1});
+  player: IReplayPlayer;
   // timelineSegment = new TimelineSegment();
-
   debug: boolean = false;
 
-  update(userData: IUserData) {
-    this.update(userData);
-  };
-
-  debugTimeAwareArray(map) {
-    if(this.debug && !map) return false;
-    if(map) {
-      let path = [];
-      console.log("here", map);
-      _.each(this.timeAwareArray, (point, i) => {
-        // console.log(point);
-        let marker = L.marker([+point[0], +point[1]]);
-        path.push(marker.getLatLng());
-        marker.bindTooltip(`${TimeString(point[2]+'')}: ${point[2]}`);
-        if(i < 300) marker.addTo(map)
-      });
-      var p = L.polyline(path);
-      p.addTo(map);
-      this.debug = true;
-    }
-
+  constructor() {
+    super();
+    this.addListerner();
   }
 
+  addListerner() {
+    this.stats$.subscribe((stats) => {
+      this.stats = stats
+    });
 
-  getPositionAtTime(time: string): L.LatLng | null {
-    let pathSegment: IPathSegment[] = this.getPolylineSegmentsForLocationsElapsed(this.timeAwareArray, time);
-    if(pathSegment && pathSegment.length > 0) {
-      let path = _.last(pathSegment).path;
-      let point = _.last(path);
-      return L.latLng([point[0], point[1]])
-    } else {
-      return null
-    }
+    this.head$.subscribe((head) => {
+      this.head = head
+    });
+
+    this.player$.subscribe((player) => {
+      this.player = player
+    })
   }
 
   getPositionBearingnAtTime(timePercent: number): {position: number[], bearing: number} {
@@ -73,44 +72,24 @@ export class TimelineReplay extends TimeAwarePolyline {
 
   }
 
+  setStats(stats: IReplayStats | null) {
+    this.stats$.next(stats)
+  }
+
+  setReplayHead(head: IReplayHead | null) {
+    this.head$.next(head)
+  }
+
+  getReplayStats() {
+    return this.stats$.share()
+  }
+
+  getReplayHead() {
+    return this.head$.share()
+  }
+
   currentTimeEffects(time) {
 
-  }
-
-  getHeadFromCurrentSegmnet(segment: IDecodedSegment, timePercent) {
-    if(segment.timeAwareArray) {
-      let time = this.getInterpolatedTime(segment, timePercent);
-      // console.log(time, "time");
-      return this.getTripPositonBearing(segment.timeAwareArray, time);
-    } else {
-      return {
-        position: [segment.position[1], segment.position[0]],
-        bearing: segment.bearing
-      }
-    }
-  }
-
-  getInterpolatedTime(tripSegment: IDecodedSegment, timePercent): string {
-    let currentTimeValue = (timePercent * (tripSegment.durationSeg) / 100) + new Date(tripSegment.start).getTime();
-    return new Date(currentTimeValue).toISOString()
-  }
-
-  getTripPositonBearing(timeAwareArray, time) {
-    var position: any;
-    var bearing;
-    let pathSegment: IPathSegment[] = this.getPolylineSegmentsForLocationsElapsed(timeAwareArray, time);
-    console.log("pathSeg");
-    if (pathSegment && pathSegment.length > 0) {
-      let pathBeaing = _.last(pathSegment);
-      let point = _.last(pathBeaing.path);
-      position = [point[0], point[1]];
-      bearing = pathBeaing.bearing;
-      // return [point[0], point[1]]
-    } else {
-      // return null
-    }
-    console.log("position trio");
-    return {position, bearing}
   }
 
   getLastPositionBearing() {
@@ -144,22 +123,73 @@ export class TimelineReplay extends TimeAwarePolyline {
       start: ""
     }).segments
   }
+
+  //replay player
+  goToTimePercent(timePercent: number, toPause: boolean = false) {
+    if(timePercent < 0) timePercent = 0;
+    if(timePercent > 100) timePercent = 100;
+    let time = this.getTimeFromTimePercent(timePercent);
+    if(toPause) {
+      if(this.player.isStopped) this.setPlayer({isStopped: false});
+      this.jumpToTime(time, timePercent)
+    } else {
+      this.goToTime(time, timePercent)
+    }
+
+  }
+
+  jumpToTimePercent(timePercent: number) {
+    this.goToTimePercent(timePercent, true)
+  }
+
+  private getNextTimePercent( head: IReplayHead): number {
+    return head.timePercent + 0.5 * this.player.speed;
+  }
+
+  private getTimeFromTimePercent(timePercent): string {
+    return ''
+  }
+
+  jumpToTime(time: string, timePercent) {
+    this.pause();
+    this.goToTime(time, timePercent)
+  }
+
+  goToTime(time: string, timePercent) {
+    //get head and update head$
+  }
+
+  clear() {
+    this.stop();
+    this.timeAwareArray = null;
+    this.stats = null;
+  }
+
+  play() {
+    if(this.player.isStopped) this.setPlayer({isStopped: false});
+    this.playerSub = Observable.timer(0, 100).switchMap(() => this.head$)
+      .map((head) => this.getNextTimePercent(head))
+      .takeUntil(this.player$.map(player => !player.isPlaying))
+      .subscribe((timePercent) => {
+        this.goToTimePercent(timePercent)
+    })
+  }
+
+  pause() {
+    this.setPlayer({isPlaying: false})
+  }
+
+  stop() {
+    this.jumpToTimePercent(0);
+    this.setPlayer({isStopped: true});
+  }
+
+  setSpeed(speed: number) {
+    this.setPlayer({speed})
+  }
+
+  setPlayer(obj: Partial<IReplayPlayer>) {
+    this.player$.next({...this.player, ...obj})
+  }
 }
 
-// export interface Stats {
-//   duration: number,
-//   start: number,
-// }
-
-// export interface IDecodedSegment extends  Partial<ISegment> {
-//   startPercent: number,
-//   endPercent: number,
-//   timeAwareArray?: ITimeAwarePoint[],
-//   start?: number,
-//   end?: number,
-//   bearing?: number,
-//   position?: number[],
-//   durationSeg: number,
-//   pstart?: string,
-//   pend?: string
-// }
