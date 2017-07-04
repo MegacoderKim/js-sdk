@@ -1,4 +1,5 @@
 import {HtMapItem} from "./map-item";
+import {HtMap} from "../interfaces";
 
 export class HtMarkerItem extends HtMapItem{
   tooltipOption = {};
@@ -8,11 +9,12 @@ export class HtMarkerItem extends HtMapItem{
     if(position) this.mapUtils.updatePosition(item, position, content, this.tooltipOption)
   }
 
-  setFocus(map: L.Map) {
-    if(this.item.getElement()) {
-      let center =  this.item.getLatLng();
-      map.panTo(center, {animate: true, duration: 1})
-    }
+  setFocus(map: HtMap) {
+    this.mapUtils.setFocus(this.item, map)
+  }
+
+  setPositionBearing(position, bearing, map) {
+
   }
 
 }

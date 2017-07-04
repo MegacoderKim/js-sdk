@@ -1,4 +1,4 @@
-import { IPageData, HtLocation, GeoJson } from "./common";
+import { IPageData, HtLocation, GeoJson, ITimeAwarePoint } from "./common";
 import { ITimelineEvent } from "./event";
 import { IAction } from "./action";
 export interface IUserPage extends IPageData {
@@ -141,4 +141,16 @@ export interface IUserPlacePage extends IPageData {
 }
 export interface IPlaceHeatPage extends IPageData {
     results: IPlaceHeat[];
+}
+export interface IDecodedSegment extends Partial<ISegment> {
+    startPercent: number;
+    endPercent: number;
+    timeAwareArray?: ITimeAwarePoint[];
+    start?: number;
+    end?: number;
+    bearing?: number;
+    position?: number[];
+    durationSeg: number;
+    pstart?: string;
+    pend?: string;
 }

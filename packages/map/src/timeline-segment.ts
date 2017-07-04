@@ -1,8 +1,10 @@
 import {ISegment, IUserData} from "../model/user";
 import {ITimeAwarePoint, Partial} from "../model/common";
 import {TimeAwarePolyline} from "./time-aware-polyline";
-import {IDecodedSegment, TimelineReplay} from "./timeline-replay";
+import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
+import { IDecodedSegment } from "./interface";
+// import {IDecodedSegment} from "../model/user";
 
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
@@ -13,9 +15,7 @@ export class TimelineSegment extends TimelineReplay {
   tripDuration: number;
   stopDuration: number;
   duration: number;
-  playSegmentCallback = (segmentId: string) => {
-
-  };
+  playSegmentCallback;
   update(userData: any) {
     let segments = userData.segments;
     // let noTrackingSegments = this.getNoTrackingSegments(userData.events);
@@ -63,9 +63,12 @@ export class TimelineSegment extends TimelineReplay {
   }
 
   currentTimeEffects(time) {
-    let segment = this.getCurrentSegment(time);
-    let segmentId = segment ? segment.id : '';
-    this.playSegmentCallback(segmentId);
+    if(this.playSegmentCallback) {
+      let segment = this.getCurrentSegment(time);
+      let segmentId = segment ? segment.id : '';
+      this.playSegmentCallback(segmentId);
+    }
+
   }
 
   private getCurrentSegment(time) {
@@ -193,11 +196,37 @@ export class TimelineSegment extends TimelineReplay {
     this.stats = null;
   }
 }
+//
+// export interface IReplayStats {
+//   start: string,
+//   end: string,
+//   duration: number,
+//   distance: number,
+//   timeAwarePolylineArray?: ITimeAwarePoint[],
+// }
 
-export interface IReplayStats {
-  start: string,
-  end: string,
-  duration: number,
-  distance: number,
-  timeAwarePolylineArray?: ITimeAwarePoint[],
-}
+// export interface IDecodedSegment extends  Partial<ISegment> {
+//   startPercent: number,
+//   endPercent: number,
+//   timeAwareArray?: ITimeAwarePoint[],
+//   start?: number,
+//   end?: number,
+//   bearing?: number,
+//   position?: number[],
+//   durationSeg: number,
+//   pstart?: string,
+//   pend?: string
+// }
+
+// export interface IDecodedSegment extends  Partial<any> {
+//   startPercent: number,
+//   endPercent: number,
+//   timeAwareArray?: any[],
+//   start?: number,
+//   end?: number,
+//   bearing?: number,
+//   position?: number[],
+//   durationSeg: number,
+//   pstart?: string,
+//   pend?: string
+// }

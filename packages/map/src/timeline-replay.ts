@@ -1,10 +1,10 @@
 import {TimeAwarePolyline} from "./time-aware-polyline";
 import {ISegment, IUserData} from "../model/user";
 import * as _ from 'underscore';
-import {ITimeAwarePoint, IPathSegment, Partial} from "../model/common";
+import { IPathSegment} from "../model/common";
 import {ITimelineEvent} from "../model/event";
-import {TimelineSegment} from "./timeline-segment";
-import {TimeString} from "ht-js-utils/dist";
+import {TimeString} from "ht-js-utils";
+import {IDecodedSegment} from "./interface";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
@@ -146,20 +146,20 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 }
 
-export interface Stats {
-  duration: number,
-  start: number,
-}
+// export interface Stats {
+//   duration: number,
+//   start: number,
+// }
 
-export interface IDecodedSegment extends  Partial<ISegment> {
-  startPercent: number,
-  endPercent: number,
-  timeAwareArray?: ITimeAwarePoint[],
-  start?: number,
-  end?: number,
-  bearing?: number,
-  position?: number[],
-  durationSeg: number,
-  pstart?: string,
-  pend?: string
-}
+// export interface IDecodedSegment extends  Partial<ISegment> {
+//   startPercent: number,
+//   endPercent: number,
+//   timeAwareArray?: ITimeAwarePoint[],
+//   start?: number,
+//   end?: number,
+//   bearing?: number,
+//   position?: number[],
+//   durationSeg: number,
+//   pstart?: string,
+//   pend?: string
+// }

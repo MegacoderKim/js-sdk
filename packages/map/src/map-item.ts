@@ -41,7 +41,8 @@ export class HtMapItem {
   }
 
   clear() {
-    this.mapUtils.clearItem(this.item)
+    if(this.item) this.mapUtils.clearItem(this.item)
+
   }
 
   resetHighlight(map) {
