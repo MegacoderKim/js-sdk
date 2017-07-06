@@ -68,17 +68,35 @@ E.g `var tracking  = ht.trackShortCode("xdBtyxs", "pk_xxxxxxxxxxxxxxxxx", {mapId
 3. `TrackAction`: Class which exposes methods to tracking action. It also exposes map object and action object.
 
 ##### Tracking options
-
 ```
 interface ITrackOption {
-    originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
-    onError?: (any) => void,
-    onActionReady?: (IAction) => void,
-    onActionUpdate?: (IAction) => void,
-    onReady?: (TrackAction) => void
+    mapOptions?: IMapOptions,
+    onError?: (error: any) => void,
+    onReady?: (trackAction: TrackAction) => void,
+    onActionReady?: (action: IAction) => void,
+    onActionUpdate?: (action: IAction) => void,
+    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
 }
-//parameters with `?` are optional
+```
+```
+interface IMapOptions {
+    gMapsStyle?: MapTypeStyle[],
+    bottomPadding?: number,
+    vehicleIcon?: CustomVehicleIcon,
+    originLatLng?: [number, number], //optional, to set default map center,
+    showStartPositionMarker?: boolean,
+    showEndPositionMarker?: boolean,
+    polyLineOptions?: GMapsPolyLineOptions
+}
+```
+```
+interface GMapsPolyLineOptions {
+    strokeColor?: string,
+    strokeOpacity?: number,
+    strokeWeight?: number,
+    visible?: boolean
+}
 ```
 
 ##### Action

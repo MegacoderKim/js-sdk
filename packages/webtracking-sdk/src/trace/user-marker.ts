@@ -6,9 +6,9 @@ export class UserMarker {
 
     constructor() {
         this.marker = Richmarker({
-            flat: true
+            flat: true,
+            zIndex: 100
         }, 'MIDDLE')
-
     }
 
     render(position, map) {

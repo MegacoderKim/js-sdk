@@ -5,5 +5,6 @@ export const Color = {
     black: '#000000',
     blue: '#008cee',
     car: "#5b5b5d",
-    darkGreen: "rgb(67, 167, 71)"
-}
+    darkGreen: "rgb(67, 167, 71)",
+    htPink: "#FF82DF"
+};

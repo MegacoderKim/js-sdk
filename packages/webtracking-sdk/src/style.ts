@@ -8,6 +8,8 @@ export const Style = {
     flexColumn: `display: flex; flex-direction: column`,
     flexRow: `display: flex; flex-direction: row`,
     destinationMarker: `display: flex; flex-direction: column; align-item: center; position: relative;`,
+    startMarker: `display: flex; flex-direction: column; align-item: center; position: relative;`,
+    endMarker: `display: flex; flex-direction: column; align-item: center; position: relative;`,
     eta: `position: absolute;
     top: 5px;
     left: 4px;
@@ -18,4 +20,4 @@ export const Style = {
     font-size: 10px;
     font-weight: 700;
     color: #fff;`
-}
+};

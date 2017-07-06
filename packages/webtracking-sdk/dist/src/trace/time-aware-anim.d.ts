@@ -5,6 +5,7 @@ import { UserMarker } from "./user-marker";
 export declare class TimeAwareAnim {
     timeAwarePolyline: TimeAwarePolyline;
     map: google.maps.Map;
+    customVehicleIcon: CustomVehicleIcon | null;
     userMarker: UserMarker;
     started: boolean;
     polyline: google.maps.Polyline;
@@ -20,6 +21,7 @@ export declare class TimeAwareAnim {
     polylineOption: google.maps.PolygonOptions | null;
     constructor(polylineOpt?: google.maps.PolygonOptions);
     start(action: IAction, map: google.maps.Map): void;
+    setCustomVehicleIcon(customVehicleIcon: any): void;
     update(action: IAction): void;
     private startAnim();
     private startAnimPoll(action);
@@ -27,12 +29,16 @@ export declare class TimeAwareAnim {
     hide(): void;
     clear(): void;
     private getTimeToAdd();
-    private getVehicleType(action);
-    private setMarker(bearing, action);
+    private getVehicleAssetDetails(action);
+    private setUserMarkerContent(bearing, action);
     private setColor(action);
     private currentPolylineData();
     private capTime(callback?);
     private clearAnimPoll();
     getBounds(bounds?: google.maps.LatLngBounds): google.maps.LatLngBounds;
     getPosition(): any;
+}
+export interface CustomVehicleIcon {
+    src: string;
+    height: string;
 }
