@@ -69,14 +69,20 @@ export class TrackAction {
 
     private makeMap() {
         let origin = this.getFirstOrigin();
-        this.map = new google.maps.Map(document.getElementById(this.options.mapId), {
-            zoom: 14,
-            center: origin,
-            disableDefaultUI:true,
-            scrollwheel: true,
-            scaleControl: false,
-            clickableIcons: false
-        });
+        if(!this.map) {
+
+            this.map = new google.maps.Map(document.getElementById(this.options.mapId), {
+                zoom: 14,
+                center: origin,
+                disableDefaultUI:true,
+                scrollwheel: true,
+                scaleControl: false,
+                clickableIcons: false
+            });
+        } else {
+            this.map.setCenter(origin)
+        }
+
     }
 
     private trace() {
@@ -102,7 +108,8 @@ export class TrackAction {
             this.updateAction(action);
             this.startActionPoll()
         }, (err) => {
-            if(this.options.onError) this.options.onError(err)
+            if(this.options.onError) this.options.onError(err);
+            this.startActionPoll()
         })
     }
 
