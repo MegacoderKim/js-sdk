@@ -4,15 +4,14 @@ import {IAction, IUser} from "../model";
 import * as moment from "moment";
 import * as _ from "underscore";
 import {UserMarker} from "./user-marker";
-import {VehicleAssets} from "../assets";
+import {Assets, VehicleAssets} from "../assets";
 
 export class TimeAwareAnim {
     timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
     map: google.maps.Map;
+    customVehicleIcon: CustomVehicleIcon | null = null;
     userMarker: UserMarker = new UserMarker();
-    // marker: google.maps.Marker = new google.maps.Marker();
     started: boolean = false;
-    // marker: google.maps.Marker = new RichMarker({flat: true, anchor: RichMarkerPosition.MIDDLE});
     polyline: google.maps.Polyline = new google.maps.Polyline();
     currentTime: string;
     animPoll;
@@ -40,6 +39,13 @@ export class TimeAwareAnim {
 
     }
 
+    setCustomVehicleIcon(customVehicleIcon) {
+        if (customVehicleIcon && customVehicleIcon.src) {
+            this.customVehicleIcon = customVehicleIcon;
+            this.customVehicleIcon.height = this.customVehicleIcon.height || '30px';
+        }
+    }
+
     update(action: IAction) {
         this.action = action;
         this.timeAwarePolyline.updateTimeAwarePolyline(action.time_aware_polyline);
@@ -54,7 +60,6 @@ export class TimeAwareAnim {
         this.polyline.setOptions({
             map: this.map,
             strokeOpacity: 1,
-            // path: polylineData.path
         });
         this.userMarker.render(_.last(polylineData.path), this.map);
         // this.marker.setPosition(_.last(polylineData.path));
@@ -71,9 +76,8 @@ export class TimeAwareAnim {
                 this.clearAnimPoll()
             });
             let polylineData = this.currentPolylineData();
-            this.userMarker.setPosition(_.last(polylineData.path))
-            // this.marker.setPosition(_.last(polylineData.path));
-            this.setMarker(polylineData.bearing, action);
+            this.userMarker.setPosition(_.last(polylineData.path));
+            this.setUserMarkerContent(polylineData.bearing, action);
             if(this.positionUpdateCallback && typeof this.positionUpdateCallback == 'function') {
                 this.positionUpdateCallback(this.userMarker.getPosition(), this.currentTime)
             }
@@ -114,28 +118,44 @@ export class TimeAwareAnim {
         return factor * this.animProps.interval;
     }
 
-    private getVehicleType(action: IAction) {
-        let actionVehicleType = action.vehicle_type;
-        if (actionVehicleType === 'car' || actionVehicleType === 'motorcycle') {
-            return actionVehicleType;
+    private getVehicleAssetDetails(action: IAction) {
+        if (this.customVehicleIcon) {
+            return {
+                img: this.customVehicleIcon.src,
+                height: this.customVehicleIcon.height
+            }
         }
-        return 'car';
+        let img = Assets.defaultHeroMarker;
+        let height = '30px';
+        let actionVehicleType = action.vehicle_type;
+        switch(actionVehicleType) {
+            case 'car':
+                img = Assets.vehicleCar;
+                height = '50px';
+                break;
+            case 'motorcycle':
+                img = Assets.motorcycle;
+                height = '50px';
+                break;
+            default:
+                img = Assets.defaultHeroMarker;
+                break;
+        }
+        return {
+            img,
+            height
+        };
     }
 
-    private setMarker(bearing, action) {
-        //todo
+    private setUserMarkerContent(bearing, action) {
         let angle = bearing || 0;
-        let vehicleType = this.getVehicleType(action);
-        let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
-            angle +
-            "deg)' height='50px' src='" +
-            VehicleAssets[vehicleType] +
-            "'>";
+        let vehicleAssetDetails = this.getVehicleAssetDetails(action);
+        let content = `<img id ='bike-marker' class='ht-rotate-marker' style='transform: rotate(${angle}deg)' height="${vehicleAssetDetails.height}" src="${vehicleAssetDetails.img}" />`;
         this.userMarker.setMarkerDiv(content)
     }
 
     private setColor(action: IAction) : void {
-        let color = this.polylineOption ? this.polylineOption.strokeColor : Color.grey4;
+        let color = this.polylineOption ? this.polylineOption.strokeColor : Color.htPink;
         this.polyline.setOptions({strokeColor: color})
     }
 
@@ -170,6 +190,11 @@ export class TimeAwareAnim {
     getPosition() {
         return this.userMarker.getPosition()
     }
+}
+
+export interface CustomVehicleIcon {
+    src: string,
+    height: string
 }
 
 interface AnimProps {

@@ -1,4 +1,6 @@
 import {TrackAction} from "./track-action";
+import {CustomVehicleIcon} from "./trace/time-aware-anim";
+import MapTypeStyle = google.maps.MapTypeStyle;
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
@@ -92,12 +94,28 @@ export interface IPlace {
 }
 
 export interface ITrackOption {
-    originLatLng?: [number, number], //optional, to set default map center
     mapId: string, //id of DOM where map is to be rendered
-    bottomPadding?: number,
+    mapOptions?: IMapOptions,
     onError?: (error: any) => void,
     onReady?: (trackAction: TrackAction) => void,
     onActionReady?: (action: IAction) => void,
     onActionUpdate?: (action: IAction) => void,
     onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
+}
+
+export interface IMapOptions {
+    gMapsStyle?: MapTypeStyle[],
+    bottomPadding?: number,
+    vehicleIcon?: CustomVehicleIcon,
+    originLatLng?: [number, number], //optional, to set default map center,
+    showStartPositionMarker: boolean,
+    showEndPositionMarker: boolean,
+    polyLineOptions: GMapsPolyLineOptions
+}
+
+export interface GMapsPolyLineOptions {
+    strokeColor: string,
+    strokeOpacity: number,
+    strokeWeight: number,
+    visible: boolean
 }

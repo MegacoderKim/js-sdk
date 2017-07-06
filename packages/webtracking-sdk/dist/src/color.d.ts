@@ -6,4 +6,5 @@ export declare const Color: {
     blue: string;
     car: string;
     darkGreen: string;
+    htPink: string;
 };

@@ -4,10 +4,16 @@ import * as $ from "jquery";
 import {TimeAwareAnim} from "./trace/time-aware-anim";
 import {Color} from "./color";
 import {Destination} from "./trace/destination";
+import {StartMarker} from "./trace/start-marker";
+import * as _ from "underscore";
+import {EndMarker} from "./trace/end-marker";
+import * as Utils from './utils';
 
 export class TrackAction {
     map: google.maps.Map;
-    private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.darkGreen});
+    private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.htPink});
+    startMarker: StartMarker = new StartMarker();
+    endMarker: EndMarker = new EndMarker();
     private actionPoll;
     destination: Destination = new Destination();
     action: IAction;
@@ -21,18 +27,21 @@ export class TrackAction {
         this.action = action;
         this.pk = pk;
         this.options = options;
+        if (options.mapOptions.vehicleIcon) {
+            this.anim.setCustomVehicleIcon(options.mapOptions.vehicleIcon);
+        }
         this.renderMap();
     }
 
-    resetBounds() {
+    resetBounds(bottomPadding: number = this.options.mapOptions.bottomPadding) {
         if(this.action.display.show_summary) {
-            this.showSummary()
+            this.showSummary(bottomPadding);
         } else {
             if(this.destination.getMap()) {
                 let bounds = this.anim.getBounds();
                 bounds.extend(this.destination.getPosition());
                 this.map.fitBounds(bounds);
-                bounds = this.extendedBounds(bounds, -this.options.bottomPadding);
+                bounds = this.extendedBounds(bounds, -bottomPadding);
                 this.map.fitBounds(bounds);
                 this.map.panToBounds(bounds);
             } else {
@@ -70,19 +79,31 @@ export class TrackAction {
     private makeMap() {
         let origin = this.getFirstOrigin();
         if(!this.map) {
-
+            let gMapsStyles = this.options.mapOptions.gMapsStyle || this.getDefaultGMapsStyle();
             this.map = new google.maps.Map(document.getElementById(this.options.mapId), {
                 zoom: 14,
                 center: origin,
                 disableDefaultUI:true,
                 scrollwheel: true,
                 scaleControl: false,
-                clickableIcons: false
+                clickableIcons: false,
+                styles: gMapsStyles
             });
         } else {
-            this.map.setCenter(origin)
+            this.map.setCenter(origin);
         }
+    }
 
+    private getDefaultGMapsStyle() {
+        return [
+            {
+                "stylers": [
+                    {
+                        "saturation": -100
+                    }
+                ]
+            }
+        ];
     }
 
     private trace() {
@@ -93,7 +114,18 @@ export class TrackAction {
                 this.anim.start(this.action, this.map);
             }
             this.startActionPoll();
-            this.traceDestination()
+            this.traceDestination();
+            this.traceStart();
+        }
+    }
+
+    traceStart() {
+        if (this.action.encoded_polyline)  {
+            let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
+            let startPoint = _.first(polylineArray);
+            let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
+            this.startMarker.setMarkerDiv();
+            this.startMarker.render(startPosition, this.map);
         }
     }
 
@@ -120,7 +152,7 @@ export class TrackAction {
         } else {
             this.anim.update(action);
             this.traceDestination();
-        };
+        }
         this.options.onActionUpdate && this.options.onActionUpdate(action)
     }
 
@@ -128,8 +160,8 @@ export class TrackAction {
         this.destination.update(this.action, this.map)
     }
 
-    private showSummary() {
-        this.drawAndFitPolyline(this.action.encoded_polyline);
+    private showSummary(bottomPadding: number = this.options.mapOptions.bottomPadding) {
+        this.drawAndFitPolyline(this.action.encoded_polyline, bottomPadding);
         this.clear()
     }
 
@@ -139,79 +171,48 @@ export class TrackAction {
         if(this.actionPoll) clearTimeout(this.actionPoll)
     }
 
-    private drawAndFitPolyline(polylineEncoded) {
+    private drawAndFitPolyline(polylineEncoded, bottomPadding: number = this.options.mapOptions.bottomPadding) {
         let polylineArray = google.maps.geometry.encoding.decodePath(polylineEncoded);
         new google.maps.Polyline({
             map: this.map,
             path: polylineArray,
-            strokeColor: "rgb(10, 97, 194)",
-            icons: [
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: '#E63629',
-                        fillOpacity: 1,
-                        strokeOpacity: 0,
-                        strokeColor: '#E63629',
-                        scale: 4
-                    },
-                    offset: '100%',
-                },
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillOpacity: 0,
-                        strokeWeight: 1,
-                        strokeColor: '#E63629',
-                        scale: 6
-                    },
-                    offset: '100%',
-                },
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillColor: '#1C9A46',
-                        fillOpacity: 1,
-                        strokeOpacity: 0,
-                        strokeColor: '#1C9A46',
-                        scale: 4
-                    },
-                    offset: '0%',
-                },
-                {
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        fillOpacity: 0,
-                        strokeWeight: 1,
-                        strokeColor: '#1C9A46',
-                        scale: 6
-                    },
-                    offset: '0%',
-                }
-            ]
+            strokeColor: "rgb(223, 92, 193)",
+            strokeOpacity: 1,
+            strokeWeight: 3,
+            icons: []
         });
+        if (polylineArray.length > 0) {
+            this.startMarker.setMarkerDiv();
+            this.endMarker.setMarkerDiv();
+            let startPoint = _.first(polylineArray);
+            let endPoint = _.last(polylineArray);
+            let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
+            let lastPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
+            this.startMarker.render(startPosition, this.map);
+            this.endMarker.render(lastPosition, this.map);
+        }
         setTimeout(() => {
-            this.fitPolyline(polylineArray);
+            //Utils.fitPolylineWithBottomPadding(this.map, polylineArray, bottomPadding);
+            this.fitPolyline(polylineArray, bottomPadding);
         }, 200);
-
     }
 
-    private fitPolyline(polylineMvc) {
+    private fitPolyline(polylineMvc, bottomPadding) {
         let bounds = new google.maps.LatLngBounds();
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
         });
         this.map.fitBounds(bounds);
-        this.fitExtended(polylineMvc)
+        this.fitExtended(polylineMvc, bottomPadding)
     }
 
-    private fitExtended(polylineMvc) {
+    private fitExtended(polylineMvc, bottomPadding) {
         let bounds = new google.maps.LatLngBounds();
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
-
-            if(this.options.bottomPadding) {
-                bounds.extend(this.extendedLocation(v, -this.options.bottomPadding));
+            let bottomPaddingValue = bottomPadding || this.options.mapOptions.bottomPadding;
+            if(bottomPaddingValue) {
+                bounds.extend(this.extendedLocation(v, -bottomPaddingValue));
             }
         });
         this.map.fitBounds(bounds);
