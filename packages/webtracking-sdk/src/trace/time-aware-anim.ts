@@ -34,7 +34,7 @@ export class TimeAwareAnim {
             if(!this.polylineOption) this.setColor(action);
             this.update(action);
             this.startAnim();
-            this.startAnimPoll();
+            this.startAnimPoll(action);
             this.started = true;
         }
 
@@ -44,7 +44,7 @@ export class TimeAwareAnim {
         this.action = action;
         this.timeAwarePolyline.updateTimeAwarePolyline(action.time_aware_polyline);
         this.setColor(action);
-        if(!this.animPoll) this.startAnimPoll()
+        if(!this.animPoll) this.startAnimPoll(action)
     }
 
     private startAnim() {
@@ -62,7 +62,7 @@ export class TimeAwareAnim {
 
     }
 
-    private startAnimPoll() {
+    private startAnimPoll(action: IAction) {
         if(this.animPoll) this.clearAnimPoll();
         this.animPoll = setInterval(() => {
             let add = this.getTimeToAdd();
@@ -73,7 +73,7 @@ export class TimeAwareAnim {
             let polylineData = this.currentPolylineData();
             this.userMarker.setPosition(_.last(polylineData.path))
             // this.marker.setPosition(_.last(polylineData.path));
-            this.setMarker(polylineData.bearing);
+            this.setMarker(polylineData.bearing, action);
             if(this.positionUpdateCallback && typeof this.positionUpdateCallback == 'function') {
                 this.positionUpdateCallback(this.userMarker.getPosition(), this.currentTime)
             }
@@ -114,14 +114,22 @@ export class TimeAwareAnim {
         return factor * this.animProps.interval;
     }
 
-    private setMarker(bearing) {
+    private getVehicleType(action: IAction) {
+        let actionVehicleType = action.vehicle_type;
+        if (actionVehicleType === 'car' || actionVehicleType === 'motorcycle') {
+            return actionVehicleType;
+        }
+        return 'car';
+    }
+
+    private setMarker(bearing, action) {
         //todo
         let angle = bearing || 0;
-        // let vehicleType = driver.vehicle_type || 'car';
+        let vehicleType = this.getVehicleType(action);
         let content = "<img id='bike-marker' class='ht-rotate-marker' style='transform: rotate(" +
             angle +
             "deg)' height='50px' src='" +
-            VehicleAssets['car'] +
+            VehicleAssets[vehicleType] +
             "'>";
         this.userMarker.setMarkerDiv(content)
     }

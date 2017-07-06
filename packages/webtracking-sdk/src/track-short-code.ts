@@ -16,7 +16,8 @@ export class TrackShortCode {
             ...GetReqOpt(this.pk)
         }).then((data: IDecoded) => {
             console.log(data);
-            this.trackAction.init(data.action, this.pk, this.options)
+            this.trackAction.init(data.action, this.pk, this.options);
+            this.options.onAccountReady && this.options.onAccountReady(data.sub_account, data.action);
         }, err => {
             this.options.onError && this.options.onError(err)
         })

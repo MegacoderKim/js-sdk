@@ -10,13 +10,14 @@ export function GetReqOpt(pk: string) {
     return {
         headers: {
             "authorization": "token " + pk,
-            "content-type": "application/json"
+            "content-type": "application/json",
+            "X-Hypertrack-Client": "hypertrack/javascript-SDK"
         }
     }
 }
 
 export function GetLatLng(place: IPlace | any, key: string = 'location') {
-    if(!place) return null;
+    if(!place || !place[key]) return null;
     return new google.maps.LatLng(place[key].coordinates[1], place[key].coordinates[0])
 }
 
