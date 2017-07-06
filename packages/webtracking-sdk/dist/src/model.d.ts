@@ -11,11 +11,13 @@ export interface IAction {
     created_at: string | null;
     display: {
         duration_remaining: number | null;
+        duration_elapsed: number | null;
+        distance_remaining: number | null;
         show_summary: boolean;
         status_text: string;
         sub_status_text: string;
     };
-    distance: number;
+    distance: number | null;
     encoded_polyline: string;
     eta: string | null;
     expected_place: IPlace;
@@ -25,6 +27,7 @@ export interface IAction {
     short_code: string;
     started_at: string | null;
     started_place: IPlace | null;
+    ended_at: string | null;
     status: string;
     suspended_at: string | null;
     time_aware_polyline: string;
@@ -34,12 +37,34 @@ export interface IAction {
     vehicle_type: string;
 }
 export interface ISubAccount {
+    id: string;
+    type: string;
+    token: ISubAccountToken;
+    account: IAccount;
+}
+export interface ISubAccountToken {
+    key: string;
+    scope: string;
+}
+export interface IAccount {
+    name: string | null;
+    tagline: string | null;
+    id: string;
+    ios_app_download_url: string | null;
+    android_app_download_url: string | null;
+    logo: string | null;
+    ios_deeplink_url: string | null;
+    android_deeplink_url: string | null;
 }
 export interface IUser {
     name: string;
     phone: number | string | null;
     last_heartbeat_at: string | null;
     photo: string;
+    display: {
+        speed: number | null;
+        battery: number | null;
+    };
     last_location: {
         geojson: IPlace;
     };
@@ -61,9 +86,10 @@ export interface IPlace {
 export interface ITrackOption {
     originLatLng?: [number, number];
     mapId: string;
-    bottomPadding: number;
-    onError: (error: any) => void;
-    onReady: (trackAction: TrackAction) => void;
-    onActionReady: (action: IAction) => void;
-    onActionUpdate: (action: IAction) => void;
+    bottomPadding?: number;
+    onError?: (error: any) => void;
+    onReady?: (trackAction: TrackAction) => void;
+    onActionReady?: (action: IAction) => void;
+    onActionUpdate?: (action: IAction) => void;
+    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void;
 }

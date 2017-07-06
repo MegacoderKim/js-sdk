@@ -5,6 +5,7 @@ export declare function GetReqOpt(pk: string): {
     headers: {
         "authorization": string;
         "content-type": string;
+        "X-Hypertrack-Client": string;
     };
 };
 export declare function GetLatLng(place: IPlace | any, key?: string): google.maps.LatLng;

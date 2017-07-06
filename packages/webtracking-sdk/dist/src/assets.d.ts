@@ -4,4 +4,5 @@ export declare const Assets: {
 };
 export declare const VehicleAssets: {
     "car": string;
+    "motorcycle": string;
 };

@@ -20,7 +20,7 @@ export class TimeAwarePolyline {
     }
 
     getLatestTime() {
-        if(this.timeAwarePolyline) {
+        if(this.timeAwarePolyline && this.timeAwarePolyline.length > 0) {
             return _.last(this.timeAwarePolyline)[2]
         } else {
             return null;

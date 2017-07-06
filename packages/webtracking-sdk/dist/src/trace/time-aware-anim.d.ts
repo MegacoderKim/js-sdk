@@ -22,12 +22,13 @@ export declare class TimeAwareAnim {
     start(action: IAction, map: google.maps.Map): void;
     update(action: IAction): void;
     private startAnim();
-    private startAnimPoll();
+    private startAnimPoll(action);
     show(map: google.maps.Map): void;
     hide(): void;
     clear(): void;
     private getTimeToAdd();
-    private setMarker(bearing);
+    private getVehicleType(action);
+    private setMarker(bearing, action);
     private setColor(action);
     private currentPolylineData();
     private capTime(callback?);

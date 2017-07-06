@@ -32,6 +32,8 @@ export class TrackAction {
                 let bounds = this.anim.getBounds();
                 bounds.extend(this.destination.getPosition());
                 this.map.fitBounds(bounds);
+                bounds = this.extendedBounds(bounds, -this.options.bottomPadding);
+                this.map.fitBounds(bounds);
                 this.map.panToBounds(bounds);
             } else {
                 this.map.setCenter(this.anim.getPosition())
@@ -55,7 +57,7 @@ export class TrackAction {
 
     private getFirstOrigin(): google.maps.LatLng {
         let origin = new google.maps.LatLng(37.370641488030245, -122.07498079040533);
-        if(this.action.user && this.action.user.last_location) {
+        if(this.action.user && this.action.user.last_location && this.action.user.last_location['geojson']) {
             origin = GetLatLng(this.action.user.last_location, 'geojson')
         } else if(this.action.started_place) {
             origin = GetLatLng(this.action.started_place)
@@ -81,7 +83,9 @@ export class TrackAction {
         if(this.action.display.show_summary) {
             this.showSummary();
         } else {
-            this.anim.start(this.action, this.map);
+            if (this.action.time_aware_polyline) {
+                this.anim.start(this.action, this.map);
+            }
             this.startActionPoll();
             this.traceDestination()
         }
@@ -186,8 +190,7 @@ export class TrackAction {
     }
 
     private fitPolyline(polylineMvc) {
-        // console.log(polylineMvc);
-        var bounds = new google.maps.LatLngBounds();
+        let bounds = new google.maps.LatLngBounds();
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
         });
@@ -196,7 +199,7 @@ export class TrackAction {
     }
 
     private fitExtended(polylineMvc) {
-        var bounds = new google.maps.LatLngBounds();
+        let bounds = new google.maps.LatLngBounds();
         $.each(polylineMvc, (i, v) => {
             bounds.extend(v);
 
@@ -208,12 +211,19 @@ export class TrackAction {
     }
 
     private extendedLocation(position, y) {
-        var projection = this.map.getProjection();
-        if(projection){
-            var markerPoint = new google.maps.Point(projection.fromLatLngToPoint(position).x, projection.fromLatLngToPoint(position).y - y/(Math.pow(2, this.map.getZoom())));
+        let projection = this.map.getProjection();
+        if(projection) {
+            let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(position).x, projection.fromLatLngToPoint(position).y - y/(Math.pow(2, this.map.getZoom())));
             return projection.fromPointToLatLng(markerPoint)
         }
         return position;
+    }
+
+    private extendedBounds(bounds, y) {
+        let southWest = bounds.getSouthWest();
+        let extendedPosition = this.extendedLocation(southWest, y);
+        bounds.extend(extendedPosition);
+        return bounds;
     }
 
 }

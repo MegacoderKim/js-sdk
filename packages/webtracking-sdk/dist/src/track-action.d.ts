@@ -27,5 +27,6 @@ export declare class TrackAction {
     private fitPolyline(polylineMvc);
     private fitExtended(polylineMvc);
     private extendedLocation(position, y);
+    private extendedBounds(bounds, y);
 }
 export declare function trackAction(action: IAction, pk: string, options: ITrackOption): TrackAction;

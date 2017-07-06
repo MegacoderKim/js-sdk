@@ -1,6 +1,6 @@
 {
   "name": "ht-webtracking-sdk",
-  "version": "0.0.11",
+  "version": "0.0.30",
   "description": "hyperTrack webtracking",
   "main": "dist/track.js",
   "typings": "dist/src/index.d.ts",
@@ -16,6 +16,7 @@
   "author": "Gaurav Mukherjee",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^7.0.22",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
     "url-loader": "^0.5.8",
