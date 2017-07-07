@@ -52,18 +52,22 @@ export class TimelineSegment extends TimelineReplay {
   }
 
   currentTimeEffects(time) {
-    if(this.playSegmentCallback) {
-      let segment = this.getCurrentSegment(time);
-      let segmentId = segment ? segment.id : '';
-      this.playSegmentCallback(segmentId);
-    }
+
 
   }
 
-  private getCurrentSegment(time) {
-    // console.log(time, "segment time", this.segments);
+  currentSegmentEffects(currentSegment) {
+    if(this.playSegmentCallback) {
+      let segment = currentSegment;
+      let segmentId = segment ? segment.id : '';
+      this.playSegmentCallback(segmentId);
+    }
+  }
+
+  private getCurrentSegment(time: string) {
+    let timeStamp = new Date(time).getTime();
     return _.find(this.segments, (segment) => {
-      return segment.start <= time && segment.end > time
+      return segment.start <= timeStamp && segment.end > timeStamp
     })
   }
 
@@ -185,14 +189,16 @@ export class TimelineSegment extends TimelineReplay {
     //get head and update head$
     let {position, bearing} = this.getPositionBearingnAtTime(time);
     let currentSegment = this.getCurrentSegment(time);
-      let head: IReplayHead = {
+    let head: IReplayHead = {
       currentTime: time,
       timePercent,
       currentPosition: position,
-        bearing,
-        currentSegment,
-        segmentPercent: 0
+      bearing,
+      currentSegment,
+      segmentPercent: 0
     };
+    this.currentSegmentEffects(currentSegment);
+    this.currentTimeEffects(time);
     this.setReplayHead(head)
   }
 

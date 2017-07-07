@@ -46,7 +46,8 @@ export class TimelineReplay extends TimeAwarePolyline {
     });
 
     this.player$.subscribe((player) => {
-      this.player = player
+      this.player = player;
+      if(player.isStopped) this.currentSegmentEffects(null)
     })
   }
 
@@ -55,7 +56,7 @@ export class TimelineReplay extends TimeAwarePolyline {
     // let currentTimeValue = (timePercent * (this.stats.duration) / 100) + new Date(this.stats.start).getTime();
     // let time = new Date(currentTimeValue).toISOString();
     // console.log(TimeString(time));
-    this.currentTimeEffects(time);
+    // if(this.player && !this.player.isStopped)
     // if(segment) console.log(segment.type, "segment", TimeString(segment.started_at), TimeString(segment.ended_at));
     var position: any;
     var bearing;
@@ -90,6 +91,10 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   currentTimeEffects(time) {
+
+  }
+
+  currentSegmentEffects(segment) {
 
   }
 
@@ -171,21 +176,16 @@ export class TimelineReplay extends TimeAwarePolyline {
 
   play() {
     this.setPlayer({isStopped: false, isPlaying: true});
-    this.playerSub = setInterval(() => {
-      this.head$.map((head) => this.getNextTimePercent(head)).subscribe((timePercent) => {
+
+    this.playerSub = Observable.timer(0, 100).switchMap(() => this.head$.take(1))
+      .map((head) => this.getNextTimePercent(head))
+      .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
+      .subscribe((timePercent) => {
         this.goToTimePercent(timePercent)
-      })
-    })
-    // this.playerSub = Observable.timer(0, 100).switchMap(() => this.head$)
-    //   .map((head) => this.getNextTimePercent(head))
-    //   .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
-    //   .subscribe((timePercent) => {
-    //     this.goToTimePercent(timePercent)
-    // });
+      });
   }
 
   pause() {
-    if(this.playerSub) clearInterval(this.playerSub)
     this.setPlayer({isPlaying: false})
   }
 
