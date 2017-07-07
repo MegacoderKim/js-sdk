@@ -169,9 +169,9 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   clear() {
-    this.stop();
+    if(!this.player.isStopped) this.stop();
     this.timeAwareArray = null;
-    this.stats = null;
+    this.setStats(null);
   }
 
   play() {
@@ -191,7 +191,8 @@ export class TimelineReplay extends TimeAwarePolyline {
 
   stop() {
     this.jumpToTimePercent(0);
-    this.setPlayer({isStopped: true});
+    this.setPlayer({isStopped: true, isPlaying: false, speed: 1});
+    this.setReplayHead(null);
   }
 
   setSpeed(speed: number) {
