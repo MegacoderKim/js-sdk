@@ -4,16 +4,17 @@ import * as _ from 'underscore';
 import { IPathSegment} from "../model/common";
 import {ITimelineEvent} from "../model/event";
 import {TimeString} from "ht-js-utils";
-import {IDecodedSegment} from "./interface";
 import {Subject} from "rxjs/Subject";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/timer";
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/take';
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/takeUntil";
-import {IReplayHead, IReplayPlayer, IReplayStats} from "../interfaces";
+import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class TimelineReplay extends TimeAwarePolyline {
@@ -21,10 +22,10 @@ export class TimelineReplay extends TimeAwarePolyline {
   polyline: L.Polyline = L.polyline([]);
   map;
   stats;
-  stats$: Subject<any> = new Subject();
+  stats$: BehaviorSubject<any> = new BehaviorSubject(null);
   head;
-  head$: Subject<any> = new Subject();
-  playerSub: Subscription;
+  head$: BehaviorSubject<any> = new BehaviorSubject(null);
+  playerSub;
   player$: BehaviorSubject<IReplayPlayer> = new BehaviorSubject({isPlaying: false, isStopped: true, speed: 1});
   player: IReplayPlayer;
   // timelineSegment = new TimelineSegment();
@@ -49,12 +50,12 @@ export class TimelineReplay extends TimeAwarePolyline {
     })
   }
 
-  getPositionBearingnAtTime(timePercent: number): {position: number[], bearing: number} {
+  getPositionBearingnAtTime(time: string): {position: number[], bearing: number} {
     if(!this.stats) return null;
-    let currentTimeValue = (timePercent * (this.stats.duration) / 100) + new Date(this.stats.start).getTime();
-    let time = new Date(currentTimeValue).toISOString();
+    // let currentTimeValue = (timePercent * (this.stats.duration) / 100) + new Date(this.stats.start).getTime();
+    // let time = new Date(currentTimeValue).toISOString();
     // console.log(TimeString(time));
-    this.currentTimeEffects(currentTimeValue);
+    this.currentTimeEffects(time);
     // if(segment) console.log(segment.type, "segment", TimeString(segment.started_at), TimeString(segment.ended_at));
     var position: any;
     var bearing;
@@ -93,7 +94,8 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   getLastPositionBearing() {
-    return this.getPositionBearingnAtTime(100)
+    let lastSegTime = _.last(this.timeAwareArray)[2]+'';
+    return this.getPositionBearingnAtTime(lastSegTime)
   }
 
   getLocationsAtTimesT(times: string[]) {
@@ -143,11 +145,13 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   private getNextTimePercent( head: IReplayHead): number {
-    return head.timePercent + 0.5 * this.player.speed;
+    return head ? head.timePercent + 0.05 * this.player.speed : 0;
   }
 
   private getTimeFromTimePercent(timePercent): string {
-    return ''
+    let currentTimeValue = (timePercent * (this.stats.duration) / 100) + new Date(this.stats.start).getTime();
+    let currentTime = new Date(currentTimeValue).toISOString();
+    return currentTime;
   }
 
   jumpToTime(time: string, timePercent) {
@@ -166,16 +170,22 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   play() {
-    if(this.player.isStopped) this.setPlayer({isStopped: false});
-    this.playerSub = Observable.timer(0, 100).switchMap(() => this.head$)
-      .map((head) => this.getNextTimePercent(head))
-      .takeUntil(this.player$.map(player => !player.isPlaying))
-      .subscribe((timePercent) => {
+    this.setPlayer({isStopped: false, isPlaying: true});
+    this.playerSub = setInterval(() => {
+      this.head$.map((head) => this.getNextTimePercent(head)).subscribe((timePercent) => {
         this.goToTimePercent(timePercent)
+      })
     })
+    // this.playerSub = Observable.timer(0, 100).switchMap(() => this.head$)
+    //   .map((head) => this.getNextTimePercent(head))
+    //   .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
+    //   .subscribe((timePercent) => {
+    //     this.goToTimePercent(timePercent)
+    // });
   }
 
   pause() {
+    if(this.playerSub) clearInterval(this.playerSub)
     this.setPlayer({isPlaying: false})
   }
 

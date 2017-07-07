@@ -3,8 +3,7 @@ import {ITimeAwarePoint, Partial} from "../model/common";
 import {TimeAwarePolyline} from "./time-aware-polyline";
 import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
-import { IDecodedSegment } from "./interface";
-// import {IDecodedSegment} from "../model/user";
+import {IDecodedSegment, IReplayHead} from "./interfaces";
 
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
@@ -181,4 +180,20 @@ export class TimelineSegment extends TimelineReplay {
   clearTimeline() {
     this.clear()
   }
+
+  goToTime(time: string, timePercent) {
+    //get head and update head$
+    let {position, bearing} = this.getPositionBearingnAtTime(time);
+    let currentSegment = this.getCurrentSegment(time);
+      let head: IReplayHead = {
+      currentTime: time,
+      timePercent,
+      currentPosition: position,
+        bearing,
+        currentSegment,
+        segmentPercent: 0
+    };
+    this.setReplayHead(head)
+  }
+
 }

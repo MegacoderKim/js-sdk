@@ -1,4 +1,4 @@
-import {HtMap, MapUtils} from "../interfaces";
+import {HtMap, MapUtils} from "./interfaces";
 import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";

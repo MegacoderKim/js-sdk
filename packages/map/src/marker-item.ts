@@ -1,5 +1,5 @@
 import {HtMapItem} from "./map-item";
-import {HtMap} from "../interfaces";
+import {HtMap} from "./interfaces";
 
 export class HtMarkerItem extends HtMapItem{
   tooltipOption = {};

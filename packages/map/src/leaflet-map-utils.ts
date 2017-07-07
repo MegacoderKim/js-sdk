@@ -1,4 +1,4 @@
-import {HtMarker, MapUtils} from "../interfaces";
+import {HtMarker, MapUtils} from "./interfaces";
 var polyUtil = require('polyline-encoded');
 
 export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBounds([])) {
