@@ -29,7 +29,7 @@ export interface IReplayHead {
   currentTime: string,
   currentPosition: number[],
   bearing: number,
-  currentSegment: ISegment| IDecodedSegment,
+  currentSegment: IDecodedSegment,
   segmentPercent: number
 }
 

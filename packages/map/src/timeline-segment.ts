@@ -32,7 +32,7 @@ export class TimelineSegment extends TimelineReplay {
       if(gapSegment) {
         let gapSegmentData =  this.getSegmentData(gapSegment, segmentLastUpdatedAt);
         duration = duration + gapSegmentData.durationSeg;
-        gapSegment = {...gapSegment, ...gapSegmentData}
+        gapSegment = {...gapSegment, ...gapSegmentData};
       }
       acc = gapSegment ? [...acc, gapSegment] : acc;
       acc = currentSegment ? [...acc, currentSegment] : acc;

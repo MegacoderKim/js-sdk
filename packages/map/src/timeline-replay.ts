@@ -30,7 +30,8 @@ export class TimelineReplay extends TimeAwarePolyline {
   player: IReplayPlayer;
   // timelineSegment = new TimelineSegment();
   debug: boolean = false;
-
+  frameInterval: number = 50;
+  skipStops: boolean =  false;
   constructor() {
     super();
     this.addListerner();
@@ -60,12 +61,12 @@ export class TimelineReplay extends TimeAwarePolyline {
     // if(segment) console.log(segment.type, "segment", TimeString(segment.started_at), TimeString(segment.ended_at));
     var position: any;
     var bearing;
-    let pathSegment: IPathSegment[] = this.getPolylineSegmentsForLocationsElapsed(this.timeAwareArray, time);
-    if (pathSegment && pathSegment.length > 0) {
-      let pathBeaing = _.last(pathSegment);
-      let point = _.last(pathBeaing.path);
+    let pathSegment: any = this.getPolylineSegmentForLocationsElapsed(this.timeAwareArray, time);
+    if (pathSegment && pathSegment.locations.length > 0) {
+      // let pathBeaing = _.last(pathSegment);
+      let point = _.last(pathSegment.locations);
       position = [point[0], point[1]];
-      bearing = pathBeaing.bearing;
+      bearing = pathSegment.bearing;
       // return [point[0], point[1]]
     } else {
       // return null
@@ -150,7 +151,21 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   private getNextTimePercent( head: IReplayHead): number {
-    return head ? head.timePercent + 0.05 * this.player.speed : 0;
+    return head ? head.timePercent + this.getIncTimePercent(head) : 0;
+  }
+
+  private getIncTimePercent(head: IReplayHead): number {
+    let stats = this.stats;
+    var duration =  3000 / this.player.speed;
+    if(head.currentSegment.type == 'trip')  {
+      let max = 2*60*60*1000;
+      duration = (3000 * Math.min(max, head.currentSegment.durationSeg)/max + 3000) / this.player.speed;
+    }
+    let segment = head.currentSegment;
+    let frameStep = duration / this.frameInterval;
+    let step = (frameStep / head.currentSegment.durationSeg);
+    let segmentGap = (segment.endPercent - segment.startPercent);
+    return  Math.min(segmentGap / frameStep, segmentGap);
   }
 
   private getTimeFromTimePercent(timePercent): string {
@@ -177,12 +192,15 @@ export class TimelineReplay extends TimeAwarePolyline {
   play() {
     this.setPlayer({isStopped: false, isPlaying: true});
 
-    this.playerSub = Observable.timer(0, 100).switchMap(() => this.head$.take(1))
+    this.playerSub = Observable.timer(0, this.frameInterval).switchMap(() => this.head$.take(1))
       .map((head) => this.getNextTimePercent(head))
       .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
       .subscribe((timePercent) => {
         this.goToTimePercent(timePercent)
       });
+  }
+  toggleSkipStops() {
+    this.skipStops = !this.skipStops;
   }
 
   pause() {
