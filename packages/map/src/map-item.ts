@@ -1,5 +1,5 @@
 import {LeafletUtils} from "./leaflet-map-utils";
-import {HtBounds, HtMap, MapUtils} from "../interfaces";
+import {HtBounds, HtMap, MapUtils} from "./interfaces";
 
 export class HtMapItem {
   item: any;

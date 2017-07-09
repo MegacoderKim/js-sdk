@@ -3,17 +3,11 @@ import {ITimeAwarePoint, Partial} from "../model/common";
 import {TimeAwarePolyline} from "./time-aware-polyline";
 import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
-import { IDecodedSegment } from "./interface";
-// import {IDecodedSegment} from "../model/user";
+import {IDecodedSegment, IReplayHead} from "./interfaces";
 
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
   allSegments: IDecodedSegment[];
-  // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
-  // timeAwareArray: ITimeAwarePoint[];
-
-  tripDuration: number;
-  stopDuration: number;
   duration: number;
   playSegmentCallback;
   update(userData: any) {
@@ -33,22 +27,16 @@ export class TimelineSegment extends TimelineReplay {
         duration = duration + segmentData.durationSeg;
         totalTimeAwareArray = [...totalTimeAwareArray, ...segmentData.timeAwareArray];
         currentSegment = {...segment, ...segmentData}
-        // return[...acc, {...segment, ...segmentData}];
-      } else {
-        // return acc;
       }
       gapSegment = acc.length && currentSegment ? this.getGapSegment(currentSegment, _.last(acc)) : null;
-      // console.log(gapSegment, "gap");
       if(gapSegment) {
         let gapSegmentData =  this.getSegmentData(gapSegment, segmentLastUpdatedAt);
         duration = duration + gapSegmentData.durationSeg;
-        gapSegment = {...gapSegment, ...gapSegmentData}
+        gapSegment = {...gapSegment, ...gapSegmentData};
       }
       acc = gapSegment ? [...acc, gapSegment] : acc;
       acc = currentSegment ? [...acc, currentSegment] : acc;
-      // console.log(acc);
       return acc
-      // return segmentData ? [...acc, {...segment, ...segmentData}] : acc;
     }, []);
     this.timeAwareArray = totalTimeAwareArray;
     // this.timeAwareArray = _.sortBy(totalTimeAwareArray, (array => {
@@ -58,23 +46,28 @@ export class TimelineSegment extends TimelineReplay {
     //sorting messes up stop end and trip start points.
     this.duration = duration;
     this.segments = this.getSegmentsWithPercentMarks(this.allSegments, duration);
-    this.stats = this.getStats(this.segments);
+    let stats = this.getStats(this.segments);
+    this.setStats(stats);
     console.log(this.segments, "deco");
   }
 
   currentTimeEffects(time) {
-    if(this.playSegmentCallback) {
-      let segment = this.getCurrentSegment(time);
-      let segmentId = segment ? segment.id : '';
-      this.playSegmentCallback(segmentId);
-    }
+
 
   }
 
-  private getCurrentSegment(time) {
-    // console.log(time, "segment time", this.segments);
+  currentSegmentEffects(currentSegment) {
+    if(this.playSegmentCallback) {
+      let segment = currentSegment;
+      let segmentId = segment ? segment.id : '';
+      this.playSegmentCallback(segmentId);
+    }
+  }
+
+  private getCurrentSegment(time: string) {
+    let timeStamp = new Date(time).getTime();
     return _.find(this.segments, (segment) => {
-      return segment.start <= time && segment.end > time
+      return segment.start <= timeStamp && segment.end > timeStamp
     })
   }
 
@@ -134,7 +127,8 @@ export class TimelineSegment extends TimelineReplay {
         end: new Date(end).toISOString(),
         duration: end - start,
         distance: 0,
-        timeAwarePolylineArray: this.timeAwareArray
+        timeAwarePolylineArray: this.timeAwareArray,
+        segments
       };
       return stats;
     }
@@ -191,42 +185,21 @@ export class TimelineSegment extends TimelineReplay {
     this.clear()
   }
 
-  clear() {
-    this.timeAwareArray = null;
-    this.stats = null;
+  goToTime(time: string, timePercent) {
+    //get head and update head$
+    let {position, bearing} = this.getPositionBearingnAtTime(time);
+    let currentSegment = this.getCurrentSegment(time);
+    let head: IReplayHead = {
+      currentTime: time,
+      timePercent,
+      currentPosition: position,
+      bearing,
+      currentSegment,
+      segmentPercent: 0
+    };
+    this.currentSegmentEffects(currentSegment);
+    this.currentTimeEffects(time);
+    this.setReplayHead(head)
   }
+
 }
-//
-// export interface IReplayStats {
-//   start: string,
-//   end: string,
-//   duration: number,
-//   distance: number,
-//   timeAwarePolylineArray?: ITimeAwarePoint[],
-// }
-
-// export interface IDecodedSegment extends  Partial<ISegment> {
-//   startPercent: number,
-//   endPercent: number,
-//   timeAwareArray?: ITimeAwarePoint[],
-//   start?: number,
-//   end?: number,
-//   bearing?: number,
-//   position?: number[],
-//   durationSeg: number,
-//   pstart?: string,
-//   pend?: string
-// }
-
-// export interface IDecodedSegment extends  Partial<any> {
-//   startPercent: number,
-//   endPercent: number,
-//   timeAwareArray?: any[],
-//   start?: number,
-//   end?: number,
-//   bearing?: number,
-//   position?: number[],
-//   durationSeg: number,
-//   pstart?: string,
-//   pend?: string
-// }

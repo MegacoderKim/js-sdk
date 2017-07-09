@@ -17,6 +17,10 @@ export class TimeAwarePolyline {
     return Polyline.getPolylineSegmentsForLocationsElapsed(timeAwarePolyline, time)
   }
 
+  getPolylineSegmentForLocationsElapsed(timeAwarePolyline: ITimeAwarePoint[], time: string): IPathSegment[] {
+    return Polyline.getLocationsTillTimeStamp(timeAwarePolyline, time)
+  }
+
   getLocationsAtTimes(timeAwarePolyline: ITimeAwarePoint[], times: string[]) {
     return Polyline.getLocationsAtTimestamps(timeAwarePolyline, times)
   }

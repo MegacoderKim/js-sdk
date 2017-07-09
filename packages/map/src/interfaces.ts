@@ -1,3 +1,6 @@
+import { ITimeAwarePoint } from "../model/common";
+import { ISegment } from "../model/user";
+
 export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,
   setStyle: (item: HtMapItem, style) => void,
@@ -20,3 +23,40 @@ export type HtPolyline = L.Polyline | google.maps.Polyline
 export type HtLatLng = L.LatLng | google.maps.LatLng
 export type HtMarker = any
 export type HtMapItem = HtMarker | HtPolyline
+
+export interface IReplayHead {
+  timePercent: number,
+  currentTime: string,
+  currentPosition: number[],
+  bearing: number,
+  currentSegment: IDecodedSegment,
+  segmentPercent: number
+}
+
+export interface IDecodedSegment extends  Partial<ISegment> {
+  startPercent: number,
+  endPercent: number,
+  timeAwareArray?: ITimeAwarePoint[],
+  start?: number,
+  end?: number,
+  bearing?: number,
+  position?: number[],
+  durationSeg: number,
+  pstart?: string,
+  pend?: string
+}
+
+export interface IReplayStats {
+  start: string,
+  end: string,
+  duration: number,
+  distance: number,
+  timeAwarePolylineArray?: ITimeAwarePoint[],
+  segments: IDecodedSegment[]
+}
+
+export interface IReplayPlayer {
+  isPlaying: boolean,
+  isStopped: boolean,
+  speed: number
+}

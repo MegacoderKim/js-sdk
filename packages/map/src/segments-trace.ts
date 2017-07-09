@@ -20,8 +20,16 @@ export class HtSegmentsTrace {
   replayMarker = new HtMarkerItem();
   eventMarkers: HtMapItems = new HtMapItems();
   allowedEvents = {};
+  map;
+
+  constructor() {
+    this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
+      this.setReplayHead(head, this.map)
+    })
+  }
 
   trace(user, map, params = {}) {
+    this.map = map;
     let userSegments = user ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
     this.segmentsPolylines.trace(segType.tripSegment, map);
@@ -147,7 +155,7 @@ export class HtSegmentsTrace {
   }
 
   traceCurrentUser(segment, map) {
-    if(segment) {
+    if(segment && this.timelineSegment.timeAwareArray && this.timelineSegment.timeAwareArray.length) {
       // let lastSegment = segment;
       let positionBearing = this.timelineSegment.getLastPositionBearing();
       this.userMarker.update({segment, positionBearing}, map)
