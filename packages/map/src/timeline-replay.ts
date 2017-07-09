@@ -26,7 +26,7 @@ export class TimelineReplay extends TimeAwarePolyline {
   head;
   head$: BehaviorSubject<any> = new BehaviorSubject(null);
   playerSub;
-  player$: BehaviorSubject<IReplayPlayer> = new BehaviorSubject({isPlaying: false, isStopped: true, speed: 1});
+  player$: BehaviorSubject<IReplayPlayer> = new BehaviorSubject({isPlaying: false, isStopped: true, speed: 2});
   player: IReplayPlayer;
   // timelineSegment = new TimelineSegment();
   debug: boolean = false;
@@ -155,17 +155,18 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   private getIncTimePercent(head: IReplayHead): number {
-    let stats = this.stats;
-    var duration =  3000 / this.player.speed;
+    let normalSpeed = 6000;
+    var duration =  normalSpeed / this.player.speed;
     if(head.currentSegment.type == 'trip')  {
       let max = 2*60*60*1000;
-      duration = (3000 * Math.min(max, head.currentSegment.durationSeg)/max + 3000) / this.player.speed;
+      duration = (normalSpeed * Math.min(max, head.currentSegment.durationSeg)/max + normalSpeed) / this.player.speed;
     }
     let segment = head.currentSegment;
     let frameStep = duration / this.frameInterval;
-    let step = (frameStep / head.currentSegment.durationSeg);
     let segmentGap = (segment.endPercent - segment.startPercent);
-    return  Math.min(segmentGap / frameStep, segmentGap);
+    let segmentCurrentGap = segment.endPercent - head.timePercent;
+    let maxInc =  Math.min(segmentGap, segmentCurrentGap);
+    return  Math.min(segmentGap / frameStep, maxInc);
   }
 
   private getTimeFromTimePercent(timePercent): string {
@@ -209,7 +210,7 @@ export class TimelineReplay extends TimeAwarePolyline {
 
   stop() {
     this.jumpToTimePercent(0);
-    this.setPlayer({isStopped: true, isPlaying: false, speed: 1});
+    this.setPlayer({isStopped: true, isPlaying: false, speed: 2});
     this.setReplayHead(null);
   }
 
