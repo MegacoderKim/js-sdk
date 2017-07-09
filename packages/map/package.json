@@ -1,6 +1,6 @@
 {
   "name": "ht-js-map",
-  "version": "0.0.45",
+  "version": "0.0.46",
   "description": "hypertrack map",
   "main": "dist/index.js",
   "scripts": {
@@ -23,11 +23,11 @@
     "@types/node": "^8.0.4",
     "ht-js-utils": "0.0.4",
     "polyline-encoded": "0.0.8",
-    "time-aware-polyline": "^0.1.18",
-    "underscore": "^1.8.3"
+    "time-aware-polyline": "^0.1.19"
   },
   "peerDependencies": {
-    "rxjs": "^5.4.1"
+    "rxjs": "^5.4.1",
+    "underscore": "^1.8.3"
   },
   "false": {}
 }

@@ -155,7 +155,7 @@ export class HtSegmentsTrace {
   }
 
   traceCurrentUser(segment, map) {
-    if(segment) {
+    if(segment && this.timelineSegment.timeAwareArray && this.timelineSegment.timeAwareArray.length) {
       // let lastSegment = segment;
       let positionBearing = this.timelineSegment.getLastPositionBearing();
       this.userMarker.update({segment, positionBearing}, map)

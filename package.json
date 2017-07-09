@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js"
   },
+  "private": true,
   "keywords": [
     "hypertrack",
     "js",
@@ -14,7 +15,9 @@
   ],
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "time-aware-polyline": "^0.1.19"
+  },
   "devDependencies": {
     "@types/node": "^8.0.3",
     "ts-loader": "^2.2.0",
