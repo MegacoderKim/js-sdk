@@ -48,6 +48,7 @@ export class TimeAwareAnim {
 
     update(action: IAction) {
         this.action = action;
+        if (!action.time_aware_polyline) return;
         this.timeAwarePolyline.updateTimeAwarePolyline(action.time_aware_polyline);
         this.setColor(action);
         if(!this.animPoll) this.startAnimPoll(action)
