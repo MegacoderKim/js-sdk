@@ -9,7 +9,7 @@ export class TimeAwarePolyline {
     }
 
     updateTimeAwarePolyline(encodedPolyline) {
-        if(this.isNewPolyline(encodedPolyline)) {
+        if(encodedPolyline && this.isNewPolyline(encodedPolyline)) {
             this.encodedPolyline = encodedPolyline;
             this.timeAwarePolyline = Polyline.decodeTimeAwarePolyline(this.encodedPolyline);
         }
