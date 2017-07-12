@@ -37,7 +37,8 @@ export interface IAction {
     tracking_url: string,
     type: string,
     user: IUser,
-    vehicle_type: string
+    vehicle_type: string,
+    metadata?: any
 }
 
 export interface ISubAccount {
