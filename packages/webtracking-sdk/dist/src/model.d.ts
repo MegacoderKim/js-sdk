@@ -38,6 +38,7 @@ export interface IAction {
     type: string;
     user: IUser;
     vehicle_type: string;
+    metadata?: any;
 }
 export interface ISubAccount {
     id: string;
