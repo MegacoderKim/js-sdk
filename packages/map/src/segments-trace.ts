@@ -35,8 +35,8 @@ export class HtSegmentsTrace {
     this.segmentsPolylines.trace(segType.tripSegment, map);
     this.stopMarkers.trace(segType.stopSegment, map, true);
     this.traceAction(user, map);
-    this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     this.traceCurrentUser(_.last(userSegments), map);
+    this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     this.traceEvents(user, map)
   }
 
