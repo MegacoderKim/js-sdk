@@ -1,5 +1,4 @@
-import {IPathSegment, ITimeAwarePoint} from "../model/common";
-import * as _ from 'underscore';
+import {IPathSegment, ITimeAwarePoint} from "ht-models";
 var Polyline = require('time-aware-polyline');
 
 export class TimeAwarePolyline {

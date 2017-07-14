@@ -1,6 +1,6 @@
 import {HtMapItem} from "./map-item";
-import {IActionMap} from "../model/action";
 import {DateString, HMString, HtShow, NameCase, TimeString, Color} from "ht-js-utils";
+import {IActionMap} from "ht-models";
 
 export class HtActionMarker extends HtMapItem{
 

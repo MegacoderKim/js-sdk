@@ -1,5 +1,4 @@
-import { ITimeAwarePoint } from "../model/common";
-import { ISegment } from "../model/user";
+import {ISegment, ITimeAwarePoint} from "ht-models";
 
 export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,

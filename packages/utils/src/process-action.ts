@@ -1,5 +1,5 @@
-import {IAction} from "../model/action";
 import * as moment from 'moment-mini';
+import {IAction} from "ht-models";
 
 export const getETATimestamp = (action: IAction) => {
   if (action.display.duration_remaining) {

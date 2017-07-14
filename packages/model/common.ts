@@ -50,6 +50,14 @@ export interface IRange {
     isToday?: boolean
 }
 
+export interface IPlace {
+    id: string,
+    address: string,
+    location: GeoJson,
+    name: string
+}
+
+
 export type ITimeAwarePoint = (number | string)[];
 
 export type Partial<T> = {

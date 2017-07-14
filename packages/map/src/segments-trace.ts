@@ -1,13 +1,11 @@
-import {ISegment, IUserData} from "../model/user";
 import {HtMapItems} from "./map-items";
-import {IAction} from "../model/action";
 import {GetActionPosition} from "ht-js-utils";
 import * as _ from "underscore";
 import {TimelineSegment} from "./timeline-segment";
 import {HtMapItem} from "./map-item";
 import {HtCurrentUser} from "./current-user";
 import {HtMarkerItem} from "./marker-item";
-import {ITimelineEvent} from "../model/event";
+import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
 
 export class HtSegmentsTrace {
 

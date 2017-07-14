@@ -1,6 +1,6 @@
 {
   "name": "ht-js-utils",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "HyperTrack utils library",
   "main": "dist/index.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ht-models": "^0.0.1",
     "moment-mini": "^2.18.1",
     "polyline-encoded": "0.0.8"
   },

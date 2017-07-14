@@ -1,39 +1,34 @@
-import {IPageData, HtLocation, GeoJson} from "./common";
+import {IPageData, HtLocation, GeoJson, IPlace} from "./common";
 import {IUser} from "./user";
+
 export interface IAction {
-    id: string,
-    user: IUser,
+    id: string;
+    user: IUser;
     display: {
-        status_text: string,
-        sub_status_text: string,
-        duration_remaining: number,
-        show_summary: boolean,
-      is_late: boolean
-    },
-    lookup_id: string,
-    assigned_at: string
-    created_at: string,
-    completed_place: IPlace,
-    completed_at: string | null,
-    suspended_at: string | null,
-    canceled_at: string | null,
-    expected_place: IPlace,
-    initial_eta: string,
-    eta: string,
-    status: string,
-    expected_at: string | null,
-    type: string,
-    tracking_url: string,
-    encoded_polyline: string,
-    event_flags: string[]
+        status_text: string;
+        sub_status_text: string;
+        duration_remaining: number;
+        show_summary: boolean;
+        is_late: boolean;
+    };
+    lookup_id: string;
+    assigned_at: string;
+    created_at: string;
+    completed_place: IPlace;
+    completed_at: string | null;
+    suspended_at: string | null;
+    canceled_at: string | null;
+    expected_place: IPlace;
+    initial_eta: string;
+    eta: string;
+    status: string;
+    expected_at: string | null;
+    type: string;
+    tracking_url: string;
+    encoded_polyline: string;
+    event_flags: string[];
 }
 
-export interface IPlace {
-    id: string,
-    address: string,
-    location: GeoJson,
-    name: string
-}
 
 export interface IActionMap {
     id: string,
