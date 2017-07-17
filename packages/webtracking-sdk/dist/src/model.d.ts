@@ -6,6 +6,13 @@ export interface IDecoded {
     action: IAction;
     sub_account: ISubAccount;
 }
+export interface ITrackActionResult {
+    user: IUser;
+    actions: IAction[];
+}
+export interface ITrackActionResults {
+    results: ITrackActionResult[];
+}
 export interface IAction {
     assigned_at: string | null;
     canceled_at: string | null;
