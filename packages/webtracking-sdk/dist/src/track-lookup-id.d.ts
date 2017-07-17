@@ -10,4 +10,4 @@ export declare class TrackLookupId {
     initTracking(data: ITrackActionResults): void;
     private handleNextAction(data);
 }
-export declare function trackLookupId(shortCode: string, pk: string, options: any): TrackAction;
+export declare function trackLookupId(shortCode: string, pk: string, options: any): TrackLookupId;
