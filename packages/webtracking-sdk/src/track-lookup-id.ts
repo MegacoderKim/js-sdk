@@ -14,7 +14,7 @@ export class TrackLookupId {
 
   private getActionsFromLookupId(lookupId: string, cb) {
     $.ajax({
-      url: `${GetBaseUrl()}actions/track/?lookup_id=${lookupId}/`,
+      url: `${GetBaseUrl()}actions/track/?lookup_id=${lookupId}`,
       ...GetReqOpt(this.pk)
     }).then((data: ITrackActionResults) => {
       cb(data)
@@ -42,5 +42,5 @@ export class TrackLookupId {
 }
 
 export function trackLookupId (shortCode: string, pk: string, options) {
-  return new TrackLookupId(shortCode, pk, options).trackAction
+  return new TrackLookupId(shortCode, pk, options)
 }
