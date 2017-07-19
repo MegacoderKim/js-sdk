@@ -1,4 +1,4 @@
-import {IAction, ITrackOption} from "./model";
+import {IAction, IMapOptions, ITrackOption} from "./model";
 import * as _ from "underscore";
 import {CustomRichMarker} from "./trace/custom-marker";
 import {MarkerAssets} from "./assets";
@@ -21,9 +21,9 @@ export class TrackActionOnMap {
   constructor(
     private action: IAction,
     private map: google.maps.Map,
-    private options: ITrackOption) {
+    private mapOptions: IMapOptions) {
     if (!action || !map) return;
-    this.timeAwareAnimation = new TimeAwareAnimation(this.map, action);
+    this.timeAwareAnimation = new TimeAwareAnimation(this.map, action, mapOptions);
     this.initializeOnMap(action);
   }
 
@@ -35,7 +35,7 @@ export class TrackActionOnMap {
     }
   }
 
-  private renderSummary(action: IAction = this.action, bottomPadding: number = this.options.mapOptions.bottomPadding) {
+  private renderSummary(action: IAction = this.action, bottomPadding: number = this.mapOptions.bottomPadding) {
     if (action.encoded_polyline) {
       this.renderEncodedPolyline(action);
       this.renderStartMarker(action);
@@ -132,7 +132,7 @@ export class TrackActionOnMap {
     return bounds;
   }
 
-  resetBounds(bottomPadding: number = this.options.mapOptions.bottomPadding) {
+  resetBounds(bottomPadding: number = this.mapOptions.bottomPadding) {
     if(this.action.display.show_summary) {
       if (this.action.encoded_polyline) {
         let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
@@ -166,7 +166,7 @@ export class TrackActionOnMap {
   }
 }
 
-export function trackActionOnMap(action: IAction, map: google.maps.Map, options: ITrackOption) {
+export function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions) {
   let trackAction = new TrackActionOnMap(action, map, options);
   return trackAction;
 }
