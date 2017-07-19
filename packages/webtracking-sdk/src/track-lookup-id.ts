@@ -10,8 +10,8 @@ export class TrackLookupId {
   map: google.maps.Map;
   actionPoll;
   constructor(public lookupId: string, public pk: string, public options) {
-    this.renderMap();
     this.getActionsFromLookupId(lookupId, (data) => {
+      this.renderMap();
       this.initTracking(data)
     });
   }
