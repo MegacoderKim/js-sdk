@@ -1,5 +1,5 @@
 import {Color} from "../color";
-import {IAction} from "../model";
+import {IAction, IMapOptions} from "../model";
 import {TimeAwarePolyline} from "./time-aware-polyline";
 import {CustomRichMarker} from "./custom-marker";
 import * as _ from "underscore";
@@ -19,7 +19,7 @@ export class TimeAwareAnimation {
   constructor(
     private map: google.maps.Map,
     private action: IAction,
-    private options?
+    private options?: IMapOptions
   ) {
     this.polyline.setOptions({
       strokeColor: Color.htPink,
@@ -89,10 +89,10 @@ export class TimeAwareAnimation {
   }
 
   private getVehicleAssetDetails(action: IAction) {
-    if (this.options.customVehicleIcon) {
+    if (this.options.vehicleIcon) {
       return {
-        img: this.options.customVehicleIcon.src,
-        height: this.options.customVehicleIcon.height
+        img: this.options.vehicleIcon.src,
+        height: this.options.vehicleIcon.height
       }
     }
     let img = Assets.defaultHeroMarker;

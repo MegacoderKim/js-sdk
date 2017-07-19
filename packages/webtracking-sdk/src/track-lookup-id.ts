@@ -1,15 +1,18 @@
 import * as $ from "jquery";
 import {GetBaseUrl, GetReqOpt} from "./helpers";
-import {IAction, IDecoded, ITrackActionResult, ITrackActionResults, ITrackOption} from "./model";
+import {
+  IAction, IDecoded, ITrackActionResult, ITrackActionResults, ITrackActions, ITrackingOptions,
+  ITrackOption
+} from "./model";
 import {TrackAction} from "./track-action";
 import {TrackActionOnMap} from "./track-action.new";
 
 export class TrackLookupId {
   trackAction: TrackAction = new TrackAction();
-  trackActions: any = {};
+  trackActions: ITrackActions = {};
   map: google.maps.Map;
   actionPoll;
-  constructor(public lookupId: string, public pk: string, public options) {
+  constructor(public lookupId: string, public pk: string, public options: ITrackingOptions) {
     this.getActionsFromLookupId(lookupId, (data) => {
       this.renderMap();
       this.initTracking(data)
@@ -60,6 +63,8 @@ export class TrackLookupId {
           return result.actions[0];
         });
         this.trackActionsOnMap(actions);
+        this.options.onActionsUpdate(actions);
+        this.options.onUpdate(this.trackActions);
         this.pollActionsFromLookupId(lookupId);
       });
     }, 2000);
@@ -70,6 +75,8 @@ export class TrackLookupId {
       return result.actions[0];
     });
     this.trackActionsOnMap(actions);
+    this.options.onActionsReady(actions);
+    this.options.onReady(this.trackActions);
     this.pollActionsFromLookupId(this.lookupId);
   }
 
@@ -78,7 +85,7 @@ export class TrackLookupId {
       if (this.trackActions[action.id]) {
         this.trackActions[action.id].update(action);
       } else {
-        this.trackActions[action.id] = new TrackActionOnMap(action, this.map, this.options);
+        this.trackActions[action.id] = new TrackActionOnMap(action, this.map, this.options.mapOptions);
       }
     });
   }

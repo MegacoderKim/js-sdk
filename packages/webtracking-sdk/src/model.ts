@@ -1,9 +1,15 @@
 import {TrackAction} from "./track-action";
+
 import {CustomVehicleIcon} from "./trace/time-aware-anim";
 import MapTypeStyle = google.maps.MapTypeStyle;
+import {TrackActionOnMap} from "./track-action.new";
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
+}
+
+export interface ITrackActions {
+    [key: string]: TrackActionOnMap
 }
 
 export interface ITrackActionResult {
@@ -110,6 +116,17 @@ export interface ITrackOption {
     onReady?: (trackAction: TrackAction) => void,
     onActionReady?: (action: IAction) => void,
     onActionUpdate?: (action: IAction) => void,
+    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
+}
+
+export interface ITrackingOptions {
+    mapId: string, //id of DOM where map is to be rendered
+    mapOptions?: IMapOptions,
+    onError?: (error: any) => void,
+    onReady?: (trackActions: ITrackActions) => void,
+    onUpdate?: (trackActions: ITrackActions) => void,
+    onActionsReady?: (actions: IAction[]) => void,
+    onActionsUpdate?: (actions: IAction[]) => void,
     onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
 }
 
