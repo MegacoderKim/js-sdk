@@ -1,15 +1,15 @@
 /// <reference types="googlemaps" />
-import { IAction, ITrackActionResults } from "./model";
+import { IAction, ITrackActionResults, ITrackActions, ITrackingOptions } from "./model";
 import { TrackAction } from "./track-action";
 export declare class TrackLookupId {
     lookupId: string;
     pk: string;
-    options: any;
+    options: ITrackingOptions;
     trackAction: TrackAction;
-    trackActions: any;
+    trackActions: ITrackActions;
     map: google.maps.Map;
     actionPoll: any;
-    constructor(lookupId: string, pk: string, options: any);
+    constructor(lookupId: string, pk: string, options: ITrackingOptions);
     private renderMap();
     private getDefaultGMapsStyle();
     private getActionsFromLookupId(lookupId, cb);

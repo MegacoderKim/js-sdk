@@ -1,18 +1,18 @@
 /// <reference types="googlemaps" />
-import { IAction, ITrackOption } from "./model";
+import { IAction, IMapOptions } from "./model";
 import { CustomRichMarker } from "./trace/custom-marker";
 import Polyline = google.maps.Polyline;
 import { TimeAwareAnimation } from "./trace/time-aware-anim.new";
 export declare class TrackActionOnMap {
     private action;
     private map;
-    private options;
+    private mapOptions;
     startMarker: CustomRichMarker;
     endMarker: CustomRichMarker;
     destinationMarker: CustomRichMarker;
     mapPolyline: Polyline;
     timeAwareAnimation: TimeAwareAnimation;
-    constructor(action: IAction, map: google.maps.Map, options: ITrackOption);
+    constructor(action: IAction, map: google.maps.Map, mapOptions: IMapOptions);
     private initializeOnMap(action?);
     private renderSummary(action?, bottomPadding?);
     private renderLive(action?);
@@ -28,4 +28,4 @@ export declare class TrackActionOnMap {
     resetBounds(bottomPadding?: number): void;
     update(action: IAction): void;
 }
-export declare function trackActionOnMap(action: IAction, map: google.maps.Map, options: ITrackOption): TrackActionOnMap;
+export declare function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions): TrackActionOnMap;

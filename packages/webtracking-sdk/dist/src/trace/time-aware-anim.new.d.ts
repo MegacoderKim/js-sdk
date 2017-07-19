@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { IAction } from "../model";
+import { IAction, IMapOptions } from "../model";
 import { TimeAwarePolyline } from "./time-aware-polyline";
 import { CustomRichMarker } from "./custom-marker";
 export declare class TimeAwareAnimation {
@@ -17,7 +17,7 @@ export declare class TimeAwareAnimation {
         speedScale: number;
         interval: number;
     };
-    constructor(map: google.maps.Map, action: IAction, options?: any);
+    constructor(map: google.maps.Map, action: IAction, options?: IMapOptions);
     start(action: IAction): void;
     private handleAnimation(action);
     private updateCurrentTime();
