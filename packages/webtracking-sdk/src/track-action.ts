@@ -19,9 +19,7 @@ export class TrackAction {
     action: IAction;
     options: ITrackOption;
     private pk: string;
-    constructor() {
-
-    }
+    constructor() {}
 
     init(action: IAction, pk: string, options: ITrackOption) {
         this.action = action;
@@ -47,7 +45,6 @@ export class TrackAction {
             } else {
                 this.map.setCenter(this.anim.getPosition())
             }
-
         }
 
     }
@@ -218,13 +215,13 @@ export class TrackAction {
         this.map.fitBounds(bounds);
     }
 
-    private extendedLocation(position, y) {
+    private extendedLocation(location, y) {
         let projection = this.map.getProjection();
         if(projection) {
-            let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(position).x, projection.fromLatLngToPoint(position).y - y/(Math.pow(2, this.map.getZoom())));
+            let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(location).x, projection.fromLatLngToPoint(location).y - y/(Math.pow(2, this.map.getZoom())));
             return projection.fromPointToLatLng(markerPoint)
         }
-        return position;
+        return location;
     }
 
     private extendedBounds(bounds, y) {

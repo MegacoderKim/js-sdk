@@ -2,14 +2,44 @@ import * as $ from "jquery";
 import {GetBaseUrl, GetReqOpt} from "./helpers";
 import {IAction, IDecoded, ITrackActionResult, ITrackActionResults, ITrackOption} from "./model";
 import {TrackAction} from "./track-action";
+import {TrackActionOnMap} from "./track-action.new";
 
 export class TrackLookupId {
   trackAction: TrackAction = new TrackAction();
+  trackActions: any;
+  map: google.maps.Map;
+  actionPoll;
   constructor(public lookupId: string, public pk: string, public options) {
+    this.renderMap();
     this.getActionsFromLookupId(lookupId, (data) => {
       this.initTracking(data)
     });
+  }
 
+  private renderMap() {
+    let gMapsStyles = this.options.mapOptions.gMapsStyle || this.getDefaultGMapsStyle();
+    let origin = new google.maps.LatLng(37.370641488030245, -122.07498079040533);
+    this.map = new google.maps.Map(document.getElementById(this.options.mapId), {
+      zoom: 14,
+      center: origin,
+      disableDefaultUI:true,
+      scrollwheel: true,
+      scaleControl: false,
+      clickableIcons: false,
+      styles: gMapsStyles
+    });
+  }
+
+  private getDefaultGMapsStyle() {
+    return [
+      {
+        "stylers": [
+          {
+            "saturation": -100
+          }
+        ]
+      }
+    ];
   }
 
   private getActionsFromLookupId(lookupId: string, cb) {
@@ -23,21 +53,34 @@ export class TrackLookupId {
     })
   }
 
+  pollActionsFromLookupId(lookupId: string) {
+    this.actionPoll = setTimeout(() => {
+      this.getActionsFromLookupId(lookupId, (data) => {
+        let actions: IAction[] = data.results.map((result: ITrackActionResult) => {
+          return result.actions[0];
+        });
+        this.trackActionsOnMap(actions);
+        this.pollActionsFromLookupId(lookupId);
+      });
+    }, 2000);
+  }
+
   initTracking(data: ITrackActionResults) {
     let actions: IAction[] = data.results.map((result: ITrackActionResult) => {
       return result.actions[0];
     });
-    // let options = this.checkNextActionCallback(this.options);
-    actions.forEach((action: IAction) => {
-      let trackAction: TrackAction = new TrackAction();
-      trackAction.init(action, this.pk, this.options)
-    });
-    // this.trackAction.init(data.action, this.pk, options);
+    this.trackActionsOnMap(actions);
+    this.pollActionsFromLookupId(this.lookupId);
   }
 
-  private handleNextAction(data) {
-    if(window) window.location.reload();
-    this.initTracking(data)
+  trackActionsOnMap(actions: IAction[]) {
+    actions.forEach((action: IAction) => {
+      if (this.trackActions[action.id]) {
+        this.trackActions[action.id].update(action);
+      } else {
+        this.trackActions[action.id] = new TrackActionOnMap(action, this.map, this.options);
+      }
+    });
   }
 }
 
