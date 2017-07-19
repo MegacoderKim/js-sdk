@@ -6,7 +6,7 @@ import {TrackActionOnMap} from "./track-action.new";
 
 export class TrackLookupId {
   trackAction: TrackAction = new TrackAction();
-  trackActions: any;
+  trackActions: any = {};
   map: google.maps.Map;
   actionPoll;
   constructor(public lookupId: string, public pk: string, public options) {
