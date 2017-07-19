@@ -14,7 +14,7 @@ export declare class TrackActionOnMap {
     timeAwareAnimation: TimeAwareAnimation;
     constructor(action: IAction, map: google.maps.Map, mapOptions: IMapOptions);
     private initializeOnMap(action?);
-    private renderSummary(action?, bottomPadding?);
+    private renderSummary(action?);
     private renderLive(action?);
     private renderEncodedPolyline(action);
     private renderStartMarker(action?);

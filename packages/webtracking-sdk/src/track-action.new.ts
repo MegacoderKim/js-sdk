@@ -35,15 +35,15 @@ export class TrackActionOnMap {
     }
   }
 
-  private renderSummary(action: IAction = this.action, bottomPadding: number = this.mapOptions.bottomPadding) {
+  private renderSummary(action: IAction = this.action) {
     if (action.encoded_polyline) {
       this.renderEncodedPolyline(action);
       this.renderStartMarker(action);
       this.renderEndMarker(action);
-      setTimeout(() => {
-        let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
-        this.fitToBounds(polylineArray, bottomPadding);
-      }, 200);
+      // setTimeout(() => {
+      //   let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
+      //   this.fitToBounds(polylineArray, bottomPadding);
+      // }, 200);
     }
   }
 
