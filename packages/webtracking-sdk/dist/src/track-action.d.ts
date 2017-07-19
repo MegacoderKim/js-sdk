@@ -32,7 +32,7 @@ export declare class TrackAction {
     private drawAndFitPolyline(polylineEncoded, bottomPadding?);
     private fitPolyline(polylineMvc, bottomPadding);
     private fitExtended(polylineMvc, bottomPadding);
-    private extendedLocation(position, y);
+    private extendedLocation(location, y);
     private extendedBounds(bounds, y);
 }
 export declare function trackAction(action: IAction, pk: string, options: ITrackOption): TrackAction;

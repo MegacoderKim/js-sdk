@@ -11,3 +11,7 @@ export declare const VehicleAssets: {
     "car": string;
     "motorcycle": string;
 };
+export declare const MarkerAssets: {
+    startPosition: () => string;
+    endPosition: () => string;
+};
