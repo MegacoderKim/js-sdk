@@ -60,10 +60,6 @@ export class TrackActionOnMap {
       if (!this.mapPolyline.getMap()) {
         this.mapPolyline.setMap(this.map);
       }
-      // this.mapPolyline.setOptions({
-      //   path: polylineArray,
-      //   map: this.map
-      // });
     }
   }
 

@@ -1,5 +1,5 @@
 import * as $ from "jquery";
-import {GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
+import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
 import {
   IAction, ITrackActionResult, ITrackActionResults, ITrackActions, ITrackingOptions
 } from "./model";
@@ -8,20 +8,38 @@ import {TrackActionOnMap} from "./track-action.new";
 export class HTTrackActions {
   trackActions: ITrackActions = {};
   map: google.maps.Map;
-  actionPoll;
+  pollActionsTimeoutId;
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
-    this.getActionsFromIdentifier(identifier, identifierType, (data) => {
+    this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
       this.initTracking(data, identifier, identifierType)
     });
-
   }
 
-  private renderMap(actions) {
-    this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions);
+  initTracking(data: ITrackActionResults, identifier: string, identifierType: string) {
+    let actions: IAction[] = this.extractActionsFromResult(data);
+    this.renderMap(actions);
+    this.trackActionsOnMap(actions);
+    this.options.onActionsReady(actions);
+    this.options.onReady(this.trackActions);
+    this.pollActionsFromIdentifier(identifier, identifierType);
   }
 
-  private getActionsFromIdentifier(identifier: string, identifierType: string, cb) {
-    let url = this.getFetchActionsUrl(identifier, identifierType);
+  extractActionsFromResult(data: ITrackActionResults) {
+    let actions: IAction[] = [];
+    data.results.forEach((result: ITrackActionResult) => {
+      actions.push(...result.actions);
+    });
+    return actions;
+  }
+
+  renderMap(actions) {
+    let initialBounds = GetActionsBounds(actions[0]);
+    let initialCenter = (initialBounds && !initialBounds.isEmpty()) ? initialBounds.getCenter() : null;
+    this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions, initialCenter);
+  }
+
+  fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
+    let url = this.getTrackActionsURL(identifier, identifierType);
     $.ajax({
       url: url,
       ...GetReqOpt(this.pk)
@@ -32,25 +50,10 @@ export class HTTrackActions {
     });
   }
 
-  private getFetchActionsUrl(identifier: string, identifierType: string) {
-    switch (identifierType) {
-      case 'shortCode':
-        return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
-      case 'lookupId':
-        return `${GetBaseUrl()}actions/track/?lookup_id=${identifier}`;
-      case 'actionId':
-        return `${GetBaseUrl()}actions/track/?id=${identifier}`;
-      default:
-        return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
-    }
-  }
-
   pollActionsFromIdentifier(identifier: string, identifierType: string) {
-    this.actionPoll = setTimeout(() => {
-      this.getActionsFromIdentifier(identifier, identifierType, (data) => {
-        let actions: IAction[] = data.results.map((result: ITrackActionResult) => {
-          return result.actions[0];
-        });
+    this.pollActionsTimeoutId = setTimeout(() => {
+      this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
+        let actions: IAction[] = this.extractActionsFromResult(data);
         this.trackActionsOnMap(actions);
         this.options.onActionsUpdate(actions);
         this.options.onUpdate(this.trackActions);
@@ -69,18 +72,20 @@ export class HTTrackActions {
     });
   }
 
-  initTracking(data: ITrackActionResults, identifier: string, identifierType: string) {
-    let actions: IAction[] = data.results.map((result: ITrackActionResult) => {
-      return result.actions[0];
-    });
-    this.renderMap(actions);
-    this.trackActionsOnMap(actions);
-    this.options.onActionsReady(actions);
-    this.options.onReady(this.trackActions);
-    this.pollActionsFromIdentifier(identifier, identifierType);
+  getTrackActionsURL(identifier: string, identifierType: string) {
+    switch (identifierType) {
+      case 'shortCode':
+        return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
+      case 'lookupId':
+        return `${GetBaseUrl()}actions/track/?lookup_id=${identifier}`;
+      case 'actionId':
+        return `${GetBaseUrl()}actions/track/?id=${identifier}`;
+      default:
+        return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
+    }
   }
 }
 
-export function trackActions (identifier: string, identifierType: string, pk: string, options: ITrackingOptions) {
+export function trackActions(identifier: string, identifierType: string, pk: string, options: ITrackingOptions) {
   return new HTTrackActions(identifier, identifierType, pk, options);
 }
