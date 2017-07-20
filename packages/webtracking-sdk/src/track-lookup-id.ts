@@ -91,6 +91,6 @@ export class TrackLookupId {
   }
 }
 
-export function trackLookupId (shortCode: string, pk: string, options) {
-  return new TrackLookupId(shortCode, pk, options)
+export function trackLookupId (lookupId: string, pk: string, options) {
+  return new TrackLookupId(lookupId, pk, options)
 }
