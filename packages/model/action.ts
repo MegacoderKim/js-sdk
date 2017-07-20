@@ -10,9 +10,12 @@ export interface IAction {
         duration_remaining: number;
         show_summary: boolean;
         is_late: boolean;
+        ended_at: null | string,
     };
     lookup_id: string;
     assigned_at: string;
+    distance: number | null,
+    duration: number | null,
     created_at: string;
     completed_place: IPlace;
     completed_at: string | null;
@@ -27,6 +30,7 @@ export interface IAction {
     tracking_url: string;
     encoded_polyline: string;
     event_flags: string[];
+    metadata: object
 }
 
 

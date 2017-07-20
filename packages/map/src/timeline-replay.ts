@@ -160,7 +160,7 @@ export class TimelineReplay extends TimeAwarePolyline {
     let frameStep = duration / this.frameInterval;
     let segmentGap = (segment.endPercent - segment.startPercent);
     let segmentCurrentGap = segment.endPercent - head.timePercent;
-    let maxInc =  Math.min(segmentGap, segmentCurrentGap);
+    let maxInc =  segmentCurrentGap > 0 ? Math.min(segmentGap, segmentCurrentGap) : segmentGap;
     return  Math.min(segmentGap / frameStep, maxInc);
   }
 
