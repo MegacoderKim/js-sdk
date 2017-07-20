@@ -33,7 +33,7 @@ export class HTTrackActions {
   }
 
   renderMap(actions) {
-    let initialBounds = GetActionsBounds(actions[0]);
+    let initialBounds = GetActionsBounds(actions);
     let initialCenter = (initialBounds && !initialBounds.isEmpty()) ? initialBounds.getCenter() : null;
     this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions, initialCenter);
   }
