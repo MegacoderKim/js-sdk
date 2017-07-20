@@ -127,7 +127,7 @@ export class TrackActionOnMap {
         bounds.extend(this.latLngBottomOffset(latLng, -bottomPadding));
       }
     });
-    this.map.panToBounds(bounds);
+    this.map.fitBounds(bounds);
   }
 
   private latLngBottomOffset(latLng, offset) {
