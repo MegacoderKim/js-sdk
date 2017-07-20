@@ -1,6 +1,3 @@
-import {ISegment, IUserData} from "../model/user";
-import {ITimeAwarePoint, Partial} from "../model/common";
-import {TimeAwarePolyline} from "./time-aware-polyline";
 import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
 import {IDecodedSegment, IReplayHead} from "./interfaces";

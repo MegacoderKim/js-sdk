@@ -1,7 +1,5 @@
-import {IAccount, ISubAccount, IToken} from "../model/account";
 import * as _ from "underscore";
-import {IAccountUser} from "../model/iaccount-user";
-import {IMembership} from "../model/membership";
+import {IAccount, IAccountUser, IMembership, ISubAccount, IToken} from "ht-models";
 
 export function UpdateSubAccountOfAccount(account: IAccount, updatedSubAccount: ISubAccount, tokenType): IAccount {
     let subAccounts = _.map(account.sub_accounts, (subAccount: ISubAccount) => {

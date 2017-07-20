@@ -1,11 +1,5 @@
 import {TimeAwarePolyline} from "./time-aware-polyline";
-import {ISegment, IUserData} from "../model/user";
 import * as _ from 'underscore';
-import { IPathSegment} from "../model/common";
-import {ITimelineEvent} from "../model/event";
-import {TimeString} from "ht-js-utils";
-import {Subject} from "rxjs/Subject";
-import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/timer";
 import 'rxjs/add/operator/switchMap';
@@ -16,6 +10,7 @@ import "rxjs/add/operator/share";
 import "rxjs/add/operator/takeUntil";
 import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {ITimelineEvent} from "ht-models";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
@@ -165,7 +160,7 @@ export class TimelineReplay extends TimeAwarePolyline {
     let frameStep = duration / this.frameInterval;
     let segmentGap = (segment.endPercent - segment.startPercent);
     let segmentCurrentGap = segment.endPercent - head.timePercent;
-    let maxInc =  Math.min(segmentGap, segmentCurrentGap);
+    let maxInc =  segmentCurrentGap > 0 ? Math.min(segmentGap, segmentCurrentGap) : segmentGap;
     return  Math.min(segmentGap / frameStep, maxInc);
   }
 

@@ -1,7 +1,7 @@
-import {IAction, IActionMap} from "../model/action";
 import {GetDateRangeQuery} from "./time-utils";
 import * as _ from "underscore";
 import {NameCase} from "./name-case";
+import {IAction, IActionMap} from "ht-models/dist";
 
 export function GetActionPosition(action: IAction | IActionMap): [number, number] | null {
     let position;

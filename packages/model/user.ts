@@ -1,4 +1,4 @@
-import {IPageData, HtLocation, GeoJson, ITimeAwarePoint} from "./common";
+import {IPageData, HtLocation, GeoJson, ITimeAwarePoint, IPlace} from "./common";
 import {IEvent, ITimelineEvent} from "./event";
 import {IAction} from "./action";
 
@@ -31,14 +31,6 @@ export interface IUserData extends IUser{
     events: ITimelineEvent[],
     actions: IAction[],
     timeline_date: string
-}
-
-export interface IEvent {
-    id: string,
-    user_id: string,
-    recorded_at: string,
-    type: string,
-    has_been_delivered: boolean
 }
 
 export interface ISegment {
@@ -138,12 +130,6 @@ export interface IUserPlace {
         is_warning: string
     },
     places: IPlace[]
-}
-
-export interface IPlace {
-    id: string,
-    name: string,
-    location: GeoJson
 }
 
 export interface IPlaceHeat {

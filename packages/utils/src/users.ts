@@ -1,6 +1,6 @@
 import {GetDateRangeQuery} from "./time-utils";
 import * as _ from "underscore";
-import {IUserAnalytics} from "../model/user";
+import {IUserAnalytics} from "ht-models";
 
 const statusString = {
   at_place: 'At place',

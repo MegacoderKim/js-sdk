@@ -11,7 +11,8 @@ export interface IAccount {
     billing_email?: string,
     tagline: string,
   tier: 'free' | 'test' | 'paid',
-  timezone: string
+  timezone: string,
+    is_agreement_signed: boolean;
 }
 
 export type PartialAccount = Partial<IAccount>;

@@ -1,5 +1,5 @@
-import {IAccount, ISubAccount, IToken} from "../../model/account";
 import * as _ from 'underscore';
+import {IAccount, IToken} from "ht-models";
 
 export function GetSecretToken (account: IAccount, tokenType: 'test' | 'production'): string {
     return getToken(getSubAccountToken(account, tokenType), 'secret')
