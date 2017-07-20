@@ -1,5 +1,6 @@
 /// <reference types="googlemaps" />
-import { IPlace } from "./model";
+import { IAction, IMapOptions, IPlace } from "./model";
+import LatLng = google.maps.LatLng;
 export declare const GetBaseUrl: (env?: string) => string;
 export declare function GetReqOpt(pk: string): {
     headers: {
@@ -8,6 +9,8 @@ export declare function GetReqOpt(pk: string): {
         "X-Hypertrack-Client": string;
     };
 };
-export declare function GetLatLng(place: IPlace | any, key?: string): google.maps.LatLng;
+export declare function GetLatLng(place: IPlace | any, key?: string): LatLng;
 export declare function FetchAction(actionId: string, pk: string): any;
 export declare function SetMap(item: any, map: any): void;
+export declare function RenderGoogleMap(mapId: string, mapOptions: IMapOptions, origin?: LatLng): google.maps.Map;
+export declare function GetActionBounds(action: IAction): google.maps.LatLngBounds;
