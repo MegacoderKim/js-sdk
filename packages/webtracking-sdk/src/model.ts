@@ -123,7 +123,7 @@ export interface ITrackingOptions {
     mapId: string, //id of DOM where map is to be rendered
     mapOptions?: IMapOptions,
     onError?: (error: any) => void,
-    onReady?: (trackActions: ITrackActions) => void,
+    onReady?: (trackActions: ITrackActions, map: google.maps.Map) => void,
     onUpdate?: (trackActions: ITrackActions) => void,
     onActionsReady?: (actions: IAction[]) => void,
     onActionsUpdate?: (actions: IAction[]) => void,
