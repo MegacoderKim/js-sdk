@@ -111,7 +111,7 @@ export interface ITrackingOptions {
     mapId: string;
     mapOptions?: IMapOptions;
     onError?: (error: any) => void;
-    onReady?: (trackActions: ITrackActions) => void;
+    onReady?: (trackActions: ITrackActions, map: google.maps.Map) => void;
     onUpdate?: (trackActions: ITrackActions) => void;
     onActionsReady?: (actions: IAction[]) => void;
     onActionsUpdate?: (actions: IAction[]) => void;

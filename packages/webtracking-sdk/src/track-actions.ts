@@ -20,7 +20,7 @@ export class HTTrackActions {
     this.renderMap(actions);
     this.trackActionsOnMap(actions);
     this.options.onActionsReady(actions);
-    this.options.onReady(this.trackActions);
+    this.options.onReady(this.trackActions, this.map);
     this.pollActionsFromIdentifier(identifier, identifierType);
   }
 
