@@ -17,4 +17,4 @@ export declare class TrackLookupId {
     initTracking(data: ITrackActionResults): void;
     trackActionsOnMap(actions: IAction[]): void;
 }
-export declare function trackLookupId(shortCode: string, pk: string, options: any): TrackLookupId;
+export declare function trackLookupId(lookupId: string, pk: string, options: any): TrackLookupId;
