@@ -1,20 +1,10 @@
-/// <reference types="googlemaps" />
-import { IAction, ITrackActionResults, ITrackActions, ITrackingOptions } from "./model";
-import { TrackAction } from "./track-action";
+import { HTTrackActions } from "./track-actions";
 export declare class TrackLookupId {
-    lookupId: string;
-    pk: string;
-    options: ITrackingOptions;
-    trackAction: TrackAction;
-    trackActions: ITrackActions;
-    map: google.maps.Map;
-    actionPoll: any;
-    constructor(lookupId: string, pk: string, options: ITrackingOptions);
-    private renderMap();
-    private getDefaultGMapsStyle();
-    private getActionsFromLookupId(lookupId, cb);
-    pollActionsFromLookupId(lookupId: string): void;
-    initTracking(data: ITrackActionResults): void;
-    trackActionsOnMap(actions: IAction[]): void;
+    private lookupId;
+    private pk;
+    private options;
+    trackActions: HTTrackActions;
+    constructor(lookupId: string, pk: string, options: any);
+    init(): HTTrackActions;
 }
-export declare function trackLookupId(lookupId: string, pk: string, options: any): TrackLookupId;
+export declare function trackLookupId(lookupId: string, pk: string, options: any): HTTrackActions;

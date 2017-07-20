@@ -7,13 +7,14 @@ export declare class HTTrackActions {
     private options;
     trackActions: ITrackActions;
     map: google.maps.Map;
-    actionPoll: any;
+    pollActionsTimeoutId: any;
     constructor(identifier: string, identifierType: string, pk: string, options: ITrackingOptions);
-    private renderMap(actions);
-    private getActionsFromIdentifier(identifier, identifierType, cb);
-    private getFetchActionsUrl(identifier, identifierType);
+    initTracking(data: ITrackActionResults, identifier: string, identifierType: string): void;
+    extractActionsFromResult(data: ITrackActionResults): IAction[];
+    renderMap(actions: any): void;
+    fetchActionsFromIdentifier(identifier: string, identifierType: string, cb: any): void;
     pollActionsFromIdentifier(identifier: string, identifierType: string): void;
     trackActionsOnMap(actions: IAction[]): void;
-    initTracking(data: ITrackActionResults, identifier: string, identifierType: string): void;
+    getTrackActionsURL(identifier: string, identifierType: string): string;
 }
 export declare function trackActions(identifier: string, identifierType: string, pk: string, options: ITrackingOptions): HTTrackActions;
