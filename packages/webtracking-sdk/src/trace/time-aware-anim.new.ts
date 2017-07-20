@@ -76,15 +76,20 @@ export class TimeAwareAnimation {
 
   private renderUserMarker(action: IAction, bearing: number = 0, position) {
     this.setUserMarkerContent(bearing, action);
-    this.userMarker.render(position, this.map);
+    this.userMarker.setPosition(position);
+    if (!this.userMarker.getMap()) {
+      this.userMarker.setMap(this.map);
+    }
   }
 
   private renderPolyline(path: LatLng[], map: google.maps.Map) {
     if (path && map) {
       this.polyline.setOptions({
-        path: path,
-        map: map
+        path: path
       });
+      if (!this.polyline.getMap()) {
+        this.polyline.setMap(this.map);
+      }
     }
   }
 
