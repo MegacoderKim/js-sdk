@@ -56,10 +56,14 @@ export class TrackActionOnMap {
   private renderEncodedPolyline(action: IAction) {
     if (action.encoded_polyline) {
       let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
-      this.mapPolyline.setOptions({
-        path: polylineArray,
-        map: this.map
-      });
+      this.mapPolyline.setPath(polylineArray);
+      if (!this.mapPolyline.getMap()) {
+        this.mapPolyline.setMap(this.map);
+      }
+      // this.mapPolyline.setOptions({
+      //   path: polylineArray,
+      //   map: this.map
+      // });
     }
   }
 
@@ -68,7 +72,10 @@ export class TrackActionOnMap {
       let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
       let startPoint = _.first(polylineArray);
       let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
-      this.startMarker.render(startPosition, this.map);
+      this.startMarker.setPosition(startPosition);
+      if (!this.startMarker.getMap()) {
+        this.startMarker.setMap(this.map);
+      }
     }
   }
 
@@ -77,7 +84,10 @@ export class TrackActionOnMap {
       let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
       let endPoint = _.last(polylineArray);
       let endPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
-      this.endMarker.render(endPosition, this.map);
+      this.endMarker.setPosition(endPosition);
+      if (!this.endMarker.getMap()) {
+        this.endMarker.setMap(this.map);
+      }
     }
   }
 
@@ -85,7 +95,11 @@ export class TrackActionOnMap {
     let finalPlace = action.completed_place || action.expected_place;
     if(finalPlace) {
       let destinationPosition = GetLatLng(finalPlace);
-      this.destinationMarker.render(destinationPosition, this.map);
+      this.destinationMarker.setPosition(destinationPosition);
+      if (!this.destinationMarker.getMap()) {
+        this.destinationMarker.setMap(this.map);
+      }
+      // this.destinationMarker.render(destinationPosition, this.map);
     } else {
       this.destinationMarker.clear();
     }

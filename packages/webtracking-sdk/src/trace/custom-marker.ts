@@ -19,6 +19,12 @@ export class CustomRichMarker {
     }
   }
 
+  setMap(map) {
+    if (map) {
+      this.marker.setMap(map);
+    }
+  }
+
   setPosition(position) {
     this.marker.setPosition(position);
   }
