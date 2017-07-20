@@ -165,6 +165,7 @@ export class TrackActionOnMap {
   }
 
   update(action: IAction) {
+    this.action = action;
     if(action.display.show_summary) {
       this.clearLiveView();
       this.renderSummary(action);
