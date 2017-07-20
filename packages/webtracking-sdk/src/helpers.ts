@@ -50,7 +50,7 @@ export function RenderGoogleMap(mapId: string, mapOptions: IMapOptions, origin?:
 export function GetActionsBounds(actions: IAction[]) {
     let bounds = new google.maps.LatLngBounds();
     actions.forEach((action: IAction) => {
-        if (this.action.encoded_polyline) {
+        if (action.encoded_polyline) {
             let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
             polylineArray.forEach((latLngPoint: LatLng) => {
                 bounds.extend(latLngPoint);
