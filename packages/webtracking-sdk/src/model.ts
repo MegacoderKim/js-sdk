@@ -33,6 +33,8 @@ export interface IAction {
         distance_remaining: number | null,
         show_summary: boolean,
         status_text: string,
+        distance_unit: string,
+        isLate: boolean,
         sub_status_text: string
     },
     distance: number | null,
