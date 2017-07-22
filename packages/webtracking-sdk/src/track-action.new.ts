@@ -160,7 +160,6 @@ export class TrackActionOnMap {
       this.map.fitBounds(bounds);
       bounds = this.extendBoundsWithBottomOffset(bounds, -bottomPadding);
       this.map.fitBounds(bounds);
-      this.map.panToBounds(bounds);
     }
   }
 
