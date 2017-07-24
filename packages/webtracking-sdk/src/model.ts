@@ -10,7 +10,7 @@ export interface IDecoded {
 
 export interface ISubAccountData {
     sub_account: ISubAccount
-};
+}
 
 export interface ITrackedActions {
     [key: string]: TrackedAction
