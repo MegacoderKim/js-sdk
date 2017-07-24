@@ -1,10 +1,10 @@
-import { TrackAction } from "./track-action";
+import { HTTrackActions } from "./track-actions";
 export declare class TrackActionId {
     actionId: string;
     pk: string;
     options: any;
-    trackAction: TrackAction;
+    trackActions: HTTrackActions;
     constructor(actionId: string, pk: string, options: any);
-    private getActionFromId(actionId);
+    init(): HTTrackActions;
 }
-export declare function trackActionId(actionId: string, pk: string, options: any): TrackAction;
+export declare function trackActionId(actionId: string, pk: string, options: any): HTTrackActions;

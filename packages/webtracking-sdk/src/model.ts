@@ -8,6 +8,10 @@ export interface IDecoded {
     sub_account: ISubAccount
 }
 
+export interface ISubAccountData {
+    sub_account: ISubAccount
+};
+
 export interface ITrackedActions {
     [key: string]: TrackedAction
 }
@@ -129,7 +133,7 @@ export interface ITrackingOptions {
     onUpdate?: (trackedActions: ITrackedActions, actions: IAction[]) => void,
     onActionsReady?: (actions: IAction[]) => void,
     onActionsUpdate?: (actions: IAction[]) => void,
-    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
+    onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void
 }
 
 export interface IMapOptions {
@@ -138,9 +142,6 @@ export interface IMapOptions {
     topPadding?: number,
     vehicleIcon?: CustomVehicleIcon,
     originLatLng?: [number, number], //optional, to set default map center,
-    showStartPositionMarker: boolean,
-    showEndPositionMarker: boolean,
-    polyLineOptions: GMapsPolyLineOptions
 }
 
 export interface GMapsPolyLineOptions {

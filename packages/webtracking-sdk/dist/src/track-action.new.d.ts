@@ -29,7 +29,7 @@ export declare class TrackedAction {
     resetBounds(bottomPadding?: number, topPadding?: number): void;
     update(action: IAction): void;
     updateMapOptions(mapOptions: IMapOptions): void;
-    hideOnMap(marker: CustomRichMarker): void;
+    hideOnMap(): void;
     updateUserMarkerIcon(icon: string): void;
 }
 export declare function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions): TrackedAction;

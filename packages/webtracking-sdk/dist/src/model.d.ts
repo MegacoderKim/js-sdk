@@ -7,6 +7,9 @@ export interface IDecoded {
     action: IAction;
     sub_account: ISubAccount;
 }
+export interface ISubAccountData {
+    sub_account: ISubAccount;
+}
 export interface ITrackedActions {
     [key: string]: TrackedAction;
 }
@@ -117,7 +120,7 @@ export interface ITrackingOptions {
     onUpdate?: (trackedActions: ITrackedActions, actions: IAction[]) => void;
     onActionsReady?: (actions: IAction[]) => void;
     onActionsUpdate?: (actions: IAction[]) => void;
-    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void;
+    onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void;
 }
 export interface IMapOptions {
     gMapsStyle?: MapTypeStyle[];
@@ -125,9 +128,6 @@ export interface IMapOptions {
     topPadding?: number;
     vehicleIcon?: CustomVehicleIcon;
     originLatLng?: [number, number];
-    showStartPositionMarker: boolean;
-    showEndPositionMarker: boolean;
-    polyLineOptions: GMapsPolyLineOptions;
 }
 export interface GMapsPolyLineOptions {
     strokeColor: string;

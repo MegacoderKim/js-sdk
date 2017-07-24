@@ -1,7 +1,7 @@
 import * as $ from "jquery";
 import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
 import {
-  IAction, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackingOptions
+  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackingOptions
 } from "./model";
 import {TrackedAction} from "./track-action.new";
 
@@ -11,7 +11,7 @@ export class HTTrackActions {
   pollActionsTimeoutId;
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
     this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
-      this.initTracking(data, identifier, identifierType)
+      this.initTracking(data, identifier, identifierType);
     });
   }
 
@@ -19,8 +19,14 @@ export class HTTrackActions {
     let actions: IAction[] = this.extractActionsFromResult(data);
     this.renderMap(actions);
     this.trackActionsOnMap(actions);
-    // this.options.onActionsReady(actions);
-    this.options.onReady(this.trackActions, actions, this.map);
+    if (this.options.onReady) {
+      this.options.onReady(this.trackActions, actions, this.map);
+    }
+    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccount) => {
+      if (this.options.onAccountReady) {
+        this.options.onAccountReady(subAccount, actions);
+      }
+    });
     this.pollActionsFromIdentifier(identifier, identifierType);
   }
 
@@ -50,12 +56,23 @@ export class HTTrackActions {
     });
   }
 
+  fetchSubaccountFromIdentifier(identifier: string, identifierType: string, cb) {
+    let url = this.getSubaccountFromIdentifierURL(identifier, identifierType);
+    $.ajax({
+      url: url,
+      ...GetReqOpt(this.pk)
+    }).then((data: ISubAccountData) => {
+      cb(data)
+    }, err => {
+      this.options.onError && this.options.onError(err)
+    });
+  }
+
   pollActionsFromIdentifier(identifier: string, identifierType: string) {
     this.pollActionsTimeoutId = setTimeout(() => {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
         this.trackActionsOnMap(actions);
-        // this.options.onActionsUpdate(actions);
         this.options.onUpdate(this.trackActions, actions);
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
@@ -80,6 +97,19 @@ export class HTTrackActions {
         return `${GetBaseUrl()}actions/track/?lookup_id=${identifier}`;
       case 'actionId':
         return `${GetBaseUrl()}actions/track/?id=${identifier}`;
+      default:
+        return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
+    }
+  }
+
+  getSubaccountFromIdentifierURL(identifier: string, identifierType: string) {
+    switch (identifierType) {
+      case 'shortCode':
+        return `${GetBaseUrl()}actions/deeplink/?short_code=${identifier}`;
+      case 'lookupId':
+        return `${GetBaseUrl()}actions/deeplink/?lookup_id=${identifier}`;
+      case 'actionId':
+        return `${GetBaseUrl()}actions/deeplink/?action_id=${identifier}`;
       default:
         return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
     }

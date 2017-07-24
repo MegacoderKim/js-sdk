@@ -1,4 +1,4 @@
-import {IAction, IMapOptions, ITrackOption} from "./model";
+import {IAction, IMapOptions} from "./model";
 import * as _ from "underscore";
 import {CustomRichMarker} from "./trace/custom-marker";
 import {MarkerAssets} from "./assets";
@@ -181,7 +181,7 @@ export class TrackedAction {
     this.mapOptions = mapOptions;
   }
 
-  hideOnMap(marker: CustomRichMarker) {
+  hideOnMap() {
     this.clearLiveView();
     this.startMarker.setMap(null);
     this.endMarker.setMap(null);
