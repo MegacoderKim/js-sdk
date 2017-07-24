@@ -21,10 +21,10 @@ export class TrackedAction {
     private mapOptions: IMapOptions) {
     if (!action || !map) return;
     this.timeAwareAnimation = new TimeAwareAnimation(this.map, action, this.userMarker, this.mapPolyline, mapOptions);
-    this.initializeOnMap(action);
+    this.showOnMap(action);
   }
 
-  private initializeOnMap(action: IAction = this.action): void {
+  showOnMap(action: IAction = this.action): void {
     if(action.display.show_summary) {
       this.renderSummary(action);
     } else {
@@ -179,6 +179,25 @@ export class TrackedAction {
 
   updateMapOptions(mapOptions: IMapOptions) {
     this.mapOptions = mapOptions;
+  }
+
+  hideOnMap(marker: CustomRichMarker) {
+    this.clearLiveView();
+    this.startMarker.setMap(null);
+    this.endMarker.setMap(null);
+    this.destinationMarker.setMap(null);
+    this.mapPolyline.setMap(null);
+    this.userMarker.setMap(null);
+  }
+
+  updateUserMarkerIcon(icon: string) {
+    this.mapOptions = {
+      ...this.mapOptions,
+      vehicleIcon: {
+        ...this.mapOptions.vehicleIcon,
+        src: icon
+      }
+    }
   }
 }
 

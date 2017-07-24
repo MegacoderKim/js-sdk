@@ -13,7 +13,7 @@ export declare class TrackedAction {
     userMarker: CustomRichMarker;
     private timeAwareAnimation;
     constructor(action: IAction, map: google.maps.Map, mapOptions: IMapOptions);
-    private initializeOnMap(action?);
+    showOnMap(action?: IAction): void;
     private renderSummary(action?);
     private renderLive(action?);
     private renderEncodedPolyline(action);
@@ -29,5 +29,7 @@ export declare class TrackedAction {
     resetBounds(bottomPadding?: number, topPadding?: number): void;
     update(action: IAction): void;
     updateMapOptions(mapOptions: IMapOptions): void;
+    hideOnMap(marker: CustomRichMarker): void;
+    updateUserMarkerIcon(icon: string): void;
 }
 export declare function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions): TrackedAction;
