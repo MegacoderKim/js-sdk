@@ -10,3 +10,9 @@ export declare const DefaultGoogleMapOptions: {
     center: google.maps.LatLng;
     styles: MapTypeStyle[];
 };
+export declare const DefaultPolylineOptions: {
+    strokeColor: string;
+    strokeOpacity: number;
+    strokeWeight: number;
+    icons: any[];
+};

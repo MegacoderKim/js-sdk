@@ -9,9 +9,9 @@ import LatLng = google.maps.LatLng;
 
 export class TimeAwareAnimation {
   timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
-  polyline: google.maps.Polyline = new google.maps.Polyline();
+  // polyline: google.maps.Polyline = new google.maps.Polyline();
   isAnimationStarted: boolean = false;
-  userMarker: CustomRichMarker = new CustomRichMarker();
+  // userMarker: CustomRichMarker = new CustomRichMarker();
   currentTime: string;
   animationPoll;
   animationSpeed: number = 20;
@@ -19,6 +19,8 @@ export class TimeAwareAnimation {
   constructor(
     private map: google.maps.Map,
     private action: IAction,
+    private userMarker: CustomRichMarker,
+    private polyline: google.maps.Polyline,
     private options?: IMapOptions
   ) {
     this.polyline.setOptions({
@@ -32,11 +34,6 @@ export class TimeAwareAnimation {
     this.action = action;
     this.timeAwarePolyline.updateTimeAwarePolyline(action.time_aware_polyline);
     this.handleAnimation(action);
-    // this.startAnimation();
-    // this.startAnimationPoll(action);
-    // this.isAnimationStarted = true;
-    // if(!this.isAnimationStarted) {
-    // }
   }
 
   private handleAnimation(action: IAction) {
@@ -132,7 +129,7 @@ export class TimeAwareAnimation {
     }
   }
 
-  private clearAnimationPoll() {
+  clearAnimationPoll() {
     clearInterval(this.animationPoll);
     this.animationPoll = null;
   }
@@ -179,38 +176,6 @@ export class TimeAwareAnimation {
     this.clearAnimationPoll();
     this.userMarker.clear();
     this.polyline.setMap(null);
-    // if(this.isAnimationStarted) {
-    // }
-  }
-
-  private startAnimation(action: IAction = this.action) {
-    this.updateCurrentTime();
-    this.renderCurrentTimeMarkerPolyline(action);
-    // this.polyline.setMap(this.map);
-    // this.userMarker.render(_.last(polylineData.path), this.map);
-  }
-
-  private startAnimationPoll(action: IAction = this.action) {
-    if (!action.time_aware_polyline) return;
-    if(this.animationPoll) this.clearAnimationPoll();
-    this.animationPoll = setInterval(() => {
-      let timeToAdd = this.getTimeToAdd();
-      this.currentTime = addISOTime(this.currentTime, timeToAdd);
-      this.capTime(() => {
-        this.clearAnimationPoll()
-      });
-
-      let polylineData = this.currentTimePolylineData();
-      this.setUserMarker(action, polylineData.bearing, _.last(polylineData.path));
-      this.polyline.setPath(polylineData.path);
-    }, this.animationSpeed)
-  }
-
-  private setUserMarker(action: IAction, bearing: number, position) {
-    if (position) {
-      this.userMarker.setPosition(position);
-    }
-    this.setUserMarkerContent(bearing, action);
   }
 }
 

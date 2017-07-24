@@ -1,11 +1,11 @@
 /// <reference types="googlemaps" />
-import { IAction, ITrackActionResults, ITrackActions, ITrackingOptions } from "./model";
+import { IAction, ITrackActionResults, ITrackedActions, ITrackingOptions } from "./model";
 export declare class HTTrackActions {
     private identifier;
     private identifierType;
     private pk;
     private options;
-    trackActions: ITrackActions;
+    trackActions: ITrackedActions;
     map: google.maps.Map;
     pollActionsTimeoutId: any;
     constructor(identifier: string, identifierType: string, pk: string, options: ITrackingOptions);
