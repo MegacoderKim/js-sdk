@@ -13,8 +13,10 @@ export declare class HTTrackActions {
     extractActionsFromResult(data: ITrackActionResults): IAction[];
     renderMap(actions: any): void;
     fetchActionsFromIdentifier(identifier: string, identifierType: string, cb: any): void;
+    fetchSubaccountFromIdentifier(identifier: string, identifierType: string, cb: any): void;
     pollActionsFromIdentifier(identifier: string, identifierType: string): void;
     trackActionsOnMap(actions: IAction[]): void;
     getTrackActionsURL(identifier: string, identifierType: string): string;
+    getSubaccountFromIdentifierURL(identifier: string, identifierType: string): string;
 }
 export declare function trackActions(identifier: string, identifierType: string, pk: string, options: ITrackingOptions): HTTrackActions;

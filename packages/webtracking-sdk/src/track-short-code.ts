@@ -12,5 +12,5 @@ export class TrackShortCode {
 
 export function trackShortCode (shortCode: string, pk: string, options) {
     let trackShortCode = new TrackShortCode(shortCode, pk, options);
-    return trackShortCode.init()
+    return trackShortCode.init();
 }
