@@ -6,24 +6,21 @@ import LatLng = google.maps.LatLng;
 import Polyline = google.maps.Polyline;
 import {TimeAwareAnimation} from "./trace/time-aware-anim.new";
 import {GetLatLng} from "./helpers";
+import {DefaultPolylineOptions} from "./defaults";
 
-export class TrackActionOnMap {
+export class TrackedAction {
   startMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.startPosition());
   endMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.endPosition());
   destinationMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.endPosition());
-  mapPolyline: Polyline = new google.maps.Polyline({
-    strokeColor: "rgb(223, 92, 193)",
-    strokeOpacity: 1,
-    strokeWeight: 3,
-    icons: []
-  });
-  timeAwareAnimation: TimeAwareAnimation;
+  mapPolyline: Polyline = new google.maps.Polyline(DefaultPolylineOptions);
+  userMarker: CustomRichMarker = new CustomRichMarker();
+  private timeAwareAnimation: TimeAwareAnimation;
   constructor(
     private action: IAction,
     private map: google.maps.Map,
     private mapOptions: IMapOptions) {
     if (!action || !map) return;
-    this.timeAwareAnimation = new TimeAwareAnimation(this.map, action, mapOptions);
+    this.timeAwareAnimation = new TimeAwareAnimation(this.map, action, this.userMarker, this.mapPolyline, mapOptions);
     this.initializeOnMap(action);
   }
 
@@ -36,15 +33,9 @@ export class TrackActionOnMap {
   }
 
   private renderSummary(action: IAction = this.action) {
-    if (action.encoded_polyline) {
-      this.renderEncodedPolyline(action);
-      this.renderStartMarker(action);
-      this.renderEndMarker(action);
-      // setTimeout(() => {
-      //   let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
-      //   this.fitToBounds(polylineArray, bottomPadding);
-      // }, 200);
-    }
+    this.renderEncodedPolyline(action);
+    this.renderStartMarker(action);
+    this.renderEndMarker(action);
   }
 
   private renderLive(action: IAction = this.action) {
@@ -102,8 +93,9 @@ export class TrackActionOnMap {
   }
 
   private clearLiveView() {
-    this.timeAwareAnimation.clear();
+    this.timeAwareAnimation.clearAnimationPoll();
     this.destinationMarker.clear();
+    this.userMarker.clear();
   }
 
   private fitToBounds(latLngPoints: LatLng[], bottomPadding: number) {
@@ -120,29 +112,38 @@ export class TrackActionOnMap {
     latLngs.forEach((latLng: LatLng) => {
       bounds.extend(latLng);
       if(bottomPadding) {
-        bounds.extend(this.latLngBottomOffset(latLng, -bottomPadding));
+        bounds.extend(this.latLngYOffset(latLng, bottomPadding));
       }
     });
     this.map.fitBounds(bounds);
   }
 
-  private latLngBottomOffset(latLng, offset) {
+  private latLngYOffset(latLng, yOffset) {
     let projection = this.map.getProjection();
     if(projection) {
-      let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(latLng).x, projection.fromLatLngToPoint(latLng).y - offset/(Math.pow(2, this.map.getZoom())));
+      let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(latLng).x, projection.fromLatLngToPoint(latLng).y - yOffset/(Math.pow(2, this.map.getZoom())));
       return projection.fromPointToLatLng(markerPoint)
     }
     return latLng;
   }
 
-  private extendBoundsWithBottomOffset(bounds, yOffset) {
+  private extendBoundsWithBottomOffset(bounds, bottomOffset) {
     let southWest = bounds.getSouthWest();
-    let extendedPosition = this.latLngBottomOffset(southWest, yOffset);
+    let extendedPosition = this.latLngYOffset(southWest, bottomOffset);
     bounds.extend(extendedPosition);
     return bounds;
   }
 
-  resetBounds(bottomPadding: number = this.mapOptions.bottomPadding) {
+  private extendBoundsWithTopOffset(bounds, topOffset) {
+    let northEast = bounds.getNorthEast();
+    let extendedPosition = this.latLngYOffset(northEast, topOffset);
+    bounds.extend(extendedPosition);
+    return bounds;
+  }
+
+  resetBounds(
+    bottomPadding: number = this.mapOptions.bottomPadding || 0,
+    topPadding: number = this.mapOptions.topPadding || 0) {
     if(this.action.display.show_summary) {
       if (this.action.encoded_polyline) {
         let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
@@ -158,7 +159,8 @@ export class TrackActionOnMap {
         bounds.extend(userMarker.getPosition());
       }
       this.map.fitBounds(bounds);
-      bounds = this.extendBoundsWithBottomOffset(bounds, -bottomPadding);
+      bounds = this.extendBoundsWithBottomOffset(bounds, bottomPadding);
+      bounds = this.extendBoundsWithTopOffset(bounds, topPadding);
       this.map.fitBounds(bounds);
     }
   }
@@ -174,9 +176,12 @@ export class TrackActionOnMap {
       this.timeAwareAnimation.update(action);
     }
   }
+
+  updateMapOptions(mapOptions: IMapOptions) {
+    this.mapOptions = mapOptions;
+  }
 }
 
 export function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions) {
-  let trackAction = new TrackActionOnMap(action, map, options);
-  return trackAction;
+  return new TrackedAction(action, map, options);
 }

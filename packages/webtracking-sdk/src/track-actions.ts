@@ -1,12 +1,12 @@
 import * as $ from "jquery";
 import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
 import {
-  IAction, ITrackActionResult, ITrackActionResults, ITrackActions, ITrackingOptions
+  IAction, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackingOptions
 } from "./model";
-import {TrackActionOnMap} from "./track-action.new";
+import {TrackedAction} from "./track-action.new";
 
 export class HTTrackActions {
-  trackActions: ITrackActions = {};
+  trackActions: ITrackedActions = {};
   map: google.maps.Map;
   pollActionsTimeoutId;
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
@@ -19,8 +19,8 @@ export class HTTrackActions {
     let actions: IAction[] = this.extractActionsFromResult(data);
     this.renderMap(actions);
     this.trackActionsOnMap(actions);
-    this.options.onActionsReady(actions);
-    this.options.onReady(this.trackActions, this.map);
+    // this.options.onActionsReady(actions);
+    this.options.onReady(this.trackActions, actions, this.map);
     this.pollActionsFromIdentifier(identifier, identifierType);
   }
 
@@ -55,8 +55,8 @@ export class HTTrackActions {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
         this.trackActionsOnMap(actions);
-        this.options.onActionsUpdate(actions);
-        this.options.onUpdate(this.trackActions);
+        // this.options.onActionsUpdate(actions);
+        this.options.onUpdate(this.trackActions, actions);
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
     }, 2000);
@@ -67,7 +67,7 @@ export class HTTrackActions {
       if (this.trackActions[action.id]) {
         this.trackActions[action.id].update(action);
       } else {
-        this.trackActions[action.id] = new TrackActionOnMap(action, this.map, this.options.mapOptions);
+        this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
       }
     });
   }

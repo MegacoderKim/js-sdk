@@ -5,11 +5,11 @@ import { CustomRichMarker } from "./custom-marker";
 export declare class TimeAwareAnimation {
     private map;
     private action;
+    private userMarker;
+    private polyline;
     private options;
     timeAwarePolyline: TimeAwarePolyline;
-    polyline: google.maps.Polyline;
     isAnimationStarted: boolean;
-    userMarker: CustomRichMarker;
     currentTime: string;
     animationPoll: any;
     animationSpeed: number;
@@ -17,7 +17,7 @@ export declare class TimeAwareAnimation {
         speedScale: number;
         interval: number;
     };
-    constructor(map: google.maps.Map, action: IAction, options?: IMapOptions);
+    constructor(map: google.maps.Map, action: IAction, userMarker: CustomRichMarker, polyline: google.maps.Polyline, options?: IMapOptions);
     start(action: IAction): void;
     private handleAnimation(action);
     private updateCurrentTime();
@@ -27,14 +27,11 @@ export declare class TimeAwareAnimation {
     private renderPolyline(path, map);
     private getVehicleAssetDetails(action);
     private capTime(callback?);
-    private clearAnimationPoll();
+    clearAnimationPoll(): void;
     private getTimeToAdd();
     private currentTimePolylineData();
     update(action: IAction): void;
     extendBoundsWithUserMarker(bounds?: google.maps.LatLngBounds): google.maps.LatLngBounds;
     getUserMarker(): CustomRichMarker;
     clear(): void;
-    private startAnimation(action?);
-    private startAnimationPoll(action?);
-    private setUserMarker(action, bearing, position);
 }

@@ -19,3 +19,10 @@ export const DefaultGoogleMapOptions = {
   center: new google.maps.LatLng(37.370641488030245, -122.07498079040533),
   styles: DefaultGMapsStyle
 };
+
+export const DefaultPolylineOptions = {
+  strokeColor: "rgb(223, 92, 193)",
+  strokeOpacity: 1,
+  strokeWeight: 3,
+  icons: []
+};
