@@ -1,10 +1,9 @@
 var Webpack = require('webpack');
 var fs = require('fs');
-
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
-
+var webpackRxjsExternals = require('webpack-rxjs-externals');
 var mainPath = path.resolve(__dirname, 'index.ts');
-
 var config = {
     devtool: 'source-map, inline-source-map',
     resolve: {
@@ -29,8 +28,15 @@ var config = {
             }
         ]
     },
+    externals: [
+        'ht-js-utils',
+        'moment-mini',
+        'underscore',
+        /^rxjs\/.+$/
+    ],
     plugins: [
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 

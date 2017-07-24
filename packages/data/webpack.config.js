@@ -1,6 +1,6 @@
 var Webpack = require('webpack');
 var fs = require('fs');
-
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
 
 var mainPath = path.resolve(__dirname, 'index.ts');
@@ -16,8 +16,7 @@ var config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js',
-        publicPath: '/dist',
-        library: "htUtils",
+        library: "htData",
         libraryTarget: "umd"
     },
     module: {
@@ -30,8 +29,17 @@ var config = {
             }
         ]
     },
+    externals: [
+        'moment-mini',
+        'underscore',
+        'ht-js-utils',
+        /^rxjs\/.+$/
+    ],
     plugins: [
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new Webpack.IgnorePlugin(/moment-mini$/),
+        // new Webpack.IgnorePlugin(/underscore$/),
+        // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 

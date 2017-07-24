@@ -16,5 +16,6 @@ export * from "./src/name-case";
 export * from "./src/process-action";
 export * from "./src/query-serializer";
 export * from "./src/time-string";
+export * from "./src/time-utils";
 export * from "./src/users";
 export * from "./src/validations";

@@ -1,5 +1,6 @@
 var Webpack = require('webpack');
 var fs = require('fs');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var path = require('path');
 
@@ -29,8 +30,19 @@ var config = {
             }
         ]
     },
+    externals: [
+        'underscore',
+        'moment-mini'
+    ],
     plugins: [
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+        new Webpack.LoaderOptionsPlugin({
+            minimize: true,
+            debug: false
+        }),
+        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new Webpack.IgnorePlugin(/moment-mini$/),
+        // new Webpack.IgnorePlugin(/underscore$/),
+        // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 
