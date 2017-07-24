@@ -178,7 +178,10 @@ export class TrackedAction {
   }
 
   updateMapOptions(mapOptions: IMapOptions) {
-    this.mapOptions = mapOptions;
+    this.mapOptions = {
+      ...this.mapOptions,
+      mapOptions
+    };
   }
 
   hideOnMap() {
