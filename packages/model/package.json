@@ -1,11 +1,12 @@
 {
   "name": "ht-models",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "hypertrack models",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
+    "wbuild": "webpack -w --config webpack.config.js",
     "prepack": "npm run build"
   },
   "author": "",

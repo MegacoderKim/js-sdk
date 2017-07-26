@@ -6,36 +6,51 @@ import {HtMapItem} from "./map-item";
 import {HtCurrentUser} from "./current-user";
 import {HtMarkerItem} from "./marker-item";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
+import {HtMapType} from "./interfaces";
+import {HtSegmentPolylines} from "./entities/segment-polylines";
+import {HtStopMarkers} from "./entities/stop-markers";
+import {HtActionMarkers} from "./entities/action-markers";
 
 export class HtSegmentsTrace {
 
-  segmentsPolylines = new HtMapItems();
-  stopMarkers = new HtMapItems();
-  actionMarkers = new HtMapItems();
-  actionsPolylines = new HtMapItems();
-  timelineSegment =  new TimelineSegment();
-  userMarker: HtCurrentUser = new HtCurrentUser();
-  replayMarker = new HtMarkerItem();
-  eventMarkers: HtMapItems = new HtMapItems();
+  segmentsPolylines;
+  stopMarkers;
+  actionMarkers;
+  actionsPolylines;
+  timelineSegment = new TimelineSegment();
+  userMarker: HtCurrentUser;
+  replayMarker;
+  eventMarkers: HtMapItems;
   allowedEvents = {};
   map;
 
-  constructor() {
+  constructor(mapType: HtMapType = 'leaflet') {
+    this.initItems(mapType);
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head, this.map)
     })
+  }
+
+  initItems(mapType: HtMapType) {
+    this.segmentsPolylines = new HtSegmentPolylines(mapType);
+    this.stopMarkers = new HtStopMarkers(mapType);
+    this.actionMarkers = new HtActionMarkers(mapType);
+    this.actionsPolylines = new HtMapItems(mapType);
+    this.userMarker = new HtCurrentUser(mapType);
+    this.replayMarker = new HtMarkerItem(mapType);
+    this.eventMarkers = new HtMapItems(mapType);
   }
 
   trace(user, map, params = {}) {
     this.map = map;
     let userSegments = user ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
-    this.segmentsPolylines.trace(segType.tripSegment, map);
+    this.segmentsPolylines.trace(segType.tripSegment, map, true);
     this.stopMarkers.trace(segType.stopSegment, map, true);
     this.traceAction(user, map);
-    this.traceCurrentUser(_.last(userSegments), map);
-    this.traceActionPolyline(user, map, this.getCurrentUserPosition());
-    this.traceEvents(user, map)
+    // this.traceCurrentUser(_.last(userSegments), map);
+    // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
+    // this.traceEvents(user, map)
   }
 
   highlightAll(toHighlight) {
@@ -43,11 +58,11 @@ export class HtSegmentsTrace {
     this.stopMarkers.highlight({}, !!toHighlight)
   }
 
-  // extendBounds(bounds) {
-  //   this.stopMarkers.getBounds(bounds);
-  //   this.segmentsPolylines.getBounds(bounds);
-  //   this.actionMarkers.getBounds(bounds);
-  // }
+  extendBounds(bounds) {
+    this.stopMarkers.extendBounds(bounds);
+    this.segmentsPolylines.extendBounds(bounds);
+    this.actionMarkers.extendBounds(bounds);
+  }
 
   selectSegment(segment: ISegment) {
     if(segment.type == 'trip') {

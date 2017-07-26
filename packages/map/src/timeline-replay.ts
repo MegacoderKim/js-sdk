@@ -8,13 +8,13 @@ import 'rxjs/add/operator/take';
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/takeUntil";
-import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
+import {HtMapType, IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimelineEvent} from "ht-models";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
-  polyline: L.Polyline = L.polyline([]);
+  // polyline: L.Polyline = L.polyline([]);
   map;
   stats;
   stats$: BehaviorSubject<any> = new BehaviorSubject(null);

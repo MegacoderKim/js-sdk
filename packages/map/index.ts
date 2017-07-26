@@ -8,4 +8,5 @@ export * from  "./src/time-aware-polyline";
 export * from  "./src/timeline-replay";
 export * from  "./src/timeline-segment";
 export * from  "./src/current-user";
-export { MapUtils, IReplayPlayer, IReplayHead, IReplayStats, IDecodedSegment} from "./src/interfaces";
+export * from  "./src/map-class";
+export { MapUtils, IReplayPlayer, IReplayHead, IReplayStats, IDecodedSegment, HtMapType} from "./src/interfaces";

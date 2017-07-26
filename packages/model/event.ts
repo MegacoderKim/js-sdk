@@ -21,7 +21,7 @@ export interface ITimelineEvent {
     recorded_at: string,
     type: string,
     user_id: string,
-    position: number[],
+    position?: number[],
     info?: string
 }
 

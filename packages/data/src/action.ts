@@ -1,4 +1,4 @@
-import {IAction} from "ht-models";
+import {IAction, IActionMap, Partial} from "ht-models";
 import * as _ from "underscore";
 import {IActionPositions} from "./interfaces";
 import moment from "moment-mini";
@@ -111,8 +111,8 @@ export class HtAction {
     return false;
   }
 
-  isValidMarker() {
-    let action = this.data;
+  isValidMarker(action?: IActionMap | IAction) {
+    action = action || this.data;
     return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
   }
 

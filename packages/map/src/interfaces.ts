@@ -1,4 +1,5 @@
 import {ISegment, ITimeAwarePoint} from "ht-models";
+import Circle = google.maps.Circle;
 
 export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,
@@ -13,15 +14,21 @@ export interface MapUtils {
   openPopup: (item: HtMapItem, content?: string) => void
   closePopup: (item: HtMapItem) => void
   bringToFront: (item: HtMapItem) => void,
-  setFocus: (item: HtMapItem, map: HtMap) =>  void
+  setFocus: (item: HtMapItem, map: HtMap) =>  void,
+  renderMap: (elem: Element, options: object) => HtMap,
+  updateCirclePosition?: (item, position, info?: string, options?: object) => any,
+  getCircleMarker: () => any,
+  getPolyline: () => any,
+  setEncodedPath: (item, path: string) => void
 }
 
 export type HtMap = L.Map | google.maps.Map
 export type HtBounds = L.LatLngBounds | google.maps.LatLngBounds
 export type HtPolyline = L.Polyline | google.maps.Polyline
 export type HtLatLng = L.LatLng | google.maps.LatLng
-export type HtMarker = any
+export type HtMarker = L.CircleMarker | L.Circle | L.Marker | L.DivIcon | google.maps.Marker | google.maps.Circle | Circle
 export type HtMapItem = HtMarker | HtPolyline
+export type HtMapType = 'google' | 'leaflet'
 
 export interface IReplayHead {
   timePercent: number,

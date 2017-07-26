@@ -1,4 +1,4 @@
-import {HtMap, MapUtils} from "./interfaces";
+import {HtMap, HtMapType, MapUtils} from "./interfaces";
 import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
@@ -14,9 +14,9 @@ export class HtMapItems {
     defaultStyle: {}
   };
 
-  constructor(options = {}) {
+  constructor(public mapType: HtMapType, options = {}) {
     let newoptions = {...this.defaultOptions, ...options};
-    var {defaultStyle, mapType} = newoptions;
+    var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : LeafletUtils;
   }
@@ -37,7 +37,7 @@ export class HtMapItems {
   }
 
   getItem(data) {
-    return new HtMapItem();
+    return new HtMapItem(this.mapType);
   }
 
   itemEffect(item) {
@@ -157,7 +157,7 @@ export class HtMapItems {
     item.reset()
   }
 
-  private bustOlditem() {
+  bustOlditem() {
     _.each(this.itemEntities, (item) => {
       if(item.isOld) {
         this.removeItem(item);

@@ -7,7 +7,9 @@ export interface IUserPage extends IPageData{
 }
 
 export interface IUser {
+  created_at: string,
     id: string,
+  lookup_id: string,
     group_id: string,
     phone: string | null,
     photo: string | null,
@@ -20,9 +22,11 @@ export interface IUser {
     display: {
         status_text: string,
         sub_status_text: string,
-        activity_text: string,
+        activity_text?: string,
         has_new_sdk: boolean,
-        is_warning: boolean
+        is_warning: boolean,
+      seconds_elapsed_since_last_heartbeat: number,
+      battery: number
     }
 }
 
@@ -30,25 +34,31 @@ export interface IUserData extends IUser{
     segments: ISegment[],
     events: ITimelineEvent[],
     actions: IAction[],
-    timeline_date: string
+    timeline_date: string,
+  pending_actions: string[],
+  last_battery: number | null,
+  location_status: string
 }
 
 export interface ISegment {
     id: string,
     user_id: string,
-    place_id: string,
     started_at: string,
     ended_at: string,
+  place?: IPlace,
+  duration: number,
   // start_location: HtLocation,
   // end_location: HtLocation,
-    location: HtLocation,
+    location?: HtLocation,
     type: 'stop' | 'trip' | 'location_void',
     distance?: number,
     display?: string,
-    encoded_polyline: string,
-    time_aware_polyline: string,
-    vehicle_type: string,
-    displayColor?: string
+    encoded_polyline?: string,
+    time_aware_polyline?: string,
+    vehicle_type?: string,
+    displayColor?: string,
+  trip_id?: string,
+  activity?: string,
 }
 
 export interface IUserMap {

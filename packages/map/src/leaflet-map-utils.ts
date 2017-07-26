@@ -30,7 +30,7 @@ export const GetLatlng = (lat: number = 0, lng: number = 0) => {
   return L.latLng(lat, lng)
 };
 
-export const SetEncodedPath = (polyline: L.Polyline, encodedPolyline: string) => {
+export const setEncodedPath = (polyline: L.Polyline, encodedPolyline: string) => {
   var path = polyUtil.decode(encodedPolyline);
   return polyline.setLatLngs(path)
 };
@@ -94,6 +94,25 @@ function getItemLatlng(item) {
   return item.getLatLng()
 }
 
+function renderMap(elem, options) {
+  let map = L.map(elem, options);
+  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  return map
+}
+
+function updateCirclePosition(circle, position, infoContent: string = "", defaultOption: L.TooltipOptions = {}) {
+  HtUpdatePositionTooltip(circle, position, infoContent, defaultOption)
+}
+
+function getCircleMarker() {
+  return L.circleMarker([0, 0])
+}
+
+function getPolyline() {
+  return L.polyline([])
+}
 
 export const LeafletUtils: MapUtils = {
   setMap: SetMap,
@@ -108,5 +127,10 @@ export const LeafletUtils: MapUtils = {
   openPopup,
   closePopup,
   bringToFront,
-  setFocus
+  setFocus,
+  renderMap,
+  updateCirclePosition,
+  getCircleMarker,
+  getPolyline,
+  setEncodedPath
 };
