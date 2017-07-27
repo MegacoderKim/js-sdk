@@ -43,7 +43,8 @@ export class HtMapItem {
   }
 
   extendBounds(bounds: HtBounds) {
-    return this.mapUtils.extendBounds();
+    bounds = bounds || this.mapUtils.extendBounds();
+    return this.mapUtils.extendBounds(this.item, bounds);
   }
 
   setMap(map) {

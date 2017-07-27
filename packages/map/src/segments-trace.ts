@@ -25,13 +25,13 @@ export class HtSegmentsTrace {
   map;
 
   constructor(mapType: HtMapType = 'leaflet') {
-    this.initItems(mapType);
+    this.initBaseItems(mapType);
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head, this.map)
     })
   }
 
-  initItems(mapType: HtMapType) {
+  private initBaseItems(mapType: HtMapType) {
     this.segmentsPolylines = new HtSegmentPolylines(mapType);
     this.stopMarkers = new HtStopMarkers(mapType);
     this.actionMarkers = new HtActionMarkers(mapType);
@@ -39,14 +39,19 @@ export class HtSegmentsTrace {
     this.userMarker = new HtCurrentUser(mapType);
     this.replayMarker = new HtMarkerItem(mapType);
     this.eventMarkers = new HtMapItems(mapType);
+    this.initItems(mapType)
+  }
+
+  initItems(mapType) {
+
   }
 
   trace(user, map, params = {}) {
     this.map = map;
     let userSegments = user ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
-    this.segmentsPolylines.trace(segType.tripSegment, map, true);
-    this.stopMarkers.trace(segType.stopSegment, map, true);
+    if(this.segmentsPolylines) this.segmentsPolylines.trace(segType.tripSegment, map, true);
+    if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment, map, true);
     this.traceAction(user, map);
     // this.traceCurrentUser(_.last(userSegments), map);
     // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
@@ -59,9 +64,11 @@ export class HtSegmentsTrace {
   }
 
   extendBounds(bounds) {
-    this.stopMarkers.extendBounds(bounds);
-    this.segmentsPolylines.extendBounds(bounds);
-    this.actionMarkers.extendBounds(bounds);
+    bounds = this.stopMarkers.extendBounds(bounds);
+    bounds = this.segmentsPolylines.extendBounds(bounds);
+    bounds = this.actionMarkers.extendBounds(bounds);
+    // console.log(bounds, "final");
+    return bounds
   }
 
   selectSegment(segment: ISegment) {
@@ -101,7 +108,7 @@ export class HtSegmentsTrace {
     let filteredActions = _.filter(actions, (action: IAction) => {
       return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
     });
-    this.actionMarkers.trace(filteredActions, map, true);
+    if(this.actionMarkers) this.actionMarkers.trace(filteredActions, map, true);
   }
 
   traceActionPolyline(user, map, currentPosition) {

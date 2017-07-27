@@ -114,6 +114,14 @@ function getPolyline() {
   return L.polyline([])
 }
 
+function setBounds(map: L.Map, bounds: L.LatLngBounds, options?) {
+  map.flyToBounds(bounds, options)
+}
+
+function isValidBounds(bounds: L.LatLngBounds) {
+  return bounds.isValid()
+}
+
 export const LeafletUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
@@ -132,5 +140,7 @@ export const LeafletUtils: MapUtils = {
   updateCirclePosition,
   getCircleMarker,
   getPolyline,
-  setEncodedPath
+  setEncodedPath,
+  setBounds,
+  isValidBounds
 };

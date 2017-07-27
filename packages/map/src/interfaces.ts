@@ -19,7 +19,9 @@ export interface MapUtils {
   updateCirclePosition?: (item, position, info?: string, options?: object) => any,
   getCircleMarker: () => any,
   getPolyline: () => any,
-  setEncodedPath: (item, path: string) => void
+  setEncodedPath: (item, path: string) => void,
+  setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
+  isValidBounds: (bounds: HtBounds) => boolean
 }
 
 export type HtMap = L.Map | google.maps.Map

@@ -1,5 +1,5 @@
 import {HtMapItem} from "./map-item";
-import {HtMap} from "./interfaces";
+import {HtBounds, HtMap} from "./interfaces";
 
 export class HtPolyline extends HtMapItem {
   constructor(mapType, options?) {
@@ -13,6 +13,10 @@ export class HtPolyline extends HtMapItem {
 
   getEncodedPath(data) {
     return data.encoded_polyline;
+  }
+
+  extendBounds(bounds: HtBounds) {
+    return this.mapUtils.extendBoundsWithPolyline(this.item, bounds)
   }
 
 }

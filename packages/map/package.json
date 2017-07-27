@@ -1,6 +1,6 @@
 {
   "name": "ht-js-map",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "hypertrack map",
   "main": "dist/index.js",
   "scripts": {

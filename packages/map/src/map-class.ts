@@ -1,4 +1,4 @@
-import {HtMap, HtMapType, MapUtils} from "./interfaces";
+import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtSegmentsTrace} from "./segments-trace";
@@ -8,7 +8,13 @@ export class HtMapClass {
   map: HtMap;
   mapUtils: MapUtils;
   segmentTrace: HtSegmentsTrace;
+  leafletSetBoundsOptions: L.PanOptions = {
+    animate: true,
+    duration: 0.3
+  };
+  googleSetBoundsOptions = {
 
+  };
   constructor(elem: Element, public mapType: HtMapType = 'leaflet', options) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
     this.initMap(elem, options);
@@ -22,5 +28,15 @@ export class HtMapClass {
 
   tracePlaceline(user: IUserData) {
     this.segmentTrace.trace(user, this.map)
+  }
+
+  resetBounds(options?, bounds?: HtBounds) {
+    bounds = this.segmentTrace.extendBounds(bounds);
+    if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
+  };
+
+  setBounds(bounds: HtBounds, options?) {
+    options = options || this.mapType == 'leaflet' ? this.leafletSetBoundsOptions : this.googleSetBoundsOptions;
+    this.mapUtils.setBounds(this.map, bounds, options)
   }
 }

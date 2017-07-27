@@ -1,15 +1,26 @@
 import {HtMarker, MapUtils} from "./interfaces";
 import {HtMapItem} from "./map-item";
-var polyUtil = require('polyline-encoded');
+import * as _ from "underscore";
 
-export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds()) {
-  if(item && item.getElement()) bounds.extend(item.getLatLng());
+export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds) {
+  bounds = bounds || new google.maps.LatLngBounds();
+  if(item && item.getMap() && item.getPosition) {
+    let p = item.getPosition();
+    let l = {lat: p.lat(), lng: p.lng()};
+    bounds.extend(l);
+  }
+  if(item && item.getMap() && item.getCenter) {
+    bounds.extend(item.getCenter());
+  }
   return bounds
 };
 
 export const ExtendBoundsWithPolyline = (polyline: google.maps.Polyline = null, bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds()): google.maps.LatLngBounds => {
   if(polyline && polyline.getMap() ) {
-    // bounds.extend(polyline.getBounds())
+    _.each(polyline.getPath().getArray(), p => {
+      let l = {lat: p.lat(), lng: p.lng()};
+      bounds.extend(l)
+    })
   }
   return bounds
 };
@@ -110,6 +121,21 @@ function getPolyline() {
   return new google.maps.Polyline()
 }
 
+function setBounds(map: google.maps.Map, bounds: google.maps.LatLngBounds, padding: number = 0) {
+  let newBounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
+  map.fitBounds(newBounds)
+}
+
+function isValidBounds(bounds: google.maps.LatLngBounds): boolean {
+  // console.log(bounds);
+  // return !bounds.isEmpty()
+  return !getBoundsFix(bounds).isEmpty()
+}
+
+function getBoundsFix(bounds) {
+  return new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
+}
+
 export const GoogleMapUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
@@ -128,5 +154,7 @@ export const GoogleMapUtils: MapUtils = {
   updateCirclePosition,
   getCircleMarker,
   getPolyline,
-  setEncodedPath
+  setEncodedPath,
+  setBounds,
+  isValidBounds
 };

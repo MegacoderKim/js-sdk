@@ -48,11 +48,12 @@ export class HtMapItems {
 
   }
 
-  extendBounds() {
-    let bounds = this.mapUtils.extendBounds();
-    return _.reduce(this.itemEntities, (bounds, item) => {
+  extendBounds(bounds) {
+    bounds = bounds || this.mapUtils.extendBounds();
+    let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
       return item.extendBounds(bounds)
     }, bounds);
+    return newBounds
   }
 
   addClick(cb) {
