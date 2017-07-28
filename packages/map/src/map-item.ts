@@ -1,5 +1,6 @@
 import {LeafletUtils} from "./leaflet-map-utils";
-import {HtBounds, HtMap, MapUtils} from "./interfaces";
+import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
+import {GoogleMapUtils} from "./google-map-utils";
 
 export class HtMapItem {
   item: any;
@@ -8,21 +9,38 @@ export class HtMapItem {
   isHighlighted: boolean = false;
   isOld: boolean = false;
   id: string | number;
-  defaultStyle = {};
+  defaultStyle;
+  googleStyle = {};
+  leafletStyle = {};
   mapUtils: MapUtils;
   defaultOptions = {
     mapType: 'leaflet',
     defaultStyle: {}
   };
 
-  constructor(options = {}) {
+
+  constructor(public mapType: HtMapType, options = {}) {
     let newoptions = {...this.defaultOptions, ...options};
-    var {defaultStyle, mapType} = newoptions;
+    var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
-    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : LeafletUtils;
+    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    this.setItem()
+  }
+
+  setItem() {
+
+  }
+
+  setMapTypeStyle() {
+    let style = this.mapType == 'leaflet' ? this.leafletStyle : this.googleStyle;
+    this.setStyle(style);
   }
 
   update(item, map: HtMap) {
+
+  }
+
+  onUpdate(item, map) {
 
   }
   //todo update data rename
@@ -33,7 +51,8 @@ export class HtMapItem {
   }
 
   extendBounds(bounds: HtBounds) {
-    return this.mapUtils.extendBounds();
+    bounds = bounds || this.mapUtils.extendBounds();
+    return this.mapUtils.extendBounds(this.item, bounds);
   }
 
   setMap(map) {
@@ -61,7 +80,7 @@ export class HtMapItem {
   }
 
   setStyle(style) {
-    this.mapUtils.setStyle(this.item, {...this.defaultStyle, ...style})
+    this.mapUtils.setStyle(this.item, style)
   }
 
   getItemInfoContent() {

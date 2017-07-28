@@ -1,18 +1,19 @@
 import {HtMapItem} from "./map-item";
 import {DateString, HMString, HtShow, NameCase, TimeString, Color} from "ht-js-utils";
-import {IActionMap} from "ht-models";
+import {IActionMap, IAction} from "ht-models";
+import {HtMapType} from "./interfaces";
 
 export class HtActionMarker extends HtMapItem{
 
   showExpected: boolean;
   hasExpected: boolean;
 
-  constructor(showExpected: boolean = false, options = {}) {
-    super(options);
+  constructor(showExpected: boolean = false, public mapType: HtMapType, options = {}) {
+    super(mapType, options);
     this.showExpected = showExpected;
   }
 
-  getInfoContent(item: IActionMap) {
+  getInfoContent(item: IActionMap | IAction) {
     let userName = item.user ? item.user.name : '';
     return `<div class="flex-column flex-center" style="min-width: 180px">
 <div class=" text-1">

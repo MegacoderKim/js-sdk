@@ -18,8 +18,12 @@ export interface IAccount {
 export type PartialAccount = Partial<IAccount>;
 
 export interface IMember {
-    user: {email: string, id: string},
+    user: {email: string, id: string, is_validated: boolean},
+  read_token: string
+  status: string
     role: string
+  account_id: string,
+  id: string
 }
 
 export interface ISubAccount {

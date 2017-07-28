@@ -1,11 +1,12 @@
 {
   "name": "ht-js-data",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js -p",
+    "wbuild": "webpack -w --config webpack.config.js",
     "prepack": "npm run build"
   },
   "author": "",

@@ -7,6 +7,7 @@ export class TimelineSegment extends TimelineReplay {
   allSegments: IDecodedSegment[];
   duration: number;
   playSegmentCallback;
+
   update(userData: any) {
     let segments = userData.segments;
     // let noTrackingSegments = this.getNoTrackingSegments(userData.events);

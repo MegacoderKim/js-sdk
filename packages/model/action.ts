@@ -3,7 +3,8 @@ import {IUser} from "./user";
 
 export interface IAction {
     id: string;
-    user: IUser;
+    user?: IUser,
+    user_id: string;
     display: {
         status_text: string;
         sub_status_text: string;
@@ -11,6 +12,8 @@ export interface IAction {
         show_summary: boolean;
         is_late: boolean;
         ended_at: null | string,
+      duration_elapsed: number,
+      distance_remaining: string | null
     };
     lookup_id: string;
     assigned_at: string;
@@ -28,6 +31,7 @@ export interface IAction {
     expected_at: string | null;
     type: string;
     tracking_url: string;
+  short_code: string,
     encoded_polyline: string;
     event_flags: string[];
     metadata: object
@@ -39,6 +43,7 @@ export interface IActionMap {
     lookup_id: string,
     type: string,
     status: string,
+  created_at: string;
     expected_place: {
         location: GeoJson
     } | null,
