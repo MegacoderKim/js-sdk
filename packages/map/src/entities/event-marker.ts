@@ -10,7 +10,7 @@ export class HtEventMarker extends HtMarkerItem{
     opacity: 1,
     color: Color.stopDark,
     pane: 'markerPane'
-  }
+  };
 
   googleStyle = {
     icon: {
@@ -22,10 +22,9 @@ export class HtEventMarker extends HtMarkerItem{
       scale: 4,
       strokeWeight: 3,
     }
-  }
+  };
 
-  constructor(mapType, options?) {
-    super(mapType, options);
+  setItem() {
     this.item = this.mapUtils.getCircleMarker()
   }
 

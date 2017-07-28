@@ -23,8 +23,7 @@ export class HtStopMarker extends HtMarkerItem{
     }
   };
 
-  constructor(mapType, options?) {
-    super(mapType, options);
+  setItem() {
     this.item = this.mapUtils.getCircleMarker()
   }
 

@@ -26,8 +26,7 @@ export class HtActionMarker extends HtMarkerItem {
     }
   };
 
-  constructor(mapType, options?) {
-    super(mapType, options);
+  setItem() {
     this.item = this.mapUtils.getCircleMarker()
   }
 

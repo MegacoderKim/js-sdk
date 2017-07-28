@@ -189,6 +189,7 @@ export class HtMapItems {
       mapitem.updateItem(data);
       if(setMap) mapitem.setMap(this.map);
       mapitem.update(data, this.map);
+      mapitem.onUpdate(data, this.map)
     } else {
       this.createItem(data, setMap)
     }

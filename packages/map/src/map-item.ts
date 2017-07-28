@@ -24,6 +24,10 @@ export class HtMapItem {
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    this.setItem()
+  }
+
+  setItem() {
 
   }
 
@@ -33,6 +37,10 @@ export class HtMapItem {
   }
 
   update(item, map: HtMap) {
+
+  }
+
+  onUpdate(item, map) {
 
   }
   //todo update data rename

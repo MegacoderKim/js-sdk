@@ -53,7 +53,7 @@ export class HtSegmentsTrace {
     if(this.segmentsPolylines) this.segmentsPolylines.trace(segType.tripSegment, map, true);
     if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment, map, true);
     this.traceAction(user, map);
-    // this.traceCurrentUser(_.last(userSegments), map);
+    this.traceCurrentUser(_.last(userSegments), map);
     // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     // this.traceEvents(user, map)
   }
