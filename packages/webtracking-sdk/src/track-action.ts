@@ -1,240 +1,209 @@
-import {IAction, ITrackOption} from "./model";
-import {FetchAction, GetLatLng} from "./helpers";
-import * as $ from "jquery";
-import {TimeAwareAnim} from "./trace/time-aware-anim";
-import {Color} from "./color";
-import {Destination} from "./trace/destination";
-import {StartMarker} from "./trace/start-marker";
+import {IAction, IMapOptions} from "./model";
 import * as _ from "underscore";
-import {EndMarker} from "./trace/end-marker";
-import * as Utils from './utils';
+import {CustomRichMarker} from "./trace/custom-marker";
+import {MarkerAssets} from "./assets";
+import LatLng = google.maps.LatLng;
+import Polyline = google.maps.Polyline;
+import {TimeAwareAnimation} from "./trace/time-aware-animation";
+import {GetLatLng} from "./helpers";
+import {DefaultPolylineOptions} from "./defaults";
 
-export class TrackAction {
-    map: google.maps.Map;
-    private anim: TimeAwareAnim = new TimeAwareAnim({strokeColor: Color.htPink});
-    startMarker: StartMarker = new StartMarker();
-    endMarker: EndMarker = new EndMarker();
-    private actionPoll;
-    destination: Destination = new Destination();
-    action: IAction;
-    options: ITrackOption;
-    private pk: string;
-    constructor() {}
+export class TrackedAction {
+  startMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.startPosition());
+  endMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.endPosition());
+  destinationMarker: CustomRichMarker = new CustomRichMarker(MarkerAssets.endPosition());
+  mapPolyline: Polyline = new google.maps.Polyline(DefaultPolylineOptions);
+  userMarker: CustomRichMarker = new CustomRichMarker();
+  private timeAwareAnimation: TimeAwareAnimation;
+  constructor(
+    private action: IAction,
+    private map: google.maps.Map,
+    private mapOptions: IMapOptions) {
+    if (!action || !map) return;
+    this.timeAwareAnimation = new TimeAwareAnimation(this.map, action, this.userMarker, this.mapPolyline, mapOptions);
+    this.showOnMap(action);
+  }
 
-    init(action: IAction, pk: string, options: ITrackOption) {
-        this.action = action;
-        this.pk = pk;
-        this.options = options;
-        if (options.mapOptions.vehicleIcon) {
-            this.anim.setCustomVehicleIcon(options.mapOptions.vehicleIcon);
-        }
-        this.renderMap();
+  showOnMap(action: IAction = this.action): void {
+    if(action.display.show_summary) {
+      this.renderSummary(action);
+    } else {
+      this.renderLive(action);
     }
+  }
 
-    resetBounds(bottomPadding: number = this.options.mapOptions.bottomPadding) {
-        if(this.action.display.show_summary) {
-            this.showSummary(bottomPadding);
-        } else {
-            if(this.destination.getMap()) {
-                let bounds = this.anim.getBounds();
-                bounds.extend(this.destination.getPosition());
-                this.map.fitBounds(bounds);
-                bounds = this.extendedBounds(bounds, -bottomPadding);
-                this.map.fitBounds(bounds);
-                this.map.panToBounds(bounds);
-            } else {
-                this.map.setCenter(this.anim.getPosition())
-            }
-        }
+  private renderSummary(action: IAction = this.action) {
+    this.renderEncodedPolyline(action);
+    this.renderStartMarker(action);
+    this.renderEndMarker(action);
+  }
 
+  private renderLive(action: IAction = this.action) {
+    this.timeAwareAnimation.start(action);
+    this.renderDestinationMarker(action);
+    this.renderStartMarker(action);
+  }
+
+  private renderEncodedPolyline(action: IAction) {
+    if (action.encoded_polyline) {
+      let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
+      this.mapPolyline.setPath(polylineArray);
+      if (!this.mapPolyline.getMap()) {
+        this.mapPolyline.setMap(this.map);
+      }
     }
+  }
 
-    setOptions(options: ITrackOption) {
-        this.options = {...this.options, ...options}
+  private renderStartMarker(action: IAction = this.action) {
+    if (action.encoded_polyline)  {
+      let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
+      let startPoint = _.first(polylineArray);
+      let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
+      this.startMarker.setPosition(startPosition);
+      if (!this.startMarker.getMap()) {
+        this.startMarker.setMap(this.map);
+      }
     }
+  }
 
-    private renderMap(): void {
-        this.makeMap();
-        this.trace();
-        this.options.onReady && this.options.onReady(this);
-        this.options.onActionReady && this.options.onActionReady(this.action)
-        // this.resetBounds()
+  private renderEndMarker(action: IAction = this.action) {
+    if (this.action.encoded_polyline)  {
+      let polylineArray = google.maps.geometry.encoding.decodePath(action.encoded_polyline);
+      let endPoint = _.last(polylineArray);
+      let endPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
+      this.endMarker.setPosition(endPosition);
+      if (!this.endMarker.getMap()) {
+        this.endMarker.setMap(this.map);
+      }
     }
+  }
 
-    private getFirstOrigin(): google.maps.LatLng {
-        let origin = new google.maps.LatLng(37.370641488030245, -122.07498079040533);
-        if(this.action.user && this.action.user.last_location && this.action.user.last_location['geojson']) {
-            origin = GetLatLng(this.action.user.last_location, 'geojson')
-        } else if(this.action.started_place) {
-            origin = GetLatLng(this.action.started_place)
-        } else if(this.action.expected_place) {
-            origin = GetLatLng(this.action.expected_place)
-        }
-        return origin;
+  private renderDestinationMarker(action: IAction = this.action) {
+    let finalPlace = action.completed_place || action.expected_place;
+    if(finalPlace) {
+      let destinationPosition = GetLatLng(finalPlace);
+      this.destinationMarker.setPosition(destinationPosition);
+      if (!this.destinationMarker.getMap()) {
+        this.destinationMarker.setMap(this.map);
+      }
+      // this.destinationMarker.render(destinationPosition, this.map);
+    } else {
+      this.destinationMarker.clear();
     }
+  }
 
-    private makeMap() {
-        let origin = this.getFirstOrigin();
-        if(!this.map) {
-            let gMapsStyles = this.options.mapOptions.gMapsStyle || this.getDefaultGMapsStyle();
-            this.map = new google.maps.Map(document.getElementById(this.options.mapId), {
-                zoom: 14,
-                center: origin,
-                disableDefaultUI:true,
-                scrollwheel: true,
-                scaleControl: false,
-                clickableIcons: false,
-                styles: gMapsStyles
-            });
-        } else {
-            this.map.setCenter(origin);
-        }
+  private clearLiveView() {
+    this.timeAwareAnimation.clearAnimationPoll();
+    this.destinationMarker.clear();
+    this.userMarker.clear();
+  }
+
+  private fitToBounds(latLngPoints: LatLng[], bottomPadding: number) {
+    let bounds = new google.maps.LatLngBounds();
+    latLngPoints.forEach((latLngPoint: LatLng) => {
+      bounds.extend(latLngPoint);
+    });
+    this.map.fitBounds(bounds);
+    this.fitToBoundsWithBottomPadding(latLngPoints, bottomPadding)
+  }
+
+  private fitToBoundsWithBottomPadding(latLngs: LatLng[], bottomPadding) {
+    let bounds = new google.maps.LatLngBounds();
+    latLngs.forEach((latLng: LatLng) => {
+      bounds.extend(latLng);
+      if(bottomPadding) {
+        bounds.extend(this.latLngYOffset(latLng, bottomPadding));
+      }
+    });
+    this.map.fitBounds(bounds);
+  }
+
+  private latLngYOffset(latLng, yOffset) {
+    let projection = this.map.getProjection();
+    if(projection) {
+      let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(latLng).x, projection.fromLatLngToPoint(latLng).y - yOffset/(Math.pow(2, this.map.getZoom())));
+      return projection.fromPointToLatLng(markerPoint)
     }
+    return latLng;
+  }
 
-    private getDefaultGMapsStyle() {
-        return [
-            {
-                "stylers": [
-                    {
-                        "saturation": -100
-                    }
-                ]
-            }
-        ];
+  private extendBoundsWithBottomOffset(bounds, bottomOffset) {
+    let southWest = bounds.getSouthWest();
+    let extendedPosition = this.latLngYOffset(southWest, bottomOffset);
+    bounds.extend(extendedPosition);
+    return bounds;
+  }
+
+  private extendBoundsWithTopOffset(bounds, topOffset) {
+    let northEast = bounds.getNorthEast();
+    let extendedPosition = this.latLngYOffset(northEast, topOffset);
+    bounds.extend(extendedPosition);
+    return bounds;
+  }
+
+  resetBounds(
+    bottomPadding: number = this.mapOptions.bottomPadding || 0,
+    topPadding: number = this.mapOptions.topPadding || 0) {
+    if(this.action.display.show_summary) {
+      if (this.action.encoded_polyline) {
+        let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
+        this.fitToBounds(polylineArray, bottomPadding);
+      }
+    } else {
+      let bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds();
+      if (this.destinationMarker.getMap() && this.destinationMarker.getPosition()) {
+        bounds.extend(this.destinationMarker.getPosition());
+      }
+      let userMarker = this.timeAwareAnimation.getUserMarker();
+      if (userMarker.getPosition() && userMarker.getMap()) {
+        bounds.extend(userMarker.getPosition());
+      }
+      this.map.fitBounds(bounds);
+      bounds = this.extendBoundsWithBottomOffset(bounds, bottomPadding);
+      bounds = this.extendBoundsWithTopOffset(bounds, topPadding);
+      this.map.fitBounds(bounds);
     }
+  }
 
-    private trace() {
-        if(this.action.display.show_summary) {
-            this.showSummary();
-        } else {
-            if (this.action.time_aware_polyline) {
-                this.anim.start(this.action, this.map);
-            }
-            this.startActionPoll();
-            this.traceDestination();
-            this.traceStart();
-        }
+  update(action: IAction) {
+    this.action = action;
+    if(action.display.show_summary) {
+      this.clearLiveView();
+      this.renderSummary(action);
+    } else {
+      this.renderDestinationMarker(action);
+      this.renderStartMarker(action);
+      this.timeAwareAnimation.update(action);
     }
+  }
 
-    traceStart() {
-        if (this.action.encoded_polyline)  {
-            let polylineArray = google.maps.geometry.encoding.decodePath(this.action.encoded_polyline);
-            let startPoint = _.first(polylineArray);
-            let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
-            this.startMarker.setMarkerDiv();
-            this.startMarker.render(startPosition, this.map);
-        }
+  updateMapOptions(mapOptions: IMapOptions) {
+    this.mapOptions = {
+      ...this.mapOptions,
+      mapOptions
+    };
+  }
+
+  hideOnMap() {
+    this.clearLiveView();
+    this.startMarker.setMap(null);
+    this.endMarker.setMap(null);
+    this.destinationMarker.setMap(null);
+    this.mapPolyline.setMap(null);
+    this.userMarker.setMap(null);
+  }
+
+  updateUserMarkerIcon(icon: string) {
+    this.mapOptions = {
+      ...this.mapOptions,
+      vehicleIcon: {
+        ...this.mapOptions.vehicleIcon,
+        src: icon
+      }
     }
-
-    private startActionPoll() {
-        this.actionPoll = setTimeout(() => {
-            this.fetchAction()
-        }, 2000)
-    }
-
-    private fetchAction() {
-        FetchAction(this.action.id, this.pk).then((action: IAction) => {
-            this.updateAction(action);
-            this.startActionPoll()
-        }, (err) => {
-            if(this.options.onError) this.options.onError(err);
-            this.startActionPoll()
-        })
-    }
-
-    private updateAction(action: IAction) {
-        this.action = action;
-        if(this.action.display.show_summary) {
-            this.showSummary()
-        } else {
-            this.anim.update(action);
-            this.traceDestination();
-        }
-        this.options.onActionUpdate && this.options.onActionUpdate(action)
-    }
-
-    private traceDestination() {
-        this.destination.update(this.action, this.map)
-    }
-
-    private showSummary(bottomPadding: number = this.options.mapOptions.bottomPadding) {
-        this.drawAndFitPolyline(this.action.encoded_polyline, bottomPadding);
-        this.clear()
-    }
-
-    private clear() {
-        this.anim.clear();
-        this.destination.clear();
-        if(this.actionPoll) clearTimeout(this.actionPoll)
-    }
-
-    private drawAndFitPolyline(polylineEncoded, bottomPadding: number = this.options.mapOptions.bottomPadding) {
-        let polylineArray = google.maps.geometry.encoding.decodePath(polylineEncoded);
-        new google.maps.Polyline({
-            map: this.map,
-            path: polylineArray,
-            strokeColor: "rgb(223, 92, 193)",
-            strokeOpacity: 1,
-            strokeWeight: 3,
-            icons: []
-        });
-        if (polylineArray.length > 0) {
-            this.startMarker.setMarkerDiv();
-            this.endMarker.setMarkerDiv();
-            let startPoint = _.first(polylineArray);
-            let endPoint = _.last(polylineArray);
-            let startPosition = new google.maps.LatLng(startPoint.lat(), startPoint.lng());
-            let lastPosition = new google.maps.LatLng(endPoint.lat(), endPoint.lng());
-            this.startMarker.render(startPosition, this.map);
-            this.endMarker.render(lastPosition, this.map);
-        }
-        setTimeout(() => {
-            //Utils.fitPolylineWithBottomPadding(this.map, polylineArray, bottomPadding);
-            this.fitPolyline(polylineArray, bottomPadding);
-        }, 200);
-    }
-
-    private fitPolyline(polylineMvc, bottomPadding) {
-        let bounds = new google.maps.LatLngBounds();
-        $.each(polylineMvc, (i, v) => {
-            bounds.extend(v);
-        });
-        this.map.fitBounds(bounds);
-        this.fitExtended(polylineMvc, bottomPadding)
-    }
-
-    private fitExtended(polylineMvc, bottomPadding) {
-        let bounds = new google.maps.LatLngBounds();
-        $.each(polylineMvc, (i, v) => {
-            bounds.extend(v);
-            let bottomPaddingValue = bottomPadding || this.options.mapOptions.bottomPadding;
-            if(bottomPaddingValue) {
-                bounds.extend(this.extendedLocation(v, -bottomPaddingValue));
-            }
-        });
-        this.map.fitBounds(bounds);
-    }
-
-    private extendedLocation(location, y) {
-        let projection = this.map.getProjection();
-        if(projection) {
-            let markerPoint = new google.maps.Point(projection.fromLatLngToPoint(location).x, projection.fromLatLngToPoint(location).y - y/(Math.pow(2, this.map.getZoom())));
-            return projection.fromPointToLatLng(markerPoint)
-        }
-        return location;
-    }
-
-    private extendedBounds(bounds, y) {
-        let southWest = bounds.getSouthWest();
-        let extendedPosition = this.extendedLocation(southWest, y);
-        bounds.extend(extendedPosition);
-        return bounds;
-    }
-
+  }
 }
 
-export function trackAction(action: IAction, pk: string, options: ITrackOption) {
-    let track = new TrackAction();
-    track.init(action, pk, options);
-    return track;
+export function trackActionOnMap(action: IAction, map: google.maps.Map, options: IMapOptions) {
+  return new TrackedAction(action, map, options);
 }

@@ -143,7 +143,6 @@ export class TimeAwareAnimation {
       if(totalDuration > mid) {
         factor = Math.pow(totalDuration, power) / Math.pow(mid, power);
       }
-
     }
     return factor * this.animationProps.interval;
   }

@@ -1,8 +1,5 @@
-import {TrackAction} from "./track-action";
-
-import {CustomVehicleIcon} from "./trace/time-aware-anim";
 import MapTypeStyle = google.maps.MapTypeStyle;
-import {TrackedAction} from "./track-action.new";
+import {TrackedAction} from "./track-action";
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
@@ -115,16 +112,6 @@ export interface IPlace {
     zip_code: string
 }
 
-export interface ITrackOption {
-    mapId: string, //id of DOM where map is to be rendered
-    mapOptions?: IMapOptions,
-    onError?: (error: any) => void,
-    onReady?: (trackAction: TrackAction) => void,
-    onActionReady?: (action: IAction) => void,
-    onActionUpdate?: (action: IAction) => void,
-    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
-}
-
 export interface ITrackingOptions {
     mapId: string, //id of DOM where map is to be rendered
     mapOptions?: IMapOptions,
@@ -142,6 +129,11 @@ export interface IMapOptions {
     topPadding?: number,
     vehicleIcon?: CustomVehicleIcon,
     originLatLng?: [number, number], //optional, to set default map center,
+}
+
+export interface CustomVehicleIcon {
+  src: string,
+  height: string
 }
 
 export interface GMapsPolyLineOptions {

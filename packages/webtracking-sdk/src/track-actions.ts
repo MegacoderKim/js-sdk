@@ -3,7 +3,7 @@ import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helper
 import {
   IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackingOptions
 } from "./model";
-import {TrackedAction} from "./track-action.new";
+import {TrackedAction} from "./track-action";
 
 export class HTTrackActions {
   trackActions: ITrackedActions = {};
