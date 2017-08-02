@@ -19,14 +19,14 @@ Add `dist/track.js` as a script tag in the html
 
 `ht` exposes 3 ways to track an action
 
-**`ht.trackShortCode(shortCode: string, pk: string, trackingOptions: ITrackOption)`:** 
+**`ht.trackShortCode(shortCode: string, pk: string, trackingOptions: ITrackingOptions)`:** 
 To be used when short code of the action is known. The first argument is the `action.short_code`, this code is also part of `action.tracking_url` generated for each action, which is a default tracking link for the action.
 
-**`ht.trackActionId(actionId: string, pk: string, trackingOptions: ITrackOption)`:**
+**`ht.trackActionId(actionId: string, pk: string, trackingOptions: ITrackingOptions)`:**
 To be used when `action.id`, i.e. ID of the action is known.
 
-**`ht.trackAction(action: IAction, pk: string, trackingOptions: ITrackOption)`:**
-To be used when `action` object is known.
+**`ht.trackLookupId(lookupId: string, pk: string, trackingOptions: ITrackingOptions)`:**
+To be used when `action.lookup_id` i.e. lookup id of the action is known. Useful for tracking multiple actions.
 
 #### Other Entities
 
@@ -45,49 +45,46 @@ In the html file create a DOM which would contain the map. Give it a unique id.
 
 E.g. `<div id="map" style="height: 300px; width: 500px"></div>`
 
-****2. Create onActionReady callback:****
-Create a `onActionReady` which will take `action` object as an argument. This is a callback which is fired when tracking it initialized. 
+****2. Create onReady callback:****
+Create a `onReady` which will take `trackedActions` object, `action` array and `map` object as arguments. This is a callback which is fired when tracking is initialized.
 
-E.g `var onActionReady =  function(action) { //do anything with action here}`
+E.g `var onReady =  function(trackedActions, actions, map) { //Setup with actions, trackedActions and map here}`
 
-****3. Create onActionUpdate callback:****
-Create a `onActionUpdate` which will take `action` object as an argument. This is a callback fired when the `action` object gets updated. Use this to update ETA, etc. 
+****3. Create onUpdate callback:****
+Create a `onUpdate` which will take `trackedActions` object and `action` array  as arguments. This is a callback fired when the `action` object gets updated. Use this to update ETA, etc. 
 
-E.g. `var onActionUpdate = function(action) { //do anything with updated action here}`
+E.g. `var onUpdate = function(trackedActions, actions) { //do anything with updated action here}`
 
 ****4. Call `trackShortCode` function:****
-Call `var track = ht.trackShortCode(shortCode: string, pk: string, trackingOptions: ITrackOption)`. `trackingOptions` is an object with `mapId` as a required field. There are other optional fields for customizing the tracking experience. `track` object is of type `TrackAction` (detail in reference section). This provides additional functionality like obtaining map object, reseting bounds function, etc.
+Call `var track = ht.trackShortCode(shortCode: string, pk: string, trackingOptions: ITrackingOptions)`. `trackingOptions` is an object with `mapId` as a required field. There are other optional fields for customizing the tracking experience. `track` object is of type `TrackedAction` (detail in reference section). This provides additional functionality like obtaining map object, reseting bounds function, etc.
 
-E.g `var tracking  = ht.trackShortCode("xdBtyxs", "pk_xxxxxxxxxxxxxxxxx", {mapId: "map", onActionReady: onActionReady, onActionUpdate: onActionUpdate})`, where `"xdBtyxs"` is the shortCode, `"pk_xxxxxxxxxxxxxxxxx"` is HyperTrack public key and `onActionReady` and `onActionUpdate` are callbacks for `ready` and `update` events.
+E.g `var tracking  = ht.trackShortCode("xdBtyxs", "pk_xxxxxxxxxxxxxxxxx", {mapId: "map", onReady: handleOnReady, onUpdate: handleOnUpdate})`, where `"xdBtyxs"` is the shortCode, `"pk_xxxxxxxxxxxxxxxxx"` is HyperTrack public key and `handleOnReady` and `handleOnUpdate` are callbacks for `ready` and `update` events.
 
 ### References 
 #### Interfaces
 
 1. `ITrackingOption`: Options that is passed to the sdk to customize the tracking.
-2. `IAction`: HyperTrack Action object. This is passed as `onActionReady` callback passed in the options.
-3. `TrackAction`: Class which exposes methods to tracking action. It also exposes map object and action object.
+2. `IAction`: HyperTrack Action object. This is passed to `onReady` and `onUpdate` callbacks.
+3. `TrackedAction`: Class which exposes methods to tracking action. It also exposes map object and action object.
 
 ##### Tracking options
 ```
-interface ITrackOption {
+interface ITrackingOptions {
     mapId: string, //id of DOM where map is to be rendered
     mapOptions?: IMapOptions,
     onError?: (error: any) => void,
-    onReady?: (trackAction: TrackAction) => void,
-    onActionReady?: (action: IAction) => void,
-    onActionUpdate?: (action: IAction) => void,
-    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void
+    onReady?: (trackedActions: ITrackedActions, actions: IAction[], map: google.maps.Map) => void,
+    onUpdate?: (trackedActions: ITrackedActions, actions: IAction[]) => void,
+    onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void
 }
 ```
 ```
 interface IMapOptions {
     gMapsStyle?: MapTypeStyle[],
     bottomPadding?: number,
+    topPadding?: number,
     vehicleIcon?: CustomVehicleIcon,
-    originLatLng?: [number, number], //optional, to set default map center,
-    showStartPositionMarker?: boolean,
-    showEndPositionMarker?: boolean,
-    polyLineOptions?: GMapsPolyLineOptions
+    originLatLng?: [number, number], //optional, to set default map center
 }
 ```
 ```
@@ -110,11 +107,15 @@ interface IAction {
     created_at: string | null,
     display: {
         duration_remaining: number | null,
+        duration_elapsed: number | null,
+        distance_remaining: number | null,
         show_summary: boolean,
         status_text: string,
+        distance_unit: string,
+        isLate: boolean,
         sub_status_text: string
     },
-    distance: number,
+    distance: number | null,
     encoded_polyline: string,
     eta: string | null,
     expected_place: IPlace,
@@ -124,57 +125,27 @@ interface IAction {
     short_code: string
     started_at: string | null,
     started_place: IPlace | null,
+    ended_at: string | null,
     status: string,
     suspended_at: string | null,
     time_aware_polyline: string,
     tracking_url: string,
     type: string,
     user: IUser,
-    vehicle_type: string
+    vehicle_type: string,
+    metadata?: any
 }
 ```
 
-##### TrackAction
+##### TrackedAction
 
 ```
-interface TrackAction {
-    action: IAction;
-    map: google.maps.Map;
+interface TrackedAction {
+    startMarker: CustomRichMarker;
+    endMarker: CustomRichMarker;
+    destinationMarker: CustomRichMarker;
+    mapPolyline: google.maps.Polyline;
+    userMarker: CustomRichMarker;
     resetBounds: () => void;
-    setOptions: (options: ITrackOption) => void;
 }
 ```
-
-#### Example
-
-```
-var shortCode = "q0oxyWr";
-var actionId = "1735bd06-db99-4acf-be3b-a9f17cc0a262";
-
-var pk = pk_xxxxxxxxxxxxxxx;
-
-var trackOptions = {
-  mapId: 'map',
-  onReady: function(trackAction){ 
-     console.log(trackAction)
-     trackAction.map // map object
-     trackAction.action //action
-     trackAction.resetBounds() //to reset bounds
-     trackAction.setOptions(newTrackOptions) //override trackOptions params
-  },
-  onActionReady: function(action) {
-    console.log(action)
-  }
-}
-
-var track = ht.trackShortCode(shortCode, pk, trackOptions)
-//or
-var track = ht.trackActionId(actionId, pk, trackOptions)
-
-var map = track.map //google map object
-track.resetBounds() //to reset bounds to bring all map items in view
-var action = track.action //get action object in sync. 
-
-```
-
-Note: Map object and action object is available in `track` object only after `onActionReady` callback is fired.
