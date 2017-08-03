@@ -1,16 +1,22 @@
 import {HtQuerySerialize} from "ht-js-utils";
 import {Observable} from "rxjs/Observable";
+import {HtClientConfig} from "../config";
 
 export class HtRequest {
 
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
 
-  constructor(private token, private options?) {
-
+  constructor(private token: string = "") {
+    this.token = token || HtClientConfig.token
   }
 
   headerObj() {
+    console.log(this.token, "token");
     return  {'Authorization': `token ${this.token}`}
+  }
+
+  headerStrings(): [string, string] {
+    return ['Authorization', `token ${this.token}`]
   }
 
   url(url: string, query = {}) {
@@ -39,4 +45,4 @@ export class HtRequest {
 
 }
 
-export const htRequest = (token: string, options?) => new HtRequest(token, options);
+// export const htRequest = (options?) => new HtRequest(options);

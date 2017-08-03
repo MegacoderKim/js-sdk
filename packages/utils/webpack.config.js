@@ -4,7 +4,7 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'index.ts');
 
 var config = {
     devtool: 'source-map, inline-source-map',

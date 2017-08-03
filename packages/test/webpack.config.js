@@ -1,6 +1,7 @@
 var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 var path = require('path');
 
 var mainPath = path.resolve(__dirname, 'src', 'index.ts');
@@ -16,7 +17,7 @@ var config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'index.js',
-        library: "htData",
+        library: "htTest",
         libraryTarget: "umd"
     },
     module: {
@@ -30,14 +31,14 @@ var config = {
         ]
     },
     externals: [
-        'ht-js-client',
-        'ht-js-fetch-client',
-        'moment-mini',
         'underscore',
-        'ht-js-utils',
-        /^rxjs\/.+$/
+        'moment-mini'
     ],
     plugins: [
+        new Webpack.LoaderOptionsPlugin({
+            minimize: true,
+            debug: false
+        }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),

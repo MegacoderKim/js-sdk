@@ -1,9 +1,9 @@
 import {HtBaseApi} from "./base";
 
 export class HtActionsApi extends HtBaseApi{
-  constructor(token: string) {
-    super('actions', token)
+  constructor(request) {
+    super('actions', request)
   }
 }
 
-export const htActionsApi = (token) => new HtActionsApi(token);
+export const htActionsApi = (request) => new HtActionsApi(request);
