@@ -1,12 +1,16 @@
 import * as $ from "jquery";
 import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
 import {
-  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackingOptions
+  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackedData,
+  ITrackingOptions
 } from "./model";
 import {TrackedAction} from "./track-action";
+import {actionToTrackingData} from "./actions.helper";
+import {TrackData} from "./track-data";
 
 export class HTTrackActions {
   trackActions: ITrackedActions = {};
+  trackMultipleData: ITrackedData = {};
   map: google.maps.Map;
   pollActionsTimeoutId;
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
@@ -20,9 +24,9 @@ export class HTTrackActions {
     this.renderMap(actions);
     this.trackActionsOnMap(actions);
     if (this.options.onReady) {
-      this.options.onReady(this.trackActions, actions, this.map);
+      this.options.onReady(this.trackMultipleData, actions, this.map);
     }
-    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccount) => {
+    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccountData) => {
       if (this.options.onAccountReady) {
         this.options.onAccountReady(subAccount, actions);
       }
@@ -73,7 +77,7 @@ export class HTTrackActions {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
         this.trackActionsOnMap(actions);
-        this.options.onUpdate(this.trackActions, actions);
+        this.options.onUpdate(this.trackMultipleData, actions);
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
     }, 2000);
@@ -81,10 +85,16 @@ export class HTTrackActions {
 
   trackActionsOnMap(actions: IAction[]) {
     actions.forEach((action: IAction) => {
-      if (this.trackActions[action.id]) {
-        this.trackActions[action.id].update(action);
+      // if (this.trackActions[action.id]) {
+      //   this.trackActions[action.id].update(action);
+      // } else {
+      //   this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
+      // }
+      let trackingData = actionToTrackingData(action);
+      if (this.trackMultipleData[trackingData.id]) {
+        this.trackMultipleData[trackingData.id].track(trackingData);
       } else {
-        this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
+        this.trackMultipleData[trackingData.id] = new TrackData(trackingData, this.map, this.options.mapOptions);
       }
     });
   }

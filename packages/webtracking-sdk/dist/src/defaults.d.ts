@@ -1,5 +1,6 @@
 /// <reference types="googlemaps" />
 import MapTypeStyle = google.maps.MapTypeStyle;
+import { CustomVehicleIcon } from "./model";
 export declare const DefaultGMapsStyle: MapTypeStyle[];
 export declare const DefaultGoogleMapOptions: {
     zoom: number;
@@ -16,3 +17,4 @@ export declare const DefaultPolylineOptions: {
     strokeWeight: number;
     icons: any[];
 };
+export declare const DefaultVehicleIcon: CustomVehicleIcon;

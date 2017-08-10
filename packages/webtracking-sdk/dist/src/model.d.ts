@@ -1,8 +1,7 @@
 /// <reference types="googlemaps" />
-import { TrackAction } from "./track-action";
-import { CustomVehicleIcon } from "./trace/time-aware-anim";
 import MapTypeStyle = google.maps.MapTypeStyle;
-import { TrackedAction } from "./track-action.new";
+import { TrackedAction } from "./track-action";
+import { TrackData } from "./track-data";
 export interface IDecoded {
     action: IAction;
     sub_account: ISubAccount;
@@ -12,6 +11,9 @@ export interface ISubAccountData {
 }
 export interface ITrackedActions {
     [key: string]: TrackedAction;
+}
+export interface ITrackedData {
+    [key: string]: TrackData;
 }
 export interface ITrackActionResult {
     user: IUser;
@@ -103,35 +105,35 @@ export interface IPlace {
     state: string;
     zip_code: string;
 }
-export interface ITrackOption {
-    mapId: string;
-    mapOptions?: IMapOptions;
-    onError?: (error: any) => void;
-    onReady?: (trackAction: TrackAction) => void;
-    onActionReady?: (action: IAction) => void;
-    onActionUpdate?: (action: IAction) => void;
-    onAccountReady?: (subAccount: ISubAccount, action: IAction) => void;
-}
 export interface ITrackingOptions {
     mapId: string;
     mapOptions?: IMapOptions;
     onError?: (error: any) => void;
-    onReady?: (trackedActions: ITrackedActions, actions: IAction[], map: google.maps.Map) => void;
-    onUpdate?: (trackedActions: ITrackedActions, actions: IAction[]) => void;
-    onActionsReady?: (actions: IAction[]) => void;
-    onActionsUpdate?: (actions: IAction[]) => void;
-    onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void;
+    onReady?: (trackedData: ITrackedData, actions: IAction[], map: google.maps.Map) => void;
+    onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
+    onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
 export interface IMapOptions {
-    gMapsStyle?: MapTypeStyle[];
+    gMapsStyle?: MapTypeStyle[] | null;
     bottomPadding?: number;
     topPadding?: number;
     vehicleIcon?: CustomVehicleIcon;
     originLatLng?: [number, number];
+}
+export interface CustomVehicleIcon {
+    src: string;
+    height: string;
 }
 export interface GMapsPolyLineOptions {
     strokeColor: string;
     strokeOpacity: number;
     strokeWeight: number;
     visible: boolean;
+}
+export interface ITrackingData {
+    id?: string;
+    encodedTimeAwarePolyline: string;
+    destination?: IPlace;
+    isLive: boolean;
+    vehicleType?: string;
 }
