@@ -1,7 +1,8 @@
 import * as $ from "jquery";
 import {config} from "./config";
 import {IAction, IMapOptions, IPlace} from "./model";
-import {DefaultGMapsStyle, DefaultGoogleMapOptions} from "./defaults";
+import * as moment from "moment";
+import {DefaultGoogleMapOptions} from "./defaults";
 import LatLng = google.maps.LatLng;
 
 export const GetBaseUrl = (env: string = 'production'): string => {
@@ -58,4 +59,8 @@ export function GetActionsBounds(actions: IAction[]) {
         }
     });
     return bounds;
+}
+
+export function addISOTime(time: string, timeToAdd: number): string {
+  return moment(time).add(timeToAdd, 'milliseconds').toISOString();
 }

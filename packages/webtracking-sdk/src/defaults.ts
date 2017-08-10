@@ -1,4 +1,6 @@
 import MapTypeStyle = google.maps.MapTypeStyle;
+import {Assets} from "./assets";
+import {CustomVehicleIcon} from "./model";
 
 export const DefaultGMapsStyle: MapTypeStyle[] = [
   {
@@ -25,4 +27,9 @@ export const DefaultPolylineOptions = {
   strokeOpacity: 1,
   strokeWeight: 3,
   icons: []
+};
+
+export const DefaultVehicleIcon: CustomVehicleIcon = {
+  src: Assets.defaultHeroMarker,
+  height: '30px'
 };

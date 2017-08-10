@@ -1,5 +1,6 @@
 import MapTypeStyle = google.maps.MapTypeStyle;
 import {TrackedAction} from "./track-action";
+import {TrackData} from "./track-data";
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
@@ -11,6 +12,10 @@ export interface ISubAccountData {
 
 export interface ITrackedActions {
     [key: string]: TrackedAction
+}
+
+export interface ITrackedData {
+  [key: string]: TrackData
 }
 
 export interface ITrackActionResult {
@@ -98,47 +103,53 @@ export interface IUser {
 }
 
 export interface IPlace {
-    address: string,
-    city: string,
-    country: string,
-    created_at: string,
-    id: string,
-    landmark: string,
+    address: string;
+    city: string;
+    country: string;
+    created_at: string;
+    id: string;
+    landmark: string;
     location: {
         coordinates: [number, number]
-    },
-    name: string,
-    state: string,
-    zip_code: string
+    };
+    name: string;
+    state: string;
+    zip_code: string;
 }
 
 export interface ITrackingOptions {
-    mapId: string, //id of DOM where map is to be rendered
-    mapOptions?: IMapOptions,
-    onError?: (error: any) => void,
-    onReady?: (trackedActions: ITrackedActions, actions: IAction[], map: google.maps.Map) => void,
-    onUpdate?: (trackedActions: ITrackedActions, actions: IAction[]) => void,
-    onActionsReady?: (actions: IAction[]) => void,
-    onActionsUpdate?: (actions: IAction[]) => void,
-    onAccountReady?: (subAccount: ISubAccount, actions: IAction[]) => void
+    mapId: string; //id of DOM where map is to be rendered
+    mapOptions?: IMapOptions;
+    onError?: (error: any) => void;
+    onReady?: (trackedData: ITrackedData, actions: IAction[], map: google.maps.Map) => void;
+    onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
+    onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
 
 export interface IMapOptions {
-    gMapsStyle?: MapTypeStyle[],
-    bottomPadding?: number,
-    topPadding?: number,
-    vehicleIcon?: CustomVehicleIcon,
-    originLatLng?: [number, number], //optional, to set default map center,
+    gMapsStyle?: MapTypeStyle[] | null;
+    bottomPadding?: number;
+    topPadding?: number;
+    vehicleIcon?: CustomVehicleIcon;
+    originLatLng?: [number, number]; //optional, to set default map center,
 }
 
 export interface CustomVehicleIcon {
-  src: string,
-  height: string
+    src: string;
+    height: string;
 }
 
 export interface GMapsPolyLineOptions {
-    strokeColor: string,
-    strokeOpacity: number,
-    strokeWeight: number,
-    visible: boolean
+    strokeColor: string;
+    strokeOpacity: number;
+    strokeWeight: number;
+    visible: boolean;
+}
+
+export interface ITrackingData {
+    id?: string,
+    encodedTimeAwarePolyline: string;
+    destination?: IPlace;
+    isLive: boolean;
+    vehicleType?: string;
 }
