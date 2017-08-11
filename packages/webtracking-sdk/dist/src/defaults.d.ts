@@ -8,6 +8,7 @@ export declare const DefaultGoogleMapOptions: {
     scrollwheel: boolean;
     scaleControl: boolean;
     clickableIcons: boolean;
+    gestureHandling: string;
     center: google.maps.LatLng;
     styles: MapTypeStyle[];
 };

@@ -14,10 +14,11 @@ export const DefaultGMapsStyle: MapTypeStyle[] = [
 
 export const DefaultGoogleMapOptions = {
   zoom: 14,
-  disableDefaultUI:true,
+  disableDefaultUI: true,
   scrollwheel: true,
   scaleControl: false,
   clickableIcons: false,
+  gestureHandling: "greedy",
   center: new google.maps.LatLng(37.370641488030245, -122.07498079040533),
   styles: DefaultGMapsStyle
 };
