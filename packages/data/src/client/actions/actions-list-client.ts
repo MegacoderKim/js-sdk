@@ -5,7 +5,7 @@ import { GetUrlParam } from "ht-js-utils";
 // import {HtFetchClient} from "ht-js-fetch-client";
 import {HtActionsApi } from "ht-js-client";
 import * as _ from  "underscore";
-import {defaultListConfig, IIndexQuery, IListConfig} from "../interfaces";
+import {defaultListConfig, IIndexQuery, IListConfig} from "../../interfaces";
 import 'rxjs/add/operator/expand';
 
 export class HtActionsListClient {
