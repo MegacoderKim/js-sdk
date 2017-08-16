@@ -1,4 +1,4 @@
-import {HtRequest} from "../../client/src/request";
+import {HtRequest} from "ht-js-client";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/fromPromise';
 // import 'whatwg-fetch'
@@ -6,11 +6,11 @@ import 'rxjs/add/observable/fromPromise';
 export class HtFetchRequest extends HtRequest {
 
   getFetch(url, options: object = {}) {
-    return fetch(url, {headers: this.headerObj(), ...options}).then(res => res.json())
+    return fetch(url, {headers: super.headerObj(), ...options}).then(res => res.json())
   }
 
   postFetch(url, body, options: object = {}) {
-    return fetch(url, {headers: this.headerObj(), method: 'POST', body: JSON.stringify(body), ...options})
+    return fetch(url, {headers: super.headerObj(), method: 'POST', body: JSON.stringify(body), ...options})
       .then(res => res.json())
   }
 
