@@ -15,7 +15,7 @@ export class HtBaseApi {
   }
 
   get(id: string, query) {
-    let tail = `/${id}`;
+    let tail = `/${id}/`;
     return this.getReqFromTail(tail, query)
   }
 
@@ -24,8 +24,8 @@ export class HtBaseApi {
     return this.getReqFromTail(tail, query)
   }
 
-  overview(query) {
-    let tail =  `/overview/`;
+  summary(query) {
+    let tail =  `/summary/`;
     return this.getReqFromTail(tail, query)
   }
 
@@ -36,6 +36,11 @@ export class HtBaseApi {
 
   getReqFromTail(tail, query) {
     return this.request.api$(this.base + tail, query)
+  }
+
+  placeline(id, query) {
+    let tail = `/timeline/${id}/`;
+    return this.getReqFromTail(tail, query)
   }
 
   // getObservable(url, options: object = {}): Observable<any> {
