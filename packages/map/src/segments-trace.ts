@@ -10,6 +10,7 @@ import {HtMapType} from "./interfaces";
 import {HtSegmentPolylines} from "./entities/segment-polylines";
 import {HtStopMarkers} from "./entities/stop-markers";
 import {HtActionMarkers} from "./entities/action-markers";
+import {htAction} from "../../data/src/action";
 
 export class HtSegmentsTrace {
 
@@ -48,7 +49,7 @@ export class HtSegmentsTrace {
 
   trace(user, map, params = {}) {
     this.map = map;
-    let userSegments = user ? user.segments : [];
+    let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
     if(this.segmentsPolylines) this.segmentsPolylines.trace(segType.tripSegment, map, true);
     if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment, map, true);
@@ -104,20 +105,21 @@ export class HtSegmentsTrace {
   }
 
   traceAction(user: IUserData, map) {
-    let actions = user ? user.actions : [];
+    let actions = user && user.actions ? user.actions : [];
     let filteredActions = _.filter(actions, (action: IAction) => {
-      return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
+      return htAction(action).isValidMarker();
+      // return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
     });
     if(this.actionMarkers) this.actionMarkers.trace(filteredActions, map, true);
   }
 
   traceActionPolyline(user, map, currentPosition) {
-    let actions = user ? user.actions : [];
+    let actions = user && user.actions ? user.actions : [];
     let ongoingAction = currentPosition ?
       actions : [];
     if(currentPosition) {
       let polylines = this.getActionPolylineWithId(currentPosition, ongoingAction);
-      console.log(polylines);
+      // console.log(polylines);
       this.actionsPolylines.trace(polylines, map, true)
 
     } else {
@@ -222,7 +224,7 @@ export class HtSegmentsTrace {
   }
 
   private traceEvents(user: IUserData, map) {
-    let events: ITimelineEvent[] = user ? user.events : [];
+    let events: ITimelineEvent[] = user && user.events ? user.events : [];
     let locations = this.timelineSegment.getLocationsAtTimesT(events.map(event => event.recorded_at));
     let eventsWithPosition = events.reduce((acc, event, i) => {
       let info = this.allowedEvents[event.type];
