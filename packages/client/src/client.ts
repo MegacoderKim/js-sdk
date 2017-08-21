@@ -1,7 +1,6 @@
 import 'rxjs/add/observable/of';
-import {HtClientConfig, htActionsApi} from "ht-js-client";
-import {HtActionsClient} from "./actions/actions-client";
-import {HtUsersClient} from "./users/users-client";
+import {HtActionsClient} from "./entities/actions/actions-client";
+import {HtUsersClient} from "./entities/users/users-client";
 
 export class HtClient {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';

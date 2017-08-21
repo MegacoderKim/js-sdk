@@ -1,8 +1,8 @@
 import * as _ from 'underscore';
 
-export const NameCase = (name: string) => {
+export const NameCase = (name: string, split: string = ' ') => {
     if(name && typeof name == 'string') {
-        let words = name.split(' ');
+        let words = name.split(split);
         words = _.map(words, word => {
             let uppercase = word.toUpperCase();
             let lowercase = word.toLowerCase();
@@ -20,4 +20,4 @@ export const NameCase = (name: string) => {
         return name
     }
 
-}
+};

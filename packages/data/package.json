@@ -1,6 +1,6 @@
 {
   "name": "ht-js-data",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,8 +13,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/leaflet": "^1.0.67",
-    "ht-js-client": "file:../client",
-    "ht-js-fetch-client": "file:../fetchClient",
     "ht-js-utils": "file:../utils",
     "ht-models": "file:../model",
     "moment-mini": "^2.18.1",

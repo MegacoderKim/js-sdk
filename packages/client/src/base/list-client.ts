@@ -1,10 +1,10 @@
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Page} from "ht-models";
 import {Observable} from "rxjs/Observable";
-import {HtBaseApi} from "ht-js-client";
-import {defaultListConfig, IIndexQuery, IListConfig} from "../../interfaces";
+import {defaultListConfig, IIndexQuery, IListConfig} from "../interfaces";
 import * as _ from  "underscore";
 import { GetUrlParam } from "ht-js-utils";
+import {HtBaseApi} from "../api/base";
 
 export class HtListClient {
   update$;

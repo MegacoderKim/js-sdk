@@ -1,11 +1,9 @@
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import {IAction, Page} from "ht-models";
-import {GetUrlParam} from "ht-js-utils";
-// import {HtFetchClient} from "ht-js-fetch-client";
-import {HtActionsApi} from "ht-js-client";
 import 'rxjs/add/operator/expand';
-import {HtListClient} from "../base/list-client";
+import {HtListClient} from "../../base/list-client";
+import {HtActionsApi} from "../../api/actions";
 
 export class HtActionsListClient extends HtListClient{
 

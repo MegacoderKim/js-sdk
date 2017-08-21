@@ -46,5 +46,6 @@ Thumbs.db
 dist
 test.js
 test.html
+node_modules
 /packages/**/node_modules/
 /packages/**/dist/

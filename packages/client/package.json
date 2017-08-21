@@ -1,6 +1,6 @@
 {
   "name": "ht-js-client",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "@types/leaflet": "^1.0.67",
-    "ht-js-utils": "0.0.11",
+    "ht-js-utils": "file:../utils",
     "ht-models": "0.0.6",
     "moment-mini": "^2.18.1",
     "typescript": "^2.4.2",

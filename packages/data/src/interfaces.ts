@@ -1,5 +1,4 @@
-
-import {ISegment} from "ht-models/dist";
+import {ISegment} from "ht-models";
 
 export interface IActionPositions {
   position: [number, number] | null,
@@ -13,19 +12,3 @@ export interface ISegmentType {
   tripSegment: ISegment[],
   stopSegment: ISegment[]
 };
-
-export const defaultListConfig: IListConfig = {
-  isLive: false,
-  autoLive: false
-};
-
-export interface IIndexQuery {
-  pageQuery: object,
-  listQuery: object,
-  dateRangeQuery: object
-}
-
-export interface IListConfig {
-  isLive: boolean,
-  autoLive: boolean
-}

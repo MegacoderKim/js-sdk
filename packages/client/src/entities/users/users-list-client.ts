@@ -1,5 +1,5 @@
-import {HtListClient} from "../base/list-client";
-import {HtUsersApi} from "ht-js-client";
+import {HtListClient} from "../../base/list-client";
+import {HtUsersApi} from "../../api/users";
 
 export class HtUsersListClient extends HtListClient {
 

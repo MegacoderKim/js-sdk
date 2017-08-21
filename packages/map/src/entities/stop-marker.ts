@@ -1,4 +1,4 @@
-import {Color} from "ht-js-utils/dist";
+import {Color} from "ht-js-utils";
 import {HtMarkerItem} from "../marker-item";
 
 export class HtStopMarker extends HtMarkerItem{
