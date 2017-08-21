@@ -61,6 +61,7 @@ export interface IAction {
     user: IUser;
     vehicle_type: string;
     metadata?: any;
+    account?: ITrackAccount;
 }
 export interface ISubAccount {
     id: string;
