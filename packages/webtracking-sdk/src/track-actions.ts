@@ -37,7 +37,16 @@ export class HTTrackActions {
   extractActionsFromResult(data: ITrackActionResults) {
     let actions: IAction[] = [];
     data.results.forEach((result: ITrackActionResult) => {
-      actions.push(...result.actions);
+      let actionsWithLogo = result.actions.map((action: IAction) => {
+        return {
+          ...action,
+          metadata: {
+            ...action.metadata,
+            'account_logo': result.account.logo
+          }
+        };
+      });
+      actions.push(...actionsWithLogo);
     });
     return actions;
   }
