@@ -180,7 +180,7 @@ export class TrackedAction {
   updateMapOptions(mapOptions: IMapOptions) {
     this.mapOptions = {
       ...this.mapOptions,
-      mapOptions
+      ...mapOptions
     };
   }
 
