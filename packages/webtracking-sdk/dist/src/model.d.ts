@@ -18,6 +18,10 @@ export interface ITrackedData {
 export interface ITrackActionResult {
     user: IUser;
     actions: IAction[];
+    account: ITrackAccount;
+}
+export interface ITrackAccount {
+    logo: "'";
 }
 export interface ITrackActionResults {
     results: ITrackActionResult[];

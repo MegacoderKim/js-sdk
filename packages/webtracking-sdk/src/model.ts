@@ -20,7 +20,12 @@ export interface ITrackedData {
 
 export interface ITrackActionResult {
     user: IUser,
-    actions: IAction[]
+    actions: IAction[],
+    account: ITrackAccount
+}
+
+export interface ITrackAccount {
+    logo: "'"
 }
 
 export interface ITrackActionResults {
