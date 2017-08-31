@@ -2,15 +2,14 @@
   "name": "ht-js-map",
   "version": "0.0.64",
   "description": "hypertrack map",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.js",
+  "main": "dist/ht-map.js",
+  "module": "dist/ht-map.js",
+  "typings": "dist/typings/ht-map.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "rimraf lib && tsc -d",
-    "build": "webpack --config webpack.config.js",
+    "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.js",
-    "prepack": "npm run tsc"
+    "prepack": "npm run build"
   },
   "author": "",
   "license": "ISC",
