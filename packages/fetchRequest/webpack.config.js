@@ -4,10 +4,10 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-fetch-request.ts');
 
 var config = {
-    devtool: 'source-map, inline-source-map',
+    devtool: 'source-ht-map, inline-source-ht-map',
     resolve: {
         modules: ['node_modules'],
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
@@ -16,8 +16,8 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
-        library: "htFetchClient",
+        filename: 'ht-fetch-request.js',
+        library: "htFetchRequest",
         libraryTarget: "umd"
     },
     module: {

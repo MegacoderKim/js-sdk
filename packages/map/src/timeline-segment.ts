@@ -1,6 +1,7 @@
 import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
 import {IDecodedSegment, IReplayHead} from "./interfaces";
+import { Partial } from "ht-models";
 
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
@@ -46,7 +47,7 @@ export class TimelineSegment extends TimelineReplay {
     this.segments = this.getSegmentsWithPercentMarks(this.allSegments, duration);
     let stats = this.getStats(this.segments);
     this.setStats(stats);
-    console.log(this.segments, "deco");
+    // console.log(this.segments, "deco");
   }
 
   currentTimeEffects(time) {
@@ -158,8 +159,8 @@ export class TimelineSegment extends TimelineReplay {
   private getGapSegment(segment: IDecodedSegment, segment2: IDecodedSegment) {
     // let firstPoint = ;
     // let lastPoint = _.first(segment.timeAwareArray);
-    let started_at = segment2.ended_at;
-    let ended_at =  segment.started_at;
+    let started_at = segment2['ended_at'];
+    let ended_at =  segment['started_at'];
     let timeAwareArray = [];
     // console.log(firstPoint, lastPoint, "fl");
     if(started_at && ended_at) {

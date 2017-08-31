@@ -1,5 +1,6 @@
 import {HtMarker, MapUtils} from "./interfaces";
 var polyUtil = require('polyline-encoded');
+import * as L from "leaflet"
 
 export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBounds([])) {
   if(item && item.getElement()) bounds.extend(item.getLatLng());

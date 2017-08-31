@@ -3,10 +3,10 @@ var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'src', 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-data.ts');
 
 var config = {
-    devtool: 'source-map, inline-source-map',
+    devtool: 'source-ht-map, inline-source-ht-map',
     resolve: {
         modules: ['node_modules'],
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
@@ -15,7 +15,7 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
+        filename: 'ht-data.js',
         library: "htData",
         libraryTarget: "umd"
     },

@@ -83,6 +83,7 @@ export interface IUserAnalytics {
   num_places: number,
   total_distance: number,
   total_duration: number,
+  stop_duration: number | null,
   num_actions: number,
   location_disabled_duration: null | number,
   network_offline_duration: null | number,

@@ -1,21 +1,18 @@
 {
   "name": "ht-models",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "hypertrack models",
-  "main": "dist/index.js",
+  "main": "dist/ht-models.js",
+  "module": "dist/ht-models.js",
+  "typings": "dist/typings/ht-models.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
+    "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.js",
     "prepack": "npm run build"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/es6-shim": "^0.31.34",
-    "ts-loader": "^2.2.0",
-    "typescript": "^2.3.1",
-    "webpack": "^3.0.0"
-  },
+  "devDependencies": {},
   "false": {}
 }

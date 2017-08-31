@@ -1,6 +1,6 @@
 import {IAction, IActionMap, Partial} from "ht-models";
 import * as _ from "underscore";
-import {IActionPositions} from "./interfaces";
+import {HtPosition, IActionPositions} from "./interfaces";
 import moment from "moment-mini";
 import { GetDateRangeQuery } from "ht-js-utils"
 
@@ -133,20 +133,26 @@ export class HtAction {
     }
   }
 
-  getCompletedPosition(): [number, number] | null {
+  getCompletedPosition(): HtPosition | null {
     let action = this.data;
     if(action && action.completed_place && action.completed_place.location) {
       let compLoc = action.completed_place.location.coordinates;
-      return [compLoc[1], compLoc[0]]
+      let lat = compLoc[1];
+      let lng = compLoc[0];
+      return {lat, lng};
+      // return [compLoc[1], compLoc[0]]
     }
     return null;
   }
 
-  getExpectedPosition(): [number, number] | null {
+  getExpectedPosition(): HtPosition | null {
     let action = this.data;
     if(action && action.expected_place && action.expected_place.location) {
       let expLoc = action.expected_place.location.coordinates;
-      return [expLoc[1], expLoc[0]]
+      let lat = expLoc[1];
+      let lng = expLoc[0];
+      return {lat, lng};
+      // return [expLoc[1], expLoc[0]]
     }
     return null;
   }

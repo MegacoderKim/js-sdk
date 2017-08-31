@@ -1,5 +1,4 @@
 import {HtMapItems} from "./map-items";
-import {GetActionPosition} from "ht-js-utils";
 import * as _ from "underscore";
 import {TimelineSegment} from "./timeline-segment";
 import {HtMapItem} from "./map-item";
@@ -10,7 +9,7 @@ import {HtMapType} from "./interfaces";
 import {HtSegmentPolylines} from "./entities/segment-polylines";
 import {HtStopMarkers} from "./entities/stop-markers";
 import {HtActionMarkers} from "./entities/action-markers";
-import {htAction} from "../../data/src/action";
+import {htAction} from "ht-js-data";
 
 export class HtSegmentsTrace {
 
@@ -32,7 +31,7 @@ export class HtSegmentsTrace {
     })
   }
 
-  private initBaseItems(mapType: HtMapType) {
+  protected initBaseItems(mapType: HtMapType) {
     this.segmentsPolylines = new HtSegmentPolylines(mapType);
     this.stopMarkers = new HtStopMarkers(mapType);
     this.actionMarkers = new HtActionMarkers(mapType);
@@ -55,8 +54,8 @@ export class HtSegmentsTrace {
     if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment, map, true);
     this.traceAction(user, map);
     this.traceCurrentUser(_.last(userSegments), map);
-    // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
-    // this.traceEvents(user, map)
+    this.traceActionPolyline(user, map, this.getCurrentUserPosition());
+    // this.traceEvents(user, ht-map)
   }
 
   highlightAll(toHighlight) {
@@ -135,16 +134,17 @@ export class HtSegmentsTrace {
     let polylinesWithId = sortedAction.reduce((acc, action: IAction) => {
       let finalEta = action.eta || action.expected_at;
       if(finalEta && !action.display.show_summary) {
-        let actionPostiion = GetActionPosition(action);
+        let {lat, lng} = htAction(action).getPositionsObject().position;
+        let actionPosition = [lat, lng];
         if(acc.length == 0) {
-          return actionPostiion ? [...acc, {
-            path: [currentPosition, actionPostiion],
+          return actionPosition ? [...acc, {
+            path: [currentPosition, actionPosition],
             id: action.id
           }]: acc
         } else {
           let pastPoint = _.last(acc).path[1];
-          return actionPostiion ? [...acc, {
-            path: [pastPoint, actionPostiion],
+          return actionPosition ? [...acc, {
+            path: [pastPoint, actionPosition],
             id: action.id
           }] : acc
 
@@ -165,7 +165,7 @@ export class HtSegmentsTrace {
     this.highlightAll(!!actionId)
   }
 
-  private getSegmentTypes(userSegments: ISegment[]) {
+  protected getSegmentTypes(userSegments: ISegment[]) {
     return _.reduce(userSegments, (segmentType: ISegmentType, segment: ISegment) => {
       if(segment.type == 'stop') {
         if(segment.location && segment.location.geojson) segmentType.stopSegment.push(segment)

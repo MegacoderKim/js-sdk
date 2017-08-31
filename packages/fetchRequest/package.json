@@ -2,10 +2,12 @@
   "name": "ht-js-fetch-client",
   "version": "0.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/ht-fetch-request.js",
+  "module": "dist/ht-fetch-request.js",
+  "typings": "dist/typings/ht-fetch-request.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
+    "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.js",
     "prepack": "npm run build"
   },

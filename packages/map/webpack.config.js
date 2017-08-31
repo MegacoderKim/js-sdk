@@ -3,9 +3,9 @@ var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
 var webpackRxjsExternals = require('webpack-rxjs-externals');
-var mainPath = path.resolve(__dirname, 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-map.ts');
 var config = {
-    devtool: 'source-map, inline-source-map',
+    devtool: 'source-ht-map, inline-source-ht-map',
     resolve: {
         modules: ['node_modules'],
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
@@ -14,7 +14,7 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
+        filename: 'ht-map.js',
         library: "htMaps",
         libraryTarget: "umd"
     },
@@ -30,8 +30,12 @@ var config = {
     },
     externals: [
         'ht-js-utils',
+        'ht-js-data',
+        'ht-models',
         'moment-mini',
+        'leaflet',
         'underscore',
+        webpackRxjsExternals(),
         /^rxjs\/.+$/
     ],
     plugins: [

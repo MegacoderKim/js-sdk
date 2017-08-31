@@ -1,5 +1,4 @@
-import {ISegment, ITimeAwarePoint} from "ht-models";
-import Circle = google.maps.Circle;
+import {ISegment, ITimeAwarePoint, Partial} from "ht-models";
 
 export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,
@@ -28,7 +27,7 @@ export type HtMap = L.Map | google.maps.Map
 export type HtBounds = L.LatLngBounds | google.maps.LatLngBounds
 export type HtPolyline = L.Polyline | google.maps.Polyline
 export type HtLatLng = L.LatLng | google.maps.LatLng
-export type HtMarker = L.CircleMarker | L.Circle | L.Marker | L.DivIcon | google.maps.Marker | google.maps.Circle | Circle
+export type HtMarker = L.CircleMarker | L.Circle | L.Marker | L.DivIcon | google.maps.Marker | google.maps.Circle
 export type HtMapItem = HtMarker | HtPolyline
 export type HtMapType = 'google' | 'leaflet'
 
@@ -37,7 +36,7 @@ export interface IReplayHead {
   currentTime: string,
   currentPosition: number[],
   bearing: number,
-  currentSegment: IDecodedSegment,
+  currentSegment: IDecodedSegment, //this needs to be fixed
   segmentPercent: number
 }
 

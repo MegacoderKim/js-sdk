@@ -1,4 +1,4 @@
-import {Color} from "ht-js-utils/dist";
+import {Color} from "ht-js-utils";
 import {HtPolyline} from "../polyline";
 import { ISegment } from "ht-models";
 
