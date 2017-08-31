@@ -4,7 +4,7 @@
   "description": "hypertrack models",
   "main": "dist/ht-models.js",
   "module": "dist/ht-models.js",
-  "typings": "dist/typings/ht-models.d.js",
+  "typings": "dist/typings/ht-models.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",

@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/ht-client.js",
   "module": "dist/ht-client.js",
-  "typings": "dist/typings/ht-client.d.js",
+  "typings": "dist/typings/ht-client.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",

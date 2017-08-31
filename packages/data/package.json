@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/ht-data.js",
   "module": "dist/ht-data.js",
-  "typings": "dist/typings/ht-data.d.js",
+  "typings": "dist/typings/ht-data.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",

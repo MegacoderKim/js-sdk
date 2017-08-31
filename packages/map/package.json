@@ -4,7 +4,7 @@
   "description": "hypertrack map",
   "main": "dist/ht-map.js",
   "module": "dist/ht-map.js",
-  "typings": "dist/typings/ht-map.d.js",
+  "typings": "dist/typings/ht-map.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",

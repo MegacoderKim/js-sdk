@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/ht-fetch-request.js",
   "module": "dist/ht-fetch-request.js",
-  "typings": "dist/typings/ht-fetch-request.d.js",
+  "typings": "dist/typings/ht-fetch-request.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",

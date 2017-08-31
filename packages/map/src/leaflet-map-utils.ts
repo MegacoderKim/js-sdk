@@ -7,7 +7,7 @@ export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBoun
   return bounds
 };
 
-export const ExtendBoundsWithPolyline = (polyline: L.Polyline = null, bounds: L.LatLngBounds = L.latLngBounds([])): L.LatLngBounds => {
+export const ExtendBoundsWithPolyline = (polyline = null, bounds: L.LatLngBounds = L.latLngBounds([])): L.LatLngBounds => {
   if(polyline && polyline.getElement() ) {
     bounds.extend(polyline.getBounds())
   }
@@ -31,7 +31,7 @@ export const GetLatlng = (lat: number = 0, lng: number = 0) => {
   return L.latLng(lat, lng)
 };
 
-export const setEncodedPath = (polyline: L.Polyline, encodedPolyline: string) => {
+export const setEncodedPath = (polyline, encodedPolyline: string) => {
   var path = polyUtil.decode(encodedPolyline);
   return polyline.setLatLngs(path)
 };
@@ -96,6 +96,7 @@ function getItemLatlng(item) {
 }
 
 function renderMap(elem, options) {
+  console.log("toptions", options);
   let map = L.map(elem, options);
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

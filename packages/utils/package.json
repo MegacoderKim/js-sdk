@@ -4,7 +4,7 @@
   "description": "HyperTrack utils library",
   "main": "dist/ht-utils.js",
   "module": "dist/ht-utils.js",
-  "typings": "dist/typings/ht-utils.d.js",
+  "typings": "dist/typings/ht-utils.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
