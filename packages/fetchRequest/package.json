@@ -1,0 +1,26 @@
+{
+  "name": "ht-js-fetch-client",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/ht-fetch-request.js",
+  "module": "dist/ht-fetch-request.js",
+  "typings": "dist/typings/ht-fetch-request.d.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && webpack --config webpack.config.js",
+    "wbuild": "webpack -w --config webpack.config.js",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "ht-js-client": "file:../client",
+    "ht-js-utils": "0.0.11",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "peerDependencies": {
+    "rxjs": "^5.4.2",
+    "whatwg-fetch": "^2.0.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {}
+}

@@ -2,10 +2,12 @@
   "name": "ht-js-data",
   "version": "0.0.20",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/ht-data.js",
+  "module": "dist/ht-data.js",
+  "typings": "dist/typings/ht-data.d.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
+    "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.js",
     "prepack": "npm run build"
   },
@@ -13,7 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "ht-js-utils": "file:../utils",
-    "ht-models": "file:../model",
+    "ht-models": "file:../models",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3"

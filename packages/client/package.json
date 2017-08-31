@@ -2,22 +2,19 @@
   "name": "ht-js-client",
   "version": "0.0.1",
   "description": "",
-  "main": "lib/index.js",
-  "module": "lib/index.js",
-  "typings": "lib/index.d.js",
+  "main": "dist/ht-client.js",
+  "module": "dist/ht-client.js",
+  "typings": "dist/typings/ht-client.d.js",
   "scripts": {
-    "tsc": "rimraf lib && tsc -d",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
+    "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.js",
-    "prepack": "npm run tsc"
+    "prepack": "npm run build"
   },
   "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "@types/leaflet": "^1.0.67",
     "ht-js-utils": "file:../utils",
-    "ht-models": "file:../model",
+    "ht-models": "file:../models",
     "moment-mini": "^2.18.1",
     "typescript": "^2.4.2",
     "underscore": "^1.8.3",

@@ -36,7 +36,7 @@ export interface IReplayHead {
   currentTime: string,
   currentPosition: number[],
   bearing: number,
-  currentSegment: IDecodedSegment | ISegment, //this needs to be fixed
+  currentSegment: IDecodedSegment, //this needs to be fixed
   segmentPercent: number
 }
 

@@ -1,4 +1,4 @@
-import {IEvent} from "ht-models/dist";
+import {IEvent} from "ht-models";
 
 export class HtEvent {
   constructor(event?: IEvent) {}

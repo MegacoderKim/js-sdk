@@ -4,7 +4,7 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'src', 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
 
 var config = {
     devtool: 'source-ht-map, inline-source-ht-map',
@@ -16,7 +16,7 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
+        filename: 'ht-client.js',
         library: "htClient",
         libraryTarget: "umd"
     },

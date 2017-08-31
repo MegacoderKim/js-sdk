@@ -10,7 +10,7 @@ import "rxjs/add/operator/share";
 import "rxjs/add/operator/takeUntil";
 import {HtBounds, HtMapType, IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {ITimelineEvent} from "ht-models";
+import {ITimelineEvent, IDecodedSegment} from "ht-models";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();

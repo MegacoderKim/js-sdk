@@ -1,9 +1,10 @@
 var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'src', 'ht-data.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-fetch-request.ts');
 
 var config = {
     devtool: 'source-ht-map, inline-source-ht-map',
@@ -15,8 +16,8 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-data.js',
-        library: "htData",
+        filename: 'ht-fetch-request.js',
+        library: "htFetchRequest",
         libraryTarget: "umd"
     },
     module: {
@@ -31,13 +32,17 @@ var config = {
     },
     externals: [
         'ht-js-client',
-        'ht-js-fetch-client',
+        'ht-js-utils',
         'moment-mini',
         'underscore',
-        'ht-js-utils',
+        'whatwg-fetch',
         /^rxjs\/.+$/
     ],
     plugins: [
+        new Webpack.LoaderOptionsPlugin({
+            minimize: true,
+            debug: false
+        }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
