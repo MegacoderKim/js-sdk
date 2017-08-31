@@ -11,7 +11,7 @@
 // // export * from "./src/getUrlParam";
 // export * from "./src/hm-string";
 // export * from "./src/html-helpers";
-// export * from "./src/map-utls";
+// export * from "./src/ht-map-utls";
 // export * from "./src/name-case";
 // export * from "./src/process-action";
 // // export * from "./src/query-serializer";

@@ -9,7 +9,8 @@ export class HtUser {
     logged_off: 'Logged off',
     "location_disabled,network_offline": 'Error',
     "location_disabled": 'Location disabled',
-    "network_offline": 'Network offline'
+    "network_offline": 'Network offline',
+    "never_tracked": 'Never tracked',
   };
 
   sortingQueryMap = {
@@ -19,6 +20,7 @@ export class HtUser {
     num_places: 'Places',
     total_distance: 'Distance',
     total_duration: 'Duration',
+    stop_duration: 'Stop duration',
     location_disabled_duration: 'Location disabled',
     network_offline_duration: 'Network offline',
     num_actions: 'Actions',
@@ -30,7 +32,7 @@ export class HtUser {
       return user.status == 'stopped'
     },
     on_trip: (user: IUserAnalytics) => {
-      return user.status == 'walk' || user.status == 'run' || user.status == 'cycle' || user.status == 'drive'
+      return user.status == 'walk' || user.status == 'run' || user.status == 'cycle' || user.status == 'drive' || user.status == 'moving'
       //moving: walk, drive, cycle, run
     },
     logged_off: (user: IUserAnalytics) => {
@@ -46,8 +48,14 @@ export class HtUser {
 
   constructor(public data?: IUserData | IUser) {}
 
-  getMarkerSeached(key: string) {
-    return (user: IUserAnalytics) => user.name.indexOf(key) > -1;
+  getMarkerSearched(key: string) {
+
+    return (user: IUserAnalytics) => {
+      if(!user.name) return false;
+      let name = user.name.toLowerCase();
+      key = key.toLowerCase();
+      return name.includes(key)
+    }
   }
 
   getMarkerFilter(key?: string) {
@@ -76,6 +84,11 @@ export class HtUser {
       }
       return segmentType;
     }, {tripSegment: [], stopSegment: []});
+  }
+
+  isValidMarker(user?: IUserAnalytics | IUser) {
+    user = user || this.data;
+    return !!(user.last_location && user.last_location.geojson);
   }
 }
 

@@ -3,7 +3,7 @@ export * from "./array-humanize";
 export * from "./color";
 export * from "./countries";
 export * from "./date-humanize";
-export * from "./date-string";
+export { DateString } from "./date-string";
 export * from "./distance-locale";
 export * from "./dot-string";
 // export * from "./getUrlParam";

@@ -1,6 +1,6 @@
 {
   "name": "ht-models",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "hypertrack models",
   "main": "dist/index.js",
   "scripts": {
@@ -11,11 +11,6 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/es6-shim": "^0.31.34",
-    "ts-loader": "^2.2.0",
-    "typescript": "^2.3.1",
-    "webpack": "^3.0.0"
-  },
+  "devDependencies": {},
   "false": {}
 }

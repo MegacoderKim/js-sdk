@@ -16,7 +16,7 @@ export class HtActionsListClient extends HtListClient{
 
   get pageData$(): Observable<Page<IAction>> {
     // return this.query.switchMap((query) => this.update(query, this.config.isLive))
-    return super.pageData$;
+    return this.pageData$;
   }
 
 }

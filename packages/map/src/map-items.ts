@@ -2,6 +2,7 @@ import {HtMap, HtMapType, MapUtils} from "./interfaces";
 import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
+import {GoogleMapUtils} from "./google-map-utils";
 
 export class HtMapItems {
   itemEntities: {[id: string]: HtMapItem} = {};
@@ -18,7 +19,7 @@ export class HtMapItems {
     let newoptions = {...this.defaultOptions, ...options};
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
-    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : LeafletUtils;
+    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
   }
 
   // constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {
@@ -67,7 +68,7 @@ export class HtMapItems {
   onHoverIn(cb) {
     _.each(this.itemEntities, (item: HtMapItem) => {
       item.item.on('mouseover', () => {
-        console.log("mouseover");
+        // console.log("mouseover");
         cb(item.data)
       })
     })

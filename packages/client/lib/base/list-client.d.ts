@@ -1,0 +1,41 @@
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Page } from "ht-models";
+import { Observable } from "rxjs/Observable";
+import { IIndexQuery, IListConfig } from "../interfaces";
+export declare class HtListClient {
+    defaultConfigQuery: Partial<IIndexQuery>;
+    config: IListConfig;
+    update$: any;
+    api: any;
+    pageDataBeh$: BehaviorSubject<Page<any> | null>;
+    listQueryBeh$: BehaviorSubject<object>;
+    pageQueryBeh$: BehaviorSubject<object>;
+    dateRangeQueryBeh$: BehaviorSubject<object>;
+    query: Observable<object>;
+    constructor(request: any, defaultConfigQuery?: Partial<IIndexQuery>, config?: IListConfig);
+    init({listQuery, pageQuery, dateRangeQuery}: {
+        listQuery: any;
+        pageQuery: any;
+        dateRangeQuery: any;
+    }, config?: any): void;
+    initListeners(): void;
+    setApi(request: any): void;
+    private setDefaultQuery(defaultConfigQuery);
+    readonly pageData$: Observable<Page<any>>;
+    readonly listQuery$: Observable<object>;
+    readonly pageQuery$: Observable<object>;
+    readonly dateRangeQuery$: Observable<object>;
+    updateListQuery(listQuery?: any): void;
+    updatePageQuery(pageQuery?: any): void;
+    updateDateRangeQuery(dateRangeQuery?: any): void;
+    setListQuery(listQuery?: any): void;
+    setPageQuery(pageQuery?: any): void;
+    setDateRangeQuery(dateRangeQuery?: any): void;
+    turnPage(next?: boolean): void;
+    setPage(number: any): void;
+    private isValidPage(pageSize, count, page?);
+    update(query: any, isLive?: boolean): any;
+    private updatedPageData(pageData, updatedPageData);
+    private getIds(pageData);
+    clear(): void;
+}

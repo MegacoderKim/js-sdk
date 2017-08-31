@@ -3,10 +3,10 @@ var fs = require('fs');
 
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'index.ts');
 
 var config = {
-    devtool: 'source-map, inline-source-map',
+    devtool: 'source-ht-map, inline-source-ht-map',
     resolve: {
         modules: ['node_modules'],
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],

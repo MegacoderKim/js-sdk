@@ -15,13 +15,13 @@ export class HtMapClass {
   googleSetBoundsOptions = {
 
   };
-  constructor(elem: Element, public mapType: HtMapType = 'leaflet', options) {
+  constructor(public mapType: HtMapType = 'leaflet', options = {}) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
-    this.initMap(elem, options);
+    // this.initMap(elem, options);
     this.segmentTrace = new HtSegmentsTrace(this.mapType);
   }
 
-  initMap(elem: Element, options) {
+  initMap(elem: Element, options = {}) {
 
     this.map = this.mapUtils.renderMap(elem, options)
   }

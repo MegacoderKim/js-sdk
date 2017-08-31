@@ -8,7 +8,7 @@ import 'rxjs/add/operator/take';
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/share";
 import "rxjs/add/operator/takeUntil";
-import {HtMapType, IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
+import {HtBounds, HtMapType, IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimelineEvent} from "ht-models";
 
@@ -104,7 +104,7 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
 
-  getBounds(bounds: L.LatLngBounds = L.latLngBounds([])) {
+  getBounds(bounds: HtBounds) {
     return _.reduce(this.timeAwareArray, (bounds, point) => {
       return bounds.extend([+point[0], +point[1]])
     }, bounds)

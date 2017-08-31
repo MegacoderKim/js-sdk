@@ -3,9 +3,9 @@ var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
 var webpackRxjsExternals = require('webpack-rxjs-externals');
-var mainPath = path.resolve(__dirname, 'index.ts');
+var mainPath = path.resolve(__dirname, 'src', 'index.ts');
 var config = {
-    devtool: 'source-map, inline-source-map',
+    devtool: 'source-ht-map, inline-source-ht-map',
     resolve: {
         modules: ['node_modules'],
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
@@ -30,8 +30,11 @@ var config = {
     },
     externals: [
         'ht-js-utils',
+        'ht-js-data',
+        'ht-models',
         'moment-mini',
         'underscore',
+        webpackRxjsExternals(),
         /^rxjs\/.+$/
     ],
     plugins: [
