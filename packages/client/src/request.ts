@@ -24,18 +24,18 @@ export class HtRequest {
     return this.baseUrl + url + '?' + string
   }
 
-  getObservable(url, options: object = {}): Observable<any> {
-    return Observable.of({})
+  getObservable<T>(url, options: object = {}): Observable<T> {
+    return Observable.empty()
   }
 
 
-  postObservable(url, body, options: object = {}) {
+  postObservable(url, body, options: object = {}): Observable<any> {
     return Observable.of({})
   }
 
-  api$(url: string, query) {
+  api$<T>(url: string, query) {
     url = this.url(url, query);
-    return this.getObservable(url)
+    return this.getObservable<T>(url)
   }
 
   postApi$(url, body, options?) {

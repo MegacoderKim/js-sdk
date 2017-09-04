@@ -32,6 +32,6 @@ export class HtActionMarker extends HtMarkerItem {
 
   getPosition(data: IAction) {
     let position = htAction(data).getPositionsObject().position;
-    return this.mapUtils.getLatlng(position[0], position[1])
+    return this.mapUtils.getLatlng(position.lat, position.lng)
   }
 }

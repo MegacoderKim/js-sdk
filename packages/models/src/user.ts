@@ -105,6 +105,7 @@ export interface IUserAnalyticsPage extends IPageData {
 export interface IUserListSummary {
   num_users: number,
   total_duration: number,
+  stop_duration: number,
   location_disabled_duration: number,
   num_actions: number,
   total_distance: number,

@@ -6,7 +6,7 @@ export class HtBaseApi {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
   request;
 
-  constructor(private base: string, request) {
+  constructor(private base: string, request: HtRequest) {
     this.setRequest(request)
   }
 
@@ -14,33 +14,33 @@ export class HtBaseApi {
     this.request = request;
   }
 
-  get(id: string, query) {
+  get<T>(id: string, query): Observable<T> {
     let tail = `/${id}/`;
-    return this.getReqFromTail(tail, query)
+    return this.getReqFromTail<T>(tail, query)
   }
 
-  index(query) {
+  index<T>(query): Observable<T> {
     let tail = `/`;
-    return this.getReqFromTail(tail, query)
+    return this.getReqFromTail<T>(tail, query)
   }
 
-  summary(query) {
+  summary<T>(query): Observable<T> {
     let tail =  `/summary/`;
-    return this.getReqFromTail(tail, query)
+    return this.getReqFromTail<T>(tail, query)
   }
 
-  heatmap(query) {
+  heatmap<T>(query): Observable<T> {
     let tail =  `/heatmap/`;
-    return this.getReqFromTail(tail, query)
+    return this.getReqFromTail<T>(tail, query)
   }
 
-  getReqFromTail(tail, query) {
+  getReqFromTail<T>(tail, query): Observable<T> {
     return this.request.api$(this.base + tail, query)
   }
 
-  placeline(id, query) {
-    let tail = `/timeline/${id}/`;
-    return this.getReqFromTail(tail, query)
+  placeline<T>(id, query): Observable<T> {
+    let tail = `/${id}/timeline/`;
+    return this.getReqFromTail<T>(tail, query)
   }
 
   // getObservable(url, options: object = {}): Observable<any> {

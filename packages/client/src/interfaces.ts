@@ -1,7 +1,9 @@
 
+import {Observable} from "rxjs/Observable";
+import {HtBaseApi} from "./api/base";
+
 export const defaultListConfig: IListConfig = {
   isLive: false,
-  autoLive: false
 };
 
 export interface IIndexQuery {
@@ -11,6 +13,25 @@ export interface IIndexQuery {
 }
 
 export interface IListConfig {
-  isLive: boolean,
-  autoLive: boolean
+  initialQuery?: object,
+  isLive?: boolean
+}
+
+export interface IQueryOptions {
+  allowedParams?: string[] | null
+  dataSource$?: Observable<object>,
+  initialData?: object
+}
+
+export interface IListClientOptions extends IQueryOptions{
+
+}
+
+export interface IItemClientOptions {
+  queryOptions?: IQueryOptions,
+  loadingSource$?: Observable<boolean>,
+  idSource$?: Observable<string | number>
+  defaultQuery?: object,
+  api: HtBaseApi,
+  id?: string
 }

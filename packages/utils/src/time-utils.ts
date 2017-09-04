@@ -51,3 +51,12 @@ export function RangeHasToday(query): boolean {
     return true
   }
 }
+
+export function GetMinute(time: string) {
+  let timeStamp = new Date(time).getTime();
+  return Math.round(timeStamp - timeStamp % 60000)
+}
+
+export function HasSameMinute(time1: string, time2: string) {
+  return GetMinute(time1) == GetMinute(time2)
+}

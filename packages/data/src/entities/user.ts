@@ -1,5 +1,5 @@
 import {ISegment, IUser, IUserAnalytics, IUserData} from "ht-models";
-import {ISegmentType} from "./interfaces";
+import {ISegmentType} from "../interfaces";
 import * as _ from "underscore";
 
 export class HtUser {
@@ -46,7 +46,7 @@ export class HtUser {
     },
   };
 
-  constructor(public data?: IUserData | IUser) {}
+  constructor(public data?: IUserData | IUser | IUserAnalytics) {}
 
   getMarkerSearched(key: string) {
 
@@ -92,4 +92,4 @@ export class HtUser {
   }
 }
 
-export const htUser = (user?: IUser | IUserData) => new HtUser(user);
+export const htUser = (user?: IUser | IUserData | IUserAnalytics) => new HtUser(user);
