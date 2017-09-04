@@ -96,7 +96,6 @@ function getItemLatlng(item) {
 }
 
 function renderMap(elem, options) {
-  console.log("toptions", options);
   let map = L.map(elem, options);
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

@@ -4,7 +4,7 @@ import {Observable} from "rxjs/Observable";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData> {
 
-  api$(id, query) {
+  api$(id, query): Observable<IUserData> {
     return this.api.placeline<IUserData>(id, {...this.defaultQuery, ...query})
   }
 }

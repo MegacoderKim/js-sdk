@@ -46,7 +46,7 @@ export class QueryObserver extends DataObserver<object>{
   }
 
   allQuery$() {
-    console.log(this.options);
+    // console.log(this.options);
     return this.dataSource$ ? this.dataSource$ : super.data$();
   }
 };

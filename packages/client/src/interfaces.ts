@@ -33,5 +33,8 @@ export interface IItemClientOptions {
   idSource$?: Observable<string | number>
   defaultQuery?: object,
   api: HtBaseApi,
-  id?: string
+  id?: string,
+  onNotFound?: () => void,
+  onDataUpdate?: (data) => void,
+  pollTime?: number
 }

@@ -15,15 +15,19 @@ export class HtMapClass {
   googleSetBoundsOptions = {
 
   };
+  googleMapOptions = {origin: [0, 0], zoom: 1};
+  leafletMapOptions = {center: [3.505, 0], zoom: 1};
+
   constructor(public mapType: HtMapType = 'leaflet', options = {}) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
     // this.initMap(elem, options);
     this.segmentTrace = new HtSegmentsTrace(this.mapType);
   }
 
-  initMap(elem: Element, options = {}) {
-
-    this.map = this.mapUtils.renderMap(elem, options)
+  initMap(elem: Element, options = {}): HtMap {
+    let mapOptions = this.mapType == 'leaflet' ? this.leafletMapOptions : this.googleMapOptions;
+    this.map = this.mapUtils.renderMap(elem, {...mapOptions, ...options});
+    return this.map
   }
 
   tracePlaceline(user: IUserData) {
