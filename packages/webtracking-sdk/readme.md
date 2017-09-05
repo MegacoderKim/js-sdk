@@ -15,18 +15,19 @@ The SDK takes location data as input and renders it on a Google Maps view. Furth
 `npm install ht-webtracking-sdk --save`
 
 ***Or Script Tag***
+
 Add ‘dist/track.js’ as a script tag between <head> and </head> of your html. It exposes global ht object on window.
 
 ### Prerequisites
 
 1. Load the Google Maps JavaScript API with API key by adding a script tag like the one in the following example in the <head> of your html:
 
-```
+```html
 <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 ```
 
 2. Create Map DOM container: In the html file, create a DOM which would contain the map. Give it a unique id. Example:
-```
+```html
 <div id="map" style="height: 300px; width: 500px"></div>
 ```
 
@@ -34,7 +35,7 @@ Add ‘dist/track.js’ as a script tag between <head> and </head> of your html.
 The SDK exposes a global variable ht with the trackByData method. Call this method with the `TrackingData` object(s) to instantiate the class and render location data on the map. Furthermore, pass the `TrackingDataOptions` object to specify the map container, callbacks and customizations.
 New location data for the trip(s) is passed on to the `track()` method in a similar format. Pass the data to the instantiated class with the id for which you wish to update the tracking experience and animate the marker to its new location.
 
-```
+```js
 var ht = require('ht-webtracking-sdk');
 var trackedData = ht.trackByData([{
   "id": "",
@@ -52,7 +53,7 @@ var trackedData = ht.trackByData([{
 ### Customization
 
 The SDK follows a default color scheme with its own custom icons and map polyline color. You may pass custom base64 images and polyline options through MapOptions within TrackingOptions to override these defaults. The SDK also exposes the map object via callbacks for full control and access of the tracking experience to the developer. For example, use this to customize the user marker
-```
+```js
 var trackingOptions = {
   "mapId": "map",
   "mapOptions": {
@@ -74,7 +75,7 @@ var trackingOptions = {
 4. `ITrackedData`: Object with keys as id of each data object and value as TrackData class.
 
 ##### Tracking Data
-```
+```js
 interface ITrackingData {
     id?: string,
     encodedTimeAwarePolyline: string;
@@ -82,7 +83,7 @@ interface ITrackingData {
     isLive: boolean;
     vehicleType?: string;
 }
-```
+```js
 ##### Tracking options
 ```
 interface ITrackingDataOptions {
@@ -92,7 +93,7 @@ interface ITrackingDataOptions {
     onReady?: (trackedData: ITrackedData, dataArray: ITrackingData[], map: google.maps.Map) => void;
 }
 ```
-```
+```js
 interface IMapOptions {
     gMapsStyle?: MapTypeStyle[] | null;
     bottomPadding?: number;
@@ -100,7 +101,7 @@ interface IMapOptions {
     vehicleIcon?: CustomVehicleIcon;
 }
 ```
-```
+```js
 interface CustomVehicleIcon {
     src: string;
     height: string;
