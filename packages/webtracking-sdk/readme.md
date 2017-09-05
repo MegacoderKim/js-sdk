@@ -83,9 +83,9 @@ interface ITrackingData {
     isLive: boolean;
     vehicleType?: string;
 }
-```js
-##### Tracking options
 ```
+##### Tracking options
+```js
 interface ITrackingDataOptions {
     mapId: string; //id of DOM where map is to be rendered
     mapOptions?: IMapOptions;
