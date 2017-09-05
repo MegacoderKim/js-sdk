@@ -12,7 +12,9 @@ The SDK takes location data as input and renders it on a Google Maps view. Furth
 
 ***npm***
 
-`npm install ht-webtracking-sdk --save`
+```sh
+npm install ht-webtracking-sdk --save
+```
 
 ***Or Script Tag***
 
