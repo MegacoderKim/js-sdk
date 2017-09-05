@@ -132,6 +132,13 @@ export interface ITrackingOptions {
     onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
 
+export interface ITrackingDataOptions {
+  mapId: string; //id of DOM where map is to be rendered
+  mapOptions?: IMapOptions;
+  onError?: (error: any) => void;
+  onReady?: (trackedData: ITrackedData, dataArray: ITrackingData[], map: google.maps.Map) => void;
+}
+
 export interface IMapOptions {
     gMapsStyle?: MapTypeStyle[] | null;
     bottomPadding?: number;

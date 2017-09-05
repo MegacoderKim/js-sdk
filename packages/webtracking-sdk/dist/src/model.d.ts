@@ -118,6 +118,12 @@ export interface ITrackingOptions {
     onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
     onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
+export interface ITrackingDataOptions {
+    mapId: string;
+    mapOptions?: IMapOptions;
+    onError?: (error: any) => void;
+    onReady?: (trackedData: ITrackedData, dataArray: ITrackingData[], map: google.maps.Map) => void;
+}
 export interface IMapOptions {
     gMapsStyle?: MapTypeStyle[] | null;
     bottomPadding?: number;
