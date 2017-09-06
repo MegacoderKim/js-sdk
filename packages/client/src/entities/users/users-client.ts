@@ -3,14 +3,26 @@ import {HtUserPlacelineClient} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {IItemClientOptions, IListClientOptions} from "../../interfaces";
 import {Partial} from "ht-models";
+import {HtUsersAnalytics} from "./users-analytics";
 
 export class HtUsersClient {
   list: HtUsersListClient;
+  analytics: HtUsersAnalytics;
   placeline: HtUserPlacelineClient;
-
+  api;
   constructor(req, options: IUsersClientOptions = {}) {
     let api = new HtUsersApi(req);
-    this.list = new HtUsersListClient(req, options['defaultConfigQuery'], options['listConfig'])
+    this.api = api;
+    this.list = new HtUsersListClient({
+      api,
+      ...options.listOptions
+    });
+
+    this.analytics = new HtUsersAnalytics({
+      api,
+      ...options.analyticsOptions
+    });
+
     this.placeline = new HtUserPlacelineClient({
       api,
       ...options.placelineOptions
@@ -20,6 +32,7 @@ export class HtUsersClient {
 }
 
 export interface IUsersClientOptions {
-  placelineOptions?: Partial<IItemClientOptions>,
-  listOptions?: Partial<IListClientOptions>
+  placelineOptions?: Partial<IItemClientOptions<HtUsersApi>>,
+  listOptions?: Partial<IListClientOptions<HtUsersApi>>,
+  analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>
 }

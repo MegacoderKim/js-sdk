@@ -7,22 +7,15 @@ import {IQueryOptions} from "../interfaces";
 export class QueryObserver extends DataObserver<object>{
   entityName: string = 'query';
   initialdata = {};
-  allowedParams: string[] | null = null;
   constructor(
     public options: IQueryOptions = {},
   ) {
     super();
     this.setOptions(options);
-    this.allowedParams = options.allowedParams
   }
 
   data$(): Observable<object> {
-    let allQuery$ = this.allQuery$();
-    if(this.allowedParams) {
-      return this.getAllowedParams$(allQuery$, this.allowedParams)
-    } else {
-      return allQuery$
-    }
+    return this.allQuery$();
   }
 
   setInitialData(options) {

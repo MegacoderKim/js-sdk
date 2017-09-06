@@ -14,31 +14,31 @@ export class HtBaseApi {
     this.request = request;
   }
 
-  get<T>(id: string, query): Observable<T> {
+  get<T>(id: string, query = {}): Observable<T> {
     let tail = `/${id}/`;
     return this.getReqFromTail<T>(tail, query)
   }
 
-  index<T>(query): Observable<T> {
+  index<T>(query = {}): Observable<T> {
     let tail = `/`;
     return this.getReqFromTail<T>(tail, query)
   }
 
-  summary<T>(query): Observable<T> {
+  summary<T>(query = {}): Observable<T> {
     let tail =  `/summary/`;
     return this.getReqFromTail<T>(tail, query)
   }
 
-  heatmap<T>(query): Observable<T> {
+  heatmap<T>(query = {}): Observable<T> {
     let tail =  `/heatmap/`;
     return this.getReqFromTail<T>(tail, query)
   }
 
-  getReqFromTail<T>(tail, query): Observable<T> {
+  getReqFromTail<T>(tail, query = {}): Observable<T> {
     return this.request.api$(this.base + tail, query)
   }
 
-  placeline<T>(id, query): Observable<T> {
+  placeline<T>(id, query = {}): Observable<T> {
     let tail = `/${id}/timeline/`;
     return this.getReqFromTail<T>(tail, query)
   }

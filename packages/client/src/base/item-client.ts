@@ -6,50 +6,16 @@ import {IdObserver} from "./id-observer";
 import {HtBaseApi} from "../api/base";
 import {Partial} from "ht-models";
 import {HtClientConfig} from "../config";
+import {HtBaseClient} from "./base-client";
 
-export abstract class ItemClient<T> {
+export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOptions<A>, A> {
   loadingObserver: LoadingObserver;
   queryObserver: QueryObserver;
   idObservable: IdObserver;
   data$: Observable<T>;
-  api: HtBaseApi;
+  api: A;
   defaultQuery: object = {};
 
-  constructor(public options: IItemClientOptions) {
-    this.api = options.api;
-    this.defaultQuery = options.defaultQuery || {};
-    this.queryObserver = new QueryObserver(options.queryOptions);
-    this.loadingObserver = new LoadingObserver(true, options.loadingSource$);
-    this.idObservable = new IdObserver(options.id, options.idSource$);
-    // this.initListeners()
-  }
-
-  getListener(options: Partial<IItemClientOptions> = {}): Observable<T> {
-    this.setOptions(options);
-    this.initListener();
-    return this.data$
-  };
-
-  initListener() {
-    if(!this.data$) {
-      let data$ = this.getDataQuery$()
-        .switchMap(({id, query}) =>  this.getData$(id, query))
-        .do((data) => {
-          this.loadingObserver.updateData(false);
-          if(!data) {
-            if(this.options.onNotFound) this.options.onNotFound();
-          }
-        })
-        .share();
-
-      data$.subscribe((data) => {
-        if(this.options.onDataUpdate) this.options.onDataUpdate(data);
-        this.onDataUpdate(data)
-      });
-
-      this.data$ = data$
-    };
-  }
 
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
@@ -64,14 +30,7 @@ export abstract class ItemClient<T> {
     return dataQuery$
   }
 
-  setOptions(options: Partial<IItemClientOptions> = {}) {
-    this.options = {...this.options, ...options};
-    this.idObservable.dataSource$ = this.options.idSource$;
-    this.idObservable.initialData = this.options.id;
-    this.queryObserver.setOptions(this.options.queryOptions)
-  };
-
-  private getData$(id, query) {
+  getData$({id, query}): Observable<T> {
     return this.api$(id, query)
       .expand((data: T) => {
         // console.log("expand");
@@ -81,9 +40,8 @@ export abstract class ItemClient<T> {
 
   }
 
-  api$(id, query): Observable<T> {
-    return this.api.get<T>(id, {...this.defaultQuery, ...query})
-  }
+  abstract api$(id, query)
+
 
   isNotFound() {
     // console.log("not founct");
