@@ -12,7 +12,6 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
   loadingObserver: LoadingObserver;
   queryObserver: QueryObserver;
   idObservable: IdObserver;
-  data$: Observable<T>;
   api: A;
   defaultQuery: object = {};
 
@@ -26,7 +25,6 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
       })
     )
       .do((data) => {
-        console.log(data, "query");
         this.loadingObserver.updateData(<string>(data['id']) || true)
       });
 
@@ -34,13 +32,27 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
   }
 
   getData$({id, query}): Observable<T> {
-    return this.api$(id, query)
-      .do(() => this.loadingObserver.updateData(false))
+    return id ?
+      this.api$(id, query)
+      .do(() => {
+        this.loadingObserver.updateData(false)
+      })
       .expand((data: T) => {
         return Observable.timer(this.pollDuration)
           .switchMap(() => this.api$(id, {...this.defaultQuery, ...query}))
-      })
+      }) : Observable.of(null)
 
+  }
+
+  setId(id) {
+    this.clearDiffData(id);
+    super.setId(id)
+  }
+
+  clearDiffData(id) {
+    this.idObservable.data$().take(1).subscribe(currentId => {
+      if(id != currentId) this.clearData()
+    })
   }
 
 

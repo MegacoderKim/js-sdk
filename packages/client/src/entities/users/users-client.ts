@@ -5,6 +5,7 @@ import {IItemClientOptions, IListClientOptions} from "../../interfaces";
 import {Partial, IUserAnalyticsPage, IUserData} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics";
 import {Observable} from "rxjs/Observable";
+import * as _ from "underscore";
 
 export class HtUsersClient {
   list: HtUsersListClient;
@@ -32,27 +33,80 @@ export class HtUsersClient {
 
   usersPlaceline$() {
 
-    const userId$ = this.analytics.idObservable.data$();
-    const placelinePage$ = this.placeline.data$
+    const userId$ = this.analytics.idObservable.data$().distinctUntilChanged();
+    const placelinePage$ = this.placeline.data$.distinctUntilChanged()
       .map((data) => {
       return data ? [data] : null;
     }); //todo take query from placeline
 
-    const d$ = userId$.startWith(null).switchMap((placeline) => {
-      if(placeline) {
-        return placelinePage$
-      } else {
-        return this.analytics.dataArray$;
-      }
-    });
+    const dataArray$ = this.analytics.dataArray$;
 
-    return d$
+    // const d$ = userId$.startWith(null).switchMap((userId) => {
+    //   console.log(userId, "user id");
+    //   return Observable.combineLatest(
+    //     placelinePage$.startWith(null).do((p) => {
+    //       console.log("placeline", p);
+    //     }),
+    //     this.analytics.dataArray$.do((p) => {
+    //       console.log("data array", p);
+    //     }),
+    //     (placelinePage, userPage) => {
+    //       console.log("combine", placelinePage, userPage);
+    //       return userId ? placelinePage || userPage : userPage
+    //     }
+    //   );
+    //   //
+    //   // if (userId) {
+    //   //   return placelinePage$
+    //   // } else {
+    //   //   return this.analytics.dataArray$;
+    //   // }
+    // }).do((userp) => {
+    //   // console.log("user place");
+    // });
+
+    // return d$
 
     // return Observable.merge(
-    //   this.analytics.dataArray$,
-    //   placelinePage$
+    //   userId$.switchMap((id) => {
+    //     return this.analytics.dataArray$
+    //   }),
+    //   placelinePage$.filter((data) => !!data)
     // ).do((data) => {
     //   console.log(data, "Dadas");
+    // })
+    const d = Observable.combineLatest(
+      placelinePage$,
+      userId$,
+      dataArray$,
+      (placelinePage, userId, dataArray) => {
+        return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
+          return userId ? user.id == userId : true;
+        })
+      }
+    );
+      // .switchMap(userId => {
+      //   return userId ? placelinePage$ : dataArray$
+      // })
+    //   .subscribe(data => {
+    //
+    //   console.log("combbine", data);
+    // });
+
+    return d
+
+    // return userId$.switchMap((id) => {
+    //   console.log("user id", id);
+    //   let pOrD = Observable.merge(
+    //     dataArray$.take(1),
+    //     placelinePage$
+    //   );
+    //   let p = this.placeline.dataObserver.take(1).switchMap((placeline) => {
+    //     console.log("placeline", placeline);
+    //     return placeline ? placelinePage$ : pOrD
+    //   });
+    //   return id ? p : dataArray$
+    //   // return placelinePage$
     // })
   }
 

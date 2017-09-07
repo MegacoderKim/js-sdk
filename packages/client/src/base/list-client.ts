@@ -6,18 +6,20 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
 
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
-      this.idObservable.data$().startWith(this.options.id),
+      // this.idObservable.data$().startWith(this.options.id),
       this.getListQuery(),
-      (id, query) => {
-        return id ? {id, ...query} : query
+      (query) => {
+        return query
+        // return id ? {id, ...query} : query
       }
     );
     return dataQuery$
   }
 
   get dataArray$() {
-    return this.data$.map((pageData) => {
-      return pageData['results']
+    return this.dataObserver.map((pageData) => {
+      // console.log("page data", pageData);
+      return pageData ? pageData['results'] : null;
     })
   }
 

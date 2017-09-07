@@ -9,6 +9,7 @@ import {Partial} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {isEmpty} from "rxjs/operator/isEmpty";
 import {Subject} from "rxjs/Subject";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;
@@ -18,7 +19,7 @@ export abstract class HtBaseClient<T, O, A> {
   api: A;
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   entityName: string;
-  dataObserver = new Subject();
+  dataObserver: ReplaySubject<T> = new ReplaySubject();
   constructor(
     public options: IBaseClientOptions<A>
   ) {
@@ -58,12 +59,17 @@ export abstract class HtBaseClient<T, O, A> {
           //   if(this.options.onNotFound) this.options.onNotFound();
           // }
         })
-        .share();
-
-
-
-      this.data$ = data$;
+        // .share();
+        // .subscribe(this.dataObserver);
+        // this.dataObserver.subscribe(data$)
+      data$.subscribe(this.dataObserver);
+      // this.dataObserver.mapTo(data$);
+      this.data$ = this.dataObserver.shareReplay(1);
     }
+  }
+
+  clearData() {
+    this.dataObserver.next(null)
   }
 
   getUpdate$(data, queryObj: object): Observable<T> {
