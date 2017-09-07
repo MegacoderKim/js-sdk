@@ -8,14 +8,17 @@ import {HtClientConfig} from "../config";
 import {Partial} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {isEmpty} from "rxjs/operator/isEmpty";
+import {Subject} from "rxjs/Subject";
 
 export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;
   queryObserver: QueryObserver;
   idObservable: IdObserver;
-  data$: Observable<T>;
+  data$: Observable<T | null | false>;
   api: A;
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
+  entityName: string;
+  dataObserver = new Subject();
   constructor(
     public options: IBaseClientOptions<A>
   ) {
@@ -28,7 +31,7 @@ export abstract class HtBaseClient<T, O, A> {
         dataSource$: options.querySource$
       });
 
-    this.loadingObserver = new LoadingObserver(true, options.loadingSource$);
+    this.loadingObserver = new LoadingObserver(options.id || false, options.loadingSource$);
     this.idObservable = new IdObserver(options.id, options.idSource$);
     // this.initListener()
   }
@@ -37,7 +40,7 @@ export abstract class HtBaseClient<T, O, A> {
     return this.options.defaultQuery || {}
   }
 
-  getListener(options: Partial<IListClientOptions<A>> = {}): Observable<T> {
+  getListener(options: Partial<IListClientOptions<A>> = {}): Observable<T | null | false> {
     this.setOptions(options);
     this.initListener();
     return this.data$
@@ -50,12 +53,14 @@ export abstract class HtBaseClient<T, O, A> {
           return queryObj ? this.getData$(queryObj) : Observable.of(false)
         }).do((data) => {
           this.loadingObserver.updateData(false);
-          this.update$.next(data);
+          // this.update$.next(data);
           // if(!data || data != false) {
           //   if(this.options.onNotFound) this.options.onNotFound();
           // }
         })
         .share();
+
+
 
       this.data$ = data$;
     }
@@ -94,7 +99,7 @@ export abstract class HtBaseClient<T, O, A> {
       .do((data) => {
       // console.log("query", data);
       // this.update$.next(null);
-      this.loadingObserver.updateData(true)
+      this.loadingObserver.updateData(data['id'] || true)
     });
   }
 
@@ -114,9 +119,7 @@ export abstract class HtBaseClient<T, O, A> {
   getDelayUpdate$(queryObj: object): Observable<T> {
     return Observable.timer(this.pollDuration)
       .switchMap(() => {
-        return this.update$.do(() => {
-          console.log("update fired");
-        })
+        return this.update$
       }).switchMap((data) => {
         return data ? this.getUpdate$(data, queryObj) : Observable.empty()
       })

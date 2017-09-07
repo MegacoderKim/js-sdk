@@ -30,13 +30,13 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
   }
 
   getData$(query): Observable<T> {
-    return this.api$(query)
+    return this.api$(query).do(() => {
+      this.loadingObserver.updateData(false)
+    })
       // .expand(() => {
       //   return
       // })
   }
-
-
 
   abstract api$(query): Observable<T>
 

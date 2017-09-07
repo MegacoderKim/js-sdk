@@ -25,7 +25,10 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
         return {id, query}
       })
     )
-      .do((data) => this.loadingObserver.updateData(true));
+      .do((data) => {
+        console.log(data, "query");
+        this.loadingObserver.updateData(<string>(data['id']) || true)
+      });
 
     return dataQuery$
   }

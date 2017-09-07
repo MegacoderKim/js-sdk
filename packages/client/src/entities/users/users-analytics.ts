@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 
 
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage, HtUsersApi> {
+  entityName = "analytics users";
 
   getDefaultQuery() {
     return {ordering: "-last_heartbeat_at", ...super.getDefaultQuery()}
