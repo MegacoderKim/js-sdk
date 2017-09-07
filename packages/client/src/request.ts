@@ -11,7 +11,6 @@ export class HtRequest {
   }
 
   headerObj() {
-    console.log(this.token, "token");
     return  {'Authorization': `token ${this.token}`}
   }
 

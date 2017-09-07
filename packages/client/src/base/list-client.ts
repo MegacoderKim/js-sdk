@@ -15,6 +15,10 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     return dataQuery$
   }
 
+  getDefaultQuery() {
+    return {page_size: 10, ...super.getDefaultQuery()}
+  }
+
   getListQuery() {
     return this.queryObserver.data$()
   }

@@ -14,17 +14,26 @@ export abstract class HtBaseClient<T, O, A> {
   idObservable: IdObserver;
   data$: Observable<T>;
   api: A;
-  defaultQuery: object = {};
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   constructor(
     public options: IBaseClientOptions<A>
   ) {
     this.api = options.api;
-    this.defaultQuery = options.defaultQuery || {};
-    this.queryObserver = new QueryObserver({initialData: options.query, dataSource$: options.querySource$});
+
+    this.queryObserver = new QueryObserver(
+      {
+        initialData:
+          {...this.getDefaultQuery(), ...options.query},
+        dataSource$: options.querySource$
+      });
+
     this.loadingObserver = new LoadingObserver(true, options.loadingSource$);
     this.idObservable = new IdObserver(options.id, options.idSource$);
     // this.initListener()
+  }
+
+  getDefaultQuery() {
+    return this.options.defaultQuery || {}
   }
 
   getListener(options: Partial<IListClientOptions<A>> = {}): Observable<T> {
@@ -77,7 +86,11 @@ export abstract class HtBaseClient<T, O, A> {
 
   getDataQueryWithLoading$(): Observable<object> {
     // console.log("get data query");
-    return this.getDataQuery$().do((data) => {
+    return this.getDataQuery$()
+      .map(query => {
+        return {...this.getDefaultQuery(), ...query}
+      })
+      .do((data) => {
       // console.log("query", data);
       // this.update$.next(null);
       this.loadingObserver.updateData(true)

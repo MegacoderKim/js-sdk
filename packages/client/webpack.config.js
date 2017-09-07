@@ -3,7 +3,7 @@ var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var webpackRxjsExternals = require('webpack-rxjs-externals');
 var path = require('path');
-
+var WebpackShellPlugin = require('webpack-shell-plugin');
 var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
 
 var config = {
@@ -44,6 +44,8 @@ var config = {
             debug: false
         }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-client']}),
+        new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-client']})
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})

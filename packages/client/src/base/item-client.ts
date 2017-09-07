@@ -32,15 +32,14 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
 
   getData$({id, query}): Observable<T> {
     return this.api$(id, query)
+      .do(() => this.loadingObserver.updateData(false))
       .expand((data: T) => {
-        // console.log("expand");
-        let pollTime = this.options.pollTime || HtClientConfig.pollTime;
-        return Observable.timer(pollTime)
+        return Observable.timer(this.pollDuration)
           .switchMap(() => this.api$(id, {...this.defaultQuery, ...query}))
-          // .takeUntil(this.getDataQuery$().skip(1))
       })
 
   }
+
 
   abstract api$(id, query)
 
