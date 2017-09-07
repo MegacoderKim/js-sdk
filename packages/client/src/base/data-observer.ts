@@ -24,7 +24,7 @@ export class DataObserver<T> {
   }
 
   data$() {
-    return this.dataSource$ || this.getDataBehaviour().asObservable().filter((data) => !!data)
+    return this.dataSource$ || this.getDataBehaviour().asObservable()
   }
 
   onDataUpdate(data: T) {

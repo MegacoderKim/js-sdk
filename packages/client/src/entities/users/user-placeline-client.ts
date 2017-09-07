@@ -36,6 +36,6 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
   }
 
   api$(id, query = {}): Observable<IUserData> {
-    return this.api.placeline<IUserData>(id, {...this.defaultQuery, ...query})
+    return id ? this.api.placeline<IUserData>(id, {...this.defaultQuery, ...query}) : Observable.of(null)
   }
 }

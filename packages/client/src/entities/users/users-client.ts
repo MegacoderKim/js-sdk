@@ -2,8 +2,9 @@ import {HtUsersListClient} from "./users-list-client";
 import {HtUserPlacelineClient} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {IItemClientOptions, IListClientOptions} from "../../interfaces";
-import {Partial} from "ht-models";
+import {Partial, IUserAnalyticsPage, IUserData} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics";
+import {Observable} from "rxjs/Observable";
 
 export class HtUsersClient {
   list: HtUsersListClient;
@@ -27,6 +28,32 @@ export class HtUsersClient {
       api,
       ...options.placelineOptions
     })
+  }
+
+  usersPlaceline$() {
+
+    const userId$ = this.analytics.idObservable.data$();
+    const placelinePage$ = this.placeline.data$
+      .map((data) => {
+      return data ? [data] : null;
+    }); //todo take query from placeline
+
+    const d$ = userId$.startWith(null).switchMap((placeline) => {
+      if(placeline) {
+        return placelinePage$
+      } else {
+        return this.analytics.dataArray$;
+      }
+    });
+
+    return d$
+
+    // return Observable.merge(
+    //   this.analytics.dataArray$,
+    //   placelinePage$
+    // ).do((data) => {
+    //   console.log(data, "Dadas");
+    // })
   }
 
 }

@@ -6,9 +6,13 @@ export * from "./api/base";
 export * from "./config";
 export * from "./entities/actions/actions-client"
 export * from "./entities/actions/actions-list-client"
+export * from "./entities/actions/actions-get-client"
 export * from "./entities/users/users-client"
 export * from "./entities/users/users-list-client"
+export * from "./entities/users/user-placeline-client"
+export * from "./entities/users/users-analytics"
 export * from "./client"
+export {IUserAnalyticsPage} from "ht-models"
 export * from "./base/base-client";
 export * from "./base/data-observer";
 export * from "./base/list-client";
@@ -29,6 +33,7 @@ import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/expand';
+import 'rxjs/add/operator/isEmpty';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/interval';

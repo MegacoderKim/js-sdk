@@ -15,6 +15,12 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     return dataQuery$
   }
 
+  get dataArray$() {
+    return this.data$.map((pageData) => {
+      return pageData['results']
+    })
+  }
+
   getDefaultQuery() {
     return {page_size: 10, ...super.getDefaultQuery()}
   }

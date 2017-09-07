@@ -7,6 +7,7 @@ import {LoadingObserver} from "./loading-observer";
 import {HtClientConfig} from "../config";
 import {Partial} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {isEmpty} from "rxjs/operator/isEmpty";
 
 export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;
@@ -46,13 +47,13 @@ export abstract class HtBaseClient<T, O, A> {
     if(!this.data$) {
       let data$ = this.getDataQueryWithLoading$()
         .switchMap((queryObj) => {
-          return this.getData$(queryObj)
+          return queryObj ? this.getData$(queryObj) : Observable.of(false)
         }).do((data) => {
           this.loadingObserver.updateData(false);
-          // this.update$.next(data);
-          if(!data) {
-            if(this.options.onNotFound) this.options.onNotFound();
-          }
+          this.update$.next(data);
+          // if(!data || data != false) {
+          //   if(this.options.onNotFound) this.options.onNotFound();
+          // }
         })
         .share();
 
