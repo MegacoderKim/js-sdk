@@ -1,7 +1,7 @@
 import {QueryObserver} from "./query-observer";
 import {DataObserver} from "./data-observer";
 
-export class LoadingObserver extends DataObserver<Boolean>{
+export class LoadingObserver extends DataObserver<Boolean | string>{
   initialData = true;
   entityName = 'loading';
 

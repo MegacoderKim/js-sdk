@@ -6,7 +6,7 @@ import {HtUsersApi} from "../../api/users";
 import {HtClientConfig} from "../../config";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
-
+  entityName = "placeliine";
   // initListener() {
   //   if(!this.data$) {
   //     // console.log("iii");
@@ -20,15 +20,15 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
   //   }
   // }
 
-  getData$({id, query}): Observable<IUserData> {
-    return this.api$(id, query)
-      .expand((data: IUserData) => {
-        return Observable.timer(this.pollDuration)
-          .switchMap(() => this.api$(id, {...this.defaultQuery, ...query}))
-        // .takeUntil(this.getDataQuery$().skip(1))
-      })
-
-  }
+  // getData$({id, query}): Observable<IUserData> {
+  //   return this.api$(id, query)
+  //     .expand((data: IUserData) => {
+  //       return Observable.timer(this.pollDuration)
+  //         .switchMap(() => this.api$(id, {...this.defaultQuery, ...query}))
+  //       // .takeUntil(this.getDataQuery$().skip(1))
+  //     })
+  //
+  // }
 
   getUpdate$(data, {id, query}) {
     // console.log("up", id, query);

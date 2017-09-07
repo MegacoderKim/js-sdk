@@ -6,13 +6,21 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
 
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
-      this.idObservable.data$().startWith(this.options.id),
+      // this.idObservable.data$().startWith(this.options.id),
       this.getListQuery(),
-      (id, query) => {
-        return id ? {id, ...query} : query
+      (query) => {
+        return query
+        // return id ? {id, ...query} : query
       }
     );
     return dataQuery$
+  }
+
+  get dataArray$() {
+    return this.dataObserver.map((pageData) => {
+      // console.log("page data", pageData);
+      return pageData ? pageData['results'] : null;
+    })
   }
 
   getDefaultQuery() {
@@ -24,13 +32,13 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
   }
 
   getData$(query): Observable<T> {
-    return this.api$(query)
+    return this.api$(query).do(() => {
+      this.loadingObserver.updateData(false)
+    })
       // .expand(() => {
       //   return
       // })
   }
-
-
 
   abstract api$(query): Observable<T>
 
