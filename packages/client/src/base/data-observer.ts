@@ -12,7 +12,7 @@ export class DataObserver<T> {
 
   setOptions(options: DataObserverOptions<T> = {}) {
     this.setDataSource(options);
-    this.setInitialData(options)
+    this.setInitialData(options);
   }
 
   setDataSource(options: DataObserverOptions<T> = {}) {
@@ -32,7 +32,7 @@ export class DataObserver<T> {
   }
 
   updateData(data: T) {
-    this.getDataBehaviour().next(data)
+    if(!this.dataSource$) this.getDataBehaviour().next(data)
   }
 
   private getDataBehaviour() {

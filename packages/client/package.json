@@ -1,6 +1,6 @@
 {
   "name": "ht-js-client",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/ht-client.js",
   "module": "dist/ht-client.js",
@@ -15,6 +15,7 @@
   "devDependencies": {
     "ht-js-utils": "file:../utils",
     "ht-models": "file:../models",
+    "ht-js-data": "file:../data",
     "moment-mini": "^2.18.1",
     "typescript": "^2.4.2",
     "underscore": "^1.8.3",

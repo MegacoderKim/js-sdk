@@ -1,4 +1,3 @@
-import 'rxjs/add/observable/of';
 import {HtActionsClient, IActionsClientOptions} from "./entities/actions/actions-client";
 import {HtUsersClient, IUsersClientOptions} from "./entities/users/users-client";
 
