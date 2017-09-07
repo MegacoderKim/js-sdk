@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import {HtUsersClient} from "ht-js-client";
+import {HtMapService, HtUsersClientService} from "ht-angular-client";
+import {IUserData} from "ht-models";
 
 @Component({
   selector: 'ht-root',
@@ -6,5 +9,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  title = 'ht';
+
+  constructor(
+
+  ) {
+
+  }
+
+
 }

@@ -1,0 +1,299 @@
+<div class="flex-column">
+  <div class="flex-row segment" (click)="selectInUserData(segment)" [class.active-segment]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id"  (mouseenter)="selectActivity(segment.id)" (mouseleave)="selectActivity('')"  *ngFor="let segment of placelineMod; trackBy:indexPlaceline; let last = last">
+    <div class="time-container action-time">
+      <div class="target-status text-muted">
+      </div>
+      <div class="timestamp">
+        {{segment.time | timeString | dot: 'Unknown ETA'}}
+      </div>
+      <div class="text-muted">
+        {{segment.time | dateString: 'short'}}
+      </div>
+    </div>
+    <div class="pipe">
+      <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>
+    </div>
+    <div class="flex-column flex timeline-detail">
+      <div class="activity-dot segment-dot" [class.activity-dot-ended]="segment.actionEnded" *ngIf="segment.actionD"><div class="auto">{{segment.actionD}} </div></div>
+      <div *ngIf="segment.isLive" [ngClass]="segment.activityBg" class="segment-dot"><div *ngIf="segment.isLive" [ngClass]="segment.activityBg" class="pulse"></div></div>
+      <div *ngIf="!segment.isLive && !segment.actionD" class="a-dot" [ngClass]="segment.activityBorder"></div>
+      <div class="flex-column column-gap-10">
+        <div (mouseenter)="selectAction(segment.action_id)" (mouseleave)="selectAction(null)" class="action-card" *ngIf="segment.actionText">
+          <div class="flex-column column-gap-4">
+            <div class="title">
+              {{segment.actionText}}
+            </div>
+            <div class="lookup" *ngIf="segment.actionLookupId">{{segment.actionLookupId}}</div>
+            <div *ngIf="segment.expected_at && segment.actionEnd">Scheduled at {{segment.expected_at | timeString}}</div>
+            <div *ngIf="segment.action_duration" class="flex-row row-gap-4">
+              <span>{{segment.action_duration / 60 | hmString}}</span>
+              <ng-template [ngIf]="(segment.action_distance || segment.action_distance == 0)">
+                <span>&bull;</span>
+                <span>{{segment.action_distance | distanceLocale}}</span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <!--<pre>-->
+        <!--{{segment | json}}-->
+        <!--</pre>-->
+        <div class="activity-card flex-column" [class.activity-card-selected]="selectedPartialSegmentId == segment.id" *ngIf="segment.activityText">
+          <div [ngClass]="segment.activityColor">
+            {{segment.activityText | nameCase}}
+          </div>
+          <div class="flex-row row-gap-4 activity-stats align-center" *ngIf="segment.duration">
+            <span>{{segment.duration / 60 | hmString}}</span>
+            <ng-template [ngIf]="(segment.distance || segment.distance == 0) && segment.type == 'trip'">
+              <span>&bull;</span>
+              <span>{{segment.distance | distanceLocale}}</span>
+            </ng-template>
+          </div>
+          <div>
+            {{segment.placeAddress}}
+          </div>
+          <table class="table table-bordered table-condensed" *ngIf="segment.events && segment.events.length">
+            <tbody>
+            <tr *ngFor="let event of segment.events; trackBy:indexId">
+              <td>{{event.recorded_at | timeString}}</td>
+              <td>{{event.text}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
+            <i class="fa fa-times-circle fa-2x"></i>
+          </div>
+        </div>
+        <div *ngIf="segment.isLive" class="text-muted heatbeat">
+          Last heartbeat
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="placelineMod && placelineMod.length == 0">
+  <div class="card-content-mid text-center"><strong>No Placeline</strong></div>
+</div>
+<!--<div class="flex-column">-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container action-time">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--4: 32 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar solid trip" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--<div class="activity-dot"><div class="auto">V</div></div>-->
+<!--<div class="action-title">-->
+<!--Visit assigned-->
+<!--</div>-->
+<!--<div class="text-sm">-->
+<!--# 15554A94-2578-480D-8BDD-->
+<!--</div>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container action-time">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--4: 32 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar solid trip" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--<div class="activity-dot"><div class="auto">S</div></div>-->
+<!--<div class="action-title">-->
+<!--Stopover assigned-->
+<!--</div>-->
+<!--<div class="text-sm">-->
+<!--# 15554A94-2578-480D-8BDD-->
+<!--</div>-->
+<!--<div class="activity-card trip-card flex-column ">-->
+<!--<div class="activity-title">-->
+<!--Walking-->
+<!--</div>-->
+<!--<div>3 Km * 32 min</div>-->
+<!--<div class="flex-row row-gap-4 align-center">-->
+<!--<i class="fa fa-plus-circle"></i>-->
+<!--<span class="badge">3</span> Events-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--4: 44 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar solid stop" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--&lt;!&ndash;<div class="activity-dot"><div class="auto">V</div></div>&ndash;&gt;-->
+<!--<div class="activity-card stop-card flex-column ">-->
+<!--<div class="activity-title">-->
+<!--Stop-->
+<!--</div>-->
+<!--<div>32 min</div>-->
+<!--<div class="flex-row row-gap-4 align-center">-->
+<!--<i class="fa fa-plus-circle"></i>-->
+<!--<span class="badge">1</span> Events-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--5: 02 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar solid trip" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--&lt;!&ndash;<div class="activity-dot"><div class="auto">V</div></div>&ndash;&gt;-->
+<!--<div class="activity-card trip-card flex-column ">-->
+<!--<div class="activity-title">-->
+<!--Walking-->
+<!--</div>-->
+<!--<div>2km * 32 min</div>-->
+<!--&lt;!&ndash;<div class="flex-row row-gap-4 align-center">&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="fa fa-plus-circle"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;<span class="badge">1</span> Events&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--5: 32 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar solid trip" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--&lt;!&ndash;<div class="activity-dot"><div class="auto">V</div></div>&ndash;&gt;-->
+<!--<div class="activity-card trip-card flex-column ">-->
+<!--<div class="activity-title">-->
+<!--Driving-->
+<!--</div>-->
+<!--<div>12km * 32 min</div>-->
+<!--&lt;!&ndash;<div class="flex-row row-gap-4 align-center">&ndash;&gt;-->
+<!--&lt;!&ndash;<i class="fa fa-plus-circle"></i>&ndash;&gt;-->
+<!--&lt;!&ndash;<span class="badge">1</span> Events&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container action-time">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--5: 54 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar solid trip" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--<div class="activity-dot"><div class="auto">V</div></div>-->
+<!--<div class="action-title">-->
+<!--Visit completed-->
+<!--</div>-->
+<!--<div class="text-sm">-->
+<!--# 15554A94-2578-480D-8BDD-->
+<!--</div>-->
+<!--<div class="activity-card trip-card flex-column ">-->
+<!--<div class="activity-title">-->
+<!--Walking-->
+<!--</div>-->
+<!--<div>3 Km * 32 min</div>-->
+<!--<div class="flex-row row-gap-4 align-center">-->
+<!--<i class="fa fa-plus-circle"></i>-->
+<!--<span class="badge">3</span> Events-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp-text">Last known</div>-->
+<!--<div class="timestamp">-->
+<!--6: 03 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar line no-info" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--<div class="activity-dot trip-dot"><div class="pulse"></div></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="flex-row">-->
+<!--<div class="time-container action-time">-->
+<!--<div class="target-status text-muted">-->
+<!--</div>-->
+<!--<div class="timestamp">-->
+<!--6: 32 pm-->
+<!--</div>-->
+<!--<div class="text-muted">-->
+<!--Aug 13-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="pipe">-->
+<!--<div class="bar trip" ngClass=""></div>-->
+<!--</div>-->
+<!--<div class="flex-column flex timeline-detail">-->
+<!--<div class="activity-dot"><div class="auto">S</div></div>-->
+<!--<div class="action-title">-->
+<!--Stopover expected-->
+<!--</div>-->
+<!--<div class="text-sm">-->
+<!--# 15554A94-2578-480D-8BDD-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->

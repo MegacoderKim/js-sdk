@@ -1,0 +1,429 @@
+@import "~styles/variables";
+@import "~styles/placeholder";
+//action timeline
+@trip: @ht-blue;
+@stop: @ht-yellow;
+@no-info: @ht-grey-3;
+@warning: rgb(209, 145, 145);
+:host {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+}
+.segment {
+  border-radius: 4px;
+}
+.active-segment {
+  background: rgba(255, 255, 255, 0.75);
+}
+.trip-status {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: @ht-grey-text-bold;
+  margin-bottom: 20px;
+  position: relative;
+  .status-main {
+    font-size: 31px;
+    font-weight: 600;
+  }
+  .status-sub {
+    color: @ht-grey-4;
+    font-size: 12px;
+  }
+}
+.ht-breadcrumb {
+  padding-bottom: 19px;
+}
+.card {
+  margin-bottom: 9px;
+  .action-img {
+    margin: 0 auto;
+  }
+  .content-right {
+    justify-content: space-around;
+    position: relative;
+    text-align: center;
+  }
+}
+
+.driver-container {
+  margin-bottom: 20px;
+  border-bottom: 1px solid @ht-grey-2;
+  padding-bottom: 16px;
+  .text-muted {
+    color: @ht-grey-3;
+  }
+}
+
+.task-status {
+  padding-bottom: 20px;
+  text-align: center;
+  color: @ht-grey-5;
+}
+
+.time-container {
+  width: 96px;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  padding-right: 20px;
+  padding-bottom: 16px;
+  z-index: 5;
+  .target-status {
+    font-size: 10px;
+  }
+  .timestamp {
+    font-size: 14px;
+    color: @ht-grey-5;
+    //padding-bottom: 5px;
+  }
+  .text-muted {
+    color: @ht-grey-3;
+    font-size: 12px;
+  }
+  .timestamp-text {
+    font-size: 12px;
+    color: @ht-grey-5;
+    font-weight: 700;
+  }
+}
+
+//.action-time {
+//
+//  .target-status {
+//    font-size: 10px;
+//  }
+//  .timestamp {
+//    font-size: 16px;
+//    font-weight: 700;
+//    color: @ht-grey-5;
+//    //padding-bottom: 5px;
+//  }
+//  .text-muted {
+//    color: @ht-grey-3;
+//  }
+//}
+.pipe {
+  width: 20px;
+  min-width: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .bar {
+    height: 100%;
+    flex:1;
+  }
+  .big {
+    outline: 2px solid;
+  }
+  .solid {
+    border-right: 3px solid @ht-grey-4;
+  }
+  .line {
+    border-right: 3px dotted @ht-grey-4 ;
+  }
+  .line-border {
+    border-right: 3px dotted @ht-grey-4 ;
+    outline: 0;
+  }
+  .light {
+    border-right: 3px dashed fade(@ht-grey-4, 40%);
+  }
+  .fade {
+    border-right: 3px solid fade(@ht-grey-4, 14%);
+  }
+}
+.timeline-detail {
+  padding-bottom: 22px;
+  position: relative;
+  padding-left: 16px;
+  min-height: 66px;
+  .task-action {
+    font-size: 16px;
+    color: @ht-grey-5;
+    text-transform: capitalize;
+    margin-bottom: 4px;
+    transition: font-size 0.4s;
+  }
+  .action-title {
+    font-size: 16px;
+    color: @ht-grey-5;
+    text-transform: capitalize;
+    //margin-bottom: 4px;
+    transition: font-size 0.4s;
+    font-weight: 700;
+  }
+  .task-detail {
+    background: #fff;
+    padding: 6px 10px;
+    color: @ht-grey-5;
+    transition: font-size 0.4s;
+  }
+  .task-icon {
+    position: absolute;
+    left: -23px;
+    top: -2px;
+  }
+  .task-ontime-status {
+    color: darken(@ht-green, 14%);
+    padding-bottom: 4px;
+    font-size: 11px;
+    transition: font-size 0.4s;
+  }
+  .text-late {
+    color: @ht-red;
+  }
+}
+.selected-task {
+  .task-action {
+    font-size: 18px;
+  }
+  .task-detail {
+    font-size: 13px;
+  }
+  .task-ontime-status {
+    font-size: 13px;
+  }
+}
+.trip-event {
+  .pipe {
+    padding-top: 7px;
+  }
+  .time-container {
+    padding-bottom: 24px;
+  }
+  &-start {
+
+  }
+  &-end {
+
+  }
+}
+.segment-dot {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: -1px;
+  left: -23px;
+  display: flex;
+}
+.a-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid @ht-grey-4;
+  position: absolute;
+  top: -8px;
+  left: -16px;
+  display: flex;
+  background-color: white;
+}
+.activity-dot {
+  border: 1px solid @ht-grey-4;
+  font-size: 10px;
+  &-ended {
+    background: @ht-grey-4;
+    color: #fff;
+  }
+}
+.trip-dot {
+  border: 0px solid @ht-blue;
+  background: @ht-blue;
+  .pulse {
+    background: @ht-blue;
+  }
+}
+.stop-dot {
+  border: 0px solid @ht-blue;
+  background: @ht-blue;
+  .pulse {
+    background: @ht-blue;
+  }
+}
+.pulse {
+
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  animation: pulse 3s ease-out;
+  animation-iteration-count: infinite;
+  position: absolute;
+  z-index: 10;
+  opacity: 1;
+  margin:auto;
+}
+.trip {
+  color: @ht-blue;
+  border-color: @trip !important;
+}
+.stop {
+  color: @stop;
+  border-color: @stop !important;
+}
+.no-info {
+  color: @stop;
+  border-color: @no-info !important;
+}
+//.start-dot {
+//  width: 25px;
+//  height: 25px;
+//  border-radius: 50%;
+//  background: #fff;
+//  border: 7px solid @ht-grey-4;
+//  position: absolute;
+//  top: -1px;
+//  left: -23px;
+//}
+//.start-dot.small {
+//  border-width: 2px;
+//}
+
+.ht-faded {
+  opacity: 0.4;
+}
+
+.action {
+  position: absolute;
+  top: 6px;
+  padding: 3px;
+  font-size: 19px;
+  color: @ht-grey-4;
+}
+.action-left {
+  left: 11px;
+  font-size: 35px;
+  color: @ht-grey-3;
+  &:hover {
+    color: @ht-grey-4;
+  }
+}
+.text-sm {
+  font-size: 11px;
+  color: @ht-grey-5;
+  padding-bottom: 7px;
+}
+.title {
+  font-size: 13px;
+  font-weight: bold;
+}
+.activity-card {
+  //background: rgba(255, 255, 255, 0.54);
+  padding: 6px 10px;
+  color: @ht-grey-5;
+  transition: font-size 0.4s;
+  font-size: 13px;
+  position: relative;
+  //border: 1px solid @ht-grey-border-light;
+  cursor: pointer;
+  //&:hover {
+  //  background: rgba(255, 255, 255, 0.54);
+  //}
+  &-selected {
+    background: #fff;
+    &:hover {
+      background: #fff;
+    }
+  }
+  .close-card {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    color: @ht-grey-5;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    display: flex;
+    .fa {
+      margin:auto;
+    }
+  }
+}
+.action-card {
+  background: #fff;
+  padding: 3px 11px;
+  border: 1px solid @ht-grey-border;
+  //border-radius: 10px;
+  font-size: 11px;
+  cursor: pointer;
+  color: @ht-grey-5;
+  margin-left: -127px;
+  padding-left: 134px;
+  margin-top: -9px;
+  min-height: 50px;
+  box-shadow: 1px 2px 2px 0px rgba(0, 0, 0, 0.07);
+  .lookup {
+    //font-size: 9px;
+  }
+  &:hover {
+    border: 1px solid @ht-grey-4;
+  }
+  &-active {
+    border: 1px solid @ht-grey-4;
+  }
+}
+.trip-border {
+  border-color: @trip !important;
+  outline-color: @trip !important;
+}
+.stop-border {
+  border-color: @stop !important;
+  outline-color: @stop !important;
+}
+.no-info-border {
+  border-color: @no-info !important;
+  outline-color: @no-info !important;
+}
+.warning-border {
+  border-color: @warning !important;
+  outline-color: @warning !important;
+}
+.trip-bg {
+  background: @trip;
+}
+.stop-bg {
+  background: @stop;
+}
+.no-info-bg {
+  background: @no-info;
+}
+.warning-bg {
+  background: @warning;
+}
+.trip-color {
+  color: @trip;
+}
+.stop-color {
+  color: darken(@stop, 6%);
+}
+.no-info-color {
+  color: @no-info;
+}
+.warning-color {
+  color: @warning;
+}
+.table {
+  margin: 7px 0;
+  font-size: 11px;
+}
+.activity-stats {
+  font-size: 12px;
+  font-weight: bold;
+}
+.heatbeat {
+  padding-left: 12px;
+  font-size: 13px;
+}
+//.trip-card {
+//  border-left: 2px solid @trip;
+//}
+//.stop-card {
+//  border-left: 2px solid @stop;
+//}
+//.no-info-card {
+//  border-left: 2px solid @no-info;
+//}

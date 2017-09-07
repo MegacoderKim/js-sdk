@@ -1,0 +1,6 @@
+<div class="flex-column card-stack" *ngIf="userPage">
+  <!--<div *ngFor="let user of userPage.results">-->
+    <!--{{user.name}}-->
+  <!--</div>-->
+  <ht-user-card (onSelectPlaceline)="onSelectUserData.next($event)" (click)="onSelectUser.next(user)" [user]="user" *ngFor="let user of userPage.results; trackBy:indexId"></ht-user-card>
+</div>

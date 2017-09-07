@@ -1,0 +1,6 @@
+<div *ngIf="battery" [ngClass]="layout == 'column' ? 'flex-column column-gap-4 justify-center' : 'flex-row row-gap-4 align-center'" class="">
+  <div>
+    {{battery}}%
+  </div>
+  <i class="fa" [ngClass]="batteryClass(battery)"></i>
+</div>

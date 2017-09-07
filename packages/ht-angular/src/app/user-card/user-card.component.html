@@ -1,0 +1,25 @@
+<div class="card-content-mid flex-row">
+  <div class="text-left flex-row row-gap-10 flex">
+    <ht-profile [url]="user.photo"></ht-profile>
+    <div class="user-info-container">
+      <div class="user-name flex-row">
+        {{user.name | nameCase | dot: 'Unknown users'}}
+      </div>
+      <ng-template [ngIf]="showStatus">
+        <div class="user-status-display">
+          <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
+        </div>
+        <div class="flex-row text-muted user-status">
+          <div>{{user.display.sub_status_text}}<span *ngIf="user.last_battery">&nbsp; &bull; &nbsp;</span></div>
+          <ht-battery-icon *ngIf="user.last_battery" [battery]="user.last_battery"></ht-battery-icon>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+  <div>
+    <button (click)="onSelectPlaceline.next(user)">
+      View on map
+    </button>
+  </div>
+</div>

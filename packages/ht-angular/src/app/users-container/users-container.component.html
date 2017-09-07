@@ -1,0 +1,6 @@
+<div class="flex-column">
+  <ht-users (onSelectUserData)="selectUserData($event)" (onSelectUser)="selectUser($event)" [userPage]="users$ | async"></ht-users>
+  <div *ngIf="user$ | async as userData">
+    <ht-placeline [userData]="userData"></ht-placeline>
+  </div>
+</div>

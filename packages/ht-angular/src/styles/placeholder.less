@@ -1,0 +1,378 @@
+@import "variables";
+
+.text-center {
+  text-align: center;
+}
+.text-muted {
+  color: @ht-grey-4;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.column-gap-4 {
+  > :not(:last-child) {
+    margin-bottom: 4px;
+  }
+}
+.row-gap-4 {
+  > :not(:last-child) {
+    margin-right: 4px;
+  }
+}
+
+.column-gap-7 {
+  > :not(:last-child) {
+    margin-bottom: 7px;
+  }
+}
+.row-gap-7 {
+  > :not(:last-child) {
+    margin-right: 7px;
+  }
+}
+
+.column-gap-10 {
+  > :not(:last-child) {
+    margin-bottom: 10px;
+  }
+}
+.row-gap-10 {
+  > :not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.column-gap-20 {
+  > :not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+.row-gap-20 {
+  > :not(:last-child) {
+    margin-right: 20px;
+  }
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+.flex {
+  flex: 1;
+}
+
+.auto {
+  margin: auto;
+}
+
+.relative {
+  position: relative;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+.space-around {
+  justify-content: space-around;
+}
+.justify-center {
+  justify-content: center;
+}
+
+.flex-center {
+  align-items: center;
+}
+
+.align-center {
+  align-items: center;
+}
+.clickable {
+  cursor: pointer;
+}
+
+.round-icon {
+  display: flex;
+  width: 23px;
+  height: 23px;
+  background: darken(@hyper, 0%);
+  border-radius: 50%;
+}
+
+
+.above {
+  z-index: 5;
+}
+
+.flex-half {
+  flex-basis: 50%;
+
+}
+
+.link-unstyled {
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.half {
+  width: 50%;
+}
+.padding-left {
+
+}
+
+.text-ontime {
+  color: darken(@ht-green, 13%);
+}
+
+.text-late {
+  color: @ht-red;
+}
+
+.text-warning {
+  color: @ht-red !important;
+}
+
+.text-red {
+  color: @ht-red;
+}
+
+.text-blue {
+  color: @ht-blue;
+}
+
+.light-color {
+  color: @ht-grey-3;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+
+.hover-shadow:hover {
+  box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.16);
+}
+
+.marker-transparent {
+  opacity: 0.4;
+}
+
+.marker-fade {
+  //filter: contrast(40%);
+  filter: contrast(16%) brightness(160%) blur(0.6px);
+}
+
+.tooltip-warning {
+  background: #e04745;
+  color: #fff;
+  &-arrow {
+    border-right-color: #e04745 !important;
+  }
+}
+
+.tooltip-info {
+  background: @ht-blue;
+  color: #fff;
+  &-arrow {
+    border-right-color: @ht-blue !important;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+  &:active {
+    color: inherit;
+    text-decoration: none;
+  }
+  &:focus {
+    outline:none;
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.clickable-card {
+  cursor: pointer;
+  z-index: 1;
+  &:hover {
+    //box-shadow: 0px 0px 4px 2px rgba(0,0,0,0.16);
+    background: #fafafa;
+  }
+  &:active {
+    top: 1px;
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .card {
+    margin-bottom: -1px;
+  }
+  .sub-status {
+    font-size: 9px;
+    margin-top: -16px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: @ht-grey-4;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+  .card-action {
+    height: 30px;
+    //background: @ht-grey-4;
+    background: @ht-blue;
+    color: #fff;
+    border: 1px solid @ht-grey-border;
+    position: relative;
+    top: -3px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-transform: uppercase;
+    &:hover {
+      background: darken(@ht-blue, 5%);
+      font-weight: 500;
+    }
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.card {
+  color: @ht-grey-5;
+  background: #fff;
+  border: 0.4px solid @ht-grey-border-light;
+  position: relative;
+  .text-muted {
+    font-size: 10px;
+    font-weight: 300;
+  }
+  @content-padding: 20px;
+  &-content {
+    padding-right: @content-padding;
+    padding-left: @content-padding;
+    &-top {
+      padding-right: @content-padding;
+      padding-left: @content-padding;
+      padding-top: 10px;
+    }
+    &-bottom{
+      padding-right: @content-padding;
+      padding-left: @content-padding;
+      padding-bottom: 10px;
+    }
+    &-mid{
+      padding-right: @content-padding;
+      padding-left: @content-padding;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+  .border {
+    padding-right: @content-padding;
+    padding-left: @content-padding;
+    border-top: 1px solid @ht-grey-2;
+  }
+}
+
+//loading
+.dropdown-header {
+  background: #ededed;
+  font-size: 14px;
+}
+.spinner-wave {
+  margin: 0 auto;
+  width: 100px;
+  height: 20px;
+  text-align: center;
+}
+.spinner-wave > div {
+  background-color: @ht-blue;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: wave 1.2s infinite ease-in-out;
+  animation: wave 1.2s infinite ease-in-out;
+}
+
+.spinner-wave div:nth-child(2) {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner-wave div:nth-child(3) {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner-wave div:nth-child(4) {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner-wave div:nth-child(5) {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+@-webkit-keyframes wave {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes wave {
+  0%, 40%, 100% { transform: scaleY(0.4); }
+  20% { transform: scaleY(1.0); }
+}
+
+@media screen and (max-width: 480px) {
+  .hide-xs {
+    display: none !important;
+  }
+
+}
+
+@media screen and (min-width: 480px) {
+  .show-xs {
+    display: none !important;
+  }
+
+}
