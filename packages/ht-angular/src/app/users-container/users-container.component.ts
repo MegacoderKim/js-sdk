@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HtMapService, HtUsersClientService} from "ht-angular-client";
 import {IUserData} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
@@ -10,22 +10,54 @@ import {Observable} from "rxjs/Observable";
   styleUrls: ['./users-container.component.less']
 })
 export class UsersContainerComponent implements OnInit {
+  @Input() hasPlaceline = true;
+  usersPage$;
   users$;
   user$;
+  selectedUserId$;
+  selectedUserDataId$;
   constructor(
     private userService: HtUsersClientService,
     private mapService: HtMapService
   ) { }
 
   ngOnInit() {
-    this.users$ = this.userService.analytics.getListener();
-    this.user$ = this.userService.placeline.getListener();
+    this.usersPage$ = this.userService.analytics.getListener();
+    if (this.hasPlaceline) this.user$ = this.userService.placeline.getListener();
+    this.users$ = this.userService.usersPlaceline$();
+    // this.user$ = this.userService.placeline.getListener();
     // console.log(this.users$);
     this.users$.subscribe((usersPage) => {
-      // console.log(usersPage, "data");
+      console.log(usersPage, "data");
     })
+    this.selectedUserDataId$ = this.userService.placeline.idObservable.data$();
+    this.selectedUserId$ = this.userService.analytics.idObservable.data$();
 
+  }
 
+  onAction(payload) {
+    switch (payload['action']) {
+      case "close":
+        this.closeUserData(payload.user);
+        break;
+      case "detail": {
+        this.selectUserData(payload.user);
+        break;
+      }
+      default: {
+        this.selectUserData(payload.user)
+      }
+
+    }
+  };
+
+  closeUser() {
+
+  }
+
+  closeUserData(user) {
+    this.userService.placeline.setId(null);
+    this.userService.analytics.setId(null)
   }
 
 

@@ -29,7 +29,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     this.userService.placeline.initListener();
     this.userService.placeline.data$.subscribe((userData: IUserData) => {
-      console.log(userData, "user Data map");
+      // console.log(userData, "user Data map");
       if (userData) {
         this.mapService.tracePlaceline(userData);
         this.mapService.resetBounds()

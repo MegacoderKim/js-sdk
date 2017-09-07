@@ -10,16 +10,16 @@
           <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
         </div>
         <div class="flex-row text-muted user-status">
-          <div>{{user.display.sub_status_text}}<span *ngIf="user.last_battery">&nbsp; &bull; &nbsp;</span></div>
-          <ht-battery-icon *ngIf="user.last_battery" [battery]="user.last_battery"></ht-battery-icon>
+          <div>{{user.display.sub_status_text}}<span *ngIf="user.display.battery">&nbsp; &bull; &nbsp;</span></div>
+          <ht-battery-icon *ngIf="user.display.battery" [battery]="user.display.battery"></ht-battery-icon>
         </div>
       </ng-template>
 
     </div>
   </div>
   <div>
-    <button (click)="onSelectPlaceline.next(user)">
-      View on map
+    <button (click)="fireAction()" *ngIf="getActionText()">
+      {{getActionText()}}
     </button>
   </div>
 </div>

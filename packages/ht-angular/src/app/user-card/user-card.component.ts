@@ -14,7 +14,8 @@ import * as _ from "underscore";
 export class UserCardComponent implements OnInit, OnChanges {
   @Input() user: IUserData | IUserAnalytics | IUser;
   @Input() selectedUserId: string | null = null;
-  @Output() onSelectPlaceline = new EventEmitter();
+  @Input() action: 'default' | 'close' | 'detail' = 'default';
+  @Output() onAction = new EventEmitter();
   showStatus: boolean = true;
   @HostBinding('class') role = 'card flex-column clickable';
   constructor() { }
@@ -29,9 +30,29 @@ export class UserCardComponent implements OnInit, OnChanges {
     return !!user
   }
 
+  fireAction() {
+    this.onAction.next({user: this.user, action: this.action});
+    event.stopPropagation()
+  }
+
   ngOnChanges(a) {
-    // console.log(a.user.currentValue, "change");
-    this.showStatus = this.getShowStatus(a.user.currentValue)
+    // console.log(a, "change");
+    this.showStatus = a.user ? this.getShowStatus(a.user.currentValue) : this.showStatus
+  }
+
+  getActionText() {
+    switch (this.action) {
+      case  "close":
+        return "Close";
+      case "detail" :
+        return "";
+      default:
+        return "View on Map"
+    }
+  }
+
+  debug(e) {
+    console.log(e);
   }
 
 }
