@@ -1,7 +1,7 @@
 var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+var webpackRxjsExternals = require('webpack-rxjs-externals');
 var path = require('path');
 
 var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
@@ -32,8 +32,10 @@ var config = {
     },
     externals: [
         'ht-js-utils',
+        'ht-js-data',
         'moment-mini',
         'underscore',
+        webpackRxjsExternals(),
         /^rxjs\/.+$/
     ],
     plugins: [

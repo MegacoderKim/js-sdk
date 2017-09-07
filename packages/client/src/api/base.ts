@@ -1,6 +1,5 @@
 import {HtRequest} from "../request";
 import { Observable } from "rxjs/Observable";
-import 'rxjs/add/observable/of';
 
 export class HtBaseApi {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';

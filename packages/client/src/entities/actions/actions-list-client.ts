@@ -5,7 +5,6 @@ import { GetUrlParam } from "ht-js-utils";
 // import {HtFetchClient} from "ht-js-fetch-client";
 import * as _ from  "underscore";
 import {defaultListConfig, IIndexQuery, IListConfig} from "../../interfaces";
-import 'rxjs/add/operator/expand';
 import {HtActionsApi} from "../../api/actions";
 import {IActionPage} from "ht-models";
 
