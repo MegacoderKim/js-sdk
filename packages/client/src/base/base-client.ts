@@ -15,11 +15,11 @@ export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;
   queryObserver: QueryObserver;
   idObservable: IdObserver;
-  data$: Observable<T | null | false>;
+  data$: Observable<T | null | boolean>;
   api: A;
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   entityName: string;
-  dataObserver: ReplaySubject<T> = new ReplaySubject();
+  dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();
   constructor(
     public options: IBaseClientOptions<A>
   ) {
@@ -41,7 +41,7 @@ export abstract class HtBaseClient<T, O, A> {
     return this.options.defaultQuery || {}
   }
 
-  getListener(options: Partial<IListClientOptions<A>> = {}): Observable<T | null | false> {
+  getListener(options: Partial<IListClientOptions<A>> = {}): Observable<T | null | boolean> {
     this.setOptions(options);
     this.initListener();
     return this.data$
@@ -54,6 +54,7 @@ export abstract class HtBaseClient<T, O, A> {
           return queryObj ? this.getData$(queryObj) : Observable.of(false)
         }).do((data) => {
           this.loadingObserver.updateData(false);
+          //todo handle not found
           // this.update$.next(data);
           // if(!data || data != false) {
           //   if(this.options.onNotFound) this.options.onNotFound();
@@ -69,7 +70,7 @@ export abstract class HtBaseClient<T, O, A> {
   }
 
   clearData() {
-    this.dataObserver.next(null)
+    this.idObservable.updateData(null)
   }
 
   getUpdate$(data, queryObj: object): Observable<T> {
