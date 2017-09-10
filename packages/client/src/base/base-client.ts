@@ -93,6 +93,16 @@ export abstract class HtBaseClient<T, O, A> {
     this.idObservable.updateData(id);
   }
 
+  toggleId(id: string | null) {
+    this.idObservable.data$().take(1).subscribe((currentId) => {
+      if(id === currentId) {
+        this.setId(null)
+      } else {
+        this.setId(id)
+      }
+    })
+  }
+
   getQueryOptions(options: IListClientOptions<A>) {
     return {initialData: options.query || {}, dataSource$: options.querySource$}
   }

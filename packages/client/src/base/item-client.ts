@@ -19,7 +19,7 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
       this.queryObserver.data$().startWith({}),
-      this.idObservable.data$(),
+      this.idObservable.data$().distinctUntilChanged(),
       ((query, id) => {
         return {id, query}
       })
