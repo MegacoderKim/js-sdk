@@ -8,6 +8,7 @@ export class HtMapClass {
   map: HtMap;
   mapUtils: MapUtils;
   segmentTrace: HtSegmentsTrace;
+  usersCluster
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
     duration: 0.3

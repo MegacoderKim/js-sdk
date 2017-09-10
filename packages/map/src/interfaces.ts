@@ -17,6 +17,7 @@ export interface MapUtils {
   renderMap: (elem: Element, options: object) => HtMap,
   updateCirclePosition?: (item, position, info?: string, options?: object) => any,
   getCircleMarker: () => any,
+  getMarker: () => any,
   getPolyline: () => any,
   setEncodedPath: (item, path: string) => void,
   setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void

@@ -111,6 +111,10 @@ function getCircleMarker() {
   return L.circleMarker([0, 0])
 }
 
+function getMarker() {
+  return L.marker([0, 0])
+}
+
 function getPolyline() {
   return L.polyline([])
 }
@@ -140,6 +144,7 @@ export const LeafletUtils: MapUtils = {
   renderMap,
   updateCirclePosition,
   getCircleMarker,
+  getMarker,
   getPolyline,
   setEncodedPath,
   setBounds,

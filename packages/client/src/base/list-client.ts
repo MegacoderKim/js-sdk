@@ -23,6 +23,24 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     })
   }
 
+  get allArray$() {
+    console.log(this.api, "api");
+    return Observable.of(3)
+
+  }
+
+  getAll$(onUpdate, onComplete = (data) => {}) {
+    return this.api.all$(onUpdate, onComplete);
+    // return this.api$({page_size: 100})
+    //   .expand((data) => {
+    //     console.log("expand", data);
+    //     const  r = this.api.all$();
+    //     console.log(r);
+    //     // let next = this.api.api$(data['next'])
+    //     return data['next'] ? r : Observable.empty()
+    //   })
+  }
+
   getDefaultQuery() {
     return {page_size: 10, ...super.getDefaultQuery()}
   }

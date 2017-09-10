@@ -6,13 +6,17 @@ import {Partial, IUserAnalyticsPage, IUserData} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
+import {EntityClient} from "../../base/entity-client";
+import {HtUsersMarkers} from "./users-markers";
 
-export class HtUsersClient {
+export class HtUsersClient extends EntityClient {
   list: HtUsersListClient;
   analytics: HtUsersAnalytics;
   placeline: HtUserPlacelineClient;
   api;
+  marks: HtUsersMarkers;
   constructor(req, options: IUsersClientOptions = {}) {
+    super();
     let api = new HtUsersApi(req);
     this.api = api;
     this.list = new HtUsersListClient({
@@ -28,86 +32,42 @@ export class HtUsersClient {
     this.placeline = new HtUserPlacelineClient({
       api,
       ...options.placelineOptions
+    });
+
+    this.marks = new HtUsersMarkers({
+      api,
+      ...options.analyticsOptions
     })
   }
 
   usersPlaceline$() {
+    let id$ = this.analytics.idObservable.data$().distinctUntilChanged();
+    let dataArray$ = this.analytics.dataArray$;
+    let selected$ = this.placeline.data$.distinctUntilChanged();
+    return this.dataArrayWithSelected$(id$, dataArray$, selected$)
 
-    const userId$ = this.analytics.idObservable.data$().distinctUntilChanged();
-    const placelinePage$ = this.placeline.data$.distinctUntilChanged()
-      .map((data) => {
-      return data ? [data] : null;
-    }); //todo take query from placeline
-
-    const dataArray$ = this.analytics.dataArray$;
-
-    // const d$ = userId$.startWith(null).switchMap((userId) => {
-    //   console.log(userId, "user id");
-    //   return Observable.combineLatest(
-    //     placelinePage$.startWith(null).do((p) => {
-    //       console.log("placeline", p);
-    //     }),
-    //     this.analytics.dataArray$.do((p) => {
-    //       console.log("data array", p);
-    //     }),
-    //     (placelinePage, userPage) => {
-    //       console.log("combine", placelinePage, userPage);
-    //       return userId ? placelinePage || userPage : userPage
-    //     }
-    //   );
-    //   //
-    //   // if (userId) {
-    //   //   return placelinePage$
-    //   // } else {
-    //   //   return this.analytics.dataArray$;
-    //   // }
-    // }).do((userp) => {
-    //   // console.log("user place");
-    // });
-
-    // return d$
-
-    // return Observable.merge(
-    //   userId$.switchMap((id) => {
-    //     return this.analytics.dataArray$
-    //   }),
-    //   placelinePage$.filter((data) => !!data)
-    // ).do((data) => {
-    //   console.log(data, "Dadas");
-    // })
-    const d = Observable.combineLatest(
-      placelinePage$,
-      userId$,
-      dataArray$,
-      (placelinePage, userId, dataArray) => {
-        return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
-          return userId ? user.id == userId : true;
-        })
-      }
-    );
-      // .switchMap(userId => {
-      //   return userId ? placelinePage$ : dataArray$
-      // })
-    //   .subscribe(data => {
+    // const userId$ = this.analytics.idObservable.data$().distinctUntilChanged();
+    // const placelinePage$ = this.placeline.data$.distinctUntilChanged()
+    //   .map((data) => {
+    //   return data ? [data] : null;
+    // }); //todo take query from placeline
     //
-    //   console.log("combbine", data);
-    // });
+    // const dataArray$ = this.analytics.dataArray$;
+    //
+    // const d = Observable.combineLatest(
+    //   placelinePage$,
+    //   userId$,
+    //   dataArray$,
+    //   (placelinePage, userId, dataArray) => {
+    //     return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
+    //       return userId ? user.id == userId : true;
+    //     })
+    //   }
+    // );
+    //
+    //
+    // return d
 
-    return d
-
-    // return userId$.switchMap((id) => {
-    //   console.log("user id", id);
-    //   let pOrD = Observable.merge(
-    //     dataArray$.take(1),
-    //     placelinePage$
-    //   );
-    //   let p = this.placeline.dataObserver.take(1).switchMap((placeline) => {
-    //     console.log("placeline", placeline);
-    //     return placeline ? placelinePage$ : pOrD
-    //   });
-    //   return id ? p : dataArray$
-    //   // return placelinePage$
-    // })
   }
 
 }

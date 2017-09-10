@@ -117,6 +117,10 @@ function getCircleMarker() {
   return new google.maps.Marker()
 }
 
+function getMarker() {
+  return new google.maps.Marker()
+}
+
 function getPolyline() {
   return new google.maps.Polyline()
 }
@@ -153,6 +157,7 @@ export const GoogleMapUtils: MapUtils = {
   renderMap,
   updateCirclePosition,
   getCircleMarker,
+  getMarker,
   getPolyline,
   setEncodedPath,
   setBounds,

@@ -37,6 +37,9 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/expand';
 import 'rxjs/add/operator/isEmpty';
+import 'rxjs/add/operator/scan';
+
+
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/interval';

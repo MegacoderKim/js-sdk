@@ -1,5 +1,5 @@
 import {ISegment, IUser, IUserAnalytics, IUserData} from "ht-models";
-import {ISegmentType} from "../interfaces";
+import {ISegmentType, HtPosition} from "../interfaces";
 import * as _ from "underscore";
 
 export class HtUser {
@@ -84,6 +84,19 @@ export class HtUser {
       }
       return segmentType;
     }, {tripSegment: [], stopSegment: []});
+  }
+
+  getPosition(): HtPosition | null {
+    let data = this.data;
+    if(data.last_location && data.last_location.geojson) {
+
+      const lat = data.last_location.geojson.coordinates[1];;
+      const lng =  data.last_location.geojson.coordinates[0];
+      return {lat, lng}
+      // return L.latLng([item.last_location.geojson.coordinates[1], item.last_location.geojson.coordinates[0]])
+    } else {
+      return null;
+    }
   }
 
   isValidMarker(user?: IUserAnalytics | IUser) {
