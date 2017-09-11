@@ -43,21 +43,18 @@ export class HtBaseApi {
     return this.getReqFromTail<T>(tail, query)
   }
 
-  all$<T>(onUpdate = (data, isFirst) => {}, onComplete = (data) => {}): Observable<any> {
+  all$<T>(): Observable<any> {
     return this.analytics({page_size: 100})
-      .do((data) => {
-        onUpdate(data, true)
-      })
       .expand((data: IPageData) => {
-        let req = this.request.getObservable(data['next']).do((data) => {
-          onUpdate(data, false)
-        });
+        let req = this.request.getObservable(data['next']);
         return data['next'] ? req : Observable.empty()
       }).scan((acc, value) => {
-        return [...acc, ...value.results]
-      }, []).do((data) => {
-        onComplete(data)
-      })
+        let results = [...acc.results, ...value.results];
+        let isFirst = acc.results.length ? false : true;
+
+        return {results, isFirst}
+      }, {results: [], isFirst: true})
+
   }
 
   analytics(query): Observable<any> {

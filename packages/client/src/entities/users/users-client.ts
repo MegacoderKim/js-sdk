@@ -8,6 +8,7 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
 import {HtUsersMarkers} from "./users-markers";
+import {htUser} from "../../../../data/src/entities/user";
 
 export class HtUsersClient extends EntityClient {
   list: HtUsersListClient;
@@ -68,6 +69,19 @@ export class HtUsersClient extends EntityClient {
     //
     // return d
 
+  }
+
+  usersMarkers$() {
+    let a = Observable.merge(
+      this.marks.data$.pluck('results'),
+      this.analytics.dataArray$
+    ).map((users) => {
+      return _.filter(users, (user) => {
+        return (user.last_location && user.last_location.geojson)
+      })
+    });
+
+    return a
   }
 
 }

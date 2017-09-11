@@ -1,10 +1,11 @@
 import {HtMarker, MapUtils} from "./interfaces";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
+declare var MarkerClusterer:any;
 
-export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds) {
+export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds, force = false) {
   bounds = bounds || new google.maps.LatLngBounds();
-  if(item && item.getMap() && item.getPosition) {
+  if((item && item.getMap() && item.getPosition) || force) {
     let p = item.getPosition();
     let l = {lat: p.lat(), lng: p.lng()};
     bounds.extend(l);
@@ -94,15 +95,16 @@ function bringToFront (item) {
   // item.bringToFront()
 }
 
-function setFocus(item, map: google.maps.Map) {
-  if(item && item.getMap()) {
+function setFocus(item, map: google.maps.Map, zoom?, force = false) {
+  if((item && item.getMap()) || force) {
     let center =  getItemLatlng(item);
-    map.setCenter(center)
+    map.setCenter(center);
+    if(zoom) map.setZoom(zoom)
   }
 }
 
 function getItemLatlng(item) {
-  return item.getLatLng()
+  return item.getPosition()
 }
 
 function renderMap(elem, options) {
@@ -119,6 +121,37 @@ function getCircleMarker() {
 
 function getMarker() {
   return new google.maps.Marker()
+}
+
+function  getMarkerCluster(map) {
+  // console.log("get", map);
+  return new MarkerClusterer(map, [],
+    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'})
+}
+
+function removeClusterMarkers(cluster) {
+  cluster.clearMarkers()
+}
+
+function removeClusterMarker(cluster, marker) {
+  cluster.removeMarker(marker)
+}
+
+
+function addMarkersToCluster(cluster, markers, map) {
+  // if(markers.length) console.log(map, "map", markers[0]);
+  // cluster.setMap(map);
+  _.each(markers, (marker) => {
+    // console.log(marker.getPosition().lng());
+    cluster.addMarker(marker)
+    // if(marker.getPosition()) {
+    //   console.log("hit", marker);
+    //   cluster.addMarker(marker)
+    // }
+  })
+  // cluster.addMarkers(markers)
+  // this.markerCluster.addLayers(markers);
+  // this.markerCluster.refreshClusters(markers);
 }
 
 function getPolyline() {
@@ -140,6 +173,11 @@ function getBoundsFix(bounds) {
   return new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
 }
 
+
+function invalidateSize(map) {
+  google.maps.event.trigger(map, 'resize');
+}
+
 export const GoogleMapUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
@@ -158,8 +196,13 @@ export const GoogleMapUtils: MapUtils = {
   updateCirclePosition,
   getCircleMarker,
   getMarker,
+  getMarkerCluster,
+  addMarkersToCluster,
+  removeClusterMarkers,
+  removeClusterMarker,
   getPolyline,
   setEncodedPath,
   setBounds,
-  isValidBounds
+  isValidBounds,
+  invalidateSize
 };

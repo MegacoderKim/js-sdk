@@ -115,6 +115,26 @@ function getMarker() {
   return L.marker([0, 0])
 }
 
+function  getMarkerCluster(map) {
+  // let cluster = L.markerClusterGroup();
+  // map.addTo(cluster);
+  // return cluster
+
+}
+
+function removeClusterMarkers(cluster) {
+
+}
+
+function removeClusterMarker(cluster, marker) {
+
+}
+
+function addMarkersToCluster(cluster, markers) {
+  cluster.addLayers(markers);
+  cluster.refreshClusters(markers);
+}
+
 function getPolyline() {
   return L.polyline([])
 }
@@ -125,6 +145,10 @@ function setBounds(map: L.Map, bounds: L.LatLngBounds, options?) {
 
 function isValidBounds(bounds: L.LatLngBounds) {
   return bounds.isValid()
+}
+
+function invalidateSize(map: L.Map) {
+  map.invalidateSize()
 }
 
 export const LeafletUtils: MapUtils = {
@@ -145,8 +169,13 @@ export const LeafletUtils: MapUtils = {
   updateCirclePosition,
   getCircleMarker,
   getMarker,
+  getMarkerCluster,
+  addMarkersToCluster,
+  removeClusterMarkers,
+  removeClusterMarker,
   getPolyline,
   setEncodedPath,
   setBounds,
-  isValidBounds
+  isValidBounds,
+  invalidateSize
 };

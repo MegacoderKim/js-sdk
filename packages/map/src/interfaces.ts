@@ -4,7 +4,7 @@ export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,
   setStyle: (item: HtMapItem, style) => void,
   clearItem: (item: HtMapItem) => void,
-  extendBounds: (item?: HtMapItem, bounds?: HtBounds) => HtBounds
+  extendBounds: (item?: HtMapItem, bounds?: HtBounds, force?: boolean) => HtBounds
   extendBoundsWithPolyline: (item?: HtPolyline, bounds?: HtBounds) => HtBounds,
   getLatlng: (lat?: number, lng?: number) => HtLatLng,
   updatePosition: (marker: HtMarker, position: HtLatLng, content?: string, options?) => void,
@@ -13,15 +13,20 @@ export interface MapUtils {
   openPopup: (item: HtMapItem, content?: string) => void
   closePopup: (item: HtMapItem) => void
   bringToFront: (item: HtMapItem) => void,
-  setFocus: (item: HtMapItem, map: HtMap) =>  void,
+  setFocus: (item: HtMapItem, map: HtMap, zoom?, force?: boolean) =>  void,
   renderMap: (elem: Element, options: object) => HtMap,
   updateCirclePosition?: (item, position, info?: string, options?: object) => any,
   getCircleMarker: () => any,
   getMarker: () => any,
+  getMarkerCluster: (map: HtMap) =>  any,
+  addMarkersToCluster: (cluster, markers: HtMarker[], map?) => any,
+  removeClusterMarkers: (cluster) =>  any,
+  removeClusterMarker: (cluster, marker) => any,
   getPolyline: () => any,
   setEncodedPath: (item, path: string) => void,
   setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
-  isValidBounds: (bounds: HtBounds) => boolean
+  isValidBounds: (bounds: HtBounds) => boolean,
+  invalidateSize: (map) => void
 }
 
 export type HtMap = L.Map | google.maps.Map

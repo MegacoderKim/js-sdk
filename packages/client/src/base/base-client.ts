@@ -16,7 +16,7 @@ export abstract class HtBaseClient<T, O, A> {
   queryObserver: QueryObserver;
   idObservable: IdObserver;
   data$: Observable<T | null | boolean>;
-  api: A;
+  api: HtBaseApi;
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   entityName: string;
   dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();

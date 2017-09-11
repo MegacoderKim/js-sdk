@@ -32,9 +32,14 @@ export class HtMapItems {
   }
 
   trace(items: any[], map: HtMap, setMap: boolean = false) {
+    items = this.filteredItem(items);
     this.map = map;
     if(items && items.length) this.traceItems(items, setMap);
     this.bustOlditem()
+  }
+
+  filteredItem(items) {
+    return items
   }
 
   getItem(data) {

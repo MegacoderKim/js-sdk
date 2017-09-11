@@ -1,6 +1,8 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseClient} from "./base-client";
 import {IListClientOptions} from "../interfaces";
+import {IUserAnalytics} from "ht-models";
+import {HtBaseApi} from "../api/base";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
 
@@ -29,8 +31,8 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
 
   }
 
-  getAll$(onUpdate, onComplete = (data) => {}) {
-    return this.api.all$(onUpdate, onComplete);
+  getAll$() {
+    return this.api.all$<IUserAnalytics>();
     // return this.api$({page_size: 100})
     //   .expand((data) => {
     //     console.log("expand", data);

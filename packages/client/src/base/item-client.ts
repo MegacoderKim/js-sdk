@@ -12,7 +12,7 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
   loadingObserver: LoadingObserver;
   queryObserver: QueryObserver;
   idObservable: IdObserver;
-  api: A;
+  api: HtBaseApi;
   defaultQuery: object = {};
 
 

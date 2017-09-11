@@ -31,7 +31,7 @@ export interface IListClientOptions<A> {
   idSource$?: Observable<string | number>
   id?: string,
   defaultQuery?: object,
-  api: A,
+  api: HtBaseApi | any,
   onDataUpdate?: (data) => void,
   pollTime?: number
 }
@@ -42,7 +42,7 @@ export interface IItemClientOptions<A> {
   loadingSource$?: Observable<boolean>,
   idSource$?: Observable<string | number>
   defaultQuery?: object,
-  api: A,
+  api: HtBaseApi,
   id?: string,
   onNotFound?: () => void,
   onDataUpdate?: (data) => void,
@@ -50,5 +50,5 @@ export interface IItemClientOptions<A> {
 }
 
 export interface IBaseClientOptions<A> extends Partial<IListClientOptions<A>>, Partial<IItemClientOptions<A>>{
-  api: A
+  api: HtBaseApi
 }

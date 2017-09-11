@@ -90,7 +90,7 @@ export class HtUser {
     let data = this.data;
     if(data.last_location && data.last_location.geojson) {
 
-      const lat = data.last_location.geojson.coordinates[1];;
+      const lat = data.last_location.geojson.coordinates[1];
       const lng =  data.last_location.geojson.coordinates[0];
       return {lat, lng}
       // return L.latLng([item.last_location.geojson.coordinates[1], item.last_location.geojson.coordinates[0]])
