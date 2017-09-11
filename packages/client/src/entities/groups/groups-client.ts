@@ -4,6 +4,7 @@ import {IBaseClientOptions} from "../../interfaces";
 import {HtBaseApi} from "../../api/base";
 import {HtGroupsApi} from "../../api/groups";
 import {HtGroupsItemClient} from "./groups-item-client";
+import {Observable} from "rxjs/Observable";
 
 export class HtGroupsClient extends EntityClient{
   list: HtGroupsListClient;
@@ -15,5 +16,11 @@ export class HtGroupsClient extends EntityClient{
     this.api = api;
     this.list = new HtGroupsListClient({api});
     this.item = new HtGroupsItemClient({api})
+  }
+
+  key$(id) {
+    return this.api.get(id).map((group) => {
+      return group['token']
+    });
   }
 }
