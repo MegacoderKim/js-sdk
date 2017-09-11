@@ -71,7 +71,7 @@ function closeTooltip(item) {
   item.closeTooltip()
 }
 
-function openPopup(item, content?: string) {
+function openPopup(item, map, content?: string) {
   if(content) item.setPopupContent(content);
   item.openPopup()
 }
@@ -151,6 +151,16 @@ function invalidateSize(map: L.Map) {
   map.invalidateSize()
 }
 
+function getPopup(options) {
+  return L.popup(options)
+}
+
+function onEvent(item, event, cb) {
+  item.on(event, (e) => {
+    cb(e)
+  })
+}
+
 export const LeafletUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
@@ -174,8 +184,10 @@ export const LeafletUtils: MapUtils = {
   removeClusterMarkers,
   removeClusterMarker,
   getPolyline,
+  getPopup,
   setEncodedPath,
   setBounds,
   isValidBounds,
-  invalidateSize
+  invalidateSize,
+  onEvent
 };

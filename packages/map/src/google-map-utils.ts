@@ -82,7 +82,11 @@ function closeTooltip(item) {
   // item.closeTooltip()
 }
 
-function openPopup(item, content?: string) {
+function openPopup(item, map, content?: string, popup?) {
+  if(popup) {
+    popup.setContent(content);
+    popup.open(map, item)
+  }
   // if(content) item.setPopupContent(content);
   // item.openPopup()
 }
@@ -99,7 +103,12 @@ function setFocus(item, map: google.maps.Map, zoom?, force = false) {
   if((item && item.getMap()) || force) {
     let center =  getItemLatlng(item);
     map.setCenter(center);
-    if(zoom) map.setZoom(zoom)
+    if(zoom) map.setZoom(zoom);
+    item.setAnimation(google.maps.Animation.DROP);
+    setTimeout(() => {
+      item.setAnimation(null);
+
+    }, 1000)
   }
 }
 
@@ -154,6 +163,10 @@ function addMarkersToCluster(cluster, markers, map) {
   // this.markerCluster.refreshClusters(markers);
 }
 
+function getPopup(options: {}) {
+  return new google.maps.InfoWindow(options)
+}
+
 function getPolyline() {
   return new google.maps.Polyline()
 }
@@ -176,6 +189,12 @@ function getBoundsFix(bounds) {
 
 function invalidateSize(map) {
   google.maps.event.trigger(map, 'resize');
+}
+
+function onEvent(item, event, cb) {
+  item.addListener(event, (e) => {
+    cb(e)
+  })
 }
 
 export const GoogleMapUtils: MapUtils = {
@@ -201,8 +220,10 @@ export const GoogleMapUtils: MapUtils = {
   removeClusterMarkers,
   removeClusterMarker,
   getPolyline,
+  getPopup,
   setEncodedPath,
   setBounds,
   isValidBounds,
-  invalidateSize
+  invalidateSize,
+  onEvent
 };

@@ -26,4 +26,8 @@ export abstract class EntityClient {
     return array$
   }
 
+  clearData() {
+
+  }
+
 }

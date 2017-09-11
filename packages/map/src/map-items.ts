@@ -20,6 +20,11 @@ export class HtMapItems {
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    this.onReady(options)
+  }
+
+  onReady(options = {}) {
+
   }
 
   // constructor(mapUtils: MapUtils = LeafletUtils, defaultStyle?) {

@@ -51,7 +51,7 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
 
   clearDiffData(id) {
     this.idObservable.data$().take(1).subscribe(currentId => {
-      if(id != currentId) this.clearData()
+      if(id != currentId) this.idObservable.updateData(null)
     })
   }
 

@@ -3,7 +3,9 @@ import {Observable} from "rxjs/Observable";
 import {IUserAnalyticsPage} from "ht-models";
 
 export class HtUsersApi extends HtBaseApi{
-    constructor(request) {
+  name = "user";
+
+  constructor(request) {
         super('users', request)
     }
 

@@ -8,6 +8,11 @@ import {htUser} from "ht-js-data";
 export class UsersCluster extends HtMapItems{
   itemEntities: {[id: string]: HtUserMarker} = {};
   markerCluster;
+  popup;
+
+  onReady() {
+    this.popup = this.mapUtils.getPopup()
+  }
 
   // extendBounds(bounds) {
   //   bounds = bounds || this.mapUtils.extendBounds();
@@ -33,7 +38,12 @@ export class UsersCluster extends HtMapItems{
   }
 
   getItem(item) {
-    return new HtUserMarker(this.mapType)
+    let marker = new HtUserMarker(this.mapType);
+    //todo make this configurable
+    this.mapUtils.onEvent(marker.item, 'click', () => {
+      this.mapUtils.openPopup(marker.item, this.map, marker.getInfoContent(), this.popup)
+    });
+    return marker
   }
 
   removeItem(mapItem: HtUserMarker) {
@@ -58,5 +68,10 @@ export class UsersCluster extends HtMapItems{
     this.mapUtils.addMarkersToCluster(this.markerCluster, userMarkerArray, this.map);
     // this.markerCluster.addLayers(userMarkerArray);
     // this.markerCluster.refreshClusters(userMarkerArray);
+  }
+
+  highlightItem(item) {
+    super.highlightItem(item);
+    this.mapUtils.openPopup(item.item, this.map, "Working", this.popup);
   }
 }

@@ -10,7 +10,7 @@ export interface MapUtils {
   updatePosition: (marker: HtMarker, position: HtLatLng, content?: string, options?) => void,
   openTooltip: (item: HtMapItem, content?: string) => void
   closeTooltip: (item: HtMapItem) => void
-  openPopup: (item: HtMapItem, content?: string) => void
+  openPopup: (item: HtMapItem, map, content?: string, popup?) => void
   closePopup: (item: HtMapItem) => void
   bringToFront: (item: HtMapItem) => void,
   setFocus: (item: HtMapItem, map: HtMap, zoom?, force?: boolean) =>  void,
@@ -22,11 +22,13 @@ export interface MapUtils {
   addMarkersToCluster: (cluster, markers: HtMarker[], map?) => any,
   removeClusterMarkers: (cluster) =>  any,
   removeClusterMarker: (cluster, marker) => any,
+  getPopup: (options?) => any,
   getPolyline: () => any,
   setEncodedPath: (item, path: string) => void,
   setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
   isValidBounds: (bounds: HtBounds) => boolean,
-  invalidateSize: (map) => void
+  invalidateSize: (map) => void,
+  onEvent: (item, event, cb) => void
 }
 
 export type HtMap = L.Map | google.maps.Map

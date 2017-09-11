@@ -33,7 +33,7 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
   }
 
   getAll$() {
-    return this.api.all$<IUserAnalytics>();
+    return this.api.all$<IUserAnalytics>({});
     // return this.api$({page_size: 100})
     //   .expand((data) => {
     //     console.log("expand", data);
@@ -45,7 +45,7 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
   }
 
   getDefaultQuery() {
-    return {page_size: 10, ...super.getDefaultQuery()}
+    return {page_size: 15, ...super.getDefaultQuery()}
   }
 
   getListQuery() {

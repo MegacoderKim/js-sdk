@@ -73,7 +73,7 @@ export class HtUsersClient extends EntityClient {
 
   usersMarkers$() {
     let a = Observable.merge(
-      this.marks.data$.pluck('results'),
+      this.marks.data$.filter(data => !!data).pluck('results'),
       this.analytics.dataArray$
     ).map((users) => {
       return _.filter(users, (user) => {
@@ -82,6 +82,13 @@ export class HtUsersClient extends EntityClient {
     });
 
     return a
+  }
+
+  clearData() {
+    this.list.clearData();
+    this.placeline.clearData();
+    this.analytics.clearData();
+    this.marks.clearData();
   }
 
 }
