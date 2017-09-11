@@ -6,8 +6,20 @@ export class HtRequest {
 
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
 
-  constructor(private token: string = "") {
-    this.token = token || HtClientConfig.token
+  constructor(private currentToken: string = "", private isAdmin: boolean = false) {
+    // this.token = token || HtClientConfig.token
+  }
+
+  setToken(token) {
+    this.currentToken = token
+  }
+
+  setIsAdmin(isAdmin) {
+    this.isAdmin = isAdmin;
+  }
+
+  get token() {
+    return this.currentToken && !this.isAdmin ? this.currentToken : HtClientConfig.token;
   }
 
   headerObj() {
