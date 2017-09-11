@@ -23,4 +23,10 @@ export class HtGroupsClient extends EntityClient{
       return group['token']
     });
   }
+
+  lookupIdKey$(lookupId) {
+    return this.api.index({lookup_id: lookupId}).map(groupPage => {
+      return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
+    })
+  }
 }
