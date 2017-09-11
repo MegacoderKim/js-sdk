@@ -8,7 +8,7 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
 import {HtUsersMarkers} from "./users-markers";
-import {htUser} from "../../../../data/src/entities/user";
+import {htUser} from "ht-js-data";
 
 export class HtUsersClient extends EntityClient {
   list: HtUsersListClient;

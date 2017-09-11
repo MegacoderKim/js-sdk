@@ -1,5 +1,4 @@
-import {ISegment, IEvent, IAction} from "ht-models";
-import {ITimeAwarePoint, Partial} from "../../models/src/common";
+import {ISegment, IEvent, IAction, ITimeAwarePoint, Partial} from "ht-models";
 
 export interface IActionPositions {
   position: HtPosition | null,

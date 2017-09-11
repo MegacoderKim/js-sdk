@@ -1,4 +1,3 @@
-
 import {Observable} from "rxjs/Observable";
 import {HtBaseApi} from "./api/base";
 import {Partial} from "ht-models";

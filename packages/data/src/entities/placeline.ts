@@ -4,7 +4,6 @@ import {htEvent} from "./event";
 import {NameCase, GetMinute} from "ht-js-utils";
 import * as _ from "underscore";
 import {CommonFunctions} from "../common";
-import {} from "../../../utils/src/time-utils";
 
 export class HtPlaceline {
   constructor(public userData: IUserData) {

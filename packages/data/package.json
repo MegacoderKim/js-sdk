@@ -9,8 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.js",
-    "prepack": "npm run build",
-    "packagr": "ng-packagr -p ng-package.json"
+    "prepack": "npm run build"
   },
   "author": "",
   "license": "ISC",

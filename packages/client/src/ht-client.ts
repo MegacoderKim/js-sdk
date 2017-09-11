@@ -12,7 +12,6 @@ export * from "./entities/users/users-list-client"
 export * from "./entities/users/user-placeline-client"
 export * from "./entities/users/users-analytics"
 export * from "./client"
-export {IUserAnalyticsPage} from "ht-models"
 export * from "./base/base-client";
 export * from "./base/data-observer";
 export * from "./base/list-client";
