@@ -10,6 +10,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {isEmpty} from "rxjs/operator/isEmpty";
 import {Subject} from "rxjs/Subject";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {FilterObserve} from "./filter-observe";
 
 export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;
@@ -20,6 +21,8 @@ export abstract class HtBaseClient<T, O, A> {
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   entityName: string;
   dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();
+  filter$: FilterObserve;
+
   constructor(
     public options: IBaseClientOptions<A>
   ) {
@@ -34,6 +37,7 @@ export abstract class HtBaseClient<T, O, A> {
 
     this.loadingObserver = new LoadingObserver(options.id || false, options.loadingSource$);
     this.idObservable = new IdObserver(options.id, options.idSource$);
+    this.filter$ = new FilterObserve()
     // this.initListener()
   }
 
@@ -49,17 +53,22 @@ export abstract class HtBaseClient<T, O, A> {
 
   initListener() {
     if(!this.data$) {
-      let data$ = this.getDataQueryWithLoading$()
-        .switchMap((queryObj) => {
-          return queryObj ? this.getData$(queryObj) : Observable.of(false)
-        }).do((data) => {
+      let data$ = this.getQueryAndFilter()
+        .switchMap(({queryObj, filter}) => {
+          return queryObj ?
+            this.getData$(queryObj).map((data) => {
+              let filData = filter(data);
+              return filData
+            }) : Observable.of(false)
+        })
+        .do((data) => {
           this.loadingObserver.updateData(false);
           //todo handle not found
           // this.update$.next(data);
           // if(!data || data != false) {
           //   if(this.options.onNotFound) this.options.onNotFound();
           // }
-        })
+        });
         // .share();
         // .subscribe(this.dataObserver);
         // this.dataObserver.subscribe(data$)
@@ -118,6 +127,16 @@ export abstract class HtBaseClient<T, O, A> {
       // this.update$.next(null);
       this.loadingObserver.updateData(data['id'] || true)
     });
+  }
+
+  getQueryAndFilter() {
+    return Observable.combineLatest(
+      this.getDataQueryWithLoading$(),
+      this.filter$.data$(),
+      (queryObj, filter) => {
+        return {queryObj, filter}
+      }
+    )
   }
 
   getDataAndUpdate$(queryObj: object): Observable<T> {

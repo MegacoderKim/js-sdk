@@ -3,6 +3,7 @@ import {HtBaseClient} from "./base-client";
 import {IListClientOptions} from "../interfaces";
 import {IUserAnalytics} from "ht-models";
 import {HtBaseApi} from "../api/base";
+import * as _ from "underscore";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
 
@@ -58,6 +59,16 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
       // .expand(() => {
       //   return
       // })
+  }
+
+  setFilter(filterResults = (data) => true) {
+    let filter = (pageData) => {
+      let results = _.filter(pageData.results, (data) => {
+        return filterResults(data)
+      });
+      return {...pageData, results}
+    };
+    this.filter$.updateData(filter);
   }
 
   abstract api$(query): Observable<T>

@@ -4,6 +4,7 @@ import { IUserAnalyticsPage } from "ht-models"
 
 export class HtUsersMarkers extends HtUsersAnalytics {
   entityName = "analytics users";
+
   getDefaultQuery() {
     return {ordering: "-created_at", ...super.getDefaultQuery()}
   }
