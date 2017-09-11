@@ -27,11 +27,23 @@ export class HtUserMarker extends HtMarkerItem {
   highlight(map: HtMap) {
     // console.log("highlight");
     this.mapUtils.setFocus(this.item, map, 16, true);
-    this.mapUtils.setMap(this.item, map)
+    // this.mapUtils.setMap(this.item, map)
   }
 
   resetItem() {
-    this.mapUtils.setMap(this.item, null)
+    // this.mapUtils.setMap(this.item, null)
+  }
+
+  getInfoContent() {
+    let data = this.data;
+    let position = htUser(data).getPosition();
+    let string = `<div>
+<strong>${data.name}</strong>
+<div>${data.status}</div>
+<div>${position.lat}, ${position.lng}</div>
+<div>${data.display.sub_status_text}</div>
+</div>`;
+    return string
   }
 
 }

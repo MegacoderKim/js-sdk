@@ -10,6 +10,6 @@ export class HtUsersMarkers extends HtUsersAnalytics {
   }
 
   api$(query) {
-    return this.api.all$()
+    return this.api.all$(query)
   }
 }

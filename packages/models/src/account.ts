@@ -82,5 +82,7 @@ export interface IWebhook {
 
 export interface IGroup {
     id: string,
-    name: string
+    name: string,
+  token: string,
+  lookup_id: string
 }

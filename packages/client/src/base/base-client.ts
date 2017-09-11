@@ -79,7 +79,7 @@ export abstract class HtBaseClient<T, O, A> {
   }
 
   clearData() {
-    this.idObservable.updateData(null)
+    this.dataObserver.next(null)
   }
 
   getUpdate$(data, queryObj: object): Observable<T> {
