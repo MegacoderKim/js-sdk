@@ -1,7 +1,7 @@
 import {HtMapItems} from "../map-items";
 import {HtStopMarker} from "./stop-marker";
 import {HtMapItem} from "../map-item";
-import {htUser} from "ht-js-data";
+import {htUser, HtUser} from "ht-js-data";
 import {HtMarkerItem} from "../marker-item";
 import {HtBounds, HtMap} from "../interfaces";
 export class HtUserMarker extends HtMarkerItem {

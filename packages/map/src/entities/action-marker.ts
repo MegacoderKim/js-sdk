@@ -1,6 +1,6 @@
 import {HtMarkerItem} from "../marker-item";
 import { Color } from "ht-js-utils";
-import { htAction } from "ht-js-data";
+import { htAction, HtAction } from "ht-js-data";
 import { IAction } from "ht-models";
 
 export class HtActionMarker extends HtMarkerItem {
