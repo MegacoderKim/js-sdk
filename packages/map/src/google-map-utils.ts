@@ -1,6 +1,7 @@
 import {HtMarker, MapUtils} from "./interfaces";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
+import {HtPosition} from "ht-js-data";
 declare var MarkerClusterer:any;
 
 export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds, force = false) {
@@ -38,7 +39,7 @@ export const ClearItem = (item) => {
   item.setMap(null)
 };
 
-export const GetLatlng = (lat: number = 0, lng: number = 0) => {
+export const GetLatlng = ({lat, lng}: HtPosition = {lat: 0, lng: 0}) => {
   return new google.maps.LatLng(lat, lng)
 };
 
@@ -85,6 +86,7 @@ function closeTooltip(item) {
 function openPopup(item, map, content?: string, popup?) {
   if(popup) {
     popup.setContent(content);
+    // console.log(item.getPosition().lat());
     popup.open(map, item)
   }
   // if(content) item.setPopupContent(content);
@@ -104,11 +106,11 @@ function setFocus(item, map: google.maps.Map, zoom?, force = false) {
     let center =  getItemLatlng(item);
     map.setCenter(center);
     if(zoom) map.setZoom(zoom);
-    item.setAnimation(google.maps.Animation.DROP);
-    setTimeout(() => {
-      item.setAnimation(null);
-
-    }, 1000)
+    // item.setAnimation(google.maps.Animation.DROP);
+    // setTimeout(() => {
+    //   item.setAnimation(null);
+    //
+    // }, 1000)
   }
 }
 
@@ -197,6 +199,12 @@ function onEvent(item, event, cb) {
   })
 }
 
+function openPopupPosition(position, map, content, popup) {
+  popup.setContent(content);
+  popup.setPosition(GetLatlng(position));
+  popup.setMap(map)
+}
+
 export const GoogleMapUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
@@ -225,5 +233,6 @@ export const GoogleMapUtils: MapUtils = {
   setBounds,
   isValidBounds,
   invalidateSize,
-  onEvent
+  onEvent,
+  openPopupPosition
 };

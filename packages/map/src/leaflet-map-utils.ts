@@ -1,6 +1,7 @@
 import {HtMarker, MapUtils} from "./interfaces";
 var polyUtil = require('polyline-encoded');
 import * as L from "leaflet"
+import {HtPosition} from "ht-js-data";
 
 export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBounds([])) {
   if(item && item.getElement()) bounds.extend(item.getLatLng());
@@ -27,7 +28,7 @@ export const ClearItem = (item) => {
   item.off()
 };
 
-export const GetLatlng = (lat: number = 0, lng: number = 0) => {
+export const GetLatlng = ({lat, lng}: HtPosition = {lat: 0, lng: 0}) => {
   return L.latLng(lat, lng)
 };
 
@@ -161,6 +162,10 @@ function onEvent(item, event, cb) {
   })
 }
 
+function openPopupPosition(position, map, content, popup) {
+
+}
+
 export const LeafletUtils: MapUtils = {
   setMap: SetMap,
   setStyle: SetStyle,
@@ -189,5 +194,6 @@ export const LeafletUtils: MapUtils = {
   setBounds,
   isValidBounds,
   invalidateSize,
-  onEvent
+  onEvent,
+  openPopupPosition
 };

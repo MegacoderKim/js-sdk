@@ -28,6 +28,8 @@ export class HtStopMarker extends HtMarkerItem{
   }
 
   getPosition(item) {
-    return this.mapUtils.getLatlng(item.location.geojson.coordinates[1], item.location.geojson.coordinates[0])
+    let lat = item.location.geojson.coordinates[1];
+    let lng = item.location.geojson.coordinates[0];
+    return this.mapUtils.getLatlng({lat, lng})
   }
 }

@@ -1,4 +1,5 @@
 import {ISegment, ITimeAwarePoint, Partial} from "ht-models";
+import {HtPosition} from "ht-js-data";
 
 export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,
@@ -6,11 +7,12 @@ export interface MapUtils {
   clearItem: (item: HtMapItem) => void,
   extendBounds: (item?: HtMapItem, bounds?: HtBounds, force?: boolean) => HtBounds
   extendBoundsWithPolyline: (item?: HtPolyline, bounds?: HtBounds) => HtBounds,
-  getLatlng: (lat?: number, lng?: number) => HtLatLng,
+  getLatlng: (position: HtPosition) => HtLatLng,
   updatePosition: (marker: HtMarker, position: HtLatLng, content?: string, options?) => void,
   openTooltip: (item: HtMapItem, content?: string) => void
   closeTooltip: (item: HtMapItem) => void
-  openPopup: (item: HtMapItem, map, content?: string, popup?) => void
+  openPopup: (item: HtMapItem | {}, map, content?: string, popup?) => void
+  openPopupPosition: (HtPosition, map, content, popup) => void
   closePopup: (item: HtMapItem) => void
   bringToFront: (item: HtMapItem) => void,
   setFocus: (item: HtMapItem, map: HtMap, zoom?, force?: boolean) =>  void,

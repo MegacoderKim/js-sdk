@@ -5,6 +5,7 @@ import {GoogleMapUtils} from "./google-map-utils";
 export class HtMapItem {
   item: any;
   data: any;
+  dataClass;
   isFaded: boolean = false;
   isHighlighted: boolean = false;
   isOld: boolean = false;
@@ -48,6 +49,11 @@ export class HtMapItem {
     this.id = data.id;
     this.data = data;
     this.isOld = false;
+    this.dataClass = this.setDataClass(data)
+  }
+
+  setDataClass(data) {
+    return null
   }
 
   extendBounds(bounds: HtBounds) {
@@ -111,7 +117,7 @@ export class HtMapItem {
     this.mapUtils.bringToFront(this.item)
   }
 
-  highlight(map: HtMap) {
+  highlight(map: HtMap, data) {
 
   }
 

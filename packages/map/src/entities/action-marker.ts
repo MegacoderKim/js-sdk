@@ -30,8 +30,12 @@ export class HtActionMarker extends HtMarkerItem {
     this.item = this.mapUtils.getCircleMarker()
   }
 
+  setDataClass(action) {
+    return htAction(action)
+  }
+
   getPosition(data: IAction) {
-    let position = htAction(data).getPositionsObject().position;
-    return this.mapUtils.getLatlng(position.lat, position.lng)
+    let position = this.dataClass.getPositionsObject().position;
+    return this.mapUtils.getLatlng(position)
   }
 }

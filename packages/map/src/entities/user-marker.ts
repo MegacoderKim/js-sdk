@@ -11,12 +11,16 @@ export class HtUserMarker extends HtMarkerItem {
     this.item = this.mapUtils.getMarker()
   }
 
+  setDataClass(data) {
+    return htUser(data)
+  }
+
   getPosition(item) {
     let position = htUser(item).getPosition();
     if(!position) {
       console.log(item, "no pos");
     }
-    return position ? this.mapUtils.getLatlng(position.lat, position.lng) : null
+    return position ? this.mapUtils.getLatlng(position) : null
   }
 
   extendBounds(bounds: HtBounds) {
@@ -24,9 +28,10 @@ export class HtUserMarker extends HtMarkerItem {
     return this.mapUtils.extendBounds(this.item, bounds, true);
   }
 
-  highlight(map: HtMap) {
+  highlight(map: HtMap, data) {
+    this.setDataClass(data);
     // console.log("highlight");
-    this.mapUtils.setFocus(this.item, map, 16, true);
+    this.mapUtils.setFocus(this.item, map, 17, true);
     // this.mapUtils.setMap(this.item, map)
   }
 

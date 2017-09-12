@@ -17,7 +17,11 @@ export class HtMapClass {
   googleSetBoundsOptions = {
 
   };
-  googleMapOptions = {center: {lat: 0, lng: 0}, zoom: 2};
+  googleMapOptions = {
+    center: {lat: 0, lng: 0}, zoom: 2,
+    fullscreenControl: false,
+    streetViewControl: false
+  };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
 
   constructor(public mapType: HtMapType = 'leaflet', options = {}) {

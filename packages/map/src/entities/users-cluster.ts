@@ -11,7 +11,10 @@ export class UsersCluster extends HtMapItems{
   popup;
 
   onReady() {
-    this.popup = this.mapUtils.getPopup()
+    this.popup = this.mapUtils.getPopup({
+      disableAutoPan: true,
+      pixelOffset: new google.maps.Size(0, -37)
+    })
   }
 
   // extendBounds(bounds) {
@@ -41,7 +44,8 @@ export class UsersCluster extends HtMapItems{
     let marker = new HtUserMarker(this.mapType);
     //todo make this configurable
     this.mapUtils.onEvent(marker.item, 'click', () => {
-      this.mapUtils.openPopup(marker.item, this.map, marker.getInfoContent(), this.popup)
+      let position = marker.dataClass.getPosition();
+      this.mapUtils.openPopupPosition(position, this.map, marker.getInfoContent(), this.popup)
     });
     return marker
   }
@@ -70,8 +74,9 @@ export class UsersCluster extends HtMapItems{
     // this.markerCluster.refreshClusters(userMarkerArray);
   }
 
-  highlightItem(item) {
-    super.highlightItem(item);
-    this.mapUtils.openPopup(item.item, this.map, "Working", this.popup);
+  highlightItem(item, data) {
+    // this.mapUtils.setMap(this.popup, null);
+    super.highlightItem(item, data);
+    this.mapUtils.openPopupPosition(item.dataClass.getPosition(), this.map, item.getInfoContent(), this.popup)
   }
 }

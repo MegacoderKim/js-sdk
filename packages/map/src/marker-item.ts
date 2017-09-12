@@ -9,7 +9,9 @@ export class HtMarkerItem extends HtMapItem{
   }
 
   getPosition(item) {
-    return this.mapUtils.getLatlng(item.position[0], item.position[1])
+    let lat = item.position[0];
+    let lng = item.position[1];
+    return this.mapUtils.getLatlng({lat, lng})
   }
 
 }

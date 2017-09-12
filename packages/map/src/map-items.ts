@@ -106,7 +106,7 @@ export class HtMapItems {
           this.unHighlightItem(item)
         } else {
 
-          this.highlightItem(item)
+          this.highlightItem(item, selectedItem)
         }
       } else {
         this.resetHighlight(item)
@@ -119,9 +119,9 @@ export class HtMapItems {
     item.unHighlight(this.map);
   }
 
-  highlightItem(item) {
+  highlightItem(item, selectedItem?) {
     item.isHighlighted = true;
-    item.highlight(this.map);
+    item.highlight(this.map, selectedItem);
   }
 
   setFade(selectedItem, toFade: boolean = true) {
