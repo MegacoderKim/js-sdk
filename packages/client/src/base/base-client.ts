@@ -10,7 +10,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {isEmpty} from "rxjs/operator/isEmpty";
 import {Subject} from "rxjs/Subject";
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {FilterObserve} from "./filter-observe";
+import {DataMapObserve} from "./data-map-observe";
 
 export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;
@@ -21,7 +21,7 @@ export abstract class HtBaseClient<T, O, A> {
   update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   entityName: string;
   dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();
-  filter$: FilterObserve;
+  dataMap$: DataMapObserve;
 
   constructor(
     public options: IBaseClientOptions<A>
@@ -37,7 +37,7 @@ export abstract class HtBaseClient<T, O, A> {
 
     this.loadingObserver = new LoadingObserver(options.id || false, options.loadingSource$);
     this.idObservable = new IdObserver(options.id, options.idSource$);
-    this.filter$ = new FilterObserve()
+    this.dataMap$ = new DataMapObserve()
     // this.initListener()
   }
 
@@ -132,7 +132,7 @@ export abstract class HtBaseClient<T, O, A> {
   getQueryAndFilter() {
     return Observable.combineLatest(
       this.getDataQueryWithLoading$(),
-      this.filter$.data$(),
+      this.dataMap$.data$(),
       (queryObj, filter) => {
         return {queryObj, filter}
       }

@@ -68,7 +68,7 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
       });
       return {...pageData, results}
     };
-    this.filter$.updateData(filter);
+    this.dataMap$.updateData(filter);
   }
 
   abstract api$(query): Observable<T>
