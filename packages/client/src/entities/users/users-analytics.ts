@@ -8,7 +8,7 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage, HtUsersAp
   entityName = "analytics users";
 
   getDefaultQuery() {
-    return {ordering: "-last_heartbeat_at", ...super.getDefaultQuery()}
+    return {...super.getDefaultQuery(), ordering: "-last_heartbeat_at"}
   }
 
   api$(query) {
