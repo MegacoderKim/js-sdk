@@ -2,7 +2,7 @@ import {Observable} from "rxjs/Observable";
 import {HtBaseClient} from "./base-client";
 import {IListClientOptions} from "../interfaces";
 import {IUserAnalytics} from "ht-models";
-import {HtBaseApi} from "../api/base";
+import {ApiType, HtBaseApi} from "../api/base";
 import * as _ from "underscore";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
@@ -26,22 +26,9 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     })
   }
 
-  get allArray$() {
-    console.log(this.api, "api");
-    return Observable.of(3)
 
-  }
-
-  getAll$() {
-    return this.api.all$<IUserAnalytics>({});
-    // return this.api$({page_size: 100})
-    //   .expand((data) => {
-    //     console.log("expand", data);
-    //     const  r = this.api.all$();
-    //     console.log(r);
-    //     // let next = this.api.api$(data['next'])
-    //     return data['next'] ? r : Observable.empty()
-    //   })
+  getAll$(type: ApiType) {
+    return this.api.all$<IUserAnalytics>({}, type);
   }
 
   getDefaultQuery() {

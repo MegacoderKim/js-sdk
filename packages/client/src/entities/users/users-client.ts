@@ -1,28 +1,32 @@
-import {HtUsersListClient} from "./users-list-client";
+import {HtUsersIndexClient} from "./users-index-client";
 import {HtUserPlacelineClient} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {IItemClientOptions, IListClientOptions} from "../../interfaces";
-import {Partial, IUserAnalyticsPage, IUserData} from "ht-models";
-import {HtUsersAnalytics} from "./users-analytics";
+import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics} from "ht-models";
+import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
-import {HtUsersMarkers} from "./users-markers";
+import {HtUsersAnalyticsMarkers} from "./users-analytics-markers";
 import {htUser} from "ht-js-data";
+import {ApiType} from "../../api/base";
+import {HtUsersIndexMarkers} from "./users-index-markers";
 
 export class HtUsersClient extends EntityClient {
-  list: HtUsersListClient;
+  index: HtUsersIndexClient;
   analytics: HtUsersAnalytics;
   placeline: HtUserPlacelineClient;
   api;
-  marks: HtUsersMarkers;
-  constructor(req, options: IUsersClientOptions = {}) {
+  marksAnalytics: HtUsersAnalyticsMarkers;
+  marksIndex: HtUsersIndexMarkers;
+
+  constructor(req, public options: IUsersClientOptions = {}) {
     super();
     let api = new HtUsersApi(req);
     this.api = api;
-    this.list = new HtUsersListClient({
+    this.index = new HtUsersIndexClient({
       api,
-      ...options.listOptions
+      ...options.indexOptions
     });
 
     this.analytics = new HtUsersAnalytics({
@@ -35,15 +39,19 @@ export class HtUsersClient extends EntityClient {
       ...options.placelineOptions
     });
 
-    this.marks = new HtUsersMarkers({
+    this.marksAnalytics = new HtUsersAnalyticsMarkers({
       api,
       ...options.analyticsOptions
+    });
+    this.marksIndex = new HtUsersIndexMarkers({
+      api,
+      ...options.indexOptions
     })
   }
 
   usersPlaceline$() {
-    let id$ = this.analytics.idObservable.data$().distinctUntilChanged();
-    let dataArray$ = this.analytics.dataArray$;
+    let id$ = this.list.idObservable.data$().distinctUntilChanged();
+    let dataArray$ = this.list.dataArray$;
     let selected$ = this.placeline.data$.distinctUntilChanged();
     return this.dataArrayWithSelected$(id$, dataArray$, selected$)
 
@@ -71,30 +79,52 @@ export class HtUsersClient extends EntityClient {
 
   }
 
+  get list (): HtUsersIndexClient | HtUsersAnalytics {
+    let apiType = this.options.listApiType || ApiType.analytics;
+    return this.getListClient(apiType)
+  }
+
+  get marks(): HtUsersIndexMarkers | HtUsersAnalyticsMarkers {
+    let apiType = this.options.listApiType || ApiType.analytics;
+    return this.getMarkerClient(apiType)
+  }
+
+  getListClient(apiType: ApiType) {
+    return apiType == ApiType.analytics ? this.analytics : this.index;
+  }
+
+  getMarkerClient(apiType: ApiType) {
+    return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
+  }
+
   usersMarkers$() {
-    let a = Observable.merge(
+
+    // let dataArray$ = apiType == ApiType.index ? this.index.dataArray$ : this.analytics.dataArray$;
+    // let dataArray$ = this.list.dataArray$;
+    let dataArray$ = Observable.merge(
       this.marks.data$.filter(data => !!data).pluck('results'),
-      this.analytics.dataArray$
+      this.list.dataArray$
     ).map((users) => {
       return _.filter(users, (user) => {
         return (user.last_location && user.last_location.geojson)
       })
     });
 
-    return a
+    return dataArray$
   }
 
   clearData() {
-    this.list.clearData();
+    this.index.clearData();
     this.placeline.clearData();
     this.analytics.clearData();
-    this.marks.clearData();
+    this.marksAnalytics.clearData();
   }
 
 }
 
 export interface IUsersClientOptions {
   placelineOptions?: Partial<IItemClientOptions<HtUsersApi>>,
-  listOptions?: Partial<IListClientOptions<HtUsersApi>>,
-  analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>
+  indexOptions?: Partial<IListClientOptions<HtUsersApi>>,
+  analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>,
+  listApiType?: ApiType
 }

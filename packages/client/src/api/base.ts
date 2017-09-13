@@ -44,8 +44,10 @@ export class HtBaseApi {
     return this.getReqFromTail<T>(tail, query)
   }
 
-  all$<T>(query): Observable<any> {
-    return this.analytics({page_size: 100, ...query})
+  all$<T>(query, apiType: ApiType = ApiType.analytics): Observable<any> {
+    query = {page_size: 100, ...query};
+    let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
+    return api$
       .expand((data: IPageData) => {
         let req = this.request.getObservable(data['next']);
         return data['next'] ? req : Observable.empty()
@@ -80,4 +82,9 @@ export class HtBaseApi {
   //   url = this.request.url(url, query);
   //   return this.getObservable(url)
   // }
+}
+
+export enum ApiType {
+  index = 'index',
+  analytics = 'analytics'
 }
