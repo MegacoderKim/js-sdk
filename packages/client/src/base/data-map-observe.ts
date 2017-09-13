@@ -3,6 +3,6 @@ import {DataObserver} from "./data-observer";
 
 export class DataMapObserve extends DataObserver<(any) => any>{
   initialData = (data) => data;
-  entityName = 'filter';
+  entityName = 'dataMap';
 
 }
