@@ -1,4 +1,4 @@
-import {HtUsersAnalytics} from "./users-analytics";
+import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import { IUserAnalyticsPage } from "ht-models"
 import {ApiType} from "../../api/base";

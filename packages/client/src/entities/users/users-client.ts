@@ -2,8 +2,8 @@ import {HtUsersIndexClient} from "./users-index-client";
 import {HtUserPlacelineClient} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {IItemClientOptions, IListClientOptions} from "../../interfaces";
-import {Partial, IUserAnalyticsPage, IUserData} from "ht-models";
-import {HtUsersAnalytics} from "./users-analytics";
+import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics} from "ht-models";
+import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
@@ -79,12 +79,12 @@ export class HtUsersClient extends EntityClient {
 
   }
 
-  get list () {
+  get list (): HtUsersIndexClient | HtUsersAnalytics {
     let apiType = this.options.listApiType || ApiType.analytics;
     return this.getListClient(apiType)
   }
 
-  get marks() {
+  get marks(): HtUsersIndexMarkers | HtUsersAnalyticsMarkers {
     let apiType = this.options.listApiType || ApiType.analytics;
     return this.getMarkerClient(apiType)
   }
@@ -97,7 +97,7 @@ export class HtUsersClient extends EntityClient {
     return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
   }
 
-  usersMarkers$(apiType: ApiType = ApiType.analytics) {
+  usersMarkers$() {
 
     // let dataArray$ = apiType == ApiType.index ? this.index.dataArray$ : this.analytics.dataArray$;
     // let dataArray$ = this.list.dataArray$;
