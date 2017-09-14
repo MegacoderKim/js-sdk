@@ -11,6 +11,7 @@ import {isEmpty} from "rxjs/operator/isEmpty";
 import {Subject} from "rxjs/Subject";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {DataMapObserve} from "./data-map-observe";
+import {BaseFilter} from "../filters/base-filter";
 
 export abstract class HtBaseClient<T, O, A> {
   loadingObserver: LoadingObserver;

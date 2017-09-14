@@ -38,6 +38,14 @@ export class QueryObserver extends DataObserver<object>{
     })
   }
 
+  clearQueryKey(key: string) {
+    this.data$().map(query => {
+      let newQuery = {...query, [key]: null};
+      delete newQuery[key]
+      return newQuery
+    }).take(1).subscribe((query) => this.updateData(query))
+  }
+
   allQuery$() {
     // console.log(this.options);
     return this.dataSource$ ? this.dataSource$ : super.data$();

@@ -11,6 +11,8 @@ import {HtUsersAnalyticsMarkers} from "./users-analytics-markers";
 import {htUser} from "ht-js-data";
 import {ApiType} from "../../api/base";
 import {HtUsersIndexMarkers} from "./users-index-markers";
+import {DefaultUsersFilter} from "../../filters/users-filter";
+import {QueryLabel} from "../../filters/base-filter";
 
 export class HtUsersClient extends EntityClient {
   index: HtUsersIndexClient;
@@ -19,6 +21,7 @@ export class HtUsersClient extends EntityClient {
   api;
   marksAnalytics: HtUsersAnalyticsMarkers;
   marksIndex: HtUsersIndexMarkers;
+  filterClass: DefaultUsersFilter;
 
   constructor(req, public options: IUsersClientOptions = {}) {
     super();
@@ -47,6 +50,9 @@ export class HtUsersClient extends EntityClient {
       api,
       ...options.indexOptions
     })
+
+    this.filterClass = new DefaultUsersFilter();
+
   }
 
   usersPlaceline$() {
@@ -87,6 +93,35 @@ export class HtUsersClient extends EntityClient {
   get marks(): HtUsersIndexMarkers | HtUsersAnalyticsMarkers {
     let apiType = this.options.listApiType || ApiType.analytics;
     return this.getMarkerClient(apiType)
+  }
+
+  get queryLabel$() {
+    let query$ = this.list.queryObserver.data$();
+    return query$.map((query) => {
+      query = {...this.list.getDefaultQuery(), ...query};
+      return this.filterClass.getQueryLabel(query)
+    })
+  }
+
+  get ordering$() {
+    return this.list.queryObserver.data$().map((query) => {
+      query = {...this.list.getDefaultQuery(), ...query};
+      let ordering = query ? query['ordering'] : null;
+      let orderingMod = this.getOrderingMod(ordering);
+      return {string: this.filterClass.sortingQueryMap[orderingMod.string], sign: orderingMod.sign}
+    }).distinctUntilChanged()
+  }
+
+  getOrderingMod(ordering: string) {
+    let string = ordering;
+    let sign = 1;
+    if (ordering.includes('-')) {
+      string = ordering.substring(1);
+      sign = 0;
+    }
+    return {
+      string, sign
+    }
   }
 
   getListClient(apiType: ApiType) {
