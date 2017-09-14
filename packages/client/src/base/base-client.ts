@@ -24,7 +24,7 @@ export abstract class HtBaseClient<T, O, A> {
   dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();
   dataMap$: DataMapObserve;
   dateRangeObserver: QueryObserver;
-
+  name = "base";
   constructor(
     public options: IBaseClientOptions<A>
   ) {
@@ -63,13 +63,10 @@ export abstract class HtBaseClient<T, O, A> {
 
   initListener() {
     if(!this.data$) {
-      let data$ = this.getAllQueryAndFilter()
-        .switchMap(({queryObj, filter}) => {
+      let data$ = this.getDataQueryWithLoading$()
+        .switchMap((queryObj) => {
           return queryObj ?
-            this.getData$(queryObj).map((data) => {
-              let filData = filter(data);
-              return filData
-            }) : Observable.of(false)
+            this.getData$(queryObj) : Observable.of(false)
         })
         .do((data) => {
           this.loadingObserver.updateData(false);

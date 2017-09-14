@@ -5,7 +5,7 @@ import {HtMap, HtMapType} from "../interfaces";
 import {htUser} from "ht-js-data";
 
 
-export class UsersCluster extends HtMapItems{
+export class UsersCluster extends HtMapItems {
   itemEntities: {[id: string]: HtUserMarker} = {};
   markerCluster;
   popup;
@@ -17,24 +17,24 @@ export class UsersCluster extends HtMapItems{
     })
   }
 
-  // extendBounds(bounds) {
-  //   bounds = bounds || this.mapUtils.extendBounds();
-  //   if(this.mapType == 'google') {
-  //     let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
-  //       return item.extendBounds(bounds)
-  //     }, bounds);
-  //     return newBounds
-  //     // console.log(this.itemEntities, Object.keys(this.itemEntities).length);
-  //     // let newBounds = Object.keys(this.itemEntities).length ? this.markerCluster.getExtendedBounds(bounds) : bounds
-  //     // return newBounds
-  //   } else {
-  //     let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
-  //       return item.extendBounds(bounds)
-  //     }, bounds);
-  //     return newBounds
-  //   }
-  //
-  // }
+  extendBounds(bounds) {
+    bounds = bounds || this.mapUtils.extendBounds();
+    if(this.mapType == 'google') {
+      let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
+        return item.extendBounds(bounds)
+      }, bounds);
+      return newBounds
+      // console.log(this.itemEntities, Object.keys(this.itemEntities).length);
+      // let newBounds = Object.keys(this.itemEntities).length ? this.markerCluster.getExtendedBounds(bounds) : bounds
+      // return newBounds
+    } else {
+      let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
+        return item.extendBounds(bounds)
+      }, bounds);
+      return newBounds
+    }
+
+  }
 
   filteredItem(items: any[]) {
     return _.filter(items, (item) => htUser(item).isValidMarker());
@@ -52,8 +52,13 @@ export class UsersCluster extends HtMapItems{
 
   removeItem(mapItem: HtUserMarker) {
     this.mapUtils.removeClusterMarker(this.markerCluster, mapItem.item);
-    // this.markerCluster.removeLayer(mapItem.item);
+    super.removeItem(mapItem)
+// this.markerCluster.removeLayer(mapItem.item);
     // super.removeItem(mapItem)
+  }
+
+  removeItems() {
+    this.mapUtils.removeClusterMarkers(this.markerCluster);
   }
 
   traceItemEffect(itemEntity: {[id: string]: HtUserMarker}) {

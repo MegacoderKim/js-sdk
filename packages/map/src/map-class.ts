@@ -43,9 +43,12 @@ export class HtMapClass {
   }
 
   resetBounds(options?, bounds?: HtBounds) {
-    bounds = this.segmentTrace.extendBounds(bounds);
-    bounds = this.usersCluster.extendBounds(bounds);
-    if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
+    setTimeout(() => {
+      bounds = this.segmentTrace.extendBounds(bounds);
+      bounds = this.usersCluster.extendBounds(bounds);
+      if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
+    }, 10)
+
   };
 
   setBounds(bounds: HtBounds, options?) {

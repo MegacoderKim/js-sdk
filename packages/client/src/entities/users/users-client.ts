@@ -161,10 +161,22 @@ export class HtUsersClient extends EntityClient {
 
     // let dataArray$ = apiType == ApiType.index ? this.index.dataArray$ : this.analytics.dataArray$;
     // let dataArray$ = this.list.dataArray$;
-    let dataArray$ = Observable.merge(
-      this.marks.data$.filter(data => !!data).pluck('results'),
+    let markers$ = Observable.merge(
+      this.marks.filteredDataArray$.filter(data => !!data),
       this.list.dataArray$
-    ).map((users) => {
+    );
+
+    let hasPlaceline$ = this.placeline.data$.map((data) => !!data).distinctUntilChanged();
+
+    let allDataArray$ = Observable.combineLatest(
+      markers$,
+      hasPlaceline$,
+      (markers, hasPlaceline) => {
+        return hasPlaceline ? [] : markers
+      }
+    );
+
+    let dataArray$ = allDataArray$.map((users) => {
       return _.filter(users, (user) => {
         return (user.last_location && user.last_location.geojson)
       })
