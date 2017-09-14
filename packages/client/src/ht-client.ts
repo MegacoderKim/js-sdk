@@ -38,6 +38,7 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/expand';
 import 'rxjs/add/operator/isEmpty';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/withLatestFrom';
 
 
 import 'rxjs/add/observable/merge';

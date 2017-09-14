@@ -28,6 +28,22 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     })
   }
 
+  get filteredData$() {
+    return Observable.combineLatest(
+      this.dataObserver,
+      this.dataMap$.data$(),
+      (data, filter) => {
+        return filter(data)
+      }
+    )
+  }
+
+  get filteredDataArray$() {
+    return this.filteredData$.map((pageData) => {
+      // console.log("page data", pageData);
+      return pageData ? pageData['results'] : null;
+    })
+  }
 
   getAll$(type: ApiType) {
     return this.api.all$<IUserAnalytics>({}, type);
