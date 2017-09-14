@@ -13,6 +13,8 @@ import {ApiType} from "../../api/base";
 import {HtUsersIndexMarkers} from "./users-index-markers";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import {QueryLabel} from "../../filters/base-filter";
+import {QueryObserver} from "../../base/query-observer";
+import * as moment from 'moment-mini'
 
 export class HtUsersClient extends EntityClient {
   index: HtUsersIndexClient;
@@ -22,37 +24,60 @@ export class HtUsersClient extends EntityClient {
   marksAnalytics: HtUsersAnalyticsMarkers;
   marksIndex: HtUsersIndexMarkers;
   filterClass: DefaultUsersFilter;
+  dateRangeObserver: QueryObserver;
+  initialDateRange: IDateRange;
+  dateRangeParam = 'recorded_at';
 
   constructor(req, public options: IUsersClientOptions = {}) {
     super();
     let api = new HtUsersApi(req);
     this.api = api;
+
+    this.initialDateRange = this.getInitialDateRange();
+    this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
+    this.dateRangeObserver.updateData(this.initialDateRange);
+    const dateRangeSource$ = this.dateRangeObserver.data$()
+      .map((range: IDateRange) => {
+      return this.getQueryFromDateRange(range)
+    });
+
     this.index = new HtUsersIndexClient({
       api,
+      dateRangeSource$,
       ...options.indexOptions
     });
 
     this.analytics = new HtUsersAnalytics({
       api,
+      dateRangeSource$,
       ...options.analyticsOptions
     });
 
     this.placeline = new HtUserPlacelineClient({
       api,
+      dateRangeSource$,
       ...options.placelineOptions
     });
 
     this.marksAnalytics = new HtUsersAnalyticsMarkers({
       api,
+      dateRangeSource$,
       ...options.analyticsOptions
     });
     this.marksIndex = new HtUsersIndexMarkers({
       api,
+      dateRangeSource$,
       ...options.indexOptions
-    })
+    });
 
     this.filterClass = new DefaultUsersFilter();
 
+  }
+
+  getInitialDateRange(range: Partial<IDateRange> = {}): IDateRange {
+    let start = moment().startOf('day').toISOString();
+    let end =  moment().endOf('day').toISOString();
+    return {...range, start, end}
   }
 
   usersPlaceline$() {
@@ -161,5 +186,11 @@ export interface IUsersClientOptions {
   placelineOptions?: Partial<IItemClientOptions<HtUsersApi>>,
   indexOptions?: Partial<IListClientOptions<HtUsersApi>>,
   analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>,
-  listApiType?: ApiType
+  listApiType?: ApiType,
+  dateRangeOptions?: IDateRange
+}
+
+export interface IDateRange {
+  start: string,
+  end: string
 }

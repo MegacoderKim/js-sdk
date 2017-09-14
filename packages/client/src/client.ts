@@ -7,6 +7,7 @@ export class HtClient {
   actions: HtActionsClient;
   users: HtUsersClient;
   groups: HtGroupsClient;
+
   constructor(public request, options: IClientOptions = {}) {
     // this.token = this.token || HtClientConfig.token;
     this.initEntities(options)

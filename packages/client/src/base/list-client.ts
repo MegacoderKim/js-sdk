@@ -4,6 +4,7 @@ import {IListClientOptions} from "../interfaces";
 import {IUserAnalytics} from "ht-models";
 import {ApiType, HtBaseApi} from "../api/base";
 import * as _ from "underscore";
+import {IDateRange} from "../entities/users/users-client";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
 
@@ -11,8 +12,9 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     let dataQuery$ = Observable.combineLatest(
       // this.idObservable.data$().startWith(this.options.id),
       this.getListQuery(),
-      (query) => {
-        return query
+      this.dateRangeObserver.data$(),
+      (query, range) => {
+        return {...query, ...range}
         // return id ? {id, ...query} : query
       }
     );

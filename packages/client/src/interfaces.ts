@@ -17,12 +17,6 @@ export interface IListConfig {
   isLive?: boolean
 }
 
-export interface IQueryOptions {
-  // allowedParams?: string[] | null
-  dataSource$?: Observable<object>,
-  initialData?: object
-}
-
 export interface IListClientOptions<A> {
   query?: object,
   querySource$?: Observable<object>,
@@ -32,7 +26,8 @@ export interface IListClientOptions<A> {
   defaultQuery?: object,
   api: HtBaseApi | any,
   onDataUpdate?: (data) => void,
-  pollTime?: number
+  pollTime?: number,
+  dateRangeSource$?: Observable<object>
 }
 
 export interface IItemClientOptions<A> {
@@ -45,7 +40,8 @@ export interface IItemClientOptions<A> {
   id?: string,
   onNotFound?: () => void,
   onDataUpdate?: (data) => void,
-  pollTime?: number
+  pollTime?: number,
+  dateRangeSource$?: Observable<object>
 }
 
 export interface IBaseClientOptions<A> extends Partial<IListClientOptions<A>>, Partial<IItemClientOptions<A>>{

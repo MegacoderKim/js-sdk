@@ -23,6 +23,7 @@ export abstract class HtBaseClient<T, O, A> {
   entityName: string;
   dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();
   dataMap$: DataMapObserve;
+  dateRangeObserver: QueryObserver;
 
   constructor(
     public options: IBaseClientOptions<A>
@@ -35,10 +36,18 @@ export abstract class HtBaseClient<T, O, A> {
           {...this.getDefaultQuery(), ...options.query},
         dataSource$: options.querySource$
       });
-
-    this.loadingObserver = new LoadingObserver(options.id || false, options.loadingSource$);
-    this.idObservable = new IdObserver(options.id, options.idSource$);
-    this.dataMap$ = new DataMapObserve()
+    let loadingOptions = {
+      initialData: options.id || false,
+      dataSource$: options.loadingSource$
+    };
+    this.loadingObserver = new LoadingObserver(loadingOptions);
+    let idOptions = {
+      initialData: options.id,
+      dataSource$: options.idSource$
+    };
+    this.idObservable = new IdObserver(idOptions);
+    this.dataMap$ = new DataMapObserve();
+    this.dateRangeObserver = new QueryObserver({dataSource$: options.dateRangeSource$})
     // this.initListener()
   }
 
@@ -54,7 +63,7 @@ export abstract class HtBaseClient<T, O, A> {
 
   initListener() {
     if(!this.data$) {
-      let data$ = this.getQueryAndFilter()
+      let data$ = this.getAllQueryAndFilter()
         .switchMap(({queryObj, filter}) => {
           return queryObj ?
             this.getData$(queryObj).map((data) => {
@@ -130,7 +139,7 @@ export abstract class HtBaseClient<T, O, A> {
     });
   }
 
-  getQueryAndFilter() {
+  getAllQueryAndFilter() {
     return Observable.combineLatest(
       this.getDataQueryWithLoading$(),
       this.dataMap$.data$(),

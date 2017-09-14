@@ -1,7 +1,9 @@
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
+import {IDateRange} from "../entities/users/users-client";
 
 export abstract class EntityClient {
+  dateRangeParam = 'created_at';
 
   dataArrayWithSelected$(id$, dataArray$, selected$) {
     const userId$ = id$;
@@ -28,6 +30,15 @@ export abstract class EntityClient {
 
   clearData() {
 
+  }
+
+
+  getQueryFromDateRange(range: IDateRange): object {
+    if (!range) return {};
+    let start =  range['start'];
+    let end = range['end'];
+    let param = this.dateRangeParam;
+    return {[`min_${param}`]: start, [`max_${param}`]: end, start: null, end: null}
   }
 
 }

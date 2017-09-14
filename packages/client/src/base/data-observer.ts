@@ -2,11 +2,14 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 
 export class DataObserver<T> {
-  dataBehavious$: BehaviorSubject<T | null>;
+  dataBehavious$: BehaviorSubject<T | any | null>;
   entityName: string = 'data';
   initialQuery = null;
+  initialData = {};
+  dataSource$: Observable<T>;
 
-  constructor(public initialData?: T, public dataSource$?: Observable<T>) {
+  constructor(public options?: DataObserverOptions<T>) {
+    if(options) this.setOptions(options)
     // this.data$().do((data) => this.onDataUpdate(data))
   }
 
@@ -35,7 +38,7 @@ export class DataObserver<T> {
     if(!this.dataSource$) this.getDataBehaviour().next(data)
   }
 
-  private getDataBehaviour() {
+  getDataBehaviour() {
     if(!this.dataBehavious$) {
       this.dataBehavious$ = new BehaviorSubject(this.initialData)
     }
