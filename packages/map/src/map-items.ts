@@ -39,8 +39,13 @@ export class HtMapItems {
   trace(items: any[], map: HtMap, setMap: boolean = false) {
     items = this.filteredItem(items);
     this.map = map;
-    if(items && items.length) this.traceItems(items, setMap);
+    if(items && items.length) {
+      this.traceItems(items, setMap);
+    } else  {
+      this.removeItems()
+    }
     this.bustOlditem()
+
   }
 
   filteredItem(items) {
@@ -225,4 +230,7 @@ export class HtMapItems {
     })
   }
 
+  removeItems() {
+
+  }
 }
