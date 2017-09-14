@@ -24,7 +24,7 @@ export class HtMapClass {
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
 
-  constructor(public mapType: HtMapType = 'leaflet', options = {}) {
+  constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
     // this.initMap(elem, options);
     this.usersCluster = new UsersCluster(mapType);
@@ -56,4 +56,8 @@ export class HtMapClass {
   inValidateSize() {
     this.mapUtils.invalidateSize(this.map)
   }
+}
+
+export interface HtMapClassOptions {
+
 }

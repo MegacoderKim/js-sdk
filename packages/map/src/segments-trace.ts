@@ -24,7 +24,7 @@ export class HtSegmentsTrace {
   allowedEvents = {};
   map;
 
-  constructor(mapType: HtMapType = 'leaflet') {
+  constructor(mapType: HtMapType = 'leaflet', public options: HtSegmentsTraceOptions = {}) {
     this.initBaseItems(mapType);
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head, this.map)
@@ -260,3 +260,7 @@ interface ISegmentType {
   tripSegment: ISegment[],
   stopSegment: ISegment[]
 };
+
+export interface HtSegmentsTraceOptions {
+
+}

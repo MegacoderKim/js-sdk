@@ -41,10 +41,11 @@ export class HtUserMarker extends HtMarkerItem {
 
   getInfoContent() {
     let data = this.data;
+    if(this.options.getInfoContent) return this.options.getInfoContent(data);
     let position = htUser(data).getPosition();
     let string = `<div>
 <strong>${data.name}</strong>
-<div>${data.status}</div>
+<div>${data.display.status_text}</div>
 <div>${position.lat}, ${position.lng}</div>
 <div>${data.display.sub_status_text}</div>
 </div>`;

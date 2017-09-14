@@ -1,6 +1,7 @@
 import {LeafletUtils} from "./leaflet-map-utils";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {GoogleMapUtils} from "./google-map-utils";
+import {HtPosition} from "../../data/src/interfaces";
 
 export class HtMapItem {
   item: any;
@@ -20,7 +21,7 @@ export class HtMapItem {
   };
 
 
-  constructor(public mapType: HtMapType, options = {}) {
+  constructor(public mapType: HtMapType, public options: HtMapItemOptions = {}) {
     let newoptions = {...this.defaultOptions, ...options};
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
@@ -129,4 +130,8 @@ export class HtMapItem {
     this.mapUtils.setFocus(this.item, map)
   }
 
+}
+
+export interface HtMapItemOptions {
+  getInfoContent?: (data) => string
 }
