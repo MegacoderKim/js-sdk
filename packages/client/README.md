@@ -22,3 +22,4 @@ htClient.action.index({page_size: 10}) //actions list
 htClient.action.get(id: string) // action with id
 htClient.actions.overview(query: object) //actions overview
 ```
+

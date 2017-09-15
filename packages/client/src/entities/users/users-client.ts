@@ -15,6 +15,7 @@ import {DefaultUsersFilter} from "../../filters/users-filter";
 import {QueryLabel} from "../../filters/base-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
+import {IsRangeADay, IsRangeToday, DateString} from "ht-js-utils";
 
 export class HtUsersClient extends EntityClient {
   index: HtUsersIndexClient;
@@ -135,6 +136,24 @@ export class HtUsersClient extends EntityClient {
       let orderingMod = this.getOrderingMod(ordering);
       return {string: this.filterClass.sortingQueryMap[orderingMod.string], sign: orderingMod.sign}
     }).distinctUntilChanged()
+  }
+
+  get dateRangeDisplay$(): Observable<string> {
+    return this.dateRangeObserver.data$().map((range: IDateRange) => {
+      let isSingleDay = IsRangeADay(range);
+      console.log(isSingleDay, "single");
+      if(isSingleDay) {
+        let isToday = IsRangeToday(range);
+        console.log("isTodau", isToday);
+        let suffix = isToday ? 'Today ' : '';
+        let string = suffix + DateString(range.start);
+        console.log("string", suffix, DateString);
+        return string
+      } else {
+        console.log(DateString(range.start), range.start);
+        return DateString(range.start) + " - " + DateString(range.end)
+      }
+    })
   }
 
   getOrderingMod(ordering: string) {
