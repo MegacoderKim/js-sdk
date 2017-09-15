@@ -6,5 +6,4 @@
 * Remove/Reset all marks on placeline id
 * Reset map on hasPlaceline
 * Reset map on first markers
-    
-## Documentation
+* Selected placeline if list has length 1 ?   

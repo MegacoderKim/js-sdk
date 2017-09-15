@@ -3,8 +3,25 @@ import * as _ from "underscore";
 import {IDateRange} from "../entities/users/users-client";
 
 export abstract class EntityClient {
-  dateRangeParam = 'created_at';
+  /**
+   * API class which handles requests for the entity
+   */
+  api;
 
+  /**
+   * Appended at start of date range params. Example if start date of date range is x the params in query will be
+   * min_<dateRangeParam> like min_created_at
+   * @type {string}
+   */
+  dateRangeParam = 'recorded_at';
+
+  /**
+   * Returns entity array or if selected just the selected entity id as array of length 1
+   * @param id$
+   * @param dataArray$
+   * @param selected$
+   * @returns {any}
+   */
   dataArrayWithSelected$(id$, dataArray$, selected$) {
     const userId$ = id$;
     const placelinePage$ = selected$.distinctUntilChanged()
@@ -32,7 +49,11 @@ export abstract class EntityClient {
 
   }
 
-
+  /**
+   * Converts date range to query params object
+   * @param {IDateRange} range
+   * @returns {Object}
+   */
   getQueryFromDateRange(range: IDateRange): object {
     if (!range) return {};
     let start =  range['start'];

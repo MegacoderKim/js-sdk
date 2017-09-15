@@ -5,6 +5,7 @@ var webpackRxjsExternals = require('webpack-rxjs-externals');
 var path = require('path');
 var WebpackShellPlugin = require('webpack-shell-plugin');
 var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
+var TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 var config = {
     devtool: 'source-ht-map, inline-source-ht-map',
@@ -45,7 +46,10 @@ var config = {
         }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-client']}),
-        new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-client']})
+        new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-client']}),
+        new TypedocWebpackPlugin({
+            out: './docs',
+        }, './src')
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})

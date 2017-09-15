@@ -1,31 +1,56 @@
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
+import {DataObserverOptions} from "../interfaces";
 
+/**
+ * This class is used to create a observable from a provided observable source or created a new observable using `BehaviousSubject`
+ * @class
+ */
 export class DataObserver<T> {
+  /** Inbuild observable */
   dataBehavious$: BehaviorSubject<T | any | null>;
   entityName: string = 'data';
-  initialQuery = null;
   initialData = {};
+  /**
+   * Provided data source
+   */
   dataSource$: Observable<T>;
 
+  /**
+   *
+   * @param {DataObserverOptions<T>} options - Options for data Observable
+   */
   constructor(public options?: DataObserverOptions<T>) {
     if(options) this.setOptions(options)
     // this.data$().do((data) => this.onDataUpdate(data))
   }
 
   setOptions(options: DataObserverOptions<T> = {}) {
-    this.setDataSource(options);
-    this.setInitialData(options);
+    this.setDataSource(options.dataSource$);
+    this.setInitialData(options.initialData);
   }
 
-  setDataSource(options: DataObserverOptions<T> = {}) {
-    this.dataSource$ = options.dataSource$ || this.dataSource$
+  /**
+   *
+   * @param dataSource$   Sets dataSource if not null
+   *
+   */
+  setDataSource(dataSource$) {
+    this.dataSource$ = dataSource$ || this.dataSource$
   }
 
-  setInitialData(options: DataObserverOptions<T> = {}) {
-    this.initialData = options.initialData || this.initialData;
+  /**
+   *
+   * @param initialData Sets initial Data if not null
+   */
+  setInitialData(initialData) {
+    this.initialData = initialData || this.initialData;
   }
 
+  /**
+   *
+   * @returns {Observable<T> | Observable<any | any | T>} Return Inbuild data source or provided data source
+   */
   data$() {
     return this.dataSource$ || this.getDataBehaviour().asObservable()
   }
@@ -34,6 +59,10 @@ export class DataObserver<T> {
     console.log(data, this.entityName);
   }
 
+  /**
+   * Updated data of inbuilt data source, would not work for provided data source
+   * @param {T} data
+   */
   updateData(data: T) {
     if(!this.dataSource$) this.getDataBehaviour().next(data)
   }
@@ -45,8 +74,3 @@ export class DataObserver<T> {
     return this.dataBehavious$
   }
 };
-
-export interface DataObserverOptions<T> {
-  initialData?: T,
-  dataSource$?: Observable<T>
-}

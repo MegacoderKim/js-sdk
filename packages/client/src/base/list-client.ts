@@ -50,7 +50,7 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
   }
 
   getDefaultQuery() {
-    return {page_size: 15, ...super.getDefaultQuery()}
+    return {page_size: 10, ...super.getDefaultQuery()}
   }
 
   getListQuery() {

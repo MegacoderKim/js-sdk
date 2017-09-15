@@ -17,17 +17,34 @@ import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
 import {IsRangeADay, IsRangeToday, DateString} from "ht-js-utils";
 
+/**
+ * Class containing all user related client entity like list of user, user placeline etc
+ * @class
+ */
 export class HtUsersClient extends EntityClient {
+  /**
+   * Fetches from `/users/`
+   */
   index: HtUsersIndexClient;
+  /**
+   * Fetches from `/users/analytics/`
+   */
   analytics: HtUsersAnalytics;
+  /**
+   * Fetches user placeline
+   */
   placeline: HtUserPlacelineClient;
-  api;
+  /**
+   * Fetches across the page (complete data of users) from `/users/analytics/`
+   */
   marksAnalytics: HtUsersAnalyticsMarkers;
+  /**
+   * Fetches across the page (complete data of users) from `/users/`
+   */
   marksIndex: HtUsersIndexMarkers;
   filterClass: DefaultUsersFilter;
   dateRangeObserver: QueryObserver;
   initialDateRange: IDateRange;
-  dateRangeParam = 'recorded_at';
 
   constructor(req, public options: IUsersClientOptions = {}) {
     super();
@@ -81,6 +98,10 @@ export class HtUsersClient extends EntityClient {
     return {...range, start, end}
   }
 
+  /**
+   * Return users list array or array of length 1 with selected user if user is selected (userId not null)
+   * @returns {any}
+   */
   usersPlaceline$() {
     let id$ = this.list.idObservable.data$().distinctUntilChanged();
     let dataArray$ = this.list.dataArray$;
@@ -111,16 +132,28 @@ export class HtUsersClient extends EntityClient {
 
   }
 
+  /**
+   * Return list client based on api type (index/analytics)
+   * @returns {HtUsersIndexClient | HtUsersAnalytics}
+   */
   get list (): HtUsersIndexClient | HtUsersAnalytics {
     let apiType = this.options.listApiType || ApiType.analytics;
     return this.getListClient(apiType)
   }
 
+  /**
+   * Returns markers array based on api type
+   * @returns {HtUsersIndexMarkers | HtUsersAnalyticsMarkers}
+   */
   get marks(): HtUsersIndexMarkers | HtUsersAnalyticsMarkers {
     let apiType = this.options.listApiType || ApiType.analytics;
     return this.getMarkerClient(apiType)
   }
 
+  /**
+   * Return label of current user queries
+   * @returns {Observable<QueryLabel[]>}
+   */
   get queryLabel$() {
     let query$ = this.list.queryObserver.data$();
     return query$.map((query) => {
@@ -129,6 +162,10 @@ export class HtUsersClient extends EntityClient {
     })
   }
 
+  /**
+   * Return orderings labels and sign for display
+   * @returns {Observable<any>}
+   */
   get ordering$() {
     return this.list.queryObserver.data$().map((query) => {
       query = {...this.list.getDefaultQuery(), ...query};
@@ -138,6 +175,10 @@ export class HtUsersClient extends EntityClient {
     }).distinctUntilChanged()
   }
 
+  /**
+   * Return display string for date range
+   * @returns {Observable<string>}
+   */
   get dateRangeDisplay$(): Observable<string> {
     return this.dateRangeObserver.data$().map((range: IDateRange) => {
       let isSingleDay = IsRangeADay(range);
@@ -156,7 +197,12 @@ export class HtUsersClient extends EntityClient {
     })
   }
 
-  getOrderingMod(ordering: string) {
+  /**
+   * Processes ordering text to extract string and sign
+   * @param {string} ordering
+   * @returns {{string: string; sign: number}}
+   */
+  private getOrderingMod(ordering: string) {
     let string = ordering;
     let sign = 1;
     if (ordering.includes('-')) {
@@ -176,6 +222,10 @@ export class HtUsersClient extends EntityClient {
     return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
   }
 
+  /**
+   * Return array of markers to display. Return [] for selected placeline
+   * @returns {any}
+   */
   usersMarkers$() {
 
     // let dataArray$ = apiType == ApiType.index ? this.index.dataArray$ : this.analytics.dataArray$;
@@ -185,7 +235,7 @@ export class HtUsersClient extends EntityClient {
       this.list.dataArray$
     );
 
-    let hasPlaceline$ = this.placeline.data$.map((data) => !!data).distinctUntilChanged();
+    let hasPlaceline$ = this.placeline.idObservable.data$().map((data) => !!data).distinctUntilChanged();
 
     let allDataArray$ = Observable.combineLatest(
       markers$,

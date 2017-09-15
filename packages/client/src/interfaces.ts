@@ -1,6 +1,8 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseApi} from "./api/base";
 import {Partial} from "ht-models";
+import {IUsersClientOptions} from "./entities/users/users-client";
+import {IActionsClientOptions} from "./entities/actions/actions-client";
 
 export const defaultListConfig: IListConfig = {
   isLive: false,
@@ -46,4 +48,17 @@ export interface IItemClientOptions<A> {
 
 export interface IBaseClientOptions<A> extends Partial<IListClientOptions<A>>, Partial<IItemClientOptions<A>>{
   api: HtBaseApi
+}
+
+export interface IClientOptions {
+  actionsClientOptions?: IActionsClientOptions,
+  usersClientOptions?: IUsersClientOptions
+}
+
+/**
+ * @interface Options for
+ */
+export interface DataObserverOptions<T> {
+  initialData?: T,
+  dataSource$?: Observable<T>
 }
