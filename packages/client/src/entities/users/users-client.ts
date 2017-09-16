@@ -160,7 +160,7 @@ export class HtUsersClient extends EntityClient {
       const segment = newSegment;
 
       if (!segment.resetBoundsId && segment.highlightedId !== oldSegment.highlightedId ) {
-        this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId)
+        // this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId) //todo highlight
         //todo select segment
         // this.mapClass.segmentTrace.
       }
