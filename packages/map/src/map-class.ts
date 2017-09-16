@@ -4,12 +4,13 @@ import {GoogleMapUtils} from "./google-map-utils";
 import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
 import {UsersCluster} from "./entities/users-cluster";
+import {LightColorMapStyle} from "./map-styles/light-color";
 
 export class HtMapClass {
   map: HtMap;
   mapUtils: MapUtils;
   segmentTrace: HtSegmentsTrace;
-  usersCluster
+  usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
     duration: 0.3
@@ -20,7 +21,8 @@ export class HtMapClass {
   googleMapOptions = {
     center: {lat: 0, lng: 0}, zoom: 2,
     fullscreenControl: false,
-    streetViewControl: false
+    streetViewControl: false,
+    styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
 

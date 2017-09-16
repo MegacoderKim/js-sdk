@@ -62,3 +62,14 @@ export interface DataObserverOptions<T> {
   initialData?: T,
   dataSource$?: Observable<T>
 }
+
+/**
+ * Observable for placeline segment selection
+ * @type selectedId: Used as hover state of segment
+ * @type resetBoundsId: Used as selection state of segment
+ */
+export interface PlacelineSegmentId {
+  selectedId?: string | null,
+  resetBoundsId?: string | null,
+  highlightedId?: string | null,
+}
