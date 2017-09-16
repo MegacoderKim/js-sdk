@@ -104,10 +104,10 @@ export class HtMapItems {
     })
   }
 
-  highlight(selectedItem, toHighlight: boolean = true) {
+  highlight(selectedId) {
     this.onEach((item) => {
-      if(toHighlight) {
-        if(selectedItem && item.id != selectedItem.id) {
+      if(selectedId) {
+        if(item.id != selectedItem.id) {
           this.unHighlightItem(item)
         } else {
 

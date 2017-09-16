@@ -71,7 +71,9 @@ export class HtSegmentsTrace {
     return bounds
   }
 
-  selectSegment(segment: ISegment) {
+  highlightSegmentId(segmentId: string) {
+    this.segmentsPolylines.highlight(segmentId);
+    this.stopMarkers.hightlight(segment);
     if(segment.type == 'trip') {
       this.segmentsPolylines.highlight(segment);
       this.stopMarkers.unHighlight()
