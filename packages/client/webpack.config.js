@@ -47,9 +47,6 @@ var config = {
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-client']}),
         new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-client']}),
-        new TypedocWebpackPlugin({
-            out: './docs',
-        }, './src')
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})

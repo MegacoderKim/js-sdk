@@ -1,7 +1,7 @@
 import {HtUsersIndexClient} from "./users-index-client";
 import {HtUserPlacelineClient} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
-import {IItemClientOptions, IListClientOptions} from "../../interfaces";
+import {IItemClientOptions, IListClientOptions, PlacelineSegmentId} from "../../interfaces";
 import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
@@ -16,6 +16,8 @@ import {QueryLabel} from "../../filters/base-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
 import {IsRangeADay, IsRangeToday, DateString} from "ht-js-utils";
+import {HtMapClass} from "ht-js-map";
+import {ISegment} from "ht-models";
 
 /**
  * Class containing all user related client entity like list of user, user placeline etc
@@ -45,7 +47,7 @@ export class HtUsersClient extends EntityClient {
   filterClass: DefaultUsersFilter;
   dateRangeObserver: QueryObserver;
   initialDateRange: IDateRange;
-
+  mapClass: HtMapClass;
   constructor(req, public options: IUsersClientOptions = {}) {
     super();
     let api = new HtUsersApi(req);
@@ -90,6 +92,7 @@ export class HtUsersClient extends EntityClient {
 
     this.filterClass = new DefaultUsersFilter();
 
+    this.initEffects()
   }
 
   getInitialDateRange(range: Partial<IDateRange> = {}): IDateRange {
@@ -105,31 +108,156 @@ export class HtUsersClient extends EntityClient {
   usersPlaceline$() {
     let id$ = this.list.idObservable.data$().distinctUntilChanged();
     let dataArray$ = this.list.dataArray$;
-    let selected$ = this.placeline.data$.distinctUntilChanged();
+    let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
     return this.dataArrayWithSelected$(id$, dataArray$, selected$)
 
-    // const userId$ = this.analytics.idObservable.data$().distinctUntilChanged();
-    // const placelinePage$ = this.placeline.data$.distinctUntilChanged()
-    //   .map((data) => {
-    //   return data ? [data] : null;
-    // }); //todo take query from placeline
-    //
-    // const dataArray$ = this.analytics.dataArray$;
-    //
-    // const d = Observable.combineLatest(
-    //   placelinePage$,
-    //   userId$,
-    //   dataArray$,
-    //   (placelinePage, userId, dataArray) => {
-    //     return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
-    //       return userId ? user.id == userId : true;
-    //     })
-    //   }
-    // );
-    //
-    //
-    // return d
+  }
 
+  /**
+   * Handle effects of placeline segments and stuff
+   */
+  private initEffects() {
+
+    Observable.combineLatest(
+      this.placeline.dataObserver,
+      this.placeline.segmentIdObserver.data$(),
+      (userData: IUserData, {segmentId, selectedSegmentId}) => {
+        if(userData && (segmentId || selectedSegmentId)) {
+          const id = segmentId || selectedSegmentId;
+          let segments = _.filter(userData.segments, (segment: ISegment) => {
+            return segment.id === id;
+          });
+          userData = {...userData, segments: segments, events: [], actions: []}
+        }
+        return userData
+      }
+    ).filter((data) => !!this.mapClass).do((userData) => {
+      if (userData) {
+        this.mapClass.tracePlaceline(userData);
+        // if (toReset) this.mapClass.resetBounds()
+      } else {
+        this.mapClass.segmentTrace.trace(null, this.mapClass.map)
+      }
+    }).map((userData) => {
+      return !!userData
+    }).distinctUntilChanged().subscribe(() => {
+      this.mapClass.resetBounds()
+    });
+
+    const segmeentFilter = {
+
+    };
+
+
+
+    let segmentScan = this.placeline.segmentIdObserver.data$().scan((acc, data: any) => {
+      return {
+        current: data,
+        old: acc.current
+      }
+    }, {old: {}, current: {}}).filter((data) => this.mapClass && !!data)
+      .do(({oldSegment, newSegment}) => {
+      const segment = newSegment;
+
+      if (!segment.resetBoundsId && segment.highlightedId !== oldSegment.highlightedId ) {
+        this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId)
+        //todo select segment
+        // this.mapClass.segmentTrace.
+      }
+      // if(oldSegment) {
+      //   let segment = oldSegment;
+      //   this.segmentsTrace.unselectSegment(segment);
+      // }
+      // if(newSegment) {
+      //   let segment = newSegment;
+      //   this.segmentsTrace.selectSegment(segment);
+      // }
+    });
+
+    let placelinseScan = this.placeline.dataObserver.scan((acc, data: any) => {
+      return {
+        current: data,
+        old: acc.current
+      }
+    }, {old: null, current: null}).filter((data) => this.mapClass && !!data);
+
+    let setBounds1 = Observable.combineLatest(
+      segmentScan,
+      placelinseScan,
+      (segmentScan, placelineScan) => {
+        // console.log(segmentScan, "Scan");
+        const firstPlaceline = placelineScan.current && !placelineScan.old;
+        const placelineResetMap = !placelineScan.current;
+        const firstResetSegment = !!segmentScan.current.resetBoundsId && !segmentScan.old.resetBoundsId;
+        const segmentResetMap = firstResetSegment;
+        // console.log("bools", firstResetSegment, segmentResetMap);
+        let userData = placelineScan.current;
+        let selectedId = segmentScan.current.selectedId;
+        if(selectedId && userData) {
+          let segments = _.filter(userData.segments, (segment) => {
+            return segment.id === selectedId;
+          }) ;
+          userData = {...userData, segments, events: [], actions: []}
+        }
+        this.mapClass.tracePlaceline(userData);
+        // console.log(placelineResetMap, segmentResetMap, "Test");
+        const toReset = placelineResetMap || segmentResetMap;
+        // if(placelineResetMap || segmentResetMap) {
+        //   this.mapClass.resetBounds()
+        // }
+        return toReset
+
+      }
+    ).filter((data) => !!data);
+
+    let setBounds2 = this.marks.dataObserver.filter(data => !!data).pluck('isFirst').filter(data => !!data);
+
+    let setBounds3 = this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
+      .distinctUntilChanged();
+
+    Observable.merge(
+      setBounds1,
+      setBounds2,
+      setBounds3
+    ).debounceTime(100).subscribe((data) => {
+      this.mapClass.resetBounds()
+    });
+
+    // this.placeline.segmentIdObserver.data$()
+    //   .filter((data) => !!this.mapClass)
+    //   .filter((placelineSegmentId: PlacelineSegmentId) => {
+    //     if (placelineSegmentId.selectedId) {
+    //       this.mapClass.segmentTrace()
+    //     }
+    //   })
+    //   .map((placelineSegmentId: PlacelineSegmentId) => !!placelineSegmentId.resetBoundsId)
+    //   .distinctUntilChanged().subscribe((hasSelectedSegment) => {
+    //   if (hasSelectedSegment) this.mapClass.resetBounds()
+    // });
+
+    this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
+      .distinctUntilChanged()
+      .subscribe((userId) => {
+        // this.userClientService.marks.setFilter((user) => !userId);
+        this.mapClass.resetBounds();
+      });
+
+    const marks$ = this.usersMarkers$();
+
+
+    marks$.subscribe((data) => {
+      this.mapClass.usersCluster.trace(data, this.mapClass.map)
+    });
+
+    this.marks.dataObserver.filter(data => !!data).pluck('isFirst').filter(data => !!data).subscribe((amrks) => {
+      this.mapClass.resetBounds()
+    });
+    // this.placeline.data$;
+
+    // this.placeline.segmentIdObserver.data$().subscribe((placelineId: PlacelineSegmentId) => {
+    //   console.log(placelineId, "ppp", this.mapClass);
+    //
+    // })
   }
 
   /**
@@ -182,13 +310,10 @@ export class HtUsersClient extends EntityClient {
   get dateRangeDisplay$(): Observable<string> {
     return this.dateRangeObserver.data$().map((range: IDateRange) => {
       let isSingleDay = IsRangeADay(range);
-      console.log(isSingleDay, "single");
       if(isSingleDay) {
         let isToday = IsRangeToday(range);
-        console.log("isTodau", isToday);
         let suffix = isToday ? 'Today ' : '';
         let string = suffix + DateString(range.start);
-        console.log("string", suffix, DateString);
         return string
       } else {
         console.log(DateString(range.start), range.start);

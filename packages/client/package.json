@@ -14,9 +14,11 @@
   },
   "author": "",
   "devDependencies": {
+    "@types/googlemaps": "^3.26.20",
+    "ht-js-data": "file:../data",
+    "ht-js-map": "file:../map",
     "ht-js-utils": "file:../utils",
     "ht-models": "file:../models",
-    "ht-js-data": "file:../data",
     "moment-mini": "^2.18.1",
     "typescript": "^2.4.2",
     "underscore": "^1.8.3",
