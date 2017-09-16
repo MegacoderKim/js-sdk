@@ -18,6 +18,8 @@ export * from "./base/list-client";
 export * from "./base/item-client";
 export * from "./base/id-observer";
 
+export { getUiState, getUiAState} from "./reducers"
+
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';
