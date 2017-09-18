@@ -2,6 +2,8 @@ import * as UserDispatch from "../dispatchers/user-dispatcher";
 import {IUserData, Page, IUser, IUserAnalytics} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 import {createSelector, MemoizedSelector} from "../store/selector";
+import * as _ from "underscore";
+import {htUser} from "ht-js-data";
 
 const initialState: State = {
   usersListActive: false,
@@ -61,6 +63,12 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
       let usersListActive = !!action.payload;
       return {...state, listApiType: action.payload, usersListActive}
     }
+    case UserDispatch.SET_LIST_ACTIVE: {
+      return {...state, usersListActive: action.payload}
+    }
+    case UserDispatch.SET_MARKERS_ACTIVE: {
+      return {...state, usersMarkersActive: action.payload}
+    }
     default: {
       return state
     }
@@ -68,15 +76,37 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
 }
 
 export const getUserData = (state: State) => state.userData;
+export const getAnalyticsMarkers = (state: State) => state.usersAnalyticsAll;
+export const getIndexMarkers = (state: State) => state.usersIndexAll;
+export const getAnalyticFilteredsMarkers = (state: State) => validMarkers(state.usersAnalyticsAll);
+export const getIndexFilteredMarkers = (state: State) => validMarkers(state.usersIndexAll);
 export const getIndexPage = (state: State) => state.usersIndexPage;
 export const getAnalyticsPage = (state: State) => state.usersAnalyticsPage;
 export const getListApiType = (state: State) => state.listApiType;
 export const getListActive = (state: State) => state.usersListActive;
+export const getMarkersActive = (state: State) => state.usersMarkersActive;
 export const getIndexActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
   return apiType === ApiType.index && isListActive
 });
 export const getAnalyticsActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
   return apiType === ApiType.analytics && isListActive
 });
+
+export const getIndexMarkersActive = createSelector(getListApiType, getMarkersActive, (apiType, isMarkersActive) => {
+  return apiType === ApiType.index && isMarkersActive
+});
+export const getAnalyticsMarkersActive = createSelector(getListApiType, getMarkersActive, (apiType, isMarkersActive) => {
+  return apiType === ApiType.analytics && isMarkersActive
+});
+
+function validMarkers(markers: AllData<IUser | IUserAnalytics>) {
+  if(!markers) return markers;
+  return _.reduce(markers.results, (acc, marker) => {
+    return htUser(marker).isValidMarker() ? [...acc, marker] : acc
+  }, [])
+}
+
+
+
 
 

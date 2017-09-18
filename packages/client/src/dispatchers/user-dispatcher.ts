@@ -17,6 +17,9 @@ export const INIT_USERS_MARKERS = "[USERS] init users markers";
 export const INIT_USERS = "[USERS] init users";
 export const PAUSE_USERS = "[USERS] pause users";
 
+export const SET_LIST_ACTIVE = "[USERS] set list active";
+export const SET_MARKERS_ACTIVE = "[USERS] set markerS active";
+
 export class SetUserData implements Action {
   readonly type = SET_USER_DATA;
   constructor(public payload: IUserData | null) {}
@@ -77,6 +80,16 @@ export class PauseUsers implements Action {
   constructor() {}
 }
 
+export class SetListActive implements Action {
+  readonly type = SET_LIST_ACTIVE;
+  constructor(public payload: boolean = true) {}
+}
+
+export class SetMarkersActive implements Action {
+  readonly type = SET_MARKERS_ACTIVE;
+  constructor(public payload: boolean = true) {}
+}
+
 export type All
   = SetUserData
   | SetUsersAnalyticsPage
@@ -90,3 +103,5 @@ export type All
   | InitUsersMarkers
   | InitUsers
   | PauseUsers
+  | SetListActive
+  | SetMarkersActive

@@ -6,7 +6,7 @@ import * as fromUsers from "./user-reducer";
 import * as fromSegments from "./segments-reducer";
 import * as fromQuery from "./query-reducer";
 import {IUserData, IUser, IUserAnalytics } from "ht-models"
-import {ApiType} from "../interfaces"
+import {ApiType, AllData} from "../interfaces"
 
 export interface State {
   users: fromUsers.State,
@@ -38,7 +38,10 @@ export const getUsersListApiType = createSelector(getUsersState, fromUsers.getLi
 export const getUsersListActive = createSelector(getUsersState, fromUsers.getListActive);
 export const getUsersIndexIsActive = createSelector(getUsersState, fromUsers.getIndexActive);
 export const getUsersAnalyticsIsActive = createSelector(getUsersState, fromUsers.getAnalyticsActive);
-
+export const getUsersIndexMarkersIsActive = createSelector(getUsersState, fromUsers.getIndexMarkersActive);
+export const getUsersAnalyticsMarkersIsActive = createSelector(getUsersState, fromUsers.getAnalyticsMarkersActive);
+export const getUsersIndexFilteredMarker = createSelector(getUsersState, fromUsers.getIndexFilteredMarkers);
+export const getUsersAnalyticsFilteredMarker = createSelector(getUsersState, fromUsers.getAnalyticFilteredsMarkers);
 /**
  * Segment selectors
  */
