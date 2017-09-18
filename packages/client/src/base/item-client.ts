@@ -10,16 +10,17 @@ import {HtBaseClient} from "./base-client";
 
 export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOptions<A>, A> {
   loadingObserver: LoadingObserver;
-  queryObserver: QueryObserver;
-  idObservable: IdObserver;
+  // queryObserver: QueryObserver;
+  // idObservable: IdObserver;
   api: HtBaseApi;
   defaultQuery: object = {};
-
+  // idSource$;
+  // querySource$;
 
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
-      this.queryObserver.data$().startWith({}),
-      this.idObservable.data$().distinctUntilChanged(),
+      this.options.querySource$,
+      this.options.idSource$.distinctUntilChanged(),
       ((query, id) => {
         return {id, query}
       })

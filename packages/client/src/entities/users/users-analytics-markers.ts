@@ -1,7 +1,7 @@
 import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import { IUserAnalyticsPage } from "ht-models"
-import {ApiType} from "../../api/base";
+import {ApiType} from "../../interfaces";
 
 export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
   name = "analytics users";

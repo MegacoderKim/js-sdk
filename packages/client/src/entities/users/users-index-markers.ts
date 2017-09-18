@@ -2,7 +2,7 @@ import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import { IUserAnalyticsPage } from "ht-models"
 import {HtUsersIndexClient} from "./users-index-client";
-import {ApiType} from "../../api/base";
+import {ApiType} from "../../interfaces";
 
 export class HtUsersIndexMarkers extends HtUsersIndexClient {
   entityName = "analytics users";

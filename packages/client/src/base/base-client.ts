@@ -25,6 +25,7 @@ export abstract class HtBaseClient<T, O, A> {
   dataMap$: DataMapObserve;
   dateRangeObserver: QueryObserver;
   name = "base";
+
   constructor(
     public options: IBaseClientOptions<A>
   ) {
@@ -47,8 +48,28 @@ export abstract class HtBaseClient<T, O, A> {
     };
     this.idObservable = new IdObserver(idOptions);
     this.dataMap$ = new DataMapObserve();
-    this.dateRangeObserver = new QueryObserver({dataSource$: options.dateRangeSource$})
+    this.dateRangeObserver = new QueryObserver({dataSource$: options.dateRangeSource$});
+    this.initEffects()
     // this.initListener()
+  }
+
+  initEffects() {
+    let query$ = this.options.isActive$ ?
+      this.options.isActive$.switchMap((isActive: boolean) => {
+        return isActive ? this.getDataQueryWithLoading$() : Observable.of(null)
+      }) : this.getDataQueryWithLoading$();
+    let data$ = query$.switchMap((queryObj) => {
+      return queryObj ?
+        this.getData$(queryObj) : Observable.of(null)
+    })
+      .do((data) => {
+        this.loadingObserver.updateData(false);
+        //todo handle not found
+      });
+    data$.subscribe((userData) => {
+      this.options.onDataUpdate(userData)
+    });
+
   }
 
   getDefaultQuery() {
@@ -98,9 +119,9 @@ export abstract class HtBaseClient<T, O, A> {
     this.idObservable.dataSource$ = this.options.idSource$;
     this.idObservable.initialData = this.options.id;
     this.idObservable.updateData(this.options.id);
-    let queryOptions = this.getQueryOptions(this.options);
-    this.queryObserver.setOptions(queryOptions);
-    this.queryObserver.updateData(queryOptions.initialData)
+    // let queryOptions = this.getQueryOptions(this.options);
+    // this.queryObserver.setOptions(queryOptions);
+    // this.queryObserver.updateData(queryOptions.initialData)
 
   }
 

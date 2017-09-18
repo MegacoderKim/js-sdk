@@ -25,6 +25,14 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
     case QueryDispatch.SET_USER_ID: {
       return {...state, userId: action.payload}
     }
+    case QueryDispatch.TOGGLE_USER_ID: {
+      const userId = state.userId == action.payload ? null : action.payload;
+      return {...state, userId}
+    }
+    case QueryDispatch.TOGGLE_PLACELINE_ID: {
+      const placelineId = state.placelineId == action.payload ? null : action.payload;
+      return {...state, placelineId}
+    }
     default: {
       return state
     }
@@ -32,3 +40,5 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
 }
 
 export const getPlacelineId = (state: State) => state.placelineId;
+export const getUsersQuery = (state: State) => state.userQuery;
+export const getUsersId = (state: State) => state.userId;

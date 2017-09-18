@@ -1,16 +1,19 @@
 import * as UserDispatch from "../dispatchers/user-dispatcher";
 import {IUserData, Page, IUser, IUserAnalytics} from "ht-models";
-import {AllData} from "../interfaces";
+import {AllData, ApiType} from "../interfaces";
+import {createSelector, MemoizedSelector} from "../store/selector";
 
 const initialState: State = {
   usersListActive: false,
-  usersMarkersActive: false
+  usersMarkersActive: false,
+  listApiType: ApiType.analytics,
 };
 
 export interface State {
   userData?: IUserData, //placeline data,
   usersAnalyticsPage?: Page<IUserAnalytics>,
   usersIndexPage?: Page<IUser>,
+  listApiType: ApiType
   usersAnalyticsAll?: AllData<IUserAnalytics>,
   usersIndexAll?: AllData<IUser>,
   usersListDataMap?: (data) => any,
@@ -54,6 +57,10 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
     case UserDispatch.PAUSE_USERS: {
       return {...state, usersMarkersActive: false, usersListActive: false}
     }
+    case UserDispatch.SET_USERS_LIST_API_TYPE: {
+      let usersListActive = !!action.payload;
+      return {...state, listApiType: action.payload, usersListActive}
+    }
     default: {
       return state
     }
@@ -61,4 +68,15 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
 }
 
 export const getUserData = (state: State) => state.userData;
+export const getIndexPage = (state: State) => state.usersIndexPage;
+export const getAnalyticsPage = (state: State) => state.usersAnalyticsPage;
+export const getListApiType = (state: State) => state.listApiType;
+export const getListActive = (state: State) => state.usersListActive;
+export const getIndexActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
+  return apiType === ApiType.index && isListActive
+});
+export const getAnalyticsActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
+  return apiType === ApiType.analytics && isListActive
+});
+
 

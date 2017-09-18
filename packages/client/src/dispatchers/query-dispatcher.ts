@@ -6,6 +6,8 @@ export const SET_USER_QUERY = '[QUERY] set user query';
 export const CLEAR_USER_QUERY_KEY = '[QUERY] clear user query key';
 export const SET_PLACELINE_ID = '[USERS] set placeline id';
 export const SET_USER_ID = '[USERS] set user id';
+export const TOGGLE_USER_ID = '[USERS] toggle user id';
+export const TOGGLE_PLACELINE_ID = '[USERS] toggle placeline id';
 
 export class SetDateRange implements Action {
   readonly type = SET_DATE_RANGE;
@@ -34,11 +36,23 @@ export class SetUserId implements Action {
   constructor(public payload: string | null) {}
 }
 
+export class ToggleUserId implements Action {
+  readonly type = TOGGLE_USER_ID;
+  constructor(public payload: string) {}
+}
+
+export class TogglePlacelineId implements Action {
+  readonly type = TOGGLE_PLACELINE_ID;
+  constructor(public payload: string) {}
+}
+
 export type All
   = SetDateRange
   | SetUserQuery
   | ClearUserQueryKey
   | SetPlacelineId
   | SetUserId
+  | ToggleUserId
+  | TogglePlacelineId
 
 

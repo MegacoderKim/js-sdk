@@ -1,5 +1,5 @@
 import {Observable} from "rxjs/Observable";
-import {ApiType, HtBaseApi} from "./api/base";
+import {HtBaseApi} from "./api/base";
 import {Partial} from "ht-models";
 import {HtUsersApi} from "./api/users";
 import {HtActionsApi} from "./api/actions";
@@ -39,29 +39,30 @@ export interface IListConfig {
 
 export interface IListClientOptions<A> {
   query?: object,
-  querySource$?: Observable<object>,
+  querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
   idSource$?: Observable<string | number>
   id?: string,
   defaultQuery?: object,
   api: HtBaseApi | any,
-  onDataUpdate?: (data) => void,
+  onDataUpdate: (data) => void,
   pollTime?: number,
-  dateRangeSource$?: Observable<object>
+  dateRangeSource$?: Observable<object>,
+  isActive$: Observable<boolean>
 }
 
 export interface IItemClientOptions<A> {
   query?: object,
-  querySource$?: Observable<object>,
+  querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
-  idSource$?: Observable<string | number>
+  idSource$: Observable<string | number>
   defaultQuery?: object,
   api: HtBaseApi,
   id?: string,
   onNotFound?: () => void,
-  onDataUpdate?: (data) => void,
+  onDataUpdate: (data) => void,
   pollTime?: number,
-  dateRangeSource$?: Observable<object>
+  dateRangeSource$?: Observable<object>,
 }
 
 export interface IBaseClientOptions<A> extends Partial<IListClientOptions<A>>, Partial<IItemClientOptions<A>>{
@@ -96,5 +97,10 @@ export interface AllData<T> {
   results: T[],
   isFirst: boolean,
   timestamp?: string
+}
+
+export enum ApiType {
+  index = 'index',
+  analytics = 'analytics'
 }
 

@@ -3,7 +3,7 @@ import {HtGroupsApi} from "../../api/groups";
 import {IGroup } from "ht-models"
 import {Observable} from "rxjs/Observable";
 export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
-  entityName = "group";
+  name = "group";
 
   getData$({id, query}): Observable<IGroup> {
     return id ?

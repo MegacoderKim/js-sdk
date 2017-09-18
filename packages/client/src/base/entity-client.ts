@@ -30,7 +30,6 @@ export abstract class EntityClient {
         return data ? [data] : null;
       }); //todo take query from placeline
 
-
     const array$ = Observable.combineLatest(
       placelinePage$,
       userId$,
@@ -38,7 +37,7 @@ export abstract class EntityClient {
       (placelinePage, userId, dataArray) => {
         return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
           return userId ? user.id == userId : true;
-        })
+        });
       }
     );
 
@@ -61,6 +60,10 @@ export abstract class EntityClient {
     let end = range['end'];
     let param = this.dateRangeParam;
     return {[`min_${param}`]: start, [`max_${param}`]: end, start: null, end: null}
+  }
+
+  getPageFromEntity(item$) {
+    return item$.map()
   }
 
 }

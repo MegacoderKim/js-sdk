@@ -5,11 +5,14 @@ import {htPlaceline} from "ht-js-data";
 import {HtUsersApi} from "../../api/users";
 import {HtClientConfig} from "../../config";
 import {SegmentIdObserver} from "../../base/segment-id-observer";
+import {IItemClientOptions} from "../../interfaces";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
-  entityName = "placeliine";
+  name = "placeline";
+
   segmentIdObserver: SegmentIdObserver;
-  constructor(options?) {
+
+  constructor(options?: IItemClientOptions<IUserData>) {
     super(options);
     this.segmentIdObserver = new SegmentIdObserver();
   }

@@ -1,8 +1,8 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseClient} from "./base-client";
-import {IListClientOptions, IDateRange} from "../interfaces";
+import {IListClientOptions, IDateRange, ApiType} from "../interfaces";
 import {IUserAnalytics} from "ht-models";
-import {ApiType, HtBaseApi} from "../api/base";
+import {HtBaseApi} from "../api/base";
 import * as _ from "underscore";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
@@ -10,7 +10,7 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
       // this.idObservable.data$().startWith(this.options.id),
-      this.getListQuery(),
+      this.options.querySource$,
       this.dateRangeObserver.data$(),
       (query, range) => {
         return {...query, ...range}
@@ -27,22 +27,22 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     })
   }
 
-  get filteredData$() {
-    return Observable.combineLatest(
-      this.dataObserver,
-      this.dataMap$.data$(),
-      (data, filter) => {
-        return filter(data)
-      }
-    )
-  }
-
-  get filteredDataArray$() {
-    return this.filteredData$.map((pageData) => {
-      // console.log("page data", pageData);
-      return pageData ? pageData['results'] : null;
-    })
-  }
+  // get filteredData$() {
+  //   return Observable.combineLatest(
+  //     this.dataObserver,
+  //     this.dataMap$.data$(),
+  //     (data, filter) => {
+  //       return filter(data)
+  //     }
+  //   )
+  // }
+  //
+  // get filteredDataArray$() {
+  //   return this.filteredData$.map((pageData) => {
+  //     // console.log("page data", pageData);
+  //     return pageData ? pageData['results'] : null;
+  //   })
+  // }
 
   getAll$(type: ApiType) {
     return this.api.all$<IUserAnalytics>({}, type);

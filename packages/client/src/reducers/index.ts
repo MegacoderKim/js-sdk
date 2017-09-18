@@ -5,7 +5,9 @@ import {createFeatureSelector, createSelector, MemoizedSelector} from "../store/
 import * as fromUsers from "./user-reducer";
 import * as fromSegments from "./segments-reducer";
 import * as fromQuery from "./query-reducer";
-import {IUserData } from "ht-models"
+import {IUserData, IUser, IUserAnalytics } from "ht-models"
+import {ApiType} from "../interfaces"
+
 export interface State {
   users: fromUsers.State,
   segments: fromSegments.State,
@@ -30,6 +32,12 @@ export const metaReducers: ActionReducer<any, any>[] = [];
  */
 export const getUsersState = createFeatureSelector<fromUsers.State>('users');
 export const getUsersUsersData = createSelector(getUsersState, fromUsers.getUserData);
+export const getUsersIndexPage = createSelector(getUsersState, fromUsers.getIndexPage);
+export const getUsersAnalyticsPage = createSelector(getUsersState, fromUsers.getAnalyticsPage);
+export const getUsersListApiType = createSelector(getUsersState, fromUsers.getListApiType);
+export const getUsersListActive = createSelector(getUsersState, fromUsers.getListActive);
+export const getUsersIndexIsActive = createSelector(getUsersState, fromUsers.getIndexActive);
+export const getUsersAnalyticsIsActive = createSelector(getUsersState, fromUsers.getAnalyticsActive);
 
 /**
  * Segment selectors
@@ -40,5 +48,6 @@ export const getSegmentsState = createFeatureSelector<fromSegments.State>('segme
  * Query selectors
  */
 export const getQueryState = createFeatureSelector<fromQuery.State>('query');
-
 export const getQueryPlacelineId = createSelector(getQueryState, fromQuery.getPlacelineId);
+export const getQueryUserQuery = createSelector(getQueryState, fromQuery.getUsersQuery);
+export const getQueryUserId = createSelector(getQueryState, fromQuery.getUsersId);

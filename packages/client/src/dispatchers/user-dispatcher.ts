@@ -1,7 +1,7 @@
 import {Action} from "../store/models";
 import {IUserData} from "ht-models"
 import {IUserAnalytics, IUser, Page} from "ht-models";
-import {AllData} from "../interfaces";
+import {AllData, ApiType} from "../interfaces";
 
 export const SET_USER_DATA = '[USERS] set user data';
 export const SET_USERS_ANALYTICS_PAGE = '[USERS] set user analytics page';
@@ -44,7 +44,7 @@ export class SetUsersIndexAll implements Action {
 
 export class SetUsersListApiType implements Action {
   readonly type = SET_USERS_LIST_API_TYPE;
-  constructor(public payload: string) {}
+  constructor(public payload: ApiType) {}
 }
 
 export class SetUsersListDataMap implements Action {

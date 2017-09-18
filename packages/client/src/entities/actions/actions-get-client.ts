@@ -6,6 +6,7 @@ import {ItemClient} from "../../base/item-client";
 import {IItemClientOptions} from "../../interfaces";
 
 export class HtActionsGetClient extends ItemClient<IAction, HtActionsApi>{
+  name = 'actions get';
 
   api$(id, query) {
     return this.api.get<IAction>(id, {...this.defaultQuery, ...query})
