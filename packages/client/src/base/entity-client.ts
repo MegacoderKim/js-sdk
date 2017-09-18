@@ -1,8 +1,9 @@
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
-import {IDateRange} from "../entities/users/users-client";
+import {IDateRange} from "../interfaces";
 
 export abstract class EntityClient {
+  stateKey: string;
   /**
    * API class which handles requests for the entity
    */

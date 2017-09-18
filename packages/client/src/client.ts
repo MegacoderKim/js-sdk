@@ -1,20 +1,26 @@
-import {HtActionsClient, IActionsClientOptions} from "./entities/actions/actions-client";
-import {HtUsersClient, IUsersClientOptions} from "./entities/users/users-client";
+import {HtActionsClient} from "./entities/actions/actions-client";
+import {HtUsersClient} from "./entities/users/users-client";
 import {HtGroupsClient} from "./entities/groups/groups-client";
 import {IClientOptions} from "./interfaces";
 import {StoreProvider} from "./store/index";
-import {reducer, reducers} from "./reducers/index";
+// import {reducer, reducers} from "./reducers/index";
+import * as fromRoot from "./reducers";
+
+import {createFeatureSelector, createSelector, MemoizedSelector} from "./store/selector";
+import * as fromUsers from "./reducers/user-reducer";
+import * as fromSegments from "./reducers/segments-reducer";
+import * as fromQuery from "./reducers/query-reducer";
 
 export class HtClient {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
   actions: HtActionsClient;
   users: HtUsersClient;
   groups: HtGroupsClient;
-  storeProvider;
+  storeProvider = new StoreProvider(fromRoot.reducers);
+
   constructor(public request, options: IClientOptions = {}) {
     // this.token = this.token || HtClientConfig.token;
     this.initEntities(options);
-    this.storeProvider = new StoreProvider(reducers)
   }
 
   get store() {
@@ -33,12 +39,16 @@ export class HtClient {
   initEntities(options: IClientOptions = {}) {
     let request = this.request;
     this.actions =  new HtActionsClient(request, options.actionsClientOptions);
-    this.users = new HtUsersClient(request, options.usersClientOptions);
+    this.users = new HtUsersClient(request, this.store, options.usersClientOptions);
     this.groups = new HtGroupsClient(request)
   }
 
   clearData() {
     this.users.clearData()
   }
+
+  /**
+   * Store selectors
+   */
 
 }

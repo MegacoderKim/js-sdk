@@ -4,6 +4,7 @@ export * from "./api/users";
 export * from "./api/base";
 // export * from "./client";
 export * from "./config";
+export * from "./interfaces";
 export * from "./entities/actions/actions-client"
 export * from "./entities/actions/actions-list-client"
 export * from "./entities/actions/actions-get-client"
@@ -17,8 +18,6 @@ export * from "./base/data-observer";
 export * from "./base/list-client";
 export * from "./base/item-client";
 export * from "./base/id-observer";
-
-export { getUiState, getUiAState} from "./reducers"
 
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';

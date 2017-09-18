@@ -12,7 +12,7 @@ import {StateObservable} from "./state";
 export class Store<T> extends Observable<T> implements Observer<Action> {
   constructor(
     state$: StateObservable,
-    private actionsObserver: Dispatcher,
+    private dispatcher: Dispatcher,
     private reducerManager: ReducerManager
   ) {
     super();
@@ -80,26 +80,26 @@ export class Store<T> extends Observable<T> implements Observer<Action> {
   }
 
   lift<R>(operator: Operator<T, R>): Store<R> {
-    const store = new Store<R>(this, this.actionsObserver, this.reducerManager);
+    const store = new Store<R>(this, this.dispatcher, this.reducerManager);
     store.operator = operator;
 
     return store;
   }
 
   dispatch<V extends Action = Action>(action: V) {
-    this.actionsObserver.next(action);
+    this.dispatcher.next(action);
   }
 
   next(action: Action) {
-    this.actionsObserver.next(action);
+    this.dispatcher.next(action);
   }
 
   error(err: any) {
-    this.actionsObserver.error(err);
+    this.dispatcher.error(err);
   }
 
   complete() {
-    this.actionsObserver.complete();
+    this.dispatcher.complete();
   }
 
   addReducer<State, Actions extends Action = Action>(

@@ -1,12 +1,30 @@
 import {Observable} from "rxjs/Observable";
-import {HtBaseApi} from "./api/base";
+import {ApiType, HtBaseApi} from "./api/base";
 import {Partial} from "ht-models";
-import {IUsersClientOptions} from "./entities/users/users-client";
-import {IActionsClientOptions} from "./entities/actions/actions-client";
+import {HtUsersApi} from "./api/users";
+import {HtActionsApi} from "./api/actions";
 
 export const defaultListConfig: IListConfig = {
   isLive: false,
 };
+
+export interface IUsersClientOptions {
+  placelineOptions?: Partial<IItemClientOptions<HtUsersApi>>,
+  indexOptions?: Partial<IListClientOptions<HtUsersApi>>,
+  analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>,
+  listApiType?: ApiType,
+  dateRangeOptions?: IDateRange,
+}
+
+export interface IActionsClientOptions {
+  listClientOptions?: Partial<IListClientOptions<HtActionsApi>>,
+  getClientOptions?: Partial<IItemClientOptions<HtActionsApi>>
+}
+
+export interface IDateRange {
+  start: string,
+  end: string
+}
 
 export interface IIndexQuery {
   pageQuery: object,
@@ -73,3 +91,10 @@ export interface PlacelineSegmentId {
   resetBoundsId?: string | null,
   highlightedId?: string | null,
 }
+
+export interface AllData<T> {
+  results: T[],
+  isFirst: boolean,
+  timestamp?: string
+}
+

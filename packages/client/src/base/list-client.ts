@@ -1,10 +1,9 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseClient} from "./base-client";
-import {IListClientOptions} from "../interfaces";
+import {IListClientOptions, IDateRange} from "../interfaces";
 import {IUserAnalytics} from "ht-models";
 import {ApiType, HtBaseApi} from "../api/base";
 import * as _ from "underscore";
-import {IDateRange} from "../entities/users/users-client";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
 

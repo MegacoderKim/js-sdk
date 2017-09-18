@@ -2,31 +2,20 @@ import {ActionReducerMap} from "../store/models";
 import {combineReducers} from "../store/utils";
 import { Action, ActionReducer } from "../store/models";
 import {createFeatureSelector, createSelector, MemoizedSelector} from "../store/selector";
-
-export interface UiState {
-  a?: string,
-  b?: string
-}
-
-export function UiReducer(state: UiState = {}, action: any): UiState {
-  console.log(action);
-  switch (action['type']) {
-    case "setA":
-      return {...state, a: action['payload']};
-    case "setB":
-      return {...state, b: action['payload']};
-    default: {
-      return state
-    }
-  }
-}
-
+import * as fromUsers from "./user-reducer";
+import * as fromSegments from "./segments-reducer";
+import * as fromQuery from "./query-reducer";
+import {IUserData } from "ht-models"
 export interface State {
-  ui: UiState
+  users: fromUsers.State,
+  segments: fromSegments.State,
+  query: fromQuery.State
 };
 
 export const reducers: ActionReducerMap<State> = {
-  ui: UiReducer,
+  users: fromUsers.usersReducer,
+  segments: fromSegments.segmentsReducer,
+  query: fromQuery.queryReducer,
 };
 
 
@@ -36,6 +25,20 @@ export function reducer(state: any, action: any) {
 
 export const metaReducers: ActionReducer<any, any>[] = [];
 
-export const getUiState = createFeatureSelector<UiState>('ui');
+/**
+ * Users selectors
+ */
+export const getUsersState = createFeatureSelector<fromUsers.State>('users');
+export const getUsersUsersData = createSelector(getUsersState, fromUsers.getUserData);
 
-export const getUiAState = createSelector(getUiState, (state: UiState) => state.a);
+/**
+ * Segment selectors
+ */
+export const getSegmentsState = createFeatureSelector<fromSegments.State>('segments');
+
+/**
+ * Query selectors
+ */
+export const getQueryState = createFeatureSelector<fromQuery.State>('query');
+
+export const getQueryPlacelineId = createSelector(getQueryState, fromQuery.getPlacelineId);

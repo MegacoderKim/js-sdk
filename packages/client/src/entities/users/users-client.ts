@@ -1,7 +1,10 @@
 import {HtUsersIndexClient} from "./users-index-client";
 import {HtUserPlacelineClient} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
-import {IItemClientOptions, IListClientOptions, PlacelineSegmentId} from "../../interfaces";
+import {
+  IDateRange, IItemClientOptions, IListClientOptions, IUsersClientOptions,
+  PlacelineSegmentId
+} from "../../interfaces";
 import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
@@ -18,7 +21,13 @@ import * as moment from 'moment-mini'
 import {IsRangeADay, IsRangeToday, DateString} from "ht-js-utils";
 import {HtMapClass} from "ht-js-map";
 import {ISegment} from "ht-models";
-
+import {HtActionsApi} from "../../api/actions";
+import {Store} from "../../store/store";
+import * as fromRoot from "../../reducers";
+import * as fromUsers from "../../reducers/user-reducer"
+import * as fromQuery from "../../reducers/query-reducer"
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -48,11 +57,12 @@ export class HtUsersClient extends EntityClient {
   dateRangeObserver: QueryObserver;
   initialDateRange: IDateRange;
   mapClass: HtMapClass;
-  constructor(req, public options: IUsersClientOptions = {}) {
+  userDispatcher = fromUsersDispatcher;
+  queryDispatcher = fromQueryDispatcher;
+  constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
     super();
     let api = new HtUsersApi(req);
     this.api = api;
-
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
     this.dateRangeObserver.updateData(this.initialDateRange);
@@ -116,7 +126,7 @@ export class HtUsersClient extends EntityClient {
   /**
    * Handle effects of placeline segments and stuff
    */
-  private initEffects() {
+  private initEffectsOld() {
 
     Observable.combineLatest(
       this.placeline.dataObserver,
@@ -386,17 +396,27 @@ export class HtUsersClient extends EntityClient {
     this.marksAnalytics.clearData();
   }
 
-}
+  // store
+  getState() {
+    return this.store.select(fromRoot.getUsersState)
+  }
 
-export interface IUsersClientOptions {
-  placelineOptions?: Partial<IItemClientOptions<HtUsersApi>>,
-  indexOptions?: Partial<IListClientOptions<HtUsersApi>>,
-  analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>,
-  listApiType?: ApiType,
-  dateRangeOptions?: IDateRange
-}
+  getPlacelineId(): Observable<string | null> {
+    return this.store.select(fromRoot.getQueryPlacelineId)
+  }
 
-export interface IDateRange {
-  start: string,
-  end: string
+  getUserData(): Observable<IUserData | null> {
+    return this.store.select(fromRoot.getUsersUsersData)
+  }
+
+  //dispatchers
+
+  setPlacelineId(placelineId: string) {
+    this.store.dispatch(new this.queryDispatcher.SetPlacelineId(placelineId))
+  }
+
+  private initEffects() {
+    this.getPlacelineId()
+  }
+
 }
