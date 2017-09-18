@@ -107,11 +107,11 @@ export class HtMapItems {
   highlight(selectedId) {
     this.onEach((item) => {
       if(selectedId) {
-        if(item.id != selectedItem.id) {
+        if(item.id != selectedId) {
           this.unHighlightItem(item)
         } else {
 
-          this.highlightItem(item, selectedItem)
+          this.highlightItem(item, selectedId)
         }
       } else {
         this.resetHighlight(item)
@@ -124,9 +124,9 @@ export class HtMapItems {
     item.unHighlight(this.map);
   }
 
-  highlightItem(item, selectedItem?) {
+  highlightItem(item, selectedItemId?) {
     item.isHighlighted = true;
-    item.highlight(this.map, selectedItem);
+    item.highlight(this.map, selectedItemId);
   }
 
   setFade(selectedItem, toFade: boolean = true) {

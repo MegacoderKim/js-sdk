@@ -118,7 +118,7 @@ export class HtMapItem {
     this.mapUtils.bringToFront(this.item)
   }
 
-  highlight(map: HtMap, data) {
+  highlight(map: HtMap, dataId) {
 
   }
 
