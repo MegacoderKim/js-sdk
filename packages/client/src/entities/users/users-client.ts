@@ -27,8 +27,10 @@ import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import * as fromUsers from "../../reducers/user-reducer"
 import * as fromQuery from "../../reducers/query-reducer"
+import * as fromSegments from "../../reducers/segments-reducer"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
+import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -88,7 +90,18 @@ export class HtUsersClient extends EntityClient {
       isActive$: this.getAnalyticsIsActive()
     });
 
-    let idSource$ = this.getPlacelineId();
+    let idSource$ = this.getPlacelineId()
+    //   .do((id) => {
+    //   console.log("placelien id ", id);
+    // });
+    //
+    // this.getUserData().subscribe((userdata) => {
+    //   console.log("placeline user", !!userdata);
+    // })
+
+    // this.getPlacelineId().subscribe((id) => {
+    //   console.log("palceline ", id);
+    // })
 
     this.placeline = new HtUserPlacelineClient({
       api,
@@ -145,31 +158,7 @@ export class HtUsersClient extends EntityClient {
    */
   private initEffectsOld() {
 
-    // Observable.combineLatest(
-    //   this.placeline.dataObserver,
-    //   this.placeline.segmentIdObserver.data$(),
-    //   (userData: IUserData, {segmentId, selectedSegmentId}) => {
-    //     if(userData && (segmentId || selectedSegmentId)) {
-    //       const id = segmentId || selectedSegmentId;
-    //       let segments = _.filter(userData.segments, (segment: ISegment) => {
-    //         return segment.id === id;
-    //       });
-    //       userData = {...userData, segments: segments, events: [], actions: []}
-    //     }
-    //     return userData
-    //   }
-    // ).filter((data) => !!this.mapClass).do((userData) => {
-    //   if (userData) {
-    //     this.mapClass.tracePlaceline(userData);
-    //     // if (toReset) this.mapClass.resetBounds()
-    //   } else {
-    //     this.mapClass.segmentTrace.trace(null, this.mapClass.map)
-    //   }
-    // }).map((userData) => {
-    //   return !!userData
-    // }).distinctUntilChanged().subscribe(() => {
-    //   this.mapClass.resetBounds()
-    // });
+
     //
     // const segmeentFilter = {
     //
@@ -177,29 +166,29 @@ export class HtUsersClient extends EntityClient {
     //
     //
     //
-    // let segmentScan = this.placeline.segmentIdObserver.data$().scan((acc, data: any) => {
-    //   return {
-    //     current: data,
-    //     old: acc.current
-    //   }
-    // }, {old: {}, current: {}}).filter((data) => this.mapClass && !!data)
-    //   .do(({oldSegment, newSegment}) => {
-    //   const segment = newSegment;
-    //
-    //   if (!segment.resetBoundsId && segment.highlightedId !== oldSegment.highlightedId ) {
-    //     // this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId) //todo highlight
-    //     //todo select segment
-    //     // this.mapClass.segmentTrace.
-    //   }
-    //   // if(oldSegment) {
-    //   //   let segment = oldSegment;
-    //   //   this.segmentsTrace.unselectSegment(segment);
-    //   // }
-    //   // if(newSegment) {
-    //   //   let segment = newSegment;
-    //   //   this.segmentsTrace.selectSegment(segment);
-    //   // }
-    // });
+    let segmentScan = this.placeline.segmentIdObserver.data$().scan((acc, data: any) => {
+      return {
+        current: data,
+        old: acc.current
+      }
+    }, {old: {}, current: {}}).filter((data) => this.mapClass && !!data)
+      .do(({oldSegment, newSegment}) => {
+      const segment = newSegment;
+
+      if (!segment.resetBoundsId && segment.highlightedId !== oldSegment.highlightedId ) {
+        // this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId) //todo highlight
+        //todo select segment
+        // this.mapClass.segmentTrace.
+      }
+      // if(oldSegment) {
+      //   let segment = oldSegment;
+      //   this.segmentsTrace.unselectSegment(segment);
+      // }
+      // if(newSegment) {
+      //   let segment = newSegment;
+      //   this.segmentsTrace.selectSegment(segment);
+      // }
+    });
     //
     // let placelinseScan = this.placeline.dataObserver.scan((acc, data: any) => {
     //   return {
@@ -367,11 +356,11 @@ export class HtUsersClient extends EntityClient {
   }
 
   getListClient(apiType: ApiType) {
-    // return apiType == ApiType.analytics ? this.analytics : this.index;
+    return apiType == ApiType.analytics ? this.analytics : this.index;
   }
 
   getMarkerClient(apiType: ApiType) {
-    // return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
+    return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
   }
 
   /**
@@ -435,7 +424,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   getPlacelineId(): Observable<string | null> {
-    return this.store.select(fromRoot.getQueryPlacelineId)
+    return this.store.select(fromRoot.getQueryPlacelineId)//.share()
   }
 
   getUserData(): Observable<IUserData | null> {
@@ -455,7 +444,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   getUsersListPage(): Observable<any> {
-    return this.getUserListApiType().switchMap((apiType: ApiType) => {
+    return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
       return apiType === ApiType.index ? this.getUsersIndexPage() : this.getUsersAnalyticsPage()
     })
   }
@@ -475,7 +464,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   getUsersMarkers(): Observable<any[]> {
-    return this.getUserListApiType().switchMap((apiType: ApiType) => {
+    return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
       return apiType === ApiType.index ? this.getUsersIndexMarkers() : this.getUsersAnalyticsMarkers()
     })
   }
@@ -490,6 +479,10 @@ export class HtUsersClient extends EntityClient {
 
   getUserListApiType() {
     return this.store.select(fromRoot.getUsersListApiType)
+  }
+
+  getSegmentsStates() {
+    return this.store.select(fromRoot.getSegmentsState)
   }
 
   //dispatchers
@@ -538,8 +531,133 @@ export class HtUsersClient extends EntityClient {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
   }
 
+  setSegmentSelectedId(segmentId: string) {
+    this.store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
+  }
+
+  setSegmentResetMapId(segmentId: string) {
+    this.store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
+  }
+
   private initEffects() {
-    this.getPlacelineId()
+    Observable.combineLatest(
+      this.getUserData(),
+      this.getSegmentsStates(),
+      (userData: IUserData, {selectedId, resetMapId}) => {
+        if(userData && (selectedId || resetMapId)) {
+          const id = selectedId || resetMapId;
+          let segments = _.filter(userData.segments, (segment: ISegment) => {
+            return segment.id === id;
+          });
+          userData = {...userData, segments: segments, events: [], actions: []}
+        }
+        return userData
+      }
+    ).filter((data) => !!this.mapClass).do((userData) => {
+      if (userData) {
+        this.mapClass.tracePlaceline(userData);
+
+        // if (toReset) this.mapClass.resetBounds()
+      } else {
+        this.mapClass.segmentTrace.trace(null, this.mapClass.map)
+      }
+    }).map((userData) => {
+      return userData ? userData.id : null
+    }).distinctUntilChanged().subscribe(() => {
+      this.mapClass.resetBounds()
+    });
+
+
+    // let segmentScan = this.getSegmentsStates().scan((acc, data: any) => {
+    //   return {
+    //     current: data,
+    //     old: acc.current
+    //   }
+    // }, {old: {}, current: {}}).filter((data) => this.mapClass && !!data)
+    //   .do(({oldSegment, newSegment}) => {
+    //     const segment = newSegment;
+    //
+    //     if (!segment.resetMapId && segment.highlightedId !== oldSegment.highlightedId ) {
+    //       this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId)
+    //       //todo select segment
+    //       // this.mapClass.segmentTrace.
+    //     }
+    //     // if(oldSegment) {
+    //     //   let segment = oldSegment;
+    //     //   this.segmentsTrace.unselectSegment(segment);
+    //     // }
+    //     // if(newSegment) {
+    //     //   let segment = newSegment;
+    //     //   this.segmentsTrace.selectSegment(segment);
+    //     // }
+    //   });
+    //
+    // let placelinseScan = this.getUserData().scan((acc, data: any) => {
+    //   return {
+    //     current: data,
+    //     old: acc.current
+    //   }
+    // }, {old: null, current: null}).filter((data) => this.mapClass && !!data);
+    //
+    // let setBounds1 = Observable.combineLatest(
+    //   segmentScan,
+    //   placelinseScan,
+    //   (segmentScan, placelineScan) => {
+    //     // console.log(segmentScan, "Scan");
+    //     const firstPlaceline = placelineScan.current && !placelineScan.old;
+    //     const placelineResetMap = !placelineScan.current;
+    //     const firstResetSegment = !!segmentScan.current.resetBoundsId && !segmentScan.old.resetBoundsId;
+    //     const segmentResetMap = firstResetSegment;
+    //     // console.log("bools", firstResetSegment, segmentResetMap);
+    //     let userData = placelineScan.current;
+    //     let selectedId = segmentScan.current.selectedId;
+    //     if(selectedId && userData) {
+    //       let segments = _.filter(userData.segments, (segment) => {
+    //         return segment.id === selectedId;
+    //       }) ;
+    //       userData = {...userData, segments, events: [], actions: []}
+    //     }
+    //     this.mapClass.tracePlaceline(userData);
+    //     // console.log(placelineResetMap, segmentResetMap, "Test");
+    //     const toReset = placelineResetMap || segmentResetMap;
+    //     // if(placelineResetMap || segmentResetMap) {
+    //     //   this.mapClass.resetBounds()
+    //     // }
+    //     return toReset
+    //
+    //   }
+    // ).filter((data) => !!data);
+    //
+    // // let setBounds2 = this.getUsersMarkers().filter(data => !!data).pluck('isFirst').filter(data => !!data);
+    //
+    // let setBounds3 = this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
+    //   .distinctUntilChanged();
+    //
+    // Observable.merge(
+    //   // setBounds1,
+    //   // setBounds2,
+    //   setBounds3
+    // ).debounceTime(100).subscribe((data) => {
+    //   this.mapClass.resetBounds()
+    // });
+    //
+    //
+    // this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
+    //   .distinctUntilChanged()
+    //   .subscribe((userId) => {
+    //     // this.userClientService.marks.setFilter((user) => !userId);
+    //     this.mapClass.resetBounds();
+    //   });
+    //
+    const marks$ = this.usersMarkers$().filter((data) => !!this.mapClass);
+
+
+    marks$.subscribe((data) => {
+      this.mapClass.usersCluster.trace(data, this.mapClass.map)
+    });
+
+
+
   }
 
 }

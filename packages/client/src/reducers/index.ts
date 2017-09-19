@@ -46,6 +46,8 @@ export const getUsersAnalyticsFilteredMarker = createSelector(getUsersState, fro
  * Segment selectors
  */
 export const getSegmentsState = createFeatureSelector<fromSegments.State>('segments');
+export const getSegmentsSelectedId = createSelector(getSegmentsState, fromSegments.getSelectedId);
+export const getSegmentsResetMapId = createSelector(getSegmentsState, fromSegments.getResetMapId);
 
 /**
  * Query selectors

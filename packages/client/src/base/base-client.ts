@@ -58,6 +58,8 @@ export abstract class HtBaseClient<T, O, A> {
       this.options.isActive$.switchMap((isActive: boolean) => {
         return isActive ? this.getDataQueryWithLoading$() : Observable.of(null)
       }) : this.getDataQueryWithLoading$();
+
+
     let data$ = query$.switchMap((queryObj) => {
       return queryObj ?
         this.getData$(queryObj) : Observable.of(null)

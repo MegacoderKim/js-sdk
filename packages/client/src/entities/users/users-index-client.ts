@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {ApiType} from "../../interfaces";
 
 export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
+  name = "users index";
 
   getDefaultQuery() {
     return {...super.getDefaultQuery(), ordering: "-last_heartbeat_at"}

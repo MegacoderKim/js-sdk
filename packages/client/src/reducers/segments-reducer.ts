@@ -30,3 +30,6 @@ export function segmentsReducer(state: State = initialState, action : SegmentsDi
     }
   }
 }
+
+export const getSelectedId = (state: State) => state.selectedId;
+export const getResetMapId = (state: State) => state.resetMapId;
