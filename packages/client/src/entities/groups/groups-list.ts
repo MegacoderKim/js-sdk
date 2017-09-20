@@ -9,7 +9,15 @@ export class HtGroupsListClient extends HtListClient<Page<IGroup>, HtBaseApi> {
     return this.api.index<Page<IGroup>>(query)
   }
 
+  get loading$() {
+    return Observable.empty()
+  }
+
   getDefaultQuery() {
     return { ...super.getDefaultQuery(), ordering: "-created_at", page_size: 50}
+  }
+
+  get data$() {
+    return Observable.empty()
   }
 }

@@ -12,5 +12,12 @@ export class HtActionsGetClient extends ItemClient<IAction, HtActionsApi>{
     return this.api.get<IAction>(id, {...this.defaultQuery, ...query})
   }
 
+  get id$() {
+    return Observable.empty()
+  }
+
+  get loading$() {
+    return this.id$
+  }
 
 }

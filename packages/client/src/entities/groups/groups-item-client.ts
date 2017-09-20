@@ -17,4 +17,12 @@ export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
   api$(id, query = {}): Observable<IGroup> {
     return this.api.get<IGroup>(id, {...this.defaultQuery, ...query})
   }
+
+  get id$() {
+    return Observable.empty()
+  }
+
+  get loading$() {
+    return this.id$
+  }
 }

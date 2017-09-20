@@ -28,9 +28,12 @@ import * as fromRoot from "../../reducers";
 import * as fromUsers from "../../reducers/user-reducer"
 import * as fromQuery from "../../reducers/query-reducer"
 import * as fromSegments from "../../reducers/segments-reducer"
+import * as fromLoading from "../../reducers/loading-reducer"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
+import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
+import {UsersList} from "./users-list";
+import {UsersMarkers} from "./users-markers";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -62,6 +65,10 @@ export class HtUsersClient extends EntityClient {
   mapClass: HtMapClass;
   userDispatcher = fromUsersDispatcher;
   queryDispatcher = fromQueryDispatcher;
+
+  list;
+  markers;
+
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
     super();
     let api = new HtUsersApi(req);
@@ -79,7 +86,9 @@ export class HtUsersClient extends EntityClient {
       dateRangeSource$,
       querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setUsersIndexPage(data),
-      isActive$: this.getIndexIsActive()
+      // isActive$: this.getIndexIsActive(),
+      store: this.store,
+      loadingDispatcher: (data) => this.setLoadingUserIndex(data)
     });
 
     this.analytics = new HtUsersAnalytics({
@@ -87,28 +96,19 @@ export class HtUsersClient extends EntityClient {
       dateRangeSource$,
       querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setUsersAnalyticsPage(data),
-      isActive$: this.getAnalyticsIsActive()
+      store: this.store,
+      // isActive$: this.getAnalyticsIsActive(),
+      loadingDispatcher: (data) => this.setLoadingUserAnalytics(data)
     });
 
-    let idSource$ = this.getPlacelineId()
-    //   .do((id) => {
-    //   console.log("placelien id ", id);
-    // });
-    //
-    // this.getUserData().subscribe((userdata) => {
-    //   console.log("placeline user", !!userdata);
-    // })
-
-    // this.getPlacelineId().subscribe((id) => {
-    //   console.log("palceline ", id);
-    // })
 
     this.placeline = new HtUserPlacelineClient({
       api,
       dateRangeSource$,
-      idSource$,
       querySource$: this.getPlacelineQuery(),
-      onDataUpdate: (data) => this.setUserData(data)
+      onDataUpdate: (data) => this.setUserData(data),
+      loadingDispatcher: (data) => this.setLoadingUserData(data),
+      store: this.store
     });
 
     this.marksAnalytics = new HtUsersAnalyticsMarkers({
@@ -116,7 +116,8 @@ export class HtUsersClient extends EntityClient {
       dateRangeSource$,
       querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setAnalyticsMarkers(data),
-      isActive$: this.getAnalyticsMarkersIsActive()
+      loadingDispatcher: (data) => this.setLoadingUserAnalyticsAll(data),
+      store: this.store
     });
 
     this.marksIndex = new HtUsersIndexMarkers({
@@ -124,10 +125,15 @@ export class HtUsersClient extends EntityClient {
       dateRangeSource$,
       querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setIndexMarkers(data),
-      isActive$: this.getIndexMarkersIsActive()
+      loadingDispatcher: (data) => this.setLoadingUserIndexAll(data),
+      store: this.store
     });
 
-    // this.filterClass = new DefaultUsersFilter();
+    this.list = new UsersList(this.store, this.index, this.analytics);
+
+    this.markers = new UsersMarkers(this.store, this.marksIndex, this.marksAnalytics);
+
+    this.filterClass = new DefaultUsersFilter();
 
     this.initEffects()
   }
@@ -142,15 +148,27 @@ export class HtUsersClient extends EntityClient {
    * Return users list array or array of length 1 with selected user if user is selected (userId not null)
    * @returns {any}
    */
-  usersPlaceline$() {
+  placelineOrList$() {
     const id$ = this.getUserId().distinctUntilChanged();
-    const dataArray$ = this.getUsersListArray();
-    const selected$ = this.getUserData();
+    const dataArray$ = this.list.dataArray$;
+    const selected$ = this.placeline.data$;
     // let id$ = this.list.idObservable.data$().distinctUntilChanged();
     // let dataArray$ = this.list.dataArray$;
     // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
     return this.dataArrayWithSelected$(id$, dataArray$, selected$)
 
+  }
+
+  getListLoading() {
+    let indexLoading = this.getLoadingUserIndex();
+    let analyticsLoading = this.getLoadingUserAnalytics();
+    return this.fromApiType(indexLoading, analyticsLoading)
+  }
+
+  getMarkersLoading() {
+    let indexLoading = this.getLoadingUserIndexAll();
+    let analyticsLoading = this.getLoadingUserAnalyticsAll();
+    return this.fromApiType(indexLoading, analyticsLoading)
   }
 
   /**
@@ -251,12 +269,12 @@ export class HtUsersClient extends EntityClient {
     //   if (hasSelectedSegment) this.mapClass.resetBounds()
     // });
 
-    this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
-      .distinctUntilChanged()
-      .subscribe((userId) => {
-        // this.userClientService.marks.setFilter((user) => !userId);
-        this.mapClass.resetBounds();
-      });
+    // this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
+    //   .distinctUntilChanged()
+    //   .subscribe((userId) => {
+    //     // this.userClientService.marks.setFilter((user) => !userId);
+    //     this.mapClass.resetBounds();
+    //   });
 
     // const marks$ = this.usersMarkers$();
 
@@ -298,26 +316,25 @@ export class HtUsersClient extends EntityClient {
    * Return label of current user queries
    * @returns {Observable<QueryLabel[]>}
    */
-  // get queryLabel$() {
-  //   let query$ = this.list.queryObserver.data$();
-  //   return query$.map((query) => {
-  //     query = {...this.list.getDefaultQuery(), ...query};
-  //     return this.filterClass.getQueryLabel(query)
-  //   })
-  // }
+  get queryLabel$() {
+    let query$ = this.list.getDataQuery$();
+    return query$.map((query) => {
+      let queryLabel =  this.filterClass.getQueryLabel(query);
+      return queryLabel
+    })
+  }
 
   /**
    * Return orderings labels and sign for display
    * @returns {Observable<any>}
    */
-  // get ordering$() {
-  //   return this.list.queryObserver.data$().map((query) => {
-  //     query = {...this.list.getDefaultQuery(), ...query};
-  //     let ordering = query ? query['ordering'] : null;
-  //     let orderingMod = this.getOrderingMod(ordering);
-  //     return {string: this.filterClass.sortingQueryMap[orderingMod.string], sign: orderingMod.sign}
-  //   }).distinctUntilChanged()
-  // }
+  get ordering$() {
+    return this.list.getDataQuery$().map((query) => {
+      let ordering = query ? query['ordering'] : null;
+      let orderingMod = this.getOrderingMod(ordering);
+      return {string: this.filterClass.sortingQueryMap[orderingMod.string], sign: orderingMod.sign}
+    }).distinctUntilChanged();
+  }
 
   /**
    * Return display string for date range
@@ -332,7 +349,7 @@ export class HtUsersClient extends EntityClient {
         let string = suffix + DateString(range.start);
         return string
       } else {
-        console.log(DateString(range.start), range.start);
+        // console.log(DateString(range.start), range.start);
         return DateString(range.start) + " - " + DateString(range.end)
       }
     })
@@ -373,10 +390,10 @@ export class HtUsersClient extends EntityClient {
     // let dataArray$ = this.list.dataArray$;
     let markers$ = Observable.merge(
       this.getUsersMarkers().filter(data => !!data),
-      this.getUsersListArray()
+      this.list.dataArray$
     );
 
-    let hasPlaceline$ = this.getPlacelineId().map((data) => !!data).distinctUntilChanged();
+    let hasPlaceline$ = this.placeline.id$.map((data) => !!data).distinctUntilChanged();
 
     let dataArray$ = Observable.combineLatest(
       markers$,
@@ -407,30 +424,6 @@ export class HtUsersClient extends EntityClient {
     return this.store.select(fromRoot.getUsersState)
   }
 
-  getIndexIsActive(): Observable<boolean> {
-    return this.store.select(fromRoot.getUsersIndexIsActive)
-  }
-
-  getIndexMarkersIsActive(): Observable<boolean> {
-    return this.store.select(fromRoot.getUsersIndexMarkersIsActive)
-  }
-
-  getAnalyticsIsActive(): Observable<boolean> {
-    return this.store.select(fromRoot.getUsersAnalyticsIsActive)
-  }
-
-  getAnalyticsMarkersIsActive(): Observable<boolean> {
-    return this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive)
-  }
-
-  getPlacelineId(): Observable<string | null> {
-    return this.store.select(fromRoot.getQueryPlacelineId)//.share()
-  }
-
-  getUserData(): Observable<IUserData | null> {
-    return this.store.select(fromRoot.getUsersUsersData)
-  }
-
   getPlacelineQuery(): Observable<object> {
     return Observable.of({})
   }
@@ -449,18 +442,18 @@ export class HtUsersClient extends EntityClient {
     })
   }
 
+  fromApiType(obIndex, obAnalytics) {
+    return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
+      return apiType === ApiType.index ? obIndex : obAnalytics
+    })
+  }
+
   getUsersIndexMarkers(): Observable<any[]> {
     return this.store.select(fromRoot.getUsersIndexFilteredMarker)
   }
 
   getUsersAnalyticsMarkers(): Observable<any[]> {
     return this.store.select(fromRoot.getUsersAnalyticsFilteredMarker)
-  }
-
-  getUsersListArray(): Observable<any[]> {
-    return this.getUsersListPage().map((usersPage) => {
-      return usersPage ? usersPage.results : usersPage;
-    })
   }
 
   getUsersMarkers(): Observable<any[]> {
@@ -483,6 +476,26 @@ export class HtUsersClient extends EntityClient {
 
   getSegmentsStates() {
     return this.store.select(fromRoot.getSegmentsState)
+  }
+
+  getLoadingUserData() {
+    return this.store.select(fromRoot.getLoadingUserData)
+  }
+
+  getLoadingUserAnalytics() {
+    return this.store.select(fromRoot.getLoadingAnalytics)
+  }
+
+  getLoadingUserIndex() {
+    return this.store.select(fromRoot.getLoadingUserIndex)
+  }
+
+  getLoadingUserAnalyticsAll() {
+    return this.store.select(fromRoot.getLoadingUserAnalyticsAll)
+  }
+
+  getLoadingUserIndexAll() {
+    return this.store.select(fromRoot.getLoadingUserIndexAll)
   }
 
   //dispatchers
@@ -519,10 +532,6 @@ export class HtUsersClient extends EntityClient {
     this.store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
   }
 
-  setUserId(userId: string | null) {
-    this.store.dispatch(new fromQueryDispatcher.SetUserId(userId))
-  }
-
   setIndexMarkers(data: AllData<IUser>) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersIndexAll(data))
   }
@@ -531,17 +540,29 @@ export class HtUsersClient extends EntityClient {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
   }
 
-  setSegmentSelectedId(segmentId: string) {
-    this.store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
+  setLoadingUserData(data) {
+    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
   }
 
-  setSegmentResetMapId(segmentId: string) {
-    this.store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
+  setLoadingUserAnalytics(data) {
+    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
+  }
+
+  setLoadingUserIndex(data) {
+    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserIndex(data))
+  }
+
+  setLoadingUserAnalyticsAll(data) {
+    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalyticsAll(data))
+  }
+
+  setLoadingUserIndexAll(data) {
+    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserIndexAll(data))
   }
 
   private initEffects() {
     Observable.combineLatest(
-      this.getUserData(),
+      this.placeline.data$,
       this.getSegmentsStates(),
       (userData: IUserData, {selectedId, resetMapId}) => {
         if(userData && (selectedId || resetMapId)) {

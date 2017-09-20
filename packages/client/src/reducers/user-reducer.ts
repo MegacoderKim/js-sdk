@@ -106,6 +106,13 @@ function validMarkers(markers: AllData<IUser | IUserAnalytics>) {
   }, [])
 }
 
+const fromApiType = (apiType: ApiType, indexPage, analyticsPage) => {
+  return apiType === ApiType.index ? indexPage : analyticsPage
+}
+
+export const getListPage = createSelector(getListApiType, getIndexPage, getAnalyticsPage, fromApiType);
+export const getMarkerPage = createSelector(getListApiType, getIndexMarkers, getAnalyticsMarkers, fromApiType);
+
 
 
 

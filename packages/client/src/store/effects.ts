@@ -7,7 +7,7 @@ export function GetEffect(currentAction) {
   let action;
   switch (currentAction.type) {
     case fromQueryDispatch.SET_PLACELINE_ID:
-      if(!currentAction.payload) action = new fromUsersDispatch.SetUserData(null);
+      action = new fromUsersDispatch.SetUserData(null);
       break;
     default:
 

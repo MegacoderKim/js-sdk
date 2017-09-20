@@ -6,6 +6,9 @@ import {HtUsersApi} from "../../api/users";
 import {HtClientConfig} from "../../config";
 import {SegmentIdObserver} from "../../base/segment-id-observer";
 import {IItemClientOptions} from "../../interfaces";
+import * as fromRoot from "../../reducers";
+import { Store} from "../../store/store";
+import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
   name = "placeline";
@@ -17,10 +20,31 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
     this.segmentIdObserver = new SegmentIdObserver();
   }
 
+  get id$() {
+    return this.store.select(fromRoot.getQueryPlacelineId)
+  }
+
+  get data$() {
+    return this.store.select(fromRoot.getUsersUsersData)
+  }
+
+  get loading$() {
+    return this.store.select(fromRoot.getLoadingUserData)
+  }
+
   getUpdate$(data, {id, query}) {
     // console.log("up", id, query);
     return this.api$(id, query)
   }
+
+  setSegmentSelectedId(segmentId: string) {
+    this.store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
+  }
+
+  setSegmentResetMapId(segmentId: string) {
+    this.store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
+  }
+
 
   api$(id, query = {}): Observable<IUserData> {
     return this.api.placeline<IUserData>(id, {...this.defaultQuery, ...query})

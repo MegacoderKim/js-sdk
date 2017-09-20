@@ -3,6 +3,8 @@ import {HtBaseApi} from "./api/base";
 import {Partial} from "ht-models";
 import {HtUsersApi} from "./api/users";
 import {HtActionsApi} from "./api/actions";
+import {Store} from "./store/store";
+import * as fromRoot from "./reducers";
 
 export const defaultListConfig: IListConfig = {
   isLive: false,
@@ -48,14 +50,15 @@ export interface IListClientOptions<A> {
   onDataUpdate: (data) => void,
   pollTime?: number,
   dateRangeSource$?: Observable<object>,
-  isActive$: Observable<boolean>
+  loadingDispatcher: any,
+  store: Store<fromRoot.State>
 }
 
 export interface IItemClientOptions<A> {
   query?: object,
   querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
-  idSource$: Observable<string | number>
+  idSource$?: Observable<string | number>
   defaultQuery?: object,
   api: HtBaseApi,
   id?: string,
@@ -63,6 +66,8 @@ export interface IItemClientOptions<A> {
   onDataUpdate: (data) => void,
   pollTime?: number,
   dateRangeSource$?: Observable<object>,
+  loadingDispatcher: any,
+  store: Store<fromRoot.State>
 }
 
 export interface IBaseClientOptions<A> extends Partial<IListClientOptions<A>>, Partial<IItemClientOptions<A>>{

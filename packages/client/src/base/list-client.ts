@@ -13,19 +13,19 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
       this.options.querySource$,
       this.dateRangeObserver.data$(),
       (query, range) => {
-        return {...query, ...range}
+        return {...this.getDefaultQuery(), ...query, ...range}
         // return id ? {id, ...query} : query
       }
     );
     return dataQuery$
   }
 
-  get dataArray$() {
-    return this.dataObserver.map((pageData) => {
-      // console.log("page data", pageData);
-      return pageData ? pageData['results'] : null;
-    })
-  }
+  // get dataArray$() {
+  //   return this.dataObserver.map((pageData) => {
+  //     // console.log("page data", pageData);
+  //     return pageData ? pageData['results'] : null;
+  //   })
+  // }
 
   // get filteredData$() {
   //   return Observable.combineLatest(
@@ -52,13 +52,13 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     return {page_size: 10, ...super.getDefaultQuery()}
   }
 
-  getListQuery() {
-    return this.queryObserver.data$()
-  }
+  // getListQuery() {
+  //   return this.queryObserver.data$()
+  // }
 
   getData$(query): Observable<T> {
     return this.api$(query).do(() => {
-      this.loadingObserver.updateData(false)
+      this.updateLoadingData(false)
     })
       // .expand(() => {
       //   return
@@ -72,9 +72,14 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
       });
       return {...pageData, results}
     };
-    this.dataMap$.updateData(filter);
+    // todo update data map
+    // this.dataMap$.updateData(filter);
   }
 
   abstract api$(query): Observable<T>
+
+  abstract get data$()
+
+  abstract get loading$()
 
 }

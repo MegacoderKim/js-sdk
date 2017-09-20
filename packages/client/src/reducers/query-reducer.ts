@@ -19,6 +19,11 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
     case QueryDispatch.SET_USER_QUERY: {
       return {...state, userQuery: action.payload}
     }
+    case QueryDispatch.CLEAR_USER_QUERY_KEY: {
+      let query = {...state.userQuery};
+      delete query[action.payload];
+      return {...state, userQuery: query}
+    }
     case QueryDispatch.SET_PLACELINE_ID: {
       return {...state, placelineId: action.payload}
     }
@@ -31,6 +36,7 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
     }
     case QueryDispatch.TOGGLE_PLACELINE_ID: {
       const placelineId = state.placelineId == action.payload ? null : action.payload;
+      console.log(placelineId, "togll");
       return {...state, placelineId}
     }
     default: {
