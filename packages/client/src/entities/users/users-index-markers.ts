@@ -17,6 +17,10 @@ export class HtUsersIndexMarkers extends HtUsersIndexClient {
     return this.store.select(fromRoot.getLoadingUserIndexAll)
   }
 
+  get query$() {
+    return this.store.select(fromRoot.getQueryUserQuery)
+  }
+
   get data$(): Observable<AllData<IUser>> {
     return this.store.select(fromRoot.getUsersIndexAll)
   }

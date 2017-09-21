@@ -16,6 +16,10 @@ export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
     return this.store.select(fromRoot.getUsersAnalyticsAll).share()
   }
 
+  get query$() {
+    return this.store.select(fromRoot.getQueryUserQuery)
+  }
+
   get loading$() {
     return this.store.select(fromRoot.getLoadingUserAnalyticsAll)
   }

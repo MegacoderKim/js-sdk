@@ -13,6 +13,10 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
     return this.store.select(fromRoot.getUsersAnalyticsIsActive)
   }
 
+  get query$() {
+    return this.store.select(fromRoot.getQueryUserQuery)
+  }
+
   get data$(): Observable<any> {
     return this.store.select(fromRoot.getUsersAnalyticsPage)
   }

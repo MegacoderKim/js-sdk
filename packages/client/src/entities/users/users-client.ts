@@ -84,7 +84,6 @@ export class HtUsersClient extends EntityClient {
     this.index = new HtUsersIndexClient({
       api,
       dateRangeSource$,
-      querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setUsersIndexPage(data),
       store: this.store,
       loadingDispatcher: (data) => this.setLoadingUserIndex(data)
@@ -93,7 +92,6 @@ export class HtUsersClient extends EntityClient {
     this.analytics = new HtUsersAnalytics({
       api,
       dateRangeSource$,
-      querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setUsersAnalyticsPage(data),
       store: this.store,
       loadingDispatcher: (data) => this.setLoadingUserAnalytics(data)
@@ -103,7 +101,6 @@ export class HtUsersClient extends EntityClient {
     this.placeline = new HtUserPlacelineClient({
       api,
       dateRangeSource$,
-      querySource$: this.getPlacelineQuery(),
       onDataUpdate: (data) => this.setUserData(data),
       loadingDispatcher: (data) => this.setLoadingUserData(data),
       store: this.store
@@ -112,7 +109,6 @@ export class HtUsersClient extends EntityClient {
     this.marksAnalytics = new HtUsersAnalyticsMarkers({
       api,
       dateRangeSource$,
-      querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setAnalyticsMarkers(data),
       loadingDispatcher: (data) => this.setLoadingUserAnalyticsAll(data),
       store: this.store
@@ -121,7 +117,6 @@ export class HtUsersClient extends EntityClient {
     this.marksIndex = new HtUsersIndexMarkers({
       api,
       dateRangeSource$,
-      querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setIndexMarkers(data),
       loadingDispatcher: (data) => this.setLoadingUserIndexAll(data),
       store: this.store

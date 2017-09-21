@@ -41,7 +41,7 @@ export interface IListConfig {
 
 export interface IListClientOptions<A> {
   query?: object,
-  querySource$: Observable<object>,
+  // querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
   idSource$?: Observable<string | number>
   id?: string,
@@ -56,7 +56,7 @@ export interface IListClientOptions<A> {
 
 export interface IItemClientOptions<A> {
   query?: object,
-  querySource$: Observable<object>,
+  // querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
   idSource$?: Observable<string | number>
   defaultQuery?: object,

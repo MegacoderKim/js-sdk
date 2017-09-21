@@ -153,9 +153,9 @@ export abstract class HtBaseClient<T, O, A> {
   //   })
   // }
 
-  getQueryOptions(options: IListClientOptions<A>) {
-    return {initialData: options.query || {}, dataSource$: options.querySource$}
-  }
+  // getQueryOptions(options: IListClientOptions<A>) {
+  //   return {initialData: options.query || {}, dataSource$: options.querySource$}
+  // }
 
   getDataQueryWithLoading$(): Observable<object> {
     // console.log("get data query");
@@ -218,5 +218,7 @@ export abstract class HtBaseClient<T, O, A> {
   abstract getDataQuery$(): Observable<object>
 
   abstract getData$(queryObj: object): Observable<T>
+
+  abstract get query$(): Observable<object>
 
 }

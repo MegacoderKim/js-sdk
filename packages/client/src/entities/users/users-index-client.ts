@@ -17,6 +17,10 @@ export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
     return this.store.select(fromRoot.getUsersIndexPage)
   }
 
+  get query$() {
+    return this.store.select(fromRoot.getQueryUserQuery)
+  }
+
   get loading$() {
     return this.store.select(fromRoot.getLoadingUserIndex)
   }

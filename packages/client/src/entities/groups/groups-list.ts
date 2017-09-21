@@ -13,6 +13,10 @@ export class HtGroupsListClient extends HtListClient<Page<IGroup>, HtBaseApi> {
     return Observable.empty()
   }
 
+  get query$() {
+    return Observable.of({})
+  }
+
   getDefaultQuery() {
     return { ...super.getDefaultQuery(), ordering: "-created_at", page_size: 50}
   }

@@ -20,4 +20,8 @@ export class HtActionsGetClient extends ItemClient<IAction, HtActionsApi>{
     return this.id$
   }
 
+  get query$() {
+    return Observable.of({})
+  }
+
 }

@@ -33,6 +33,10 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
     return this.store.select(fromRoot.getLoadingUserData)
   }
 
+  get query$() {
+    return Observable.of({})
+  }
+
   getUpdate$(data, {id, query}) {
     // console.log("up", id, query);
     return this.api$(id, query)
