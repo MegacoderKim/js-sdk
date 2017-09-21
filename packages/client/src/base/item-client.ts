@@ -9,13 +9,8 @@ import {HtClientConfig} from "../config";
 import {HtBaseClient} from "./base-client";
 
 export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOptions<A>, A> {
-  loadingObserver: LoadingObserver;
-  // queryObserver: QueryObserver;
-  // idObservable: IdObserver;
   api: HtBaseApi;
   defaultQuery: object = {};
-  // idSource$;
-  // querySource$;
   name = "item";
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
@@ -44,18 +39,6 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
       }) : Observable.of(null)
 
   }
-
-  // setId(id) {
-  //   this.clearDiffData(id);
-  //   super.setId(id)
-  // }
-
-  // clearDiffData(id) {
-  //   this.idObservable.data$().take(1).subscribe(currentId => {
-  //     if(id != currentId) this.idObservable.updateData(null)
-  //   })
-  // }
-
 
   abstract api$(id, query)
 

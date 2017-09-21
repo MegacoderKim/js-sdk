@@ -6,7 +6,7 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 
 export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
-  name = "analytics users";
+  name = "analytics all users";
 
   get IsActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive)

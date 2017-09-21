@@ -7,7 +7,7 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 
 export class HtUsersIndexMarkers extends HtUsersIndexClient {
-  entityName = "analytics users";
+  name = "index all users";
 
   get IsActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersIndexMarkersIsActive)

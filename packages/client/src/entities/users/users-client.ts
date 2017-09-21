@@ -152,30 +152,9 @@ export class HtUsersClient extends EntityClient {
 
   }
 
-  // getListLoading() {
-  //   return this.list.loading$;
-  // }
-
-  // getMarkersLoading() {
-  //   let indexLoading = this.getLoadingUserIndexAll();
-  //   let analyticsLoading = this.getLoadingUserAnalyticsAll();
-  //   return this.fromApiType(indexLoading, analyticsLoading)
-  // }
-
-  /**
-   * Handle effects of placeline segments and stuff
-   */
   private initEffectsOld() {
 
-
-    //
-    // const segmeentFilter = {
-    //
-    // };
-    //
-    //
-    //
-    let segmentScan = this.placeline.segmentIdObserver.data$().scan((acc, data: any) => {
+    let segmentScan = this.placeline.segmentState$.scan((acc, data: any) => {
       return {
         current: data,
         old: acc.current
@@ -285,23 +264,6 @@ export class HtUsersClient extends EntityClient {
     // })
   }
 
-  /**
-   * Return list client based on api type (index/analytics)
-   * @returns {HtUsersIndexClient | HtUsersAnalytics}
-   */
-  // get list (): HtUsersIndexClient | HtUsersAnalytics {
-  //   let apiType = this.options.listApiType || ApiType.analytics;
-  //   return this.getListClient(apiType)
-  // }
-
-  /**
-   * Returns markers array based on api type
-   * @returns {HtUsersIndexMarkers | HtUsersAnalyticsMarkers}
-   */
-  // get marks(): HtUsersIndexMarkers | HtUsersAnalyticsMarkers {
-  //   let apiType = this.options.listApiType || ApiType.analytics;
-  //   return this.getMarkerClient(apiType)
-  // }
 
   /**
    * Return label of current user queries
@@ -647,9 +609,6 @@ export class HtUsersClient extends EntityClient {
         this.setUserData(null)
       });
 
-    // this.markers.data$.filter(data => data && data.isFirst).subscribe((data) => {
-    //   this.mapClass.resetBounds()
-    // })
   }
 
 }

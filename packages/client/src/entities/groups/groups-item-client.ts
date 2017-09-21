@@ -9,7 +9,7 @@ export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
     return id ?
       this.api$(id, query)
         .do(() => {
-          this.loadingObserver.updateData(false)
+          this.updateLoadingData(false)
         }) : Observable.of(null)
 
   }

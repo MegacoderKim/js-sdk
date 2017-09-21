@@ -8,18 +8,12 @@ import {SegmentIdObserver} from "../../base/segment-id-observer";
 import {IItemClientOptions} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import { Store} from "../../store/store";
+import { State } from "../../reducers/segments-reducer";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
   name = "placeline";
-
-  segmentIdObserver: SegmentIdObserver;
-
-  constructor(options?: IItemClientOptions<IUserData>) {
-    super(options);
-    this.segmentIdObserver = new SegmentIdObserver();
-  }
 
   get id$() {
     return this.store.select(fromRoot.getQueryPlacelineId)
@@ -35,6 +29,10 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
 
   get query$() {
     return Observable.of({})
+  }
+
+  get segmentState$() {
+    return this.store.select(fromRoot.getSegmentsState)
   }
 
   getUpdate$(data, {id, query}) {
