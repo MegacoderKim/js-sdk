@@ -6,15 +6,14 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage, HtUsersApi> {
-  //todo IUserPage added as hack to fix usersMarkers$ in client
+  //todo IUserPage added as hack to fix allMarkers$ in client
   entityName = "analytics users";
 
   get IsActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersAnalyticsIsActive)
   }
 
-  get data$() {
-    console.log(this.store);
+  get data$(): Observable<any> {
     return this.store.select(fromRoot.getUsersAnalyticsPage)
   }
 

@@ -36,7 +36,6 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
     }
     case QueryDispatch.TOGGLE_PLACELINE_ID: {
       const placelineId = state.placelineId == action.payload ? null : action.payload;
-      console.log(placelineId, "togll");
       return {...state, placelineId}
     }
     default: {

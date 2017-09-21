@@ -101,7 +101,8 @@ export interface PlacelineSegmentId {
 export interface AllData<T> {
   results: T[],
   isFirst: boolean,
-  timestamp?: string
+  timestamp?: string,
+  count?: number
 }
 
 export enum ApiType {

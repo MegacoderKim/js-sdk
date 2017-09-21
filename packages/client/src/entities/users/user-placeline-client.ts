@@ -9,6 +9,7 @@ import {IItemClientOptions} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import { Store} from "../../store/store";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
   name = "placeline";
@@ -43,6 +44,14 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
 
   setSegmentResetMapId(segmentId: string) {
     this.store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
+  }
+
+  toggleId(userId: string) {
+    this.store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+  }
+
+  setId(userId: string) {
+    this.store.dispatch(new fromQueryDispatcher.SetPlacelineId(userId))
   }
 
 

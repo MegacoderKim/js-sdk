@@ -46,6 +46,8 @@ export const getUsersIndexMarkersIsActive = createSelector(getUsersState, fromUs
 export const getUsersAnalyticsMarkersIsActive = createSelector(getUsersState, fromUsers.getAnalyticsMarkersActive);
 export const getUsersIndexFilteredMarker = createSelector(getUsersState, fromUsers.getIndexFilteredMarkers);
 export const getUsersAnalyticsFilteredMarker = createSelector(getUsersState, fromUsers.getAnalyticFilteredsMarkers);
+export const getUsersIndexAll = createSelector(getUsersState, fromUsers.getIndexAll);
+export const getUsersAnalyticsAll = createSelector(getUsersState, fromUsers.getAnalyticsAll);
 export const getUsersMarkersPage = createSelector(getUsersState, fromUsers.getMarkerPage);
 /**
  * Segment selectors

@@ -76,8 +76,8 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
 }
 
 export const getUserData = (state: State) => state.userData;
-export const getAnalyticsMarkers = (state: State) => state.usersAnalyticsAll;
-export const getIndexMarkers = (state: State) => state.usersIndexAll;
+export const getAnalyticsAll = (state: State) => state.usersAnalyticsAll;
+export const getIndexAll = (state: State) => state.usersIndexAll;
 export const getAnalyticFilteredsMarkers = (state: State) => validMarkers(state.usersAnalyticsAll);
 export const getIndexFilteredMarkers = (state: State) => validMarkers(state.usersIndexAll);
 export const getIndexPage = (state: State) => state.usersIndexPage;
@@ -108,10 +108,10 @@ function validMarkers(markers: AllData<IUser | IUserAnalytics>) {
 
 const fromApiType = (apiType: ApiType, indexPage, analyticsPage) => {
   return apiType === ApiType.index ? indexPage : analyticsPage
-}
+};
 
 export const getListPage = createSelector(getListApiType, getIndexPage, getAnalyticsPage, fromApiType);
-export const getMarkerPage = createSelector(getListApiType, getIndexMarkers, getAnalyticsMarkers, fromApiType);
+export const getMarkerPage = createSelector(getListApiType, getIndexAll, getAnalyticsAll, fromApiType);
 
 
 

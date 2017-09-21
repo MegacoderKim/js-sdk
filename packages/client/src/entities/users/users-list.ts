@@ -8,6 +8,7 @@ import {IUserAnalyticsPage, IUserPage, IUserAnalytics, IUser} from "ht-models";
 import {HtListClient} from "../../base/list-client";
 import {HtUsersApi} from "../../api/users";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher"
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
 
 export class UsersList {
@@ -70,6 +71,18 @@ export class UsersList {
 
   setId(userId: string | null) {
     this.store.dispatch(new fromQueryDispatcher.SetUserId(userId))
+  }
+
+  toggleId(userId: string) {
+    this.store.dispatch(new fromQueryDispatcher.ToggleUserId(userId))
+  }
+
+  setApiType(apiType: ApiType) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersListApiType(apiType))
+  }
+
+  setActive(isActive) {
+    this.store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
   }
 
   protected getForApiType(apiType: ApiType) {

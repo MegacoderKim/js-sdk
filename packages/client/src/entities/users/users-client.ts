@@ -86,7 +86,6 @@ export class HtUsersClient extends EntityClient {
       dateRangeSource$,
       querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setUsersIndexPage(data),
-      // isActive$: this.getIndexIsActive(),
       store: this.store,
       loadingDispatcher: (data) => this.setLoadingUserIndex(data)
     });
@@ -97,7 +96,6 @@ export class HtUsersClient extends EntityClient {
       querySource$: this.getUserListQuery(),
       onDataUpdate: (data) => this.setUsersAnalyticsPage(data),
       store: this.store,
-      // isActive$: this.getAnalyticsIsActive(),
       loadingDispatcher: (data) => this.setLoadingUserAnalytics(data)
     });
 
@@ -149,7 +147,7 @@ export class HtUsersClient extends EntityClient {
    * @returns {any}
    */
   placelineOrList$() {
-    const id$ = this.getUserId().distinctUntilChanged();
+    const id$ = this.list.id$.distinctUntilChanged();
     const dataArray$ = this.list.dataArray$;
     const selected$ = this.placeline.data$;
     // let id$ = this.list.idObservable.data$().distinctUntilChanged();
@@ -159,17 +157,15 @@ export class HtUsersClient extends EntityClient {
 
   }
 
-  getListLoading() {
-    let indexLoading = this.getLoadingUserIndex();
-    let analyticsLoading = this.getLoadingUserAnalytics();
-    return this.fromApiType(indexLoading, analyticsLoading)
-  }
+  // getListLoading() {
+  //   return this.list.loading$;
+  // }
 
-  getMarkersLoading() {
-    let indexLoading = this.getLoadingUserIndexAll();
-    let analyticsLoading = this.getLoadingUserAnalyticsAll();
-    return this.fromApiType(indexLoading, analyticsLoading)
-  }
+  // getMarkersLoading() {
+  //   let indexLoading = this.getLoadingUserIndexAll();
+  //   let analyticsLoading = this.getLoadingUserAnalyticsAll();
+  //   return this.fromApiType(indexLoading, analyticsLoading)
+  // }
 
   /**
    * Handle effects of placeline segments and stuff
@@ -276,7 +272,7 @@ export class HtUsersClient extends EntityClient {
     //     this.mapClass.resetBounds();
     //   });
 
-    // const marks$ = this.usersMarkers$();
+    // const marks$ = this.allMarkers$();
 
 
     // marks$.subscribe((data) => {
@@ -384,24 +380,37 @@ export class HtUsersClient extends EntityClient {
    * Return array of markers to display. Return [] for selected placeline
    * @returns {any}
    */
-  usersMarkers$() {
+  allMarkers$() {
 
     // let dataArray$ = apiType == ApiType.index ? this.index.dataArray$ : this.analytics.dataArray$;
     // let dataArray$ = this.list.dataArray$;
-    let markers$ = Observable.merge(
-      this.getUsersMarkers().filter(data => !!data),
+    let isFirstCb = () => this.mapClass.resetBounds();
+    let userMarkers$ = this.markers.getResults(isFirstCb).filter(data => !!data);
+
+    let allMarkers$ = Observable.merge(
+      userMarkers$,
       this.list.dataArray$
     );
 
     let hasPlaceline$ = this.placeline.id$.map((data) => !!data).distinctUntilChanged();
 
     let dataArray$ = Observable.combineLatest(
-      markers$,
+      allMarkers$,
       hasPlaceline$,
       (markers, hasPlaceline) => {
         return hasPlaceline ? [] : markers
       }
-    );
+    ).map((markers) => {
+      return _.reduce(markers, (acc, marker) => {
+        const isValid = htUser(marker).isValidMarker();
+        if (isValid) {
+          acc.valid.push(marker)
+        } else {
+          acc.invalid.push(marker)
+        };
+        return acc
+      }, {valid: [], invalid: []})
+    });
 
     // let dataArray$ = allDataArray$.map((users) => {
     //   return _.filter(users, (user) => {
@@ -466,10 +475,6 @@ export class HtUsersClient extends EntityClient {
     return this.store.select(fromRoot.getQueryUserQuery)
   }
 
-  getUserId() {
-    return this.store.select(fromRoot.getQueryUserId)
-  }
-
   getUserListApiType() {
     return this.store.select(fromRoot.getUsersListApiType)
   }
@@ -478,42 +483,10 @@ export class HtUsersClient extends EntityClient {
     return this.store.select(fromRoot.getSegmentsState)
   }
 
-  getLoadingUserData() {
-    return this.store.select(fromRoot.getLoadingUserData)
-  }
-
-  getLoadingUserAnalytics() {
-    return this.store.select(fromRoot.getLoadingAnalytics)
-  }
-
-  getLoadingUserIndex() {
-    return this.store.select(fromRoot.getLoadingUserIndex)
-  }
-
-  getLoadingUserAnalyticsAll() {
-    return this.store.select(fromRoot.getLoadingUserAnalyticsAll)
-  }
-
-  getLoadingUserIndexAll() {
-    return this.store.select(fromRoot.getLoadingUserIndexAll)
-  }
-
   //dispatchers
-
-  setPlacelineId(placelineId: string) {
-    this.store.dispatch(new this.queryDispatcher.SetPlacelineId(placelineId))
-  }
 
   setUserData(userData: IUserData) {
     this.store.dispatch(new fromUsersDispatcher.SetUserData(userData))
-  }
-
-  setUsersMarkersActive(isActive?: boolean) {
-    this.store.dispatch(new fromUsersDispatcher.SetMarkersActive(isActive))
-  }
-
-  setListApiType(apiType: ApiType) {
-    this.store.dispatch(new fromUsersDispatcher.SetUsersListApiType(apiType))
   }
 
   setUsersIndexPage(usersPage) {
@@ -522,14 +495,6 @@ export class HtUsersClient extends EntityClient {
 
   setUsersAnalyticsPage(usersPage) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(usersPage))
-  }
-
-  setToggleUserId(userId: string) {
-    this.store.dispatch(new fromQueryDispatcher.ToggleUserId(userId))
-  }
-
-  setTogglePlacelineId(userId: string) {
-    this.store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
   }
 
   setIndexMarkers(data: AllData<IUser>) {
@@ -670,15 +635,26 @@ export class HtUsersClient extends EntityClient {
     //     this.mapClass.resetBounds();
     //   });
     //
-    const marks$ = this.usersMarkers$().filter((data) => !!this.mapClass);
-
+    const marks$ = this.allMarkers$().filter((data) => !!this.mapClass).pluck('valid');
 
     marks$.subscribe((data) => {
       this.mapClass.usersCluster.trace(data, this.mapClass.map)
     });
 
 
+    this.placeline.id$.scan((acc, currentId) => {
+      let isSame = acc.oldId === currentId;
+      let oldId = currentId;
+      return {isSame, oldId}
+    }, {isSame: false, oldId: null})
+      .pluck('isSame').filter(data => !data)
+      .subscribe((isDiff: boolean) => {
+        this.setUserData(null)
+      });
 
+    // this.markers.data$.filter(data => data && data.isFirst).subscribe((data) => {
+    //   this.mapClass.resetBounds()
+    // })
   }
 
 }

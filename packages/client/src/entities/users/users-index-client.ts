@@ -13,7 +13,7 @@ export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
     return this.store.select(fromRoot.getUsersIndexIsActive)
   }
 
-  get data$() {
+  get data$(): Observable<any> {
     return this.store.select(fromRoot.getUsersIndexPage)
   }
 

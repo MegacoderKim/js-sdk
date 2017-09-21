@@ -1,8 +1,8 @@
 import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
-import { IUserAnalyticsPage } from "ht-models"
+import { IUserAnalyticsPage, IUser } from "ht-models"
 import {HtUsersIndexClient} from "./users-index-client";
-import {ApiType} from "../../interfaces";
+import {ApiType, AllData} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 
@@ -15,6 +15,10 @@ export class HtUsersIndexMarkers extends HtUsersIndexClient {
 
   get loading$() {
     return this.store.select(fromRoot.getLoadingUserIndexAll)
+  }
+
+  get data$(): Observable<AllData<IUser>> {
+    return this.store.select(fromRoot.getUsersIndexAll)
   }
 
   getDefaultQuery() {
