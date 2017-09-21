@@ -11,7 +11,7 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     let dataQuery$ = Observable.combineLatest(
       // this.idObservable.data$().startWith(this.options.id),
       this.query$,
-      this.dateRangeObserver.data$(),
+      this.options.dateRangeSource$,
       (query, range) => {
         return {...this.getDefaultQuery(), ...query, ...range}
         // return id ? {id, ...query} : query

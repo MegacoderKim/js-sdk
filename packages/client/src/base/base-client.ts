@@ -17,16 +17,15 @@ import { State} from "../reducers/index";
 import { Store} from "../store/store";
 
 export abstract class HtBaseClient<T, O, A> {
-  loadingObserver: LoadingObserver;
+  // loadingObserver: LoadingObserver;
   // queryObserver: QueryObserver;
   // idObservable: IdObserver;
   // data$: Observable<T | null | boolean>;
   api: HtBaseApi;
-  update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
-  entityName: string;
+  // update$: BehaviorSubject<T | null> = new BehaviorSubject(null);
   // dataObserver: ReplaySubject<T | boolean> = new ReplaySubject();
   // dataMap$: DataMapObserve;
-  dateRangeObserver: QueryObserver;
+  // dateRangeObserver: QueryObserver;
   name = "base";
 
   constructor(
@@ -40,18 +39,18 @@ export abstract class HtBaseClient<T, O, A> {
     //       {...this.getDefaultQuery(), ...options.query},
     //     dataSource$: options.querySource$
     //   });
-    let loadingOptions = {
-      initialData: options.id || false,
-      dataSource$: options.loadingSource$
-    };
-    this.loadingObserver = new LoadingObserver(loadingOptions);
-    let idOptions = {
-      initialData: options.id,
-      dataSource$: options.idSource$
-    };
+    // let loadingOptions = {
+    //   initialData: options.id || false,
+    //   dataSource$: options.loadingSource$
+    // };
+    // this.loadingObserver = new LoadingObserver(loadingOptions);
+    // let idOptions = {
+    //   initialData: options.id,
+    //   dataSource$: options.idSource$
+    // };
     // this.idObservable = new IdObserver(idOptions);
     // this.dataMap$ = new DataMapObserve();
-    this.dateRangeObserver = new QueryObserver({dataSource$: options.dateRangeSource$});
+    // this.dateRangeObserver = new QueryObserver({dataSource$: options.dateRangeSource$});
     this.initEffects()
     // this.initListener()
   }
@@ -123,9 +122,9 @@ export abstract class HtBaseClient<T, O, A> {
   //   this.dataObserver.next(null)
   // }
 
-  getUpdate$(data, queryObj: object): Observable<T> {
-    return Observable.empty()
-  }
+  // getUpdate$(data, queryObj: object): Observable<T> {
+  //   return Observable.empty()
+  // }
 
   // setOptions(options: Partial<IBaseClientOptions<A>> = {}) {
   //   this.options = {...this.options, ...options};
@@ -177,39 +176,31 @@ export abstract class HtBaseClient<T, O, A> {
   //   )
   // }
 
-  getDataAndUpdate$(queryObj: object): Observable<T> {
-    return this.getData$(queryObj).switchMap((data) => {
-      return Observable.merge(
-        Observable.of(data),
-        this.getDelayUpdate$(queryObj)
-      )
-    })
-    // return Observable.merge(
-    //   this.getData$(queryObj),
-    //   this.getDelayUpdate$(queryObj)
-    // )
-  }
+  // getDataAndUpdate$(queryObj: object): Observable<T> {
+  //   return this.getData$(queryObj).switchMap((data) => {
+  //     return Observable.merge(
+  //       Observable.of(data),
+  //       this.getDelayUpdate$(queryObj)
+  //     )
+  //   })
+  // }
 
-  getDelayUpdate$(queryObj: object): Observable<T> {
-    return Observable.timer(this.pollDuration)
-      .switchMap(() => {
-        return this.update$
-      }).switchMap((data) => {
-        return data ? this.getUpdate$(data, queryObj) : Observable.empty()
-      })
-  }
+  // getDelayUpdate$(queryObj: object): Observable<T> {
+  //   return Observable.timer(this.pollDuration)
+  //     .switchMap(() => {
+  //       return this.update$
+  //     }).switchMap((data) => {
+  //       return data ? this.getUpdate$(data, queryObj) : Observable.empty()
+  //     })
+  // }
 
   updateLoadingData(data) {
-    if(this.options.loadingDispatcher) {
-      this.options.loadingDispatcher(data)
-    } else {
-      this.loadingObserver.updateData(data)
-    }
+    this.options.loadingDispatcher(data)
   }
 
-  pauseUpdate() {
-    this.update$.next(null)
-  }
+  // pauseUpdate() {
+  //   this.update$.next(null)
+  // }
 
   get pollDuration(): number {
     return this.options.pollTime || HtClientConfig.pollTime;
