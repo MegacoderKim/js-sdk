@@ -20,15 +20,12 @@ export abstract class HtBaseClient<T, O, A> {
     return this.options.store
   }
 
-  get isActive$() {
-    return null
-  }
+  abstract get isActive$()
 
   initEffects() {
-    let query$ = this.isActive$ ?
-      this.isActive$.switchMap((isActive: boolean) => {
+    let query$ = this.isActive$.switchMap((isActive: boolean) => {
         return isActive ? this.getDataQueryWithLoading$() : Observable.of(null)
-      }) : this.getDataQueryWithLoading$();
+      });
 
 
     let data$ = query$.switchMap((queryObj) => {

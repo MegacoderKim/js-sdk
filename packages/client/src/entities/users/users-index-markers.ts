@@ -9,7 +9,7 @@ import {Store} from "../../store/store";
 export class HtUsersIndexMarkers extends HtUsersIndexClient {
   name = "index all users";
 
-  get IsActive$(): Observable<boolean> {
+  get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersIndexMarkersIsActive)
   }
 

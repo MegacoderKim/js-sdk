@@ -12,6 +12,11 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
   api: HtBaseApi;
   defaultQuery: object = {};
   name = "item";
+
+  get isActive$() {
+    return Observable.of(true)
+  }
+
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
       this.query$.distinctUntilChanged(),

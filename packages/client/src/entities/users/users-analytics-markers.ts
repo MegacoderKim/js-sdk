@@ -8,7 +8,7 @@ import {Store} from "../../store/store";
 export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
   name = "analytics all users";
 
-  get IsActive$(): Observable<boolean> {
+  get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive)
   }
 

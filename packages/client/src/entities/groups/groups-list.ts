@@ -5,6 +5,9 @@ import {Page} from "ht-models";
 import {Observable} from "rxjs/Observable";
 
 export class HtGroupsListClient extends HtListClient<Page<IGroup>, HtBaseApi> {
+
+  name = "group List"
+
   api$(query) {
     return this.api.index<Page<IGroup>>(query)
   }

@@ -19,7 +19,7 @@ export class UsersList {
     private usersAnalyticsClient: HtListClient<IUserAnalyticsPage | any, HtUsersApi>
   ) {}
 
-  get IsActive$(): Observable<boolean> {
+  get isActive$(): Observable<boolean> {
     return this.getClient().switchMap((client) => {
       return client.isActive$
     })

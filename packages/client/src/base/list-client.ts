@@ -7,6 +7,8 @@ import * as _ from "underscore";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
 
+  name = "list";
+
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
       this.query$,
@@ -43,6 +45,11 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     };
     // todo update data map
     // this.dataMap$.updateData(filter);
+  }
+
+  get isActive$() {
+    console.log("isActive", this.name);
+    return Observable.of(true)
   }
 
   abstract api$(query): Observable<T>

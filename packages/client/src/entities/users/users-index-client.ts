@@ -9,7 +9,7 @@ import {Store} from "../../store/store";
 export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
   name = "users index";
 
-  get IsActive$(): Observable<boolean> {
+  get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersIndexIsActive)
   }
 

@@ -9,7 +9,7 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
   //todo IUserPage added as hack to fix allMarkers$ in client
   name = "analytics users";
 
-  get IsActive$(): Observable<boolean> {
+  get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersAnalyticsIsActive)
   }
 
