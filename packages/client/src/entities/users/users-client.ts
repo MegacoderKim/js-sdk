@@ -131,6 +131,10 @@ export class HtUsersClient extends EntityClient {
     this.initEffects()
   }
 
+  setActive(): void {
+    this.store.dispatch(new fromUsersDispatcher.InitUsers())
+  }
+
   getInitialDateRange(range: Partial<IDateRange> = {}): IDateRange {
     let start = moment().startOf('day').toISOString();
     let end =  moment().endOf('day').toISOString();
@@ -341,7 +345,7 @@ export class HtUsersClient extends EntityClient {
 
     // let dataArray$ = apiType == ApiType.index ? this.index.dataArray$ : this.analytics.dataArray$;
     // let dataArray$ = this.list.dataArray$;
-    let isFirstCb = () => this.mapClass.resetBounds();
+    let isFirstCb = () => !!this.mapClass && this.mapClass.resetBounds();
     let userMarkers$ = this.markers.getResults(isFirstCb).filter(data => !!data);
 
     let allMarkers$ = Observable.merge(

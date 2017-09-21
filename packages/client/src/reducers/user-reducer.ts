@@ -60,8 +60,7 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
       return {...state, usersMarkersActive: false, usersListActive: false}
     }
     case UserDispatch.SET_USERS_LIST_API_TYPE: {
-      let usersListActive = !!action.payload;
-      return {...state, listApiType: action.payload, usersListActive}
+      return {...state, listApiType: action.payload}
     }
     case UserDispatch.SET_LIST_ACTIVE: {
       return {...state, usersListActive: action.payload}
