@@ -154,6 +154,7 @@ function addMarkersToCluster(cluster, markers, map) {
   // cluster.setMap(map);
   _.each(markers, (marker) => {
     // console.log(marker.getPosition().lng());
+    cluster.removeMarker(marker);
     cluster.addMarker(marker)
     // if(marker.getPosition()) {
     //   console.log("hit", marker);
