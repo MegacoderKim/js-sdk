@@ -73,15 +73,15 @@ export class HtSegmentsTrace {
 
   highlightSegmentId(segmentId: string) {
     this.segmentsPolylines.highlight(segmentId);
-    this.stopMarkers.hightlight(segment);
-    if(segment.type == 'trip') {
-      this.segmentsPolylines.highlight(segment);
-      this.stopMarkers.unHighlight()
-    } else if (segment.type == 'stop') {
-      this.stopMarkers.highlight(segment);
-      // this.segmentsPolylines.unHighlight();
-    }
-    this.selectSegmentEffect(segment)
+    this.stopMarkers.hightlight(segmentId);
+    // if(segmentId.type == 'trip') {
+    //   this.segmentsPolylines.highlight(segment);
+    //   this.stopMarkers.unHighlight()
+    // } else if (segment.type == 'stop') {
+    //   this.stopMarkers.highlight(segment);
+    //   // this.segmentsPolylines.unHighlight();
+    // }
+    // this.selectSegmentEffect(segment)
   }
 
   unselectSegment(segment: ISegment) {

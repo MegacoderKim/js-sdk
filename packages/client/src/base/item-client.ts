@@ -9,23 +9,24 @@ import {HtClientConfig} from "../config";
 import {HtBaseClient} from "./base-client";
 
 export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOptions<A>, A> {
-  loadingObserver: LoadingObserver;
-  queryObserver: QueryObserver;
-  idObservable: IdObserver;
   api: HtBaseApi;
   defaultQuery: object = {};
+  name = "item";
 
+  get isActive$() {
+    return Observable.of(true)
+  }
 
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
-      this.queryObserver.data$().startWith({}),
-      this.idObservable.data$().distinctUntilChanged(),
+      this.query$.distinctUntilChanged(),
+      this.id$.distinctUntilChanged(),
       ((query, id) => {
         return {id, query}
       })
     )
       .do((data) => {
-        this.loadingObserver.updateData(<string>(data['id']) || true)
+        this.updateLoadingData(<string>(data['id']) || true)
       });
 
     return dataQuery$
@@ -35,7 +36,7 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
     return id ?
       this.api$(id, query)
       .do(() => {
-        this.loadingObserver.updateData(false)
+        this.updateLoadingData(false)
       })
       .expand((data: T) => {
         return Observable.timer(this.pollDuration)
@@ -44,19 +45,11 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
 
   }
 
-  setId(id) {
-    this.clearDiffData(id);
-    super.setId(id)
-  }
-
-  clearDiffData(id) {
-    this.idObservable.data$().take(1).subscribe(currentId => {
-      if(id != currentId) this.idObservable.updateData(null)
-    })
-  }
-
-
   abstract api$(id, query)
+
+  abstract get id$()
+
+  abstract get loading$()
 
 
   isNotFound() {

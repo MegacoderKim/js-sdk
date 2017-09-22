@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
-import {IDateRange} from "../entities/users/users-client";
+import {IDateRange} from "../interfaces";
 
 export abstract class EntityClient {
   /**
@@ -29,15 +29,15 @@ export abstract class EntityClient {
         return data ? [data] : null;
       }); //todo take query from placeline
 
-
     const array$ = Observable.combineLatest(
       placelinePage$,
       userId$,
       dataArray$,
       (placelinePage, userId, dataArray) => {
-        return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
+        const filteredData = _.filter(dataArray, (user) => {
           return userId ? user.id == userId : true;
-        })
+        });
+        return placelinePage && userId ? placelinePage : filteredData
       }
     );
 
@@ -60,6 +60,10 @@ export abstract class EntityClient {
     let end = range['end'];
     let param = this.dateRangeParam;
     return {[`min_${param}`]: start, [`max_${param}`]: end, start: null, end: null}
+  }
+
+  getPageFromEntity(item$) {
+    return item$.map()
   }
 
 }

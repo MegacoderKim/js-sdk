@@ -1,6 +1,7 @@
 import {HtRequest} from "../request";
 import { Observable } from "rxjs/Observable";
 import {IPageData} from "ht-models";
+import {ApiType} from "../interfaces";
 
 export class HtBaseApi {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
@@ -82,9 +83,4 @@ export class HtBaseApi {
   //   url = this.request.url(url, query);
   //   return this.getObservable(url)
   // }
-}
-
-export enum ApiType {
-  index = 'index',
-  analytics = 'analytics'
 }

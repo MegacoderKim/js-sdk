@@ -1,7 +1,7 @@
 import {HtActionsListClient} from "./actions-list-client";
 import {HtActionsGetClient} from "./actions-get-client";
 import {HtActionsApi} from "../../api/actions";
-import {IItemClientOptions, IListClientOptions} from "../../interfaces";
+import {IItemClientOptions, IListClientOptions, IActionsClientOptions} from "../../interfaces";
 import {Partial} from "ht-models";
 
 export class HtActionsClient {
@@ -24,10 +24,6 @@ export class HtActionsClient {
   }
 }
 
-export interface IActionsClientOptions {
-  listClientOptions?: Partial<IListClientOptions<HtActionsApi>>,
-  getClientOptions?: Partial<IItemClientOptions<HtActionsApi>>
-}
 
 
 

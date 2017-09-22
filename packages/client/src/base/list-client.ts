@@ -1,48 +1,24 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseClient} from "./base-client";
-import {IListClientOptions} from "../interfaces";
+import {IListClientOptions, IDateRange, ApiType} from "../interfaces";
 import {IUserAnalytics} from "ht-models";
-import {ApiType, HtBaseApi} from "../api/base";
+import {HtBaseApi} from "../api/base";
 import * as _ from "underscore";
-import {IDateRange} from "../entities/users/users-client";
 
 export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
 
+  name = "list";
+
   getDataQuery$() {
     let dataQuery$ = Observable.combineLatest(
-      // this.idObservable.data$().startWith(this.options.id),
-      this.getListQuery(),
-      this.dateRangeObserver.data$(),
+      this.query$,
+      this.options.dateRangeSource$,
       (query, range) => {
-        return {...query, ...range}
+        return {...this.getDefaultQuery(), ...query, ...range}
         // return id ? {id, ...query} : query
       }
     );
     return dataQuery$
-  }
-
-  get dataArray$() {
-    return this.dataObserver.map((pageData) => {
-      // console.log("page data", pageData);
-      return pageData ? pageData['results'] : null;
-    })
-  }
-
-  get filteredData$() {
-    return Observable.combineLatest(
-      this.dataObserver,
-      this.dataMap$.data$(),
-      (data, filter) => {
-        return filter(data)
-      }
-    )
-  }
-
-  get filteredDataArray$() {
-    return this.filteredData$.map((pageData) => {
-      // console.log("page data", pageData);
-      return pageData ? pageData['results'] : null;
-    })
   }
 
   getAll$(type: ApiType) {
@@ -53,17 +29,11 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     return {page_size: 10, ...super.getDefaultQuery()}
   }
 
-  getListQuery() {
-    return this.queryObserver.data$()
-  }
-
   getData$(query): Observable<T> {
     return this.api$(query).do(() => {
-      this.loadingObserver.updateData(false)
+      this.updateLoadingData(false)
     })
-      // .expand(() => {
-      //   return
-      // })
+
   }
 
   setFilter(filterResults = (data) => true) {
@@ -73,9 +43,18 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
       });
       return {...pageData, results}
     };
-    this.dataMap$.updateData(filter);
+    // todo update data map
+    // this.dataMap$.updateData(filter);
   }
 
+  // get isActive$() {
+  //   return Observable.of(false)
+  // }
+
   abstract api$(query): Observable<T>
+
+  abstract get data$()
+
+  abstract get loading$()
 
 }
