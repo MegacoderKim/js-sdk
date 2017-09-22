@@ -5,17 +5,27 @@ import {HtBaseApi} from "../../api/base";
 import {HtGroupsApi} from "../../api/groups";
 import {HtGroupsItemClient} from "./groups-item-client";
 import {Observable} from "rxjs/Observable";
+import {Store} from "../../store/store";
+import * as fromRoot from "../../reducers";
 
 export class HtGroupsClient extends EntityClient{
   list: HtGroupsListClient;
   item: HtGroupsItemClient;
   api: HtBaseApi;
-  constructor(req, options = {}) {
+  constructor(req, private store: Store<fromRoot.State>, options = {}) {
     super();
     let api = new HtGroupsApi(req);
     this.api = api;
-    this.list = new HtGroupsListClient({api});
-    this.item = new HtGroupsItemClient({api})
+    this.list = new HtGroupsListClient({
+      api,
+      store,
+      loadingDispatcher: (data) => {}
+    });
+    this.item = new HtGroupsItemClient({
+      api,
+      store,
+      loadingDispatcher: (data) => {}
+    })
   }
 
   key$(id) {

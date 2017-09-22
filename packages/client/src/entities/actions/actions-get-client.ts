@@ -24,4 +24,8 @@ export class HtActionsGetClient extends ItemClient<IAction, HtActionsApi>{
     return Observable.of({})
   }
 
+  setData(data) {
+
+  }
+
 }

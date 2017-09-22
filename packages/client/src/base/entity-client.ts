@@ -3,7 +3,6 @@ import * as _ from "underscore";
 import {IDateRange} from "../interfaces";
 
 export abstract class EntityClient {
-  stateKey: string;
   /**
    * API class which handles requests for the entity
    */
@@ -35,9 +34,10 @@ export abstract class EntityClient {
       userId$,
       dataArray$,
       (placelinePage, userId, dataArray) => {
-        return placelinePage && userId ? placelinePage : _.filter(dataArray, (user) => {
+        const filteredData = _.filter(dataArray, (user) => {
           return userId ? user.id == userId : true;
         });
+        return placelinePage && userId ? placelinePage : filteredData
       }
     );
 

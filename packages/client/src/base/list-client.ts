@@ -47,10 +47,9 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     // this.dataMap$.updateData(filter);
   }
 
-  get isActive$() {
-    console.log("isActive", this.name);
-    return Observable.of(true)
-  }
+  // get isActive$() {
+  //   return Observable.of(false)
+  // }
 
   abstract api$(query): Observable<T>
 

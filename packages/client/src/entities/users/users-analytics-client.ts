@@ -4,6 +4,7 @@ import {HtUsersApi} from "../../api/users";
 import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage, HtUsersApi> {
   //todo IUserPage added as hack to fix allMarkers$ in client
@@ -31,5 +32,9 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
 
   api$(query) {
     return this.api.analytics(query)
+  }
+
+  setData(data) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
   }
 }

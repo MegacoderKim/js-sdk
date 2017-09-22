@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {ApiType} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
 export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
   name = "users index";
@@ -31,6 +32,10 @@ export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
 
   api$(query) {
     return this.api.index<IUserPage>(query)
+  }
+
+  setData(usersPage) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersIndexPage(usersPage))
   }
 
 }

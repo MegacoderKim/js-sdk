@@ -37,10 +37,12 @@ export abstract class HtBaseClient<T, O, A> {
         //todo handle not found
       });
     data$.subscribe((userData) => {
-      this.options.onDataUpdate(userData)
+      this.setData(userData)
     });
 
   }
+
+  abstract setData(data): void
 
   getDefaultQuery() {
     return this.options.defaultQuery || {}

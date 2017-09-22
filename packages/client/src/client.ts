@@ -15,7 +15,7 @@ export class HtClient {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
   // actions: HtActionsClient;
   users: HtUsersClient;
-  // groups: HtGroupsClient;
+  groups: HtGroupsClient;
   storeProvider = new StoreProvider(fromRoot.reducers);
 
   constructor(public request, options: IClientOptions = {}) {
@@ -40,7 +40,7 @@ export class HtClient {
     let request = this.request;
     // this.actions =  new HtActionsClient(request, options.actionsClientOptions);
     this.users = new HtUsersClient(request, this.store, options.usersClientOptions);
-    // this.groups = new HtGroupsClient(request)
+    this.groups = new HtGroupsClient(request, this.store)
   }
 
   clearData() {

@@ -2,6 +2,10 @@ import {ItemClient} from "../../base/item-client";
 import {HtGroupsApi} from "../../api/groups";
 import {IGroup } from "ht-models"
 import {Observable} from "rxjs/Observable";
+import * as fromGroup from "../../reducers";
+import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
+import {Store} from "../../store/store";
+
 export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
   name = "group item";
 
@@ -23,10 +27,18 @@ export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
   }
 
   get id$() {
-    return Observable.empty()
+    return this.store.select(fromGroup.getGroupId)
   }
 
   get loading$() {
     return this.id$
+  }
+
+  setId(id) {
+    this.store.dispatch(new fromGroupDispatcher.SetGroupId(id))
+  }
+
+  setData(data) {
+    this.store.dispatch(new fromGroupDispatcher.SetGroup(data))
   }
 }

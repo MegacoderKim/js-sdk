@@ -6,7 +6,8 @@ import * as fromUsers from "./user-reducer";
 import * as fromSegments from "./segments-reducer";
 import * as fromQuery from "./query-reducer";
 import * as fromLoading from "./loading-reducer";
-import {IUserData, IUser, IUserAnalytics } from "ht-models"
+import * as fromGroups from "./groups-reducer";
+import {IUserData, IUser, IUserAnalytics, IGroup } from "ht-models"
 import {ApiType, AllData} from "../interfaces"
 
 export interface State {
@@ -14,13 +15,15 @@ export interface State {
   segments: fromSegments.State,
   query: fromQuery.State,
   loading: fromLoading.State
+  groups: fromGroups.State
 };
 
 export const reducers: ActionReducerMap<State> = {
   users: fromUsers.usersReducer,
   segments: fromSegments.segmentsReducer,
   query: fromQuery.queryReducer,
-  loading: fromLoading.loadingReducer
+  loading: fromLoading.loadingReducer,
+  groups: fromGroups.groupsReducer
 };
 
 
@@ -75,3 +78,11 @@ export const getLoadingUserIndex = createSelector(getLoadingState, fromLoading.g
 export const getLoadingUserAnalyticsAll = createSelector(getLoadingState, fromLoading.getUserAnalyticsAll);
 export const getLoadingUserIndexAll = createSelector(getLoadingState, fromLoading.getUserIndexAll);
 
+/**
+ *
+ * Groups reducer
+ */
+export const getGroupsState = createFeatureSelector<fromGroups.State>('groups');
+export const getGroupId = createSelector(getGroupsState, fromGroups.getId);
+export const getGroupAll = createSelector(getGroupsState, fromGroups.getAllGroups);
+export const getGroupListActive = createSelector(getGroupsState, fromGroups.getListActive);

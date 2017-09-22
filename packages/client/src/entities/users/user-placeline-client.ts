@@ -10,6 +10,7 @@ import * as fromRoot from "../../reducers";
 import { Store} from "../../store/store";
 import { State } from "../../reducers/segments-reducer";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
@@ -54,6 +55,10 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
 
   setId(userId: string) {
     this.store.dispatch(new fromQueryDispatcher.SetPlacelineId(userId))
+  }
+
+  setData(data) {
+    return this.store.dispatch(new fromUsersDispatcher.SetUserData(data))
   }
 
 
