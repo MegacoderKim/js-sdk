@@ -1,0 +1,10 @@
+<div class="" htDropdown *ngIf="dateRange$ | async as dateRange">
+  <button type="button" class="ht-btn flex-row row-gap-4" htDropdownToggle>
+    {{dateRange}}
+    <!--<span *ngIf="ordering$ | async as ordering"></span>-->
+    <!--<i class="fa fa-filter"></i>-->
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdown-keyboard-access">
+    <li class="dropdown-item" (click)="setDateRange(date.range)" *ngFor="let date of customDates">{{date.label}}</li>
+  </ul>
+</div>

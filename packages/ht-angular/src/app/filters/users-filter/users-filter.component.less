@@ -1,0 +1,33 @@
+@import "../../../styles/placeholder";
+@import "../../../styles/variables";
+
+.filter-container {
+  .flex-row;
+  .row-gap-7;
+  .align-center;
+  position: relative;
+  padding: 4px 10px;
+}
+.query-label {
+  .flex-row;
+  .row-gap-4;
+  .align-center;
+  padding: 3px 7px;
+  background-color: @ht-grey-4;
+  color: #ffffff;
+  border-radius: 4px;
+  cursor: pointer;
+  &:hover {
+    background-color: @ht-grey-5;
+  }
+}
+.loading-bar {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+}
+.hidden-filter {
+  position: absolute;
+  z-index: -1;
+}

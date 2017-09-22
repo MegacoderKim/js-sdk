@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit} from '@angular/core';
 import {HtMapService, HtUsersClientService} from "ht-angular-client";
 import {IUserData} from "ht-models";
 
@@ -15,6 +15,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     private userService: HtUsersClientService,
   ) { }
 
+  @HostListener('resize')
+  onMapResize() {
+    this.mapService.inValidateSize()
+    // todo this.mapService.map.resize();
+  }
+
   ngOnInit() {
 
     // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
@@ -27,17 +33,17 @@ export class MapComponent implements OnInit, AfterViewInit {
     //   this.userService.placeline.setId("75db8dcb-6fc3-44d7-8533-e40c7ebb0a1f")
     // }, 12000)
 
-    this.userService.placeline.initListener();
-    this.userService.placeline.data$.subscribe((userData: IUserData) => {
-      // console.log(userData, "user Data map");
-      if (userData) {
-        this.mapService.tracePlaceline(userData);
-        this.mapService.resetBounds()
-      } else {
-
-      }
-
-    });
+    // this.userService.placeline.initListener();
+    // this.userService.placeline.data$.subscribe((userData: IUserData) => {
+    //   // console.log(userData, "user Data map");
+    //   if (userData) {
+    //     this.mapService.tracePlaceline(userData);
+    //     this.mapService.resetBounds()
+    //   } else {
+    //     this.mapService.segmentTrace.trace(null, this.mapService.map)
+    //   }
+    //
+    // });
   }
 
   ngAfterViewInit() {

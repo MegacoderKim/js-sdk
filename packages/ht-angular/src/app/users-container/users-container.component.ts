@@ -1,8 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {HtMapService, HtUsersClientService} from "ht-angular-client";
-import {IUserData} from "ht-models";
+import {IUserAnalytics, IUserData} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
+import * as _ from "underscore";
+// import {htUser} from "ht-js-data";
+import {ApiType} from "ht-js-client";
 
 @Component({
   selector: 'ht-users-container',
@@ -16,75 +19,102 @@ export class UsersContainerComponent implements OnInit {
   user$;
   selectedUserId$;
   selectedUserDataId$;
+  loadingUserId$;
+  loadingUserDataId$;
+  @Input() hasMap: boolean = false;
+  @Input() apiType: ApiType = ApiType.analytics;
+
   constructor(
     private userService: HtUsersClientService,
     private mapService: HtMapService
   ) { }
 
   ngOnInit() {
-    this.usersPage$ = this.userService.analytics.getListener();
-    if (this.hasPlaceline) this.user$ = this.userService.placeline.getListener();
-    this.users$ = this.userService.usersPlaceline$();
-    // this.user$ = this.userService.placeline.getListener();
-    // console.log(this.users$);
-    this.users$.subscribe((usersPage) => {
-      console.log(usersPage, "data");
-    })
-    this.selectedUserDataId$ = this.userService.placeline.idObservable.data$();
-    this.selectedUserId$ = this.userService.analytics.idObservable.data$();
+    this.userService.list.setApiType(this.apiType);
+    this.userService.list.setActive();
+    if (this.hasPlaceline) {
+      // this.user$ = Observable.empty();
+      this.user$ = this.userService.placeline.data$;
+      this.users$ = this.userService.placelineOrList$();
+    } else {
+      this.users$ = this.userService.list.dataArray$;
+    }
 
+    this.loadingUserDataId$ = this.userService.placeline.loading$.distinctUntilChanged();
+    // this.loadingUserId$ = this.userService.list.loading$.distinctUntilChanged();
+
+
+    this.selectedUserDataId$ = this.userService.placeline.id$;
+    this.selectedUserId$ = this.userService.list.id$;
+  }
+
+  clear() {
+    this.mapService.segmentTrace.trace(null, this.mapService.map)
+  }
+
+  selectUserMarker(user) {
+    this.mapService.usersCluster.highlight(user)
   }
 
   onAction(payload) {
+    // console.log(payload, payload['action']);
     switch (payload['action']) {
       case "close":
-        this.closeUserData(payload.user);
+        this.closeUser(payload.event);
         break;
       case "detail": {
-        this.selectUserData(payload.user);
+        this.selectUserCard(payload.user);
+        // this.selectUserMarker(payload.user);
+        // this.selectUser(payload.user);
         break;
       }
+      case "default": {
+        this.selectUserCardAction(payload.user, payload.event);
+        // this.selectUserData(payload.user, payload.event);
+        break
+      }
       default: {
-        this.selectUserData(payload.user)
+
       }
 
     }
   };
 
-  closeUser() {
+  selectUserCard(user) {
+    if (this.hasPlaceline) {
+      this.selectUser(user)
+    } else {
+      this.selectUserMarker(user)
+    }
 
   }
 
-  closeUserData(user) {
-    this.userService.placeline.setId(null);
-    this.userService.analytics.setId(null)
+  selectUserCardAction(user, event) {
+    if (this.hasPlaceline) {
+      this.selectUserData(user, event);
+    } else {
+      this.selectUserMarker(user);
+    }
+  }
+
+  closeUser(event) {
+    event.stopPropagation();
+    this.userService.list.setId(null)
   }
 
 
   selectUser(user) {
-    // console.log("user", user.id);
     const id = user.id;
-    // this.id.e.next(id)
-    this.userService.analytics.setId(user.id);
-    this.userService.placeline.setId(id);
-    // this.id$.next(id)
-    // this.userService.placeline.idObservable.e.next(user.id)
-    // this.id.next(user.id)
-    // this.userService.analytics.setId(user.id)
-
-    // this.filteredUser
-    // this.user$.do((userData: IUserData) => {
-    //   console.log(userData);
-    //   this.mapService.tracePlaceline(userData);
-    //   this.mapService.resetBounds()
-    // })
+    this.userService.list.toggleId(id);
+    this.userService.placeline.toggleId(id);
+    // this.userService.placeline.setId(id);
 
   };
 
-  selectUserData(userData: IUserData) {
+  selectUserData(userData: IUserData, event) {
     const id = userData.id;
-    // this.id.e.next(id)
-    this.userService.placeline.setId(id);
+    event.stopPropagation();
+    this.userService.placeline.toggleId(id);
   }
 
 }

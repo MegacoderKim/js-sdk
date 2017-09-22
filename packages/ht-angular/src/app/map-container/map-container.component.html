@@ -1,0 +1,7 @@
+<ht-map></ht-map>
+<div class="map-label map-label-bottom">
+  <ht-loading-dots *ngIf="showLoading && loading$ | async" class="text-1"></ht-loading-dots>
+</div>
+<div class="map-label map-label-top">
+  <button class="ht-btn" (click)="resetMap()">Fit in view</button>
+</div>

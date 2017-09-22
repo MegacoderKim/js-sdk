@@ -1,10 +1,13 @@
-@import "~styles/variables";
-@import "~styles/placeholder";
+@import "../../styles/placeholder";
+
+@import "../../styles/variables";
+
 //action timeline
 @trip: @ht-blue;
 @stop: @ht-yellow;
 @no-info: @ht-grey-3;
 @warning: rgb(209, 145, 145);
+
 :host {
   margin: 30px 0;
   display: flex;
@@ -64,7 +67,7 @@
 }
 
 .time-container {
-  width: 96px;
+  width: 84px;
   display: flex;
   flex-direction: column;
   text-align: right;
@@ -246,6 +249,33 @@
     background: @ht-blue;
   }
 }
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.3, 0.3);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(3,3);
+    opacity: 0;
+  }
+}
+
+.ranges {
+  li.active {
+    background: @ht-grey-5;
+    border-color: @ht-grey-5;
+  }
+  li {
+    color: @ht-grey-5;
+    &:hover {
+      background: @ht-grey-5;
+      border-color: @ht-grey-5;
+    }
+  }
+}
+
 .pulse {
 
   border-radius: 50%;

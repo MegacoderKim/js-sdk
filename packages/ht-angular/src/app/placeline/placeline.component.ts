@@ -10,9 +10,9 @@ import * as _ from "underscore";
 })
 export class PlacelineComponent implements OnInit {
 
-  @Output() hoveredActivity = new EventEmitter();
+  @Output() segmentId = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
-  @Output() selectedPartialSegment = new EventEmitter();
+  @Output() selectedSegment = new EventEmitter();
   @Input() userData: IUserData;
   @Input() selectedPartialSegmentId: string;
   selectedAction: string | null = null;
@@ -26,22 +26,22 @@ export class PlacelineComponent implements OnInit {
   }
 
   selectInUserData(segment, event?) {
-    if(segment && (segment.type == 'trip' || segment.type == 'stop')) {
+    if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
       this.hardSelectedActivity = segment.id;
-      this.selectedPartialSegment.next({segments: [segment]})
+      this.selectedSegment.next({segments: [segment]})
     } else {
       this.hardSelectedActivity = "";
-      this.selectedPartialSegment.next(null);
-      if(event) event.stopPropagation()
+      this.selectedSegment.next(null);
+      if (event) event.stopPropagation()
     }
   }
 
   selectSegment(segment, toShow: boolean = true) {
-    if(segment.actionText) {
-      let actionId = toShow ? segment.action_id : null;
+    if (segment.actionText) {
+      const actionId = toShow ? segment.action_id : null;
       this.selectAction(actionId)
     } else {
-      let userId = toShow ? segment.id : null;
+      const userId = toShow ? segment.id : null;
       this.selectActivity(userId)
     }
   }
@@ -52,7 +52,7 @@ export class PlacelineComponent implements OnInit {
   }
 
   selectActivity(activityId) {
-    this.hoveredActivity.next(activityId);
+    this.segmentId.next(activityId);
     this.hoverActivity(activityId);
     // console.log(this.selectedActivity, "sele");
   }
@@ -64,29 +64,29 @@ export class PlacelineComponent implements OnInit {
   }
 
   get placelineMod() {
-    let placeline = this.userData;
-    if(this.userData.segments.length == 0) return [];
-    let actions = placeline.actions;
+    const placeline = this.userData;
+    if (this.userData.segments.length === 0) return [];
+    const actions = placeline.actions;
     this.actionMap = {};
-    let {currentActions, expActions} = this.currentExpActions(actions);
-    let allEvents = this.userData.events;
+    const {currentActions, expActions} = this.currentExpActions(actions);
+    const allEvents = this.userData.events;
 
 
     let {activitySegments} = _.reduce(this.userData.segments, (acc, segment: ISegment) => {
-      let time = segment.started_at;
-      let activityText = this.getActivityText(segment);
-      let activityClass = this.getActivityClass(segment);
-      let placeAddress = this.getActivityPlaceAddress(segment);
-      let lastSeg = segment;
-      let gapSegment = this.getGapSegment(segment, acc.lastSeg);
+      const time = segment.started_at;
+      const activityText = this.getActivityText(segment);
+      const activityClass = this.getActivityClass(segment);
+      const placeAddress = this.getActivityPlaceAddress(segment);
+      const lastSeg = segment;
+      const gapSegment = this.getGapSegment(segment, acc.lastSeg);
       // let lastSeg = _.last(acc.activitySegments);
-      let currentActivitySegment = {...segment, time, events: [], ...this.getSegmentStyle(activityClass), activityText, placeAddress};
-      let events = _.reject(acc.events, (event) => {
+      const currentActivitySegment = {...segment, time, events: [], ...this.getSegmentStyle(activityClass), activityText, placeAddress};
+      const events = _.reject(acc.events, (event) => {
 
-        if(this.isEventInSegment(segment, event)) {
+        if (this.isEventInSegment(segment, event)) {
           // event = {...event, ...this.getEventDisplay(event)};
-          let eventDisplay = this.getEventDisplay(event);
-          if(eventDisplay) currentActivitySegment.events.push({...event, ...eventDisplay});
+          const eventDisplay = this.getEventDisplay(event);
+          if (eventDisplay) currentActivitySegment.events.push({...event, ...eventDisplay});
           return true
         }
         return false
@@ -98,7 +98,7 @@ export class PlacelineComponent implements OnInit {
     }, {activitySegments: [], events: allEvents, lastSeg: null});
 
 
-    let lastSeg = this.lastSeg(placeline);
+    const lastSeg = this.lastSeg(placeline);
     // activitySegments.push(lastSeg);
     // return activitySegments
 
@@ -147,17 +147,18 @@ export class PlacelineComponent implements OnInit {
       return this.createActionSegment(actionEvent, 'no-info')
     });
     let expActionSegments = _.map(expActions, (actionEvent, i, expEvents) => {
-      if(actionEvents.length == 0) {
+      if(actionEvents.length === 0) {
         lastSeg['activityBorder'] = 'line-border';
       }
-      let activityClass = i < expEvents.length - 2 ? 'line' : '';
+      const activityClass = i < expEvents.length - 2 ? 'line' : '';
       return this.createActionSegment(actionEvent, activityClass)
     });
     // console.log(actionSegments, expActionSegments, "ac");
     // console.log("last seeg", lastSeg);
     // console.log(activitySegments.length,actionSegments.length , expActionSegments.length);
     // console.log(this.userData.segments.length, this.userData.actions.length);
-    return lastSeg['time'] ? [...currentSegment, lastSeg, ...restActiviySegments, ...expActionSegments] : [...currentSegment, ...expActionSegments]
+    return lastSeg['time'] ?
+      [...currentSegment, lastSeg, ...restActiviySegments, ...expActionSegments] : [...currentSegment, ...expActionSegments]
   }
 
   private createActionSegment(actionEvent, activityClass = 'no-info', seg = {}) {
@@ -166,21 +167,27 @@ export class PlacelineComponent implements OnInit {
   }
 
   private getSegmentStyle(activityClass = 'no-info') {
-    return activityClass ? {activityBg: `${activityClass}-bg`, activityBorder: `${activityClass}-border`, activityClass, activityColor: `${activityClass}-color`} : {}
+    return activityClass ?
+      {
+        activityBg: `${activityClass}-bg`,
+        activityBorder: `${activityClass}-border`,
+        activityClass,
+        activityColor: `${activityClass}-color`
+      } : {}
   }
 
   private isEventInSegment(segment, event): boolean {
-    if(!!segment.ended_at && !!event.recorded_at) {
-      let eventMin = this.getMinute(event.recorded_at);
-      let segEndMin = this.getMinute(segment.ended_at);
-      let segStartMin = this.getMinute(segment.started_at);
+    if (!!segment.ended_at && !!event.recorded_at) {
+      const eventMin = this.getMinute(event.recorded_at);
+      const segEndMin = this.getMinute(segment.ended_at);
+      const segStartMin = this.getMinute(segment.started_at);
       return eventMin >= segStartMin && eventMin <= segEndMin;
     }
     return false;
   }
 
   private getMinute(time: string) {
-    let timeStamp = new Date(time).getTime();
+    const timeStamp = new Date(time).getTime();
     return Math.round(timeStamp - timeStamp % 60000)
   }
 
@@ -188,7 +195,7 @@ export class PlacelineComponent implements OnInit {
     return _.reduce(actions, (acc, action: IAction) => {
       let expActions = [];
       this.actionMap = this.setActionMap(action);
-      let assign = {
+      const assign = {
         actionText: `${NameCase(action.type)} assigned`,
         actionTime: action.assigned_at,
         actionD: NameCase(action.type[0]) + this.actionMap[action.id],
@@ -197,8 +204,8 @@ export class PlacelineComponent implements OnInit {
         ...action
       };
       let currentActions = (assign.actionTime) ? [...acc.currentActions, assign] : acc.currentActions;
-      if(action.display.ended_at) {
-        let end = {
+      if (action.display.ended_at) {
+        const end = {
           actionText: `${NameCase(action.type)} ${action.status}`,
           actionTime: action.display.ended_at,
           actionD: NameCase(action.type[0]) + this.actionMap[action.id],
@@ -212,7 +219,7 @@ export class PlacelineComponent implements OnInit {
         };
         currentActions = [...currentActions, end];
       } else {
-        let end = {
+        const end = {
           actionText: `${NameCase(action.type)} scheduled`,
           actionTime: action.eta || null,
           actionD: NameCase(action.type[0]) + this.actionMap[action.id],
@@ -257,7 +264,7 @@ export class PlacelineComponent implements OnInit {
       isLive = true;
       time = placeline.last_heartbeat_at
     }
-    let activityClass = this.getActivityClass(lastSeg);
+    const activityClass = this.getActivityClass(lastSeg);
     return {time, pipeClass, lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg`}
   }
 
@@ -348,13 +355,19 @@ export class PlacelineComponent implements OnInit {
 
   private getGapSegment(segment, lastSeg) {
     let gaps = [];
-    if(!lastSeg) return [];
-    if(segment.started_at && lastSeg.ended_at) {
-      let endMin = this.getMinute(segment.started_at);
-      let startMin = this.getMinute(lastSeg.ended_at);
-      let duration = (new Date(segment.started_at).getTime() -  new Date(lastSeg.ended_at).getTime()) / 1000
-      if(endMin != startMin && startMin < endMin) {
-        let gap = {...this.getSegmentStyle('no-info'), time: lastSeg.ended_at, activityText: 'No information', events: [], duration, id: "asd"};
+    if (!lastSeg) return [];
+    if (segment.started_at && lastSeg.ended_at) {
+      const endMin = this.getMinute(segment.started_at);
+      const startMin = this.getMinute(lastSeg.ended_at);
+      const duration = (new Date(segment.started_at).getTime() -  new Date(lastSeg.ended_at).getTime()) / 1000
+      if (endMin !== startMin && startMin < endMin) {
+        const gap = {
+          ...this.getSegmentStyle('no-info'),
+          time: lastSeg.ended_at,
+          activityText: 'No information',
+          events: [],
+          duration, id: "asd"
+        };
         gaps.push(gap)
       }
     }
@@ -362,13 +375,13 @@ export class PlacelineComponent implements OnInit {
   }
 
   private setActionMap(action) {
-    let actionMap = this.actionMap;
-    let type = action.type;
-    let id = action.id;
-    let typeCount = this.actionMap[type];
-    let actionShort = this.actionMap[id];
-    if(typeCount) {
-      if(!actionShort) {
+    const actionMap = this.actionMap;
+    const type = action.type;
+    const id = action.id;
+    const typeCount = this.actionMap[type];
+    const actionShort = this.actionMap[id];
+    if (typeCount) {
+      if (!actionShort) {
         actionMap[type] = this.actionMap[type] + 1;
         actionMap[id] = '' + this.actionMap[type]
       }

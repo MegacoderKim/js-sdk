@@ -1,6 +1,6 @@
 <div class="toast" [@toast]="snackbarService.showErrorToast ? 'on' : 'off'" id="error-toast">{{snackbarService.errorMessage}}<span class="dismiss-button" (click)="snackbarService.showErrorToast=false">Dismiss</span></div>
 <div class="toast" [@toast]="snackbarService.showSuccessToast ? 'on' : 'off'" id="show-toast">{{snackbarService.successMessage}}<span class="dismiss-button" (click)="snackbarService.showSuccessToast=false">Dismiss</span></div>
-<div class="loading" *ngIf="!isMobile" [@toast]="snackbarService.showLoadingToast ? 'on' : 'off'" id="show-loading">
+<div class="loading" [@toast]="snackbarService.showLoadingToast ? 'on' : 'off'" id="show-loading">
   <div class="spinner-wave">
     <div></div>
     <div></div>

@@ -1,5 +1,9 @@
 @import "variables";
 
+//generic utils
+
+//text
+
 .text-center {
   text-align: center;
 }
@@ -12,6 +16,48 @@
 .text-left {
   text-align: left;
 }
+.text-1 {
+  font-size: 2em;
+}
+.text-4 {
+  font-size: 0.8em;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+
+.text-ontime {
+  color: darken(@ht-green, 13%);
+}
+
+.text-late {
+  color: @ht-red;
+}
+
+.text-warning {
+  color: @ht-red !important;
+}
+
+.text-red {
+  color: @ht-red;
+}
+
+.text-blue {
+  color: @ht-blue;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+//layouts
 .flex-row {
   display: flex;
   flex-direction: row;
@@ -109,11 +155,6 @@
   border-radius: 50%;
 }
 
-
-.above {
-  z-index: 5;
-}
-
 .flex-half {
   flex-basis: 50%;
 
@@ -128,39 +169,6 @@
 
 .half {
   width: 50%;
-}
-.padding-left {
-
-}
-
-.text-ontime {
-  color: darken(@ht-green, 13%);
-}
-
-.text-late {
-  color: @ht-red;
-}
-
-.text-warning {
-  color: @ht-red !important;
-}
-
-.text-red {
-  color: @ht-red;
-}
-
-.text-blue {
-  color: @ht-blue;
-}
-
-.light-color {
-  color: @ht-grey-3;
-}
-
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .noselect {
@@ -221,6 +229,14 @@ a {
   }
 }
 
+//card
+@card-selected: #edeff1;
+@card-selected-2: #edeff1;
+.card.clickable {
+  &:hover {
+    background: @card-selected;
+  }
+}
 .clickable-card {
   cursor: pointer;
   z-index: 1;
@@ -281,43 +297,96 @@ a {
   background: #fff;
   border: 0.4px solid @ht-grey-border-light;
   position: relative;
+  display: flex;
   .text-muted {
     font-size: 10px;
     font-weight: 300;
   }
-  @content-padding: 20px;
+  @content-padding-side: 10px;
   &-content {
-    padding-right: @content-padding;
-    padding-left: @content-padding;
+    padding-right: @content-padding-side;
+    padding-left: @content-padding-side;
     &-top {
-      padding-right: @content-padding;
-      padding-left: @content-padding;
+      padding-right: @content-padding-side;
+      padding-left: @content-padding-side;
       padding-top: 10px;
     }
     &-bottom{
-      padding-right: @content-padding;
-      padding-left: @content-padding;
+      padding-right: @content-padding-side;
+      padding-left: @content-padding-side;
       padding-bottom: 10px;
     }
     &-mid{
-      padding-right: @content-padding;
-      padding-left: @content-padding;
+      padding-right: @content-padding-side;
+      padding-left: @content-padding-side;
       padding-top: 10px;
       padding-bottom: 10px;
     }
   }
   .border {
-    padding-right: @content-padding;
-    padding-left: @content-padding;
+    padding-right: @content-padding-side;
+    padding-left: @content-padding-side;
     border-top: 1px solid @ht-grey-2;
+  }
+  &-selected {
+    //color: #000;
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.18);
+    z-index: 1;
+    //background: darken(@card-selected, 3%);
+    //border-color: @ht-grey-5;
+  }
+  &-quick-action {
+    position: absolute;
+    top: 0;
+    right: 0;
+    //background: @ht-grey-5;
+    //color: white;
+    border: 1px solid @ht-grey-border;
+    font-size: 0.8em;
+    padding: 5px 9px;
+    border-bottom-left-radius: 4px;
+    .element {
+      //display: none;
+      transform: scale(0);
+      width: 0;
+      transition: all 0.2s;
+    }
+    &:hover {
+      .element {
+        //display: flex;
+        width: 100%;
+        transform: scale(1);
+      }
+    }
   }
 }
 
-//loading
-.dropdown-header {
-  background: #ededed;
-  font-size: 14px;
+.card-stack {
+  .card {
+    border-bottom-width: 0;
+    &:last-child {
+      border-bottom-width: 0.4px;
+    }
+    &:hover {
+      .card-action {
+        //border-left: 1px solid @ht-grey-border;
+      }
+      //background: @ht-grey-1;
+      //box-shadow: 0 3px 5px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+      //z-index: 1;
+    }
+    &-selected {
+      //box-shadow: 0px 0px 10px 2px #ccc;
+      //z-index: 1;
+    }
+    &:nth-child(odd) {
+      background: #fbfbfb;
+    }
+  }
 }
+//card end
+
+//loading
 .spinner-wave {
   margin: 0 auto;
   width: 100px;
@@ -375,4 +444,139 @@ a {
     display: none !important;
   }
 
+}
+
+//button
+.ht-btn {
+  display: flex;
+  align-items: center;
+  padding: 5px 13px;
+  border: 0;
+  background: rgb(255, 255, 255);
+  //border: 1px solid @ht-grey-5;
+  color: @ht-grey-5;
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  &:focus {
+    background: lighten(@ht-grey-1, 5%);
+    outline: 0;
+  }
+
+  &-card {
+    &:hover{
+      background: @ht-blue;
+      color: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    }
+  }
+}
+
+//activity class
+
+.stopped-color {
+  color: @stop;
+}
+.drive-color {
+  color: @trip;
+}
+.walk-color {
+  color: @trip;
+}
+.moving-color {
+  color: @trip;
+}
+.logged_off-color {
+  color: @no-info;
+}
+.network_offline-color {
+  color: @warning;
+}
+
+.location_disabled-color {
+  color: @warning;
+}
+
+.location_low_accuracy-color {
+  color: @warning;
+}
+
+.stopped-bg {
+  background: @stop;
+}
+.drive-bg {
+  background: @trip;
+}
+.walk-bg {
+  background: @trip;
+}
+.moving-bg {
+  background: @trip;
+}
+.logged_off-bg {
+  background: @no-info;
+}
+.network_offline-bg {
+  background: @warning;
+}
+.location_disabled-bg {
+  background-color: @warning;
+}
+.location_low_accuracy-bg {
+  background-color: @warning;
+}
+
+//dropdown
+.dropdown {
+  position: relative;
+
+}
+.open {
+  .dropdown-menu {
+    display: block;
+  }
+}
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  .dropdown-item {
+    padding: 3px 10px;
+    color: @ht-grey-4;
+    cursor: pointer;
+    &:hover {
+      background: #f3f3f3;
+    }
+  }
+  .dropdown-active {
+    background: #e9e9e9;
+    &:hover {
+      background: #e9e9e9;
+    }
+  }
+  &-right {
+    left: inherit;
+    right: 0;
+    text-align: right;
+  }
+}
+
+//all browsers
+input, textarea, select, button {
+  font-size: inherit;
 }

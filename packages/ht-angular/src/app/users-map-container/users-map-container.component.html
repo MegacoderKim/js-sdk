@@ -1,0 +1,11 @@
+<div class="container">
+  <ht-users-filter *ngIf="showFilter"></ht-users-filter>
+  <div class="flex-row flex">
+    <div class="bar" *ngIf="showSidebar" [style.width.px]="sidebarWidth || 400">
+      <ht-users-container [apiType]="apiType" [hasPlaceline]="hasPlaceline" [hasMap]="true"></ht-users-container>
+    </div>
+    <div class="flex">
+      <ht-map-container [showLoading]="false"></ht-map-container>
+    </div>
+  </div>
+</div>

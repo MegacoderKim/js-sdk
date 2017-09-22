@@ -1,0 +1,8 @@
+<div class="container">
+  <div class="bar" *ngIf="showSidebar">
+    <ht-placeline-container [userId]="userId"></ht-placeline-container>
+  </div>
+  <div class="flex">
+    <ht-map-container [showLoading]="false"></ht-map-container>
+  </div>
+</div>

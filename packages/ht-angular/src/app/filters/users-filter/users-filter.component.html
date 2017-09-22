@@ -1,0 +1,37 @@
+<div class="filter-container" [@filter]="showFilter$ | async">
+  <ht-entity-search (onSearchQuery)="onQuery($event)"></ht-entity-search>
+  <div class="" htDropdown>
+    <button type="button" class="ht-btn flex-row row-gap-4" htDropdownToggle>
+      <span>Sorting</span>
+      <ng-container *ngIf="ordering$ | async as ordering">
+        <span>: {{ordering.string}}</span>
+        <i [ngClass]="ordering.sign ? 'fa-arrow-up' : 'fa-arrow-down'" class="fa"></i>
+      </ng-container>
+      <!--<span *ngIf="ordering$ | async as ordering"></span>-->
+      <!--<i class="fa fa-filter"></i>-->
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <li class="dropdown-item" (click)="setOrdering(sort.value)" *ngFor="let sort of sortingLabels">{{sort.label}}</li>
+    </ul>
+  </div>
+  <div class="" htDropdown>
+    <button id="dropdown-keyboard-access" type="button" class="ht-btn flex-row row-gap-4" htDropdownToggle>
+      <span>Filters</span> <i class="fa fa-filter"></i>
+    </button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <li class="dropdown-item" (click)="setStatus(filter.values.toString(), $event)" *ngFor="let filter of statusFiltes">{{filter.label}}</li>
+    </ul>
+  </div>
+  <div class="flex flex-row row-gap-4" *ngIf="query$ | async as queries">
+    <div (click)="clearQuery(query.key)" class="query-label" *ngFor="let query of queries">
+      <span>{{query.label}}</span>
+      <i class="fa fa-close"></i>
+    </div>
+  </div>
+  <ht-date-range></ht-date-range>
+  <div class="loading-bar" *ngIf="loading$ | async">
+    <ht-loading-bar></ht-loading-bar>
+  </div>
+</div>
+
+

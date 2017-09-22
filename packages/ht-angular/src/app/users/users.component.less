@@ -1,10 +1,20 @@
-@import "~styles/placeholder.less";
+@import "../../styles/placeholder";
+@import "../../styles/variables";
 
-.card-stack {
-  .card {
-    border-bottom-width: 0;
-    &:last-child {
-      .card;
-    }
+.card-action-clicked {
+  //background: @ht-blue;
+  color: white;
+}
+.card-action {
+  font-size: 1.3em;
+  //padding: 5px 24px;
+  font-weight: bold;
+  min-width: 46px;
+
+}
+.card-action.clickable {
+  &:hover {
+    background: #e6e6e6;
+    //.card-action-clicked;
   }
 }

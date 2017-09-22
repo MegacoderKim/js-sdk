@@ -16,7 +16,7 @@ export class LoadingDataComponent implements OnInit {
   }
 
   get displayMessage() {
-    return !this.customMessage ? `Loading ${this.message}` : this.customMessage;
+    return !this.customMessage ? `${this.message}` : this.customMessage;
   }
 
 }

@@ -1,6 +1,16 @@
 <div class="flex-column">
-  <ht-users [selectedUserDataId]="selectedUserDataId$ | async" [selectedUserId]="selectedUserId$ | async" (onAction)="onAction($event)" (onSelectUser)="selectUser($event)" [users]="users$ | async"></ht-users>
-  <div *ngIf="user$ | async as userData">
-    <ht-placeline [userData]="userData"></ht-placeline>
-  </div>
+  <ht-users
+    [selectedUserDataId]="selectedUserDataId$ | async"
+    [selectedUserId]="selectedUserId$ | async"
+    [loadingUserDataId]="loadingUserDataId$ | async"
+    [hasMap]="hasMap"
+    (onAction)="onAction($event)"
+    (onSelectUser)="selectUserCard($event)"
+    [showExtraBtn]="hasPlaceline"
+    [users]="users$ | async"></ht-users>
+  <ht-placeline-container [showUserCard]="false" *ngIf="(selectedUserId$ | async)"></ht-placeline-container>
+  <!--<div *ngIf="(selectedUserId$ | async) && user$ | async as userData">-->
+    <!--&lt;!&ndash;<ht-user-card [user]="userData"></ht-user-card>&ndash;&gt;-->
+    <!--<ht-placeline [userData]="userData"></ht-placeline>-->
+  <!--</div>-->
 </div>
