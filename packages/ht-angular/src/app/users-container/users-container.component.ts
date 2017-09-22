@@ -99,7 +99,8 @@ export class UsersContainerComponent implements OnInit {
 
   closeUser(event) {
     event.stopPropagation();
-    this.userService.list.setId(null)
+    this.userService.list.setId(null);
+    this.userService.placeline.setId(null)
   }
 
 
