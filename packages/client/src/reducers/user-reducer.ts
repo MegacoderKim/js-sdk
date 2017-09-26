@@ -1,5 +1,5 @@
 import * as UserDispatch from "../dispatchers/user-dispatcher";
-import {IUserData, Page, IUser, IUserAnalytics} from "ht-models";
+import {IUserData, Page, IUser, IUserAnalytics, IUserListSummary} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 import {createSelector, MemoizedSelector} from "../store/selector";
 import * as _ from "underscore";
@@ -8,6 +8,7 @@ import {htUser} from "ht-js-data";
 const initialState: State = {
   usersListActive: false,
   usersMarkersActive: false,
+  usersSummaryActive: false,
   listApiType: ApiType.analytics,
 };
 
@@ -20,8 +21,10 @@ export interface State {
   usersIndexAll?: AllData<IUser>,
   usersListDataMap?: (data) => any,
   usersMarkersDataMap?: (data) => any,
+  usersSummary?: IUserListSummary | null,
   usersListActive: boolean,
-  usersMarkersActive: boolean
+  usersMarkersActive: boolean,
+  usersSummaryActive: boolean,
 }
 
 export function usersReducer(state: State = initialState, action : UserDispatch.All): State {
@@ -40,6 +43,9 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
     }
     case UserDispatch.SET_USERS_INDEX_ALL: {
       return {...state, usersIndexAll: action.payload}
+    }
+    case UserDispatch.SET_USERS_SUMMARY: {
+      return {...state, usersSummary: action.payload}
     }
     case UserDispatch.SET_USERS_LIST_DATA_MAP: {
       return {...state, usersListDataMap: action.payload}
@@ -67,6 +73,9 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
     }
     case UserDispatch.SET_MARKERS_ACTIVE: {
       return {...state, usersMarkersActive: action.payload}
+    }
+    case UserDispatch.SET_SUMMARY_ACTIVE: {
+      return {...state, usersSummaryActive: action.payload}
     }
     default: {
       return state

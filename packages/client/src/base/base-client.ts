@@ -23,7 +23,7 @@ export abstract class HtBaseClient<T, O, A> {
   abstract get isActive$()
 
   initEffects() {
-    let query$ = this.isActive$.switchMap((isActive: boolean) => {
+    let query$ = this.isActive$.mergeMap((isActive: boolean) => {
         return isActive ? this.getDataQueryWithLoading$() : Observable.of(null)
       });
 

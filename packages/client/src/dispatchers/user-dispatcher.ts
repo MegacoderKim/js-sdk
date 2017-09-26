@@ -1,6 +1,6 @@
 import {Action} from "../store/models";
 import {IUserData} from "ht-models"
-import {IUserAnalytics, IUser, Page} from "ht-models";
+import {IUserAnalytics, IUser, Page, IUserListSummary} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 
 export const SET_USER_DATA = '[USERS] set user data';
@@ -8,6 +8,7 @@ export const SET_USERS_ANALYTICS_PAGE = '[USERS] set user analytics page';
 export const SET_USERS_INDEX_PAGE = '[USERS] set user index page';
 export const SET_USERS_ANALYTICS_ALL = '[USERS] set users analytics all';
 export const SET_USERS_INDEX_ALL = '[USERS] set users index all';
+export const SET_USERS_SUMMARY = '[USERS] set users summary';
 export const SET_USERS_LIST_API_TYPE = '[USERS] set users list api type';
 export const SET_USERS_LIST_DATA_MAP = '[USERS] set users list data map';
 export const SET_USERS_MARKERS_DATA_MAP = '[USERS] set users markers data map';
@@ -19,6 +20,7 @@ export const PAUSE_USERS = "[USERS] pause users";
 
 export const SET_LIST_ACTIVE = "[USERS] set list active";
 export const SET_MARKERS_ACTIVE = "[USERS] set markerS active";
+export const SET_SUMMARY_ACTIVE = "[USERS] set summary active";
 
 export class SetUserData implements Action {
   readonly type = SET_USER_DATA;
@@ -44,6 +46,11 @@ export class SetUsersIndexAll implements Action {
   readonly type = SET_USERS_INDEX_ALL;
   constructor(public payload: AllData<IUser>) {}
 };
+
+export class SetUsersSummary implements Action {
+  readonly type = SET_USERS_SUMMARY;
+  constructor(public payload: IUserListSummary) {}
+}
 
 export class SetUsersListApiType implements Action {
   readonly type = SET_USERS_LIST_API_TYPE;
@@ -90,12 +97,18 @@ export class SetMarkersActive implements Action {
   constructor(public payload: boolean = true) {}
 }
 
+export class SetSummaryActive implements Action {
+  readonly type = SET_SUMMARY_ACTIVE;
+  constructor(public payload: boolean = true) {}
+}
+
 export type All
   = SetUserData
   | SetUsersAnalyticsPage
   | SetUsersIndexPage
   | SetUsersAnalyticsAll
   | SetUsersIndexAll
+  | SetUsersSummary
   | SetUsersListApiType
   | SetUsersListDataMap
   | SetUsersMarkersDataMap
@@ -105,3 +118,4 @@ export type All
   | PauseUsers
   | SetListActive
   | SetMarkersActive
+  | SetSummaryActive

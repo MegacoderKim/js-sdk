@@ -19,6 +19,9 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
     case QueryDispatch.SET_USER_QUERY: {
       return {...state, userQuery: action.payload}
     }
+    case QueryDispatch.SET_USER_QUERY_RESET_PAGE: {
+      return {...state, userQuery: {...action.payload, page: null}}
+    }
     case QueryDispatch.CLEAR_USER_QUERY_KEY: {
       let query = {...state.userQuery};
       delete query[action.payload];
