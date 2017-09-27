@@ -117,10 +117,13 @@ export class TrackData {
   private renderDestinationMarker(destination: IPlace) {
     if(destination) {
       let destinationPosition = GetLatLng(destination);
-      this.destinationMarker.setPosition(destinationPosition);
-      if (!this.destinationMarker.getMap()) {
+      if (destinationPosition) {
+        this.destinationMarker.setPosition(destinationPosition);
+      }
+      if (destinationPosition && !this.destinationMarker.getMap()) {
         this.destinationMarker.setMap(this.map);
       }
+
     } else {
       this.destinationMarker.clear();
     }
