@@ -82,8 +82,10 @@ export class TrackedAction {
     let finalPlace = action.completed_place || action.expected_place;
     if(finalPlace) {
       let destinationPosition = GetLatLng(finalPlace);
-      this.destinationMarker.setPosition(destinationPosition);
-      if (!this.destinationMarker.getMap()) {
+      if (destinationPosition) {
+        this.destinationMarker.setPosition(destinationPosition);
+      }
+      if (destinationPosition && !this.destinationMarker.getMap()) {
         this.destinationMarker.setMap(this.map);
       }
       // this.destinationMarker.render(destinationPosition, this.map);
