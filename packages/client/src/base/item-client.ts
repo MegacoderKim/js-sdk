@@ -1,30 +1,48 @@
-import {QueryObserver} from "./query-observer";
-import {LoadingObserver} from "./loading-observer";
 import {Observable} from "rxjs/Observable";
 import {IItemClientOptions} from "../interfaces";
-import {IdObserver} from "./id-observer";
 import {HtBaseApi} from "../api/base";
 import {Partial} from "ht-models";
 import {HtClientConfig} from "../config";
 import {HtBaseClient} from "./base-client";
 
-export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOptions<A>, A> {
+export abstract class ItemClient<T> extends HtBaseClient<T> {
   api: HtBaseApi;
   defaultQuery: object = {};
   name = "item";
 
-  get isActive$() {
-    return Observable.of(true)
+  constructor(
+    public options: IItemClientOptions<T>
+  ) {
+    super();
+    this.initEffects();
   }
 
-  getDataQuery$() {
+  initEffects() {
+    let query$ = this.getApiQueryWithLoading$();
+
+    let data$ = query$.switchMap((queryObj) => {
+      return queryObj ?
+        this.getData$(queryObj['id'], queryObj['query']) : Observable.of(null)
+    })
+      // .do((data) => {
+      //   this.updateLoadingData(false);
+      //   //todo handle not found
+      // });
+    data$.subscribe((userData) => {
+      this.setData(userData)
+    });
+
+  }
+
+
+  getApiQuery$() {
     let dataQuery$ = Observable.combineLatest(
       this.query$.distinctUntilChanged(),
       this.id$.distinctUntilChanged(),
       ((query, id) => {
-        return {id, query}
+        return id ? {id, query} : null
       })
-    )
+    ).filter((data) => !!data)
       .do((data) => {
         this.updateLoadingData(<string>(data['id']) || true)
       });
@@ -32,7 +50,7 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
     return dataQuery$
   }
 
-  getData$({id, query}): Observable<T> {
+  getData$(id, query): Observable<T> {
     return id ?
       this.api$(id, query)
       .do(() => {
@@ -44,8 +62,6 @@ export abstract class ItemClient<T, A> extends HtBaseClient<T, IItemClientOption
       }) : Observable.of(null)
 
   }
-
-  abstract api$(id, query)
 
   abstract get id$()
 

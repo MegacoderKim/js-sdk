@@ -34,6 +34,7 @@ import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersList} from "./users-list";
 import {UsersMarkers} from "./users-markers";
+import {UsersSummaryClient} from "./users-summary-client";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -67,6 +68,7 @@ export class HtUsersClient extends EntityClient {
   queryDispatcher = fromQueryDispatcher;
 
   list;
+  summary: UsersSummaryClient;
   markers;
 
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
@@ -82,41 +84,45 @@ export class HtUsersClient extends EntityClient {
     });
 
     this.index = new HtUsersIndexClient({
-      api,
+      api$: (query) => api.index(query),
       dateRangeSource$,
       store: this.store,
       loadingDispatcher: (data) => this.setLoadingUserIndex(data)
     });
 
+
+
     this.analytics = new HtUsersAnalytics({
-      api,
+      api$: (query) => this.api.analytics(query),
       dateRangeSource$,
       store: this.store,
       loadingDispatcher: (data) => this.setLoadingUserAnalytics(data)
     });
 
     this.placeline = new HtUserPlacelineClient({
-      api,
+      api$: (id, query) => this.api.placeline(id, query),
       dateRangeSource$,
       loadingDispatcher: (data) => this.setLoadingUserData(data),
       store: this.store
     });
 
     this.marksAnalytics = new HtUsersAnalyticsMarkers({
-      api,
+      api$: (query) => this.api.all$(query, ApiType.analytics),
       dateRangeSource$,
       loadingDispatcher: (data) => this.setLoadingUserAnalyticsAll(data),
       store: this.store
     });
 
     this.marksIndex = new HtUsersIndexMarkers({
-      api,
+      api$: (query) => this.api.all$(query, ApiType.index),
       dateRangeSource$,
       loadingDispatcher: (data) => this.setLoadingUserIndexAll(data),
       store: this.store
     });
 
     this.list = new UsersList(this.store, this.index, this.analytics);
+
+    this.summary  = new UsersSummaryClient(this.store, );
 
     this.markers = new UsersMarkers(this.store, this.marksIndex, this.marksAnalytics);
 
@@ -150,125 +156,13 @@ export class HtUsersClient extends EntityClient {
 
   }
 
-  private initEffectsOld() {
-
-    let segmentScan = this.placeline.segmentState$.scan((acc, data: any) => {
-      return {
-        current: data,
-        old: acc.current
-      }
-    }, {old: {}, current: {}}).filter((data) => this.mapClass && !!data)
-      .do(({oldSegment, newSegment}) => {
-      const segment = newSegment;
-
-      if (!segment.resetBoundsId && segment.highlightedId !== oldSegment.highlightedId ) {
-        // this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId) //todo highlight
-        //todo select segment
-        // this.mapClass.segmentTrace.
-      }
-      // if(oldSegment) {
-      //   let segment = oldSegment;
-      //   this.segmentsTrace.unselectSegment(segment);
-      // }
-      // if(newSegment) {
-      //   let segment = newSegment;
-      //   this.segmentsTrace.selectSegment(segment);
-      // }
-    });
-    //
-    // let placelinseScan = this.placeline.dataObserver.scan((acc, data: any) => {
-    //   return {
-    //     current: data,
-    //     old: acc.current
-    //   }
-    // }, {old: null, current: null}).filter((data) => this.mapClass && !!data);
-    //
-    // let setBounds1 = Observable.combineLatest(
-    //   segmentScan,
-    //   placelinseScan,
-    //   (segmentScan, placelineScan) => {
-    //     // console.log(segmentScan, "Scan");
-    //     const firstPlaceline = placelineScan.current && !placelineScan.old;
-    //     const placelineResetMap = !placelineScan.current;
-    //     const firstResetSegment = !!segmentScan.current.resetBoundsId && !segmentScan.old.resetBoundsId;
-    //     const segmentResetMap = firstResetSegment;
-    //     // console.log("bools", firstResetSegment, segmentResetMap);
-    //     let userData = placelineScan.current;
-    //     let selectedId = segmentScan.current.selectedId;
-    //     if(selectedId && userData) {
-    //       let segments = _.filter(userData.segments, (segment) => {
-    //         return segment.id === selectedId;
-    //       }) ;
-    //       userData = {...userData, segments, events: [], actions: []}
-    //     }
-    //     this.mapClass.tracePlaceline(userData);
-    //     // console.log(placelineResetMap, segmentResetMap, "Test");
-    //     const toReset = placelineResetMap || segmentResetMap;
-    //     // if(placelineResetMap || segmentResetMap) {
-    //     //   this.mapClass.resetBounds()
-    //     // }
-    //     return toReset
-    //
-    //   }
-    // ).filter((data) => !!data);
-    //
-    // let setBounds2 = this.marks.dataObserver.filter(data => !!data).pluck('isFirst').filter(data => !!data);
-    //
-    // let setBounds3 = this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
-    //   .distinctUntilChanged();
-    //
-    // Observable.merge(
-    //   setBounds1,
-    //   setBounds2,
-    //   setBounds3
-    // ).debounceTime(100).subscribe((data) => {
-    //   this.mapClass.resetBounds()
-    // });
-
-    // this.placeline.segmentIdObserver.data$()
-    //   .filter((data) => !!this.mapClass)
-    //   .filter((placelineSegmentId: PlacelineSegmentId) => {
-    //     if (placelineSegmentId.selectedId) {
-    //       this.mapClass.segmentTrace()
-    //     }
-    //   })
-    //   .map((placelineSegmentId: PlacelineSegmentId) => !!placelineSegmentId.resetBoundsId)
-    //   .distinctUntilChanged().subscribe((hasSelectedSegment) => {
-    //   if (hasSelectedSegment) this.mapClass.resetBounds()
-    // });
-
-    // this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
-    //   .distinctUntilChanged()
-    //   .subscribe((userId) => {
-    //     // this.userClientService.marks.setFilter((user) => !userId);
-    //     this.mapClass.resetBounds();
-    //   });
-
-    // const marks$ = this.allMarkers$();
-
-
-    // marks$.subscribe((data) => {
-    //   this.mapClass.usersCluster.trace(data, this.mapClass.map)
-    // });
-    //
-    // this.marks.dataObserver.filter(data => !!data).pluck('isFirst').filter(data => !!data).subscribe((amrks) => {
-    //   this.mapClass.resetBounds()
-    // });
-    // this.placeline.data$;
-
-    // this.placeline.segmentIdObserver.data$().subscribe((placelineId: PlacelineSegmentId) => {
-    //   console.log(placelineId, "ppp", this.mapClass);
-    //
-    // })
-  }
-
 
   /**
    * Return label of current user queries
    * @returns {Observable<QueryLabel[]>}
    */
   get queryLabel$() {
-    let query$ = this.list.getDataQuery$();
+    let query$ = this.list.getApiQuery$();
     return query$.map((query) => {
       let queryLabel =  this.filterClass.getQueryLabel(query);
       return queryLabel
@@ -280,7 +174,7 @@ export class HtUsersClient extends EntityClient {
    * @returns {Observable<any>}
    */
   get ordering$() {
-    return this.list.getDataQuery$().map((query) => {
+    return this.list.getApiQuery$().map((query) => {
       let ordering = query ? query['ordering'] : null;
       let orderingMod = this.getOrderingMod(ordering);
       return {string: this.filterClass.sortingQueryMap[orderingMod.string], sign: orderingMod.sign}
@@ -509,87 +403,6 @@ export class HtUsersClient extends EntityClient {
     });
 
 
-    // let segmentScan = this.getSegmentsStates().scan((acc, data: any) => {
-    //   return {
-    //     current: data,
-    //     old: acc.current
-    //   }
-    // }, {old: {}, current: {}}).filter((data) => this.mapClass && !!data)
-    //   .do(({oldSegment, newSegment}) => {
-    //     const segment = newSegment;
-    //
-    //     if (!segment.resetMapId && segment.highlightedId !== oldSegment.highlightedId ) {
-    //       this.mapClass.segmentTrace.highlightSegmentId(segment.highlightedId)
-    //       //todo select segment
-    //       // this.mapClass.segmentTrace.
-    //     }
-    //     // if(oldSegment) {
-    //     //   let segment = oldSegment;
-    //     //   this.segmentsTrace.unselectSegment(segment);
-    //     // }
-    //     // if(newSegment) {
-    //     //   let segment = newSegment;
-    //     //   this.segmentsTrace.selectSegment(segment);
-    //     // }
-    //   });
-    //
-    // let placelinseScan = this.getUserData().scan((acc, data: any) => {
-    //   return {
-    //     current: data,
-    //     old: acc.current
-    //   }
-    // }, {old: null, current: null}).filter((data) => this.mapClass && !!data);
-    //
-    // let setBounds1 = Observable.combineLatest(
-    //   segmentScan,
-    //   placelinseScan,
-    //   (segmentScan, placelineScan) => {
-    //     // console.log(segmentScan, "Scan");
-    //     const firstPlaceline = placelineScan.current && !placelineScan.old;
-    //     const placelineResetMap = !placelineScan.current;
-    //     const firstResetSegment = !!segmentScan.current.resetBoundsId && !segmentScan.old.resetBoundsId;
-    //     const segmentResetMap = firstResetSegment;
-    //     // console.log("bools", firstResetSegment, segmentResetMap);
-    //     let userData = placelineScan.current;
-    //     let selectedId = segmentScan.current.selectedId;
-    //     if(selectedId && userData) {
-    //       let segments = _.filter(userData.segments, (segment) => {
-    //         return segment.id === selectedId;
-    //       }) ;
-    //       userData = {...userData, segments, events: [], actions: []}
-    //     }
-    //     this.mapClass.tracePlaceline(userData);
-    //     // console.log(placelineResetMap, segmentResetMap, "Test");
-    //     const toReset = placelineResetMap || segmentResetMap;
-    //     // if(placelineResetMap || segmentResetMap) {
-    //     //   this.mapClass.resetBounds()
-    //     // }
-    //     return toReset
-    //
-    //   }
-    // ).filter((data) => !!data);
-    //
-    // // let setBounds2 = this.getUsersMarkers().filter(data => !!data).pluck('isFirst').filter(data => !!data);
-    //
-    // let setBounds3 = this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
-    //   .distinctUntilChanged();
-    //
-    // Observable.merge(
-    //   // setBounds1,
-    //   // setBounds2,
-    //   setBounds3
-    // ).debounceTime(100).subscribe((data) => {
-    //   this.mapClass.resetBounds()
-    // });
-    //
-    //
-    // this.placeline.idObservable.data$().filter((data) => !!this.mapClass)
-    //   .distinctUntilChanged()
-    //   .subscribe((userId) => {
-    //     // this.userClientService.marks.setFilter((user) => !userId);
-    //     this.mapClass.resetBounds();
-    //   });
-    //
     const marks$ = this.allMarkers$().filter((data) => !!this.mapClass).pluck('valid');
 
     marks$.subscribe((data) => {

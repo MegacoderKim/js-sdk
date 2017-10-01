@@ -45,7 +45,7 @@ export class HtBaseApi {
     return this.getReqFromTail<T>(tail, query)
   }
 
-  all$<T>(query, apiType: ApiType = ApiType.analytics): Observable<any> {
+  all$<T>(query, apiType: ApiType = ApiType.index): Observable<any> {
     query = {page_size: 100, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$

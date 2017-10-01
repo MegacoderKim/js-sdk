@@ -17,7 +17,6 @@ export * from "./base/base-client";
 export * from "./base/data-observer";
 export * from "./base/list-client";
 export * from "./base/item-client";
-export * from "./base/id-observer";
 
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';

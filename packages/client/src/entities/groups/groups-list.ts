@@ -8,13 +8,13 @@ import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
 import {AllData} from "../../interfaces";
 
-export class HtGroupsListClient extends HtListClient<Page<IGroup>, HtBaseApi> {
+export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
 
   name = "group List";
 
-  api$(query) {
-    return this.api.index<Page<IGroup>>(query)
-  }
+  // api$(query) {
+  //   return this.api.index<Page<IGroup>>(query)
+  // }
 
   getDataQuery$() {
     let dataQuery$ = this.query$.map((query) => {

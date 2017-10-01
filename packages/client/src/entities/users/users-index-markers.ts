@@ -30,9 +30,9 @@ export class HtUsersIndexMarkers extends HtUsersIndexClient {
     return { ...super.getDefaultQuery(), page_size: 100, ordering: "-created_at"}
   }
 
-  api$(query) {
-    return this.api.all$(query, ApiType.index)
-  }
+  // api$(query) {
+  //   return this.api.all$(query, ApiType.index)
+  // }
 
   setData(data: AllData<IUser>) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersIndexAll(data))

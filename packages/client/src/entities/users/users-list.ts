@@ -15,9 +15,11 @@ export class UsersList {
 
   constructor(
     public store: Store<fromRoot.State>,
-    private usersIndexClient: HtListClient<IUserPage | any, HtUsersApi>,
-    private usersAnalyticsClient: HtListClient<IUserAnalyticsPage | any, HtUsersApi>
-  ) {}
+    private usersIndexClient: HtListClient<IUserPage | any>,
+    private usersAnalyticsClient: HtListClient<IUserAnalyticsPage | any>
+  ) {
+
+  }
 
   get isActive$(): Observable<boolean> {
     return this.getClient().switchMap((client) => {
@@ -51,9 +53,9 @@ export class UsersList {
     return this.store.select(fromRoot.getUsersListApiType)
   }
 
-  getDataQuery$() {
+  getApiQuery$() {
     return this.getClient().switchMap((client) => {
-      return client.getDataQuery$()
+      return client.getApiQuery$()
     })
   }
 
@@ -63,6 +65,10 @@ export class UsersList {
 
   updateQuery(query: object) {
     this.store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
+  }
+
+  updateQueryResetPage(query: object) {
+    this.store.dispatch(new fromQueryDispatcher.SetUserQueryResetPage(query))
   }
 
   clearQueryKey(key: string) {

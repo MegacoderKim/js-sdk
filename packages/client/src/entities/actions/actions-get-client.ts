@@ -5,12 +5,12 @@ import {Observable} from "rxjs/Observable";
 import {ItemClient} from "../../base/item-client";
 import {IItemClientOptions} from "../../interfaces";
 
-export class HtActionsGetClient extends ItemClient<IAction, HtActionsApi>{
+export class HtActionsGetClient extends ItemClient<IAction>{
   name = 'actions get';
 
-  api$(id, query) {
-    return this.api.get<IAction>(id, {...this.defaultQuery, ...query})
-  }
+  // api$(id, query) {
+  //   return this.api.get<IAction>(id, {...this.defaultQuery, ...query})
+  // }
 
   get id$() {
     return Observable.empty()

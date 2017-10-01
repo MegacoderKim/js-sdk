@@ -1,55 +1,33 @@
-import {IBaseClientOptions, IItemClientOptions, IListClientOptions} from "../interfaces";
+import {IItemClientOptions, IListClientOptions} from "../interfaces";
 import {HtBaseApi} from "../api/base";
 import {Observable} from "rxjs/Observable";
 import {HtClientConfig} from "../config";
 import { State} from "../reducers/index";
 import { Store} from "../store/store";
 
-export abstract class HtBaseClient<T, O, A> {
+export abstract class HtBaseClient<T> {
   api: HtBaseApi;
   name = "base";
-
-  constructor(
-    public options: IBaseClientOptions<A>
-  ) {
-    this.api = options.api;
-    this.initEffects()
-  }
+  options;
 
   get store() {
     return this.options.store
   }
 
-  abstract get isActive$()
-
-  initEffects() {
-    let query$ = this.isActive$.mergeMap((isActive: boolean) => {
-        return isActive ? this.getDataQueryWithLoading$() : Observable.of(null)
-      });
-
-
-    let data$ = query$.switchMap((queryObj) => {
-      return queryObj ?
-        this.getData$(queryObj) : Observable.of(null)
-    })
-      .do((data) => {
-        this.updateLoadingData(false);
-        //todo handle not found
-      });
-    data$.subscribe((userData) => {
-      this.setData(userData)
-    });
-
+  get api$() {
+    return this.options.api$
   }
+
+  // abstract get isActive$()
 
   abstract setData(data): void
 
-  getDefaultQuery() {
+  getDefaultQuery(): object {
     return this.options.defaultQuery || {}
   }
 
-  getDataQueryWithLoading$(): Observable<object> {
-    return this.getDataQuery$()
+  getApiQueryWithLoading$(): Observable<object> {
+    return this.getApiQuery$()
       .do((data) => {
       this.updateLoadingData(data['id'] || true)
     });
@@ -63,9 +41,9 @@ export abstract class HtBaseClient<T, O, A> {
     return this.options.pollTime || HtClientConfig.pollTime;
   }
 
-  abstract getDataQuery$(): Observable<object>
+  abstract getApiQuery$(): Observable<object>
 
-  abstract getData$(queryObj: object): Observable<T>
+  // abstract getData$(queryObj: object): Observable<T>
 
   abstract get query$(): Observable<object>
 

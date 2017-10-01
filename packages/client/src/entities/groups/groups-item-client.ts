@@ -6,7 +6,7 @@ import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
 
-export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
+export class HtGroupsItemClient extends ItemClient<IGroup> {
   name = "group item";
 
   getData$({id, query}): Observable<IGroup> {
@@ -18,9 +18,9 @@ export class HtGroupsItemClient extends ItemClient<IGroup, HtGroupsApi> {
 
   }
 
-  api$(id, query = {}): Observable<IGroup> {
-    return this.api.get<IGroup>(id, {...this.defaultQuery, ...query})
-  }
+  // api$(id, query = {}): Observable<IGroup> {
+  //   return this.api.get<IGroup>(id, {...this.defaultQuery, ...query})
+  // }
 
   get query$() {
     return Observable.of({})

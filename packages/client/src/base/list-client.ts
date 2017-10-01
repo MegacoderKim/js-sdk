@@ -5,11 +5,38 @@ import {IUserAnalytics} from "ht-models";
 import {HtBaseApi} from "../api/base";
 import * as _ from "underscore";
 
-export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOptions<A>, A>{
+export abstract class HtListClient<T> extends HtBaseClient<T>{
 
   name = "list";
 
-  getDataQuery$() {
+  constructor(
+    public options: IListClientOptions<T>
+  ) {
+    super();
+    this.initEffects();
+  }
+
+  initEffects() {
+    let query$ = this.isActive$.mergeMap((isActive: boolean) => {
+      return isActive ? this.getApiQueryWithLoading$() : Observable.of(null)
+    });
+    // let query$ = this.getApiQueryWithLoading$();
+
+    let data$ = query$.switchMap((queryObj) => {
+      return queryObj ?
+        this.getData$(queryObj) : Observable.of(null)
+    })
+      // .do((data) => {
+      //   this.updateLoadingData(false);
+      //   //todo handle not found
+      // });
+    data$.subscribe((userData) => {
+      this.setData(userData)
+    });
+
+  }
+
+  getApiQuery$() {
     let dataQuery$ = Observable.combineLatest(
       this.query$,
       this.options.dateRangeSource$,
@@ -47,11 +74,9 @@ export abstract class HtListClient<T, A> extends HtBaseClient<T, IListClientOpti
     // this.dataMap$.updateData(filter);
   }
 
-  // get isActive$() {
-  //   return Observable.of(false)
-  // }
-
-  abstract api$(query): Observable<T>
+  get isActive$() {
+    return Observable.of(false)
+  }
 
   abstract get data$()
 

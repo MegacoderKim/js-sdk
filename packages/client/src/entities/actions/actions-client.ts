@@ -13,10 +13,10 @@ export class HtActionsClient {
     let api = new HtActionsApi(req);
     this.api = api;
     this.list = new HtActionsListClient(req, options['defaultConfigQuery'], options['listConfig']);
-    this.item = new HtActionsGetClient({
-      api,
-      ...options.getClientOptions
-    })
+    // this.item = new HtActionsGetClient({
+    //   api$: this.api.get,
+    //   ...options.getClientOptions
+    // })
   }
 
   updateListQuery() {

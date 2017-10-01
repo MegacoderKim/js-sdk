@@ -4,7 +4,6 @@ import {Observable} from "rxjs/Observable";
 import {htPlaceline} from "ht-js-data";
 import {HtUsersApi} from "../../api/users";
 import {HtClientConfig} from "../../config";
-import {SegmentIdObserver} from "../../base/segment-id-observer";
 import {IItemClientOptions} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import { Store} from "../../store/store";
@@ -13,7 +12,7 @@ import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
-export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
+export class HtUserPlacelineClient extends ItemClient<IUserData> {
   name = "placeline";
 
   get id$() {
@@ -61,8 +60,4 @@ export class HtUserPlacelineClient extends ItemClient<IUserData, HtUsersApi> {
     return this.store.dispatch(new fromUsersDispatcher.SetUserData(data))
   }
 
-
-  api$(id, query = {}): Observable<IUserData> {
-    return this.api.placeline<IUserData>(id, {...this.defaultQuery, ...query})
-  }
 }

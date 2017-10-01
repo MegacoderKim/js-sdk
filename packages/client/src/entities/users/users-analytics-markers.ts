@@ -29,9 +29,9 @@ export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
     return { ...super.getDefaultQuery(), page_size: 100, ordering: "-created_at"}
   }
 
-  api$(query) {
-    return this.api.all$(query, ApiType.analytics)
-  }
+  // api$(query) {
+  //   return this.api.all$(query, ApiType.analytics)
+  // }
 
   setData(data) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))

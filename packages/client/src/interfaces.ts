@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseApi} from "./api/base";
-import {Partial} from "ht-models";
+import {Partial, IUserData, Page, IUser, IUserAnalytics, IAction} from "ht-models";
 import {HtUsersApi} from "./api/users";
 import {HtActionsApi} from "./api/actions";
 import {Store} from "./store/store";
@@ -11,16 +11,16 @@ export const defaultListConfig: IListConfig = {
 };
 
 export interface IUsersClientOptions {
-  placelineOptions?: Partial<IItemClientOptions<HtUsersApi>>,
-  indexOptions?: Partial<IListClientOptions<HtUsersApi>>,
-  analyticsOptions?: Partial<IListClientOptions<HtUsersApi>>,
+  placelineOptions?: Partial<IItemClientOptions<IUserData>>,
+  indexOptions?: Partial<IListClientOptions<Page<IUser>>>,
+  analyticsOptions?: Partial<IListClientOptions<Page<IUserAnalytics>>>,
   listApiType?: ApiType,
   dateRangeOptions?: IDateRange,
 }
 
 export interface IActionsClientOptions {
-  listClientOptions?: Partial<IListClientOptions<HtActionsApi>>,
-  getClientOptions?: Partial<IItemClientOptions<HtActionsApi>>
+  listClientOptions?: Partial<IListClientOptions<Page<IAction>>>,
+  getClientOptions?: Partial<IItemClientOptions<IAction>>
 }
 
 export interface IDateRange {
@@ -39,40 +39,38 @@ export interface IListConfig {
   isLive?: boolean
 }
 
-export interface IListClientOptions<A> {
+export interface IListClientOptions<T> {
   query?: object,
   // querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
   idSource$?: Observable<string | number>
   id?: string,
   defaultQuery?: object,
-  api: HtBaseApi | any,
-  onDataUpdate: (data) => void,
+  api$: (query) => Observable<T>,
   pollTime?: number,
   dateRangeSource$?: Observable<object>,
   loadingDispatcher: any,
   store: Store<fromRoot.State>
 }
 
-export interface IItemClientOptions<A> {
+export interface IItemClientOptions<T> {
   query?: object,
   // querySource$: Observable<object>,
   loadingSource$?: Observable<boolean>,
   idSource$?: Observable<string | number>
   defaultQuery?: object,
-  api: HtBaseApi,
+  api$: (id, query) => Observable<T>,
   id?: string,
   onNotFound?: () => void,
-  onDataUpdate: (data) => void,
   pollTime?: number,
   dateRangeSource$?: Observable<object>,
   loadingDispatcher: any,
   store: Store<fromRoot.State>
 }
 
-export interface IBaseClientOptions<A> extends Partial<IListClientOptions<A>>, Partial<IItemClientOptions<A>>{
-  api: HtBaseApi
-}
+// export interface IBaseClientOptions<T> extends Partial<IListClientOptions<T>>, Partial<IItemClientOptions<T>>{
+//
+// }
 
 export interface IClientOptions {
   actionsClientOptions?: IActionsClientOptions,

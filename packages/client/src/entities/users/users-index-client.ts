@@ -7,7 +7,7 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
-export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
+export class HtUsersIndexClient extends HtListClient<IUserPage> {
   name = "users index";
 
   get isActive$(): Observable<boolean> {
@@ -28,10 +28,6 @@ export class HtUsersIndexClient extends HtListClient<IUserPage, HtUsersApi> {
 
   getDefaultQuery() {
     return {...super.getDefaultQuery(), ordering: "-last_heartbeat_at"}
-  }
-
-  api$(query) {
-    return this.api.index<IUserPage>(query)
   }
 
   setData(usersPage) {

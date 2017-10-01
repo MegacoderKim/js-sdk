@@ -6,7 +6,7 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
-export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage, HtUsersApi> {
+export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage> {
   //todo IUserPage added as hack to fix allMarkers$ in client
   name = "analytics users";
 
@@ -30,9 +30,9 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
     return {...super.getDefaultQuery(), ordering: "-last_heartbeat_at"}
   }
 
-  api$(query) {
-    return this.api.analytics(query)
-  }
+  // api$(query) {
+  //   return this.api.analytics(query)
+  // }
 
   setData(data) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
