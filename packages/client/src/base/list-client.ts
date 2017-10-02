@@ -8,7 +8,7 @@ import * as _ from "underscore";
 export abstract class HtListClient<T> extends HtBaseClient<T>{
 
   name = "list";
-
+  toUpdate: boolean;
   constructor(
     public options: IListClientOptions<T>
   ) {
@@ -25,7 +25,7 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
     let data$ = query$.switchMap((queryObj) => {
       return queryObj ?
         this.getData$(queryObj) : Observable.of(null)
-    })
+    });
       // .do((data) => {
       //   this.updateLoadingData(false);
       //   //todo handle not found
@@ -57,9 +57,22 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
   }
 
   getData$(query): Observable<T> {
-    return this.api$(query).do(() => {
+
+    let first = this.api$(query).do(() => {
       this.updateLoadingData(false)
-    })
+    });
+
+    let update = first.expand(() => {
+      return Observable.timer(this.pollDuration).switchMap(() => {
+        return this.api$(query)
+      })
+    });
+
+    return this.toUpdate ? update : first
+
+    // return this.api$(query).do(() => {
+    //   this.updateLoadingData(false)
+    // })
 
   }
 

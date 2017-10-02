@@ -29,7 +29,8 @@ export abstract class HtBaseClient<T> {
   getApiQueryWithLoading$(): Observable<object> {
     return this.getApiQuery$()
       .do((data) => {
-      this.updateLoadingData(data['id'] || true)
+      let loading = data && data['id'] ? data['id'] : true;
+      this.updateLoadingData(loading)
     });
   }
 

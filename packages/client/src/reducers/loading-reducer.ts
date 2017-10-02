@@ -5,7 +5,8 @@ const initialState: State = {
   usersAnalytics: false,
   usersIndex: false,
   usersAnalyticsAll: false,
-  usersIndexAll: false
+  usersIndexAll: false,
+  usersSummary: false,
 };
 
 export interface State {
@@ -14,6 +15,7 @@ export interface State {
   usersIndex: boolean,
   usersAnalyticsAll: boolean,
   usersIndexAll: boolean,
+  usersSummary: boolean
 }
 
 export function loadingReducer(state: State = initialState, action : LoadingDispatcher.All): State {
@@ -33,6 +35,9 @@ export function loadingReducer(state: State = initialState, action : LoadingDisp
     case LoadingDispatcher.SET_USER_INDEX_ALL: {
       return {...state, usersIndexAll: action.payload}
     }
+    case LoadingDispatcher.SET_USER_SUMMARY: {
+      return {...state, usersSummary: action.payload}
+    }
     default:
       return state
   }
@@ -43,3 +48,4 @@ export const getUserAnalytics = (state: State) => state.usersAnalytics;
 export const getUserIndex = (state: State) => state.usersIndex;
 export const getUserAnalyticsAll = (state: State) => state.usersAnalyticsAll;
 export const getUserIndexAll = (state: State) => state.usersIndexAll;
+export const getUserSummary = (state: State) => state.usersSummary;

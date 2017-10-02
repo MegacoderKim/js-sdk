@@ -34,7 +34,7 @@ import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersList} from "./users-list";
 import {UsersMarkers} from "./users-markers";
-import {UsersSummaryClient} from "./users-summary-client";
+import {HtUsersSummaryClient} from "./users-summary-client";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -68,7 +68,7 @@ export class HtUsersClient extends EntityClient {
   queryDispatcher = fromQueryDispatcher;
 
   list;
-  summary: UsersSummaryClient;
+  summary: HtUsersSummaryClient;
   markers;
 
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
@@ -120,9 +120,15 @@ export class HtUsersClient extends EntityClient {
       store: this.store
     });
 
+    this.summary  = new HtUsersSummaryClient({
+      api$: (query) => api.summary(query),
+      dateRangeSource$,
+      store: this.store,
+      loadingDispatcher: (data) => this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserSummary(data))
+    });
+
     this.list = new UsersList(this.store, this.index, this.analytics);
 
-    this.summary  = new UsersSummaryClient(this.store, );
 
     this.markers = new UsersMarkers(this.store, this.marksIndex, this.marksAnalytics);
 
@@ -154,6 +160,37 @@ export class HtUsersClient extends EntityClient {
     // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
     return this.dataArrayWithSelected$(id$, dataArray$, selected$)
 
+  }
+
+  listSummary$() {
+    return Observable.combineLatest(
+      this.summary.data$,
+      this.list.id$,
+      (summary, userId) => userId ? null : summary
+    )
+  }
+
+  listMap$() {
+    const withSummary = Observable.zip(
+      this.placelineOrList$(),
+      this.summary.data$,
+      (placelineList, summary) => {
+        console.log("sasd", placelineList, summary);
+        return {placelineList, summary}
+      }
+    );
+
+    const list$ = this.placelineOrList$().map((placelineList) => {
+      console.log("adas");
+      return {placelineList, summary: null}
+    });
+
+    return this.summary.isActive$
+      .switchMap((summaryActive) => {
+      return summaryActive ?
+        withSummary :
+        list$
+    })
   }
 
 
@@ -238,7 +275,7 @@ export class HtUsersClient extends EntityClient {
 
     let allMarkers$ = Observable.merge(
       userMarkers$,
-      this.list.dataArray$
+      // this.list.dataArray$
     );
 
     let hasPlaceline$ = this.placeline.id$.map((data) => !!data).distinctUntilChanged();

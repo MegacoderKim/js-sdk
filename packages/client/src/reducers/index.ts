@@ -7,7 +7,7 @@ import * as fromSegments from "./segments-reducer";
 import * as fromQuery from "./query-reducer";
 import * as fromLoading from "./loading-reducer";
 import * as fromGroups from "./groups-reducer";
-import {IUserData, IUser, IUserAnalytics, IGroup } from "ht-models"
+import {IUserData, IUser, IUserAnalytics, IGroup, IUserListSummary } from "ht-models"
 import {ApiType, AllData} from "../interfaces"
 
 export interface State {
@@ -52,6 +52,9 @@ export const getUsersAnalyticsFilteredMarker = createSelector(getUsersState, fro
 export const getUsersIndexAll = createSelector(getUsersState, fromUsers.getIndexAll);
 export const getUsersAnalyticsAll = createSelector(getUsersState, fromUsers.getAnalyticsAll);
 export const getUsersMarkersPage = createSelector(getUsersState, fromUsers.getMarkerPage);
+export const getUsersSummary = createSelector(getUsersState, fromUsers.getSummary);
+export const getUsersSummaryActive = createSelector(getUsersState, fromUsers.getSummaryActive);
+
 /**
  * Segment selectors
  */
@@ -77,6 +80,7 @@ export const getLoadingAnalytics = createSelector(getLoadingState, fromLoading.g
 export const getLoadingUserIndex = createSelector(getLoadingState, fromLoading.getUserIndex);
 export const getLoadingUserAnalyticsAll = createSelector(getLoadingState, fromLoading.getUserAnalyticsAll);
 export const getLoadingUserIndexAll = createSelector(getLoadingState, fromLoading.getUserIndexAll);
+export const getLoadingUserSummary = createSelector(getLoadingState, fromLoading.getUserSummary);
 
 /**
  *

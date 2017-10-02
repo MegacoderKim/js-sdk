@@ -24,10 +24,10 @@ export abstract class ItemClient<T> extends HtBaseClient<T> {
       return queryObj ?
         this.getData$(queryObj['id'], queryObj['query']) : Observable.of(null)
     })
-      // .do((data) => {
-      //   this.updateLoadingData(false);
-      //   //todo handle not found
-      // });
+      .do((data) => {
+        this.updateLoadingData(false);
+        //todo handle not found
+      });
     data$.subscribe((userData) => {
       this.setData(userData)
     });
@@ -42,9 +42,10 @@ export abstract class ItemClient<T> extends HtBaseClient<T> {
       ((query, id) => {
         return id ? {id, query} : null
       })
-    ).filter((data) => !!data)
+    )
       .do((data) => {
-        this.updateLoadingData(<string>(data['id']) || true)
+        let loading = data && data['id'] ? data['id'] : true;
+        this.updateLoadingData(<string>(loading))
       });
 
     return dataQuery$

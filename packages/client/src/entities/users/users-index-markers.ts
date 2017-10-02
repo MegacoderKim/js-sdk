@@ -9,7 +9,7 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
 export class HtUsersIndexMarkers extends HtUsersIndexClient {
   name = "index all users";
-
+  toUpdate = false;
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersIndexMarkersIsActive)
   }

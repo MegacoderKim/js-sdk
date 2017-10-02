@@ -9,6 +9,7 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage> {
   //todo IUserPage added as hack to fix allMarkers$ in client
   name = "analytics users";
+  toUpdate = true;
 
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersAnalyticsIsActive)

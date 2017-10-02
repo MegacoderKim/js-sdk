@@ -9,6 +9,8 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
   name = "analytics all users";
 
+  toUpdate = false;
+
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive)
   }

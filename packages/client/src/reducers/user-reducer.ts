@@ -93,6 +93,9 @@ export const getAnalyticsPage = (state: State) => state.usersAnalyticsPage;
 export const getListApiType = (state: State) => state.listApiType;
 export const getListActive = (state: State) => state.usersListActive;
 export const getMarkersActive = (state: State) => state.usersMarkersActive;
+export const getSummary = (state: State) => state.usersSummary;
+export const getSummaryActive = (state: State) => state.usersSummaryActive;
+
 export const getIndexActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
   return apiType === ApiType.index && isListActive
 });

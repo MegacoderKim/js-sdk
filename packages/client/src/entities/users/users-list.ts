@@ -38,9 +38,24 @@ export class UsersList {
   }
 
   get loading$() {
-    return this.getClient().switchMap((client) => {
+    const listLoading = this.getClient().switchMap((client) => {
       return client.loading$
-    })
+    });
+    const summaryLoadingState$ = this.store.select(fromRoot.getLoadingUserSummary);
+
+    const summaryActive = this.store.select(fromRoot.getUsersSummaryActive);
+
+    const summaryLoading$ = Observable.combineLatest(
+      summaryActive,
+      summaryLoadingState$,
+      (summaryActive, summaryLoading) => summaryActive && summaryLoading
+    );
+
+    return Observable.combineLatest(
+      listLoading,
+      summaryLoading$,
+      (listLoading, summaryLoading) => listLoading || summaryLoading
+    )
   }
 
   get dataArray$() {
