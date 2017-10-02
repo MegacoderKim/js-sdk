@@ -6,7 +6,7 @@ import {
   IDateRange, IItemClientOptions, IListClientOptions, IUsersClientOptions,
   PlacelineSegmentId
 } from "../../interfaces";
-import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics} from "ht-models";
+import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics, IUserListSummary} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
@@ -60,7 +60,7 @@ export class HtUsersClient extends EntityClient {
    * Fetches across the page (complete data of users) from `/users/`
    */
   marksIndex: HtUsersIndexMarkers;
-  filterClass: DefaultUsersFilter;
+  filterClass: DefaultUsersFilter = new DefaultUsersFilter();
   dateRangeObserver: QueryObserver;
   initialDateRange: IDateRange;
   mapClass: HtMapClass;
@@ -132,7 +132,7 @@ export class HtUsersClient extends EntityClient {
 
     this.markers = new UsersMarkers(this.store, this.marksIndex, this.marksAnalytics);
 
-    this.filterClass = new DefaultUsersFilter();
+    // this.filterClass = new DefaultUsersFilter();
 
     this.initEffects()
   }
@@ -169,6 +169,55 @@ export class HtUsersClient extends EntityClient {
       (summary, userId) => userId ? null : summary
     )
   }
+
+  listStatusOverview$() {
+    return this.listSummary$().map((summary: IUserListSummary) => {
+      if(summary) {
+        return summary.status_overview
+      }
+      return null
+    })
+  }
+
+  listStatusChart$() {
+    // return status_overview.
+    return this.listStatusOverview$().map(overview => {
+      if(overview) {
+        let total = 0;
+        let statusTotal;
+        let max = 0;
+        let summaryEntity = this.filterClass.statusQueryArray;
+        // let summaryEntity = this.filterClass.activityQueryArray;
+        let values = _.map(summaryEntity, (entity) => {
+          let sum = _.reduce(entity.values, (acc, key: string) => {
+            return acc + overview[key]
+          }, 0);
+          let value = entity.value || 0 + sum;
+          max = max && value < max ? max : value;
+          total = total + value;
+          let selected = false;
+          // if(this.status) {
+          //   if(this.status == entity.keys[0]) statusTotal = value;
+          //   let status = this.status.split(',');
+          //   selected = _.reduce(entity.keys, (acc, key) => {
+          //     return acc && status.indexOf(key) > -1
+          //   }, true)
+          // };
+          return {...entity, value, selected }
+        });
+        let totalUsers = total;
+        let chart = _.map(values, (datum) => {
+          let w = max ? datum.value / max : 0;
+
+          return {...datum, w}
+        });
+        return {totalUsers, chart}
+      }
+      return null
+    })
+    // return status_overview ? Object.keys(status_overview) : null
+  }
+
 
   listMap$() {
     const withSummary = Observable.zip(

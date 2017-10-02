@@ -1,29 +1,53 @@
 import {BaseFilter} from "./base-filter";
+import {Color} from "ht-js-utils";
 
 export class DefaultUsersFilter extends BaseFilter {
 
   statusQueryArray = [
     {
       label: "Stopped",
-      values: ['stopped']
+      values: ['stopped'],
+      color: Color.stop
     },
     {
       label: "Moving",
-      values: ['on_trip']
+      values: ['on_trip'],
+      color: Color.blue
     },
     {
       label: "Logged off",
-      values: ['logged_off']
+      values: ['logged_off'],
+      color: '#8a91a0'
     },
     {
       label: 'Location disabled',
-      values: ['location_disabled']
+      values: ['location_disabled'],
+      color: Color.red
     },
     {
       label: "Network offline",
-      values: ['network_offline']
+      values: ['network_offline'],
+      color: '#ccc',
     }
   ];
+
+  activityQueryArray = [
+    {
+      label: 'Logged in',
+      values: ['stopped', 'on_trip', 'network_offline'],
+      color: Color.blue
+    },
+    {
+      label: 'Logged off',
+      values: ['logged_off'],
+      color: '#a8a8a8',
+    },
+    {
+      label: 'Location disabled',
+      values: ['location_disabled'],
+      color: Color.red
+    },
+  ]
 
   genericQueryArray = [
     {
