@@ -39,7 +39,6 @@ export const metaReducers: ActionReducer<any, any>[] = [];
 export const getUsersState = createFeatureSelector<fromUsers.State>('users');
 export const getUsersUsersData = createSelector(getUsersState, fromUsers.getUserData);
 export const getUsersIndexPage = createSelector(getUsersState, fromUsers.getIndexPage);
-export const getUsersListPage = createSelector(getUsersState, fromUsers.getListPage);
 export const getUsersAnalyticsPage = createSelector(getUsersState, fromUsers.getAnalyticsPage);
 export const getUsersListApiType = createSelector(getUsersState, fromUsers.getListApiType);
 export const getUsersListActive = createSelector(getUsersState, fromUsers.getListActive);
@@ -51,7 +50,6 @@ export const getUsersIndexFilteredMarker = createSelector(getUsersState, fromUse
 export const getUsersAnalyticsFilteredMarker = createSelector(getUsersState, fromUsers.getAnalyticFilteredMarkers);
 export const getUsersIndexAll = createSelector(getUsersState, fromUsers.getIndexAll);
 export const getUsersAnalyticsAll = createSelector(getUsersState, fromUsers.getAnalyticsAll);
-export const getUsersMarkersPage = createSelector(getUsersState, fromUsers.getMarkerPage);
 export const getUsersSummary = createSelector(getUsersState, fromUsers.getSummary);
 export const getUsersSummaryActive = createSelector(getUsersState, fromUsers.getSummaryActive);
 

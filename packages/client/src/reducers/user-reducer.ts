@@ -121,19 +121,6 @@ export const getAnalyticsMarkersActive = createSelector(getListApiType, getMarke
   return apiType === ApiType.analytics && isMarkersActive
 });
 
-function validMarkers(markers: AllData<IUser | IUserAnalytics>) {
-  if(!markers) return markers;
-  return _.reduce(markers.results, (acc, marker) => {
-    return htUser(marker).isValidMarker() ? [...acc, marker] : acc
-  }, [])
-}
-
-const fromApiType = (apiType: ApiType, indexPage, analyticsPage) => {
-  return apiType === ApiType.index ? indexPage : analyticsPage
-};
-
-export const getListPage = createSelector(getListApiType, getIndexPage, getAnalyticsPage, fromApiType);
-export const getMarkerPage = createSelector(getListApiType, getIndexAll, getAnalyticsAll, fromApiType);
 
 
 
