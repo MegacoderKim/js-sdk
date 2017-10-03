@@ -48,9 +48,9 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
     return dataQuery$
   }
 
-  getAll$(type: ApiType) {
-    return this.api.all$<IUserAnalytics>({}, type);
-  }
+  // getAll$(type: ApiType) {
+  //   return this.api.all$<IUserAnalytics>({}, type);
+  // }
 
   getDefaultQuery() {
     return {page_size: 10, ...super.getDefaultQuery()}
@@ -69,10 +69,6 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
     });
 
     return this.toUpdate ? update : first
-
-    // return this.api$(query).do(() => {
-    //   this.updateLoadingData(false)
-    // })
 
   }
 

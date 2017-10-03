@@ -5,8 +5,9 @@ import {ApiType, AllData} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {HtAllItemsClient} from "../../base/all-items.client";
 
-export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
+export class HtUsersAnalyticsMarkers extends HtAllItemsClient<IUserAnalyticsPage> {
   name = "analytics all users";
 
   toUpdate = false;

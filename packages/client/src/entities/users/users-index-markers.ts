@@ -6,10 +6,12 @@ import {ApiType, AllData} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {HtAllItemsClient} from "../../base/all-items.client";
 
-export class HtUsersIndexMarkers extends HtUsersIndexClient {
+export class HtUsersIndexMarkers extends HtAllItemsClient<IUser> {
   name = "index all users";
   toUpdate = false;
+
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersIndexMarkersIsActive)
   }

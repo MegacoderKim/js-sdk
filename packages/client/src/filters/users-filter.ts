@@ -81,11 +81,11 @@ export class DefaultUsersFilter extends BaseFilter {
     return [...this.statusQueryArray, ...this.genericQueryArray, ...this.showAllQueryArray]
   }
 
-  mapQuerys = [
+  mapQueries = [
 
   ];
 
-  statusOverviewQuery = [
+  statusOverviewQueries = [
     'search',
     'show_all'
   ]
