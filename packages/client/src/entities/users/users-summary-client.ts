@@ -10,6 +10,10 @@ import {IUserListSummary} from "ht-models"
 export class HtUsersSummaryClient extends HtUsersIndexClient {
 
   toUpdate = true;
+  allowedQueryKeys = [
+    'search',
+    'show_all'
+  ];
 
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersSummaryActive)
@@ -17,10 +21,6 @@ export class HtUsersSummaryClient extends HtUsersIndexClient {
 
   get data$(): Observable<any> {
     return this.store.select(fromRoot.getUsersSummary)
-  }
-
-  get query$() {
-    return this.store.select(fromRoot.getQueryUserQuery)
   }
 
   get loading$() {
