@@ -47,7 +47,7 @@ export class DefaultUsersFilter extends BaseFilter {
       values: ['location_disabled'],
       color: Color.red
     },
-  ]
+  ];
 
   genericQueryArray = [
     {
@@ -80,6 +80,15 @@ export class DefaultUsersFilter extends BaseFilter {
   get allQueryArray() {
     return [...this.statusQueryArray, ...this.genericQueryArray, ...this.showAllQueryArray]
   }
+
+  mapQuerys = [
+
+  ];
+
+  statusOverviewQuery = [
+    'search',
+    'show_all'
+  ]
 
 
 }
