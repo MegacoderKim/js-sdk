@@ -11,6 +11,7 @@ export class HtRequest {
   }
 
   setToken(token) {
+    HtClientConfig.subToken = token;
     this.currentToken = token
   }
 

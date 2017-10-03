@@ -1,5 +1,6 @@
 export const HtClientConfig = {
   token: "",
+  subToken: "",
   pollTime: 10000,
   setToken(token) {
     this.token = token

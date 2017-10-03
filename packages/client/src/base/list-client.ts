@@ -59,8 +59,8 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
 
   getData$(query): Observable<T> {
 
-    let first = this.api$(query).do(() => {
-      this.updateLoadingData(false)
+    let first = this.api$(query).do((data) => {
+      this.firstDataEffect(data)
     });
 
     let update = first.expand((data) => {
@@ -86,6 +86,10 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
 
     return this.toUpdate ? update : first
 
+  }
+
+  firstDataEffect(data) {
+    this.updateLoadingData(false)
   }
 
   get isActive$() {

@@ -6,7 +6,15 @@ export abstract class HtAllItemsClient<T> extends HtListClient<T> {
   // allowedQueryKeys = [];
 
   getDefaultQuery() {
-    return { ...super.getDefaultQuery(), page_size: 400, ordering: "-created_at"}
+    return { ...super.getDefaultQuery(), page_size: 200, ordering: "-created_at"}
+  }
+
+  firstDataEffect(data) {
+    if((data && !data.next) || !data) {
+      // console.log("data", data);
+      // this.storage.set(data);
+      this.updateLoadingData(false)
+    }
   }
 
 }

@@ -55,9 +55,9 @@ export class HtBaseApi {
       }).scan((acc, value) => {
         let results = [...acc.results, ...value.results];
         let isFirst = acc.results.length ? false : true;
-
-        return {results, isFirst}
-      }, {results: [], isFirst: true})
+        let next = value['next'];
+        return {results, isFirst, next}
+      }, {results: [], isFirst: true, next: null})
 
   }
 
