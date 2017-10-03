@@ -6,10 +6,12 @@ import {ApiType, AllData} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {HtAllItemsClient} from "../../base/all-items.client";
 
-export class HtUsersIndexMarkers extends HtUsersIndexClient {
+export class HtUsersIndexMarkers extends HtAllItemsClient<IUser> {
   name = "index all users";
   toUpdate = false;
+
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersIndexMarkersIsActive)
   }
@@ -23,7 +25,7 @@ export class HtUsersIndexMarkers extends HtUsersIndexClient {
   }
 
   get data$(): Observable<AllData<IUser>> {
-    return this.store.select(fromRoot.getUsersIndexAll)
+    return this.store.select(fromRoot.getUsersIndexFilteredMarker)
   }
 
   getDefaultQuery() {
@@ -36,5 +38,9 @@ export class HtUsersIndexMarkers extends HtUsersIndexClient {
 
   setData(data: AllData<IUser>) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersIndexAll(data))
+  }
+
+  setDataMap(mapFunc) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(mapFunc))
   }
 }

@@ -9,6 +9,7 @@ export abstract class ItemClient<T> extends HtBaseClient<T> {
   api: HtBaseApi;
   defaultQuery: object = {};
   name = "item";
+  toUpdate = true;
 
   constructor(
     public options: IItemClientOptions<T>
@@ -52,15 +53,30 @@ export abstract class ItemClient<T> extends HtBaseClient<T> {
   }
 
   getData$(id, query): Observable<T> {
-    return id ?
-      this.api$(id, query)
-      .do(() => {
-        this.updateLoadingData(false)
+
+    if(!id) return Observable.of(null);
+
+    let first = this.api$(id, query).do(() => {
+      this.updateLoadingData(false)
+    });
+
+    let update = first.expand(() => {
+      return Observable.timer(this.pollDuration).switchMap(() => {
+        return this.api$(id, query)
       })
-      .expand((data: T) => {
-        return Observable.timer(this.pollDuration)
-          .switchMap(() => this.api$(id, {...this.defaultQuery, ...query}))
-      }) : Observable.of(null)
+    });
+
+    return this.toUpdate ? update : first;
+
+    // return id ?
+    //   this.api$(id, query)
+    //   .do(() => {
+    //     this.updateLoadingData(false)
+    //   })
+    //   .expand((data: T) => {
+    //     return Observable.timer(this.pollDuration)
+    //       .switchMap(() => this.api$(id, {...this.defaultQuery, ...query}))
+    //   }) : Observable.of(null)
 
   }
 

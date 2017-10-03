@@ -5,8 +5,9 @@ import {ApiType, AllData} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {HtAllItemsClient} from "../../base/all-items.client";
 
-export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
+export class HtUsersAnalyticsMarkers extends HtAllItemsClient<IUserAnalyticsPage> {
   name = "analytics all users";
 
   toUpdate = false;
@@ -16,7 +17,7 @@ export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
   }
 
   get data$(): Observable<any> {
-    return this.store.select(fromRoot.getUsersAnalyticsAll).share()
+    return this.store.select(fromRoot.getUsersAnalyticsFilteredMarker)
   }
 
   get query$() {
@@ -37,5 +38,9 @@ export class HtUsersAnalyticsMarkers extends HtUsersAnalytics {
 
   setData(data) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
+  }
+
+  setDataMap(mapFunc) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(mapFunc))
   }
 }

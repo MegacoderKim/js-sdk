@@ -38,7 +38,7 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
 
   getApiQuery$() {
     let dataQuery$ = Observable.combineLatest(
-      this.query$,
+      this.allowedQuery$,
       this.options.dateRangeSource$,
       (query, range) => {
         return {...this.getDefaultQuery(), ...query, ...range}
@@ -48,9 +48,9 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
     return dataQuery$
   }
 
-  getAll$(type: ApiType) {
-    return this.api.all$<IUserAnalytics>({}, type);
-  }
+  // getAll$(type: ApiType) {
+  //   return this.api.all$<IUserAnalytics>({}, type);
+  // }
 
   getDefaultQuery() {
     return {page_size: 10, ...super.getDefaultQuery()}
@@ -70,21 +70,6 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
 
     return this.toUpdate ? update : first
 
-    // return this.api$(query).do(() => {
-    //   this.updateLoadingData(false)
-    // })
-
-  }
-
-  setFilter(filterResults = (data) => true) {
-    let filter = (pageData) => {
-      let results = _.filter(pageData.results, (data) => {
-        return filterResults(data)
-      });
-      return {...pageData, results}
-    };
-    // todo update data map
-    // this.dataMap$.updateData(filter);
   }
 
   get isActive$() {

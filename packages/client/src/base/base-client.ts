@@ -4,11 +4,13 @@ import {Observable} from "rxjs/Observable";
 import {HtClientConfig} from "../config";
 import { State} from "../reducers/index";
 import { Store} from "../store/store";
+import * as _ from "underscore";
 
 export abstract class HtBaseClient<T> {
   api: HtBaseApi;
   name = "base";
   options;
+  allowedQueryKeys: string[];
 
   get store() {
     return this.options.store
@@ -36,6 +38,29 @@ export abstract class HtBaseClient<T> {
 
   updateLoadingData(data) {
     this.options.loadingDispatcher(data)
+  }
+
+  protected get allowedQuery$() {
+    let queryStore$ = this.query$;
+    if(this.allowedQueryKeys && this.allowedQueryKeys.length) {
+      let keys$ = _.map(this.allowedQueryKeys, (key: string) => {
+        return queryStore$
+          .map(store => store ? store[key] : null)
+          .distinctUntilChanged()
+          .map(value => {
+            return value ? {[key]: value} : null
+          })
+      });
+      return Observable.combineLatest(...keys$).map(obsArray => {
+        return _.reduce(obsArray, (acc, query) => {
+          return query ? {...acc, ...query} : acc
+        }, {});
+      })
+    } else if(this.allowedQueryKeys) {
+      return Observable.of({})
+    } else {
+      return queryStore$
+    }
   }
 
   get pollDuration(): number {
