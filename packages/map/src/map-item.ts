@@ -48,6 +48,7 @@ export class HtMapItem {
   //todo update data rename
   updateItem(data) {
     this.id = data.id;
+    this.item['id'] = this.id;
     this.data = data;
     this.isOld = false;
     this.dataClass = this.setDataClass(data)
