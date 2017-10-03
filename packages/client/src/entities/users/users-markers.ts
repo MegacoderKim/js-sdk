@@ -74,4 +74,25 @@ export class UsersMarkers extends UsersList {
     this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(mapFunc))
   }
 
+  getUpdateQuery$(overview, query) {
+    return this.data$.flatMap((allData: AllData<any>) => {
+      let currentTotalUsers = allData.results.length;
+      let {totalUsers, chart} = overview;
+      let status = query['status'];
+      if(!!status) {
+        let value = _.find(chart, (datum) => {
+          return datum.keys.toString(',') == status;
+        });
+        return value && value !== currentTotalUsers ? Observable.of(true) : Observable.empty();
+      } else if(currentTotalUsers < totalUsers) {
+        return Observable.of(true)
+      }
+      return Observable.empty()
+    })
+  }
+
+  updateLatestData() {
+
+  }
+
 }

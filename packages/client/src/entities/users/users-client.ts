@@ -499,6 +499,20 @@ export class HtUsersClient extends EntityClient {
       this.markers.setFilter(query)
     });
 
+    this.markers.isActive$.filter(data => !!data).flatMap(() => {
+      return this.listStatusChart$()
+    })
+      .takeUntil(this.markers.isActive$.filter(data => !data).skip(1))
+      .withLatestFrom(this.list.query$)
+      .switchMap(([statusOverview, query]) => {
+        // return Observable.of({})
+        console.log(statusOverview, query);
+        return this.markers.getUpdateQuery$(statusOverview, query)
+      })//todo finish this
+    //   .subscribe(data => {
+    //   console.log("mar", data);
+    // });
+
 
     this.placeline.id$.scan((acc, currentId) => {
       let isSame = acc.oldId === currentId;
