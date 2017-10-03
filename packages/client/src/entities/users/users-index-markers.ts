@@ -25,7 +25,7 @@ export class HtUsersIndexMarkers extends HtAllItemsClient<IUser> {
   }
 
   get data$(): Observable<AllData<IUser>> {
-    return this.store.select(fromRoot.getUsersIndexAll)
+    return this.store.select(fromRoot.getUsersIndexFilteredMarker)
   }
 
   getDefaultQuery() {
@@ -38,5 +38,9 @@ export class HtUsersIndexMarkers extends HtAllItemsClient<IUser> {
 
   setData(data: AllData<IUser>) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersIndexAll(data))
+  }
+
+  setDataMap(mapFunc) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(mapFunc))
   }
 }

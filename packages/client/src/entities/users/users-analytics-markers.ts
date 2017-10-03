@@ -17,7 +17,7 @@ export class HtUsersAnalyticsMarkers extends HtAllItemsClient<IUserAnalyticsPage
   }
 
   get data$(): Observable<any> {
-    return this.store.select(fromRoot.getUsersAnalyticsAll).share()
+    return this.store.select(fromRoot.getUsersAnalyticsFilteredMarker)
   }
 
   get query$() {
@@ -38,5 +38,9 @@ export class HtUsersAnalyticsMarkers extends HtAllItemsClient<IUserAnalyticsPage
 
   setData(data) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
+  }
+
+  setDataMap(mapFunc) {
+    this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(mapFunc))
   }
 }

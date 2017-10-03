@@ -72,17 +72,6 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
 
   }
 
-  setFilter(filterResults = (data) => true) {
-    let filter = (pageData) => {
-      let results = _.filter(pageData.results, (data) => {
-        return filterResults(data)
-      });
-      return {...pageData, results}
-    };
-    // todo update data map
-    // this.dataMap$.updateData(filter);
-  }
-
   get isActive$() {
     return Observable.of(false)
   }

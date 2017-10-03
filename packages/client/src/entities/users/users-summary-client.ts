@@ -27,20 +27,9 @@ export class HtUsersSummaryClient extends HtUsersIndexClient {
     return this.store.select(fromRoot.getLoadingUserSummary)
   }
 
-  // getData$(query): Observable<IUserListSummary> {
-  //   return this.api$(query).do(() => {
-  //     this.updateLoadingData(false)
-  //   }).expand(() => {
-  //     return Observable.timer(this.pollDuration).switchMap(() => {
-  //       return this.api$(query)
-  //     })
-  //   })
-  //
-  // }
-
-  // getDefaultQuery() {
-  //   return {...super.getDefaultQuery(), ordering: "-last_heartbeat_at"}
-  // }
+  getDefaultQuery() {
+    return {}
+  }
 
   setActive(isActive: boolean = true) {
     this.store.dispatch(new fromUsersDispatcher.SetSummaryActive(isActive))

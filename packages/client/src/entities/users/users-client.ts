@@ -392,19 +392,19 @@ export class HtUsersClient extends EntityClient {
     })
   }
 
-  getUsersIndexMarkers(): Observable<any[]> {
-    return this.store.select(fromRoot.getUsersIndexFilteredMarker)
-  }
+  // getUsersIndexMarkers(): Observable<any[]> {
+  //   return this.store.select(fromRoot.getUsersIndexFilteredMarker)
+  // }
+  //
+  // getUsersAnalyticsMarkers(): Observable<any[]> {
+  //   return this.store.select(fromRoot.getUsersAnalyticsFilteredMarker)
+  // }
 
-  getUsersAnalyticsMarkers(): Observable<any[]> {
-    return this.store.select(fromRoot.getUsersAnalyticsFilteredMarker)
-  }
-
-  getUsersMarkers(): Observable<any[]> {
-    return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
-      return apiType === ApiType.index ? this.getUsersIndexMarkers() : this.getUsersAnalyticsMarkers()
-    })
-  }
+  // getUsersMarkers(): Observable<any[]> {
+  //   return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
+  //     return apiType === ApiType.index ? this.getUsersIndexMarkers() : this.getUsersAnalyticsMarkers()
+  //   })
+  // }
 
   getUserListQuery(): Observable<object> {
     return this.store.select(fromRoot.getQueryUserQuery)
@@ -493,6 +493,10 @@ export class HtUsersClient extends EntityClient {
 
     marks$.subscribe((data) => {
       this.mapClass.usersCluster.trace(data, this.mapClass.map)
+    });
+
+    this.list.query$.filter(data => !!data).subscribe((query) => {
+      this.markers.setFilter(query)
     });
 
 

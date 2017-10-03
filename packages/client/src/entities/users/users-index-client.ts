@@ -48,7 +48,7 @@ export class HtUsersIndexClient extends HtListClient<IUserPage> {
     return this.store.select(fromRoot.getLoadingUserIndex)
   }
 
-  getDefaultQuery() {
+  getDefaultQuery(): object {
     return {...super.getDefaultQuery(), ordering: "-last_heartbeat_at"}
   }
 

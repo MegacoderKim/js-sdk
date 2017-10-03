@@ -86,8 +86,9 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
 export const getUserData = (state: State) => state.userData;
 export const getAnalyticsAll = (state: State) => state.usersAnalyticsAll;
 export const getIndexAll = (state: State) => state.usersIndexAll;
-export const getAnalyticFilteredsMarkers = (state: State) => validMarkers(state.usersAnalyticsAll);
-export const getIndexFilteredMarkers = (state: State) => validMarkers(state.usersIndexAll);
+export const getMarkerDataMap = (state: State) => state.usersMarkersDataMap;
+// export const getAnalyticFilteredsMarkers = (state: State) => validMarkers(state.usersAnalyticsAll);
+// export const getIndexFilteredMarkers = (state: State) => validMarkers(state.usersIndexAll);
 export const getIndexPage = (state: State) => state.usersIndexPage;
 export const getAnalyticsPage = (state: State) => state.usersAnalyticsPage;
 export const getListApiType = (state: State) => state.listApiType;
@@ -95,6 +96,16 @@ export const getListActive = (state: State) => state.usersListActive;
 export const getMarkersActive = (state: State) => state.usersMarkersActive;
 export const getSummary = (state: State) => state.usersSummary;
 export const getSummaryActive = (state: State) => state.usersSummaryActive;
+
+export const getAnalyticFilteredMarkers = createSelector(getAnalyticsAll, getMarkerDataMap,
+  (allData: AllData<any>, mapFunc) => {
+  return mapFunc ? mapFunc(allData) : allData
+});
+
+export const getIndexFilteredMarkers = createSelector(getIndexAll, getMarkerDataMap,
+  (allData: AllData<any>, mapFunc) => {
+  return mapFunc ? mapFunc(allData) : allData
+});
 
 export const getIndexActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
   return apiType === ApiType.index && isListActive

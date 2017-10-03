@@ -58,6 +58,12 @@ export class UsersList {
     )
   }
 
+  get query$() {
+    return this.getClient().switchMap((client) => {
+      return client.query$
+    })
+  }
+
   get dataArray$() {
     return this.data$.map((dataPage) => {
       return dataPage ? dataPage['results'] : null
