@@ -9,6 +9,7 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
 
   name = "list";
   toUpdate: boolean;
+  isLive: boolean;
   constructor(
     public options: IListClientOptions<T>
   ) {
@@ -62,9 +63,24 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
       this.updateLoadingData(false)
     });
 
-    let update = first.expand(() => {
+    let update = first.expand((data) => {
       return Observable.timer(this.pollDuration).switchMap(() => {
-        return this.api$(query)
+        if(this.isLive) {
+          return this.api$(query)
+        } else {
+          let ids: string[] = _.map(data.results, (item) => {
+            return item.id
+          });
+          let updateQuery = {...query, id: ids.toString(), status: null, page: null};
+          return this.api$(updateQuery).map(data => {
+            let dataEntity = _.indexBy(data.results, 'id');
+            let results = _.map(data.results, item => {
+              return dataEntity[item.id]
+            });
+            return {...data, results}
+          })
+        }
+
       })
     });
 

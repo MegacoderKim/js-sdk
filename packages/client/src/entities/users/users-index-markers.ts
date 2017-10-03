@@ -28,10 +28,6 @@ export class HtUsersIndexMarkers extends HtAllItemsClient<IUser> {
     return this.store.select(fromRoot.getUsersIndexFilteredMarker)
   }
 
-  getDefaultQuery() {
-    return { ...super.getDefaultQuery(), page_size: 100, ordering: "-created_at"}
-  }
-
   // api$(query) {
   //   return this.api.all$(query, ApiType.index)
   // }

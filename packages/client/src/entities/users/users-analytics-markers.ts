@@ -28,10 +28,6 @@ export class HtUsersAnalyticsMarkers extends HtAllItemsClient<IUserAnalyticsPage
     return this.store.select(fromRoot.getLoadingUserAnalyticsAll)
   }
 
-  getDefaultQuery() {
-    return { ...super.getDefaultQuery(), page_size: 100, ordering: "-created_at"}
-  }
-
   // api$(query) {
   //   return this.api.all$(query, ApiType.analytics)
   // }

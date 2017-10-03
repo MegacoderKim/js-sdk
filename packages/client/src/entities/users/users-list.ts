@@ -9,10 +9,10 @@ import {HtListClient} from "../../base/list-client";
 import {HtUsersApi} from "../../api/users";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {Subscription} from "rxjs/Subscription";
 
 
 export class UsersList {
-
   constructor(
     public store: Store<fromRoot.State>,
     private usersIndexClient: HtListClient<IUserPage | any>,
@@ -110,6 +110,12 @@ export class UsersList {
 
   setActive(isActive) {
     this.store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
+  }
+
+  setLive(isLive: boolean) {
+    return this.getClient().subscribe((client) => {
+      client.isLive = isLive;
+    })
   }
 
   protected getForApiType(apiType: ApiType) {
