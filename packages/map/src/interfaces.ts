@@ -81,3 +81,7 @@ export interface IReplayPlayer {
 export interface HtMapItemsOptions {
   getInfoContent?: (data) => string
 }
+
+export interface HtMapItemOptions {
+
+}

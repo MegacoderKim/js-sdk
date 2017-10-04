@@ -53,11 +53,9 @@ export class UsersCluster extends HtMapItems {
   getInfoContent(data) {
     // let data = this.data;
     if(this.options.getInfoContent) return this.options.getInfoContent(data);
-    let position = htUser(data).getPosition();
     let string = `<div>
 <strong>${data.name}</strong>
 <div>${data.display.status_text}</div>
-<div>${position.lat}, ${position.lng}</div>
 <div>${data.display.sub_status_text}</div>
 </div>`;
     return string
@@ -95,6 +93,6 @@ export class UsersCluster extends HtMapItems {
   highlightItem(item, data) {
     // this.mapUtils.setMap(this.popup, null);
     super.highlightItem(item, data);
-    this.mapUtils.openPopupPosition(item.dataClass.getPosition(), this.map, item.getInfoContent(), this.popup)
+    this.mapUtils.openPopupPosition(item.dataClass.getPosition(), this.map, this.getInfoContent(data), this.popup)
   }
 }

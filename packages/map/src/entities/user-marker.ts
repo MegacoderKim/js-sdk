@@ -28,8 +28,8 @@ export class HtUserMarker extends HtMarkerItem {
     return this.mapUtils.extendBounds(this.item, bounds, true);
   }
 
-  highlight(map: HtMap, dataId) {
-    this.setDataClass(this.data);
+  highlight(map: HtMap, data) {
+    this.setDataClass(data);
     // console.log("highlight");
     this.mapUtils.setFocus(this.item, map, 17, true);
     // this.mapUtils.setMap(this.item, map)

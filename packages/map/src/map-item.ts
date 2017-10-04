@@ -1,5 +1,5 @@
 import {LeafletUtils} from "./leaflet-map-utils";
-import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
+import {HtBounds, HtMap, HtMapType, MapUtils, HtMapItemOptions} from "./interfaces";
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtPosition} from "ht-js-data";
 
@@ -47,7 +47,7 @@ export class HtMapItem {
   }
   //todo update data rename
   updateItem(data) {
-    this.id = data.id;
+    this.id = data['id'];
     this.item['id'] = this.id;
     this.data = data;
     this.isOld = false;
@@ -95,7 +95,7 @@ export class HtMapItem {
     return this.getInfoContent(this.data)
   }
 
-  getInfoContent(item) {
+  getInfoContent(data) {
     return ""
   }
 
@@ -119,7 +119,7 @@ export class HtMapItem {
     this.mapUtils.bringToFront(this.item)
   }
 
-  highlight(map: HtMap, dataId) {
+  highlight(map: HtMap, data) {
 
   }
 
@@ -131,8 +131,4 @@ export class HtMapItem {
     this.mapUtils.setFocus(this.item, map)
   }
 
-}
-
-export interface HtMapItemOptions {
-  getInfoContent?: (data) => string
 }
