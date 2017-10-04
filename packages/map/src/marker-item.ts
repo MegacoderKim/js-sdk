@@ -1,7 +1,7 @@
 import {HtMapItem} from "./map-item";
 import {HtMap} from "./interfaces";
 
-export class HtMarkerItem extends HtMapItem{
+export class HtMarkerItem<T> extends HtMapItem<T>{
 
   update(data, map: HtMap) {
     let position = this.getPosition(data);

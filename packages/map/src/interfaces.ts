@@ -78,10 +78,10 @@ export interface IReplayPlayer {
   speed: number
 }
 
-export interface HtMapItemsOptions {
-  getInfoContent?: (data) => string
+export interface HtMapItemsOptions<T> {
+  getInfoContent?: (data: T) => string
 }
 
-export interface HtMapItemOptions {
+export interface HtMapItemOptions<T> {
 
 }

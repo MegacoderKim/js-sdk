@@ -3,9 +3,9 @@ import {HtBounds, HtMap, HtMapType, MapUtils, HtMapItemOptions} from "./interfac
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtPosition} from "ht-js-data";
 
-export class HtMapItem {
+export class HtMapItem<T> {
   item: any;
-  data: any;
+  data: T;
   dataClass;
   isFaded: boolean = false;
   isHighlighted: boolean = false;
@@ -21,7 +21,7 @@ export class HtMapItem {
   };
 
 
-  constructor(public mapType: HtMapType, public options: HtMapItemOptions = {}) {
+  constructor(public mapType: HtMapType, public options: HtMapItemOptions<T> = {}) {
     let newoptions = {...this.defaultOptions, ...options};
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
@@ -46,7 +46,7 @@ export class HtMapItem {
 
   }
   //todo update data rename
-  updateItem(data) {
+  updateItem(data: T) {
     this.id = data['id'];
     this.item['id'] = this.id;
     this.data = data;
@@ -119,7 +119,7 @@ export class HtMapItem {
     this.mapUtils.bringToFront(this.item)
   }
 
-  highlight(map: HtMap, data) {
+  highlight(map: HtMap, data: T) {
 
   }
 

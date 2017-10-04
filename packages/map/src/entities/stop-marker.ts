@@ -1,7 +1,8 @@
 import {Color} from "ht-js-utils";
 import {HtMarkerItem} from "../marker-item";
+import {ISegment} from "ht-models";
 
-export class HtStopMarker extends HtMarkerItem{
+export class HtStopMarker extends HtMarkerItem<ISegment>{
   leafletStyle = {
     radius: 10,
     fillColor: Color.stop,

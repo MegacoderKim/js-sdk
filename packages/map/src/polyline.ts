@@ -1,7 +1,7 @@
 import {HtMapItem} from "./map-item";
 import {HtBounds, HtMap} from "./interfaces";
 
-export class HtPolyline extends HtMapItem {
+export class HtPolyline<T> extends HtMapItem<T> {
   constructor(mapType, options?) {
     super(mapType, options);
     this.item = this.mapUtils.getPolyline()

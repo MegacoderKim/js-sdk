@@ -10,6 +10,7 @@ import {HtSegmentPolylines} from "./entities/segment-polylines";
 import {HtStopMarkers} from "./entities/stop-markers";
 import {HtActionMarkers} from "./entities/action-markers";
 import {htAction} from "ht-js-data";
+import {IEvent} from "ht-models";
 
 export class HtSegmentsTrace {
 
@@ -20,7 +21,7 @@ export class HtSegmentsTrace {
   timelineSegment = new TimelineSegment();
   userMarker: HtCurrentUser;
   replayMarker;
-  eventMarkers: HtMapItems;
+  eventMarkers: HtMapItems<IEvent>;
   allowedEvents = {};
   map;
 

@@ -5,6 +5,7 @@ import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
 import {UsersCluster} from "./entities/users-cluster";
 import {LightColorMapStyle} from "./map-styles/light-color";
+import {Subject} from "rxjs/Subject";
 
 export class HtMapClass {
   map: HtMap;
@@ -25,6 +26,7 @@ export class HtMapClass {
     styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
+  map$ = new Subject();
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
@@ -37,6 +39,7 @@ export class HtMapClass {
     let mapOptions = this.mapType == 'leaflet' ? this.leafletMapOptions : this.googleMapOptions;
     this.map = this.mapUtils.renderMap(elem, {...mapOptions, ...options});
     this.usersCluster.markerCluster = this.mapUtils.getMarkerCluster(this.map);
+    this.map$.next(this.map);
     return this.map
   }
 

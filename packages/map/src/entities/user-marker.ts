@@ -4,7 +4,9 @@ import {HtMapItem} from "../map-item";
 import {htUser, HtUser} from "ht-js-data";
 import {HtMarkerItem} from "../marker-item";
 import {HtBounds, HtMap} from "../interfaces";
-export class HtUserMarker extends HtMarkerItem {
+import {IUser, IUserAnalytics} from "ht-models";
+
+export class HtUserMarker extends HtMarkerItem<IUser | IUserAnalytics> {
 
 
   setItem() {

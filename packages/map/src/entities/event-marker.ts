@@ -1,7 +1,8 @@
 import {HtMarkerItem} from "../marker-item";
 import {Color} from "ht-js-utils";
+import {IEvent} from "ht-models";
 
-export class HtEventMarker extends HtMarkerItem{
+export class HtEventMarker extends HtMarkerItem<IEvent>{
   leafletSttyle = {
     radius: 10,
     fillColor: Color.stop,

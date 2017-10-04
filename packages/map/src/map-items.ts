@@ -4,8 +4,8 @@ import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 
-export class HtMapItems {
-  itemEntities: {[id: string]: HtMapItem} = {};
+export class HtMapItems<T> {
+  itemEntities: {[id: string]: HtMapItem<T>} = {};
   defaultStyle = {};
   fadeStyle = {};
   map;
@@ -15,7 +15,7 @@ export class HtMapItems {
     defaultStyle: {}
   };
 
-  constructor(public mapType: HtMapType, public options: HtMapItemsOptions = {}) {
+  constructor(public mapType: HtMapType, public options: HtMapItemsOptions<T> = {}) {
     let newoptions = {...this.defaultOptions, ...options};
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;
@@ -32,11 +32,11 @@ export class HtMapItems {
   //   this.mapUtils = mapUtils;
   // }
 
-  traceOnMap(items: any[], map: HtMap) {
+  traceOnMap(items: T[], map: HtMap) {
     this.trace(items, map, true)
   }
 
-  trace(items: any[], map: HtMap, setMap: boolean = false) {
+  trace(items: T[], map: HtMap, setMap: boolean = false) {
     items = this.filteredItem(items);
     this.map = map;
     if(items && items.length) {
@@ -52,8 +52,8 @@ export class HtMapItems {
     return items
   }
 
-  getItem(data) {
-    return new HtMapItem(this.mapType);
+  getItem(data: T) {
+    return new HtMapItem<T>(this.mapType);
   }
 
   itemEffect(item) {
@@ -73,7 +73,7 @@ export class HtMapItems {
   }
 
   addClick(cb) {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       item.item.on('click', () => {
         cb(item.data)
       })
@@ -81,7 +81,7 @@ export class HtMapItems {
   }
 
   onHoverIn(cb) {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       item.item.on('mouseover', () => {
         // console.log("mouseover");
         cb(item.data)
@@ -90,7 +90,7 @@ export class HtMapItems {
   }
 
   onHoverOut(cb) {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       item.item.on('mouseout', () => {
         cb(item.data)
       })
@@ -130,7 +130,7 @@ export class HtMapItems {
   }
 
   setFade(selectedItem, toFade: boolean = true) {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       if(toFade) {
         // console.log(this.fadeStyle);
         if(selectedItem && item.id == selectedItem.id){
@@ -153,7 +153,7 @@ export class HtMapItems {
   }
 
   onEach(cb) {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       cb(item)
     })
   }
@@ -165,7 +165,7 @@ export class HtMapItems {
   }
 
   resetItems() {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       this.resetItem(item)
     })
   }
@@ -211,10 +211,10 @@ export class HtMapItems {
     }
   }
 
-  private createItem(data, setMap: boolean = false) {
+  private createItem(data: T, setMap: boolean = false) {
     let item = this.getItem(data);
     this.itemEffect(item);
-    this.itemEntities[data.id] = item;
+    this.itemEntities[data['id']] = item;
     this.updateItem(data, setMap)
   }
 
@@ -225,7 +225,7 @@ export class HtMapItems {
   }
 
   clearAll() {
-    _.each(this.itemEntities, (item: HtMapItem) => {
+    _.each(this.itemEntities, (item: HtMapItem<T>) => {
       item.clear()
     })
   }

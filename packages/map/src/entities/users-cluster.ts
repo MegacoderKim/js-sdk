@@ -3,9 +3,9 @@ import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
 import {HtMap, HtMapType} from "../interfaces";
 import {htUser} from "ht-js-data";
+import {IUser, IUserAnalytics} from "ht-models";
 
-
-export class UsersCluster extends HtMapItems {
+export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
   markerCluster;
   popup;

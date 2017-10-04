@@ -3,7 +3,7 @@ import { Color } from "ht-js-utils";
 import { htAction, HtAction } from "ht-js-data";
 import { IAction } from "ht-models";
 
-export class HtActionMarker extends HtMarkerItem {
+export class HtActionMarker extends HtMarkerItem<IAction> {
   leafletSttyle = {
     radius: 10,
     fillColor: Color.stop,
