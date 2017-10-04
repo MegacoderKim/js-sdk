@@ -17,7 +17,7 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
       return {...state, dateRange: action.payload}
     }
     case QueryDispatch.SET_USER_QUERY: {
-      return {...state, userQuery: action.payload}
+      return {...state, userQuery: {...state.userQuery, ...action.payload}}
     }
     case QueryDispatch.SET_USER_QUERY_RESET_PAGE: {
       return {...state, userQuery: {...action.payload, page: null}}

@@ -162,6 +162,16 @@ export class HtUsersClient extends EntityClient {
 
   }
 
+  listPage$() {
+    const id$ = this.list.id$.distinctUntilChanged();
+    const dataArray$ = this.list.data$;
+    const selected$ = this.placeline.data$;
+    // let id$ = this.list.idObservable.data$().distinctUntilChanged();
+    // let dataArray$ = this.list.dataArray$;
+    // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
+    return this.pageDataWithSelected$(id$, dataArray$, selected$)
+  }
+
   listSummary$() {
     return Observable.combineLatest(
       this.summary.data$,
@@ -181,12 +191,17 @@ export class HtUsersClient extends EntityClient {
 
   listStatusChart$() {
     // return status_overview.
-    return this.listStatusOverview$().map(overview => {
+    return Observable.combineLatest(
+      this.list.query$,
+      this.listStatusOverview$()
+    )
+      .map(([query, overview]) => {
       if(overview) {
         let total = 0;
         let statusTotal;
         let max = 0;
         let summaryEntity = this.filterClass.statusQueryArray;
+        let status = query ? query['status'] : null;
         // let summaryEntity = this.filterClass.activityQueryArray;
         let values = _.map(summaryEntity, (entity) => {
           let sum = _.reduce(entity.values, (acc, key: string) => {
@@ -195,7 +210,10 @@ export class HtUsersClient extends EntityClient {
           let value = entity.value || 0 + sum;
           max = max && value < max ? max : value;
           total = total + value;
-          let selected = false;
+          // let selected = false;
+          // if(status && status == ) {
+          //
+          // }
           // if(this.status) {
           //   if(this.status == entity.keys[0]) statusTotal = value;
           //   let status = this.status.split(',');
@@ -203,15 +221,21 @@ export class HtUsersClient extends EntityClient {
           //     return acc && status.indexOf(key) > -1
           //   }, true)
           // };
-          return {...entity, value, selected }
+          return {...entity, value }
         });
         let totalUsers = total;
+        let hasSelected = false;
         let chart = _.map(values, (datum) => {
+          let selected = false;
+          if(status && status == datum.values.toString()) {
+            selected = true;
+            hasSelected = true;
+          }
           let w = max ? datum.value / max : 0;
 
-          return {...datum, w}
+          return {...datum, w, selected}
         });
-        return {totalUsers, chart}
+        return {totalUsers, chart, hasSelected}
       }
       return null
     })

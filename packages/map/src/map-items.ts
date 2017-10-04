@@ -1,4 +1,4 @@
-import {HtMap, HtMapType, MapUtils} from "./interfaces";
+import {HtMap, HtMapItemsOptions, HtMapType, MapUtils} from "./interfaces";
 import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
@@ -15,7 +15,7 @@ export class HtMapItems {
     defaultStyle: {}
   };
 
-  constructor(public mapType: HtMapType, options = {}) {
+  constructor(public mapType: HtMapType, public options: HtMapItemsOptions = {}) {
     let newoptions = {...this.defaultOptions, ...options};
     var {defaultStyle} = newoptions;
     if(defaultStyle) this.defaultStyle = defaultStyle;

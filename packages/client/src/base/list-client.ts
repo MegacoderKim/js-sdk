@@ -72,12 +72,12 @@ export abstract class HtListClient<T> extends HtBaseClient<T>{
             return item.id
           });
           let updateQuery = {...query, id: ids.toString(), status: null, page: null};
-          return this.api$(updateQuery).map(data => {
-            let dataEntity = _.indexBy(data.results, 'id');
-            let results = _.map(data.results, item => {
-              return dataEntity[item.id]
-            });
-            return {...data, results}
+          return this.api$(updateQuery).map(newData => {
+            // let dataEntity = _.indexBy(newData.results, 'id');
+            // let results = _.map(data.results, item => {
+            //   return dataEntity[item.id]
+            // });
+            return {...data, results: newData.results}
           })
         }
 

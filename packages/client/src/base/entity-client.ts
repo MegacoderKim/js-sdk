@@ -1,6 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {IDateRange} from "../interfaces";
+import {Page} from "ht-models";
 
 export abstract class EntityClient {
   /**
@@ -43,6 +44,32 @@ export abstract class EntityClient {
 
 
     return array$
+  }
+
+  pageDataWithSelected$(id$, pageData$, selected$) {
+    const userId$ = id$;
+    const placelinePage$ = selected$.distinctUntilChanged()
+      .map((data) => {
+        return data ? [data] : null;
+      }); //todo take query from placeline
+
+    const newPageData$ = Observable.combineLatest(
+      placelinePage$,
+      userId$,
+      pageData$,
+      (placelineResults, userId, pageData: Page<any>) => {
+        if (!pageData) return pageData;
+        const filteredData = _.filter(pageData.results, (user) => {
+          return userId ? user.id == userId : true;
+        });
+        let results = placelineResults && userId ? placelineResults : filteredData;
+        let count = userId ? 0 : pageData.count;
+        return {...pageData, results, count}
+      }
+    );
+
+
+    return newPageData$
   }
 
   clearData() {

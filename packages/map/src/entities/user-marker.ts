@@ -39,17 +39,4 @@ export class HtUserMarker extends HtMarkerItem {
     // this.mapUtils.setMap(this.item, null)
   }
 
-  getInfoContent() {
-    let data = this.data;
-    if(this.options.getInfoContent) return this.options.getInfoContent(data);
-    let position = htUser(data).getPosition();
-    let string = `<div>
-<strong>${data.name}</strong>
-<div>${data.display.status_text}</div>
-<div>${position.lat}, ${position.lng}</div>
-<div>${data.display.sub_status_text}</div>
-</div>`;
-    return string
-  }
-
 }

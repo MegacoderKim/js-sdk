@@ -45,9 +45,22 @@ export class UsersCluster extends HtMapItems {
     //todo make this configurable
     this.mapUtils.onEvent(marker.item, 'click', () => {
       let position = marker.dataClass.getPosition();
-      this.mapUtils.openPopupPosition(position, this.map, marker.getInfoContent(), this.popup)
+      this.mapUtils.openPopupPosition(position, this.map, this.getInfoContent(marker.data), this.popup)
     });
     return marker
+  }
+
+  getInfoContent(data) {
+    // let data = this.data;
+    if(this.options.getInfoContent) return this.options.getInfoContent(data);
+    let position = htUser(data).getPosition();
+    let string = `<div>
+<strong>${data.name}</strong>
+<div>${data.display.status_text}</div>
+<div>${position.lat}, ${position.lng}</div>
+<div>${data.display.sub_status_text}</div>
+</div>`;
+    return string
   }
 
   removeItem(mapItem: HtUserMarker) {

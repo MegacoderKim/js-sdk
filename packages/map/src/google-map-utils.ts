@@ -153,27 +153,41 @@ function addMarkersToCluster(cluster, markers, map) {
   // if(markers.length) console.log(map, "map", markers[0]);
   // cluster.setMap(map);
   let clusterMarkers = cluster.getMarkers();
-  var hasId = clusterMarkers && clusterMarkers.length && clusterMarkers[0]['id'];
-  if(hasId) {
-    let markerEntity = _.indexBy(clusterMarkers, 'id');
-    markers.forEach((marker) => {
-      if(markerEntity[marker['id']]) {
+  markers.forEach((marker) => {
+    // if(markerEntity[marker['id']]) {
+    //
+    // } else {
+    //   cluster.addMarker(marker)
+    // }
+    //alternate aproach
+    if(clusterMarkers.indexOf && clusterMarkers.indexOf(marker) > -1) {
 
-      } else {
-        cluster.addMarker(marker)
-      }
-    })
-  } else {
-    _.each(markers, (marker) => {
-      // console.log(marker.getPosition().lng());
-      cluster.removeMarker(marker);
+    } else {
       cluster.addMarker(marker)
-      // if(marker.getPosition()) {
-      //   console.log("hit", marker);
-      //   cluster.addMarker(marker)
-      // }
-    })
-  }
+    }
+  });
+
+  // var hasId = clusterMarkers && clusterMarkers.length && clusterMarkers[0]['id'];
+  // if(hasId) {
+  //   let markerEntity = _.indexBy(clusterMarkers, 'id');
+  //   markers.forEach((marker) => {
+  //     if(markerEntity[marker['id']]) {
+  //
+  //     } else {
+  //       cluster.addMarker(marker)
+  //     }
+  //   })
+  // } else {
+  //   _.each(markers, (marker) => {
+  //     // console.log(marker.getPosition().lng());
+  //     cluster.removeMarker(marker);
+  //     cluster.addMarker(marker)
+  //     // if(marker.getPosition()) {
+  //     //   console.log("hit", marker);
+  //     //   cluster.addMarker(marker)
+  //     // }
+  //   })
+  // }
 
   // cluster.addMarkers(markers)
   // this.markerCluster.addLayers(markers);

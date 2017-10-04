@@ -77,3 +77,7 @@ export interface IReplayPlayer {
   isStopped: boolean,
   speed: number
 }
+
+export interface HtMapItemsOptions {
+  getInfoContent?: (data) => string
+}
