@@ -4,7 +4,7 @@ import {HtUsersApi} from "../../api/users";
 import {
   AllData,
   IDateRange, IItemClientOptions, IListClientOptions, IUsersClientOptions,
-  PlacelineSegmentId
+  PlacelineSegmentId, QueryLabel
 } from "../../interfaces";
 import {Partial, IUserAnalyticsPage, IUserData, IUserPage, IUser, IUserAnalytics, IUserListSummary} from "ht-models";
 import {HtUsersAnalytics} from "./users-analytics-client";
@@ -16,7 +16,6 @@ import {htUser} from "ht-js-data";
 import {ApiType} from "../../interfaces";
 import {HtUsersIndexMarkers} from "./users-index-markers";
 import {DefaultUsersFilter} from "../../filters/users-filter";
-import {QueryLabel} from "../../filters/base-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
 import {IsRangeADay, IsRangeToday, DateString} from "ht-js-utils";
@@ -70,7 +69,7 @@ export class HtUsersClient extends EntityClient {
   list;
   summary: HtUsersSummaryClient;
   markers;
-
+  _statusQueryArray: QueryLabel[];
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
     super();
     let api = new HtUsersApi(req);
@@ -137,6 +136,11 @@ export class HtUsersClient extends EntityClient {
     this.initEffects()
   }
 
+  set statusQueryArray(data: QueryLabel[]) {
+    this._statusQueryArray = data;
+    this.filterClass.customQueryArray = data
+  }
+
   setActive(): void {
     this.store.dispatch(new fromUsersDispatcher.InitUsers())
   }
@@ -200,7 +204,7 @@ export class HtUsersClient extends EntityClient {
         let total = 0;
         let statusTotal;
         let max = 0;
-        let summaryEntity = this.filterClass.statusQueryArray;
+        let summaryEntity = this._statusQueryArray || this.filterClass.statusQueryArray;
         let status = query ? query['status'] : null;
         // let summaryEntity = this.filterClass.activityQueryArray;
         let values = _.map(summaryEntity, (entity) => {
@@ -210,17 +214,6 @@ export class HtUsersClient extends EntityClient {
           let value = entity.value || 0 + sum;
           max = max && value < max ? max : value;
           total = total + value;
-          // let selected = false;
-          // if(status && status == ) {
-          //
-          // }
-          // if(this.status) {
-          //   if(this.status == entity.keys[0]) statusTotal = value;
-          //   let status = this.status.split(',');
-          //   selected = _.reduce(entity.keys, (acc, key) => {
-          //     return acc && status.indexOf(key) > -1
-          //   }, true)
-          // };
           return {...entity, value }
         });
         let totalUsers = total;
