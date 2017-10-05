@@ -51,7 +51,6 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
       return {...state, usersIndexPage: action.payload}
     }
     case UserDispatch.SET_USERS_ANALYTICS_ALL: {
-      console.log("state", action.payload);
       const resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ...action.payload.resultsEntity};
       return {...state, usersAnalyticsAll: {...action.payload, resultsEntity}}
     }

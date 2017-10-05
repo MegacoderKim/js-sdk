@@ -1,4 +1,5 @@
 import * as _ from "underscore";
+import {QueryLabel} from "../interfaces";
 // import { NameCase } from "ht-js-data";
 
 export abstract class BaseFilter {
@@ -61,10 +62,3 @@ export abstract class BaseFilter {
   abstract get allQueryArray()
 
 };
-
-export interface QueryLabel {
-  label: string,
-  values?: string[],
-  value?: string,
-  param?: object
-}

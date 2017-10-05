@@ -108,3 +108,10 @@ export enum ApiType {
   analytics = 'analytics'
 }
 
+export interface QueryLabel {
+  label: string,
+  values: string[],
+  value?: string,
+  color?: string
+}
+

@@ -1,9 +1,11 @@
 import {BaseFilter} from "./base-filter";
 import {Color} from "ht-js-utils";
+import {QueryLabel} from "../interfaces";
 
 export class DefaultUsersFilter extends BaseFilter {
+  customQueryArray: QueryLabel[] = [];
 
-  statusQueryArray = [
+  statusQueryArray: QueryLabel[] = [
     {
       label: "Stopped",
       values: ['stopped'],
@@ -31,7 +33,7 @@ export class DefaultUsersFilter extends BaseFilter {
     }
   ];
 
-  activityQueryArray = [
+  activityQueryArray: QueryLabel[] = [
     {
       label: 'Logged in',
       values: ['stopped', 'on_trip', 'network_offline'],
@@ -49,17 +51,18 @@ export class DefaultUsersFilter extends BaseFilter {
     },
   ];
 
-  genericQueryArray = [
+  genericQueryArray: QueryLabel[] = [
     {
       label: "Show all",
       values: ['show_all']
     }
   ];
 
-  showAllQueryArray = [
+  showAllQueryArray: QueryLabel[] = [
     {
       label: "Never tracked",
-      values: ['never_tracked']
+      values: ['never_tracked'],
+      color: "#575757"
     }
   ];
 
@@ -78,7 +81,7 @@ export class DefaultUsersFilter extends BaseFilter {
   };
 
   get allQueryArray() {
-    return [...this.statusQueryArray, ...this.genericQueryArray, ...this.showAllQueryArray]
+    return [...this.statusQueryArray, ...this.genericQueryArray, ...this.showAllQueryArray, ...this.customQueryArray]
   }
 
   mapQueries = [
