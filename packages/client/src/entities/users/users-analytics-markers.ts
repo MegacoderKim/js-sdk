@@ -33,6 +33,7 @@ export class HtUsersAnalyticsMarkers extends HtAllItemsClient<IUserAnalyticsPage
   // }
 
   setData(data) {
+    data = data || {resultsEntity: {}, isFirst: false};
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
   }
 

@@ -29,7 +29,8 @@ export class UsersMarkers extends UsersList {
   getResults(isFirstCb?) {
     return this.data$.map((allData: AllData<IUser | IUserAnalytics>) => {
       if(allData && allData.isFirst && isFirstCb) isFirstCb();
-      return allData ? allData.results : allData
+      if(!allData) return allData;
+      return _.values(allData.resultsEntity)
     })
   }
 
@@ -64,8 +65,9 @@ export class UsersMarkers extends UsersList {
     };
 
     let dataMap = (allResults: AllData<any>) => {
-      let results = _.filter(allResults.results, userMarkerFilter);
-      return {...allResults, results}
+      let results = _.filter(allResults.resultsEntity, userMarkerFilter);
+      let resultsEntity = _.indexBy(results, 'id');
+      return {...allResults, resultsEntity}
     };
     this.setDataMap(dataMap)
   }
@@ -76,7 +78,8 @@ export class UsersMarkers extends UsersList {
 
   getUpdateQuery$(overview, query) {
     return this.data$.flatMap((allData: AllData<any>) => {
-      let currentTotalUsers = allData.results.length;
+      let results = _.values(allData.resultsEntity);
+      let currentTotalUsers = results.length;
       let {totalUsers, chart} = overview;
       let status = query['status'];
       if(!!status) {

@@ -1,7 +1,9 @@
 import {HtRequest} from "../request";
 import { Observable } from "rxjs/Observable";
 import {IPageData} from "ht-models";
-import {ApiType} from "../interfaces";
+import {AllData, ApiType} from "../interfaces";
+import * as _ from "underscore";
+import {Page} from "../../../models/src/common";
 
 export class HtBaseApi {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
@@ -45,19 +47,26 @@ export class HtBaseApi {
     return this.getReqFromTail<T>(tail, query)
   }
 
-  all$<T>(query, apiType: ApiType = ApiType.index): Observable<any> {
+  all$<T>(query, apiType: ApiType = ApiType.index): Observable<AllData<T>> {
     query = {page_size: 100, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$
       .expand((data: IPageData) => {
         let req = this.request.getObservable(data['next']);
         return data['next'] ? req : Observable.empty()
-      }).scan((acc, value) => {
-        let results = [...acc.results, ...value.results];
-        let isFirst = acc.results.length ? false : true;
-        let next = value['next'];
-        return {results, isFirst, next}
-      }, {results: [], isFirst: true, next: null})
+      })
+      .map((value: Page<T>) => {
+        let resultsEntity = _.indexBy(value.results, 'id');
+        let isFirst = !value.previous;
+        return {resultsEntity, isFirst, next: value.next, previous: value.previous}
+      })
+      // .scan((acc: AllData<T>, value) => {
+      //   // let results = [...acc.results, ...value.results];
+      //   let resultsEntity = _.indexBy(value.results, 'id');
+      //   let isFirst = Object.keys(acc.resultsEntity).length ? false : true;
+      //   let next = value['next'];
+      //   return {resultsEntity, isFirst, next}
+      // }, {resultsEntity: {}, isFirst: true, next: null})
 
   }
 

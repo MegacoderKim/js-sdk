@@ -97,7 +97,7 @@ export interface PlacelineSegmentId {
 }
 
 export interface AllData<T> {
-  results: T[],
+  resultsEntity: {[id: string]: T},
   isFirst: boolean,
   timestamp?: string,
   count?: number

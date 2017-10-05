@@ -5,11 +5,23 @@ import {createSelector, MemoizedSelector} from "../store/selector";
 import * as _ from "underscore";
 import {htUser} from "ht-js-data";
 
+const initialUsersAnalyticsAll = {
+  resultsEntity: {},
+  isFirst: false
+};
+
+const initialUsersIndexAll = {
+  resultsEntity: {},
+  isFirst: false
+};
+
 const initialState: State = {
   usersListActive: false,
   usersMarkersActive: false,
   usersSummaryActive: false,
   listApiType: ApiType.analytics,
+  usersAnalyticsAll: initialUsersAnalyticsAll,
+  usersIndexAll: initialUsersIndexAll
 };
 
 export interface State {
@@ -39,10 +51,14 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
       return {...state, usersIndexPage: action.payload}
     }
     case UserDispatch.SET_USERS_ANALYTICS_ALL: {
-      return {...state, usersAnalyticsAll: action.payload}
+      console.log("state", action.payload);
+      const resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ...action.payload.resultsEntity};
+      return {...state, usersAnalyticsAll: {...action.payload, resultsEntity}}
     }
     case UserDispatch.SET_USERS_INDEX_ALL: {
-      return {...state, usersIndexAll: action.payload}
+      // const newEntities = _.indexBy(action.payload.results, 'id');
+      const resultsEntity = {...state.usersIndexAll.resultsEntity, ...action.payload.resultsEntity};
+      return {...state, usersIndexAll: {...action.payload, resultsEntity}}
     }
     case UserDispatch.SET_USERS_SUMMARY: {
       return {...state, usersSummary: action.payload}

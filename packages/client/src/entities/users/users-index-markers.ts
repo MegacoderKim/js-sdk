@@ -33,6 +33,7 @@ export class HtUsersIndexMarkers extends HtAllItemsClient<IUser> {
   // }
 
   setData(data: AllData<IUser>) {
+    data = data || {resultsEntity: {}, isFirst: false};
     this.store.dispatch(new fromUsersDispatcher.SetUsersIndexAll(data))
   }
 
