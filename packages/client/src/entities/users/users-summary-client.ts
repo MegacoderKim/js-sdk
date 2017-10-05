@@ -14,7 +14,7 @@ export class HtUsersSummaryClient extends HtUsersIndexClient {
     'search',
     'show_all'
   ];
-
+  isLive = true;
   get isActive$(): Observable<boolean> {
     return this.store.select(fromRoot.getUsersSummaryActive)
   }
