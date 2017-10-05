@@ -35,16 +35,25 @@ export class UsersMarkers extends UsersList {
   }
 
   setFilter(query) {
-    let status = query['status'];
+    let statusString = query['status'];
     let search = query['search'];
     let ids = query['id'];
     let userMarkerFilters = [];
-    // if(status || search) {
-    //   this.updateUserMap(query);
-    // }
-    if(status) {
+
+    if(statusString) {
+      let statusArray = statusString.split(',');
       // this.updateUserMap(query);
-      userMarkerFilters.push(htUser().getMarkerFilter(status))
+      let statusFilter = [];
+      statusArray.forEach((status) => {
+        statusFilter.push(htUser().getMarkerFilter(status))
+      });
+      let allStatusFilter = (user) => {
+        return _.reduce(statusFilter, (acc, filter: (user) => boolean) => {
+          return acc || filter(user)
+        }, false);
+      };
+
+      userMarkerFilters.push(allStatusFilter)
     }
     if(search) {
       userMarkerFilters.push(((user: IUserAnalytics) => {
