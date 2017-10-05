@@ -3,7 +3,7 @@ import { Observable } from "rxjs/Observable";
 import {IPageData} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 import * as _ from "underscore";
-import {Page} from "../../../models/src/common";
+import {Page} from "ht-models";
 
 export class HtBaseApi {
   // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
