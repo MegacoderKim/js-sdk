@@ -100,7 +100,9 @@ export interface AllData<T> {
   resultsEntity: {[id: string]: T},
   isFirst: boolean,
   timestamp?: string,
-  count?: number
+  count?: number,
+  next?: string,
+  previous?: string
 }
 
 export enum ApiType {

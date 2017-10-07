@@ -48,7 +48,7 @@ export class HtBaseApi {
   }
 
   all$<T>(query, apiType: ApiType = ApiType.index): Observable<AllData<T>> {
-    query = {page_size: 100, ...query};
+    query = {page_size: 200, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$
       .expand((data: IPageData) => {
@@ -58,7 +58,8 @@ export class HtBaseApi {
       .map((value: Page<T>) => {
         let resultsEntity = _.indexBy(value.results, 'id');
         let isFirst = !value.previous;
-        return {resultsEntity, isFirst, next: value.next, previous: value.previous}
+        let count = value.count;
+        return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
       })
       // .scan((acc: AllData<T>, value) => {
       //   // let results = [...acc.results, ...value.results];

@@ -6,6 +6,7 @@ import {HtGroupsItemClient} from "./groups-item-client";
 import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
+import {AllData} from "../../interfaces";
 
 export class HtGroupsClient extends EntityClient{
   list: HtGroupsListClient;
@@ -37,5 +38,13 @@ export class HtGroupsClient extends EntityClient{
     return this.api.index({lookup_id: lookupId}).map(groupPage => {
       return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
     })
+  }
+
+  getChildren(groupId: string) {
+    return this.api.all$({parent_group_id: groupId})
+  }
+
+  getRoot() {
+    return this.api.all$({has_parent: false})
   }
 }
