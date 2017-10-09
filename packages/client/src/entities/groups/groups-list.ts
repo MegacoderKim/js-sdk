@@ -7,7 +7,10 @@ import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
 import {AllData} from "../../interfaces";
-import {HEntityState, HEntityType, HEntity, ISelectors, IDispatchers, HList} from "../base/interfaces";
+import {
+  HEntityState, HEntityType, HEntity, ISelectors, IDispatchers, HList,
+  HGroupsListFunctions, HGroupListMethods, HGroupList
+} from "../base/interfaces";
 import {HListFactory} from "../base/list-client";
 
 export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
@@ -62,7 +65,7 @@ export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
 
 }
 
-export const groupsListClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HList => {
+export const groupsListClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HGroupList => {
   let innerConfig = {
     name: 'group',
     defaultQuery: {ordering: '-created_at'},
@@ -84,5 +87,19 @@ export const groupsListClientFactory = (api$, store, overrideEntityState: HEntit
       store.dispatch(new fromGroupDispatcher.SetListActive(isActive))
     }
   };
-  return HListFactory(api$, store, dispatchers, selectors, overrideEntityState, innerConfig)
-}
+
+  let methods: HGroupListMethods = {
+    getRoots() {
+      return  api$({has_parent: false})
+    },
+    getChildren(groupId) {
+      return api$({parent_group_id: groupId})
+    }
+  };
+  let groupsFunctions: HGroupsListFunctions = {
+    dispatchers,
+    selectors,
+    methods
+  };
+  return <HGroupList>(HListFactory(api$, store, groupsFunctions, overrideEntityState, innerConfig))
+};

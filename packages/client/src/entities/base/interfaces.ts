@@ -62,6 +62,10 @@ export interface HEntityState {
   // dispatchers: IDispatchers
 }
 
-export interface HGroupList extends HEntity {
-
+export interface HEntityTypeFunctions {
+  dispatchers: IDispatchers,
+  selectors: ISelectors,
+  methods: any
 }
+
+

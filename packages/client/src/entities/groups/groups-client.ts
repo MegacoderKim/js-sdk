@@ -7,10 +7,10 @@ import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import {AllData} from "../../interfaces";
-import {HEntityState, HEntity, HList} from "../base/interfaces";
+import {HEntityState, HEntity, HList, HGroupList} from "../base/interfaces";
 
 export class HtGroupsClient extends EntityClient{
-  list: HList;
+  list: HGroupList;
   item: HEntity;
   api: HtBaseApi;
   constructor(req, private store: Store<fromRoot.State>, options = {}) {

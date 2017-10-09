@@ -9,8 +9,8 @@ import {Partial} from "ht-models";
 import {HEntityFactory} from "./entity-factory";
 import {CombineQuery, MergeQuery, PageResults} from "./helpers";
 
-export const HListFactory = (api$, store, dispatchers, selectors, entityState: HEntityState, overrideConfig: Partial<HEntityType>): HList => {
-
+export const HListFactory = (api$, store, entityFunction, entityState: HEntityState, overrideConfig: Partial<HEntityType>): HList => {
+  let {dispatchers, selectors, methods} = entityFunction;
   let entity = HEntityFactory(entityState, {
     ...overrideConfig,
     firstDataEffect(data) {
@@ -59,7 +59,7 @@ export const HListFactory = (api$, store, dispatchers, selectors, entityState: H
     ...overriderClient,
   });
 
-  let methods: HListMethods = {
+  let listMethods: HListMethods = {
     dataArray$: selectors.data$.let(PageResults)
   };
 
@@ -68,6 +68,7 @@ export const HListFactory = (api$, store, dispatchers, selectors, entityState: H
     client,
     selectors,
     dispatchers,
+    ...listMethods,
     ...methods
   }
 };
