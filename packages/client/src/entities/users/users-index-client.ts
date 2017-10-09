@@ -7,6 +7,10 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as _ from "underscore";
+import {HEntityState, HEntityType, IDispatchers, ISelectors} from "../base/interfaces";
+import {HUsersList} from "./users-interface";
+import {HListFactory} from "../base/list-client";
+import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 
 export class HtUsersIndexClient extends HtListClient<IUserPage> {
   name = "users index";
@@ -57,3 +61,36 @@ export class HtUsersIndexClient extends HtListClient<IUserPage> {
   }
 
 }
+
+export const UsersIndexClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HUsersList => {
+  let innerConfig = {
+    name: 'users analytics',
+    defaultQuery: {ordering: '-last_heartbeat_at'},
+    ...config
+  };
+
+  let selectors: ISelectors = {
+    query$: store.select(fromRoot.getQueryUserQuery),
+    data$: store.select(fromRoot.getUsersAnalyticsPage),
+    active$: store.select(fromRoot.getUsersAnalyticsIsActive),
+    loading$: store.select(fromRoot.getLoadingAnalytics)
+  };
+
+  let dispatchers: IDispatchers = {
+    setData(data) {
+      store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
+    },
+    setLoading(data) {
+      store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
+    },
+    setActive(isActive: boolean = true){
+      store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
+    }
+  };
+
+  let usersFunctions = {
+    selectors,
+    dispatchers
+  };
+  return <HUsersList>(HListFactory(api$, store, usersFunctions, overrideEntityState, innerConfig))
+};

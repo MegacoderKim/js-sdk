@@ -5,6 +5,11 @@ import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {HEntityState, HEntityType, IDispatchers, ISelectors} from "../base/interfaces";
+import {HUsersList} from "./users-interface";
+import {HListFactory} from "../base/list-client";
+import {HGroupsListFunctions} from "../groups/groups-interfaces";
+import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage> {
   //todo IUserPage added as hack to fix allMarkers$ in client
@@ -39,3 +44,36 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
   }
 }
+
+export const UsersAnalyticsClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HUsersList => {
+  let innerConfig = {
+    name: 'users analytics',
+    defaultQuery: {ordering: '-last_heartbeat_at'},
+    ...config
+  };
+
+  let selectors: ISelectors = {
+    query$: store.select(fromRoot.getQueryUserQuery),
+    data$: store.select(fromRoot.getUsersAnalyticsPage),
+    active$: store.select(fromRoot.getUsersAnalyticsIsActive),
+    loading$: store.select(fromRoot.getLoadingAnalytics)
+  };
+
+  let dispatchers: IDispatchers = {
+    setData(data) {
+      store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
+    },
+    setLoading(data) {
+      store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
+    },
+    setActive(isActive: boolean = true){
+      store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
+    }
+  };
+
+  let usersFunctions = {
+    selectors,
+    dispatchers
+  };
+  return <HUsersList>(HListFactory(api$, store, usersFunctions, overrideEntityState, innerConfig))
+};

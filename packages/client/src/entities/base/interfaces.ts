@@ -11,7 +11,8 @@ export interface IDispatchers {
 export interface ISelectors {
   query$: Observable<object>
   active$?: Observable<boolean>,
-  data$: Observable<any>
+  data$: Observable<any>,
+  loading$: Observable<boolean | string>
 };
 
 export interface HEntityType {
