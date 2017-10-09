@@ -9,9 +9,9 @@ import {Store} from "../../store/store";
 import {AllData} from "../../interfaces";
 import {
   HEntityState, HEntityType, HEntity, ISelectors, IDispatchers, HList,
-  HGroupsListFunctions, HGroupListMethods, HGroupList
 } from "../base/interfaces";
 import {HListFactory} from "../base/list-client";
+import {HGroupList, HGroupListMethods, HGroupsListFunctions} from "./groups-interfaces";
 
 export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
 

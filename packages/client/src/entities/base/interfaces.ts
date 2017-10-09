@@ -29,7 +29,8 @@ export interface HEntityTypeClientOptions extends Partial<HEntityType> {
 }
 
 export interface HListMethods {
-  dataArray$: Observable<any[]>
+  dataArray$: Observable<any[]>,
+  setActive: (isActive?: boolean ) => any
 }
 
 export interface HClientConfig {

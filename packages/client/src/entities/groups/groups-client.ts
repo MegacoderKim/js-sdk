@@ -7,7 +7,8 @@ import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import {AllData} from "../../interfaces";
-import {HEntityState, HEntity, HList, HGroupList} from "../base/interfaces";
+import {HEntityState, HEntity, HList} from "../base/interfaces";
+import { HGroupList } from "./groups-interfaces"
 
 export class HtGroupsClient extends EntityClient{
   list: HGroupList;

@@ -18,6 +18,13 @@ export * from "./base/data-observer";
 export * from "./base/list-client";
 export * from "./base/item-client";
 
+//groups
+export * from "./entities/groups/groups-interfaces";
+export * from "./entities/groups/groups-client";
+export * from "./entities/groups/groups-list";
+export * from "./entities/groups/groups-item-client";
+export * from "./entities/groups/groups-all-items-client";
+
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/catch';

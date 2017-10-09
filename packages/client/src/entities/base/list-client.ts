@@ -60,7 +60,10 @@ export const HListFactory = (api$, store, entityFunction, entityState: HEntitySt
   });
 
   let listMethods: HListMethods = {
-    dataArray$: selectors.data$.let(PageResults)
+    dataArray$: selectors.data$.let(PageResults),
+    setActive(isActive: boolean = true) {
+      dispatchers.setActive(isActive)
+    }
   };
 
   return {
