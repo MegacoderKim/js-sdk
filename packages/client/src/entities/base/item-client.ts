@@ -1,52 +1,63 @@
-import {HEntityType, HEntityTypeClientOptions, HEntity, IDispatchers, ISelectors} from "./interfaces";
+import {
+  HEntityType, HEntityTypeClientOptions, HEntity, IDispatchers, ISelectors, HEntityState,
+  HClientConfig, HEntityTypeFunctions, HEntityItemFunctions, HItem
+} from "./interfaces";
 import {Observable} from "rxjs/Observable";
 import {HClientFactory} from "./client-factory";
 import * as _ from "underscore";
+import {HEntityFactory} from "./entity-factory";
 
-export const HItemFactory = (api$, store, overrideConfig: Partial<HEntityType>): HEntity => {
-  const config: HEntityType = {
-    name: overrideConfig.name || 'list',
-    defaultQuery: {page_size: 10, ...overrideConfig.defaultQuery},
-    pollDuration: overrideConfig.pollDuration || 1000,
-    updateStrategy: overrideConfig.updateStrategy || 'live'
-  };
-  let selectors: ISelectors = {
-    query$: Observable.of({}),
-    data$: Observable.of({})
-  };
-  let dispatchers: IDispatchers = {
-    setData(data) {
-      console.log("Set data", config.name, data);
-    },
-    setLoading() {
+export const HItemFactory = (api$, store, entityFunction: HEntityItemFunctions, entityState: HEntityState, overrideConfig: Partial<HEntityType>): HItem => {
 
-    }
-  };
-  let dateRangeQuery$ = Observable.of({start: '', end: ''});
+  let {dispatchers, selectors, methods} = entityFunction;
 
-  let apiQuery$ = Observable.of([]);
-
-  let client = HClientFactory(dispatchers, {
-    apiQuery$,
-    getData$([id, query]) {
-      let first = api$(id, query).do((data) => {
-        // this.firstDataEffect(data)
-      });
-
-      let update = first.expand(() => {
-        return Observable.timer(config.pollDuration).switchMap(() => {
-          return api$(id, query)
-        })
-      });
-
-      return this.updateStrategy != 'once' ? update : first
+  let entity = HEntityFactory(entityState, {
+    ...overrideConfig,
+    firstDataEffect(data) {
+      dispatchers.setLoading(false)
     }
   });
 
+  let apiQuery$ = Observable.combineLatest(
+    selectors.id$.distinctUntilChanged(),
+    selectors.query$.distinctUntilChanged()
+  );
+
+  let overriderClient: HClientConfig = {
+    apiQuery$,
+    getData$([query]) {
+      let first = api$(query).do((data) => {
+        entity.firstDataEffect(data)
+      });
+
+      let update = first.expand((data) => {
+        return Observable.timer(entity.pollDuration).switchMap(() => {
+          if(overrideConfig.updateStrategy == 'live') {
+            return api$(query)
+          } else {
+            let ids: string[] = _.map(data.results, (item) => {
+              return item['id']
+            });
+            let updateQuery = {...query, id: ids.toString(), status: null, page: null};
+            return api$(updateQuery).map(newData => {
+              return {...data, results: newData.results}
+            })
+          }
+
+        })
+      });
+
+      return overrideConfig.updateStrategy != 'once' ? update : first
+    },
+  };
+
+  let client = HClientFactory(dispatchers, overriderClient);
+
   return {
-    ...config,
-    selectors,
+    ...entity,
+    client,
     dispatchers,
-    client
+    selectors,
+    // ...methods
   }
 };

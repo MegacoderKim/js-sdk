@@ -6,6 +6,7 @@ export interface IDispatchers {
   setData: (data) => any,
   setLoading: (data) => any,
   setActive?: (data?: boolean) => any
+  setId?: (id: string | null) => any
 };
 
 export interface ISelectors {
@@ -13,6 +14,10 @@ export interface ISelectors {
   active$?: Observable<boolean>,
   data$: Observable<any>,
   loading$: Observable<boolean | string>
+};
+
+export interface IItemSelectors extends ISelectors {
+  id$: Observable<string | null>
 };
 
 export interface HEntityType {
@@ -56,6 +61,10 @@ export interface HEntity extends HEntityType {
 export interface HList extends HEntity, HListMethods {
   dateRangeQuery$: Observable<object>,
 }
+export interface HItem extends HEntity {
+  dateRangeQuery$: Observable<object>,
+  // selectors: IItemSelectors
+}
 
 export interface HEntityState {
   dateRangeParam?: string,
@@ -67,7 +76,13 @@ export interface HEntityState {
 export interface HEntityTypeFunctions {
   dispatchers: IDispatchers,
   selectors: ISelectors,
-  methods: any
+  methods: object
+}
+
+export interface HEntityItemFunctions {
+  dispatchers: IDispatchers,
+  selectors: IItemSelectors,
+  methods: object
 }
 
 

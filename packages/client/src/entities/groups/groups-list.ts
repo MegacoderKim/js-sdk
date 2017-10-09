@@ -74,7 +74,8 @@ export const groupsListClientFactory = (api$, store, overrideEntityState: HEntit
   let selectors: ISelectors = {
     query$: Observable.of({}),
     data$: store.select(fromRoot.getGroupAll),
-    active$: store.select(fromRoot.getGroupListActive)
+    active$: store.select(fromRoot.getGroupListActive),
+    loading$: Observable.of(false)
   };
   let dispatchers: IDispatchers = {
     setData(data) {
@@ -101,5 +102,9 @@ export const groupsListClientFactory = (api$, store, overrideEntityState: HEntit
     selectors,
     methods
   };
-  return <HGroupList>(HListFactory(api$, store, groupsFunctions, overrideEntityState, innerConfig))
+  return {
+    ...<HGroupList>(HListFactory(api$, store, groupsFunctions, overrideEntityState, innerConfig)),
+    dispatchers,
+    selectors
+  }
 };

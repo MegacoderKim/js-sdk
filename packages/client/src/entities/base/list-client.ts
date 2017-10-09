@@ -20,7 +20,7 @@ export const HListFactory = (api$, store, entityFunction, entityState: HEntitySt
 
   let baseQuery$ = selectors.query$
     .let(MergeQuery(entity.defaultQuery))
-    .let(CombineQuery(entity.dateRangeQuery$))
+    .let(CombineQuery(entityState.dateRangeQuery$))
     .map(data => [data]);
 
   let apiQuery$ = selectors.active$ ? selectors.active$.mergeMap((isActive: boolean) => {

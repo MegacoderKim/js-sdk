@@ -11,7 +11,7 @@ export * from "./entities/actions/actions-get-client"
 export * from "./entities/users/users-client"
 export * from "./entities/users/users-index-client"
 export * from "./entities/users/user-placeline-client"
-export * from "./entities/users/users-analytics-client"
+export { UsersAnalyticsClientFactory, HtUsersAnalytics} from "./entities/users/users-analytics-client"
 export * from "./client"
 export * from "./base/base-client";
 export * from "./base/data-observer";

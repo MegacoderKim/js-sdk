@@ -34,7 +34,7 @@ export class HtGroupsClient extends EntityClient{
     //   loadingDispatcher: (data) => {}
     // });
     let getApi$ = (id, query) => this.api.get(id, query);
-    this.item = groupsItemsClientFactory(getApi$, store)
+    // this.item = groupsItemsClientFactory(getApi$, store)
 
     // this.item = new HtGroupsItemClient({
     //   api$: this.api.get,

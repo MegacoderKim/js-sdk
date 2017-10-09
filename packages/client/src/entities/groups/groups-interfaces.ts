@@ -6,7 +6,7 @@ export interface HGroupListMethods {
   getChildren: (parentId: string) => Observable<any>
 }
 
-export interface HGroupList extends HList, HGroupListMethods {
+export interface HGroupList extends HList, HGroupListMethods, HEntityTypeFunctions {
 
 }
 

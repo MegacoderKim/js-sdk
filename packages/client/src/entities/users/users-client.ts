@@ -1,5 +1,5 @@
 import {HtUsersIndexClient} from "./users-index-client";
-import {HtUserPlacelineClient} from "./user-placeline-client";
+import {HtUserPlacelineClient, UsersPlacelineClientFactory, HUsersPlaceline} from "./user-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {
   AllData,
@@ -34,6 +34,7 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersList} from "./users-list";
 import {UsersMarkers} from "./users-markers";
 import {HtUsersSummaryClient} from "./users-summary-client";
+import {HUsersItem} from "./users-interface";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -50,7 +51,7 @@ export class HtUsersClient extends EntityClient {
   /**
    * Fetches user placeline
    */
-  placeline: HtUserPlacelineClient;
+  placeline: HUsersPlaceline;
   /**
    * Fetches across the page (complete data of users) from `/users/analytics/`
    */
@@ -72,6 +73,11 @@ export class HtUsersClient extends EntityClient {
   _statusQueryArray: QueryLabel[];
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
     super();
+
+    let entityState = {
+
+    };
+
     let api = new HtUsersApi(req);
     this.api = api;
     this.initialDateRange = this.getInitialDateRange();
@@ -98,12 +104,18 @@ export class HtUsersClient extends EntityClient {
       loadingDispatcher: (data) => this.setLoadingUserAnalytics(data)
     });
 
-    this.placeline = new HtUserPlacelineClient({
-      api$: (id, query) => this.api.placeline(id, query),
-      dateRangeSource$,
-      loadingDispatcher: (data) => this.setLoadingUserData(data),
-      store: this.store
-    });
+
+    this.placeline = UsersPlacelineClientFactory(
+      (id, query) => this.api.placeline(id, query),
+      store,
+      {}
+    );
+    // this.placeline = new HtUserPlacelineClient({
+    //   api$: (id, query) => this.api.placeline(id, query),
+    //   dateRangeSource$,
+    //   loadingDispatcher: (data) => this.setLoadingUserData(data),
+    //   store: this.store
+    // });
 
     this.marksAnalytics = new HtUsersAnalyticsMarkers({
       api$: (query) => this.api.all$(query, ApiType.analytics),
@@ -158,7 +170,7 @@ export class HtUsersClient extends EntityClient {
   placelineOrList$() {
     const id$ = this.list.id$.distinctUntilChanged();
     const dataArray$ = this.list.dataArray$;
-    const selected$ = this.placeline.data$;
+    const selected$ = this.placeline.selectors.data$;
     // let id$ = this.list.idObservable.data$().distinctUntilChanged();
     // let dataArray$ = this.list.dataArray$;
     // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
@@ -169,7 +181,7 @@ export class HtUsersClient extends EntityClient {
   listPage$() {
     const id$ = this.list.id$.distinctUntilChanged();
     const dataArray$ = this.list.data$;
-    const selected$ = this.placeline.data$;
+    const selected$ = this.placeline.selectors.data$;
     // let id$ = this.list.idObservable.data$().distinctUntilChanged();
     // let dataArray$ = this.list.dataArray$;
     // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
@@ -344,7 +356,7 @@ export class HtUsersClient extends EntityClient {
       // this.list.dataArray$
     );
 
-    let hasPlaceline$ = this.placeline.id$.map((data) => !!data).distinctUntilChanged();
+    let hasPlaceline$ = this.placeline.selectors.id$.map((data) => !!data).distinctUntilChanged();
 
     let dataArray$ = Observable.combineLatest(
       allMarkers$,
@@ -479,7 +491,7 @@ export class HtUsersClient extends EntityClient {
 
   private initEffects() {
     Observable.combineLatest(
-      this.placeline.data$,
+      this.placeline.selectors.data$,
       this.getSegmentsStates(),
       (userData: IUserData, {selectedId, resetMapId}) => {
         if(userData && (selectedId || resetMapId)) {
@@ -531,7 +543,7 @@ export class HtUsersClient extends EntityClient {
     // });
 
 
-    this.placeline.id$.scan((acc, currentId) => {
+    this.placeline.selectors.id$.scan((acc, currentId) => {
       let isSame = acc.oldId === currentId;
       let oldId = currentId;
       return {isSame, oldId}
