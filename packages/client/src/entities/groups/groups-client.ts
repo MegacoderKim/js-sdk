@@ -1,31 +1,45 @@
 import {EntityClient} from "../../base/entity-client";
-import {HtGroupsListClient} from "./groups-list";
+import {groupsListClientFactory, HtGroupsListClient} from "./groups-list";
 import {HtBaseApi} from "../../api/base";
 import {HtGroupsApi} from "../../api/groups";
-import {HtGroupsItemClient} from "./groups-item-client";
+import {groupsItemsClientFactory, HtGroupsItemClient} from "./groups-item-client";
 import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import {AllData} from "../../interfaces";
+import {HEntityState, HEntity, HList} from "../base/interfaces";
 
 export class HtGroupsClient extends EntityClient{
-  list: HtGroupsListClient;
-  item: HtGroupsItemClient;
+  list: HList;
+  item: HEntity;
   api: HtBaseApi;
   constructor(req, private store: Store<fromRoot.State>, options = {}) {
     super();
     let api = new HtGroupsApi(req);
     this.api = api;
-    this.list = new HtGroupsListClient({
-      api$: this.api.index,
+    let entityState: HEntityState = {
+      dateRangeParam: 'created_at',
+      // dateRangeQuery$: Observable.of({start: "", end: ''})
+    };
+    this.list = groupsListClientFactory(
+      (query) => this.api.index(query),
       store,
-      loadingDispatcher: (data) => {}
-    });
-    this.item = new HtGroupsItemClient({
-      api$: this.api.get,
-      store,
-      loadingDispatcher: (data) => {}
-    })
+      entityState,
+      {updateStrategy: 'once'}
+    );
+    // this.list = new HtGroupsListClient({
+    //   api$: this.api.index,
+    //   store,
+    //   loadingDispatcher: (data) => {}
+    // });
+    let getApi$ = (id, query) => this.api.get(id, query);
+    this.item = groupsItemsClientFactory(getApi$, store)
+
+    // this.item = new HtGroupsItemClient({
+    //   api$: this.api.get,
+    //   store,
+    //   loadingDispatcher: (data) => {}
+    // })
   }
 
   key$(id) {

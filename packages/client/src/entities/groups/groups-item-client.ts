@@ -5,6 +5,8 @@ import {Observable} from "rxjs/Observable";
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
+import {HEntity} from "../base/interfaces";
+import {HItemFactory} from "../base/item-client";
 
 export class HtGroupsItemClient extends ItemClient<IGroup> {
   name = "group item";
@@ -41,4 +43,13 @@ export class HtGroupsItemClient extends ItemClient<IGroup> {
   setData(data) {
     this.store.dispatch(new fromGroupDispatcher.SetGroup(data))
   }
+}
+
+export const groupsItemsClientFactory = (api$, store, config = {}): HEntity => {
+  let innerConfig = {
+    name: 'group',
+    defaultQuery: {ordering: '-created_at'},
+    ...config
+  };
+  return HItemFactory(api$, store, innerConfig)
 }

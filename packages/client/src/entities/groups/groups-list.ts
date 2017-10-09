@@ -1,12 +1,14 @@
 import {IGroup} from "ht-models";
 import {HtBaseApi} from "../../api/base";
 import {HtListClient} from "../../base/list-client";
-import {Page} from "ht-models";
+import {Page, Partial} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
 import {AllData} from "../../interfaces";
+import {HEntityState, HEntityType, HEntity, ISelectors, IDispatchers, HList} from "../base/interfaces";
+import {HListFactory} from "../base/list-client";
 
 export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
 
@@ -58,4 +60,29 @@ export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
   }
 
 
+}
+
+export const groupsListClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HList => {
+  let innerConfig = {
+    name: 'group',
+    defaultQuery: {ordering: '-created_at'},
+    ...config
+  };
+  let selectors: ISelectors = {
+    query$: Observable.of({}),
+    data$: store.select(fromRoot.getGroupAll),
+    active$: store.select(fromRoot.getGroupListActive)
+  };
+  let dispatchers: IDispatchers = {
+    setData(data) {
+      store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))
+    },
+    setLoading(data) {
+      console.log("loading", data);
+    },
+    setActive(isActive: boolean = true) {
+      store.dispatch(new fromGroupDispatcher.SetListActive(isActive))
+    }
+  };
+  return HListFactory(api$, store, dispatchers, selectors, overrideEntityState, innerConfig)
 }

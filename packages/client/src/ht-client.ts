@@ -40,6 +40,7 @@ import 'rxjs/add/operator/isEmpty';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/withLatestFrom';
 import "rxjs/add/operator/mergeMap";
+import "rxjs/add/operator/let";
 
 
 import 'rxjs/add/observable/merge';
