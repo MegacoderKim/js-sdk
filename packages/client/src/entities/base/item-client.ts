@@ -17,7 +17,8 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
     dispatchers,
     // selectors,
     api$,
-    store
+    store,
+    firstDataEffect
   } = entityState;
 
 
@@ -33,7 +34,11 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
 
   let getData$ = ([id, query]) => {
     let first = api$(id, query).do((data) => {
-      // entity.firstDataEffect(data)
+      if(firstDataEffect) {
+        firstDataEffect(data)
+      } else {
+        dispatchers.setLoading(false)
+      }
     });
 
     let update = first.expand((data) => {

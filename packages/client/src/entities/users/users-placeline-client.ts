@@ -103,17 +103,12 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
       store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
     },
     setLoading(data) {
+      console.log("loading", data);
       store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
     },
     setId(id) {
       store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
     },
-    // setSegmentSelectedId(segmentId) {
-    //   store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
-    // },
-    // setSegmentResetMapId(segmentId: string) {
-    //   store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
-    // },
     toggleId(userId: string) {
       store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
     }
@@ -126,7 +121,7 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
     setSegmentResetMapId(segmentId: string) {
       store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
     },
-  }
+  };
 
   let entityState: EntityItemState = {
     store,

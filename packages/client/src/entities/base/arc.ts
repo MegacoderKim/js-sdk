@@ -30,9 +30,8 @@ export type EntityTypeConfigFactory = (config: Partial<EntityTypeConfig>) => Ent
 export type ClientSubs = (dispatcher, selector, getData) => void;
 
 export interface EntityTypeState {
-  dateRangeParam?: string
-  dateRangeQuery$?: Observable<IDateRange>,
   store: Store<any>,
+  firstDataEffect?: (data) => any
 }
 
 export interface EntityType extends EntityTypeConfig {
@@ -67,13 +66,14 @@ export interface PublicEntityListState {
   api$: (query: object) => Observable<any>
 };
 
-export interface EntityListState extends EntityTypeState, PublicEntityListState {
-  selectors: ListSelectors,
-  dispatchers: ListDispatchers
+export interface ListState extends EntityTypeState, PublicEntityListState {
+  dateRangeParam?: string
+  dateRangeQuery$?: Observable<IDateRange>,
 }
 
-export interface ListState extends EntityTypeState, PublicEntityListState {
-
+export interface EntityListState extends ListState, PublicEntityListState {
+  selectors: ListSelectors,
+  dispatchers: ListDispatchers,
 }
 
 export interface EntityList extends EntityTypeConfig, PublicEntityListState {
@@ -113,7 +113,7 @@ export interface PublicEntityItemState {
 
 export interface EntityItemState extends EntityTypeState, PublicEntityItemState {
   selectors: ItemSelectors,
-  dispatchers: ItemDispatchers
+  dispatchers: ItemDispatchers,
 };
 
 export interface ItemState extends EntityTypeState, PublicEntityItemState {

@@ -19,7 +19,8 @@ export const HListFactory: EntityListFactory = (entityState: EntityListState, ov
     // selectors,
     api$,
     dateRangeParam,
-    dateRangeQuery$
+    dateRangeQuery$,
+    firstDataEffect
   } = entityState;
 
   let entity = EntityConfigFactory(overrideConfig);
@@ -44,7 +45,11 @@ export const HListFactory: EntityListFactory = (entityState: EntityListState, ov
 
   let getData$ = ([query]) => {
     let first = api$(query).do((data) => {
-      // entity.firstDataEffect(data)
+      if(firstDataEffect) {
+        firstDataEffect(data)
+      } else {
+        dispatchers.setLoading(false)
+      }
     });
 
     let update = first.expand((data) => {
