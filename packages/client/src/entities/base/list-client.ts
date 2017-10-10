@@ -6,73 +6,74 @@ import {Observable} from "rxjs/Observable";
 import {HClientFactory} from "./client-factory";
 import * as _ from "underscore";
 import {Partial} from "ht-models";
-import {HEntityFactory} from "./entity-factory";
-import {CombineQuery, MergeQuery, PageResults} from "./helpers";
+import {EntityConfigFactory} from "./entity-factory";
+import {CombineQuery, DateRangeToQuery, MergeQuery, PageResults} from "./helpers";
+import {
+  EntityList, EntityListFactory, EntityListSelectors, EntityListState, EntityTypeConfig, EntityTypeState,
+  ListSelectors
+} from "./arc";
 
-export const HListFactory = (api$, store, entityFunction, entityState: HEntityState, overrideConfig: Partial<HEntityType>): HList => {
-  let {dispatchers, selectors, methods} = entityFunction;
-  let entity = HEntityFactory(entityState, {
-    ...overrideConfig,
-    firstDataEffect(data) {
-      dispatchers.setLoading(false)
-    }
-  });
+export const HListFactory: EntityListFactory = (entityState: EntityListState, overrideConfig: Partial<EntityTypeConfig>): EntityList => {
+  let {
+    dispatchers,
+    // selectors,
+    api$,
+    dateRangeParam,
+    dateRangeQuery$
+  } = entityState;
 
-  let baseQuery$ = selectors.query$
+  let entity = EntityConfigFactory(overrideConfig);
+
+  let baseQuery$ = entityState.selectors.query$
     .let(MergeQuery(entity.defaultQuery))
     .let(CombineQuery(entityState.dateRangeQuery$))
     .map(data => [data]);
 
-  let apiQuery$ = selectors.active$ ? selectors.active$.mergeMap((isActive: boolean) => {
+  let apiQuery$ = entityState.selectors.active$ ? entityState.selectors.active$.mergeMap((isActive: boolean) => {
     return isActive ? baseQuery$ : Observable.of(null)
   }) : baseQuery$;
 
-  let overriderClient: HClientConfig = {
-    apiQuery$,
-    getData$([query]) {
-      let first = api$(query).do((data) => {
-        entity.firstDataEffect(data)
-      });
-
-      let update = first.expand((data) => {
-        return Observable.timer(entity.pollDuration).switchMap(() => {
-          if(overrideConfig.updateStrategy == 'live') {
-            return api$(query)
-          } else {
-            let ids: string[] = _.map(data.results, (item) => {
-              return item['id']
-            });
-            let updateQuery = {...query, id: ids.toString(), status: null, page: null};
-            return api$(updateQuery).map(newData => {
-              return {...data, results: newData.results}
-            })
-          }
-
-        })
-      });
-
-      return overrideConfig.updateStrategy != 'once' ? update : first
-    },
+  let selectors: EntityListSelectors = {
+    ...entityState.selectors,
+    dataArray$: entityState.selectors.data$.let(PageResults),
+    apiQuery$
   };
 
-  let client = HClientFactory(dispatchers, {
-    ...overriderClient,
-  });
+  selectors = dateRangeQuery$ ? {...selectors, dateRangeQuery$: dateRangeQuery$.let(DateRangeToQuery(dateRangeParam)),
+  } : selectors;
 
-  let listMethods: HListMethods = {
-    dataArray$: selectors.data$.let(PageResults),
-    setActive(isActive: boolean = true) {
-      dispatchers.setActive(isActive)
-    }
+  let getData$ = ([query]) => {
+    let first = api$(query).do((data) => {
+      // entity.firstDataEffect(data)
+    });
+
+    let update = first.expand((data) => {
+      return Observable.timer(entity.pollDuration).switchMap(() => {
+        if(overrideConfig.updateStrategy == 'live') {
+          return api$(query)
+        } else {
+          let ids: string[] = _.map(data.results, (item) => {
+            return item['id']
+          });
+          let updateQuery = {...query, id: ids.toString(), status: null, page: null};
+          return api$(updateQuery).map(newData => {
+            return {...data, results: newData.results}
+          })
+        }
+
+      })
+    });
+
+    return overrideConfig.updateStrategy != 'once' ? update : first
   };
+
+  HClientFactory(dispatchers, selectors.apiQuery$, getData$);
 
   return {
     ...entity,
-    client,
     selectors,
     dispatchers,
-    ...listMethods,
-    ...methods
+    api$
   }
 };
 

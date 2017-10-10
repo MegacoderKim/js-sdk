@@ -7,6 +7,12 @@ import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
 import {HEntity, HEntityState, HEntityType} from "../base/interfaces";
 import {HItemFactory} from "../base/item-client";
+import {GroupsItem, GroupsItemFactory} from "./groups-item-interface";
+
+import {
+  EntityItemFactory, EntityItemState, EntityTypeConfig, ItemDispatchers, ItemSelectors,
+  ItemState
+} from "../base/arc";
 
 export class HtGroupsItemClient extends ItemClient<IGroup> {
   name = "group item";
@@ -45,11 +51,48 @@ export class HtGroupsItemClient extends ItemClient<IGroup> {
   }
 }
 
-export const groupsItemsClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}) => {
+export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, config: Partial<EntityTypeConfig> = {}): GroupsItem => {
   let innerConfig = {
     name: 'group',
     defaultQuery: {ordering: '-created_at'},
     ...config
   };
+
+  let {
+    api$,
+    store
+  } = state;
+
+  let itemSelector: ItemSelectors = {
+    id$: store.select(fromGroup.getGroupId),
+    query$: Observable.of({}),
+    data$: Observable.empty(),
+    loading$: Observable.of(false),
+  };
+
+  let dispatchers: ItemDispatchers = {
+    setId(id) {
+      store.dispatch(new fromGroupDispatcher.SetGroupId(id))
+    },
+    setData(data) {
+      store.dispatch(new fromGroupDispatcher.SetGroup(data))
+    },
+    setLoading(data) {
+
+    }
+  };
+
+  let itemState: EntityItemState = {
+    selectors: itemSelector,
+    dispatchers,
+    store,
+    api$
+  };
+
+  let entityItem = HItemFactory(itemState, innerConfig);
+
+  return {
+    ...entityItem,
+  }
   // return HItemFactory(api$, store, innerConfig)
-}
+};

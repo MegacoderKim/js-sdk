@@ -10,6 +10,8 @@ import {HUsersList} from "./users-interface";
 import {HListFactory} from "../base/list-client";
 import {HGroupsListFunctions} from "../groups/groups-interfaces";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
+import {UsersAnalytics, UsersAnalyticsFactory} from "./users-analytics-interfaces";
+import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/arc";
 
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage> {
   //todo IUserPage added as hack to fix allMarkers$ in client
@@ -45,21 +47,23 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
   }
 }
 
-export const UsersAnalyticsClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HUsersList => {
+export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): UsersAnalytics => {
   let innerConfig = {
     name: 'users analytics',
     defaultQuery: {ordering: '-last_heartbeat_at'},
     ...config
   };
 
-  let selectors: ISelectors = {
+  let {api$, store} = state;
+
+  let selectors: ListSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery),
     data$: store.select(fromRoot.getUsersAnalyticsPage),
     active$: store.select(fromRoot.getUsersAnalyticsIsActive),
     loading$: store.select(fromRoot.getLoadingAnalytics)
   };
 
-  let dispatchers: IDispatchers = {
+  let dispatchers: ListDispatchers = {
     setData(data) {
       store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
     },
@@ -71,9 +75,16 @@ export const UsersAnalyticsClientFactory = (api$, store, overrideEntityState: HE
     }
   };
 
-  let usersFunctions = {
+  let entityListState: EntityListState = {
     selectors,
-    dispatchers
+    dispatchers,
+    store,
+    api$
   };
-  return <HUsersList>(HListFactory(api$, store, usersFunctions, overrideEntityState, innerConfig))
+
+  let entityList = HListFactory(entityListState, innerConfig);
+
+  return {
+    ...entityList,
+  }
 };

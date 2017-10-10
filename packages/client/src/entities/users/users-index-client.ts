@@ -11,6 +11,8 @@ import {HEntityState, HEntityType, IDispatchers, ISelectors} from "../base/inter
 import {HUsersList} from "./users-interface";
 import {HListFactory} from "../base/list-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
+import {UsersIndex, UsersIndexFactory} from "./users-index-interfaces";
+import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/arc";
 
 export class HtUsersIndexClient extends HtListClient<IUserPage> {
   name = "users index";
@@ -62,21 +64,23 @@ export class HtUsersIndexClient extends HtListClient<IUserPage> {
 
 }
 
-export const UsersIndexClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HUsersList => {
+export const UsersIndexClientFactory: UsersIndexFactory = (state: EntityListState, config: Partial<EntityTypeConfig> = {}): UsersIndex => {
   let innerConfig = {
     name: 'users analytics',
     defaultQuery: {ordering: '-last_heartbeat_at'},
     ...config
   };
 
-  let selectors: ISelectors = {
+  let {api$, store} = state;
+
+  let selectors: ListSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery),
     data$: store.select(fromRoot.getUsersAnalyticsPage),
     active$: store.select(fromRoot.getUsersAnalyticsIsActive),
     loading$: store.select(fromRoot.getLoadingAnalytics)
   };
 
-  let dispatchers: IDispatchers = {
+  let dispatchers: ListDispatchers = {
     setData(data) {
       store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
     },
@@ -88,9 +92,16 @@ export const UsersIndexClientFactory = (api$, store, overrideEntityState: HEntit
     }
   };
 
-  let usersFunctions = {
+  let listState: EntityListState = {
     selectors,
-    dispatchers
+    dispatchers,
+    store,
+    api$
   };
-  return <HUsersList>(HListFactory(api$, store, usersFunctions, overrideEntityState, innerConfig))
+
+  let entityList = HListFactory(listState, innerConfig);
+
+  return {
+    ...entityList
+  }
 };

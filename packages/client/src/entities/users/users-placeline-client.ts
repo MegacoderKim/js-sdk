@@ -15,6 +15,14 @@ import {HEntityState, HEntityType, IDispatchers, IItemSelectors, ISelectors} fro
 import {HUsersItem} from "./users-interface";
 import {HItemFactory} from "../base/item-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
+import {
+  AddUsersPlacelineDispatchers, AddUsersPlacelineSelector, UsersPlaceline,
+  UsersPlacelineFactory
+} from "./users-placeline-interfaces";
+import {
+  Dispatchers, EntityItemState, EntityTypeConfig, EntityTypeState, ItemDispatchers, ItemSelectors, ItemState,
+  ListDispatchers
+} from "../base/arc";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData> {
   name = "placeline";
@@ -66,7 +74,7 @@ export class HtUserPlacelineClient extends ItemClient<IUserData> {
 
 }
 
-export const UsersPlacelineClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HUsersPlaceline => {
+export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemState, config: Partial<EntityTypeConfig> = {}): UsersPlaceline => {
   let innerConfig: Partial<HEntityType> = {
     name: 'users analytics',
     defaultQuery: {ordering: '-last_heartbeat_at'},
@@ -74,50 +82,64 @@ export const UsersPlacelineClientFactory = (api$, store, overrideEntityState: HE
     ...config
   };
 
-  let selectors: IItemSelectors = {
+  let {
+    store,
+    api$
+  } = state;
+
+  let itemSelectors: ItemSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery),
     data$: store.select(fromRoot.getUsersAnalyticsPage),
-    active$: store.select(fromRoot.getUsersAnalyticsIsActive),
     loading$: store.select(fromRoot.getLoadingAnalytics),
     id$: store.select(fromRoot.getQueryPlacelineId)
   };
 
-  let dispatchers: IPlacelineDispatcher = {
+  let placelineSelectors: AddUsersPlacelineSelector = {
+
+  };
+
+  let dispatchers: ItemDispatchers = {
     setData(data) {
       store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
     },
     setLoading(data) {
       store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
     },
-    setActive(isActive: boolean = true){
-      store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
-    },
     setId(id) {
       store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
     },
+    // setSegmentSelectedId(segmentId) {
+    //   store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
+    // },
+    // setSegmentResetMapId(segmentId: string) {
+    //   store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
+    // },
+    toggleId(userId: string) {
+      store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+    }
+  };
+
+  let placelineDispatchers: AddUsersPlacelineDispatchers = {
     setSegmentSelectedId(segmentId) {
       store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
     },
     setSegmentResetMapId(segmentId: string) {
       store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
     },
-    toggleId(userId: string) {
-      store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
-    }
-  };
-  let methods = {
+  }
 
-  };
-
-  let usersFunctions = {
-    selectors,
+  let entityState: EntityItemState = {
+    store,
+    selectors: itemSelectors,
     dispatchers,
-    methods
+    api$
   };
+
+  let entityItem = HItemFactory(entityState, innerConfig);
+
   return {
-    ...<HUsersItem>(HItemFactory(api$, store, usersFunctions, overrideEntityState, innerConfig)),
-    dispatchers,
-    selectors
+    ...entityItem,
+    dispatchers: {...entityItem.dispatchers, ...placelineDispatchers}
   }
 };
 

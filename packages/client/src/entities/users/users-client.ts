@@ -1,5 +1,5 @@
 import {HtUsersIndexClient} from "./users-index-client";
-import {HtUserPlacelineClient, UsersPlacelineClientFactory, HUsersPlaceline} from "./user-placeline-client";
+import {HtUserPlacelineClient, UsersPlacelineClientFactory, HUsersPlaceline} from "./users-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {
   AllData,
@@ -35,6 +35,8 @@ import {UsersList} from "./users-list";
 import {UsersMarkers} from "./users-markers";
 import {HtUsersSummaryClient} from "./users-summary-client";
 import {HUsersItem} from "./users-interface";
+import {EntityTypeState, ItemState, ListState} from "../base/arc";
+import {UsersPlaceline} from "./users-placeline-interfaces";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -51,7 +53,7 @@ export class HtUsersClient extends EntityClient {
   /**
    * Fetches user placeline
    */
-  placeline: HUsersPlaceline;
+  placeline: UsersPlaceline;
   /**
    * Fetches across the page (complete data of users) from `/users/analytics/`
    */
@@ -74,15 +76,39 @@ export class HtUsersClient extends EntityClient {
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
     super();
 
-    let entityState = {
+    this.initialDateRange = this.getInitialDateRange();
+    this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
+    this.dateRangeObserver.updateData(this.initialDateRange);
 
+    let entityState: EntityTypeState = {
+      store,
+
+    };
+
+    let listState = {
+      dateRangeParam: 'last_hearbeat_at',
+      dateRangeQuery$: this.dateRangeObserver.data$()
+    }
+
+    let indexState: ListState = {
+      ...entityState,
+      ...listState,
+      api$: (query) => this.api.index(query),
+    };
+
+    let analyticsState: ListState = {
+      ...entityState,
+      ...listState,
+      api$: (query) => this.api.analytics(query),
+    };
+
+    let placelineState: ItemState = {
+      ...entityState,
+      api$: (id, query) => this.api.placeline(id, query),
     };
 
     let api = new HtUsersApi(req);
     this.api = api;
-    this.initialDateRange = this.getInitialDateRange();
-    this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
-    this.dateRangeObserver.updateData(this.initialDateRange);
     const dateRangeSource$ = this.dateRangeObserver.data$()
       .map((range: IDateRange) => {
       return this.getQueryFromDateRange(range)
@@ -106,8 +132,7 @@ export class HtUsersClient extends EntityClient {
 
 
     this.placeline = UsersPlacelineClientFactory(
-      (id, query) => this.api.placeline(id, query),
-      store,
+      placelineState,
       {}
     );
     // this.placeline = new HtUserPlacelineClient({

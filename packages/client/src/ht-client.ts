@@ -8,10 +8,16 @@ export * from "./interfaces";
 export * from "./entities/actions/actions-client"
 export * from "./entities/actions/actions-list-client"
 export * from "./entities/actions/actions-get-client"
+
+//users
+export * from "./entities/users/users-index-interfaces";
+export * from "./entities/users/users-analytics-interfaces";
+export * from "./entities/users/users-placeline-interfaces";
 export * from "./entities/users/users-client"
 export * from "./entities/users/users-index-client"
-export * from "./entities/users/user-placeline-client"
+export * from "./entities/users/users-placeline-client"
 export { UsersAnalyticsClientFactory, HtUsersAnalytics} from "./entities/users/users-analytics-client"
+
 export * from "./client"
 export * from "./base/base-client";
 export * from "./base/data-observer";
@@ -19,7 +25,8 @@ export * from "./base/list-client";
 export * from "./base/item-client";
 
 //groups
-export * from "./entities/groups/groups-interfaces";
+export * from "./entities/groups/groups-item-interface";
+export * from "./entities/groups/groups-list-interface";
 export * from "./entities/groups/groups-client";
 export * from "./entities/groups/groups-list";
 export * from "./entities/groups/groups-item-client";

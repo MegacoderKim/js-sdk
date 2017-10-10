@@ -11,7 +11,9 @@ import {
   HEntityState, HEntityType, HEntity, ISelectors, IDispatchers, HList,
 } from "../base/interfaces";
 import {HListFactory} from "../base/list-client";
-import {HGroupList, HGroupListMethods, HGroupsListFunctions} from "./groups-interfaces";
+import {EntityList, EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/arc";
+import {EntityConfigFactory} from "../base/entity-factory";
+import {AddGroupsListSelector, GroupListFactory, GroupsList} from "./groups-list-interface"
 
 export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
 
@@ -65,19 +67,36 @@ export class HtGroupsListClient extends HtListClient<Page<IGroup>> {
 
 }
 
-export const groupsListClientFactory = (api$, store, overrideEntityState: HEntityState, config: Partial<HEntityType> = {}): HGroupList => {
+export const groupsListClientFactory: GroupListFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): GroupsList => {
   let innerConfig = {
     name: 'group',
     defaultQuery: {ordering: '-created_at'},
     ...config
   };
-  let selectors: ISelectors = {
+
+  let {
+    store,
+    api$
+  } = state;
+
+  let listSelectors:  ListSelectors = {
     query$: Observable.of({}),
     data$: store.select(fromRoot.getGroupAll),
     active$: store.select(fromRoot.getGroupListActive),
-    loading$: Observable.of(false)
+    loading$: Observable.of(false),
+
   };
-  let dispatchers: IDispatchers = {
+
+  let groupSelector: AddGroupsListSelector = {
+    getRoots() {
+      return  api$({has_parent: false})
+    },
+    getChildren(groupId) {
+      return api$({parent_group_id: groupId})
+    }
+  };
+
+  let dispatchers: ListDispatchers = {
     setData(data) {
       store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))
     },
@@ -89,22 +108,17 @@ export const groupsListClientFactory = (api$, store, overrideEntityState: HEntit
     }
   };
 
-  let methods: HGroupListMethods = {
-    getRoots() {
-      return  api$({has_parent: false})
-    },
-    getChildren(groupId) {
-      return api$({parent_group_id: groupId})
-    }
-  };
-  let groupsFunctions: HGroupsListFunctions = {
+  let listState: EntityListState = {
+    selectors: listSelectors,
     dispatchers,
-    selectors,
-    methods
+    api$,
+    store
   };
+
+  let entityList: EntityList = HListFactory(listState, innerConfig);
+
   return {
-    ...<HGroupList>(HListFactory(api$, store, groupsFunctions, overrideEntityState, innerConfig)),
-    dispatchers,
-    selectors
+    ...entityList,
+    selectors: {...entityList.selectors, ...groupSelector, ...listSelectors},
   }
 };
