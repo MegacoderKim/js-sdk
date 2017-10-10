@@ -1,7 +1,7 @@
 import {
   EntityList, EntityListSelectors, EntityTypeConfig, ListDispatchers, ListSelectors,
   ListState
-} from "../base/arc";
+} from "../base/interfaces";
 import {Observable} from "rxjs/Observable";
 
 export interface AddGroupsListSelector {

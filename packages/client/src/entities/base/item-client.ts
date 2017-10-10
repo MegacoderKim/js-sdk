@@ -1,15 +1,11 @@
-import {
-  HEntityType, HEntityTypeClientOptions, HEntity, IDispatchers, ISelectors, HEntityState,
-  HClientConfig, HEntityTypeFunctions, HEntityItemFunctions, HItem
-} from "./interfaces";
 import {Observable} from "rxjs/Observable";
 import {HClientFactory} from "./client-factory";
 import * as _ from "underscore";
-import {EntityConfigFactory} from "./entity-factory";
+import {EntityConfigFactory} from "./entity-config";
 import {
   EntityItem, EntityItemFactory, EntityItemSelectors, EntityItemState, EntityListState, EntityTypeConfig,
   ItemDispatchers, ItemSelectors
-} from "./arc";
+} from "./interfaces";
 
 export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, overrideConfig: Partial<EntityTypeConfig>): EntityItem => {
 

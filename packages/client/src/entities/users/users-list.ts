@@ -10,8 +10,6 @@ import {HtUsersApi} from "../../api/users";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {Subscription} from "rxjs/Subscription";
-import {HUsersList} from "./users-interface";
-
 
 export class UsersList {
   constructor(

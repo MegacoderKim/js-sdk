@@ -11,8 +11,6 @@ import { State } from "../../reducers/segments-reducer";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import {HEntityState, HEntityType, IDispatchers, IItemSelectors, ISelectors} from "../base/interfaces";
-import {HUsersItem} from "./users-interface";
 import {HItemFactory} from "../base/item-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {
@@ -22,7 +20,7 @@ import {
 import {
   Dispatchers, EntityItemState, EntityTypeConfig, EntityTypeState, ItemDispatchers, ItemSelectors, ItemState,
   ListDispatchers
-} from "../base/arc";
+} from "../base/interfaces";
 
 export class HtUserPlacelineClient extends ItemClient<IUserData> {
   name = "placeline";
@@ -75,7 +73,7 @@ export class HtUserPlacelineClient extends ItemClient<IUserData> {
 }
 
 export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemState, config: Partial<EntityTypeConfig> = {}): UsersPlaceline => {
-  let innerConfig: Partial<HEntityType> = {
+  let innerConfig: Partial<EntityTypeConfig> = {
     name: 'users analytics',
     defaultQuery: {ordering: '-last_heartbeat_at'},
     updateStrategy: 'live',
@@ -137,14 +135,3 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
     dispatchers: {...entityItem.dispatchers, ...placelineDispatchers}
   }
 };
-
-export interface IPlacelineDispatcher extends IDispatchers{
-  toggleId: (id) => any,
-  setSegmentResetMapId: (id) => any,
-  setSegmentSelectedId: (id) => any
-}
-
-export interface HUsersPlaceline extends HUsersItem {
-  dispatchers: IPlacelineDispatcher,
-  selectors: IItemSelectors
-}

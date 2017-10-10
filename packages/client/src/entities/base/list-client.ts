@@ -1,17 +1,13 @@
-import {
-  HClientConfig, HEntityState, HEntityType, HEntityTypeClientOptions, HEntity, IDispatchers,
-  ISelectors, HList, HListMethods
-} from "./interfaces";
 import {Observable} from "rxjs/Observable";
 import {HClientFactory} from "./client-factory";
 import * as _ from "underscore";
 import {Partial} from "ht-models";
-import {EntityConfigFactory} from "./entity-factory";
+import {EntityConfigFactory} from "./entity-config";
 import {CombineQuery, DateRangeToQuery, MergeQuery, PageResults} from "./helpers";
 import {
   EntityList, EntityListFactory, EntityListSelectors, EntityListState, EntityTypeConfig, EntityTypeState,
   ListSelectors
-} from "./arc";
+} from "./interfaces";
 
 export const HListFactory: EntityListFactory = (entityState: EntityListState, overrideConfig: Partial<EntityTypeConfig>): EntityList => {
   let {

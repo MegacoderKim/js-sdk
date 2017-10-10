@@ -1,5 +1,5 @@
 import {HtUsersIndexClient} from "./users-index-client";
-import {HtUserPlacelineClient, UsersPlacelineClientFactory, HUsersPlaceline} from "./users-placeline-client";
+import {HtUserPlacelineClient, UsersPlacelineClientFactory} from "./users-placeline-client";
 import {HtUsersApi} from "../../api/users";
 import {
   AllData,
@@ -34,8 +34,7 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersList} from "./users-list";
 import {UsersMarkers} from "./users-markers";
 import {HtUsersSummaryClient} from "./users-summary-client";
-import {HUsersItem} from "./users-interface";
-import {EntityTypeState, ItemState, ListState} from "../base/arc";
+import {EntityTypeState, ItemState, ListState} from "../base/interfaces";
 import {UsersPlaceline} from "./users-placeline-interfaces";
 /**
  * Class containing all user related client entity like list of user, user placeline etc

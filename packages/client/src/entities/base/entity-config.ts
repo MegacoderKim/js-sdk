@@ -1,7 +1,6 @@
 import {Observable} from "rxjs/Observable";
-import {HClientConfig, HEntityType, HClient, HEntityState} from "./interfaces";
 import {HClientFactory} from "./client-factory";
-import {EntityTypeConfig, EntityTypeConfigFactory} from "./arc";
+import {EntityTypeConfig, EntityTypeConfigFactory} from "./interfaces";
 
 export const EntityConfigFactory: EntityTypeConfigFactory = (overrideConfig: Partial<EntityTypeConfig>): EntityTypeConfig => {
   const config: EntityTypeConfig = {

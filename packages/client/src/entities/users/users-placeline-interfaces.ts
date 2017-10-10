@@ -1,7 +1,7 @@
 import {
   EntityItem, EntityItemDispatchers, EntityItemSelectors, EntityTypeConfig, ItemDispatchers, ItemSelectors,
   ItemState
-} from "../base/arc";
+} from "../base/interfaces";
 
 export interface AddUsersPlacelineSelector {
 

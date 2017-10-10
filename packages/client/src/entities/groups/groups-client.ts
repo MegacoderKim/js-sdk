@@ -7,8 +7,7 @@ import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import {AllData} from "../../interfaces";
-import {HEntityState, HEntity, HList} from "../base/interfaces";
-import {EntityListState, EntityTypeState, ItemState, ListState} from "../base/arc";
+import {EntityListState, EntityTypeState, ItemState, ListState} from "../base/interfaces";
 import { GroupsItem } from "./groups-item-interface";
 import { GroupsList } from "./groups-list-interface";
 

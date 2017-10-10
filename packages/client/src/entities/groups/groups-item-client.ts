@@ -5,14 +5,13 @@ import {Observable} from "rxjs/Observable";
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
-import {HEntity, HEntityState, HEntityType} from "../base/interfaces";
 import {HItemFactory} from "../base/item-client";
 import {GroupsItem, GroupsItemFactory} from "./groups-item-interface";
 
 import {
   EntityItemFactory, EntityItemState, EntityTypeConfig, ItemDispatchers, ItemSelectors,
   ItemState
-} from "../base/arc";
+} from "../base/interfaces";
 
 export class HtGroupsItemClient extends ItemClient<IGroup> {
   name = "group item";

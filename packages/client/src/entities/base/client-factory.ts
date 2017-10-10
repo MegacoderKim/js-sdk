@@ -1,6 +1,5 @@
-import {HClient, HClientConfig, IDispatchers} from "./interfaces";
 import {Observable} from "rxjs/Observable";
-import {ClientSubs, Dispatchers, Selectors} from "./arc";
+import {ClientSubs, Dispatchers, Selectors} from "./interfaces";
 
 export const HClientFactory: ClientSubs = (dispatchers: Dispatchers, apiQuery$: Observable<any[] | null>, getData$) => {
 

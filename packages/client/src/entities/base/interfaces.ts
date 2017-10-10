@@ -1,88 +1,129 @@
 import {Partial} from "ht-models";
 import {Observable} from "rxjs/Observable";
+import {Store} from "../../store/store";
 import {IDateRange} from "../../interfaces";
 
-export interface IDispatchers {
+export interface Dispatchers {
   setData: (data) => any,
   setLoading: (data) => any,
-  setActive?: (data?: boolean) => any
-  setId?: (id: string | null) => any
 };
 
-export interface ISelectors {
+export interface Selectors {
   query$: Observable<object>
-  active$?: Observable<boolean>,
   data$: Observable<any>,
-  loading$: Observable<boolean | string>
+  loading$: Observable<boolean | string>,
 };
 
-export interface IItemSelectors extends ISelectors {
-  id$: Observable<string | null>
-};
+export interface ReqSelectors {
+  apiQuery$: Observable<any[] | null>,
+}
 
-export interface HEntityType {
+export interface EntityTypeConfig {
   name: string,
   defaultQuery: object,
   pollDuration: number,
   updateStrategy: string,
-  firstDataEffect?: (data) => void
 }
 
-export interface HEntityTypeClientOptions extends Partial<HEntityType> {
-  // id?: string,
-  // query?: object,
-  // isActive?: boolean
+export type EntityTypeConfigFactory = (config: Partial<EntityTypeConfig>) => EntityTypeConfig
+
+export type ClientSubs = (dispatcher, selector, getData) => void;
+
+export interface EntityTypeState {
+  store: Store<any>,
+  firstDataEffect?: (data) => any
 }
 
-export interface HListMethods {
+export interface EntityType extends EntityTypeConfig {
+  // selectors: Selectors,
+  // dispatchers: Dispatchers,
+}
+
+type EntityTypeFactory = () => EntityType
+
+/**
+ * list
+ */
+
+export interface ListDispatchers extends Dispatchers {
+  setActive: (data?: boolean) => any
+}
+
+export interface EntityListDispatchers extends ListDispatchers {
+
+}
+
+export interface ListSelectors extends Selectors {
+  active$: Observable<boolean>,
+}
+
+export interface EntityListSelectors extends ReqSelectors, ListSelectors {
   dataArray$: Observable<any[]>,
-  setActive: (isActive?: boolean ) => any
+  dateRangeQuery$?: Observable<object>,
 }
 
-export interface HClientConfig {
-  apiQuery$: Observable<any[]>,
-  // apiData$: Observable<any>,
-  getData$: (a: any[]) => Observable<any>,
-  // setData$: Observable<any>
-  // firstDataEffect?: (data) => void
-}
+export interface PublicEntityListState {
+  api$: (query: object) => Observable<any>
+};
 
-export interface HClient extends HClientConfig {
-  // firstDataEffect: (data) => void
-}
-
-
-export interface HEntity extends HEntityType {
-  selectors: ISelectors,
-  dispatchers: IDispatchers,
-  client: HClient,
-}
-
-export interface HList extends HEntity, HListMethods {
-  dateRangeQuery$: Observable<object>,
-}
-export interface HItem extends HEntity {
-  dateRangeQuery$: Observable<object>,
-  // selectors: IItemSelectors
-}
-
-export interface HEntityState {
-  dateRangeParam?: string,
+export interface ListState extends EntityTypeState, PublicEntityListState {
+  dateRangeParam?: string
   dateRangeQuery$?: Observable<IDateRange>,
-  // selectors: ISelectors,
-  // dispatchers: IDispatchers
 }
 
-export interface HEntityTypeFunctions {
-  dispatchers: IDispatchers,
-  selectors: ISelectors,
-  methods: object
+export interface EntityListState extends ListState, PublicEntityListState {
+  selectors: ListSelectors,
+  dispatchers: ListDispatchers,
 }
 
-export interface HEntityItemFunctions {
-  dispatchers: IDispatchers,
-  selectors: IItemSelectors,
-  methods: object
+export interface EntityList extends EntityTypeConfig, PublicEntityListState {
+  selectors: EntityListSelectors,
+  dispatchers: EntityListDispatchers
+}
+
+export type EntityListFactory = (entityListState: ListState, config: Partial<EntityTypeConfig>) => EntityList
+
+/**
+ * item
+ */
+export interface ItemDispatchers extends Dispatchers {
+  setId: (id: string | null) => any,
+  toggleId?: (userId: string) => any
+  // toggleId(userId: string) {
+  //   store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+  // }
+}
+
+export interface EntityItemDispatchers extends ItemDispatchers {
+
+}
+
+export interface ItemSelectors extends Selectors {
+  id$: Observable<string | null>
+
+}
+
+export interface EntityItemSelectors extends ReqSelectors, ItemSelectors {
+
+}
+
+export interface PublicEntityItemState {
+  api$: (id: string, query: object) => Observable<any>
+}
+
+export interface EntityItemState extends EntityTypeState, PublicEntityItemState {
+  selectors: ItemSelectors,
+  dispatchers: ItemDispatchers,
+};
+
+export interface ItemState extends EntityTypeState, PublicEntityItemState {
+
+}
+
+export interface EntityItem extends PublicEntityItemState, EntityTypeConfig {
+  selectors: EntityItemSelectors,
+  dispatchers: EntityItemDispatchers
 }
 
 
+export type EntityItemFactory = (state: EntityTypeState, config: Partial<EntityTypeConfig>) => EntityItem;

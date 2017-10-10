@@ -5,13 +5,10 @@ import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import {HEntityState, HEntityType, IDispatchers, ISelectors} from "../base/interfaces";
-import {HUsersList} from "./users-interface";
 import {HListFactory} from "../base/list-client";
-import {HGroupsListFunctions} from "../groups/groups-interfaces";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersAnalytics, UsersAnalyticsFactory} from "./users-analytics-interfaces";
-import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/arc";
+import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/interfaces";
 
 export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPage> {
   //todo IUserPage added as hack to fix allMarkers$ in client

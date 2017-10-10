@@ -7,12 +7,9 @@ import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {Store} from "../../store/store";
 import {AllData} from "../../interfaces";
-import {
-  HEntityState, HEntityType, HEntity, ISelectors, IDispatchers, HList,
-} from "../base/interfaces";
 import {HListFactory} from "../base/list-client";
-import {EntityList, EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/arc";
-import {EntityConfigFactory} from "../base/entity-factory";
+import {EntityList, EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/interfaces";
+import {EntityConfigFactory} from "../base/entity-config";
 import {AddGroupsListSelector, GroupListFactory, GroupsList} from "./groups-list-interface"
 
 export class HtGroupsListClient extends HtListClient<Page<IGroup>> {

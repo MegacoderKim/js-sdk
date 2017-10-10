@@ -7,12 +7,10 @@ import * as fromRoot from "../../reducers";
 import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as _ from "underscore";
-import {HEntityState, HEntityType, IDispatchers, ISelectors} from "../base/interfaces";
-import {HUsersList} from "./users-interface";
 import {HListFactory} from "../base/list-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersIndex, UsersIndexFactory} from "./users-index-interfaces";
-import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/arc";
+import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/interfaces";
 
 export class HtUsersIndexClient extends HtListClient<IUserPage> {
   name = "users index";
