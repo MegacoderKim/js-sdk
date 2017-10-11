@@ -3,10 +3,15 @@ import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
 import {IDateRange} from "../../interfaces";
 
+export type ItemApi<T> = (id: string, query: object | null) => Observable<T>;
+export type ListApi<T> = (query: object | null) => Observable<T>;
+
 export interface Dispatchers {
   setData: (data) => any,
   setLoading: (data) => any,
 };
+
+export type GetData<T> = (queryArray: any[]) => Observable<T>
 
 export interface Selectors {
   query$: Observable<object>
@@ -26,8 +31,6 @@ export interface EntityTypeConfig {
 }
 
 export type EntityTypeConfigFactory = (config: Partial<EntityTypeConfig>) => EntityTypeConfig
-
-export type ClientSubs = (dispatcher, selector, getData) => void;
 
 export interface EntityTypeState {
   store: Store<any>,
@@ -68,12 +71,13 @@ export interface PublicEntityListState {
 
 export interface ListState extends EntityTypeState, PublicEntityListState {
   dateRangeParam?: string
-  dateRangeQuery$?: Observable<IDateRange>,
+  dateRangeQuery$?: Observable<object>,
 }
 
 export interface EntityListState extends ListState, PublicEntityListState {
   selectors: ListSelectors,
   dispatchers: ListDispatchers,
+  allowedQueryKeys?: string[] | null
 }
 
 export interface EntityList extends EntityTypeConfig, PublicEntityListState {

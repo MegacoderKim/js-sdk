@@ -33,9 +33,11 @@ import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersList} from "./users-list";
 import {UsersMarkers} from "./users-markers";
-import {HtUsersSummaryClient} from "./users-summary-client";
+import {HtUsersSummaryClient, HtUsersSummaryFactory} from "./users-summary-client";
 import {EntityTypeState, ItemState, ListState} from "../base/interfaces";
 import {UsersPlaceline} from "./users-placeline-interfaces";
+import {UsersSummary} from "./users-summary-interface";
+import {DateRangeToQuery} from "../base/helpers";
 /**
  * Class containing all user related client entity like list of user, user placeline etc
  * @class
@@ -69,11 +71,12 @@ export class HtUsersClient extends EntityClient {
   queryDispatcher = fromQueryDispatcher;
 
   list;
-  summary: HtUsersSummaryClient;
+  summary: UsersSummary;
   markers;
   _statusQueryArray: QueryLabel[];
   constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
     super();
+    let api = new HtUsersApi(req);
 
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
@@ -85,28 +88,27 @@ export class HtUsersClient extends EntityClient {
     };
 
     let listState = {
-      dateRangeParam: 'last_hearbeat_at',
-      dateRangeQuery$: this.dateRangeObserver.data$()
-    }
+      dateRangeQuery$: this.dateRangeObserver.data$().let(DateRangeToQuery('recorded_at'))
+    };
 
     let indexState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => this.api.index(query),
+      api$: (query) => api.index(query),
     };
 
     let analyticsState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => this.api.analytics(query),
+      api$: (query) => api.analytics(query),
     };
 
     let placelineState: ItemState = {
       ...entityState,
-      api$: (id, query) => this.api.placeline(id, query),
+      api$: (id, query) => api.placeline(id, query),
     };
 
-    let api = new HtUsersApi(req);
+
     this.api = api;
     const dateRangeSource$ = this.dateRangeObserver.data$()
       .map((range: IDateRange) => {
@@ -155,12 +157,19 @@ export class HtUsersClient extends EntityClient {
       store: this.store
     });
 
-    this.summary  = new HtUsersSummaryClient({
+    let summaryState: ListState = {
+      ...entityState,
+      ...listState,
       api$: (query) => api.summary(query),
-      dateRangeSource$,
-      store: this.store,
-      loadingDispatcher: (data) => this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserSummary(data))
-    });
+    };
+
+    this.summary = HtUsersSummaryFactory(summaryState, {});
+    // this.summary  = new HtUsersSummaryClient({
+    //   api$: (query) => api.summary(query),
+    //   dateRangeSource$,
+    //   store: this.store,
+    //   loadingDispatcher: (data) => this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserSummary(data))
+    // });
 
     this.list = new UsersList(this.store, this.index, this.analytics);
 
@@ -214,7 +223,7 @@ export class HtUsersClient extends EntityClient {
 
   listSummary$() {
     return Observable.combineLatest(
-      this.summary.data$,
+      this.summary.selectors.data$,
       this.list.id$,
       (summary, userId) => userId ? null : summary
     )
@@ -275,7 +284,7 @@ export class HtUsersClient extends EntityClient {
   listMap$() {
     const withSummary = Observable.zip(
       this.placelineOrList$(),
-      this.summary.data$,
+      this.summary.selectors.data$,
       (placelineList, summary) => {
         console.log("sasd", placelineList, summary);
         return {placelineList, summary}
@@ -287,7 +296,7 @@ export class HtUsersClient extends EntityClient {
       return {placelineList, summary: null}
     });
 
-    return this.summary.isActive$
+    return this.summary.selectors.active$
       .switchMap((summaryActive) => {
       return summaryActive ?
         withSummary :

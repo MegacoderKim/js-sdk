@@ -43,7 +43,7 @@ export class HtUsersIndexClient extends HtListClient<IUserPage> {
     } else if(this.allowedQueryKeys) {
       return Observable.of({})
     } else {
-      return this.store.select(fromRoot.getQueryUserQuery)
+      return queryStore$
     }
 
   }

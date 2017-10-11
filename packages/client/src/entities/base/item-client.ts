@@ -1,10 +1,11 @@
 import {Observable} from "rxjs/Observable";
-import {HClientFactory} from "./client-factory";
+import {ClientSubConfig, ClientSubDispatchers, HClientFactory} from "./client-factory";
 import * as _ from "underscore";
 import {EntityConfigFactory} from "./entity-config";
 import {
-  EntityItem, EntityItemFactory, EntityItemSelectors, EntityItemState, EntityListState, EntityTypeConfig,
-  ItemDispatchers, ItemSelectors
+  EntityItem, EntityItemFactory, EntityItemSelectors, EntityItemState, EntityListState, EntityTypeConfig, GetData,
+  ItemApi,
+  ItemDispatchers, ItemSelectors, ReqSelectors
 } from "./interfaces";
 
 export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, overrideConfig: Partial<EntityTypeConfig>): EntityItem => {
@@ -47,7 +48,14 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
     return overrideConfig.updateStrategy != 'once' ? update : first
   };
 
-  HClientFactory(dispatchers, selectors.apiQuery$, getData$);
+  let clientSubConfig: ClientSubConfig = {
+    apiQuery$: selectors.apiQuery$,
+    getData$,
+    setLoading: dispatchers.setLoading,
+    setData: dispatchers.setData
+  };
+
+  HClientFactory(clientSubConfig);
 
   return {
     api$,
@@ -56,3 +64,31 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
     ...entity
   }
 };
+
+// export const getItemApiQueryFactory$: (config: GetItemApiQueryConfig) => Observable<any[]> = (config: GetItemApiQueryConfig) => {
+//   let {id$, query$} = config;
+//   return Observable.combineLatest(
+//     id$.distinctUntilChanged(),
+//     query$.distinctUntilChanged()
+//   )
+// };
+//
+//
+//
+// export const itemClientSubs = (apiQueryConfig: GetItemApiQueryConfig, getDataConfig: GetItemDataConfig, clientSubDispatchers: ClientSubDispatchers): ReqSelectors => {
+//   let apiQuery$ = getItemApiQueryFactory$(apiQueryConfig);
+//   let getData$ = getItemDataFactory$(getDataConfig);
+//   let clientSubConfig: ClientSubConfig = {
+//     getData$,
+//     apiQuery$,
+//     ...clientSubDispatchers
+//   };
+//   HClientFactory(clientSubConfig);
+//   return {apiQuery$}
+// };
+//
+// export interface GetItemApiQueryConfig {
+//   id$: Observable<string>,
+//   query$: Observable<object>
+// }
+

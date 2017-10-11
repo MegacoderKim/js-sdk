@@ -109,7 +109,8 @@ export const groupsListClientFactory: GroupListFactory = (state: ListState, conf
     selectors: listSelectors,
     dispatchers,
     api$,
-    store
+    store,
+    firstDataEffect: (data) => dispatchers.setLoading(false)
   };
 
   let entityList: EntityList = HListFactory(listState, innerConfig);
