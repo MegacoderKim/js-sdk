@@ -9,7 +9,7 @@ export const ListSelectorsFactory = ({selectors, apiQueryConfig}: ListSelectorsC
   let listSelectors = {
     dataArray$: selectors.data$.let(PageResults),
     apiQuery$
-  }
+  };
   return listSelectors
 };
 

@@ -7,46 +7,46 @@ import {
   ItemApi,
   ItemDispatchers, ItemSelectors, ReqSelectors
 } from "./interfaces";
+import {ItemSelectorsConfig, itemSelectorsFactory} from "../helpers/item-selectors-factory";
+import {ItemApiQueryConfig} from "../helpers/api-query-factory";
+import {GetDataConfig, itemGetDataFactory$} from "../helpers/get-data-factory";
 
 export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, overrideConfig: Partial<EntityTypeConfig>): EntityItem => {
 
   let {
     dispatchers,
-    // selectors,
     api$,
     store,
     firstDataEffect
   } = entityState;
 
+  let itemApiQuery: ItemApiQueryConfig = {
+    query$: entityState.selectors.query$,
+    id$: entityState.selectors.id$
+  };
+
+  let itemSelectorsConfig: ItemSelectorsConfig = {
+    selectors: entityState.selectors,
+    itemApiQuery
+  };
+
+  let itemSelectors = itemSelectorsFactory(itemSelectorsConfig);
 
   let selectors: EntityItemSelectors = {
     ...entityState.selectors,
-    apiQuery$: Observable.combineLatest(
-      entityState.selectors.id$.distinctUntilChanged(),
-      entityState.selectors.query$.distinctUntilChanged()
-    )
+    ...itemSelectors
   };
 
   let entity = EntityConfigFactory(overrideConfig);
 
-  let getData$ = ([id, query]) => {
-    let first = api$(id, query).do((data) => {
-      if(firstDataEffect) {
-        firstDataEffect(data)
-      } else {
-        dispatchers.setLoading(false)
-      }
-    });
-
-    let update = first.expand((data) => {
-      return Observable.timer(entity.pollDuration).switchMap(() => {
-        return api$(id, query)
-
-      })
-    });
-
-    return overrideConfig.updateStrategy != 'once' ? update : first
+  let itemGetDataConfig: GetDataConfig<ItemApi<any>> = {
+    api$,
+    pollDuration: entity.pollDuration,
+    updateStrategy: entity.updateStrategy,
+    firstDataEffect
   };
+
+  let getData$ = itemGetDataFactory$(itemGetDataConfig);
 
   let clientSubConfig: ClientSubConfig = {
     apiQuery$: selectors.apiQuery$,
@@ -64,31 +64,4 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
     ...entity
   }
 };
-
-// export const getItemApiQueryFactory$: (config: GetItemApiQueryConfig) => Observable<any[]> = (config: GetItemApiQueryConfig) => {
-//   let {id$, query$} = config;
-//   return Observable.combineLatest(
-//     id$.distinctUntilChanged(),
-//     query$.distinctUntilChanged()
-//   )
-// };
-//
-//
-//
-// export const itemClientSubs = (apiQueryConfig: GetItemApiQueryConfig, getDataConfig: GetItemDataConfig, clientSubDispatchers: ClientSubDispatchers): ReqSelectors => {
-//   let apiQuery$ = getItemApiQueryFactory$(apiQueryConfig);
-//   let getData$ = getItemDataFactory$(getDataConfig);
-//   let clientSubConfig: ClientSubConfig = {
-//     getData$,
-//     apiQuery$,
-//     ...clientSubDispatchers
-//   };
-//   HClientFactory(clientSubConfig);
-//   return {apiQuery$}
-// };
-//
-// export interface GetItemApiQueryConfig {
-//   id$: Observable<string>,
-//   query$: Observable<object>
-// }
 

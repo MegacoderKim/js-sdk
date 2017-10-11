@@ -1,6 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import {AllowedQueryKeys, CombineQuery, DateRangeToQuery, MergeQuery} from "../base/helpers";
 import {IDateRange} from "../../interfaces";
+import {Partial} from "ht-models";
 
 export const apiQueryFactory$ = (config: EntityApiQueryConfig): Observable<any[]>  => {
   let {
@@ -64,6 +65,6 @@ export interface ListApiQueryConfig extends ApiQueryConfig, EntityListApiQueryCo
 
 }
 
-export interface ItemApiQueryConfig extends ApiQueryConfig, EntityItemApiQueryConfig, DateRangeApiQueryConfig {
+export interface ItemApiQueryConfig extends ApiQueryConfig, EntityItemApiQueryConfig, Partial<DateRangeApiQueryConfig> {
 
 }
