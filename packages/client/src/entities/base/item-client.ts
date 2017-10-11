@@ -32,11 +32,6 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
 
   let itemSelectors = itemSelectorsFactory(itemSelectorsConfig);
 
-  let selectors: EntityItemSelectors = {
-    ...entityState.selectors,
-    ...itemSelectors
-  };
-
   let entity = EntityConfigFactory(overrideConfig);
 
   let itemGetDataConfig: GetDataConfig<ItemApi<any>> = {
@@ -49,7 +44,7 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
   let getData$ = itemGetDataFactory$(itemGetDataConfig);
 
   let clientSubConfig: ClientSubConfig = {
-    apiQuery$: selectors.apiQuery$,
+    apiQuery$: itemSelectors.apiQuery$,
     getData$,
     setLoading: dispatchers.setLoading,
     setData: dispatchers.setData
@@ -59,8 +54,7 @@ export const HItemFactory: EntityItemFactory = (entityState: EntityItemState, ov
 
   return {
     api$,
-    dispatchers,
-    selectors,
+    selectors: itemSelectors,
     ...entity
   }
 };

@@ -90,25 +90,22 @@ export type EntityListFactory = (entityListState: ListState, config: Partial<Ent
 /**
  * item
  */
-export interface ItemDispatchers extends Dispatchers {
+export interface ItemDispatchers {
+
+}
+
+export interface EntityItemDispatchers extends Dispatchers {
   setId: (id: string | null) => any,
   toggleId?: (userId: string) => any
-  // toggleId(userId: string) {
-  //   store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
-  // }
 }
 
-export interface EntityItemDispatchers extends ItemDispatchers {
+export interface ItemSelectors extends ReqSelectors{
+
 
 }
 
-export interface ItemSelectors extends Selectors {
+export interface EntityItemSelectors extends Selectors {
   id$: Observable<string | null>
-
-}
-
-export interface EntityItemSelectors extends ReqSelectors, ItemSelectors {
-
 }
 
 export interface PublicEntityItemState {
@@ -116,8 +113,8 @@ export interface PublicEntityItemState {
 }
 
 export interface EntityItemState extends EntityTypeState, PublicEntityItemState {
-  selectors: ItemSelectors,
-  dispatchers: ItemDispatchers,
+  selectors: EntityItemSelectors,
+  dispatchers: EntityItemDispatchers,
 };
 
 export interface ItemState extends EntityTypeState, PublicEntityItemState {
@@ -125,8 +122,8 @@ export interface ItemState extends EntityTypeState, PublicEntityItemState {
 }
 
 export interface EntityItem extends PublicEntityItemState, EntityTypeConfig {
-  selectors: EntityItemSelectors,
-  dispatchers: EntityItemDispatchers
+  selectors: ItemSelectors,
+  // dispatchers: EntityItemDispatchers
 }
 
 

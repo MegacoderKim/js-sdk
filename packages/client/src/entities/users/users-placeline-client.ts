@@ -18,7 +18,9 @@ import {
   UsersPlacelineFactory
 } from "./users-placeline-interfaces";
 import {
-  Dispatchers, EntityItemState, EntityTypeConfig, EntityTypeState, ItemDispatchers, ItemSelectors, ItemState,
+  Dispatchers, EntityItemDispatchers, EntityItemSelectors, EntityItemState, EntityTypeConfig, EntityTypeState,
+  ItemDispatchers, ItemSelectors,
+  ItemState,
   ListDispatchers
 } from "../base/interfaces";
 
@@ -85,7 +87,7 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
     api$
   } = state;
 
-  let itemSelectors: ItemSelectors = {
+  let itemSelectors: EntityItemSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery),
     data$: store.select(fromRoot.getUsersAnalyticsPage),
     loading$: store.select(fromRoot.getLoadingAnalytics),
@@ -96,7 +98,7 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
 
   };
 
-  let dispatchers: ItemDispatchers = {
+  let dispatchers: EntityItemDispatchers = {
     setData(data) {
       store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
     },
@@ -132,6 +134,7 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
 
   return {
     ...entityItem,
-    dispatchers: {...entityItem.dispatchers, ...placelineDispatchers}
+    dispatchers: {...dispatchers, ...placelineDispatchers},
+    selectors: {...entityItem.selectors, ...itemSelectors}
   }
 };

@@ -9,7 +9,8 @@ import {HItemFactory} from "../base/item-client";
 import {GroupsItem, GroupsItemFactory} from "./groups-item-interface";
 
 import {
-  EntityItemFactory, EntityItemState, EntityTypeConfig, ItemDispatchers, ItemSelectors,
+  EntityItemDispatchers,
+  EntityItemFactory, EntityItemSelectors, EntityItemState, EntityTypeConfig, ItemDispatchers, ItemSelectors,
   ItemState
 } from "../base/interfaces";
 
@@ -62,14 +63,14 @@ export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, co
     store
   } = state;
 
-  let itemSelector: ItemSelectors = {
+  let itemSelector: EntityItemSelectors = {
     id$: store.select(fromGroup.getGroupId),
     query$: Observable.of({}),
     data$: Observable.empty(),
     loading$: Observable.of(false),
   };
 
-  let dispatchers: ItemDispatchers = {
+  let dispatchers: EntityItemDispatchers = {
     setId(id) {
       store.dispatch(new fromGroupDispatcher.SetGroupId(id))
     },
@@ -92,6 +93,8 @@ export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, co
 
   return {
     ...entityItem,
+    dispatchers,
+    selectors: {...itemSelector, ...entityItem.selectors}
   }
   // return HItemFactory(api$, store, innerConfig)
 };
