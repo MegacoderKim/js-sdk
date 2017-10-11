@@ -95,6 +95,8 @@ export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListStat
   let entityList = HListFactory(entityListState, innerConfig);
 
   return {
-    ...entityList
+    ...entityList,
+    dispatchers,
+    selectors: {...listSelectors, ...entityList.selectors}
   }
 };

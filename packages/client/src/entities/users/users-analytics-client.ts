@@ -47,11 +47,12 @@ export class HtUsersAnalytics extends HtListClient<IUserAnalyticsPage | IUserPag
 export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): UsersAnalytics => {
   let innerConfig = {
     name: 'users analytics',
-    defaultQuery: {ordering: '-last_heartbeat_at'},
-    ...config
+    updateStrategy: 'update',
+    ...config,
+    defaultQuery: {ordering: '-last_heartbeat_at', ...config.defaultQuery},
   };
 
-  let {api$, store} = state;
+  let {api$, store, dateRangeQuery$} = state;
 
   let selectors: ListSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery),
@@ -73,15 +74,19 @@ export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListSt
   };
 
   let entityListState: EntityListState = {
+      ...state,
     selectors,
     dispatchers,
-    store,
-    api$
+    firstDataEffect: (data) => {
+      dispatchers.setLoading(false)
+    }
   };
 
   let entityList = HListFactory(entityListState, innerConfig);
 
   return {
     ...entityList,
+    dispatchers,
+    selectors: {...selectors, ...entityList.selectors}
   }
 };

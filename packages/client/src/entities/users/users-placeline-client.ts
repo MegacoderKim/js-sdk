@@ -19,7 +19,7 @@ import {
 } from "./users-placeline-interfaces";
 import {
   Dispatchers, EntityItemDispatchers, EntityItemSelectors, EntityItemState, EntityTypeConfig, EntityTypeState,
-  ItemDispatchers, ItemSelectors,
+  ItemDispatchers, GenItemSelectors,
   ItemState,
   ListDispatchers
 } from "../base/interfaces";

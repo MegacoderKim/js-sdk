@@ -5,7 +5,7 @@ import {EntityConfigFactory} from "./entity-config";
 import {
   EntityItem, EntityItemFactory, EntityItemSelectors, EntityItemState, EntityListState, EntityTypeConfig, GetData,
   ItemApi,
-  ItemDispatchers, ItemSelectors, ReqSelectors
+  ItemDispatchers, GenItemSelectors, ReqSelectors
 } from "./interfaces";
 import {ItemSelectorsConfig, itemSelectorsFactory} from "../helpers/item-selectors-factory";
 import {ItemApiQueryConfig} from "../helpers/api-query-factory";

@@ -1,5 +1,5 @@
 import {
-  EntityItem, EntityItemSelectors, EntityTypeConfig, ItemDispatchers, ItemSelectors,
+  EntityItem, EntityItemSelectors, EntityTypeConfig, ItemDispatchers, GenItemSelectors,
   ItemState
 } from "../base/interfaces";
 
@@ -7,7 +7,7 @@ export interface AddGroupsItemSelector {
 
 }
 
-export interface GroupsItemSelector extends AddGroupsItemSelector, EntityItemSelectors, ItemSelectors {
+export interface GroupsItemSelector extends AddGroupsItemSelector, EntityItemSelectors, GenItemSelectors {
 
 }
 

@@ -10,19 +10,21 @@ import {HtUsersApi} from "../../api/users";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {Subscription} from "rxjs/Subscription";
+import {UsersAnalytics} from "./users-analytics-interfaces";
+import {UsersIndex} from "./users-index-interfaces";
 
 export class UsersList {
   constructor(
     public store: Store<fromRoot.State>,
-    private usersIndexClient: HtListClient<IUserPage | any>,
-    private usersAnalyticsClient: HtListClient<IUserAnalyticsPage | any>
+    private usersIndexClient: UsersIndex,
+    private usersAnalyticsClient: UsersAnalytics
   ) {
 
   }
 
-  get isActive$(): Observable<boolean> {
+  get active$(): Observable<boolean> {
     return this.getClient().switchMap((client) => {
-      return client.isActive$
+      return client.selectors.active$
     })
   }
 
@@ -32,13 +34,13 @@ export class UsersList {
 
   get data$() {
     return this.getClient().switchMap((client) => {
-      return client.data$
+      return client.selectors.data$
     })
   }
 
   get loading$() {
     const listLoading = this.getClient().switchMap((client) => {
-      return client.loading$
+      return client.selectors.loading$
     });
     const summaryLoadingState$ = this.store.select(fromRoot.getLoadingUserSummary);
 
@@ -59,7 +61,7 @@ export class UsersList {
 
   get query$() {
     return this.getClient().switchMap((client) => {
-      return client.query$
+      return client.selectors.query$
     })
   }
 
@@ -75,7 +77,9 @@ export class UsersList {
 
   getApiQuery$() {
     return this.getClient().switchMap((client) => {
-      return client.getApiQuery$()
+      return client.selectors.apiQuery$.map(data => {
+        return data ? data[0] : data;
+      })
     })
   }
 
@@ -113,7 +117,7 @@ export class UsersList {
 
   setLive(isLive: boolean) {
     return this.getClient().subscribe((client) => {
-      client.isLive = isLive;
+      // client.isLive = isLive;
     })
   }
 

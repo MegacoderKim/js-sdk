@@ -16,7 +16,6 @@ export const listGetDataFactory = ({api$, firstDataEffect, pollDuration, updateS
         firstDataEffect(data)
       }
     });
-
     let update = first.expand((data) => {
       return Observable.timer(pollDuration).switchMap(() => {
         if(updateStrategy == 'live') {

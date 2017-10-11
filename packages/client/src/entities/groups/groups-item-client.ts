@@ -10,7 +10,7 @@ import {GroupsItem, GroupsItemFactory} from "./groups-item-interface";
 
 import {
   EntityItemDispatchers,
-  EntityItemFactory, EntityItemSelectors, EntityItemState, EntityTypeConfig, ItemDispatchers, ItemSelectors,
+  EntityItemFactory, EntityItemSelectors, EntityItemState, EntityTypeConfig, ItemDispatchers, GenItemSelectors,
   ItemState
 } from "../base/interfaces";
 

@@ -1,5 +1,5 @@
 import {
-  EntityList, EntityListSelectors, EntityTypeConfig, ListDispatchers, ListSelectors,
+  EntityList, EntityListSelectors, EntityTypeConfig, GenListSelectors, ListDispatchers, ListSelectors,
   ListState
 } from "../base/interfaces";
 import {Observable} from "rxjs/Observable";
@@ -9,7 +9,7 @@ export interface AddGroupsListSelector {
   getChildren: (groupId: string) => Observable<any>
 }
 
-export interface GroupsListSelector extends AddGroupsListSelector, EntityListSelectors, ListSelectors {
+export interface GroupsListSelector extends AddGroupsListSelector, EntityListSelectors, GenListSelectors {
 
 }
 

@@ -20,7 +20,7 @@ export abstract class HtBaseClient<T> {
     return this.options.api$
   }
 
-  // abstract get isActive$()
+  // abstract get active$()
 
   abstract setData(data): void
 

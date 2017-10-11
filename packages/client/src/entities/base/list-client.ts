@@ -6,8 +6,8 @@ import {
   EntityListFactory,
   EntityListSelectors,
   EntityListState,
-  EntityTypeConfig,
-  ListApi
+  EntityTypeConfig, GenListSelectors,
+  ListApi, ListSelectors
 } from "./interfaces";
 import {GetDataConfig, listGetDataFactory} from "../helpers/get-data-factory";
 import {ListApiQueryConfig} from "../helpers/api-query-factory";
@@ -24,6 +24,11 @@ export const HListFactory: EntityListFactory = (entityState: EntityListState, ov
     allowedQueryKeys
   } = entityState;
 
+  let config = {
+    updateStrategy: 'live',
+    ...overrideConfig,
+  };
+
   let entity = EntityConfigFactory(overrideConfig);
 
   let listApiQueryConfig: ListApiQueryConfig = {
@@ -34,10 +39,9 @@ export const HListFactory: EntityListFactory = (entityState: EntityListState, ov
     active$: entityState.selectors.active$
   };
 
-  let listSelector = ListSelectorsFactory({selectors: entityState.selectors, apiQueryConfig: listApiQueryConfig})
+  let listSelector: GenListSelectors = ListSelectorsFactory({selectors: entityState.selectors, apiQueryConfig: listApiQueryConfig})
 
-  let selectors: EntityListSelectors = {
-    ...entityState.selectors,
+  let selectors: GenListSelectors = {
     ...listSelector
   };
 
@@ -62,7 +66,6 @@ export const HListFactory: EntityListFactory = (entityState: EntityListState, ov
   return {
     ...entity,
     selectors,
-    dispatchers,
     api$
   }
 };

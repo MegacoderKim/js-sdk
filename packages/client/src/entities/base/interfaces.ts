@@ -34,7 +34,9 @@ export type EntityTypeConfigFactory = (config: Partial<EntityTypeConfig>) => Ent
 
 export interface EntityTypeState {
   store: Store<any>,
-  firstDataEffect?: (data) => any
+  firstDataEffect?: (data) => any,
+  selectors?: Selectors,
+  dispatchers?: Dispatchers,
 }
 
 export interface EntityType extends EntityTypeConfig {
@@ -54,6 +56,10 @@ export interface ListDispatchers extends Dispatchers {
 
 export interface EntityListDispatchers extends ListDispatchers {
 
+};
+
+export interface GenListSelectors extends ReqSelectors {
+  dataArray$: Observable<any[]>,
 }
 
 export interface ListSelectors extends Selectors {
@@ -61,7 +67,6 @@ export interface ListSelectors extends Selectors {
 }
 
 export interface EntityListSelectors extends ReqSelectors, ListSelectors {
-  dataArray$: Observable<any[]>,
   dateRangeQuery$?: Observable<object>,
 }
 
@@ -81,8 +86,7 @@ export interface EntityListState extends ListState, PublicEntityListState {
 }
 
 export interface EntityList extends EntityTypeConfig, PublicEntityListState {
-  selectors: EntityListSelectors,
-  dispatchers: EntityListDispatchers
+  selectors: GenListSelectors,
 }
 
 export type EntityListFactory = (entityListState: ListState, config: Partial<EntityTypeConfig>) => EntityList
@@ -99,7 +103,7 @@ export interface EntityItemDispatchers extends Dispatchers {
   toggleId?: (userId: string) => any
 }
 
-export interface ItemSelectors extends ReqSelectors{
+export interface GenItemSelectors extends ReqSelectors{
 
 
 }
@@ -122,7 +126,7 @@ export interface ItemState extends EntityTypeState, PublicEntityItemState {
 }
 
 export interface EntityItem extends PublicEntityItemState, EntityTypeConfig {
-  selectors: ItemSelectors,
+  selectors: GenItemSelectors,
   // dispatchers: EntityItemDispatchers
 }
 

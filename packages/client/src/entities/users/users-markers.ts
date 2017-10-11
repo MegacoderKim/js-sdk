@@ -11,13 +11,14 @@ import {UsersList} from "./users-list";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {htUser} from "ht-js-data";
 import * as _ from "underscore";
+import {IUsersMarkers} from "./users-markers-interfaces"
 
 export class UsersMarkers extends UsersList {
 
   constructor(
     public store: Store<fromRoot.State>,
-    private usersIndexMarkers: HtUsersIndexMarkers,
-    private usersAnalyticsMarkers: HtUsersAnalyticsMarkers
+    private usersIndexMarkers: IUsersMarkers,
+    private usersAnalyticsMarkers: IUsersMarkers
   ) {
     super(store, usersIndexMarkers, usersAnalyticsMarkers)
   };

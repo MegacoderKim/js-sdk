@@ -69,21 +69,21 @@ export const UsersIndexClientFactory: UsersIndexFactory = (state: EntityListStat
     ...config
   };
 
-  let {api$, store} = state;
+  let {store} = state;
 
   let selectors: ListSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery),
-    data$: store.select(fromRoot.getUsersAnalyticsPage),
-    active$: store.select(fromRoot.getUsersAnalyticsIsActive),
-    loading$: store.select(fromRoot.getLoadingAnalytics)
+    data$: store.select(fromRoot.getUsersIndexPage),
+    active$: store.select(fromRoot.getUsersIndexIsActive),
+    loading$: store.select(fromRoot.getLoadingUserIndex)
   };
 
   let dispatchers: ListDispatchers = {
     setData(data) {
-      store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
+      store.dispatch(new fromUsersDispatcher.SetUsersIndexPage(data))
     },
     setLoading(data) {
-      store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
+      store.dispatch(new fromLoadingDispatcher.SetLoadingUserIndex(data))
     },
     setActive(isActive: boolean = true){
       store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
@@ -91,15 +91,19 @@ export const UsersIndexClientFactory: UsersIndexFactory = (state: EntityListStat
   };
 
   let listState: EntityListState = {
+    ...state,
     selectors,
     dispatchers,
-    store,
-    api$
+    firstDataEffect(data) {
+      dispatchers.setLoading(false)
+    }
   };
 
   let entityList = HListFactory(listState, innerConfig);
 
   return {
-    ...entityList
+    ...entityList,
+    dispatchers,
+    selectors: {...selectors, ...entityList.selectors}
   }
 };
