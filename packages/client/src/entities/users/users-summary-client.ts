@@ -54,7 +54,8 @@ export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListStat
 
   return {
     ...entityList,
-    dispatchers,
-    selectors: {...listSelectors, ...entityList.selectors}
+    ...dispatchers,
+    ...listSelectors,
+    ...entityList.selectors
   }
 };

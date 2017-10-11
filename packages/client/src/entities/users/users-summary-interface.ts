@@ -21,9 +21,8 @@ export interface UsersSummaryDispatchers extends AddUsersSummaryDispatchers, Ent
 
 }
 
-export interface UsersSummary extends EntityList {
-  selectors: UsersSummarySelector,
-  dispatchers: UsersSummaryDispatchers
+export interface UsersSummary extends EntityList, UsersSummarySelector, UsersSummaryDispatchers {
+
 };
 
 export type UsersSummaryFactory = (itemEntityState: ListState, config: Partial<EntityTypeConfig>) => UsersSummary

@@ -20,9 +20,8 @@ export interface UsersPlacelineDispatchers extends AddUsersPlacelineDispatchers,
 
 }
 
-export interface UsersPlaceline extends EntityItem {
-  selectors: UsersPlacelineSelector,
-  dispatchers: UsersPlacelineDispatchers
+export interface UsersPlaceline extends EntityItem, UsersPlacelineSelector, UsersPlacelineDispatchers {
+
 };
 
 export type UsersPlacelineFactory = (itemEntityState: ItemState, config: Partial<EntityTypeConfig>) => UsersPlaceline

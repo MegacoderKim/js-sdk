@@ -20,7 +20,7 @@ import {
 
 export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemState, config: Partial<EntityTypeConfig> = {}): UsersPlaceline => {
   let innerConfig: Partial<EntityTypeConfig> = {
-    name: 'users analytics',
+    name: 'users placeline',
     defaultQuery: {ordering: '-last_heartbeat_at'},
     updateStrategy: 'live',
     ...config
@@ -32,9 +32,9 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
   } = state;
 
   let itemSelectors: EntityItemSelectors = {
-    query$: store.select(fromRoot.getQueryUserQuery),
-    data$: store.select(fromRoot.getUsersAnalyticsPage),
-    loading$: store.select(fromRoot.getLoadingAnalytics),
+    query$: Observable.of({}),
+    data$: store.select(fromRoot.getUsersUsersData),
+    loading$: store.select(fromRoot.getLoadingUserData),
     id$: store.select(fromRoot.getQueryPlacelineId)
   };
 
@@ -44,11 +44,11 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
 
   let dispatchers: EntityItemDispatchers = {
     setData(data) {
-      store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
+      store.dispatch(new fromUsersDispatcher.SetUserData(data))
     },
     setLoading(data) {
       console.log("loading", data);
-      store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
+      store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
     },
     setId(id) {
       store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
@@ -68,17 +68,21 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
   };
 
   let entityState: EntityItemState = {
-    store,
+      ...state,
     selectors: itemSelectors,
     dispatchers,
-    api$
+    firstDataEffect(data) {
+        dispatchers.setLoading(false)
+    }
   };
 
   let entityItem = HItemFactory(entityState, innerConfig);
 
   return {
     ...entityItem,
-    dispatchers: {...dispatchers, ...placelineDispatchers},
-    selectors: {...entityItem.selectors, ...itemSelectors}
+    ...dispatchers,
+    ...placelineDispatchers,
+    ...entityItem.selectors,
+    ...itemSelectors
   }
 };

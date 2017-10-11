@@ -45,9 +45,15 @@ export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListSt
 
   let entityList = HListFactory(entityListState, innerConfig);
 
+  // return {
+  //   ...entityList,
+  //   dispatchers,
+  //   selectors: {...selectors, ...entityList.selectors}
+  // }
   return {
     ...entityList,
-    dispatchers,
-    selectors: {...selectors, ...entityList.selectors}
+    ...dispatchers,
+    ...selectors,
+    ...entityList.selectors
   }
 };

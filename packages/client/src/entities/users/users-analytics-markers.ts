@@ -61,8 +61,10 @@ export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<E
 
   return {
     ...entityList,
-    dispatchers: {...listDispatcher, ...indexMarkersDispatchers},
-    selectors: {...listSelectors, ...entityList.selectors}
+    ...listDispatcher,
+    ...indexMarkersDispatchers,
+    ...listSelectors,
+    ...entityList.selectors
   }
 
 };

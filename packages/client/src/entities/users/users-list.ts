@@ -19,7 +19,7 @@ export class UsersList {
 
   get active$(): Observable<boolean> {
     return this.getClient().switchMap((client) => {
-      return client.selectors.active$
+      return client.active$
     })
   }
 
@@ -29,13 +29,13 @@ export class UsersList {
 
   get data$() {
     return this.getClient().switchMap((client) => {
-      return client.selectors.data$
+      return client.data$
     })
   }
 
   get loading$() {
     const listLoading = this.getClient().switchMap((client) => {
-      return client.selectors.loading$
+      return client.loading$
     });
     const summaryLoadingState$ = this.store.select(fromRoot.getLoadingUserSummary);
 
@@ -56,7 +56,7 @@ export class UsersList {
 
   get query$() {
     return this.getClient().switchMap((client) => {
-      return client.selectors.query$
+      return client.query$
     })
   }
 
@@ -72,7 +72,7 @@ export class UsersList {
 
   getApiQuery$() {
     return this.getClient().switchMap((client) => {
-      return client.selectors.apiQuery$.map(data => {
+      return client.apiQuery$.map(data => {
         return data ? data[0] : data;
       })
     })

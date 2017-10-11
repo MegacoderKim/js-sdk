@@ -61,7 +61,9 @@ export const groupsListClientFactory: GroupListFactory = (state: ListState, conf
 
   return {
     ...entityList,
-    selectors: {...entityList.selectors, ...groupSelector, ...listSelectors},
-    dispatchers
+    ...entityList.selectors,
+    ...groupSelector,
+    ...listSelectors,
+    ...dispatchers
   }
 };

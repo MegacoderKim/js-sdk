@@ -21,9 +21,8 @@ export interface UsersAnalyticsDispatchers extends AddUsersAnalyticsDispatchers,
 
 }
 
-export interface UsersAnalytics extends EntityList {
-  selectors: UsersAnalyticsSelector,
-  dispatchers: UsersAnalyticsDispatchers
+export interface UsersAnalytics extends EntityList, UsersAnalyticsSelector, UsersAnalyticsDispatchers {
+
 }
 
 export type UsersAnalyticsFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => UsersAnalytics

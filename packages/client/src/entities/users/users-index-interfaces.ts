@@ -21,9 +21,8 @@ export interface UsersIndexDispatchers extends AddUsersIndexDispatchers, EntityL
 
 }
 
-export interface UsersIndex extends EntityList {
-  selectors: UsersIndexSelector,
-  dispatchers: UsersIndexDispatchers
+export interface UsersIndex extends EntityList, UsersIndexSelector, UsersIndexDispatchers {
+
 }
 
 export type UsersIndexFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => UsersIndex

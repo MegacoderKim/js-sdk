@@ -176,7 +176,7 @@ export class HtUsersClient extends EntityClient {
   placelineOrList$() {
     const id$ = this.list.id$.distinctUntilChanged();
     const dataArray$ = this.list.dataArray$;
-    const selected$ = this.placeline.selectors.data$;
+    const selected$ = this.placeline.data$;
     // let id$ = this.list.idObservable.data$().distinctUntilChanged();
     // let dataArray$ = this.list.dataArray$;
     // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
@@ -187,7 +187,7 @@ export class HtUsersClient extends EntityClient {
   listPage$() {
     const id$ = this.list.id$.distinctUntilChanged();
     const dataArray$ = this.list.data$;
-    const selected$ = this.placeline.selectors.data$;
+    const selected$ = this.placeline.data$;
     // let id$ = this.list.idObservable.data$().distinctUntilChanged();
     // let dataArray$ = this.list.dataArray$;
     // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
@@ -196,7 +196,7 @@ export class HtUsersClient extends EntityClient {
 
   listSummary$() {
     return Observable.combineLatest(
-      this.summary.selectors.data$,
+      this.summary.data$,
       this.list.id$,
       (summary, userId) => userId ? null : summary
     )
@@ -257,7 +257,7 @@ export class HtUsersClient extends EntityClient {
   listMap$() {
     const withSummary = Observable.zip(
       this.placelineOrList$(),
-      this.summary.selectors.data$,
+      this.summary.data$,
       (placelineList, summary) => {
         console.log("sasd", placelineList, summary);
         return {placelineList, summary}
@@ -269,7 +269,7 @@ export class HtUsersClient extends EntityClient {
       return {placelineList, summary: null}
     });
 
-    return this.summary.selectors.active$
+    return this.summary.active$
       .switchMap((summaryActive) => {
       return summaryActive ?
         withSummary :
@@ -362,7 +362,7 @@ export class HtUsersClient extends EntityClient {
       // this.list.dataArray$
     );
 
-    let hasPlaceline$ = this.placeline.selectors.id$.map((data) => !!data).distinctUntilChanged();
+    let hasPlaceline$ = this.placeline.id$.map((data) => !!data).distinctUntilChanged();
 
     let dataArray$ = Observable.combineLatest(
       allMarkers$,
@@ -497,7 +497,7 @@ export class HtUsersClient extends EntityClient {
 
   private initEffects() {
     Observable.combineLatest(
-      this.placeline.selectors.data$,
+      this.placeline.data$,
       this.getSegmentsStates(),
       (userData: IUserData, {selectedId, resetMapId}) => {
         if(userData && (selectedId || resetMapId)) {
@@ -549,7 +549,7 @@ export class HtUsersClient extends EntityClient {
     // });
 
 
-    this.placeline.selectors.id$.scan((acc, currentId) => {
+    this.placeline.id$.scan((acc, currentId) => {
       let isSame = acc.oldId === currentId;
       let oldId = currentId;
       return {isSame, oldId}

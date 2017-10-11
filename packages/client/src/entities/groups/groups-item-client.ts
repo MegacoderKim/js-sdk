@@ -43,18 +43,21 @@ export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, co
   };
 
   let itemState: EntityItemState = {
+    ...state,
     selectors: itemSelector,
     dispatchers,
-    store,
-    api$
+    firstDataEffect(data) {
+      dispatchers.setLoading(false)
+    }
   };
 
   let entityItem = HItemFactory(itemState, innerConfig);
 
   return {
     ...entityItem,
-    dispatchers,
-    selectors: {...itemSelector, ...entityItem.selectors}
+    ...dispatchers,
+    ...itemSelector,
+    ...entityItem.selectors
   }
   // return HItemFactory(api$, store, innerConfig)
 };

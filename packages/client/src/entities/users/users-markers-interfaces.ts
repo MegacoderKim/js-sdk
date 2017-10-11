@@ -21,9 +21,8 @@ export interface UsersMarkersDispatchers extends AddUsersMarkersDispatchers, Ent
 
 }
 
-export interface IUsersMarkers extends EntityList {
-  selectors: UsersMarkersSelector,
-  dispatchers: UsersMarkersDispatchers
+export interface IUsersMarkers extends EntityList, UsersMarkersSelector, UsersMarkersDispatchers {
+
 }
 
 export type UsersMarkersFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => IUsersMarkers

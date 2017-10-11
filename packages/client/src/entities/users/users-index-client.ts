@@ -49,7 +49,8 @@ export const UsersIndexClientFactory: UsersIndexFactory = (state: EntityListStat
 
   return {
     ...entityList,
-    dispatchers,
-    selectors: {...selectors, ...entityList.selectors}
+    ...dispatchers,
+    ...selectors,
+    ...entityList.selectors
   }
 };

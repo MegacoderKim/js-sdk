@@ -13,9 +13,8 @@ export interface GroupsListSelector extends AddGroupsListSelector, EntityListSel
 
 }
 
-export interface GroupsList extends EntityList {
-  selectors: GroupsListSelector,
-  dispatchers: ListDispatchers
+export interface GroupsList extends EntityList, GroupsListSelector, ListDispatchers {
+
 }
 
 export type GroupListFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => GroupsList

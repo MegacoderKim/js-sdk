@@ -34,7 +34,6 @@ export type EntityTypeConfigFactory = (config: Partial<EntityTypeConfig>) => Ent
 
 export interface EntityTypeState {
   store: Store<any>,
-  firstDataEffect?: (data) => any,
   selectors?: Selectors,
   dispatchers?: Dispatchers,
 }
@@ -82,7 +81,8 @@ export interface ListState extends EntityTypeState, PublicEntityListState {
 export interface EntityListState extends ListState, PublicEntityListState {
   selectors: ListSelectors,
   dispatchers: ListDispatchers,
-  allowedQueryKeys?: string[] | null
+  allowedQueryKeys?: string[] | null,
+  firstDataEffect: (data) => any,
 }
 
 export interface EntityList extends EntityTypeConfig, PublicEntityListState {
@@ -119,6 +119,7 @@ export interface PublicEntityItemState {
 export interface EntityItemState extends EntityTypeState, PublicEntityItemState {
   selectors: EntityItemSelectors,
   dispatchers: EntityItemDispatchers,
+  firstDataEffect: (data) => any,
 };
 
 export interface ItemState extends EntityTypeState, PublicEntityItemState {
