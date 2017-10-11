@@ -1,17 +1,12 @@
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers"
 import {Observable} from "rxjs/Observable";
-import {HtUsersIndexClient} from "./users-index-client";
-import {HtUsersAnalytics} from "./users-analytics-client";
 import {ApiType} from "../../interfaces";
-import {IUserAnalyticsPage, IUserPage, IUserAnalytics, IUser} from "ht-models";
-import {HtListClient} from "../../base/list-client";
-import {HtUsersApi} from "../../api/users";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import {Subscription} from "rxjs/Subscription";
 import {UsersAnalytics} from "./users-analytics-interfaces";
 import {UsersIndex} from "./users-index-interfaces";
+import {Subscription} from "rxjs/Subscription";
 
 export class UsersList {
   constructor(

@@ -1,12 +1,8 @@
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers"
 import {Observable} from "rxjs/Observable";
-import {HtUsersIndexClient} from "./users-index-client";
-import {HtUsersAnalytics} from "./users-analytics-client";
-import {AllData, ApiType} from "../../interfaces";
-import {IUserAnalyticsPage, IUserPage, IUserAnalytics, IUser} from "ht-models";
-import {HtUsersIndexMarkers} from "./users-index-markers";
-import {HtUsersAnalyticsMarkers} from "./users-analytics-markers";
+import {AllData} from "../../interfaces";
+import {IUser, IUserAnalytics} from "ht-models";
 import {UsersList} from "./users-list";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {htUser} from "ht-js-data";

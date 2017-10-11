@@ -1,15 +1,15 @@
 import {EntityClient} from "../../base/entity-client";
-import {groupsListClientFactory, HtGroupsListClient} from "./groups-list";
+import {groupsListClientFactory} from "./groups-list";
 import {HtBaseApi} from "../../api/base";
 import {HtGroupsApi} from "../../api/groups";
-import {groupsItemsClientFactory, HtGroupsItemClient} from "./groups-item-client";
-import {Observable} from "rxjs/Observable";
+import {groupsItemsClientFactory} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
+import {EntityTypeState, ItemState, ListState} from "../base/interfaces";
+import {GroupsItem} from "./groups-item-interface";
+import {GroupsList} from "./groups-list-interface";
 import {AllData} from "../../interfaces";
-import {EntityListState, EntityTypeState, ItemState, ListState} from "../base/interfaces";
-import { GroupsItem } from "./groups-item-interface";
-import { GroupsList } from "./groups-list-interface";
+import {Observable} from "rxjs/Observable";
 
 export class HtGroupsClient extends EntityClient{
   list: GroupsList;
