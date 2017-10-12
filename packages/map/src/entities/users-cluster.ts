@@ -9,6 +9,7 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
   markerCluster;
   popup;
+  onClick: (data, marker) => void;
 
   onReady() {
     this.popup = this.mapUtils.getPopup({
@@ -44,8 +45,13 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
     let marker = new HtUserMarker(this.mapType);
     //todo make this configurable
     this.mapUtils.onEvent(marker.item, 'click', () => {
-      let position = marker.dataClass.getPosition();
-      this.mapUtils.openPopupPosition(position, this.map, this.getInfoContent(marker.data), this.popup)
+      if(this.onClick) {
+        this.onClick(marker.data, marker.item)
+      } else {
+        let position = marker.dataClass.getPosition();
+        this.mapUtils.openPopupPosition(position, this.map, this.getInfoContent(marker.data), this.popup)
+      }
+
     });
     return marker
   }
