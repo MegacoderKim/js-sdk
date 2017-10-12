@@ -1,0 +1,50 @@
+@import "../../styles/placeholder.less";
+@box: 20px;
+.box {
+  height: @box;
+  min-width: @box;
+  border-radius: 50%;
+  display: flex;
+  color: white;
+  text-shadow: 0px 0.5px 1px #ffffff;
+  font-weight: bold;
+}
+.label-container {
+  min-width: 170px;
+}
+.graph-label {
+  transition: color 0.2s;
+  cursor: pointer;
+  //padding: 5px;
+  padding: 1px 5px;
+  color: @ht-grey-5;
+  .flex-row;
+  .align-center;
+  border-radius: 4px;
+  font-size: 14px;
+  &:hover {
+    background: rgb(220, 220, 220);
+  }
+}
+.bars {
+  //padding-right: 20px;
+}
+.bar {
+  height:10px;
+  border-radius: 3px;
+  transition: width 1s ease-in-out;
+}
+.graph-active {
+  //text-decoration: underline;
+  //color: @ht-blue;
+  background: rgb(211, 211, 211);
+}
+.count {
+  font-size: 21px;
+  color: @ht-grey-5;
+  padding-bottom: 18px;
+}
+:host {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,23 @@
+<div class="flex-row wrap group-container">
+  <div class="flex-column group-container-list bar card-stack" *ngFor="let groups of groupsLevels; let i = index">
+    <div class="text-center level">
+      <span class="">Level {{i + 1}}</span>
+    </div>
+    <a [routerLink]="['/groups', group.id]" class="card clickable-card" [class.card-active]="selectedGroups[i] == group.id" *ngFor="let group of groups">
+      <div class="card-content-mid flex-row">
+        <div class="flex">
+          {{group.name}}
+        </div>
+        <div (click)="selectGroup(group, i, $event)" class="action">
+          <i class="fa fa-angle-right"></i>
+        </div>
+      </div>
+    </a>
+  </div>
+  <h3 class="text-center msg bar" *ngIf="loading">
+    Loading
+  </h3>
+  <h3 class="text-center msg bar" *ngIf="noChild">
+   No sub-group
+  </h3>
+</div>

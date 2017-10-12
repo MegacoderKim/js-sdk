@@ -22,9 +22,15 @@ export class MapContainerComponent implements OnInit, AfterContentInit {
   ngOnInit() {
     this.userClientService.mapClass = this.mapService; // todo handle this from ht-angular-client
 
-    this.loading$ = this.userClientService.placeline.loading$
+    const loading$1 = this.userClientService.placeline.loading$
       .map((data) => !!data && this.showLoading)
       .distinctUntilChanged();
+
+    const loading$2 = this.userClientService.markers.loading$
+      .map((data) => !!data)
+      .distinctUntilChanged();
+
+    this.loading$ = Observable.merge(loading$1, loading$2);
 
   }
 

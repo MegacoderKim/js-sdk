@@ -25,7 +25,6 @@ import { DropdownOptionsComponent } from './dropdown-options/dropdown-options.co
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { DropdownDirective } from './dropdown/dropdown.directive';
 import {DropdownService} from "./dropdown/dropdown.service";
-import { DropdownMenuDirective } from './dropdown/dropdown-menu.directive';
 import { DropdownToggleDirective } from './dropdown/dropdown-toggle.directive';
 
 @NgModule({

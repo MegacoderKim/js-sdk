@@ -1,5 +1,5 @@
 <div class="ht-btn flex-row">
-  <input #query (input)="test(query.value)" (keydown.enter)="setSearch(query)" [class.input-sm]="small" type="text" class="input-search" placeholder="Search {{entity}}">
+  <input #query (input)="test(query.value)" (keydown.enter)="setSearch(query)" type="text" class="input-search" placeholder="Search {{entity}}">
   <span class="input-group-btn" (click)="setSearch(query)">
         <i class="fa fa-search"></i>
       </span>

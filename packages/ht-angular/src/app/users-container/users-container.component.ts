@@ -21,6 +21,7 @@ export class UsersContainerComponent implements OnInit {
   selectedUserDataId$;
   loadingUserId$;
   loadingUserDataId$;
+  loadingUsers$;
   @Input() hasMap: boolean = false;
   @Input() apiType: ApiType = ApiType.analytics;
 
@@ -35,10 +36,20 @@ export class UsersContainerComponent implements OnInit {
     if (this.hasPlaceline) {
       // this.user$ = Observable.empty();
       this.user$ = this.userService.placeline.data$;
-      this.users$ = this.userService.placelineOrList$();
+      // this.users$ = this.userService.placelineOrList$();
+      this.usersPage$ = this.userService.listPage$();
+      this.mapService.usersCluster.onClick = (data, marker) => {
+        this.selectUserCard(data)
+      }
     } else {
-      this.users$ = this.userService.list.dataArray$;
+      this.usersPage$ = this.userService.list.data$;
+      // this.users$ = this.userService.list.dataArray$;
     }
+    this.users$ = this.usersPage$.map((pageData) => {
+      return pageData ? pageData.results : pageData
+    });
+
+    this.loadingUsers$ = this.userService.list.loading$;
 
     this.loadingUserDataId$ = this.userService.placeline.loading$.distinctUntilChanged();
     // this.loadingUserId$ = this.userService.list.loading$.distinctUntilChanged();
@@ -116,6 +127,10 @@ export class UsersContainerComponent implements OnInit {
     const id = userData.id;
     event.stopPropagation();
     this.userService.placeline.toggleId(id);
+  }
+
+  fetchPage(number) {
+    this.userService.list.updateQuery({page: number})
   }
 
 }

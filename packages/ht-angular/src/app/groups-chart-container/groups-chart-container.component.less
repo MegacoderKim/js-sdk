@@ -1,0 +1,48 @@
+@import "../../styles/placeholder";
+@import "../../styles/variables";
+.bar {
+  width: 200px;
+  min-width: 200px;
+}
+.card-active {
+  background-color: @ht-blue;
+  color: white !important;
+  &:hover {
+    background-color: @ht-blue;
+    color: white;
+  }
+  .action {
+    display: none;
+  }
+}
+.action {
+  background: @ht-grey-4;
+  color: white;
+  padding: 0 8px;
+  border-radius: 3px;
+  &:hover {
+    background-color: @ht-grey-5;
+  }
+}
+.card {
+  .flex-column
+}
+.group-container {
+  margin: 20px 0;
+  &-list {
+    margin: 20px 0;
+  }
+}
+.msg {
+  margin-top: 60px;
+}
+.level {
+  padding: 8px 16px;
+  background-color: @ht-grey-5;
+  color: white;
+}
+a {
+  &:focus {
+    color: initial;
+  }
+}

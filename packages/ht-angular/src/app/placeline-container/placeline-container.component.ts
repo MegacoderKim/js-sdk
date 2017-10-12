@@ -1,11 +1,23 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {HtUsersClientService} from "ht-angular-client";
 import {IUserData} from "ht-models";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'ht-placeline-container',
   templateUrl: './placeline-container.component.html',
-  styleUrls: ['./placeline-container.component.less']
+  styleUrls: ['./placeline-container.component.less'],
+  // animations: [
+  //   trigger('slide', [
+  //     transition(':enter', [
+  //       style({transform: 'translateY(100px)'}),
+  //       animate('0.3s' + ' ease-out')
+  //     ]),
+  //     transition(':leave', [
+  //       animate('0.3s' + ' ease-in', style({transform: 'translateY(100px)'}))
+  //     ])
+  //   ])
+  // ]
 })
 export class PlacelineContainerComponent implements OnInit {
   @Input() userId: string | null;

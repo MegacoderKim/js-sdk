@@ -1,6 +1,6 @@
 {
     "name": "ht-angular",
-    "version": "0.0.5",
+    "version": "0.0.11",
     "repository": {
       "type": "git",
       "url": "https://github.com/username/repo"
@@ -32,9 +32,9 @@
       "core-js": "^2.4.1",
       "font-awesome": "^4.7.0",
       "ht-angular-client": "0.0.5",
-      "ht-js-client": "0.0.10",
+      "ht-js-client": "0.0.20",
       "ht-js-data": "0.0.21",
-      "ht-js-map": "0.0.67",
+      "ht-js-map": "0.0.72",
       "ht-js-utils": "0.0.13",
       "ht-models": "0.0.8",
       "leaflet": "^1.2.0",
@@ -74,5 +74,18 @@
       "tslint": "~5.3.2",
       "typescript": "~2.3.3",
       "underscore": "^1.8.3"
+    },
+    "peerDependencies": {
+      "font-awesome": "^4.7.0",
+      "ht-angular-client": ">=0.0.5",
+      "ht-js-client": ">=0.0.13",
+      "ht-js-data": ">=0.0.21",
+      "ht-js-map": ">=0.0.70",
+      "ht-js-utils": ">=0.0.13",
+      "ht-models": ">=0.0.8",
+      "leaflet": "^1.2.0",
+      "moment-mini": "^2.18.1",
+      "underscore": "^1.8.3",
+      "typescript": ">=2.5.3"
     }
   }

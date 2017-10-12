@@ -8,6 +8,8 @@ import {GroupsModule} from "./app/groups/groups.module";
 import {GroupsComponent} from "./app/groups/groups.component";
 import {GroupsContainerModule} from "./app/groups-container/groups-container.module";
 import {GroupsContainerComponent} from "./app/groups-container/groups-container.component";
+import {GroupsChartContainerModule} from "./app/groups-chart-container/groups-chart-container.module";
+import {GroupsChartContainerComponent} from "./app/groups-chart-container/groups-chart-container.component";
 import {MapModule} from "./app/map/map.module";
 import {MapContainerModule} from "./app/map-container/map-container.module";
 import {MapContainerComponent} from "./app/map-container/map-container.component";
@@ -34,6 +36,8 @@ export {
   GroupsContainerComponent,
   GroupsModule,
   GroupsContainerModule,
+  GroupsChartContainerModule,
+  GroupsChartContainerComponent,
   MapContainerComponent,
   MapContainerModule,
   MapModule,

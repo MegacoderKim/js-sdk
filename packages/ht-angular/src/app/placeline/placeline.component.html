@@ -15,6 +15,9 @@
       <div class="text-muted">
         {{segment.time | dateString: 'short'}}
       </div>
+      <!--<div class="time-container-mid text-muted" *ngIf="!segment.actionD">-->
+        <!--<span>{{segment.duration / 60 | hmString}}</span>-->
+      <!--</div>-->
     </div>
     <div class="pipe">
       <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>

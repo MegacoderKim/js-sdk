@@ -1,0 +1,4 @@
+<div [@summaryAnim] *ngIf="summary$ | async as summary">
+  <ht-users-summary (setQuery)="setQuery($event)" [summary]="summary"></ht-users-summary>
+</div>
+

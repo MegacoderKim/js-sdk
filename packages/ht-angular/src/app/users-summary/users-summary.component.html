@@ -1,0 +1,22 @@
+<div class="flex-column justify-center label-container">
+  <div class="count text-center">{{summary.totalUsers}} {{'user' | pluralize: summary.totalUsers}}</div>
+  <div
+    class="graph-label flex-row row-gap-10"
+    [class.graph-active]="datum.selected"
+    (click)="setFilter(datum)"
+    *ngFor="let datum of summary.chart; trackBy:indexId; let i = index">
+    <!--<div class="box" [style.background-color]="datum.color"></div>-->
+    <div class="flex-row flex space-between">
+      <span>{{datum.label}}</span>
+      <div class="box" [style.color]="datum.color">
+        <span class="auto">{{datum.value}}</span>
+      </div>
+
+    </div>
+    <div class="bars flex">
+      <div class="bar" style="height: 10px;" [style.background-color]="datum.color" [style.width.%]="datum.w * 100"></div>
+    </div>
+    <!--<div class="box" style="background-color: #ccc;"></div>-->
+  </div>
+</div>
+<!--{{summary | json}}-->

@@ -14,13 +14,13 @@
           <ht-battery-icon *ngIf="user.display.battery" [battery]="user.display.battery"></ht-battery-icon>
         </div>
       </ng-template>
-      <div class="flex-row text-4" *ngIf="!user['segments'] && user.total_distance">
-        <div>{{user.total_distance | distanceLocale}}</div>
+      <div class="flex-row text-4" *ngIf="!user['segments'] && user['total_distance']">
+        <div>{{user['total_distance'] | distanceLocale}}</div>
         <div>&nbsp; &bull; &nbsp;</div>
-        <div>{{user.total_duration | hmString:60}}</div>
+        <div>{{user['total_duration'] | hmString:60}}</div>
       </div>
       <div class="text-4">
-        {{user.phone}}
+        {{user['phone']}}
       </div>
     </div>
   </div>
