@@ -47,7 +47,6 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
       store.dispatch(new fromUsersDispatcher.SetUserData(data))
     },
     setLoading(data) {
-      console.log("loading", data);
       store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
     },
     setId(id) {
