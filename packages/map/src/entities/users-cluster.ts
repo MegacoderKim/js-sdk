@@ -1,7 +1,7 @@
 import {HtMapItems} from "../map-items";
 import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
-import {HtMap, HtMapType} from "../interfaces";
+import {HtMap, HtMapType, SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-js-data";
 import {IUser, IUserAnalytics} from "ht-models";
 
@@ -10,7 +10,11 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   markerCluster;
   popup;
   onClick: (data, marker) => void;
-
+  setFocusConfig: SetFocusConfig = {
+    zoom: 17,
+    force: true,
+    center: true
+  };
   onReady() {
     this.popup = this.mapUtils.getPopup({
       disableAutoPan: true,
@@ -48,12 +52,30 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
       if(this.onClick) {
         this.onClick(marker.data, marker.item)
       } else {
-        let position = marker.dataClass.getPosition();
-        this.mapUtils.openPopupPosition(position, this.map, this.getInfoContent(marker.data), this.popup)
+        // this.openPopup()
+        this.highlight(marker.data, this.setFocusConfig);
+        // let position = marker.dataClass.getPosition();
+        // this.mapUtils.openPopupPosition(position, this.map, this.getInfoContent(marker.data), this.popup)
       }
 
     });
+    this.mapUtils.onEvent(marker.item, 'mouseover', () => {
+      this.openPopup(marker);
+    });
+
+    this.mapUtils.onEvent(marker.item, 'mouseout', () => {
+      this.closePopup();
+    });
     return marker
+  }
+
+  openPopup(marker) {
+    let position = marker.dataClass.getPosition();
+    this.mapUtils.openPopupPosition(position, this.map, this.getInfoContent(marker.data), this.popup)
+  }
+
+  closePopup() {
+    this.mapUtils.setMap(this.popup, null)
   }
 
   getInfoContent(data) {
@@ -98,7 +120,7 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
 
   highlightItem(item, data) {
     // this.mapUtils.setMap(this.popup, null);
-    super.highlightItem(item, data);
+    super.highlightItem(item, data, this.setFocusConfig);
     this.mapUtils.openPopupPosition(item.dataClass.getPosition(), this.map, this.getInfoContent(data), this.popup)
   }
 }

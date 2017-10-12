@@ -32,7 +32,11 @@ export const SetStyle = (item, style) => {
 };
 
 export const SetMap = (item, map: google.maps.Map) => {
-  if((item && !item.getMap()) || (item && !item.getMap)) item.setMap(map)
+  if(!map) {
+    item.setMap(null)
+  } else if((item && !item.getMap()) || (item && !item.getMap)) {
+    item.setMap(map)
+  }
 };
 
 export const ClearItem = (item) => {
@@ -101,11 +105,11 @@ function bringToFront (item) {
   // item.bringToFront()
 }
 
-function setFocus(item, map: google.maps.Map, zoom?, force = false) {
+function setFocus(item, map: google.maps.Map, {zoom, force = false, center}) {
   if((item && item.getMap()) || force) {
-    let center =  getItemLatlng(item);
-    map.setCenter(center);
-    if(zoom) map.setZoom(zoom);
+    let markerCenter = getItemLatlng(item);
+    if(center) map.setCenter(markerCenter);
+    if(zoom && center) map.setZoom(zoom);
     // item.setAnimation(google.maps.Animation.DROP);
     // setTimeout(() => {
     //   item.setAnimation(null);

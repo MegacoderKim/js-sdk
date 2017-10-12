@@ -15,7 +15,7 @@ export interface MapUtils {
   openPopupPosition: (HtPosition, map, content, popup) => void
   closePopup: (item: HtMapItem) => void
   bringToFront: (item: HtMapItem) => void,
-  setFocus: (item: HtMapItem, map: HtMap, zoom?, force?: boolean) =>  void,
+  setFocus: (item: HtMapItem, map: HtMap, config?: SetFocusConfig) =>  void,
   renderMap: (elem: Element, options: object) => HtMap,
   updateCirclePosition?: (item, position, info?: string, options?: object) => any,
   getCircleMarker: () => any,
@@ -31,6 +31,12 @@ export interface MapUtils {
   isValidBounds: (bounds: HtBounds) => boolean,
   invalidateSize: (map) => void,
   onEvent: (item, event, cb) => void
+}
+
+export interface SetFocusConfig {
+  zoom?: number,
+  force?: boolean,
+  center?: boolean
 }
 
 export type HtMap = L.Map | google.maps.Map

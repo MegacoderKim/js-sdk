@@ -1,5 +1,5 @@
 import {LeafletUtils} from "./leaflet-map-utils";
-import {HtBounds, HtMap, HtMapType, MapUtils, HtMapItemOptions} from "./interfaces";
+import {HtBounds, HtMap, HtMapType, MapUtils, HtMapItemOptions, SetFocusConfig} from "./interfaces";
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtPosition} from "ht-js-data";
 
@@ -119,7 +119,7 @@ export class HtMapItem<T> {
     this.mapUtils.bringToFront(this.item)
   }
 
-  highlight(map: HtMap, data: T) {
+  highlight(map: HtMap, data: T, config: SetFocusConfig = {}) {
 
   }
 
@@ -127,8 +127,8 @@ export class HtMapItem<T> {
 
   }
 
-  setFocus(map) {
-    this.mapUtils.setFocus(this.item, map)
+  setFocus(map, config: SetFocusConfig = {}) {
+    this.mapUtils.setFocus(this.item, map, config)
   }
 
 }

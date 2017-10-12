@@ -1,4 +1,4 @@
-import {HtMap, HtMapItemsOptions, HtMapType, MapUtils} from "./interfaces";
+import {HtMap, HtMapItemsOptions, HtMapType, MapUtils, SetFocusConfig} from "./interfaces";
 import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
@@ -104,14 +104,14 @@ export class HtMapItems<T> {
     })
   }
 
-  highlight(data) {
+  highlight(data, config: SetFocusConfig = {}) {
     this.onEach((item) => {
       if(data) {
         if(item.id != data.id) {
           this.unHighlightItem(item)
         } else {
 
-          this.highlightItem(item, data)
+          this.highlightItem(item, data, config)
         }
       } else {
         this.resetHighlight(item)
@@ -124,9 +124,9 @@ export class HtMapItems<T> {
     item.unHighlight(this.map);
   }
 
-  highlightItem(item, data?) {
+  highlightItem(item, data?, config = {}) {
     item.isHighlighted = true;
-    item.highlight(this.map, data);
+    item.highlight(this.map, data, config);
   }
 
   setFade(selectedItem, toFade: boolean = true) {

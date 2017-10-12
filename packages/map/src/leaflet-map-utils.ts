@@ -1,4 +1,4 @@
-import {HtMarker, MapUtils} from "./interfaces";
+import {HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 var polyUtil = require('polyline-encoded');
 import * as L from "leaflet"
 import {HtPosition} from "ht-js-data";
@@ -85,10 +85,11 @@ function bringToFront (item) {
   item.bringToFront()
 }
 
-function setFocus(item, map: L.Map) {
-  if(item && item.getElement()) {
-    let center =  getItemLatlng(item);
-    map.panTo(center, {animate: true, duration: 1})
+function setFocus(item, map: L.Map, config: SetFocusConfig) {
+  if(item && item.getElement() || config.force) {
+    let markerCenter =  getItemLatlng(item);
+    if(config.center) map.panTo(markerCenter, {animate: true, duration: 1});
+    if(config.zoom && config.center) map.setView(markerCenter, config.zoom)
   }
 }
 

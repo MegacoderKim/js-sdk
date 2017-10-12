@@ -3,8 +3,8 @@ import {HtStopMarker} from "./stop-marker";
 import {HtMapItem} from "../map-item";
 import {htUser, HtUser} from "ht-js-data";
 import {HtMarkerItem} from "../marker-item";
-import {HtBounds, HtMap} from "../interfaces";
-import {IUser, IUserAnalytics} from "ht-models";
+import {HtBounds, HtMap, SetFocusConfig} from "../interfaces";
+import {IUser, IUserAnalytics, Partial} from "ht-models";
 
 export class HtUserMarker extends HtMarkerItem<IUser | IUserAnalytics> {
 
@@ -30,10 +30,9 @@ export class HtUserMarker extends HtMarkerItem<IUser | IUserAnalytics> {
     return this.mapUtils.extendBounds(this.item, bounds, true);
   }
 
-  highlight(map: HtMap, data) {
+  highlight(map: HtMap, data, config: SetFocusConfig = {}) {
     this.setDataClass(data);
-    // console.log("highlight");
-    this.mapUtils.setFocus(this.item, map, 17, true);
+    this.mapUtils.setFocus(this.item, map, config);
     // this.mapUtils.setMap(this.item, map)
   }
 
