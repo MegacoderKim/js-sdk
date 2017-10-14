@@ -25,11 +25,11 @@ export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<E
       store.select(fromRoot.getUsersAnalyticsMarkersIsActive)
     },
     setData(data: AllData<IUserAnalytics>) {
-      data = data || {resultsEntity: {}, isFirst: false};
+      data = data || {resultsEntity: {}, isFirst: false, next: "no_next"};
       store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
     },
     setLoading(data) {
-      store.dispatch(new fromLoadingDispatcher.SetLoadingUserIndexAll(data))
+      store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalyticsAll(data))
     }
   };
 
