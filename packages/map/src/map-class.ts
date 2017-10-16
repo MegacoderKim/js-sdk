@@ -6,6 +6,8 @@ import {IUserData} from "ht-models";
 import {UsersCluster} from "./entities/users-cluster";
 import {LightColorMapStyle} from "./map-styles/light-color";
 import {Subject} from "rxjs/Subject";
+import {HtMapItem} from "./map-item";
+import * as _ from "underscore";
 
 export class HtMapClass {
   map: HtMap;
@@ -49,12 +51,25 @@ export class HtMapClass {
 
   resetBounds(options?, bounds?: HtBounds) {
     setTimeout(() => {
-      bounds = this.segmentTrace.extendBounds(bounds);
-      bounds = this.usersCluster.extendBounds(bounds);
+      let items = [this.segmentTrace, this.usersCluster];
+      bounds = this.getBoundsItem(items);
+      // bounds = this.segmentTrace.extendBounds(bounds);
+      // bounds = this.usersCluster.extendBounds(bounds);
       if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
     }, 10)
 
   };
+
+  getBoundsItem(items) {
+    let bounds = this.mapUtils.extendBounds();
+    return _.reduce(items, (bounds, item: HtMapItem<any>) => {
+      return this.getBounds(bounds, item)
+    }, bounds)
+  }
+
+  getBounds(bounds, item) {
+    return item.extendBounds(bounds)
+  }
 
   setBounds(bounds: HtBounds, options?) {
     options = options || this.mapType == 'leaflet' ? this.leafletSetBoundsOptions : this.googleSetBoundsOptions;

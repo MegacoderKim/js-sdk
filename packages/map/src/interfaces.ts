@@ -85,7 +85,9 @@ export interface IReplayPlayer {
 }
 
 export interface HtMapItemsOptions<T> {
-  getInfoContent?: (data: T) => string
+  getInfoContent?: (data: T) => string,
+  getItem?: (data) => T | any,
+  getPosition?: (data) => HtPosition
 }
 
 export interface HtMapItemOptions<T> {
