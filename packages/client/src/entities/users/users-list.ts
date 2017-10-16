@@ -1,29 +1,25 @@
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers"
 import {Observable} from "rxjs/Observable";
-import {HtUsersIndexClient} from "./users-index-client";
-import {HtUsersAnalytics} from "./users-analytics-client";
 import {ApiType} from "../../interfaces";
-import {IUserAnalyticsPage, IUserPage, IUserAnalytics, IUser} from "ht-models";
-import {HtListClient} from "../../base/list-client";
-import {HtUsersApi} from "../../api/users";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher"
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {UsersAnalytics} from "./users-analytics-interfaces";
+import {UsersIndex} from "./users-index-interfaces";
 import {Subscription} from "rxjs/Subscription";
-
 
 export class UsersList {
   constructor(
     public store: Store<fromRoot.State>,
-    private usersIndexClient: HtListClient<IUserPage | any>,
-    private usersAnalyticsClient: HtListClient<IUserAnalyticsPage | any>
+    private usersIndexClient: UsersIndex,
+    private usersAnalyticsClient: UsersAnalytics
   ) {
 
   }
 
-  get isActive$(): Observable<boolean> {
+  get active$(): Observable<boolean> {
     return this.getClient().switchMap((client) => {
-      return client.isActive$
+      return client.active$
     })
   }
 
@@ -76,7 +72,9 @@ export class UsersList {
 
   getApiQuery$() {
     return this.getClient().switchMap((client) => {
-      return client.getApiQuery$()
+      return client.apiQuery$.map(data => {
+        return data ? data[0] : data;
+      })
     })
   }
 
@@ -114,7 +112,7 @@ export class UsersList {
 
   setLive(isLive: boolean) {
     return this.getClient().subscribe((client) => {
-      client.isLive = isLive;
+      // client.isLive = isLive;
     })
   }
 

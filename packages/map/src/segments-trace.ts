@@ -210,7 +210,7 @@ export class HtSegmentsTrace {
     return this.userMarker.getCurrentPosition()
   }
 
-  focusUserMarker(map) {
+  focusUserMarker(map, config) {
     this.userMarker.setFocus(map);
   }
 
