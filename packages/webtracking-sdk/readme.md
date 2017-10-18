@@ -52,6 +52,29 @@ var trackedData = ht.trackByData([{
 );
 ```
 
+### With HyperTrack Actions
+
+The SDK also exposes 3 main methods to render [actions](https://docs.hypertrack.com/api/entities/action.html) directly on the map.
+
+* Using action short code - ht.trackShortCode(shortCode, publishable_key, trackingOptions)
+* Using action lookup id - ht.trackLookupId(lookupId, publishable_key, trackingOptions)
+* Using action collection id - ht.trackCollectionId(collectionId, publishable_key, trackingOptions)
+
+For example, to track a collection of actions by collection id -
+
+```js
+var ht = require('ht-webtracking-sdk');
+var trackedCollection = ht.trackCollectionId('P_4328591238', 'pk_xxxxxxxxx',
+  {
+    "mapId": "map",
+    "mapOptions": {},
+    "onReady": handleOnReady,
+    "onUpdate": handleOnUpdate,
+    "onError": handleOnError
+  }
+);
+```
+
 ### Customization
 
 The SDK follows a default color scheme with its own custom icons and map polyline color. You may pass custom base64 images and polyline options through MapOptions within TrackingOptions to override these defaults. The SDK also exposes the map object via callbacks for full control and access of the tracking experience to the developer. For example, use this to customize the user marker
@@ -87,6 +110,15 @@ interface ITrackingData {
 }
 ```
 ##### Tracking options
+```js
+interface ITrackingOptions {
+    mapId: string; //id of DOM where map is to be rendered
+    mapOptions?: IMapOptions;
+    onError?: (error: any) => void;
+    onReady?: (trackedData: ITrackedData, actions: IAction[], map: google.maps.Map) => void;
+    onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
+}
+```
 ```js
 interface ITrackingDataOptions {
     mapId: string; //id of DOM where map is to be rendered
