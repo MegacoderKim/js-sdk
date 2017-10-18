@@ -111,6 +111,8 @@ export class HTTrackActions {
         return `${GetBaseUrl()}actions/track/?short_code=${identifier}`;
       case 'lookupId':
         return `${GetBaseUrl()}actions/track/?lookup_id=${identifier}`;
+      case 'collectionId':
+        return `${GetBaseUrl()}actions/track/?collection_id=${identifier}`;
       case 'actionId':
         return `${GetBaseUrl()}actions/track/?id=${identifier}`;
       default:
