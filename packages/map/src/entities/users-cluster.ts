@@ -4,6 +4,10 @@ import {HtUserMarker} from "./user-marker";
 import {HtMap, HtMapType, SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-js-data";
 import {IUser, IUserAnalytics} from "ht-models";
+import {HtMapUtils} from "../map-utils";
+import { MapEntities, RenderConfig} from "./interfaces";
+import {entityTraceFactory} from "../helpers/entity-trace";
+import {clusterRenderConfigFactory} from "../helpers/cluster-render";
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
@@ -24,20 +28,10 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
 
   extendBounds(bounds) {
     bounds = bounds || this.mapUtils.extendBounds();
-    if(this.mapType == 'google') {
-      let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
-        return item.extendBounds(bounds)
-      }, bounds);
-      return newBounds
-      // console.log(this.itemEntities, Object.keys(this.itemEntities).length);
-      // let newBounds = Object.keys(this.itemEntities).length ? this.markerCluster.getExtendedBounds(bounds) : bounds
-      // return newBounds
-    } else {
-      let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
-        return item.extendBounds(bounds)
-      }, bounds);
-      return newBounds
-    }
+    let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
+      return item.extendBounds(bounds)
+    }, bounds);
+    return newBounds
 
   }
 
@@ -123,4 +117,37 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
     super.highlightItem(item, data, this.setFocusConfig);
     this.mapUtils.openPopupPosition(item.dataClass.getPosition(), this.map, this.getInfoContent(data), this.popup)
   }
+};
+
+export const usersClustersFactory = (mapUtils: HtMapUtils): ClusterEntities<any> => {
+  let state = {
+    map: null,
+    cluster: null
+  };
+  let clusterRender = clusterRenderConfigFactory(mapUtils, state);
+  let renderConfig: RenderConfig = {
+    setMap: true,
+    ...clusterRender,
+    removeAll(entities) {
+
+    },
+    onClick(data) {
+
+    },
+  };
+  let styles = () => {
+
+  };
+  let entityTrace = entityTraceFactory(mapUtils, renderConfig, htUser);
+  return {
+    ...entityTrace,
+    ...state,
+    renderer: clusterRender
+  }
+};
+
+export interface ClusterEntities<T> extends MapEntities<T> {
+  renderer: any,
+  map: any,
+  cluster: any
 }
