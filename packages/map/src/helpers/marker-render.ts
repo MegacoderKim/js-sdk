@@ -1,4 +1,9 @@
-export const markerRenderConfigFactory = (mapUtils) => {
+import {RenderConfig} from "../entities/interfaces";
+import {HtMapUtils} from "../map-utils";
+import {MapUtils} from "../interfaces";
+import * as _ from "underscore";
+
+export const markerRenderConfigFactory = (mapUtils: MapUtils): RenderConfig => {
   return {
     setMap: true,
     getItem(data) {
@@ -11,9 +16,27 @@ export const markerRenderConfigFactory = (mapUtils) => {
       let position = entity.getPosition();
       mapUtils.updatePosition(entity.item, position);
     },
-    remove(item) {
-      mapUtils.clearItem(item)
+    removeItem(item) {
+      mapUtils.clearItem(item);
     },
+    removeAll(entities) {
+      _.each(entities, (entity: any) => {
+        this.removeItem(entity.item)
+      });
+      this.entities = {}
+
+    },
+    setStyle(item) {
+      let style = this.styles();
+      mapUtils.setStyle(item, style)
+    },
+    remove(data) {
+      let id = data.id;
+      if(this.entities[id]) delete this.entities[id];
+    },
+    onClick(data, item) {
+      console.log("clicked", data);
+    }
   }
 
 };

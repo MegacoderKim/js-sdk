@@ -168,6 +168,7 @@ function openPopupPosition(position, map, content, popup) {
 }
 
 export const LeafletUtils: MapUtils = {
+  type: 'leaflet',
   setMap: SetMap,
   setStyle: SetStyle,
   clearItem: ClearItem,

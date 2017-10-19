@@ -2,6 +2,7 @@ import {ISegment, ITimeAwarePoint, Partial} from "ht-models";
 import {HtPosition} from "ht-js-data";
 
 export interface MapUtils {
+  type: HtMapType,
   setMap: (item: HtMapItem, map: HtMap) => void,
   setStyle: (item: HtMapItem, style) => void,
   clearItem: (item: HtMapItem) => void,

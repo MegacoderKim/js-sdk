@@ -6,11 +6,13 @@ import {HtCurrentUser} from "./current-user";
 import {HtMarkerItem} from "./marker-item";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
 import {HtMapType} from "./interfaces";
-import {HtSegmentPolylines} from "./entities/segment-polylines";
-import {HtStopMarkers} from "./entities/stop-markers";
+import {HtSegmentPolylines, segmentFactory} from "./entities/segment-polylines";
+import {HtStopMarkers, stopFactory} from "./entities/stop-markers";
 import {HtActionMarkers} from "./entities/action-markers";
 import {htAction} from "ht-js-data";
 import {IEvent} from "ht-models";
+import {LeafletUtils} from "./leaflet-map-utils";
+import {GoogleMapUtils} from "./google-map-utils";
 
 export class HtSegmentsTrace {
 
@@ -33,8 +35,9 @@ export class HtSegmentsTrace {
   }
 
   protected initBaseItems(mapType: HtMapType) {
-    this.segmentsPolylines = new HtSegmentPolylines(mapType);
-    this.stopMarkers = new HtStopMarkers(mapType);
+    let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    this.segmentsPolylines = segmentFactory(mapUtils);
+    this.stopMarkers = stopFactory(mapUtils);
     this.actionMarkers = new HtActionMarkers(mapType);
     this.actionsPolylines = new HtMapItems(mapType);
     this.userMarker = new HtCurrentUser(mapType);

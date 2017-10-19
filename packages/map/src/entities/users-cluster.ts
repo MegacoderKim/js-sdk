@@ -1,13 +1,15 @@
 import {HtMapItems} from "../map-items";
 import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
-import {HtMap, HtMapType, SetFocusConfig} from "../interfaces";
+import {HtMap, HtMapType, MapUtils, SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-js-data";
 import {IUser, IUserAnalytics} from "ht-models";
-import {HtMapUtils} from "../map-utils";
 import { MapEntities, RenderConfig} from "./interfaces";
 import {entityTraceFactory} from "../helpers/entity-trace";
 import {clusterRenderConfigFactory} from "../helpers/cluster-render";
+import {circleRenderConfigFactory} from "../helpers/circle-render";
+import {Color} from "ht-js-utils";
+import {stylesConfigFactory} from "../helpers/styles-factory";
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
@@ -119,35 +121,56 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   }
 };
 
-export const usersClustersFactory = (mapUtils: HtMapUtils): ClusterEntities<any> => {
+export const usersClustersFactory = (mapUtils: MapUtils): ClusterEntities<any> => {
   let state = {
     map: null,
     cluster: null
   };
-  let clusterRender = clusterRenderConfigFactory(mapUtils, state);
+  let stylesObj = {
+    google: {
+      default: {
+        icon: {
+          fillColor: Color.stop,
+          fillOpacity: 1,
+          strokeColor: Color.stopDark,
+          strokeOpacity: 1,
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 8,
+          strokeWeight: 2,
+        }
+      }
+    },
+    leaflet: {
+      default: {
+
+      }
+    }
+  };
+  let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
+
+  let clusterRender = clusterRenderConfigFactory(mapUtils);
   let renderConfig: RenderConfig = {
     setMap: true,
     ...clusterRender,
-    removeAll(entities) {
-
-    },
-    onClick(data) {
-
-    },
   };
-  let styles = () => {
+  renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);
 
+  let mapItems = {
+    ...state,
+    entities: {},
+    renderer: clusterRender
   };
-  let entityTrace = entityTraceFactory(mapUtils, renderConfig, htUser);
+  let entityTrace = entityTraceFactory(mapUtils, mapItems, htUser);
+
   return {
     ...entityTrace,
     ...state,
-    renderer: clusterRender
+    ...renderConfig,
+    ...stylesConfig,
   }
 };
 
-export interface ClusterEntities<T> extends MapEntities<T> {
-  renderer: any,
+export interface ClusterEntities<T> extends MapEntities<T>, RenderConfig {
   map: any,
   cluster: any
 }

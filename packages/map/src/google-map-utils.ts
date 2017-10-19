@@ -239,6 +239,7 @@ function openPopupPosition(position, map, content, popup) {
 }
 
 export const GoogleMapUtils: MapUtils = {
+  type: 'google',
   setMap: SetMap,
   setStyle: SetStyle,
   clearItem: ClearItem,

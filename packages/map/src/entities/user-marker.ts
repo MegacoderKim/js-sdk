@@ -4,7 +4,8 @@ import {HtMapItem} from "../map-item";
 import {htUser, HtUser} from "ht-js-data";
 import {HtMarkerItem} from "../marker-item";
 import {HtBounds, HtMap, SetFocusConfig} from "../interfaces";
-import {IUser, IUserAnalytics, Partial} from "ht-models";
+import {IUser, IUserAnalytics, Partial, IUserData} from "ht-models";
+import {HtPosition} from "ht-js-data";
 
 export class HtUserMarker extends HtMarkerItem<IUser | IUserAnalytics> {
 
@@ -13,9 +14,9 @@ export class HtUserMarker extends HtMarkerItem<IUser | IUserAnalytics> {
     this.item = this.mapUtils.getMarker()
   }
 
-  setDataClass(data) {
-    return htUser(data)
-  }
+  // setDataClass(data) {
+  //   return htUser(data)
+  // }
 
   getPosition(item) {
     let position = htUser(item).getPosition();
