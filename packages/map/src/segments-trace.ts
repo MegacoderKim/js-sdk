@@ -28,7 +28,6 @@ export class HtSegmentsTrace {
   // map;
 
   constructor(public options: HtSegmentsTraceOptions = {}) {
-    let mapUtils = MapService.mapUtils;
     this.initBaseItems();
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head, this.map)
