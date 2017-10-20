@@ -10,6 +10,9 @@ export const polylineRenderConfigFactory = (renderConfig: RenderConfig, mapUtils
     getItem(data) {
       return mapUtils.getPolyline()
     },
+    getBounds(item, bounds?) {
+      return mapUtils.extendBoundsWithPolyline(item, bounds)
+    },
     update(entity) {
       mapUtils.setEncodedPath(entity.item, entity.getEncodedPath())
     }

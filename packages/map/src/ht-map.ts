@@ -7,6 +7,5 @@ export * from "./segments-trace"
 export * from "./time-aware-polyline";
 export * from "./timeline-replay";
 export * from "./timeline-segment";
-export * from "./current-user";
 export * from "./map-class";
 export * from "./interfaces";

@@ -3,11 +3,12 @@ import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
-import {UsersCluster, usersClustersFactory} from "./entities/users-cluster";
+import {usersClustersFactory} from "./entities/users-cluster";
 import {LightColorMapStyle} from "./map-styles/light-color";
 import {Subject} from "rxjs/Subject";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 export class HtMapClass {
   map: HtMap;
@@ -28,7 +29,7 @@ export class HtMapClass {
     styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
-  map$ = new Subject();
+  map$ = new ReplaySubject();
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;

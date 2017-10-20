@@ -1,6 +1,3 @@
-import {HtMapItems} from "../map-items";
-import {HtSegmentPolyline} from "./segment-polyline";
-import {ISegment} from "ht-models";
 import {MapUtils} from "../interfaces";
 import {MapEntities} from "./interfaces";
 import {Color} from "ht-js-utils";
@@ -10,13 +7,6 @@ import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/entity-trace";
 import {stylesConfigFactory} from "../helpers/styles-factory";
 
-export class HtSegmentPolylines extends HtMapItems<ISegment> {
-  getItem(data) {
-    let circle = new HtSegmentPolyline(this.mapType);
-    circle.setMapTypeStyle();
-    return circle;
-  }
-}
 
 export const segmentFactory = (mapUtils: MapUtils): MapEntities<any> => {
   let state = {

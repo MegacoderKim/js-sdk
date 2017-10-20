@@ -1,18 +1,16 @@
-import {HtMapItems} from "./map-items";
 import * as _ from "underscore";
 import {TimelineSegment} from "./timeline-segment";
-import {HtMapItem} from "./map-item";
-import {HtCurrentUser} from "./current-user";
-import {HtMarkerItem} from "./marker-item";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
 import {HtMapType} from "./interfaces";
-import {HtSegmentPolylines, segmentFactory} from "./entities/segment-polylines";
-import {HtStopMarkers, stopFactory} from "./entities/stop-markers";
-import {HtActionMarkers} from "./entities/action-markers";
+import {segmentFactory} from "./entities/segment-polylines";
+import {stopFactory} from "./entities/stop-markers";
+import {actionsFactory} from "./entities/action-markers";
 import {htAction} from "ht-js-data";
 import {IEvent} from "ht-models";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
+import {markersFactory} from "./base/marker-factory";
+import {htUser} from "ht-js-data";
 
 export class HtSegmentsTrace {
 
@@ -21,9 +19,9 @@ export class HtSegmentsTrace {
   actionMarkers;
   actionsPolylines;
   timelineSegment = new TimelineSegment();
-  userMarker: HtCurrentUser;
+  userMarker;
   replayMarker;
-  eventMarkers: HtMapItems<IEvent>;
+  eventMarkers;
   allowedEvents = {};
   map;
 
@@ -38,11 +36,12 @@ export class HtSegmentsTrace {
     let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
     this.segmentsPolylines = segmentFactory(mapUtils);
     this.stopMarkers = stopFactory(mapUtils);
-    this.actionMarkers = new HtActionMarkers(mapType);
-    this.actionsPolylines = new HtMapItems(mapType);
-    this.userMarker = new HtCurrentUser(mapType);
-    this.replayMarker = new HtMarkerItem(mapType);
-    this.eventMarkers = new HtMapItems(mapType);
+    this.actionMarkers = actionsFactory(mapUtils);
+    this.actionsPolylines = actionsFactory(mapUtils);
+    this.userMarker = markersFactory(mapUtils, {data: htUser});
+    // this.userMarker = new HtCurrentUser(mapType);ht-js-utils/dist/sr
+    this.replayMarker = stopFactory(mapUtils);
+    this.eventMarkers = stopFactory(mapUtils);
     this.initItems(mapType)
   }
 
@@ -58,7 +57,7 @@ export class HtSegmentsTrace {
     if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment, map, true);
     this.traceAction(user, map);
     this.traceCurrentUser(_.last(userSegments), map);
-    this.traceActionPolyline(user, map, this.getCurrentUserPosition());
+    // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     // this.traceEvents(user, ht-map)
   }
 
@@ -128,14 +127,13 @@ export class HtSegmentsTrace {
       this.actionsPolylines.trace(polylines, map, true)
 
     } else {
-      this.actionsPolylines.clearAll()
+      this.actionsPolylines.removeAll()
     }
   }
 
   getActionPolylineWithId(currentPosition, items: IAction[]) {
     let sortedAction = _.sortBy(items, action => {
-      let finalEta = action.eta || action.expected_at;
-      return finalEta
+      return action.eta || action.expected_at
     });
     let polylinesWithId = sortedAction.reduce((acc, action: IAction) => {
       let finalEta = action.eta || action.expected_at;
@@ -188,7 +186,7 @@ export class HtSegmentsTrace {
       let positionBearing = this.timelineSegment.getLastPositionBearing();
       this.userMarker.update({segment, positionBearing}, map)
     } else {
-      this.userMarker.clear();
+      this.userMarker.removeAll();
     }
   }
 
@@ -210,11 +208,13 @@ export class HtSegmentsTrace {
   }
 
   getCurrentUserPosition() {
-    return this.userMarker.getCurrentPosition()
+    return this.userMarker.getPosition()
   }
 
   focusUserMarker(map, config) {
-    this.userMarker.setFocus(map);
+    console.log(this.userMarker);
+    console.error("focus user not implimente");
+    // this.userMarker.setFocus(map);
   }
 
   setSegmentPlayCallback(cb) {
@@ -237,7 +237,7 @@ export class HtSegmentsTrace {
       if(info) {
         var lastEvent = _.last(acc);
         let sameAsLastEvent = lastEvent && lastEvent.recorded_at == event.recorded_at;
-        if(sameAsLastEvent) {
+        if (sameAsLastEvent) {
           let lastInfo = lastEvent.info + ', ' + info;
           let newLastEvent = {...lastEvent, info: lastInfo};
           acc.pop();
