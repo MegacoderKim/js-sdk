@@ -157,6 +157,10 @@ export class HtAction {
     return null;
   }
 
+  getPosition(): HtPosition | null {
+    return this.getPositionsObject().position;
+  }
+
   hasEnded(): boolean {
     return !!this.data.display.ended_at
   }
