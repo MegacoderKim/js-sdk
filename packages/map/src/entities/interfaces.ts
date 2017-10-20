@@ -27,8 +27,9 @@ export interface MapEntities<T> extends RenderConfig {
   name?: string
   entities: Entities<T>,
   map?: any,
-  styles(mapType: HtMapType, styleType?: 'fade' | 'select'): object,
+  styles(mapType: HtMapType): object,
   stylesObj: object,
+  stylesType: string;
   // config: RenderConfig,
   // dataClass:  DataObj<T>,
   trace: (data: any[]) => void,

@@ -10,6 +10,7 @@ import {clusterRenderConfigFactory} from "../helpers/cluster-render";
 import {circleRenderConfigFactory} from "../helpers/circle-render";
 import {Color} from "ht-js-utils";
 import {stylesConfigFactory} from "../helpers/styles-factory";
+import {MapService} from "../map-service";
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
@@ -121,7 +122,8 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   }
 };
 
-export const usersClustersFactory = (mapUtils: MapUtils): ClusterEntities<any> => {
+export const usersClustersFactory = (): ClusterEntities<any> => {
+  let mapUtils = MapService.mapUtils;
   let state = {
     map: null,
     cluster: null
@@ -129,15 +131,15 @@ export const usersClustersFactory = (mapUtils: MapUtils): ClusterEntities<any> =
   let stylesObj = {
     google: {
       default: {
-        icon: {
-          fillColor: Color.stop,
-          fillOpacity: 1,
-          strokeColor: Color.stopDark,
-          strokeOpacity: 1,
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          strokeWeight: 2,
-        }
+        // icon: {
+        //   fillColor: Color.stop,
+        //   fillOpacity: 1,
+        //   strokeColor: Color.stopDark,
+        //   strokeOpacity: 1,
+        //   path: google.maps.SymbolPath.CIRCLE,
+        //   scale: 8,
+        //   strokeWeight: 2,
+        // }
       }
     },
     leaflet: {
@@ -150,7 +152,7 @@ export const usersClustersFactory = (mapUtils: MapUtils): ClusterEntities<any> =
 
   let clusterRender = clusterRenderConfigFactory(mapUtils);
   let renderConfig: RenderConfig = {
-    setMap: true,
+    // setMap: true,
     ...clusterRender,
   };
   renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);

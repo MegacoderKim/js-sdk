@@ -24,8 +24,9 @@ export const currentUserFactory = (mapUtils) => {
   let markers = markersFactory(mapUtils, {data: htUser});
   return {
     ...markers,
-    trace(data) {
-      markers.trace([data])
+    trace(user) {
+      let data = user ? [user] : [];
+      markers.trace(data)
     }
   }
 };

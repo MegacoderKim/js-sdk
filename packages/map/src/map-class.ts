@@ -13,7 +13,7 @@ import {MapService} from "./map-service";
 
 export class HtMapClass {
   // map: HtMap;
-  mapUtils: MapUtils;
+  // mapUtils: MapUtils;
   segmentTrace: HtSegmentsTrace;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
@@ -30,14 +30,23 @@ export class HtMapClass {
     styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
+  clusters = [];
   // map$ = new ReplaySubject();
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
-    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    // this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    MapService.setMapType(mapType);
     // this.initMap(elem, options);
     // this.usersCluster = new UsersCluster(mapType);
-    this.usersCluster = usersClustersFactory(this.mapUtils);
-    this.segmentTrace = new HtSegmentsTrace(this.mapType);
+    this.usersCluster = usersClustersFactory();
+    this.addCluster(this.usersCluster);
+    this.segmentTrace = new HtSegmentsTrace();
+  }
+
+  addCluster(cluster) {
+    if(!this.clusters.includes(cluster)) {
+      this.clusters.push(cluster)
+    }
   }
 
   get map$() {
@@ -50,9 +59,9 @@ export class HtMapClass {
 
   initMap(elem: Element, options = {}): HtMap {
     let mapOptions = this.mapType == 'leaflet' ? this.leafletMapOptions : this.googleMapOptions;
-    let map = this.mapUtils.renderMap(elem, {...mapOptions, ...options});
-    this.usersCluster.map = map;
-    this.usersCluster.cluster = this.mapUtils.getMarkerCluster(map);
+    let map = MapService.mapUtils.renderMap(elem, {...mapOptions, ...options});
+    // this.usersCluster.map = map;
+    this.usersCluster.cluster = MapService.mapUtils.getMarkerCluster(map);
     MapService.setMap(map);
     // this.map$.next(this.map);
     return map
@@ -68,13 +77,13 @@ export class HtMapClass {
       bounds = this.getBoundsItem(items);
       // bounds = this.segmentTrace.extendBounds(bounds);
       // bounds = this.usersCluster.extendBounds(bounds);
-      if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
+      if(bounds && MapService.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
     }, 10)
 
   };
 
   getBoundsItem(items) {
-    let bounds = this.mapUtils.extendBounds();
+    let bounds = MapService.mapUtils.extendBounds();
     return _.reduce(items, (bounds, item: HtMapItem<any>) => {
       return this.getBounds(bounds, item)
     }, bounds)
@@ -86,11 +95,11 @@ export class HtMapClass {
 
   setBounds(bounds: HtBounds, options?) {
     options = options || this.mapType == 'leaflet' ? this.leafletSetBoundsOptions : this.googleSetBoundsOptions;
-    this.mapUtils.setBounds(this.map, bounds, options)
+    MapService.mapUtils.setBounds(this.map, bounds, options)
   }
 
   inValidateSize() {
-    this.mapUtils.invalidateSize(this.map)
+    MapService.mapUtils.invalidateSize(this.map)
   }
 }
 
