@@ -9,9 +9,10 @@ import {Subject} from "rxjs/Subject";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {MapService} from "./map-service";
 
 export class HtMapClass {
-  map: HtMap;
+  // map: HtMap;
   mapUtils: MapUtils;
   segmentTrace: HtSegmentsTrace;
   usersCluster;
@@ -29,7 +30,7 @@ export class HtMapClass {
     styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
-  map$ = new ReplaySubject();
+  // map$ = new ReplaySubject();
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
@@ -39,17 +40,26 @@ export class HtMapClass {
     this.segmentTrace = new HtSegmentsTrace(this.mapType);
   }
 
+  get map$() {
+    return MapService.map$
+  }
+
+  get map() {
+    return MapService.map
+  }
+
   initMap(elem: Element, options = {}): HtMap {
     let mapOptions = this.mapType == 'leaflet' ? this.leafletMapOptions : this.googleMapOptions;
-    this.map = this.mapUtils.renderMap(elem, {...mapOptions, ...options});
-    this.usersCluster.map = this.map;
-    this.usersCluster.cluster = this.mapUtils.getMarkerCluster(this.map);
-    this.map$.next(this.map);
-    return this.map
+    let map = this.mapUtils.renderMap(elem, {...mapOptions, ...options});
+    this.usersCluster.map = map;
+    this.usersCluster.cluster = this.mapUtils.getMarkerCluster(map);
+    MapService.setMap(map);
+    // this.map$.next(this.map);
+    return map
   }
 
   tracePlaceline(user: IUserData) {
-    this.segmentTrace.trace(user, this.map)
+    this.segmentTrace.trace(user)
   }
 
   resetBounds(options?, bounds?: HtBounds) {

@@ -11,6 +11,8 @@ import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 import {markersFactory} from "./base/marker-factory";
 import {htUser} from "ht-js-data";
+import {MapService} from "./map-service";
+import {currentUserFactory} from "./entities/current-user";
 
 export class HtSegmentsTrace {
 
@@ -23,7 +25,7 @@ export class HtSegmentsTrace {
   replayMarker;
   eventMarkers;
   allowedEvents = {};
-  map;
+  // map;
 
   constructor(mapType: HtMapType = 'leaflet', public options: HtSegmentsTraceOptions = {}) {
     this.initBaseItems(mapType);
@@ -32,13 +34,17 @@ export class HtSegmentsTrace {
     })
   }
 
+  get map() {
+    return MapService.map
+  }
+
   protected initBaseItems(mapType: HtMapType) {
     let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
     this.segmentsPolylines = segmentFactory(mapUtils);
     this.stopMarkers = stopFactory(mapUtils);
     this.actionMarkers = actionsFactory(mapUtils);
     this.actionsPolylines = actionsFactory(mapUtils);
-    this.userMarker = markersFactory(mapUtils, {data: htUser});
+    this.userMarker = currentUserFactory(mapUtils);
     // this.userMarker = new HtCurrentUser(mapType);ht-js-utils/dist/sr
     this.replayMarker = stopFactory(mapUtils);
     this.eventMarkers = stopFactory(mapUtils);
@@ -49,14 +55,15 @@ export class HtSegmentsTrace {
 
   }
 
-  trace(user, map, params = {}) {
-    this.map = map;
+  trace(user) {
+    // this.map = map;
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
-    if(this.segmentsPolylines) this.segmentsPolylines.trace(segType.tripSegment, map, true);
-    if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment, map, true);
-    this.traceAction(user, map);
-    this.traceCurrentUser(_.last(userSegments), map);
+    if(this.segmentsPolylines) this.segmentsPolylines.trace(segType.tripSegment);
+    if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
+    this.traceAction(user);
+    this.userMarker.trace(user)
+    // this.traceCurrentUser(_.last(userSegments));
     // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     // this.traceEvents(user, ht-map)
   }
@@ -108,13 +115,13 @@ export class HtSegmentsTrace {
     this.actionMarkers.resetHighlights()
   }
 
-  traceAction(user: IUserData, map) {
+  traceAction(user: IUserData) {
     let actions = user && user.actions ? user.actions : [];
     let filteredActions = _.filter(actions, (action: IAction) => {
       return htAction(action).isValidMarker();
       // return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
     });
-    if(this.actionMarkers) this.actionMarkers.trace(filteredActions, map, true);
+    if(this.actionMarkers) this.actionMarkers.trace(filteredActions);
   }
 
   traceActionPolyline(user, map, currentPosition) {
@@ -180,13 +187,15 @@ export class HtSegmentsTrace {
     }, {tripSegment: [], stopSegment: []});
   }
 
-  traceCurrentUser(segment, map) {
+  traceCurrentUser(segment) {
+    console.log("seg,emt", segment);
     if(segment && this.timelineSegment.timeAwareArray && this.timelineSegment.timeAwareArray.length) {
       // let lastSegment = segment;
       let positionBearing = this.timelineSegment.getLastPositionBearing();
-      this.userMarker.update({segment, positionBearing}, map)
+      console.log(positionBearing);
+      // this.userMarker.trace({segment, positionBearing})
     } else {
-      this.userMarker.removeAll();
+      // this.userMarker.removeAll();
     }
   }
 

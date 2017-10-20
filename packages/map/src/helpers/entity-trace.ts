@@ -1,6 +1,7 @@
 import {Entities} from "../entities/interfaces";
 import * as _ from "underscore";
 import {MapUtils} from "../interfaces";
+import {MapService} from "../map-service";
 
 export const entityTraceFactory = (mapUtils: MapUtils, mapItems, dataFactory) => {
   // let {entities, renderer, map} = mapItems;
@@ -21,8 +22,10 @@ export const entityTraceFactory = (mapUtils: MapUtils, mapItems, dataFactory) =>
   return {
     entities: {},
     trace(data, map?) {
-      // let renderConfig = this.renderer;
-      this.map = map;
+      this.map = MapService.map;
+      if(!this.map) {
+        console.warn("Map is not initialized")
+      }
       if(data && data.length) {
         _.each(data, datum => {
           let id = datum['id'];

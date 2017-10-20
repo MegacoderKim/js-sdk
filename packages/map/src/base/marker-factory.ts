@@ -13,15 +13,7 @@ export const markersFactory = (mapUtils: MapUtils, config: MarkerFactoryConfig):
   let stylesObj = {
     google: {
       default: {
-        icon: {
-          fillColor: Color.stop,
-          fillOpacity: 1,
-          strokeColor: Color.stopDark,
-          strokeOpacity: 1,
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          strokeWeight: 2,
-        }
+
       }
     },
     leaflet: {
