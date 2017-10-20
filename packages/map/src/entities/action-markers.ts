@@ -1,19 +1,12 @@
 import {IAction} from "ht-models";
-import {markerRenderConfigFactory} from "../helpers/marker-render";
-import {stylesConfigFactory} from "../helpers/styles-factory";
 import {dataFactory} from "../helpers/data-factory";
-import {entityTraceFactory} from "../helpers/entity-trace";
 import {MapEntities} from "./interfaces";
-import {MapUtils} from "../interfaces";
 import {Color} from "ht-js-utils";
 import {htAction} from "ht-js-data";
-import {MapService} from "../map-service";
+import {mapItemsFactory} from "../base/map-items-factory";
 
 export const actionsFactory = (): MapEntities<any> => {
-  let mapUtils = MapService.mapUtils;
-  let state = {
-    map: null,
-  };
+
   let stylesObj = {
     google: {
       default: {
@@ -40,13 +33,7 @@ export const actionsFactory = (): MapEntities<any> => {
       }
     }
   };
-  let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
-  let renderConfig = markerRenderConfigFactory();
-  let mapItems = {
-    ...state,
-    entities: {},
-    renderer: renderConfig
-  };
+
   let stop = dataFactory({
     getPosition(data) {
       let posObj = htAction(data).getPositionsObject();
@@ -54,13 +41,7 @@ export const actionsFactory = (): MapEntities<any> => {
 
     }
   });
-  let entityTrace = entityTraceFactory(mapItems, stop);
-
-  return {
-    name: 'stop',
-    ...entityTrace,
-    ...state,
-    ...renderConfig,
-    ...stylesConfig
-  }
+  let name = " actions";
+  let markers = mapItemsFactory({data: stop, stylesObj, name});
+  return markers
 };

@@ -11,6 +11,8 @@ import {circleRenderConfigFactory} from "../helpers/circle-render";
 import {Color} from "ht-js-utils";
 import {stylesConfigFactory} from "../helpers/styles-factory";
 import {MapService} from "../map-service";
+import {markerRenderConfigFactory} from "../helpers/marker-render";
+import {clustersFactory} from "../base/clusters-factory";
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
@@ -123,56 +125,56 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
 };
 
 export const usersClustersFactory = (): ClusterEntities<any> => {
-  let mapUtils = MapService.mapUtils;
-  let state = {
-    map: null,
-    cluster: null
-  };
-  let stylesObj = {
-    google: {
-      default: {
-        // icon: {
-        //   fillColor: Color.stop,
-        //   fillOpacity: 1,
-        //   strokeColor: Color.stopDark,
-        //   strokeOpacity: 1,
-        //   path: google.maps.SymbolPath.CIRCLE,
-        //   scale: 8,
-        //   strokeWeight: 2,
-        // }
-      }
-    },
-    leaflet: {
-      default: {
-
-      }
-    }
-  };
-  let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
-
-  let clusterRender = clusterRenderConfigFactory();
-  let renderConfig: RenderConfig = {
-    // setMap: true,
-    ...clusterRender,
-  };
-  renderConfig = circleRenderConfigFactory(renderConfig);
-
-  let mapItems = {
-    ...state,
-    entities: {},
-    renderer: clusterRender
-  };
-  let entityTrace = entityTraceFactory(mapItems, htUser);
-
-  return {
-    ...entityTrace,
-    ...state,
-    ...renderConfig,
-    ...stylesConfig,
-  }
+  // let mapUtils = MapService.mapUtils;
+  return clustersFactory({data: htUser, name: 'user cluster'})
+  // let state = {
+  //   map: null,
+  //   cluster: null
+  // };
+  // let stylesObj = {
+  //   google: {
+  //     default: {
+  //       // icon: {
+  //       //   fillColor: Color.stop,
+  //       //   fillOpacity: 1,
+  //       //   strokeColor: Color.stopDark,
+  //       //   strokeOpacity: 1,
+  //       //   path: google.maps.SymbolPath.CIRCLE,
+  //       //   scale: 8,
+  //       //   strokeWeight: 2,
+  //       // }
+  //     }
+  //   },
+  //   leaflet: {
+  //     default: {
+  //
+  //     }
+  //   }
+  // };
+  // let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
+  // let markerRenderConfig = markerRenderConfigFactory();
+  // let clusterRender = clusterRenderConfigFactory(markerRenderConfig);
+  // let renderConfig: RenderConfig = {
+  //   // setMap: true,
+  //   ...clusterRender,
+  // };
+  // renderConfig = circleRenderConfigFactory(renderConfig);
+  //
+  // let mapItems = {
+  //   ...state,
+  //   entities: {},
+  //   renderer: clusterRender
+  // };
+  // let entityTrace = entityTraceFactory(mapItems, htUser);
+  //
+  // return {
+  //   ...entityTrace,
+  //   ...state,
+  //   ...renderConfig,
+  //   ...stylesConfig,
+  // }
 };
 
 export interface ClusterEntities<T> extends MapEntities<T>, RenderConfig {
-  map: any,
   cluster: any
 }

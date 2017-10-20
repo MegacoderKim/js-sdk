@@ -6,8 +6,11 @@ import {markerRenderConfigFactory} from "../helpers/marker-render";
 import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/entity-trace";
 import {MapService} from "../map-service";
+import {clusterRenderConfigFactory} from "../helpers/cluster-render";
+import {polylineRenderConfigFactory} from "../helpers/polyline-render";
+import {circleRenderConfigFactory} from "../helpers/circle-render";
 
-export const markersFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
+export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
   let mapUtils = MapService.mapUtils;
   let state = {
     map: null,
@@ -27,6 +30,9 @@ export const markersFactory = (config: MarkerFactoryConfig): MapEntities<any> =>
   let stylesConfig = stylesConfigFactory(config.stylesObj || stylesObj, mapUtils.type);
 
   let renderConfig = markerRenderConfigFactory();
+  if(config.isCircle) renderConfig = circleRenderConfigFactory(renderConfig);
+  if(config.isPolyline) renderConfig = polylineRenderConfigFactory(renderConfig);
+  if(config.isCluster) renderConfig = clusterRenderConfigFactory(renderConfig);
   // renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);
   let mapItems = {
     ...state,
@@ -37,15 +43,20 @@ export const markersFactory = (config: MarkerFactoryConfig): MapEntities<any> =>
   let entityTrace = entityTraceFactory(mapItems, config.data);
 
   return {
-    name: 'stop',
+    name: config.name || 'marker',
     ...entityTrace,
     ...state,
     ...renderConfig,
-    ...stylesConfig
+    ...stylesConfig,
+    setMap: !config.isCluster
   }
 };
 
 export interface MarkerFactoryConfig {
   data: any,
-  stylesObj?: object
+  stylesObj?: object,
+  isCluster?: boolean,
+  isPolyline?: boolean,
+  isCircle?: boolean,
+  name?: string
 }

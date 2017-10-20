@@ -1,5 +1,5 @@
 import {htUser} from "ht-js-data";
-import {markersFactory} from "../base/marker-factory";
+import {mapItemsFactory} from "../base/map-items-factory";
 import {MapEntities, MapEntity} from "./interfaces";
 import {dataFactory} from "../helpers/data-factory";
 import {IUserData} from "ht-models";
@@ -21,7 +21,7 @@ export const currentUserFactory = () => {
   //
   //   }
   // });
-  let markers = markersFactory({data: htUser});
+  let markers = mapItemsFactory({data: htUser});
   return {
     ...markers,
     trace(user) {

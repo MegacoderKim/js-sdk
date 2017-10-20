@@ -2,7 +2,8 @@ import {MapUtils} from "../interfaces";
 import {MapEntities} from "./interfaces";
 import {Color} from "ht-js-utils";
 import {dataFactory} from "../helpers/data-factory";
-import {markersFactory} from "../base/marker-factory";
+import {mapItemsFactory} from "../base/map-items-factory";
+import {clustersFactory} from "../base/clusters-factory";
 
 export const stopFactory = (): MapEntities<any> => {
 
@@ -43,6 +44,7 @@ export const stopFactory = (): MapEntities<any> => {
 
     }
   });
-  return markersFactory({data: stop, stylesObj});
+  return mapItemsFactory({data: stop, stylesObj, isCircle: true});
+  // return clustersFactory({data: stop, stylesObj, isCircle: true});
 
 };

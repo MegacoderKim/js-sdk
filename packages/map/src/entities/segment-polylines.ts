@@ -7,13 +7,10 @@ import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/entity-trace";
 import {stylesConfigFactory} from "../helpers/styles-factory";
 import {MapService} from "../map-service";
+import {mapItemsFactory} from "../base/map-items-factory";
 
 
 export const segmentFactory = (): MapEntities<any> => {
-  let mapUtils = MapService.mapUtils;
-  let state = {
-    map: null,
-  };
   let stylesObj = {
     google: {
       default: {
@@ -28,25 +25,12 @@ export const segmentFactory = (): MapEntities<any> => {
       }
     }
   };
-  let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
-  let renderConfig = markerRenderConfigFactory();
-  renderConfig = polylineRenderConfigFactory(renderConfig);
-  let mapItems = {
-    ...state,
-    entities: {},
-    renderer: renderConfig
-  };
   let stop = dataFactory({
     getEncodedPath(data) {
       return data.encoded_polyline;
     }
   });
-  let entityTrace = entityTraceFactory(mapItems, stop);
-  return {
-    name: 'segment',
-    ...entityTrace,
-    ...state,
-    ...renderConfig,
-    ...stylesConfig
-  }
+  let name = 'segment';
+  let segments = mapItemsFactory({isPolyline: true, stylesObj, data: stop, name});
+  return segments;
 };

@@ -9,7 +9,7 @@ import {htAction} from "ht-js-data";
 import {IEvent} from "ht-models";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
-import {markersFactory} from "./base/marker-factory";
+import {mapItemsFactory} from "./base/map-items-factory";
 import {htUser} from "ht-js-data";
 import {MapService} from "./map-service";
 import {currentUserFactory} from "./entities/current-user";
@@ -77,6 +77,7 @@ export class HtSegmentsTrace {
     bounds = this.stopMarkers.extendBounds(bounds);
     bounds = this.segmentsPolylines.extendBounds(bounds);
     bounds = this.actionMarkers.extendBounds(bounds);
+    // bounds = this.userMarker.extendBounds(bounds);
     // console.log(bounds, "final");
     return bounds
   }
