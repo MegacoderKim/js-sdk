@@ -4,7 +4,7 @@ import {Color} from "ht-js-utils";
 import {dataFactory} from "../helpers/data-factory";
 import {markersFactory} from "../base/marker-factory";
 
-export const stopFactory = (mapUtils: MapUtils): MapEntities<any> => {
+export const stopFactory = (): MapEntities<any> => {
 
   let stylesObj = {
     google: {
@@ -43,6 +43,6 @@ export const stopFactory = (mapUtils: MapUtils): MapEntities<any> => {
 
     }
   });
-  return markersFactory(mapUtils, {data: stop, stylesObj});
+  return markersFactory({data: stop, stylesObj});
 
 };

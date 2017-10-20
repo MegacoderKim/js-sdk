@@ -6,7 +6,7 @@ import {IUserData} from "ht-models";
 import * as _ from "underscore";
 var Polyline = require('time-aware-polyline');
 
-export const currentUserFactory = (mapUtils) => {
+export const currentUserFactory = () => {
   // let data = dataFactory({
   //   getPosition(user: IUserData) {
   //     let lastSeg = _.last(user.segments);
@@ -21,7 +21,7 @@ export const currentUserFactory = (mapUtils) => {
   //
   //   }
   // });
-  let markers = markersFactory(mapUtils, {data: htUser});
+  let markers = markersFactory({data: htUser});
   return {
     ...markers,
     trace(user) {

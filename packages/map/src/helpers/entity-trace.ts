@@ -3,8 +3,9 @@ import * as _ from "underscore";
 import {MapUtils} from "../interfaces";
 import {MapService} from "../map-service";
 
-export const entityTraceFactory = (mapUtils: MapUtils, mapItems, dataFactory) => {
+export const entityTraceFactory = (mapItems, dataFactory) => {
   // let {entities, renderer, map} = mapItems;
+  let mapUtils = MapService.mapUtils;
 
   function bustOlditem(item) {
     let entities: Entities<any> = item.entities;

@@ -2,10 +2,12 @@ import {HtMapUtils} from "../map-utils";
 import * as _ from "underscore";
 import {entityTraceFactory} from "./entity-trace";
 import {MapUtils} from "../interfaces";
+import {MapService} from "../map-service";
 
-export const clusterTraceFactory = (mapUtils: MapUtils, renderConfig, dataFactory) => {
+export const clusterTraceFactory = (renderConfig, dataFactory) => {
+  let mapUtils = MapService.mapUtils;
 
-  let entityTrace = entityTraceFactory(mapUtils, renderConfig, dataFactory);
+  let entityTrace = entityTraceFactory(renderConfig, dataFactory);
 
   return {
     cluster: null,

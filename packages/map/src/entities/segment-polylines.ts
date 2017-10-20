@@ -6,9 +6,11 @@ import {polylineRenderConfigFactory} from "../helpers/polyline-render";
 import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/entity-trace";
 import {stylesConfigFactory} from "../helpers/styles-factory";
+import {MapService} from "../map-service";
 
 
-export const segmentFactory = (mapUtils: MapUtils): MapEntities<any> => {
+export const segmentFactory = (): MapEntities<any> => {
+  let mapUtils = MapService.mapUtils;
   let state = {
     map: null,
   };
@@ -27,8 +29,8 @@ export const segmentFactory = (mapUtils: MapUtils): MapEntities<any> => {
     }
   };
   let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
-  let renderConfig = markerRenderConfigFactory(mapUtils);
-  renderConfig = polylineRenderConfigFactory(renderConfig, mapUtils);
+  let renderConfig = markerRenderConfigFactory();
+  renderConfig = polylineRenderConfigFactory(renderConfig);
   let mapItems = {
     ...state,
     entities: {},
@@ -39,7 +41,7 @@ export const segmentFactory = (mapUtils: MapUtils): MapEntities<any> => {
       return data.encoded_polyline;
     }
   });
-  let entityTrace = entityTraceFactory(mapUtils, mapItems, stop);
+  let entityTrace = entityTraceFactory(mapItems, stop);
   return {
     name: 'segment',
     ...entityTrace,

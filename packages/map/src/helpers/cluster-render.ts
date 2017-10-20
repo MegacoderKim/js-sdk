@@ -1,10 +1,12 @@
 import {markerRenderConfigFactory} from "./marker-render";
 import {Entities} from "../entities/interfaces";
 import * as _ from "underscore";
+import {MapService} from "../map-service";
 
-export const clusterRenderConfigFactory = (mapUtils) => {
+export const clusterRenderConfigFactory = () => {
   // console.log(test);
-  let markerRender = markerRenderConfigFactory(mapUtils);
+  let mapUtils = MapService.mapUtils;
+  let markerRender = markerRenderConfigFactory();
   return {
     ...markerRender,
     setMap: false,

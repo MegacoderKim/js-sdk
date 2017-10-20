@@ -7,8 +7,10 @@ import {MapEntities} from "./interfaces";
 import {MapUtils} from "../interfaces";
 import {Color} from "ht-js-utils";
 import {htAction} from "ht-js-data";
+import {MapService} from "../map-service";
 
-export const actionsFactory = (mapUtils: MapUtils): MapEntities<any> => {
+export const actionsFactory = (): MapEntities<any> => {
+  let mapUtils = MapService.mapUtils;
   let state = {
     map: null,
   };
@@ -39,7 +41,7 @@ export const actionsFactory = (mapUtils: MapUtils): MapEntities<any> => {
     }
   };
   let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
-  let renderConfig = markerRenderConfigFactory(mapUtils);
+  let renderConfig = markerRenderConfigFactory();
   let mapItems = {
     ...state,
     entities: {},
@@ -52,7 +54,7 @@ export const actionsFactory = (mapUtils: MapUtils): MapEntities<any> => {
 
     }
   });
-  let entityTrace = entityTraceFactory(mapUtils, mapItems, stop);
+  let entityTrace = entityTraceFactory(mapItems, stop);
 
   return {
     name: 'stop',

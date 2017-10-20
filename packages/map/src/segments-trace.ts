@@ -29,7 +29,7 @@ export class HtSegmentsTrace {
 
   constructor(public options: HtSegmentsTraceOptions = {}) {
     let mapUtils = MapService.mapUtils;
-    this.initBaseItems(mapUtils);
+    this.initBaseItems();
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head, this.map)
     })
@@ -39,20 +39,20 @@ export class HtSegmentsTrace {
     return MapService.map
   }
 
-  protected initBaseItems(mapUtils) {
+  protected initBaseItems() {
     // let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
-    this.segmentsPolylines = segmentFactory(mapUtils);
-    this.stopMarkers = stopFactory(mapUtils);
-    this.actionMarkers = actionsFactory(mapUtils);
-    this.actionsPolylines = actionsFactory(mapUtils);
-    this.userMarker = currentUserFactory(mapUtils);
+    this.segmentsPolylines = segmentFactory();
+    this.stopMarkers = stopFactory();
+    this.actionMarkers = actionsFactory();
+    this.actionsPolylines = actionsFactory();
+    this.userMarker = currentUserFactory();
     // this.userMarker = new HtCurrentUser(mapType);ht-js-utils/dist/sr
-    this.replayMarker = stopFactory(mapUtils);
-    this.eventMarkers = stopFactory(mapUtils);
-    this.initItems(mapUtils)
+    this.replayMarker = stopFactory();
+    this.eventMarkers = stopFactory();
+    this.initItems()
   }
 
-  initItems(mapUtils) {
+  initItems() {
 
   }
 

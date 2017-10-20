@@ -150,19 +150,19 @@ export const usersClustersFactory = (): ClusterEntities<any> => {
   };
   let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
 
-  let clusterRender = clusterRenderConfigFactory(mapUtils);
+  let clusterRender = clusterRenderConfigFactory();
   let renderConfig: RenderConfig = {
     // setMap: true,
     ...clusterRender,
   };
-  renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);
+  renderConfig = circleRenderConfigFactory(renderConfig);
 
   let mapItems = {
     ...state,
     entities: {},
     renderer: clusterRender
   };
-  let entityTrace = entityTraceFactory(mapUtils, mapItems, htUser);
+  let entityTrace = entityTraceFactory(mapItems, htUser);
 
   return {
     ...entityTrace,

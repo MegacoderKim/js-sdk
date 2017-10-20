@@ -5,8 +5,10 @@ import {stylesConfigFactory} from "../helpers/styles-factory";
 import {markerRenderConfigFactory} from "../helpers/marker-render";
 import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/entity-trace";
+import {MapService} from "../map-service";
 
-export const markersFactory = (mapUtils: MapUtils, config: MarkerFactoryConfig): MapEntities<any> => {
+export const markersFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
+  let mapUtils = MapService.mapUtils;
   let state = {
     map: null,
   };
@@ -24,7 +26,7 @@ export const markersFactory = (mapUtils: MapUtils, config: MarkerFactoryConfig):
   };
   let stylesConfig = stylesConfigFactory(config.stylesObj || stylesObj, mapUtils.type);
 
-  let renderConfig = markerRenderConfigFactory(mapUtils);
+  let renderConfig = markerRenderConfigFactory();
   // renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);
   let mapItems = {
     ...state,
@@ -32,7 +34,7 @@ export const markersFactory = (mapUtils: MapUtils, config: MarkerFactoryConfig):
     renderer: renderConfig
   };
 
-  let entityTrace = entityTraceFactory(mapUtils, mapItems, config.data);
+  let entityTrace = entityTraceFactory(mapItems, config.data);
 
   return {
     name: 'stop',

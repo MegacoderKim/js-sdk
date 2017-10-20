@@ -2,8 +2,11 @@ import {RenderConfig} from "../entities/interfaces";
 import {HtMapUtils} from "../map-utils";
 import {MapUtils} from "../interfaces";
 import * as _ from "underscore";
+import {MapService} from "../map-service";
 
-export const markerRenderConfigFactory = (mapUtils: MapUtils): RenderConfig => {
+export const markerRenderConfigFactory = (): RenderConfig => {
+  let mapUtils = MapService.mapUtils;
+
   return {
     setMap: true,
     getItem(data) {

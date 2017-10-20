@@ -1,7 +1,10 @@
 import {RenderConfig} from "../entities/interfaces";
 import {MapUtils} from "../interfaces";
+import {MapService} from "../map-service";
 
-export const polylineRenderConfigFactory = (renderConfig: RenderConfig, mapUtils: MapUtils) => {
+export const polylineRenderConfigFactory = (renderConfig: RenderConfig) => {
+  let mapUtils = MapService.mapUtils;
+
   return {
     ...renderConfig,
     // getEncodedPath(data) {
