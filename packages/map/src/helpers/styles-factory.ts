@@ -13,7 +13,8 @@ const defaultStyle = {
   }
 };
 
-export const stylesConfigFactory = (mapType: HtMapType, stylesObj: StyleObj = defaultStyle) => {
+export const stylesConfigFactory = (mapType: HtMapType, stylesObj: Partial<StyleObj> = {}) => {
+  stylesObj = {...defaultStyle, ...stylesObj};
   return {
     stylesObj,
     stylesType: 'default',

@@ -43,7 +43,7 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
 
 export interface MarkerFactoryConfig {
   data: any,
-  stylesObj?: StyleObj,
+  stylesObj?: Partial<StyleObj>,
   isCluster?: boolean,
   isPolyline?: boolean,
   isCircle?: boolean,

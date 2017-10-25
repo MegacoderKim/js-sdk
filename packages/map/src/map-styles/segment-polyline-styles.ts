@@ -8,9 +8,9 @@ export const segmentPolylineStyles = {
       strokeWeight: 5
     }
   },
-  leaflet: {
-    default: {
-
-    }
-  }
+  // leaflet: {
+  //   default: {
+  //
+  //   }
+  // }
 }
