@@ -1,4 +1,3 @@
-import {markerRenderConfigFactory} from "./marker-render";
 import {Entities, RenderConfig} from "../entities/interfaces";
 import * as _ from "underscore";
 import {MapService} from "../map-service";

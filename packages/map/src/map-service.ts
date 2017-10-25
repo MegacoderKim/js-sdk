@@ -2,13 +2,14 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 import {HtMapType} from "./map-utils";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
+import {HtMap} from "./interfaces";
 
 export const MapService = {
   mapUtils: null,
   map: null,
   map$: new ReplaySubject(),
   clusters: [],
-  setMap(map) {
+  setMap(map: HtMap) {
     this.map$.next(map)
   },
   getMap() {

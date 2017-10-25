@@ -1,7 +1,7 @@
 import {htUser} from "ht-js-data";
 import {HtMarkerItem} from "../marker-item";
 import {HtBounds, HtMap, SetFocusConfig} from "../interfaces";
-import {IUser, IUserAnalytics, Partial, IUserData} from "ht-models";
+import {IUser, IUserAnalytics} from "ht-models";
 
 export class HtUserMarker extends HtMarkerItem<IUser | IUserAnalytics> {
 

@@ -1,8 +1,8 @@
-import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
+import {HtBounds, HtMap, HtMapType} from "./interfaces";
 import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
 import {usersClustersFactory} from "./entities/users-cluster";
-import {LightColorMapStyle} from "./map-styles/light-color-map";
+import {LightColorMapStyle} from "./styles/light-color-map";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {MapService} from "./map-service";
@@ -36,8 +36,8 @@ export class HtMapClass {
     this.segmentTrace = new HtSegmentsTrace();
   }
 
-  get map$() {
-    return MapService.map$
+  get map$(): ReplaySubject<HtMap> {
+    return MapService.map$ as ReplaySubject<HtMap>
   }
 
   get map() {

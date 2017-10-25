@@ -1,8 +1,8 @@
 import {MarkerFactoryConfig, mapItemsFactory} from "./map-items-factory";
-import {Entity, MapEntities} from "../entities/interfaces";
 import {MapService} from "../map-service";
+import {MapEntities, RenderConfig} from "../entities/interfaces";
 
-export const clustersFactory = (config: MarkerFactoryConfig) => {
+export const clustersFactory = (config: MarkerFactoryConfig): ClusterEntities<any> => {
   config = {
     ...config,
     name: config.name || 'cluster',
@@ -16,3 +16,7 @@ export const clustersFactory = (config: MarkerFactoryConfig) => {
   MapService.addCluster(cluster);
   return cluster
 };
+
+export interface ClusterEntities<T> extends MapEntities<T>, RenderConfig {
+  cluster: any
+}

@@ -1,18 +1,10 @@
 import {HtMapItems} from "../map-items";
 import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
-import {HtMap, HtMapType, MapUtils, SetFocusConfig} from "../interfaces";
+import {SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-js-data";
 import {IUser, IUserAnalytics} from "ht-models";
-import { MapEntities, RenderConfig} from "./interfaces";
-import {entityTraceFactory} from "../helpers/trace-factory";
-import {clusterRenderConfigFactory} from "../renderers/cluster-render";
-import {circleRenderConfigFactory} from "../renderers/circle-render";
-import {Color} from "ht-js-utils";
-import {stylesConfigFactory} from "../helpers/styles-factory";
-import {MapService} from "../map-service";
-import {markerRenderConfigFactory} from "../renderers/marker-render";
-import {clustersFactory} from "../base/clusters-factory";
+import {ClusterEntities, clustersFactory} from "../base/clusters-factory";
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
@@ -125,6 +117,3 @@ export const usersClustersFactory = (): ClusterEntities<any> => {
   return clustersFactory({data: htUser, name: 'user cluster'})
 };
 
-export interface ClusterEntities<T> extends MapEntities<T>, RenderConfig {
-  cluster: any
-}

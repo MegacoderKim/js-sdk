@@ -18,8 +18,6 @@ export interface RenderConfig {
   // onMouseOut(data): any
 }
 
-export type DataFactory<T> = (data: T) => DataObj<T>
-
 export type Entities<T> = {
   [id: string]: Entity<T>
 }
@@ -47,84 +45,4 @@ export interface Entity<T> extends DataObj<T>{
   isOld: boolean
 }
 
-export interface MapEntitiesFactoryConfig<T> {
-  renderConfig: Partial<RenderConfig>,
-  // styles(mapType: HtMapType, styleType?: 'fade' | 'select'): object,
-  dataFactory:  DataFactory<T>
-}
-
-export type MapEntitiesFactory<T> = (mapUtils: HtMapUtils, config: MapEntitiesFactoryConfig<T>) => MapEntities<T>
-
-// export const usersMarkersFactory: MapEntitiesFactory<any> = (mapUtils: HtMapUtils, config: MapEntitiesFactoryConfig<any>): MapEntities<any> => {
-//   let markerGetItem = (data) => {
-//     return null
-//   };
-//   let renderConfig = {
-//     getItem: markerGetItem,
-//     setMap: true,
-//     remove() {
-//
-//     },
-//     removeAll() {
-//
-//     },
-//     update: (data) => {
-//       console.log("update");
-//     },
-//     onClick: (data) => null,
-//     ...config.renderConfig
-//   };
-//   let entityMarker = entityTraceFactory(mapUtils, renderConfig, config.dataFactory);
-//   return  {
-//     ...entityTraceFactory(mapUtils, renderConfig, config.dataFactory),
-//     styles: config.styles,
-//     extendBounds(bounds) {
-//       bounds = bounds || mapUtils.extendBounds();
-//       let newBounds = _.reduce(this.entities, (bounds, entity) => {
-//         return mapUtils.extendBounds(entity.item, bounds, true);
-//       }, bounds);
-//       return newBounds
-//     }
-//   }
-// };
-
-
-
-// export const dataClassFactory = (config: MapEntitiesFactoryConfig<any>): (data) => DataObj<any> => {
-//   let mapData = config.mapFuncs;
-//   if(config.dataClass) {
-//     return config.dataClass;
-//   } else {
-//     return (data) => {
-//       return {
-//         data,
-//         getPosition() {
-//           let data = this.data;
-//           return mapData.getPosition(data)
-//         },
-//         getInfoContent() {
-//           let data = this.data;
-//           return mapData.getInfoContent(data)
-//         }
-//       }
-//     }
-//   }
-// };
-
-
-//example
-// export const HHtest = () => {
-//   let cc = {
-//     styles(a, b) {
-//       return {}
-//     },
-//     dataFactory: htUser,
-//     mapUtils: null,
-//     renderConfig: {setMap: true}
-//   };
-//   console.log("adasdasdasd");
-//   let user = usersMarkersFactory(GoogleMapUtils, cc);
-//   user.map = "has map";
-//   user.trace([]);
-// };
 

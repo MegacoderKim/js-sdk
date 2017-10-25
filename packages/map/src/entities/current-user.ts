@@ -1,8 +1,8 @@
 import {htUser} from "ht-js-data";
-// import {MapEntities, Entity} from "./interfaces";
 import {MapEntity, mapItemFactory} from "../base/map-item-factory";
+import {IUserData} from "../../../models/src/user";
 
-export const currentUserFactory = () => {
+export const currentUserFactory = (): MapEntity<IUserData> => {
   let config = {data: htUser};
   return mapItemFactory(config);
 };

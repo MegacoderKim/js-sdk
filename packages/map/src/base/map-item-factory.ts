@@ -9,7 +9,7 @@ export const mapItemFactory = (config: MarkerFactoryConfig): MapEntity<any> => {
       let data = user ? [user] : [];
       markers.trace(data)
     },
-    getEntity() {
+    getEntity(): Entity<any> {
       if(!this.entities) return null;
       let keys = Object.keys(this.entities);
       if(keys.length == 0) return null;

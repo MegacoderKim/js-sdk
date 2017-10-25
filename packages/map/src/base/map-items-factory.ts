@@ -1,9 +1,6 @@
-import {MapUtils} from "../interfaces";
 import {MapEntities} from "../entities/interfaces";
-import {Color} from "ht-js-utils";
 import {StyleObj, stylesConfigFactory} from "../helpers/styles-factory";
 import {markerRenderConfigFactory} from "../renderers/marker-render";
-import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/trace-factory";
 import {MapService} from "../map-service";
 import {clusterRenderConfigFactory} from "../renderers/cluster-render";

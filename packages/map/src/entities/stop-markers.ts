@@ -1,10 +1,7 @@
-import {MapUtils} from "../interfaces";
 import {MapEntities} from "./interfaces";
-import {Color} from "ht-js-utils";
 import {dataFactory} from "../helpers/data-factory";
 import {mapItemsFactory} from "../base/map-items-factory";
-import {clustersFactory} from "../base/clusters-factory";
-import {stopStyles} from "../map-styles/stop-styles";
+import {stopStyles} from "../styles/stop-styles";
 
 export const stopFactory = (): MapEntities<any> => {
 

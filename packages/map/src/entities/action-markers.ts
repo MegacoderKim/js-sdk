@@ -1,4 +1,3 @@
-import {IAction} from "ht-models";
 import {dataFactory} from "../helpers/data-factory";
 import {MapEntities} from "./interfaces";
 import {Color} from "ht-js-utils";
