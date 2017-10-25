@@ -4,6 +4,7 @@ import {HListFactory} from "../base/list-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersAnalytics, UsersAnalyticsFactory} from "./users-analytics-interfaces";
 import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/interfaces";
+import {Observable} from "rxjs/Observable";
 
 export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): UsersAnalytics => {
   let innerConfig = {
@@ -16,7 +17,7 @@ export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListSt
   let {api$, store, dateRangeQuery$} = state;
 
   let selectors: ListSelectors = {
-    query$: store.select(fromRoot.getQueryUserQuery),
+    query$: store.select(fromRoot.getQueryUserQuery) as Observable<object | null>,
     data$: store.select(fromRoot.getUsersAnalyticsPage),
     active$: store.select(fromRoot.getUsersAnalyticsIsActive),
     loading$: store.select(fromRoot.getLoadingAnalytics)

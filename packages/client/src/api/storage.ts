@@ -9,7 +9,7 @@ export class UsersListStorage {
   }
 
   cleanOld() {
-    let keys = [];
+    let keys: string[] = [];
     store.each((value, key) => {
       if(key.contains(this.sfx)) {
         new Date(value.time).toDateString() !== new Date().toDateString() && keys.push(key)

@@ -442,7 +442,7 @@ export class HtUsersClient extends EntityClient {
   // }
 
   getUserListQuery(): Observable<object> {
-    return this.store.select(fromRoot.getQueryUserQuery)
+    return this.store.select(fromRoot.getQueryUserQuery) as Observable<object>
   }
 
   getUserListApiType() {
@@ -455,7 +455,7 @@ export class HtUsersClient extends EntityClient {
 
   //dispatchers
 
-  setUserData(userData: IUserData) {
+  setUserData(userData: IUserData | null) {
     this.store.dispatch(new fromUsersDispatcher.SetUserData(userData))
   }
 

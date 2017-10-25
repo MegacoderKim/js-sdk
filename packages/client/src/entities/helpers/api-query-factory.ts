@@ -44,24 +44,24 @@ export interface DateRangeApiQueryConfig {
 }
 
 export interface EntityItemApiQueryConfig {
-  id$: Observable<string>
+  id$: Observable<string | null | undefined>
 };
 
 export interface EntityListApiQueryConfig {
-  allowedQueryKeys: string[] | null,
+  allowedQueryKeys?: string[] | null,
   defaultQuery: object,
   active$: Observable<boolean>
 }
 
 export interface ApiQueryConfig{
-  query$: Observable<object>
+  query$: Observable<object | null>
 };
 
 export interface EntityApiQueryConfig extends ApiQueryConfig, Partial<EntityListApiQueryConfig>, Partial<EntityItemApiQueryConfig>, Partial<DateRangeApiQueryConfig> {
 
 }
 
-export interface ListApiQueryConfig extends ApiQueryConfig, EntityListApiQueryConfig, DateRangeApiQueryConfig {
+export interface ListApiQueryConfig extends ApiQueryConfig, EntityListApiQueryConfig, Partial<DateRangeApiQueryConfig> {
 
 }
 

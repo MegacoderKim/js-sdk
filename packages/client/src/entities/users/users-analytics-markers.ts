@@ -7,6 +7,7 @@ import {EntityListDispatchers, EntityListState, EntityTypeConfig, ListSelectors,
 import {AddUsersMarkersDispatchers, IUsersMarkers} from "./users-markers-interfaces";
 import {HListFactory} from "../base/list-client";
 import {AllItemsHelpers} from "../helpers/all-items";
+import {Observable} from "rxjs/Observable";
 
 export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): IUsersMarkers => {
   let {store, api$} = state;
@@ -41,7 +42,7 @@ export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<E
 
   let listSelectors: ListSelectors = {
     active$: store.select(fromRoot.getUsersAnalyticsMarkersIsActive),
-    query$: store.select(fromRoot.getQueryUserQuery),
+    query$: store.select(fromRoot.getQueryUserQuery) as Observable<object | null>,
     data$: store.select(fromRoot.getUsersAnalyticsFilteredMarker),
     loading$: store.select(fromRoot.getLoadingUserAnalyticsAll)
   };

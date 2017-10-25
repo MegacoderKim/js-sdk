@@ -14,7 +14,7 @@ export interface Dispatchers {
 export type GetData<T> = (queryArray: any[]) => Observable<T>
 
 export interface Selectors {
-  query$: Observable<object>
+  query$: Observable<object | null>
   data$: Observable<any>,
   loading$: Observable<boolean | string>,
 };
@@ -109,7 +109,7 @@ export interface GenItemSelectors extends ReqSelectors{
 }
 
 export interface EntityItemSelectors extends Selectors {
-  id$: Observable<string | null>
+  id$: Observable<string | null | undefined>
 }
 
 export interface PublicEntityItemState {

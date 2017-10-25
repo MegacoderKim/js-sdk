@@ -25,7 +25,7 @@ const initialState: State = {
 };
 
 export interface State {
-  userData?: IUserData, //placeline data,
+  userData?: IUserData | undefined | null, //placeline data,
   usersAnalyticsPage?: Page<IUserAnalytics>,
   usersIndexPage?: Page<IUser>,
   listApiType: ApiType
@@ -51,12 +51,16 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
       return {...state, usersIndexPage: action.payload}
     }
     case UserDispatch.SET_USERS_ANALYTICS_ALL: {
-      const resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ...action.payload.resultsEntity};
+      let resultsEntity = {};
+      if(state.usersAnalyticsAll) {
+        resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ...action.payload.resultsEntity};
+      }
+
       return {...state, usersAnalyticsAll: {...action.payload, resultsEntity}}
     }
     case UserDispatch.SET_USERS_INDEX_ALL: {
       // const newEntities = _.indexBy(action.payload.results, 'id');
-      const resultsEntity = {...state.usersIndexAll.resultsEntity, ...action.payload.resultsEntity};
+      const resultsEntity = state.usersIndexAll ? {...state.usersIndexAll.resultsEntity, ...action.payload.resultsEntity} : {};
       return {...state, usersIndexAll: {...action.payload, resultsEntity}}
     }
     case UserDispatch.SET_USERS_SUMMARY: {
