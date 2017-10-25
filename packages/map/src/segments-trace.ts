@@ -13,22 +13,23 @@ import {mapItemsFactory} from "./base/map-items-factory";
 import {htUser} from "ht-js-data";
 import {MapService} from "./map-service";
 import {currentUserFactory} from "./entities/current-user";
+import {MapEntities, MapEntity} from "./entities/interfaces";
 
 export class HtSegmentsTrace {
 
-  segmentsPolylines;
-  stopMarkers;
-  actionMarkers;
-  actionsPolylines;
+  segmentsPolylines = segmentFactory();
+  stopMarkers = stopFactory();
+  actionMarkers = actionsFactory();
+  actionsPolylines = actionsFactory();
   timelineSegment = new TimelineSegment();
-  userMarker;
-  replayMarker;
-  eventMarkers;
+  userMarker = currentUserFactory();
+  replayMarker = stopFactory();
+  eventMarkers = stopFactory();
   allowedEvents = {};
   // map;
 
   constructor(public options: HtSegmentsTraceOptions = {}) {
-    this.initBaseItems();
+    // this.initBaseItems();
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head, this.map)
     })
@@ -38,22 +39,17 @@ export class HtSegmentsTrace {
     return MapService.map
   }
 
-  protected initBaseItems() {
-    // let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
-    this.segmentsPolylines = segmentFactory();
-    this.stopMarkers = stopFactory();
-    this.actionMarkers = actionsFactory();
-    this.actionsPolylines = actionsFactory();
-    this.userMarker = currentUserFactory();
-    // this.userMarker = new HtCurrentUser(mapType);ht-js-utils/dist/sr
-    this.replayMarker = stopFactory();
-    this.eventMarkers = stopFactory();
-    this.initItems()
-  }
-
-  initItems() {
-
-  }
+  // protected initBaseItems() {
+  //   // let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+  //   this.segmentsPolylines = segmentFactory();
+  //   this.stopMarkers = stopFactory();
+  //   this.actionMarkers = actionsFactory();
+  //   this.actionsPolylines = actionsFactory();
+  //   this.userMarker = currentUserFactory();
+  //   // this.userMarker = new HtCurrentUser(mapType);ht-js-utils/dist/sr
+  //   this.replayMarker = stopFactory();
+  //   this.eventMarkers = stopFactory();
+  // }
 
   trace(user) {
     // this.map = map;
@@ -69,8 +65,8 @@ export class HtSegmentsTrace {
   }
 
   highlightAll(toHighlight) {
-    this.segmentsPolylines.highlight({}, !!toHighlight);
-    this.stopMarkers.highlight({}, !!toHighlight)
+    // this.segmentsPolylines.highlight({}, !!toHighlight);
+    // this.stopMarkers.highlight({}, !!toHighlight)
   }
 
   extendBounds(bounds) {
@@ -83,8 +79,8 @@ export class HtSegmentsTrace {
   }
 
   highlightSegmentId(segmentId: string) {
-    this.segmentsPolylines.highlight(segmentId);
-    this.stopMarkers.hightlight(segmentId);
+    // this.segmentsPolylines.highlight(segmentId);
+    // this.stopMarkers.hightlight(segmentId);
     // if(segmentId.type == 'trip') {
     //   this.segmentsPolylines.highlight(segment);
     //   this.stopMarkers.unHighlight()
@@ -97,23 +93,23 @@ export class HtSegmentsTrace {
 
   unselectSegment(segment: ISegment) {
     if(segment.type == 'trip') {
-      this.segmentsPolylines.resetHighlights();
-      this.stopMarkers.resetHighlights();
+      // this.segmentsPolylines.resetHighlights();
+      // this.stopMarkers.resetHighlights();
     } else if (segment.type == 'stop') {
       // console.log("stop select");
-      this.stopMarkers.resetHighlights();
-      this.stopMarkers.resetHighlights();
+      // this.stopMarkers.resetHighlights();
+      // this.stopMarkers.resetHighlights();
       // this.segmentsPolylines.resetHighlights();
     }
     this.unselectSegmentEffect(segment)
   }
 
   selectSegmentEffect(segment) {
-    this.actionMarkers.highlight({})
+    // this.actionMarkers.highlight({})
   }
 
   unselectSegmentEffect(segment) {
-    this.actionMarkers.resetHighlights()
+    // this.actionMarkers.resetHighlights()
   }
 
   traceAction(user: IUserData) {
@@ -132,10 +128,10 @@ export class HtSegmentsTrace {
     if(currentPosition) {
       let polylines = this.getActionPolylineWithId(currentPosition, ongoingAction);
       // console.log(polylines);
-      this.actionsPolylines.trace(polylines, map, true)
+      this.actionsPolylines.trace(polylines)
 
     } else {
-      this.actionsPolylines.removeAll()
+      // this.actionsPolylines.removeAll()
     }
   }
 
@@ -170,9 +166,9 @@ export class HtSegmentsTrace {
 
   selectAction(actionId: string) {
     if(actionId) {
-      this.actionMarkers.highlight({id: actionId});
+      // this.actionMarkers.highlight({id: actionId});
     } else {
-      this.actionMarkers.resetHighlights()
+      // this.actionMarkers.resetHighlights()
     }
     this.highlightAll(!!actionId)
   }
@@ -218,12 +214,13 @@ export class HtSegmentsTrace {
   }
 
   getCurrentUserPosition() {
-    return this.userMarker.getPosition()
+    return this.userMarker.getEntity().getPosition()
   }
 
   focusUserMarker(map, config) {
     console.log(this.userMarker);
     console.error("focus user not implimente");
+    MapService.mapUtils.setFocus(this.userMarker.getEntity(), map, {force: true, zoom: 15, center: true, ...config})
     // this.userMarker.setFocus(map);
   }
 
@@ -233,9 +230,9 @@ export class HtSegmentsTrace {
 
   setReplayHead(head, map) {
     if(head && head.currentPosition) {
-      this.replayMarker.setPositionBearing([head.currentPosition[0], head.currentPosition[1]], head.bearing, map);
+      // this.replayMarker.setPositionBearing([head.currentPosition[0], head.currentPosition[1]], head.bearing, map);
     } else {
-      this.replayMarker.clear()
+      // this.replayMarker.clear()
     }
   }
 
@@ -268,7 +265,7 @@ export class HtSegmentsTrace {
       }
 
     }, []);
-    this.eventMarkers.trace(eventsWithPosition, map, true)
+    this.eventMarkers.trace(eventsWithPosition)
   }
 }
 

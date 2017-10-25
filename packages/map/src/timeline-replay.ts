@@ -15,7 +15,7 @@ import {ITimelineEvent, IDecodedSegment} from "ht-models";
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
   // polyline: L.Polyline = L.polyline([]);
-  map;
+  // map;
   stats;
   stats$: BehaviorSubject<any> = new BehaviorSubject(null);
   head;

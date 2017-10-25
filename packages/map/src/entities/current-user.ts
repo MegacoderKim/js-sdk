@@ -7,26 +7,20 @@ import * as _ from "underscore";
 var Polyline = require('time-aware-polyline');
 
 export const currentUserFactory = () => {
-  // let data = dataFactory({
-  //   getPosition(user: IUserData) {
-  //     let lastSeg = _.last(user.segments);
-  //     // return {lat: 0, lng: 0};
-  //     if(lastSeg && lastSeg.time_aware_polyline && !lastSeg.ended_at) {
-  //       let decoded = Polyline.decodeTimeAwarePolyline(lastSeg.time_aware_polyline);
-  //       let lastPos = _.last(decoded);
-  //       return {lat: lastPos[0], lng: lastPos[1]}
-  //     } else {
-  //       return null;
-  //     }
-  //
-  //   }
-  // });
+
   let markers = mapItemsFactory({data: htUser});
   return {
     ...markers,
     trace(user) {
       let data = user ? [user] : [];
       markers.trace(data)
+    },
+    getEntity() {
+      if(!this.entities) return null;
+      let keys = Object.keys(this.entities);
+      if(keys.length == 0) return null;
+      let key = keys[0];
+      return this.entities[key];
     }
   }
 };
