@@ -15,6 +15,10 @@ export const dataFactory = (config) => {
       getEncodedPath() {
         let data = this.data;
         return config.getEncodedPath ? config.getEncodedPath(data) : null
+      },
+      getDivContent() {
+        let data = this.data;
+        return config.getDivContent ? config.getDivContent(data) : null
       }
     }
     // return {

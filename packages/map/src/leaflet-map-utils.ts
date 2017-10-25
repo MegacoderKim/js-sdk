@@ -167,6 +167,18 @@ function openPopupPosition(position, map, content, popup) {
 
 }
 
+function setDivContent(marker, content) {
+  console.error('set div content not implemented')
+}
+
+function getDivMarker() {
+  return getMarker()
+}
+
+function setDivMarkerStyle(item, options) {
+  SetStyle(item, options)
+}
+
 export const LeafletUtils: MapUtils = {
   type: 'leaflet',
   setMap: SetMap,
@@ -197,5 +209,8 @@ export const LeafletUtils: MapUtils = {
   isValidBounds,
   invalidateSize,
   onEvent,
-  openPopupPosition
+  openPopupPosition,
+  setDivContent,
+  getDivMarker,
+  setDivMarkerStyle
 };

@@ -5,7 +5,7 @@ import * as _ from "underscore";
 import {MapService} from "../map-service";
 
 export const markerRenderConfigFactory = (): RenderConfig => {
-  let mapUtils = MapService.mapUtils;
+  let mapUtils: MapUtils = MapService.mapUtils;
 
   return {
     setMap: true,

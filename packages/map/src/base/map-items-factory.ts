@@ -6,6 +6,7 @@ import {MapService} from "../map-service";
 import {clusterRenderConfigFactory} from "../renderers/cluster-render";
 import {polylineRenderConfigFactory} from "../renderers/polyline-render";
 import {circleRenderConfigFactory} from "../renderers/circle-render";
+import {divMarkerRender} from "../renderers/div-marker-render";
 
 export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
   let mapUtils = MapService.mapUtils;
@@ -19,6 +20,7 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
   if(config.isCircle) renderConfig = circleRenderConfigFactory(renderConfig);
   if(config.isPolyline) renderConfig = polylineRenderConfigFactory(renderConfig);
   if(config.isCluster) renderConfig = clusterRenderConfigFactory(renderConfig);
+  if(config.isDiv) renderConfig = divMarkerRender(renderConfig);
   // renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);
   let mapItems = {
     ...state,
@@ -44,5 +46,6 @@ export interface MarkerFactoryConfig {
   isCluster?: boolean,
   isPolyline?: boolean,
   isCircle?: boolean,
+  isDiv?: boolean,
   name?: string
 }

@@ -31,7 +31,10 @@ export interface MapUtils {
   setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
   isValidBounds: (bounds: HtBounds) => boolean,
   invalidateSize: (map) => void,
-  onEvent: (item, event, cb) => void
+  onEvent: (item, event, cb) => void,
+  setDivContent: (item, content: string) => void,
+  getDivMarker: () => any,
+  setDivMarkerStyle: (marker, options: object) => any
 }
 
 export interface SetFocusConfig {
