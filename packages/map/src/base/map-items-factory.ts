@@ -1,7 +1,7 @@
 import {MapUtils} from "../interfaces";
 import {MapEntities} from "../entities/interfaces";
 import {Color} from "ht-js-utils";
-import {stylesConfigFactory} from "../helpers/styles-factory";
+import {StyleObj, stylesConfigFactory} from "../helpers/styles-factory";
 import {markerRenderConfigFactory} from "../renderers/marker-render";
 import {dataFactory} from "../helpers/data-factory";
 import {entityTraceFactory} from "../helpers/trace-factory";
@@ -15,19 +15,8 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
   let state = {
     map: null,
   };
-  let stylesObj = {
-    google: {
-      default: {
 
-      }
-    },
-    leaflet: {
-      default: {
-
-      }
-    }
-  };
-  let stylesConfig = stylesConfigFactory(config.stylesObj || stylesObj, mapUtils.type);
+  let stylesConfig = stylesConfigFactory(mapUtils.type, config.stylesObj);
 
   let renderConfig = markerRenderConfigFactory();
   if(config.isCircle) renderConfig = circleRenderConfigFactory(renderConfig);
@@ -54,7 +43,7 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
 
 export interface MarkerFactoryConfig {
   data: any,
-  stylesObj?: object,
+  stylesObj?: StyleObj,
   isCluster?: boolean,
   isPolyline?: boolean,
   isCircle?: boolean,

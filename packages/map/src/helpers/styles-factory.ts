@@ -1,6 +1,19 @@
 import {HtMapType} from "../map-utils";
 
-export const stylesConfigFactory = (stylesObj, mapType: HtMapType) => {
+const defaultStyle = {
+  google: {
+    default: {
+
+    }
+  },
+  leaflet: {
+    default: {
+
+    }
+  }
+};
+
+export const stylesConfigFactory = (mapType: HtMapType, stylesObj: StyleObj = defaultStyle) => {
   return {
     stylesObj,
     stylesType: 'default',
@@ -12,3 +25,14 @@ export const stylesConfigFactory = (stylesObj, mapType: HtMapType) => {
     }
   }
 };
+
+export interface StyleObj {
+  google: {
+    default: object,
+    [key: string]: object
+  },
+  leaflet: {
+    default: object,
+    [key: string]: object
+  }
+}
