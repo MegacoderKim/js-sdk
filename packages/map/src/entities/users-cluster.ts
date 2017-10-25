@@ -5,13 +5,13 @@ import {HtMap, HtMapType, MapUtils, SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-js-data";
 import {IUser, IUserAnalytics} from "ht-models";
 import { MapEntities, RenderConfig} from "./interfaces";
-import {entityTraceFactory} from "../helpers/entity-trace";
-import {clusterRenderConfigFactory} from "../helpers/cluster-render";
-import {circleRenderConfigFactory} from "../helpers/circle-render";
+import {entityTraceFactory} from "../helpers/trace-factory";
+import {clusterRenderConfigFactory} from "../renderers/cluster-render";
+import {circleRenderConfigFactory} from "../renderers/circle-render";
 import {Color} from "ht-js-utils";
 import {stylesConfigFactory} from "../helpers/styles-factory";
 import {MapService} from "../map-service";
-import {markerRenderConfigFactory} from "../helpers/marker-render";
+import {markerRenderConfigFactory} from "../renderers/marker-render";
 import {clustersFactory} from "../base/clusters-factory";
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
@@ -100,13 +100,10 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   }
 
   traceItemEffect(itemEntity: {[id: string]: HtUserMarker}) {
-    // this.mapUtils.removeClusterMarkers(this.markerCluster);
     let userMarkerArray = _.values(itemEntity)
       .filter((usermarker) => {
-        // console.log(usermarker.data);
         let isValid = htUser(usermarker.data).isValidMarker();
         return isValid;
-        // console.log(isValid, "isValid");
       })
       .map(userMarker => {
         // userMarker = _.filter(userMarker, (userMak))
@@ -125,54 +122,7 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
 };
 
 export const usersClustersFactory = (): ClusterEntities<any> => {
-  // let mapUtils = MapService.mapUtils;
   return clustersFactory({data: htUser, name: 'user cluster'})
-  // let state = {
-  //   map: null,
-  //   cluster: null
-  // };
-  // let stylesObj = {
-  //   google: {
-  //     default: {
-  //       // icon: {
-  //       //   fillColor: Color.stop,
-  //       //   fillOpacity: 1,
-  //       //   strokeColor: Color.stopDark,
-  //       //   strokeOpacity: 1,
-  //       //   path: google.maps.SymbolPath.CIRCLE,
-  //       //   scale: 8,
-  //       //   strokeWeight: 2,
-  //       // }
-  //     }
-  //   },
-  //   leaflet: {
-  //     default: {
-  //
-  //     }
-  //   }
-  // };
-  // let stylesConfig = stylesConfigFactory(stylesObj, mapUtils.type);
-  // let markerRenderConfig = markerRenderConfigFactory();
-  // let clusterRender = clusterRenderConfigFactory(markerRenderConfig);
-  // let renderConfig: RenderConfig = {
-  //   // setMap: true,
-  //   ...clusterRender,
-  // };
-  // renderConfig = circleRenderConfigFactory(renderConfig);
-  //
-  // let mapItems = {
-  //   ...state,
-  //   entities: {},
-  //   renderer: clusterRender
-  // };
-  // let entityTrace = entityTraceFactory(mapItems, htUser);
-  //
-  // return {
-  //   ...entityTrace,
-  //   ...state,
-  //   ...renderConfig,
-  //   ...stylesConfig,
-  // }
 };
 
 export interface ClusterEntities<T> extends MapEntities<T>, RenderConfig {

@@ -3,7 +3,7 @@ import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
-import {HtPosition} from "../../data/src/interfaces";
+import {HtPosition} from "ht-js-data";
 import {RenderConfig} from "./entities/interfaces";
 
 export class HtMapItems<T> {
@@ -237,36 +237,3 @@ export class HtMapItems<T> {
   }
 }
 
-export function  htMapItemsFactory<T>(config) {
-  return (data: T): IDataClass<T> => {
-    return {
-      data,
-      ...config
-    }
-  }
-};
-
-let config = {
-  getPosition() {
-    let data = this.data;
-    console.log(data, this, "data");
-  }
-};
-
-let data = {
-  id: "Asdasdusers"
-};
-
-export type IDataClass<T> = {
-  getPosition(): HtPosition | null
-  data: T
-}
-
-let d = htMapItemsFactory(config);
-
-// let dd = d(data);
-// console.log(dd, "dd");
-// dd.getPosition();
-//
-// console.log("ASda");
-// HHtest();

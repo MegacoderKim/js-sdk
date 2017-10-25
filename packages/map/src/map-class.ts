@@ -2,7 +2,7 @@ import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
 import {usersClustersFactory} from "./entities/users-cluster";
-import {LightColorMapStyle} from "./map-styles/light-color";
+import {LightColorMapStyle} from "./map-styles/light-color-map";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {MapService} from "./map-service";

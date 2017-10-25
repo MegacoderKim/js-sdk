@@ -4,34 +4,11 @@ import {Color} from "ht-js-utils";
 import {dataFactory} from "../helpers/data-factory";
 import {mapItemsFactory} from "../base/map-items-factory";
 import {clustersFactory} from "../base/clusters-factory";
+import {stopStyles} from "../map-styles/stop-styles";
 
 export const stopFactory = (): MapEntities<any> => {
 
-  let stylesObj = {
-    google: {
-      default: {
-        icon: {
-          fillColor: Color.stop,
-          fillOpacity: 1,
-          strokeColor: Color.stopDark,
-          strokeOpacity: 1,
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          strokeWeight: 2,
-        }
-      }
-    },
-    leaflet: {
-      default: {
-        radius: 10,
-        fillColor: Color.stop,
-        fillOpacity: 1,
-        weight: 1,
-        color: Color.stopDark,
-        pane: 'markerPane'
-      }
-    }
-  };
+  let stylesObj = stopStyles;
   let stop = dataFactory({
     getPosition(data) {
       if(data.location && data.location.geojson) {

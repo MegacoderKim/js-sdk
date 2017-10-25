@@ -1,5 +1,5 @@
 import {MarkerFactoryConfig, mapItemsFactory} from "./map-items-factory";
-import {MapEntity, MapEntities} from "../entities/interfaces";
+import {Entity, MapEntities} from "../entities/interfaces";
 import {MapService} from "../map-service";
 
 export const clustersFactory = (config: MarkerFactoryConfig) => {

@@ -13,7 +13,9 @@ import {mapItemsFactory} from "./base/map-items-factory";
 import {htUser} from "ht-js-data";
 import {MapService} from "./map-service";
 import {currentUserFactory} from "./entities/current-user";
-import {MapEntities, MapEntity} from "./entities/interfaces";
+import {MapEntities, Entity} from "./entities/interfaces";
+import {MapEntity} from "./base/map-item-factory";
+import {HtPosition} from "ht-js-data";
 
 export class HtSegmentsTrace {
 
@@ -22,7 +24,7 @@ export class HtSegmentsTrace {
   actionMarkers = actionsFactory();
   actionsPolylines = actionsFactory();
   timelineSegment = new TimelineSegment();
-  userMarker = currentUserFactory();
+  userMarker: MapEntity<IUserData> = currentUserFactory();
   replayMarker = stopFactory();
   eventMarkers = stopFactory();
   allowedEvents = {};
@@ -39,19 +41,7 @@ export class HtSegmentsTrace {
     return MapService.map
   }
 
-  // protected initBaseItems() {
-  //   // let mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
-  //   this.segmentsPolylines = segmentFactory();
-  //   this.stopMarkers = stopFactory();
-  //   this.actionMarkers = actionsFactory();
-  //   this.actionsPolylines = actionsFactory();
-  //   this.userMarker = currentUserFactory();
-  //   // this.userMarker = new HtCurrentUser(mapType);ht-js-utils/dist/sr
-  //   this.replayMarker = stopFactory();
-  //   this.eventMarkers = stopFactory();
-  // }
-
-  trace(user) {
+  trace(user, map?) {
     // this.map = map;
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);

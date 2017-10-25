@@ -21,7 +21,7 @@ export interface RenderConfig {
 export type DataFactory<T> = (data: T) => DataObj<T>
 
 export type Entities<T> = {
-  [id: string]: MapEntity<T>
+  [id: string]: Entity<T>
 }
 export interface MapEntities<T> extends RenderConfig {
   name?: string
@@ -42,7 +42,7 @@ export interface DataObj<T> {
   getInfoContent(): string
 }
 
-export interface MapEntity<T> extends DataObj<T>{
+export interface Entity<T> extends DataObj<T>{
   item: any,
   isOld: boolean
 }

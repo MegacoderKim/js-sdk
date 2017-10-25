@@ -2,13 +2,13 @@ import {MapUtils} from "../interfaces";
 import {MapEntities} from "../entities/interfaces";
 import {Color} from "ht-js-utils";
 import {stylesConfigFactory} from "../helpers/styles-factory";
-import {markerRenderConfigFactory} from "../helpers/marker-render";
+import {markerRenderConfigFactory} from "../renderers/marker-render";
 import {dataFactory} from "../helpers/data-factory";
-import {entityTraceFactory} from "../helpers/entity-trace";
+import {entityTraceFactory} from "../helpers/trace-factory";
 import {MapService} from "../map-service";
-import {clusterRenderConfigFactory} from "../helpers/cluster-render";
-import {polylineRenderConfigFactory} from "../helpers/polyline-render";
-import {circleRenderConfigFactory} from "../helpers/circle-render";
+import {clusterRenderConfigFactory} from "../renderers/cluster-render";
+import {polylineRenderConfigFactory} from "../renderers/polyline-render";
+import {circleRenderConfigFactory} from "../renderers/circle-render";
 
 export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
   let mapUtils = MapService.mapUtils;
