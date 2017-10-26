@@ -55,7 +55,7 @@ export class HtMapClass {
     this.segmentTrace.trace(user)
   }
 
-  resetBounds(options?, bounds?: HtBounds) {
+  resetBounds(bounds?: HtBounds, options?) {
     setTimeout(() => {
       let items = [this.segmentTrace, this.usersCluster];
       bounds = this.getBoundsItem(items);
