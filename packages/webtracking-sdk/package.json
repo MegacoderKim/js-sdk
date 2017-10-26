@@ -1,6 +1,6 @@
 {
   "name": "ht-webtracking-sdk",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "hyperTrack webtracking",
   "main": "dist/track.js",
   "typings": "dist/src/index.d.ts",
