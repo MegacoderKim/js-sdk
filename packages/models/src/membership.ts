@@ -1,4 +1,5 @@
 import {IAccount} from "./account";
+import {Page} from "./common";
 
 export interface IMembership {
     id: string,
@@ -7,3 +8,5 @@ export interface IMembership {
     account: IAccount,
     read_token: string
 }
+
+export type IPageMembership = Page<IMembership>

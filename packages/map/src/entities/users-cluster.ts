@@ -1,9 +1,16 @@
 import {HtMapItems} from "../map-items";
 import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
-import {HtMap, HtMapType, SetFocusConfig} from "../interfaces";
+import {SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-js-data";
 import {IUser, IUserAnalytics} from "ht-models";
+import {ClusterEntities, clustersFactory} from "../base/clusters-factory";
+import {dataFactory} from "../helpers/data-factory";
+import {mapItemsFactory} from "../base/map-items-factory";
+import {MapEntities} from "./interfaces";
+import {StyleObj} from "../helpers/styles-factory";
+import {userDivFactory} from "../helpers/user-div-factory";
+declare const RichMarkerPosition: any;
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   itemEntities: {[id: string]: HtUserMarker} = {};
@@ -24,20 +31,10 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
 
   extendBounds(bounds) {
     bounds = bounds || this.mapUtils.extendBounds();
-    if(this.mapType == 'google') {
-      let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
-        return item.extendBounds(bounds)
-      }, bounds);
-      return newBounds
-      // console.log(this.itemEntities, Object.keys(this.itemEntities).length);
-      // let newBounds = Object.keys(this.itemEntities).length ? this.markerCluster.getExtendedBounds(bounds) : bounds
-      // return newBounds
-    } else {
-      let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
-        return item.extendBounds(bounds)
-      }, bounds);
-      return newBounds
-    }
+    let newBounds = _.reduce(this.itemEntities, (bounds, item) => {
+      return item.extendBounds(bounds)
+    }, bounds);
+    return newBounds
 
   }
 
@@ -101,13 +98,10 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   }
 
   traceItemEffect(itemEntity: {[id: string]: HtUserMarker}) {
-    // this.mapUtils.removeClusterMarkers(this.markerCluster);
     let userMarkerArray = _.values(itemEntity)
       .filter((usermarker) => {
-        // console.log(usermarker.data);
         let isValid = htUser(usermarker.data).isValidMarker();
         return isValid;
-        // console.log(isValid, "isValid");
       })
       .map(userMarker => {
         // userMarker = _.filter(userMarker, (userMak))
@@ -123,4 +117,32 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
     super.highlightItem(item, data, this.setFocusConfig);
     this.mapUtils.openPopupPosition(item.dataClass.getPosition(), this.map, this.getInfoContent(data), this.popup)
   }
-}
+};
+
+export const usersClustersFactory = (): ClusterEntities<any> => {
+  let config = {
+    getPosition(data) {
+      return htUser(data).getPosition()
+    },
+    getDivContent(data) {
+      return userDivFactory(data)
+    }
+  };
+  let stylesObj: StyleObj = {
+    google: {
+      default: {
+        flat: true,
+        anchor: RichMarkerPosition.BOTTOM_CENTER,
+        zIndex: 1
+      }
+    },
+    leaflet: {
+      default: {
+
+      }
+    }
+  };
+  let data = dataFactory(config);
+  return clustersFactory({data, name: 'user cluster', isDiv: true, stylesObj})
+};
+

@@ -18,7 +18,7 @@ export const UsersIndexClientFactory: UsersIndexFactory = (state: EntityListStat
   let {store} = state;
 
   let selectors: ListSelectors = {
-    query$: store.select(fromRoot.getQueryUserQuery),
+    query$: store.select(fromRoot.getQueryUserQuery) as Observable<object | null>,
     data$: store.select(fromRoot.getUsersIndexPage),
     active$: store.select(fromRoot.getUsersIndexIsActive),
     loading$: store.select(fromRoot.getLoadingUserIndex)

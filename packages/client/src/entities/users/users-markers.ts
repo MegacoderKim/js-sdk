@@ -35,12 +35,12 @@ export class UsersMarkers extends UsersList {
     let statusString = query['status'];
     let search = query['search'];
     let ids = query['id'];
-    let userMarkerFilters = [];
+    let userMarkerFilters: ((users) => any)[] = [];
 
     if(statusString) {
       let statusArray = statusString.split(',');
       // this.updateUserMap(query);
-      let statusFilter = [];
+      let statusFilter: any[] = [];
       statusArray.forEach((status) => {
         statusFilter.push(htUser().getMarkerFilter(status))
       });

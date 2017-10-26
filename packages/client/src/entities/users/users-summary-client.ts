@@ -5,6 +5,7 @@ import {UsersSummary, UsersSummaryFactory} from "./users-summary-interface";
 import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/interfaces";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {HListFactory} from "../base/list-client";
+import {Observable} from "rxjs/Observable";
 
 export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListState, config: Partial<EntityTypeConfig>): UsersSummary => {
 
@@ -19,7 +20,7 @@ export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListStat
 
   let listSelectors: ListSelectors = {
     active$: store.select(fromRoot.getUsersSummaryActive),
-    query$: store.select(fromRoot.getQueryUserQuery),
+    query$: <Observable<object>>(store.select(fromRoot.getQueryUserQuery)),
     data$: store.select(fromRoot.getUsersSummary),
     loading$: store.select(fromRoot.getLoadingUserSummary)
   };

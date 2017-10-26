@@ -12,6 +12,7 @@ import {
 import {GetDataConfig, listGetDataFactory} from "../helpers/get-data-factory";
 import {ListApiQueryConfig} from "../helpers/api-query-factory";
 import {ListSelectorsFactory} from "../helpers/list-selector-factory";
+import {Observable} from "rxjs/Observable";
 
 export const HListFactory: EntityListFactory = (entityState: EntityListState, overrideConfig: Partial<EntityTypeConfig>): EntityList => {
   let {
@@ -32,7 +33,7 @@ export const HListFactory: EntityListFactory = (entityState: EntityListState, ov
   let entity = EntityConfigFactory(overrideConfig);
 
   let listApiQueryConfig: ListApiQueryConfig = {
-    query$: entityState.selectors.query$,
+    query$: entityState.selectors.query$ as Observable<object | null>,
     defaultQuery: entity.defaultQuery,
     allowedQueryKeys: allowedQueryKeys,
     dateRangeQuery$,

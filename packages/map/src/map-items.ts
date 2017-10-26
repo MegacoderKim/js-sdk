@@ -3,6 +3,8 @@ import * as _ from 'underscore';
 import {HtMapItem} from "./map-item";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
+import {HtPosition} from "ht-js-data";
+import {RenderConfig} from "./entities/interfaces";
 
 export class HtMapItems<T> {
   itemEntities: {[id: string]: HtMapItem<T>} = {};
@@ -234,3 +236,4 @@ export class HtMapItems<T> {
 
   }
 }
+

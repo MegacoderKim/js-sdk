@@ -2,6 +2,7 @@ import {MapUtils} from "./interfaces";
 import {HtPosition} from "ht-js-data";
 //currently unused
 export abstract class HtMapUtils {
+  abstract
   abstract setMap: (item: HtMapItem, map: HtMap) => void;
   abstract setStyle: (item: HtMapItem, style) => void;
   abstract clearItem: (item: HtMapItem) => void;

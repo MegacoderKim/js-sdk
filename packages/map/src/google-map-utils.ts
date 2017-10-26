@@ -3,7 +3,7 @@ import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {HtPosition} from "ht-js-data";
 declare var MarkerClusterer:any;
-
+declare var RichMarker: any;
 export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds, force = false) {
   bounds = bounds || new google.maps.LatLngBounds();
   if((item && item.getMap() && item.getPosition) || force) {
@@ -66,6 +66,7 @@ export function HtUpdatePopup(marker, infoContent, defaultOption) {
 }
 
 export function HtUpdatePositionTooltip(marker, position, infoContent: string = "", defaultOption: L.TooltipOptions = {}) {
+  position = GetLatlng(position);
   marker.setPosition(position);
   // if(infoContent) HtUpdateTooltip(marker, infoContent, defaultOption)
 }
@@ -238,7 +239,23 @@ function openPopupPosition(position, map, content, popup) {
   popup.setMap(map)
 }
 
+function setDivContent(marker, content) {
+  marker.setContent(content)
+}
+
+function getDivMarker() {
+  return new RichMarker({})
+}
+
+function setDivMarkerStyle(item, options) {
+  let {zIndex, flat, anchor} = options;
+  if(zIndex) item.setZIndex(zIndex);
+  if(flat) item.setFlat(flat);
+  if(anchor) item.setAnchor(anchor)
+}
+
 export const GoogleMapUtils: MapUtils = {
+  type: 'google',
   setMap: SetMap,
   setStyle: SetStyle,
   clearItem: ClearItem,
@@ -267,5 +284,8 @@ export const GoogleMapUtils: MapUtils = {
   isValidBounds,
   invalidateSize,
   onEvent,
-  openPopupPosition
+  openPopupPosition,
+  setDivContent,
+  getDivMarker,
+  setDivMarkerStyle
 };

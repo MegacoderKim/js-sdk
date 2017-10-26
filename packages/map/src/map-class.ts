@@ -1,17 +1,16 @@
-import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
-import {LeafletUtils} from "./leaflet-map-utils";
-import {GoogleMapUtils} from "./google-map-utils";
+import {HtBounds, HtMap, HtMapType} from "./interfaces";
 import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
-import {UsersCluster} from "./entities/users-cluster";
-import {LightColorMapStyle} from "./map-styles/light-color";
-import {Subject} from "rxjs/Subject";
+import {usersClustersFactory} from "./entities/users-cluster";
+import {LightColorMapStyle} from "./styles/light-color-map";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
+import {MapService} from "./map-service";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 export class HtMapClass {
-  map: HtMap;
-  mapUtils: MapUtils;
+  // map: HtMap;
+  // mapUtils: MapUtils;
   segmentTrace: HtSegmentsTrace;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
@@ -28,40 +27,45 @@ export class HtMapClass {
     styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
-  map$ = new Subject();
+  // clusters = [];
+  // map$ = new ReplaySubject();
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
-    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
-    // this.initMap(elem, options);
-    this.usersCluster = new UsersCluster(mapType);
-    this.segmentTrace = new HtSegmentsTrace(this.mapType);
+    MapService.setMapType(mapType);
+    this.usersCluster = usersClustersFactory();
+    this.segmentTrace = new HtSegmentsTrace();
+  }
+
+  get map$(): ReplaySubject<HtMap> {
+    return MapService.map$ as ReplaySubject<HtMap>
+  }
+
+  get map() {
+    return MapService.map
   }
 
   initMap(elem: Element, options = {}): HtMap {
     let mapOptions = this.mapType == 'leaflet' ? this.leafletMapOptions : this.googleMapOptions;
-    this.map = this.mapUtils.renderMap(elem, {...mapOptions, ...options});
-    this.usersCluster.markerCluster = this.mapUtils.getMarkerCluster(this.map);
-    this.map$.next(this.map);
-    return this.map
+    let map = MapService.mapUtils.renderMap(elem, {...mapOptions, ...options});
+    MapService.setMap(map);
+    return map
   }
 
   tracePlaceline(user: IUserData) {
-    this.segmentTrace.trace(user, this.map)
+    this.segmentTrace.trace(user)
   }
 
-  resetBounds(options?, bounds?: HtBounds) {
+  resetBounds(bounds?: HtBounds, options?) {
     setTimeout(() => {
       let items = [this.segmentTrace, this.usersCluster];
       bounds = this.getBoundsItem(items);
-      // bounds = this.segmentTrace.extendBounds(bounds);
-      // bounds = this.usersCluster.extendBounds(bounds);
-      if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
+      if(bounds && MapService.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
     }, 10)
 
   };
 
   getBoundsItem(items) {
-    let bounds = this.mapUtils.extendBounds();
+    let bounds = MapService.mapUtils.extendBounds();
     return _.reduce(items, (bounds, item: HtMapItem<any>) => {
       return this.getBounds(bounds, item)
     }, bounds)
@@ -73,11 +77,11 @@ export class HtMapClass {
 
   setBounds(bounds: HtBounds, options?) {
     options = options || this.mapType == 'leaflet' ? this.leafletSetBoundsOptions : this.googleSetBoundsOptions;
-    this.mapUtils.setBounds(this.map, bounds, options)
+    MapService.mapUtils.setBounds(this.map, bounds, options)
   }
 
   inValidateSize() {
-    this.mapUtils.invalidateSize(this.map)
+    MapService.mapUtils.invalidateSize(this.map)
   }
 }
 

@@ -2,6 +2,7 @@ import {ISegment, ITimeAwarePoint, Partial} from "ht-models";
 import {HtPosition} from "ht-js-data";
 
 export interface MapUtils {
+  type: HtMapType,
   setMap: (item: HtMapItem, map: HtMap) => void,
   setStyle: (item: HtMapItem, style) => void,
   clearItem: (item: HtMapItem) => void,
@@ -30,7 +31,10 @@ export interface MapUtils {
   setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
   isValidBounds: (bounds: HtBounds) => boolean,
   invalidateSize: (map) => void,
-  onEvent: (item, event, cb) => void
+  onEvent: (item, event, cb) => void,
+  setDivContent: (item, content: string) => void,
+  getDivMarker: () => any,
+  setDivMarkerStyle: (marker, options: object) => any
 }
 
 export interface SetFocusConfig {

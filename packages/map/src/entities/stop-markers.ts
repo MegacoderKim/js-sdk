@@ -1,12 +1,24 @@
-import {HtMapItems} from "../map-items";
-import {HtStopMarker} from "./stop-marker";
-import {ISegment} from "ht-models";
+import {MapEntities} from "./interfaces";
+import {dataFactory} from "../helpers/data-factory";
+import {mapItemsFactory} from "../base/map-items-factory";
+import {stopStyles} from "../styles/stop-styles";
 
-export class HtStopMarkers extends HtMapItems<ISegment> {
+export const stopFactory = (): MapEntities<any> => {
 
-  getItem(data) {
-    let circle = new HtStopMarker(this.mapType);
-    circle.setMapTypeStyle();
-    return circle;
-  }
-}
+  let stylesObj = stopStyles;
+  let stop = dataFactory({
+    getPosition(data) {
+      if(data.location && data.location.geojson) {
+        let lat = data.location.geojson.coordinates[1];
+        let lng = data.location.geojson.coordinates[0];
+        return {lat, lng}
+      } else {
+        return null;
+      }
+
+    }
+  });
+  return mapItemsFactory({data: stop, stylesObj, isCircle: true});
+  // return clustersFactory({data: stop, stylesObj, isCircle: true});
+
+};

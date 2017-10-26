@@ -57,7 +57,7 @@ export class HtActionsListClient {
 
   get pageData$(): Observable<Page<IAction>> {
     // return this.query.switchMap((query) => this.update(query, this.config.isLive))
-    return this.pageDataBeh$.asObservable()
+    return this.pageDataBeh$.asObservable() as Observable<Page<IAction>>
   }
 
   get listQuery$() {

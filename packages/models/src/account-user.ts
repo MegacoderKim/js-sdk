@@ -7,7 +7,6 @@ export interface IAccountUser {
     first_name: string,
     last_name: string,
     username: string,
-    memberships: IMembership[],
     default_account: IAccount
     is_new_user: boolean,
     is_staff?: boolean

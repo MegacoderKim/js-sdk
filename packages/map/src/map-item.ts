@@ -132,3 +132,11 @@ export class HtMapItem<T> {
   }
 
 }
+
+export interface MapData {
+  getPosition: () => HtPosition | null,
+  isValidMarker: () => boolean,
+  style: object,
+  fadeStyle: object,
+  [key: string]: any
+}

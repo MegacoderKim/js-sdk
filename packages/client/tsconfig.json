@@ -8,6 +8,7 @@
     "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "strictNullChecks": true,
     "outDir": "typings",
     "typeRoots": [
       "../../node_modules/@types"

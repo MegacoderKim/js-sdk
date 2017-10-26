@@ -40,7 +40,7 @@ export const usersIndexMarkersFactory = (state: ListState, config: Partial<Entit
 
   let listSelectors: ListSelectors = {
     active$: store.select(fromRoot.getUsersIndexMarkersIsActive),
-    query$: store.select(fromRoot.getQueryUserQuery),
+    query$: store.select(fromRoot.getQueryUserQuery) as Observable<object>,
     data$: store.select(fromRoot.getUsersIndexFilteredMarker),
     loading$: store.select(fromRoot.getLoadingUserIndexAll)
   };

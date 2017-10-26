@@ -12,25 +12,25 @@ export function UpdateSubAccountOfAccount(account: IAccount, updatedSubAccount: 
   return {...account, sub_accounts: subAccounts};
 }
 
-export function UpdateAccountOfAccountUser(accountUser: IAccountUser, account: IAccount, config): IAccountUser {
-  let memberships = _.map(accountUser.memberships, (member: IMembership) => {
-    let isMember = IsCurrentMember(member, config.token, config.tokenType);
-    return isMember ? {...member, account: account} : member;
-  });
-  let defaultAccount = account.id == accountUser.default_account.id ? account : accountUser.default_account;
-  return {...accountUser, memberships: memberships, default_account: defaultAccount};
-}
+// export function UpdateAccountOfAccountUser(accountUser: IAccountUser, account: IAccount, config): IAccountUser {
+//   let memberships = _.map(accountUser.memberships, (member: IMembership) => {
+//     let isMember = IsCurrentMember(member, config.token, config.tokenType);
+//     return isMember ? {...member, account: account} : member;
+//   });
+//   let defaultAccount = account.id == accountUser.default_account.id ? account : accountUser.default_account;
+//   return {...accountUser, memberships: memberships, default_account: defaultAccount};
+// }
 
-export function GetAccountFromAccountUser (accountUser: IAccountUser, token: string, tokenType: 'test' | 'production') {
-  if(!accountUser) return null;
-  if(isCurrentAccount(accountUser.default_account, token, tokenType)) {
-    return accountUser.default_account;
-  }
-  let membership = _.find(accountUser.memberships, (member: IMembership) => {
-    return isCurrentAccount(member.account, token, tokenType);
-  });
-  return membership ? membership.account : null
-}
+// export function GetAccountFromAccountUser (accountUser: IAccountUser, token: string, tokenType: 'test' | 'production') {
+//   if(!accountUser) return null;
+//   if(isCurrentAccount(accountUser.default_account, token, tokenType)) {
+//     return accountUser.default_account;
+//   }
+//   let membership = _.find(accountUser.memberships, (member: IMembership) => {
+//     return isCurrentAccount(member.account, token, tokenType);
+//   });
+//   return membership ? membership.account : null
+// }
 
 export function isCurrentAccount(account: IAccount, token: string, tokenType: 'test' | 'production'): boolean {
   return GetSecretToken(account, tokenType) == token;

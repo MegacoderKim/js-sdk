@@ -48,7 +48,7 @@ export const DateRangeToQuery = (dateRangeParam: string): (param: Observable<IDa
   }
 };
 
-export const AllowedQueryKeys = (allowedQueryKeys: string[] | null) => {
+export const AllowedQueryKeys = (allowedQueryKeys?: string[] | null) => {
   return (queryStore$) => {
     if(allowedQueryKeys && allowedQueryKeys.length) {
       let keys$ = _.map(allowedQueryKeys, (key: string) => {
