@@ -83,7 +83,9 @@ export class HTTrackActions {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
         this.trackActionsOnMap(actions);
-        this.options.onUpdate(this.trackMultipleData, actions);
+        if (this.options.onUpdate ) {
+          this.options.onUpdate(this.trackMultipleData, actions);
+        }
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
     }, 2000);
