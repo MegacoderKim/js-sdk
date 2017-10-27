@@ -7,45 +7,49 @@ var path = require('path');
 
 var mainPath = path.resolve(__dirname, 'src', 'ht-fetch-request.ts');
 
-var nodeConfig = require('./webpack.config.bundle');
-
-var browserSpecConfig = {
+var config = {
+    devtool: 'source-ht-map, inline-source-ht-map',
+    resolve: {
+        modules: ['node_modules'],
+        extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
+        alias: {}
+    },
+    entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-fetch-request_browser.js',
+        filename: 'ht-fetch-request.js',
         library: "htFetchRequest",
         libraryTarget: "umd"
     },
+    module: {
+        rules: [
+            {
+                test: /\.ts$/,
+                use: [
+                    { loader: 'ts-loader' }
+                ]
+            }
+        ]
+    },
     externals: [
-        {
-            'ht-js-client': {
-                commonjs: 'htClient',
-                commonjs2: 'htClient',
-                amd: 'htClient',
-                root: 'htClient'
-            }
-        },
-        {
-            'ht-js-utils': {
-                commonjs: 'htUtils',
-                commonjs2: 'htUtils',
-                amd: 'htUtils',
-                root: 'htUtils'
-            }
-        },
+        'ht-js-client',
+        'ht-js-utils',
+        'moment-mini',
+        'underscore',
+        'whatwg-fetch',
         webpackRxjsExternals(),
+        /^rxjs\/.+$/
     ],
     plugins: [
         new Webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
         }),
+        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 
-var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
-
-module.exports = [nodeConfig, browserConfig];
+module.exports = config;
