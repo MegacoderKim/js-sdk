@@ -60,7 +60,7 @@ export class UsersContainerComponent implements OnInit {
   }
 
   clear() {
-    this.mapService.segmentTrace.trace(null, this.mapService.map)
+    this.mapService.segmentTrace.trace(null)
   }
 
   selectUserMarker(user) {

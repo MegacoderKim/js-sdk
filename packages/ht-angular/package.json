@@ -32,7 +32,7 @@
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "ht-angular-client": "0.0.5",
-    "ht-js-client": "0.0.10",
+    "ht-js-client": "file:../ht-sdk/packages/client",
     "ht-js-data": "0.0.21",
     "ht-js-map": "file:../ht-sdk/packages/map",
     "ht-js-utils": "0.0.13",

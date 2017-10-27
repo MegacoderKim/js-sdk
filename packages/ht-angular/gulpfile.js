@@ -236,6 +236,13 @@ gulp.task('copy-style', (cb) => {
 
 })
 
+gulp.task('copy-js', (cb) => {
+  return gulp.src('./src/js/**/*.js')
+    .pipe(gulpCopy('./dist'))
+    .pipe(gulp.dest('.'))
+
+})
+
 // Compile inlined TS files with Angular Compiler (ngc)
 gulp.task('ngc', (cb) => {
   const executable = path.join(__dirname, platformPath('/node_modules/.bin/ngc'));
@@ -396,7 +403,7 @@ gulp.task('watch', () => {
 
 // Build the 'dist' folder (without publishing it to NPM)
 gulp.task('build', ['clean'], (cb) => {
-  runSequence('compile', 'package', 'bundle', 'copy-style', cb);
+  runSequence('compile', 'package', 'bundle', 'copy-style', 'copy-js', cb);
 });
 
 // Build and then Publish 'dist' folder to NPM

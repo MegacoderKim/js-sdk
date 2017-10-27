@@ -9,7 +9,7 @@ import {Color} from "ht-js-utils";
 })
 export class TestComponent implements OnInit {
 
-  userId = "1373d1e5-4435-4168-90cb-1d7d8ead7d4b";
+  userId = "b934b19f-de9c-4c38-9ad5-e59c2f075f06";
   constructor(
     private userService: HtUsersClientService,
     private clientService: HtClientService

@@ -8,6 +8,7 @@ import {IUserListSummary} from "ht-models";
 })
 export class UsersSummaryComponent implements OnInit {
   @Output() setQuery: EventEmitter<object> = new EventEmitter();
+  @Output() clearQueryKey: EventEmitter<string> = new EventEmitter();
   @Input() summary;
 
   constructor() { }
@@ -23,6 +24,18 @@ export class UsersSummaryComponent implements OnInit {
   setFilter(datum) {
     const query = {status: datum.values.toString()};
     this.setQuery.next(query)
+  }
+
+  clearFilter(datum) {
+    this.clearQueryKey.next('status')
+  }
+
+  selectLabel(datum) {
+    if (datum.selected) {
+      this.clearFilter(datum)
+    } else {
+      this.setFilter(datum)
+    }
   }
 
 }

@@ -30,6 +30,10 @@ export class UsersSummaryContainerComponent implements OnInit {
 
   }
 
+  onClearQueryKey(key) {
+    this.usersClientService.list.clearQueryKey(key)
+  }
+
   setQuery(query: object) {
     this.usersClientService.list.updateQueryResetPage(query)
   }
