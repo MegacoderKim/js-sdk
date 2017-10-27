@@ -8,8 +8,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
-    "wbuild": "webpack -w --config webpack.config.js",
+    "wbuild": "webpack -w --config webpack.config.bundle.js",
     "prepack": "npm run build",
+    "lint": "tslint src",
     "doc": "typedoc --out doc src"
   },
   "author": "",
@@ -20,9 +21,7 @@
     "ht-js-utils": "file:../utils",
     "ht-models": "file:../models",
     "moment-mini": "^2.18.1",
-    "typescript": "^2.4.2",
     "underscore": "^1.8.3",
-    "webpack": "^3.4.1",
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "peerDependencies": {
