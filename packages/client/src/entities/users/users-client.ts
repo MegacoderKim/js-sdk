@@ -7,13 +7,13 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
 import {usersAnalyticsMarkersFactory} from "./users-analytics-markers";
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import {usersIndexMarkersFactory} from "./users-index-markers";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
-import {DateString, IsRangeADay, IsRangeToday} from "ht-js-utils";
-import {HtMapClass} from "ht-js-map";
+import {DateString, IsRangeADay, IsRangeToday} from "ht-utils";
+import {HtMapClass} from "ht-maps";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";

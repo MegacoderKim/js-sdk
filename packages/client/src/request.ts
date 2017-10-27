@@ -1,4 +1,4 @@
-import {HtQuerySerialize} from "ht-js-utils";
+import {HtQuerySerialize} from "ht-utils";
 import {Observable} from "rxjs/Observable";
 
 export class HtRequest {

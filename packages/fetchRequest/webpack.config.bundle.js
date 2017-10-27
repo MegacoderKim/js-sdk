@@ -32,8 +32,8 @@ var config = {
         ]
     },
     externals: [
-        'ht-js-client',
-        'ht-js-utils',
+        'ht-client',
+        'ht-utils',
         'moment-mini',
         'underscore',
         'whatwg-fetch',

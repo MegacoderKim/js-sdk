@@ -14,7 +14,7 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-map.js',
+        filename: 'ht-maps.js',
         library: "htMaps",
         libraryTarget: "umd"
     },
@@ -29,8 +29,8 @@ var config = {
         ]
     },
     externals: [
-        'ht-js-utils',
-        'ht-js-data',
+        'ht-utils',
+        'ht-data',
         'ht-models',
         'moment-mini',
         'leaflet',

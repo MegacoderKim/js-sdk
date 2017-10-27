@@ -21,7 +21,7 @@ var browserSpecConfig = {
                 amd: 'moment',
                 root: 'moment'
             },
-            'ht-js-utils': {
+            'ht-utils': {
                 commonjs: 'htUtils',
                 commonjs2: 'htUtils',
                 amd: 'htUtils',
@@ -39,7 +39,7 @@ var browserSpecConfig = {
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
-        new BundleAnalyzerPlugin({analyzerPort: 8088})
+        // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 

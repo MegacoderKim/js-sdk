@@ -5,7 +5,7 @@ import {AllData} from "../../interfaces";
 import {IUser, IUserAnalytics} from "ht-models";
 import {UsersList} from "./users-list";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import * as _ from "underscore";
 import {IUsersMarkers} from "./users-markers-interfaces"
 

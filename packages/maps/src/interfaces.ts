@@ -1,5 +1,5 @@
 import {ISegment, ITimeAwarePoint, Partial} from "ht-models";
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 
 export interface MapUtils {
   type: HtMapType,

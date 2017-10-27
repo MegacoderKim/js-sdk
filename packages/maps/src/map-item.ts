@@ -1,7 +1,7 @@
 import {LeafletUtils} from "./leaflet-map-utils";
 import {HtBounds, HtMap, HtMapType, MapUtils, HtMapItemOptions, SetFocusConfig} from "./interfaces";
 import {GoogleMapUtils} from "./google-map-utils";
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 
 export class HtMapItem<T> {
   item: any;

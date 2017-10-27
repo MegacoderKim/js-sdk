@@ -1,4 +1,4 @@
-import {Color} from "ht-js-utils";
+import {Color} from "ht-utils";
 
 export const segmentPolylineStyles = {
   google: {

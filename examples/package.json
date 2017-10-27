@@ -1,0 +1,24 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "font-awesome": "^4.7.0",
+    "ht-client": "0.0.1-beta",
+    "ht-js-data": "0.0.22",
+    "ht-js-fetch-client": "0.0.0",
+    "ht-js-map": "0.0.72",
+    "ht-js-utils": "0.0.14",
+    "leaflet": "^1.2.0",
+    "moment-mini": "^2.18.1",
+    "rxjs": "^5.5.2",
+    "underscore": "^1.8.3",
+    "whatwg-fetch": "^2.0.3"
+  }
+}

@@ -2,7 +2,7 @@ import {HtMapItems} from "../map-items";
 import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
 import {SetFocusConfig} from "../interfaces";
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import {IUser, IUserAnalytics} from "ht-models";
 import {ClusterEntities, clustersFactory} from "../base/clusters-factory";
 import {dataFactory} from "../helpers/data-factory";

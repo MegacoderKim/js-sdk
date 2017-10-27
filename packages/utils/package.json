@@ -1,5 +1,5 @@
 {
-  "name": "ht-js-utils",
+  "name": "ht-utils",
   "version": "0.0.14",
   "description": "HyperTrack utils library",
   "main": "dist/ht-utils.js",

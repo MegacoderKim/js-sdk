@@ -1,5 +1,5 @@
 import {BaseFilter} from "./base-filter";
-import {Color} from "ht-js-utils";
+import {Color} from "ht-utils";
 import {QueryLabel} from "../interfaces";
 
 export class DefaultUsersFilter extends BaseFilter {

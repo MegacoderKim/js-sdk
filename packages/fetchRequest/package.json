@@ -1,5 +1,5 @@
 {
-  "name": "ht-js-fetch-client",
+  "name": "ht-fetch-client",
   "version": "0.0.0",
   "description": "",
   "main": "dist/ht-fetch-request.js",
@@ -12,8 +12,8 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "ht-js-client": "file:../client",
-    "ht-js-utils": "0.0.11",
+    "ht-client": "file:../client",
+    "ht-utils": "file:../utils",
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {

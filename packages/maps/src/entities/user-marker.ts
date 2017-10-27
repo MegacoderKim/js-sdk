@@ -1,4 +1,4 @@
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import {HtMarkerItem} from "../marker-item";
 import {HtBounds, HtMap, SetFocusConfig} from "../interfaces";
 import {IUser, IUserAnalytics} from "ht-models";

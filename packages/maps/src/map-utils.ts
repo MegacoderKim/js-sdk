@@ -1,5 +1,5 @@
 import {MapUtils} from "./interfaces";
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 //currently unused
 export abstract class HtMapUtils {
   abstract

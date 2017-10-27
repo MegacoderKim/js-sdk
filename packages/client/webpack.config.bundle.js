@@ -46,8 +46,8 @@ var nodeConfig = {
     //     }
     // },
     externals: [
-        'ht-js-utils',
-        'ht-js-data',
+        'ht-utils',
+        'ht-data',
         'moment-mini',
         'underscore',
         webpackRxjsExternals(),

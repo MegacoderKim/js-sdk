@@ -18,7 +18,7 @@ var browserSpecConfig = {
     },
     externals: [
         {
-            'ht-js-client': {
+            'ht-client': {
                 commonjs: 'htClient',
                 commonjs2: 'htClient',
                 amd: 'htClient',
@@ -26,7 +26,7 @@ var browserSpecConfig = {
             }
         },
         {
-            'ht-js-utils': {
+            'ht-utils': {
                 commonjs: 'htUtils',
                 commonjs2: 'htUtils',
                 amd: 'htUtils',

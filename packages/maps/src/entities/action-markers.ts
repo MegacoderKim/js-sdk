@@ -1,7 +1,7 @@
 import {dataFactory} from "../helpers/data-factory";
 import {MapEntities} from "./interfaces";
-import {Color} from "ht-js-utils";
-import {htAction} from "ht-js-data";
+import {Color} from "ht-utils";
+import {htAction} from "ht-data";
 import {mapItemsFactory} from "../base/map-items-factory";
 
 export const actionsFactory = (): MapEntities<any> => {

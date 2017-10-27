@@ -1,5 +1,5 @@
 {
-  "name": "ht-js-data",
+  "name": "ht-data",
   "version": "0.0.22",
   "description": "",
   "main": "dist/ht-data.js",
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ht-js-utils": "file:../utils",
+    "ht-utils": "file:../utils",
     "ht-models": "file:../models",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
@@ -24,6 +24,6 @@
     "ht-models": "0.0.x",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
-    "ht-js-utils": ">=0.0.9"
+    "ht-utils": ">=0.0.9"
   }
 }

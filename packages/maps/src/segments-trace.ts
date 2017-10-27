@@ -5,17 +5,17 @@ import {HtMapType} from "./interfaces";
 import {segmentFactory} from "./entities/segment-polylines";
 import {stopFactory} from "./entities/stop-markers";
 import {actionsFactory} from "./entities/action-markers";
-import {htAction} from "ht-js-data";
+import {htAction} from "ht-data";
 import {IEvent} from "ht-models";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 import {mapItemsFactory} from "./base/map-items-factory";
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import {MapService} from "./map-service";
 import {currentUserFactory} from "./entities/current-user";
 import {MapEntities, Entity} from "./entities/interfaces";
 import {MapEntity} from "./base/map-item-factory";
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 
 export class HtSegmentsTrace {
 

@@ -1,4 +1,4 @@
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 
 export const dataFactory = (config) => {
   return (data) => {

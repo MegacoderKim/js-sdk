@@ -24,17 +24,23 @@ var browserSpecConfig = {
                 amd: 'moment',
                 root: 'moment'
             },
-            'ht-js-utils': {
+            'ht-utils': {
                 commonjs: 'htUtils',
                 commonjs2: 'htUtils',
                 amd: 'htUtils',
                 root: 'htUtils'
             },
-            'ht-js-data': {
+            'ht-data': {
                 commonjs: 'htData',
                 commonjs2: 'htData',
                 amd: 'htData',
                 root: 'htData'
+            },
+            'ht-maps': {
+                commonjs: 'htMaps',
+                commonjs2: 'htMaps',
+                amd: 'htMaps',
+                root: 'htMaps'
             },
             'underscore': {
                 commonjs: 'underscore',

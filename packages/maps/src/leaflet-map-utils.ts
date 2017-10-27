@@ -1,7 +1,7 @@
 import {HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 var polyUtil = require('polyline-encoded');
 import * as L from "leaflet"
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 
 export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBounds([])) {
   if(item && item.getElement()) bounds.extend(item.getLatLng());

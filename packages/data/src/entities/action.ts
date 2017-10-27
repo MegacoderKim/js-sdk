@@ -2,7 +2,7 @@ import {IAction, IActionMap, Partial} from "ht-models";
 import * as _ from "underscore";
 import {HtPosition, IActionPositions} from "../interfaces";
 import moment from "moment-mini";
-import { GetDateRangeQuery } from "ht-js-utils"
+import { GetDateRangeQuery } from "ht-utils"
 
 export class HtAction {
 

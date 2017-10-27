@@ -1,5 +1,5 @@
 import {HtMapType} from "../interfaces";
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 import {IUser, Partial, IUserAnalytics} from "ht-models";
 import {HtBounds, HtMapUtils} from "../map-utils";
 

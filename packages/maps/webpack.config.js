@@ -9,7 +9,7 @@ var nodeConfig = require('./webpack.config.bundle');
 var browserSpecConfig = {
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-map_browser.js',
+        filename: 'ht-maps_browser.js',
         library: "htMaps",
         libraryTarget: "umd"
     },
@@ -21,13 +21,13 @@ var browserSpecConfig = {
                 amd: 'moment',
                 root: 'moment'
             },
-            'ht-js-utils': {
+            'ht-utils': {
                 commonjs: 'htUtils',
                 commonjs2: 'htUtils',
                 amd: 'htUtils',
                 root: 'htUtils'
             },
-            'ht-js-data': {
+            'ht-data': {
                 commonjs: 'htData',
                 commonjs2: 'htData',
                 amd: 'htData',

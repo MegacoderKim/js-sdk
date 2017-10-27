@@ -1,7 +1,7 @@
 import {HtMarker, MapUtils} from "./interfaces";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
-import {HtPosition} from "ht-js-data";
+import {HtPosition} from "ht-data";
 declare var MarkerClusterer:any;
 declare var RichMarker: any;
 export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds, force = false) {

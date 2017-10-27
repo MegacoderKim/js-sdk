@@ -3,7 +3,7 @@ import {IUserData, Page, IUser, IUserAnalytics, IUserListSummary} from "ht-model
 import {AllData, ApiType} from "../interfaces";
 import {createSelector, MemoizedSelector} from "../store/selector";
 import * as _ from "underscore";
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 
 const initialUsersAnalyticsAll = {
   resultsEntity: {},

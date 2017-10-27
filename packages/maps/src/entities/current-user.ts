@@ -1,4 +1,4 @@
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import {MapEntity, mapItemFactory} from "../base/map-item-factory";
 import {IUserData} from "ht-models";
 import {StyleObj} from "../helpers/styles-factory";
