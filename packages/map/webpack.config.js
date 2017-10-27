@@ -40,6 +40,8 @@ var config = {
     ],
     plugins: [
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-map']}),
+        // new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-map']}),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };

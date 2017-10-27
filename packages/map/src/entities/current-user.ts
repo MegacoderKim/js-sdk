@@ -1,6 +1,6 @@
 import {htUser} from "ht-js-data";
 import {MapEntity, mapItemFactory} from "../base/map-item-factory";
-import {IUserData} from "../../../models/src/user";
+import {IUserData} from "ht-models";
 import {StyleObj} from "../helpers/styles-factory";
 import {MarkerFactoryConfig} from "../base/map-items-factory";
 import {dataFactory} from "../helpers/data-factory";
