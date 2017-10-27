@@ -38,7 +38,7 @@ export class UsersListStorage {
   }
 
   get token() {
-    return HtClientConfig.subToken + "_uls"
+    return HtClientConfig.request.subToken + "_uls"
   }
 
   get sfx() {

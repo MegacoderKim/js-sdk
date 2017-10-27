@@ -18,6 +18,8 @@ export * from "./entities/users/users-index-client"
 export * from "./entities/users/users-placeline-client"
 export * from "./entities/users/users-analytics-client"
 
+export * from "./filters/users-filter"
+
 export * from "./client"
 export * from "./base/data-observer";
 

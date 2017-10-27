@@ -1,34 +1,33 @@
 import {HtQuerySerialize} from "ht-js-utils";
 import {Observable} from "rxjs/Observable";
-import {HtClientConfig} from "./config";
 
 export class HtRequest {
-
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
-
-  constructor(private currentToken: string = "", private isAdmin: boolean = false) {
-    // this.token = token || HtClientConfig.token
+  subToken: string = '';
+  token: string;
+  constructor(private isAdmin: boolean = false) {
+    // this.currentToken = currentToken || HtClientConfig.currentToken
   }
 
   setToken(token) {
-    HtClientConfig.subToken = token;
-    this.currentToken = token
+    this.token = token;
   }
+
 
   setIsAdmin(isAdmin) {
     this.isAdmin = isAdmin;
   }
 
-  get token() {
-    return this.currentToken && !this.isAdmin ? this.currentToken : HtClientConfig.token;
+  get currentToken() {
+    return this.subToken && !this.isAdmin ? this.subToken : this.token;
   }
 
   headerObj() {
-    return  {'Authorization': `token ${this.token}`}
+    return  {'Authorization': `token ${this.currentToken}`}
   }
 
   headerStrings(): [string, string] {
-    return ['Authorization', `token ${this.token}`]
+    return ['Authorization', `token ${this.currentToken}`]
   }
 
   url(url: string, query = {}) {
@@ -54,6 +53,10 @@ export class HtRequest {
     url = this.url(url);
     return this.postObservable(url, body, options)
   }
+
+}
+
+export class HTest {
 
 }
 

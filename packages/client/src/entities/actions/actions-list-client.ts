@@ -20,8 +20,8 @@ export class HtActionsListClient {
   dateRangeQueryBeh$: BehaviorSubject<object> = new BehaviorSubject({});
   query: Observable<object>;
 
-  constructor(request, public defaultConfigQuery: Partial<IIndexQuery> = {}, private config: IListConfig = defaultListConfig) {
-    this.api =  new HtActionsApi(request);
+  constructor(public defaultConfigQuery: Partial<IIndexQuery> = {}, private config: IListConfig = defaultListConfig) {
+    this.api =  new HtActionsApi();
     this.setDefaultQuery(defaultConfigQuery);
     this.query = Observable.combineLatest(
       this.listQuery$,

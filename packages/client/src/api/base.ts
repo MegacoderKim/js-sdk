@@ -1,21 +1,23 @@
-import {HtRequest} from "../request";
+// import {HtRequest} from "../request";
 import { Observable } from "rxjs/Observable";
 import {IPageData} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 import * as _ from "underscore";
 import {Page} from "ht-models";
+import {apiConfig} from "../client-request";
+import {HtRequest} from "../request";
+// import {HtClientConfig} from "../config";
+// import {HTest, HtRequest} from "../request";
+// import {UsersListStorage} from "./storage";
 
 export class HtBaseApi {
-  // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
-  request;
 
-  constructor(private base: string, request: HtRequest, isAdmin: boolean = false) {
-    this.setRequest(request, isAdmin)
+  constructor(private base: string) {
+
   }
 
-  setRequest(request, isAdmin) {
-    if(isAdmin) request.setIsAdmin(isAdmin);
-    this.request = request;
+  get request(): HtRequest {
+    return apiConfig.request
   }
 
   get<T>(id: string, query = {}): Observable<T> {

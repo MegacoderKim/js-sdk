@@ -10,9 +10,9 @@ export class HtActionsClient {
   api;
   constructor(req, options: IActionsClientOptions = {} ) {
     // let {listConfig, defaultConfigQuery} = options;
-    let api = new HtActionsApi(req);
+    let api = new HtActionsApi();
     this.api = api;
-    this.list = new HtActionsListClient(req, options['defaultConfigQuery'], options['listConfig']);
+    this.list = new HtActionsListClient(options['defaultConfigQuery'], options['listConfig']);
     // this.item = new HtActionsGetClient({
     //   api$: this.api.get,
     //   ...options.getClientOptions

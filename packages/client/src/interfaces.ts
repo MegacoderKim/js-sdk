@@ -1,8 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import {HtBaseApi} from "./api/base";
 import {Partial, IUserData, Page, IUser, IUserAnalytics, IAction} from "ht-models";
-import {HtUsersApi} from "./api/users";
-import {HtActionsApi} from "./api/actions";
 import {Store} from "./store/store";
 import * as fromRoot from "./reducers";
 
