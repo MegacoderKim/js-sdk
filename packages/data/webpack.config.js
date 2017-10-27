@@ -4,45 +4,45 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 var path = require('path');
 
 var mainPath = path.resolve(__dirname, 'src', 'ht-data.ts');
+var nodeConfig = require('./webpack.config.bundle');
 
-var config = {
-    devtool: 'source-ht-map, inline-source-ht-map',
-    resolve: {
-        modules: ['node_modules'],
-        extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
-        alias: {}
-    },
-    entry: mainPath,
+var browserSpecConfig = {
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-data.js',
+        filename: 'ht-data_browser.js',
         library: "htData",
         libraryTarget: "umd"
     },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: [
-                    { loader: 'ts-loader' }
-                ]
-            }
-        ]
-    },
     externals: [
-        'ht-js-client',
-        'ht-js-fetch-client',
-        'moment-mini',
-        'underscore',
-        'ht-js-utils',
-        /^rxjs\/.+$/
+        {
+            'moment-mini': {
+                commonjs: 'moment',
+                commonjs2: 'moment',
+                amd: 'moment',
+                root: 'moment'
+            },
+            'ht-js-utils': {
+                commonjs: 'htUtils',
+                commonjs2: 'htUtils',
+                amd: 'htUtils',
+                root: 'htUtils'
+            },
+            'underscore': {
+                commonjs: 'underscore',
+                commonjs2: 'underscore',
+                amd: 'underscore',
+                root: '_'
+            }
+        }
     ],
     plugins: [
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
-        // new BundleAnalyzerPlugin({analyzerPort: 8088})
+        new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 
-module.exports = config;
+var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
+
+module.exports = [nodeConfig, browserConfig];
