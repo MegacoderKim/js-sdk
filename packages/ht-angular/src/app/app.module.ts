@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HtModule} from "ht-angular-client";
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
@@ -30,6 +29,7 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/empty';
 import {GroupKeyResolver} from "./guard/group-key-resolver";
+import {HtModule} from "./ht/ht.module";
 
 @NgModule({
   declarations: [

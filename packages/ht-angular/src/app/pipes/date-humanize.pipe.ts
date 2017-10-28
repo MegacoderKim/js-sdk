@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {DateHumanize} from "ht-js-utils";
+import {DateHumanize} from "ht-utility";
 
 @Pipe({
   name: 'dateHumanize'

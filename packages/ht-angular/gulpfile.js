@@ -18,6 +18,7 @@ const tslint = require('gulp-tslint');
 /** Sass style */
 const postcss = require('postcss');
 const less = require('less');
+var gulpLess = require('gulp-less');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const scss = require('postcss-less');
@@ -231,15 +232,25 @@ pump(
 
 gulp.task('copy-style', (cb) => {
   return gulp.src('./src/styles/**/*.less')
-    .pipe(gulpCopy('./dist'))
-    .pipe(gulp.dest('.'))
+    // .pipe(gulpCopy('./dist'))
+    // .pipe(gulpLess())
+    .pipe(gulp.dest('./dist/less'))
 
 })
 
+gulp.task('compile-style', (cb) => {
+  return gulp.src('./src/styles.less')
+    // .pipe(gulpCopy('.'))
+    .pipe(gulpLess())
+    .pipe(gulp.dest('./dist/css'))
+
+})
+
+
 gulp.task('copy-js', (cb) => {
   return gulp.src('./src/js/**/*.js')
-    .pipe(gulpCopy('./dist'))
-    .pipe(gulp.dest('.'))
+    // .pipe(gulpCopy('./dist/js'))
+    .pipe(gulp.dest('./dist/js'))
 
 })
 
@@ -277,7 +288,7 @@ startKarmaServer(true, false, cb);
 gulp.task('package', (cb) => {
   let pkgJson = JSON.parse(fs.readFileSync('./src/package.json', 'utf8'));
 let targetPkgJson = {};
-let fieldsToCopy = ['version', 'description', 'keywords', 'author', 'repository', 'license', 'bugs', 'homepage'];
+let fieldsToCopy = ['version', 'description', 'keywords', 'author', 'repository', 'license', 'bugs', 'homepage', 'dependencies', 'peerDependencies'];
 
 targetPkgJson['name'] = LIBRARY_NAME;
 
@@ -403,7 +414,7 @@ gulp.task('watch', () => {
 
 // Build the 'dist' folder (without publishing it to NPM)
 gulp.task('build', ['clean'], (cb) => {
-  runSequence('compile', 'package', 'bundle', 'copy-style', 'copy-js', cb);
+  runSequence('compile', 'package', 'bundle', 'copy-style', 'copy-js', 'compile-style', cb);
 });
 
 // Build and then Publish 'dist' folder to NPM

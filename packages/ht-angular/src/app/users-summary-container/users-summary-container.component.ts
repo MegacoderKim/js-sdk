@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {HtUsersClientService} from "ht-angular-client";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {HtUsersService} from "../ht/ht-users.service";
 
 @Component({
   selector: 'ht-users-summary-container',
@@ -20,7 +20,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
 export class UsersSummaryContainerComponent implements OnInit {
   summary$;
   constructor(
-    private usersClientService: HtUsersClientService
+    private usersClientService: HtUsersService
   ) { }
 
   ngOnInit() {

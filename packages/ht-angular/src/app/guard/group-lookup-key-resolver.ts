@@ -2,8 +2,8 @@ import {ActivatedRoute, ActivatedRouteSnapshot, Resolve} from "@angular/router";
 import {Observable} from "rxjs/Observable";
 import {Observer} from "rxjs/Observer";
 import {IGroup, Page} from "ht-models";
-import {HtClientService} from "ht-angular-client";
 import {Injectable} from "@angular/core";
+import {HtClientService} from "../ht/ht-client.service";
 
 @Injectable()
 export class GroupLookupKeyResolver implements Resolve<any> {

@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {DateString} from "ht-js-utils";
+import {htAction} from "ht-data";
+import {DateString} from "ht-utility";
 
 @Pipe({
   name: 'dateString'

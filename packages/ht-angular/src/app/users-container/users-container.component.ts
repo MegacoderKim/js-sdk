@@ -1,11 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {HtMapService, HtUsersClientService} from "ht-angular-client";
+// import {HtMapService, HtUsersClientService} from "ht-angular-client";
 import {IUserAnalytics, IUserData} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 // import {htUser} from "ht-js-data";
-import {ApiType} from "ht-js-client";
+import {ApiType} from "ht-client";
+import {HtMapService} from "../ht/ht-map.service";
+import {HtUsersService} from "../ht/ht-users.service";
 
 @Component({
   selector: 'ht-users-container',
@@ -26,7 +28,7 @@ export class UsersContainerComponent implements OnInit {
   @Input() apiType: ApiType = ApiType.analytics;
 
   constructor(
-    private userService: HtUsersClientService,
+    private userService: HtUsersService,
     private mapService: HtMapService
   ) { }
 

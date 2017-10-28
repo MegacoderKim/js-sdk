@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IAction, ISegment, IUserData} from "ht-models";
-import {NameCase} from "ht-js-utils";
+import {NameCase} from "ht-utility";
 import * as _ from "underscore";
 
 @Component({

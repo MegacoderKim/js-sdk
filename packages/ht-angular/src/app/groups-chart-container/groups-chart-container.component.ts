@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {HtClientService} from "ht-angular-client";
-import {AllData} from "ht-js-client";
+import {AllData} from "ht-client";
 import {IGroup} from "ht-models";
 import * as _ from "underscore";
+import {HtClientService} from "../ht/ht-client.service";
 
 @Component({
   selector: 'ht-groups-chart-container',

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { NameCase } from "ht-js-utils"
+import {NameCase} from "ht-utility";
 
 @Pipe({
   name: 'nameCase'

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {HMString} from "ht-js-utils";
+import {HMString} from "ht-utility";
 
 @Pipe({
   name: 'hmString'

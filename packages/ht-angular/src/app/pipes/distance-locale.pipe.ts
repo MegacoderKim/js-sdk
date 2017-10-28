@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {DistanceLocale} from "ht-js-utils";
+import {DistanceLocale} from "ht-utility";
 
 @Pipe({
   name: 'distanceLocale'

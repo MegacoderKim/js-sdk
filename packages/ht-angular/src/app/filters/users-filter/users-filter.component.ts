@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {HtUsersClientService} from "ht-angular-client";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {HtUsersService} from "../../ht/ht-users.service";
 
 @Component({
   selector: 'ht-users-filter',
@@ -28,7 +28,7 @@ export class UsersFilterComponent implements OnInit {
   ordering$;
   showFilter$;
   constructor(
-    private usersClientService: HtUsersClientService
+    private usersClientService: HtUsersService
   ) { }
 
   ngOnInit() {

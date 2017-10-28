@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {DotString} from "ht-js-utils";
+import {DotString} from "ht-utility";
 
 @Pipe({
   name: 'dot'

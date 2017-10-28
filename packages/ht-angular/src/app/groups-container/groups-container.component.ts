@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {HtClientService} from "ht-angular-client";
 import * as _ from "underscore";
 import {IGroup} from "ht-models";
+import {HtClientService} from "../ht/ht-client.service";
 @Component({
   selector: 'ht-groups-container',
   templateUrl: './groups-container.component.html',

@@ -3,9 +3,8 @@
   "lib": {
     "entryFile": "public_api.ts",
     "externals": [
-      "ht-js-map",
-      "ht-js-utils",
-      "ht-utils"
+      "ht-maps",
+      "ht-utility"
     ]
   }
 }

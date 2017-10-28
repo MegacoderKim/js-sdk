@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {HtClientService} from "ht-angular-client";
 import {IGroup} from "ht-models";
+import {HtClientService} from "../ht/ht-client.service";
 
 @Injectable()
 export class GroupKeyGuard implements CanActivate {

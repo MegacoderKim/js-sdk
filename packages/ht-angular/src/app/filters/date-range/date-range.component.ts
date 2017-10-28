@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {HtUsersClientService} from "ht-angular-client";
 // import * as moment from 'moment-mini'
 import moment from 'moment-mini'
-import {IDateRange} from "ht-js-client";
+import {IDateRange} from "ht-client";
+import {HtUsersService} from "../../ht/ht-users.service";
 
 @Component({
   selector: 'ht-date-range',
@@ -51,7 +51,7 @@ export class DateRangeComponent implements OnInit {
   ];
 
   constructor(
-    private usersClientService: HtUsersClientService
+    private usersClientService: HtUsersService
   ) { }
 
   ngOnInit() {

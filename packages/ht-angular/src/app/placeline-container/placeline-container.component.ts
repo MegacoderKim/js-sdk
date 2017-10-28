@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {HtUsersClientService} from "ht-angular-client";
 import {IUserData} from "ht-models";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {HtUsersService} from "../ht/ht-users.service";
 
 @Component({
   selector: 'ht-placeline-container',
@@ -24,7 +24,7 @@ export class PlacelineContainerComponent implements OnInit {
   @Input() showUserCard: boolean = true;
   userData$;
   constructor(
-    private userClientService: HtUsersClientService,
+    private userClientService: HtUsersService,
   ) { }
 
   ngOnInit() {

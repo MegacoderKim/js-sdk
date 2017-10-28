@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Page} from "ht-models";
-import {GetUrlParam} from "ht-js-utils";
+import {GetUrlParam} from "ht-utility";
 
 @Component({
   selector: 'ht-pagination',

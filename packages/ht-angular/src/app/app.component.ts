@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {HtUsersClientService} from "ht-angular-client";
-import {QueryLabel} from "ht-js-client";
-import {Color} from "ht-js-utils";
+import {QueryLabel} from "ht-client";
+import {Color} from "ht-utility";
+import {HtUsersService} from "./ht/ht-users.service";
 
 @Component({
   selector: 'ht-root',
@@ -10,7 +10,7 @@ import {Color} from "ht-js-utils";
 })
 export class AppComponent {
 
-  constructor(private htUsersClientService: HtUsersClientService) {
+  constructor(private htUsersClientService: HtUsersService) {
     const queryMap: QueryLabel[] = [
       {
         label: 'Logged in',
@@ -28,7 +28,7 @@ export class AppComponent {
         color: Color.red
       },
     ];
-    this.htUsersClientService.statusQueryArray = queryMap
+    // this.htUsersClientService.statusQueryArray = queryMap
   }
 
 

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {TimeString} from "ht-js-utils";
+import {TimeString} from "ht-utility";
 
 @Pipe({
   name: 'timeString'

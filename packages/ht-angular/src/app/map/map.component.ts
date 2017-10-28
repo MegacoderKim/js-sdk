@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit} from '@angular/core';
-import {HtMapService, HtUsersClientService} from "ht-angular-client";
 import {IUserData} from "ht-models";
+import {HtMapService} from "../ht/ht-map.service";
+import {HtUsersService} from "../ht/ht-users.service";
 
 @Component({
   selector: 'ht-map',
@@ -12,7 +13,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   constructor(
     private elRef: ElementRef,
     private mapService: HtMapService,
-    private userService: HtUsersClientService,
+    private userService: HtUsersService,
   ) { }
 
   @HostListener('resize')

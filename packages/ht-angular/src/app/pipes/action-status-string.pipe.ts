@@ -1,5 +1,6 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {htAction} from "ht-js-data";
+import {htAction} from "ht-data";
+
 
 @Pipe({
   name: 'actionStatusString'

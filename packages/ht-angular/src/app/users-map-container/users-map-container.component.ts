@@ -1,7 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IUserData} from "ht-models";
-import {HtClientService, HtMapService, HtUsersClientService} from "ht-angular-client";
-import { ApiType } from "ht-js-client"
+import { ApiType } from "ht-client"
+import {HtClientService} from "../ht/ht-client.service";
+import {HtUsersService} from "../ht/ht-users.service";
+import {HtRequestService} from "../ht/ht-request.service";
 
 @Component({
   selector: 'ht-users-map-container',
@@ -16,8 +18,8 @@ export class UsersMapContainerComponent implements OnInit {
   @Input() showFilter: boolean = true;
   @Input() showSidebar: boolean = true;
   constructor(
-    private clientService: HtClientService,
-    private userClientService: HtUsersClientService
+    private requestService: HtRequestService,
+    private userClientService: HtUsersService
   ) {
 
   }
@@ -33,7 +35,7 @@ export class UsersMapContainerComponent implements OnInit {
   ngOnInit() {
     this.userClientService.setActive();
     if (this.key) {
-      this.clientService.setToken(this.key)
+      this.requestService.setToken(this.key)
     }
   }
 

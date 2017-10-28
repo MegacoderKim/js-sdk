@@ -1,8 +1,8 @@
 import {AfterContentInit, Component, Input, OnInit} from '@angular/core';
-import {HtMapService, HtUsersClientService} from "ht-angular-client";
 import {IUserData} from "ht-models";
-import {ApiType} from "ht-js-client";
 import {Observable} from "rxjs/Observable";
+import {HtUsersService} from "../ht/ht-users.service";
+import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'ht-map-container',
@@ -15,7 +15,7 @@ export class MapContainerComponent implements OnInit, AfterContentInit {
   subs = [];
   loading$;
   constructor(
-    private userClientService: HtUsersClientService,
+    private userClientService: HtUsersService,
     private mapService: HtMapService
   ) { }
 
