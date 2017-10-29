@@ -1,7 +1,7 @@
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import {Partial, Page, IAction} from "ht-models";
-import { GetUrlParam } from "ht-utils";
+import { GetUrlParam } from "ht-utility";
 import * as _ from  "underscore";
 import {defaultListConfig, IIndexQuery, IListConfig} from "../../interfaces";
 import {HtActionsApi} from "../../api/actions";

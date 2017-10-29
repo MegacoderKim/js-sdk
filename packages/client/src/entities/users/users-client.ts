@@ -12,7 +12,7 @@ import {usersIndexMarkersFactory} from "./users-index-markers";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
-import {DateString, IsRangeADay, IsRangeToday} from "ht-utils";
+import {DateString, IsRangeADay, IsRangeToday} from "ht-utility";
 import {HtMapClass} from "ht-maps";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
@@ -33,6 +33,8 @@ import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegment from "../../reducers/segments-reducer";
 import {HtClientConfig} from "../../config";
 import {store} from "../../store-provider";
+import {clientApi} from "../../client-request";
+// import {htClient} from "../../client";
 
 /**
  * Class containing all user related client entity like list of user, user placeline etc
@@ -73,7 +75,7 @@ export class HtUsersClient extends EntityClient {
   store;
   constructor(public options: IUsersClientOptions = {}) {
     super();
-    // let api = new HtUsersApi(req);
+    let api = clientApi.api.users;
     this.store = store;
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
@@ -91,18 +93,18 @@ export class HtUsersClient extends EntityClient {
     let indexState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => HtClientConfig.api.users.index(query),
+      api$: (query) => api.index(query),
     };
 
     let analyticsState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => HtClientConfig.api.users.analytics(query)
+      api$: (query) => api.analytics(query)
     };
 
     let placelineState: ItemState = {
       ...entityState,
-      api$: (id, query) => HtClientConfig.api.users.placeline(id, query),
+      api$: (id, query) => api.placeline(id, query),
     };
 
 
@@ -125,13 +127,13 @@ export class HtUsersClient extends EntityClient {
     let analyticsMarkersState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => HtClientConfig.api.users.all$(query, ApiType.analytics)
+      api$: (query) => api.all$(query, ApiType.analytics)
     };
 
     let indexMarkersState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => HtClientConfig.api.all$(query, ApiType.index),
+      api$: (query) => api.all$(query, ApiType.index),
     };
 
     this.marksAnalytics = usersAnalyticsMarkersFactory(analyticsMarkersState, {});
@@ -141,7 +143,7 @@ export class HtUsersClient extends EntityClient {
     let summaryState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => HtClientConfig.api.users.summary(query)
+      api$: (query) => api.summary(query)
     };
 
     this.summary = HtUsersSummaryFactory(summaryState, {});

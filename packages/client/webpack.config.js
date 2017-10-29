@@ -24,11 +24,11 @@ var browserSpecConfig = {
                 amd: 'moment',
                 root: 'moment'
             },
-            'ht-utils': {
-                commonjs: 'htUtils',
-                commonjs2: 'htUtils',
-                amd: 'htUtils',
-                root: 'htUtils'
+            'ht-utility': {
+                commonjs: 'htUtility',
+                commonjs2: 'htUtility',
+                amd: 'htUtility',
+                root: 'htUtility'
             },
             'ht-data': {
                 commonjs: 'htData',

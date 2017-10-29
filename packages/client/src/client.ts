@@ -3,13 +3,16 @@ import {HtUsersClient} from "./entities/users/users-client";
 import {HtGroupsClient} from "./entities/groups/groups-client";
 import {IClientOptions} from "./interfaces";
 import {HtClientConfig} from "./config";
+import {entityApiFactory, IEntityApi} from "./entity-api";
+import {HtRequest} from "./request";
+import {clientApi} from "./client-request";
 
 export class HtClient {
   // actions: HtActionsClient;
   users: HtUsersClient;
   groups: HtGroupsClient;
   constructor(public request, options: IClientOptions = {}) {
-    HtClientConfig.setRequest(request);
+    clientApi.setRequest(request);
     this.initEntities(options);
   }
 
@@ -29,3 +32,26 @@ export class HtClient {
    */
 
 }
+
+// export const htClient: IHtClient = {
+//   token: '',
+//   api: entityApiFactory(),
+//   request: new HtRequest(),
+//   setToken(token: string) {
+//     this.token = token;
+//     this.request.token = token;
+//     // this.api.request = this.request
+//   },
+//   setRequest(request) {
+//     request.token = request.token || this.token;
+//     this.request = request
+//   }
+// };
+//
+// export interface IHtClient {
+//   token: string,
+//   api: IEntityApi,
+//   request: HtRequest,
+//   setToken(token: string): void,
+//   setRequest(request: HtRequest): void
+// }

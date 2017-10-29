@@ -1,4 +1,5 @@
 export * from "./request";
+export * from "./client-request";
 export * from "./api/actions";
 export * from "./api/users";
 export * from "./api/base";

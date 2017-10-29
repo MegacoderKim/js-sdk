@@ -12,6 +12,8 @@ import {AllData} from "../../interfaces";
 import {Observable} from "rxjs/Observable";
 import {HtClientConfig} from "../../config";
 import {store} from "../../store-provider";
+import {clientApi} from "../../client-request";
+// import {htClient} from "../../client";
 
 export class HtGroupsClient extends EntityClient{
   list: GroupsList;
@@ -20,7 +22,7 @@ export class HtGroupsClient extends EntityClient{
   store: Store<fromRoot.State>;
   constructor(options = {}) {
     super();
-    let api = HtClientConfig.api.groups;
+    let api = clientApi.api.groups;
     this.api = api;
     this.store = store;
     let entityState: EntityTypeState = {

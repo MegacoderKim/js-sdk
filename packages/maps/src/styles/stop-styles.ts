@@ -1,4 +1,4 @@
-import {Color} from "ht-utils";
+import {Color} from "ht-utility";
 
 export const stopStyles = {
   google: {

@@ -3,7 +3,6 @@ var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
 var webpackRxjsExternals = require('webpack-rxjs-externals');
-var mainPath = path.resolve(__dirname, 'src', 'ht-map.ts');
 var nodeConfig = require('./webpack.config.bundle');
 
 var browserSpecConfig = {
@@ -21,11 +20,11 @@ var browserSpecConfig = {
                 amd: 'moment',
                 root: 'moment'
             },
-            'ht-utils': {
-                commonjs: 'htUtils',
-                commonjs2: 'htUtils',
-                amd: 'htUtils',
-                root: 'htUtils'
+            'ht-utility': {
+                commonjs: 'htUtility',
+                commonjs2: 'htUtility',
+                amd: 'htUtility',
+                root: 'htUtility'
             },
             'ht-data': {
                 commonjs: 'htData',

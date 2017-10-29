@@ -46,7 +46,7 @@ var nodeConfig = {
     //     }
     // },
     externals: [
-        'ht-utils',
+        'ht-utility',
         'ht-data',
         'moment-mini',
         'underscore',
@@ -59,8 +59,8 @@ var nodeConfig = {
             debug: false
         }),
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        // new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-client']}),
-        // new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-client']}),
+        // new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-client']}),
+        // new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-client']}),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})

@@ -5,14 +5,13 @@ var WebpackShellPlugin = require('webpack-shell-plugin');
 
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'src', 'ht-utils.ts');
 var nodeConfig = require('./webpack.config.bundle');
 
 var browserSpecConfig = {
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-utils_browser.js',
-        library: "htUtils",
+        filename: 'ht-utility_browser.js',
+        library: "htUtility",
         libraryTarget: "umd"
     },
     externals: [

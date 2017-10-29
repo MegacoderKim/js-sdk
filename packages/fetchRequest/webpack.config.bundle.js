@@ -33,7 +33,7 @@ var config = {
     },
     externals: [
         'ht-client',
-        'ht-utils',
+        'ht-utility',
         'moment-mini',
         'underscore',
         'whatwg-fetch',

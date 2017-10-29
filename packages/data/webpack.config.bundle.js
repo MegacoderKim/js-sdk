@@ -32,7 +32,7 @@ var config = {
     externals: [
         'moment-mini',
         'underscore',
-        'ht-utils'
+        'ht-utility'
     ],
     plugins: [
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),

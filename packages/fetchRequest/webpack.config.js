@@ -26,11 +26,11 @@ var browserSpecConfig = {
             }
         },
         {
-            'ht-utils': {
-                commonjs: 'htUtils',
-                commonjs2: 'htUtils',
-                amd: 'htUtils',
-                root: 'htUtils'
+            'ht-utility': {
+                commonjs: 'htUtility',
+                commonjs2: 'htUtility',
+                amd: 'htUtility',
+                root: 'htUtility'
             }
         },
         webpackRxjsExternals(),

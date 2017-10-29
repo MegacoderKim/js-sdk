@@ -3,7 +3,7 @@ var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
 var webpackRxjsExternals = require('webpack-rxjs-externals');
-var mainPath = path.resolve(__dirname, 'src', 'ht-map.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-maps.ts');
 var config = {
     devtool: 'source-ht-map, inline-source-ht-map',
     resolve: {
@@ -29,7 +29,7 @@ var config = {
         ]
     },
     externals: [
-        'ht-utils',
+        'ht-utility',
         'ht-data',
         'ht-models',
         'moment-mini',

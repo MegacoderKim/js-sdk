@@ -1,8 +1,8 @@
 {
   "name": "ht-maps",
-  "version": "0.0.72",
+  "version": "0.0.1-beta",
   "description": "hypertrack maps",
-  "main": "dist/ht-map.js",
+  "main": "dist/ht-maps.js",
   "module": "dist/ht-maps.js",
   "typings": "dist/typings/ht-maps.d.ts",
   "scripts": {
@@ -18,7 +18,7 @@
     "@types/leaflet": "^1.0.63",
     "@types/node": "^8.0.4",
     "ht-data": "file:../data",
-    "ht-utils": "file:../utils",
+    "ht-utility": "file:../utils",
     "ht-models": "file:../models",
     "leaflet": "^1.2.0",
     "moment-mini": "~2.18.1",
@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "ht-models": "^0.0.x",
-    "ht-utils": "0.0.x",
+    "ht-utility": "0.0.x",
     "ht-data": ">=0.0.20",
     "underscore": "^1.8.x",
     "rxjs": "^5.4.x"

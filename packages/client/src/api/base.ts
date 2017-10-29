@@ -4,20 +4,23 @@ import {IPageData} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 import * as _ from "underscore";
 import {Page} from "ht-models";
-import {apiConfig} from "../client-request";
+// import {clientApi} from "../client-request";
 import {HtRequest} from "../request";
+import {clientApi} from "../client-request";
 // import {HtClientConfig} from "../config";
 // import {HTest, HtRequest} from "../request";
 // import {UsersListStorage} from "./storage";
 
 export class HtBaseApi {
+  // request: HtRequest;
 
   constructor(private base: string) {
 
   }
 
-  get request(): HtRequest {
-    return apiConfig.request
+  get request() {
+    // return ""
+    return clientApi.request
   }
 
   get<T>(id: string, query = {}): Observable<T> {

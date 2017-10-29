@@ -1,22 +1,20 @@
-import {apiFactory} from "./client-api";
-import {apiConfig} from "./client-request";
-// import {HtRequest} from "./request";
+// import {clientApi} from "./client-request";
+
 export class HtClientConfigClass implements IConfig {
   pollTime = 10000;
-  api: any = apiFactory();
   request;
   _token: string;
-  set token(token) {
-    this.setToken(token)
-  }
-  setRequest(request) {
-    request.token = request.token || this._token;
-    apiConfig.request = request;
-  }
-  setToken(token) {
-    this._token = token;
-    apiConfig.request.setToken(token);
-  }
+  // set token(token) {
+  //   this.setToken(token)
+  // }
+  // setRequest(request) {
+  //   request.token = request.token || this._token;
+  //   // clientApi.request = request;
+  // }
+  // setToken(token) {
+  //   this._token = token;
+  //   // clientApi.request.setToken(token);
+  // }
 }
 
 export const HtClientConfig = new HtClientConfigClass();
@@ -24,13 +22,13 @@ export const HtClientConfig = new HtClientConfigClass();
 //   // currentToken: "",
 //   // subToken: "",
 //   pollTime: 10000,
-//   api: apiFactory(),
+//   api: entityApiFactory(),
 //   // request: new HtRequest(),
 //   setToken(token) {
 //     this.token = token;
 //   },
 //   setRequest(_request) {
-//     apiConfig.request = _request;
+//     clientApi.request = _request;
 //   }
 // };
 
@@ -39,8 +37,7 @@ export interface IConfig {
   // currentToken: string,
   // subToken: string
   pollTime: number,
-  api?: any,
   request?: any,
-  setToken(token): void,
-  setRequest(req): void
+  // setToken(token): void,
+  // setRequest(req): void
 }

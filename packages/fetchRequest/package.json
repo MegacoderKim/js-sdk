@@ -1,6 +1,6 @@
 {
   "name": "ht-fetch-client",
-  "version": "0.0.0",
+  "version": "0.0.1-beta",
   "description": "",
   "main": "dist/ht-fetch-request.js",
   "module": "dist/ht-fetch-request.js",
@@ -13,12 +13,13 @@
   },
   "devDependencies": {
     "ht-client": "file:../client",
-    "ht-utils": "file:../utils",
+    "ht-utility": "file:../utils",
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
     "rxjs": "^5.4.2",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "ht-utility": "^0.0.1-beta"
   },
   "author": "",
   "license": "ISC",

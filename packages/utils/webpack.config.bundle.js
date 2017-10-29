@@ -5,7 +5,7 @@ var WebpackShellPlugin = require('webpack-shell-plugin');
 
 var path = require('path');
 
-var mainPath = path.resolve(__dirname, 'src', 'ht-utils.ts');
+var mainPath = path.resolve(__dirname, 'src', 'ht-utility.ts');
 
 var config = {
     devtool: 'source-ht-map, inline-source-ht-map',
@@ -17,8 +17,8 @@ var config = {
     entry: mainPath,
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-utils.js',
-        library: "htUtils",
+        filename: 'ht-utility.js',
+        library: "htUtility",
         libraryTarget: "umd"
     },
     module: {
@@ -40,7 +40,6 @@ var config = {
             minimize: true,
             debug: false
         }),
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-utils']}),
         // new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-utils']})
         // new Webpack.IgnorePlugin(/moment-mini$/),

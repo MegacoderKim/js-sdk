@@ -1,10 +1,10 @@
 {
-  "name": "ht-utils",
-  "version": "0.0.14",
+  "name": "ht-utility",
+  "version": "0.0.1-beta",
   "description": "HyperTrack utils library",
-  "main": "dist/ht-utils.js",
-  "module": "dist/ht-utils.js",
-  "typings": "dist/typings/ht-utils.d.ts",
+  "main": "dist/ht-utility.js",
+  "module": "dist/ht-utility.js",
+  "typings": "dist/typings/ht-utility.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
