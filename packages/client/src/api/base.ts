@@ -6,7 +6,7 @@ import * as _ from "underscore";
 import {Page} from "ht-models";
 // import {clientApi} from "../client-request";
 import {HtRequest} from "../request";
-import {clientApi} from "../client-request";
+import {clientApi} from "../client-api";
 // import {HtClientConfig} from "../config";
 // import {HTest, HtRequest} from "../request";
 // import {UsersListStorage} from "./storage";

@@ -33,7 +33,7 @@ import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegment from "../../reducers/segments-reducer";
 import {HtClientConfig} from "../../config";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-request";
+import {clientApi} from "../../client-api";
 // import {htClient} from "../../client";
 
 /**
@@ -75,7 +75,7 @@ export class HtUsersClient extends EntityClient {
   store;
   constructor(public options: IUsersClientOptions = {}) {
     super();
-    let api = clientApi.api.users;
+    let api = clientApi.users;
     this.store = store;
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});

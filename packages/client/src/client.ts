@@ -5,7 +5,7 @@ import {IClientOptions} from "./interfaces";
 import {HtClientConfig} from "./config";
 import {entityApiFactory, IEntityApi} from "./entity-api";
 import {HtRequest} from "./request";
-import {clientApi} from "./client-request";
+import {clientApi} from "./client-api";
 
 export class HtClient {
   // actions: HtActionsClient;

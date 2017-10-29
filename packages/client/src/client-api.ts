@@ -1,8 +1,8 @@
 import {HtRequest} from "./request";
 import {entityApiFactory, IEntityApi} from "./entity-api";
 
-export const clientApi: IApiConfig = {
-  api: entityApiFactory(),
+export const clientApi: IClientApi = {
+  ... entityApiFactory(),
   request: new HtRequest(),
   token: "",
   setToken(token: string) {
@@ -16,8 +16,7 @@ export const clientApi: IApiConfig = {
   }
 };
 
-export interface IApiConfig {
-  api: IEntityApi,
+export interface IClientApi extends IEntityApi {
   request: HtRequest,
   token: string,
   subToken?: string
