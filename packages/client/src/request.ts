@@ -13,7 +13,6 @@ export class HtRequest {
     this.token = token;
   }
 
-
   setIsAdmin(isAdmin) {
     this.isAdmin = isAdmin;
   }
@@ -36,12 +35,14 @@ export class HtRequest {
   }
 
   getObservable<T>(url, options: object = {}): Observable<T> {
-    return Observable.empty()
+    let p = this.getFetch(url, options);
+    return this.fromPromise(p) as Observable<T>
   }
 
 
-  postObservable(url, body, options: object = {}): Observable<any> {
-    return Observable.of({})
+  postObservable<T>(url, body, options: object = {}): Observable<any> {
+    let p = this.postFetch(url, body, options);
+    return this.fromPromise(p) as Observable<T>
   }
 
   api$<T>(url: string, query) {
@@ -52,6 +53,19 @@ export class HtRequest {
   postApi$(url, body, options?) {
     url = this.url(url);
     return this.postObservable(url, body, options)
+  }
+
+  getFetch(url, options: object = {}) {
+    return fetch(url, {headers: this.headerObj(), ...options}).then(res => res.json())
+  }
+
+  postFetch(url, body, options: object = {}) {
+    return fetch(url, {headers: this.headerObj(), method: 'POST', body: JSON.stringify(body), ...options})
+      .then(res => res.json())
+  }
+
+  fromPromise(promise) {
+    return Observable.fromPromise(promise)
   }
 
 }

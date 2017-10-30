@@ -11,8 +11,8 @@ export class HtClient {
   // actions: HtActionsClient;
   users: HtUsersClient;
   groups: HtGroupsClient;
-  constructor(public request, options: IClientOptions = {}) {
-    clientApi.setRequest(request);
+  constructor(token: string, options: IClientOptions = {}) {
+    clientApi.setToken(token);
     this.initEntities(options);
   }
 

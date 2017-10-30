@@ -63,3 +63,4 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/zip';
+import 'rxjs/add/observable/fromPromise';
