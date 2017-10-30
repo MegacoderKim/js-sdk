@@ -57,8 +57,7 @@ export class HtBaseApi {
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$
       .expand((data: IPageData) => {
-        let req = this.request.getObservable(data['next']);
-        return data['next'] ? req : Observable.empty()
+        return data['next'] ? this.request.getObservable(data['next']) : Observable.empty()
       })
       .map((value: Page<T>) => {
         let resultsEntity = _.indexBy(value.results, 'id');
