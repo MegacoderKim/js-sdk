@@ -7,10 +7,15 @@ import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {MapService} from "./map-service";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import {currentId} from "async_hooks";
 
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
+  // userData$: Observable<IUserData | null>;
+  // userDataSub: Subscription;
   segmentTrace: HtSegmentsTrace;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
@@ -50,6 +55,30 @@ export class HtMapClass {
     MapService.setMap(map);
     return map
   }
+
+  // setPlacelineData$(data$: Observable<IUserData | null>) {
+  //   if (this.userDataSub) {
+  //     this.userDataSub.unsubscribe();
+  //   }
+  //   this.initUserDataObserver(data$)
+  // }
+  //
+  // private initUserDataObserver(data$: Observable<IUserData | null>) {
+  //   let userData$ = data$.scan((acc, data) => {
+  //     const oldId = acc.user ? acc.user.id : null;
+  //     const currentId = data ? data.id : null;
+  //     const isNew = currentId && oldId ? currentId !== oldId : true;
+  //     return {user: data, isNew, oldId }
+  //   }, {user: null, oldId: null, isNew: true});
+  //
+  //   let sub = userData$.subscribe((acc) => {
+  //     const userData = acc.user;
+  //     const isNew = acc.isNew;
+  //     this.tracePlaceline(userData);
+  //     if(isNew) this.resetBounds()
+  //   });
+  //   this.userDataSub = sub;
+  // }
 
   tracePlaceline(user: IUserData) {
     this.segmentTrace.trace(user)
