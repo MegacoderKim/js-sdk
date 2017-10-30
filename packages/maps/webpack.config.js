@@ -4,6 +4,8 @@ var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlug
 var path = require('path');
 var webpackRxjsExternals = require('webpack-rxjs-externals');
 var nodeConfig = require('./webpack.config.bundle');
+var stylePath = path.resolve(__dirname, 'src', 'css', 'style.js');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var browserSpecConfig = {
     output: {
@@ -49,6 +51,34 @@ var browserSpecConfig = {
     ]
 };
 
+var styleConfig = {
+    devtool: 'source-ht-map, inline-source-ht-map',
+    resolve: {
+        modules: ['node_modules'],
+        extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png', 'css'],
+        alias: {}
+    },
+    entry: stylePath,
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'style.js',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: ['css-loader', 'less-loader']
+                })
+            }
+        ]
+    },
+    plugins: [
+        new ExtractTextPlugin("styles.css"),
+    ]
+};
+
 var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
 
-module.exports = [nodeConfig, browserConfig];
+module.exports = [nodeConfig, browserConfig, styleConfig];
