@@ -76,6 +76,7 @@ export class HtUsersClient extends EntityClient {
   constructor(public options: IUsersClientOptions = {}) {
     super();
     let api = clientApi.users;
+    this.api = api;
     this.store = store;
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});

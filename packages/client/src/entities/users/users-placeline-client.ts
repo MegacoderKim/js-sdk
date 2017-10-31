@@ -32,7 +32,7 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
   } = state;
 
   let itemSelectors: EntityItemSelectors = {
-    query$: Observable.of({}),
+    query$: store.select(fromRoot.getQueryPlacelineQuery),
     data$: store.select(fromRoot.getUsersUsersData),
     loading$: store.select(fromRoot.getLoadingUserData),
     id$: store.select(fromRoot.getQueryPlacelineId)
@@ -54,6 +54,9 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
     },
     toggleId(userId: string) {
       store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+    },
+    setQuery(query) {
+      store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
     }
   };
 

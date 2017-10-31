@@ -6,6 +6,7 @@ import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from 
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {HListFactory} from "../base/list-client";
 import {Observable} from "rxjs/Observable";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListState, config: Partial<EntityTypeConfig>): UsersSummary => {
 
@@ -34,6 +35,9 @@ export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListStat
     },
     setLoading(data) {
       store.dispatch(new fromLoadingDispatcher.SetLoadingUserSummary(data))
+    },
+    setQuery(query) {
+
     }
   };
 

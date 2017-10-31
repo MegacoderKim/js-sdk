@@ -65,6 +65,7 @@ export const getSegmentsResetMapId = createSelector(getSegmentsState, fromSegmen
  */
 export const getQueryState = createFeatureSelector<fromQuery.State>('query');
 export const getQueryPlacelineId = createSelector(getQueryState, fromQuery.getPlacelineId);
+export const getQueryPlacelineQuery = createSelector(getQueryState, fromQuery.getPlacelineQuery);
 export const getQueryUserQuery = createSelector(getQueryState, fromQuery.getUsersQuery);
 export const getQueryUserId = createSelector(getQueryState, fromQuery.getUsersId);
 

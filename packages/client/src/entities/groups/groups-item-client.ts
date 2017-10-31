@@ -39,6 +39,9 @@ export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, co
     },
     setLoading(data) {
 
+    },
+    setQuery() {
+
     }
   };
 

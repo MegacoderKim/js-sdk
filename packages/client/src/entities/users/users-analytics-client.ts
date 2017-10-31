@@ -5,6 +5,7 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {UsersAnalytics, UsersAnalyticsFactory} from "./users-analytics-interfaces";
 import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/interfaces";
 import {Observable} from "rxjs/Observable";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): UsersAnalytics => {
   let innerConfig = {
@@ -32,6 +33,9 @@ export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListSt
     },
     setActive(isActive: boolean = true){
       store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
+    },
+    setQuery(query = {}) {
+      store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
     }
   };
 

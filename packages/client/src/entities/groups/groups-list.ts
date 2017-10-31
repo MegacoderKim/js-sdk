@@ -46,6 +46,9 @@ export const groupsListClientFactory: GroupListFactory = (state: ListState, conf
     },
     setActive(isActive: boolean = true) {
       store.dispatch(new fromGroupDispatcher.SetListActive(isActive))
+    },
+    setQuery() {
+
     }
   };
 
