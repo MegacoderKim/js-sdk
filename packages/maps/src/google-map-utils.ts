@@ -200,6 +200,11 @@ function addMarkersToCluster(cluster, markers, map) {
 }
 
 function getPopup(options: {}) {
+  let defaultOption = {
+    disableAutoPan: true,
+    pixelOffset: new google.maps.Size(0, -37)
+  };
+  options = {...defaultOption, ...options};
   return new google.maps.InfoWindow(options)
 }
 
@@ -233,7 +238,7 @@ function onEvent(item, event, cb) {
   })
 }
 
-function openPopupPosition(position, map, content, popup) {
+function openPopupPosition(position: HtPosition, map, content, popup) {
   popup.setContent(content);
   popup.setPosition(GetLatlng(position));
   popup.setMap(map)

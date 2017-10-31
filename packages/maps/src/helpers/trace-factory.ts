@@ -35,7 +35,8 @@ export const entityTraceFactory = (mapItems, dataFactoryConfig) => {
           if(!hasEntity) {
             item = mapItems.getItem(datum);
             mapUtils.onEvent(item, 'click', () => {
-              if(mapItems.onClick) mapItems.onClick(datum, item);
+              let entity = mapItems.entities[id];
+              if(mapItems.onClick) mapItems.onClick(entity, item);
             });
             mapItems.setStyle(item)
           } else {

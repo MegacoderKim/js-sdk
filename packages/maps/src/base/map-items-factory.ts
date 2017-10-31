@@ -1,4 +1,4 @@
-import {MapEntities} from "../entities/interfaces";
+import {EventConfig, MapEntities} from "../entities/interfaces";
 import {StyleObj, stylesConfigFactory} from "../helpers/styles-factory";
 import {markerRenderConfigFactory} from "../renderers/marker-render";
 import {entityTraceFactory} from "../helpers/trace-factory";
@@ -17,11 +17,14 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
 
   let stylesConfig = stylesConfigFactory(mapUtils.type, config.stylesObj);
 
-  let renderConfig = markerRenderConfigFactory();
+  let renderConfig = markerRenderConfigFactory(config.eventConfig);
   if(config.isCircle) renderConfig = circleRenderConfigFactory(renderConfig);
   if(config.isPolyline) renderConfig = polylineRenderConfigFactory(renderConfig);
   if(config.isCluster) renderConfig = clusterRenderConfigFactory(renderConfig);
   if(config.isDiv) renderConfig = divMarkerRender(renderConfig);
+
+
+  let popupObj = !config.hasPopup ? {} : {popup: mapUtils.getPopup(config.popupConfig)};
 
   let mapItems = {
     name: config.name || 'marker',
@@ -30,7 +33,8 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
     ...renderConfig,
     ...stylesConfig,
     setMap: !config.isCluster,
-    cluster: null
+    cluster: null,
+    ...popupObj
   };
 
   if(config.isCluster) MapService.addCluster(mapItems);
@@ -44,9 +48,12 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
 export interface MarkerFactoryConfig {
   dataFactoryConfig: DataFactoryConfig<any>,
   stylesObj?: Partial<StyleObj>,
+  eventConfig?: EventConfig,
   isCluster?: boolean,
   isPolyline?: boolean,
   isCircle?: boolean,
   isDiv?: boolean,
-  name?: string
+  name?: string,
+  hasPopup?: boolean,
+  popupConfig?: object
 }

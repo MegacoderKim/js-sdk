@@ -1,10 +1,10 @@
-import {RenderConfig} from "../entities/interfaces";
+import {EventConfig, RenderConfig} from "../entities/interfaces";
 import {HtMapUtils} from "../map-utils";
 import {MapUtils} from "../interfaces";
 import * as _ from "underscore";
 import {MapService} from "../map-service";
 
-export const markerRenderConfigFactory = (): RenderConfig => {
+export const markerRenderConfigFactory = (config: EventConfig = {}): RenderConfig => {
   let mapUtils: MapUtils = MapService.mapUtils;
 
   return {
@@ -37,9 +37,7 @@ export const markerRenderConfigFactory = (): RenderConfig => {
       let id = data.id;
       if(this.entities[id]) delete this.entities[id];
     },
-    onClick(data, item) {
-      console.log("clicked", data);
-    }
+    ...config
   }
 
 };

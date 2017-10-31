@@ -3,7 +3,13 @@ import {HtPosition} from "ht-data";
 import {IUser, Partial, IUserAnalytics} from "ht-models";
 import {HtBounds, HtMapUtils} from "../map-utils";
 
-export interface RenderConfig {
+export interface EventConfig {
+  onClick?(data, item): any,
+  onMouseEnter?(data, item): any,
+  onMouseLeave?(data, item): any
+}
+
+export interface RenderConfig extends EventConfig{
   setMap: boolean,
   getItem: (data) => any,
   update:(data) => any,
@@ -12,7 +18,6 @@ export interface RenderConfig {
   removeAll: (data) => any,
   getBounds: (bounds?) => any,
   setStyle: (item) => any,
-  onClick(data, item): any,
   traceEffect?(): any
   // onMousein(data): any,
   // onMouseOut(data): any

@@ -6,9 +6,10 @@ import {htUser} from "ht-data";
 import {IUser, IUserAnalytics} from "ht-models";
 import {dataFactory, DataFactoryConfig, DivMarkerDataFactoryConfig} from "../helpers/data-factory";
 import {mapItemsFactory} from "../base/map-items-factory";
-import {MapEntities} from "./interfaces";
+import {EventConfig, MapEntities} from "./interfaces";
 import {StyleObj} from "../helpers/styles-factory";
 import {userDivFactory} from "../helpers/user-div-factory";
+import {MapService} from "../map-service";
 declare const RichMarkerPosition: any;
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
@@ -125,6 +126,24 @@ export const usersClustersFactory = (): MapEntities<any> => {
     },
     getDivContent(data) {
       return userDivFactory(data)
+    },
+    getInfoContent(data) {
+      // if(this.options.getInfoContent) return this.options.getInfoContent(data);
+      let string = `<div>
+<strong>${data.name}</strong>
+<div>${data.display.status_text}</div>
+<div>${data.display.sub_status_text}</div>
+</div>`;
+      return string
+    }
+  };
+
+  let mapUtils = MapService.mapUtils;
+  let eventConfig: EventConfig = {
+    onClick(entity, item) {
+      let popup = this.popup;
+      let map = MapService.map;
+      mapUtils.openPopupPosition(entity.getPosition(), map, entity.getInfoContent(), popup);
     }
   };
   let stylesObj: StyleObj = {
@@ -142,6 +161,14 @@ export const usersClustersFactory = (): MapEntities<any> => {
     }
   };
   // let data = dataFactory(config);
-  return mapItemsFactory({dataFactoryConfig, name: 'user cluster', isDiv: true, isCluster: true, stylesObj})
+  return mapItemsFactory({
+    dataFactoryConfig,
+    eventConfig,
+    name: 'user cluster',
+    isDiv: true,
+    isCluster: true,
+    hasPopup: true,
+    stylesObj
+  })
 };
 

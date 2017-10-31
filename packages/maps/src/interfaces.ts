@@ -13,7 +13,7 @@ export interface MapUtils {
   openTooltip: (item: HtMapItem, content?: string) => void
   closeTooltip: (item: HtMapItem) => void
   openPopup: (item: HtMapItem | {}, map, content?: string, popup?) => void
-  openPopupPosition: (HtPosition, map, content, popup) => void
+  openPopupPosition: (position: HtPosition, map, content, popup) => void
   closePopup: (item: HtMapItem) => void
   bringToFront: (item: HtMapItem) => void,
   setFocus: (item: HtMapItem, map: HtMap, config?: SetFocusConfig) =>  void,
@@ -34,7 +34,7 @@ export interface MapUtils {
   onEvent: (item, event, cb) => void,
   setDivContent: (item, content: string) => void,
   getDivMarker: () => any,
-  setDivMarkerStyle: (marker, options: object) => any
+  setDivMarkerStyle: (marker, options: object) => any,
 }
 
 export interface SetFocusConfig {
