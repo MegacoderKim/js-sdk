@@ -28,6 +28,7 @@ export interface MapEntities<T> extends RenderConfig {
   styles(mapType: HtMapType): object,
   stylesObj: object,
   stylesType: string;
+  cluster?: any,
   // config: RenderConfig,
   // dataClass:  DataObj<T>,
   trace: (data: any[]) => void,

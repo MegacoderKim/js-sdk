@@ -4,7 +4,6 @@ import {HtUserMarker} from "./user-marker";
 import {SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-data";
 import {IUser, IUserAnalytics} from "ht-models";
-import {ClusterEntities, clustersFactory} from "../base/clusters-factory";
 import {dataFactory} from "../helpers/data-factory";
 import {mapItemsFactory} from "../base/map-items-factory";
 import {MapEntities} from "./interfaces";
@@ -119,7 +118,7 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
   }
 };
 
-export const usersClustersFactory = (): ClusterEntities<any> => {
+export const usersClustersFactory = (): MapEntities<any> => {
   let config = {
     getPosition(data) {
       return htUser(data).getPosition()
@@ -143,6 +142,6 @@ export const usersClustersFactory = (): ClusterEntities<any> => {
     }
   };
   let data = dataFactory(config);
-  return clustersFactory({data, name: 'user cluster', isDiv: true, stylesObj})
+  return mapItemsFactory({data, name: 'user cluster', isDiv: true, isCluster: true, stylesObj})
 };
 

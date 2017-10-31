@@ -21,23 +21,23 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
   if(config.isPolyline) renderConfig = polylineRenderConfigFactory(renderConfig);
   if(config.isCluster) renderConfig = clusterRenderConfigFactory(renderConfig);
   if(config.isDiv) renderConfig = divMarkerRender(renderConfig);
-  // renderConfig = circleRenderConfigFactory(renderConfig, mapUtils);
+
   let mapItems = {
-    ...state,
-    entities: {},
-    renderer: renderConfig
-  };
-
-  let entityTrace = entityTraceFactory(mapItems, config.data);
-
-  return {
     name: config.name || 'marker',
-    ...entityTrace,
+    entities: {},
     ...state,
     ...renderConfig,
     ...stylesConfig,
-    setMap: !config.isCluster
-  }
+    setMap: !config.isCluster,
+    cluster: null
+  };
+
+  if(config.isCluster) MapService.addCluster(mapItems);
+  let entityTrace = entityTraceFactory(mapItems, config.data);
+
+
+  return entityTrace
+
 };
 
 export interface MarkerFactoryConfig {
