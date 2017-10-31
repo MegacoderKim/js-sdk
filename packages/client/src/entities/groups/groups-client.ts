@@ -10,16 +10,21 @@ import {GroupsItem} from "./groups-item-interface";
 import {GroupsList} from "./groups-list-interface";
 import {AllData} from "../../interfaces";
 import {Observable} from "rxjs/Observable";
+import {HtClientConfig} from "../../config";
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+// import {htClient} from "../../client";
 
 export class HtGroupsClient extends EntityClient{
   list: GroupsList;
   item: GroupsItem;
   api: HtBaseApi;
-  constructor(req, private store: Store<fromRoot.State>, options = {}) {
+  store: Store<fromRoot.State>;
+  constructor(options = {}) {
     super();
-    let api = new HtGroupsApi(req);
+    let api = clientApi.groups;
     this.api = api;
-
+    this.store = store;
     let entityState: EntityTypeState = {
       store,
     };

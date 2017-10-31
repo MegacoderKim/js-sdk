@@ -5,6 +5,7 @@ import {Store} from "../../store/store";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {HListFactory} from "../base/list-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import {UsersIndex, UsersIndexFactory} from "./users-index-interfaces";
 import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/interfaces";
 
@@ -33,6 +34,9 @@ export const UsersIndexClientFactory: UsersIndexFactory = (state: EntityListStat
     },
     setActive(isActive: boolean = true){
       store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
+    },
+    setQuery(query = {}) {
+      store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
     }
   };
 

@@ -1,7 +1,6 @@
-import {HtRequest} from "ht-js-client";
+import {HtRequest} from "ht-client";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/fromPromise';
-// import 'whatwg-fetch'
 
 export class HtFetchRequest extends HtRequest {
 

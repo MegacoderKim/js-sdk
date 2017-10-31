@@ -1,21 +1,26 @@
-import {HtRequest} from "../request";
+// import {HtRequest} from "../request";
 import { Observable } from "rxjs/Observable";
 import {IPageData} from "ht-models";
 import {AllData, ApiType} from "../interfaces";
 import * as _ from "underscore";
 import {Page} from "ht-models";
+// import {clientApi} from "../client-request";
+import {HtRequest} from "../request";
+import {clientApi} from "../client-api";
+// import {HtClientConfig} from "../config";
+// import {HTest, HtRequest} from "../request";
+// import {UsersListStorage} from "./storage";
 
 export class HtBaseApi {
-  // private token: string = 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793';
-  request;
+  // request: HtRequest;
 
-  constructor(private base: string, request: HtRequest, isAdmin: boolean = false) {
-    this.setRequest(request, isAdmin)
+  constructor(private base: string) {
+
   }
 
-  setRequest(request, isAdmin) {
-    if(isAdmin) request.setIsAdmin(isAdmin);
-    this.request = request;
+  get request() {
+    // return ""
+    return clientApi.request
   }
 
   get<T>(id: string, query = {}): Observable<T> {
@@ -52,8 +57,7 @@ export class HtBaseApi {
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$
       .expand((data: IPageData) => {
-        let req = this.request.getObservable(data['next']);
-        return data['next'] ? req : Observable.empty()
+        return data['next'] ? this.request.getObservable(data['next']) : Observable.empty()
       })
       .map((value: Page<T>) => {
         let resultsEntity = _.indexBy(value.results, 'id');

@@ -8,6 +8,7 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {HListFactory} from "../base/list-client";
 import {AddUsersMarkersDispatchers, IUsersMarkers} from "./users-markers-interfaces";
 import {AllItemsHelpers} from "../helpers/all-items";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export const usersIndexMarkersFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): IUsersMarkers => {
   let {store, api$} = state;
@@ -29,6 +30,9 @@ export const usersIndexMarkersFactory = (state: ListState, config: Partial<Entit
     },
     setLoading(data) {
       store.dispatch(new fromLoadingDispatcher.SetLoadingUserIndexAll(data))
+    },
+    setQuery(query) {
+      store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
     }
   };
 

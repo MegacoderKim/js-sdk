@@ -9,12 +9,13 @@ export type ListApi<T> = (query: object | null) => Observable<T>;
 export interface Dispatchers {
   setData: (data) => any,
   setLoading: (data) => any,
+  setQuery: (data: object) => any
 };
 
 export type GetData<T> = (queryArray: any[]) => Observable<T>
 
 export interface Selectors {
-  query$: Observable<object | null>
+  query$: Observable<object | null | undefined>
   data$: Observable<any>,
   loading$: Observable<boolean | string>,
 };
@@ -100,7 +101,7 @@ export interface ItemDispatchers {
 
 export interface EntityItemDispatchers extends Dispatchers {
   setId: (id: string | null) => any,
-  toggleId?: (userId: string) => any
+  toggleId?: (userId: string) => any,
 }
 
 export interface GenItemSelectors extends ReqSelectors{
@@ -110,6 +111,7 @@ export interface GenItemSelectors extends ReqSelectors{
 
 export interface EntityItemSelectors extends Selectors {
   id$: Observable<string | null | undefined>
+  query$: Observable<object | null | undefined>
 }
 
 export interface PublicEntityItemState {

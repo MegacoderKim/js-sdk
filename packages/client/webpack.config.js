@@ -7,50 +7,59 @@ var WebpackShellPlugin = require('webpack-shell-plugin');
 var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
 var TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
-var config = {
-    devtool: 'source-ht-map, inline-source-ht-map',
-    resolve: {
-        modules: ['node_modules'],
-        extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
-        alias: {}
-    },
-    entry: mainPath,
+var nodeConfig = require('./webpack.config.bundle.js');
+
+var browserSpecConfig = {
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-client.js',
+        filename: 'ht-client_browser.js',
         library: "htClient",
         libraryTarget: "umd"
     },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: [
-                    { loader: 'ts-loader' }
-                ]
-            }
-        ]
-    },
     externals: [
-        'ht-js-utils',
-        'ht-js-data',
-        'moment-mini',
-        'underscore',
+        {
+            'moment-mini': {
+                commonjs: 'moment',
+                commonjs2: 'moment',
+                amd: 'moment',
+                root: 'moment'
+            },
+            'ht-utility': {
+                commonjs: 'htUtility',
+                commonjs2: 'htUtility',
+                amd: 'htUtility',
+                root: 'htUtility'
+            },
+            'ht-data': {
+                commonjs: 'htData',
+                commonjs2: 'htData',
+                amd: 'htData',
+                root: 'htData'
+            },
+            'ht-maps': {
+                commonjs: 'htMaps',
+                commonjs2: 'htMaps',
+                amd: 'htMaps',
+                root: 'htMaps'
+            },
+            'underscore': {
+                commonjs: 'underscore',
+                commonjs2: 'underscore',
+                amd: 'underscore',
+                root: '_'
+            }
+        },
         webpackRxjsExternals(),
-        /^rxjs\/.+$/
     ],
     plugins: [
         new Webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
         }),
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-client']}),
-        new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-client']}),
-        // new Webpack.IgnorePlugin(/moment-mini$/),
-        // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 
-module.exports = config;
+var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
+
+module.exports = [browserConfig, nodeConfig];

@@ -1,7 +1,7 @@
 import {IUserData, IAction, IEvent, ISegment} from "ht-models";
 import {IActionMark, IActivitySegment, IEventMark, IPlacelineSegment, IProcSegment} from "../interfaces";
 import {htEvent} from "./event";
-import {NameCase, GetMinute} from "ht-js-utils";
+import {NameCase, GetMinute} from "ht-utility";
 import * as _ from "underscore";
 import {CommonFunctions} from "../common";
 

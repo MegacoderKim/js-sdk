@@ -48,4 +48,5 @@ test.js
 test.html
 node_modules
 /packages/**/node_modules/
+/examples/node_modules/
 /packages/**/dist/

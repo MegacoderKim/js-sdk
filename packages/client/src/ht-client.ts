@@ -1,4 +1,5 @@
 export * from "./request";
+export * from "./client-api";
 export * from "./api/actions";
 export * from "./api/users";
 export * from "./api/base";
@@ -17,6 +18,8 @@ export * from "./entities/users/users-client"
 export * from "./entities/users/users-index-client"
 export * from "./entities/users/users-placeline-client"
 export * from "./entities/users/users-analytics-client"
+
+export * from "./filters/users-filter"
 
 export * from "./client"
 export * from "./base/data-observer";
@@ -60,3 +63,4 @@ import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/zip';
+import 'rxjs/add/observable/fromPromise';

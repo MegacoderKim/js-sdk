@@ -54,7 +54,7 @@ export interface EntityListApiQueryConfig {
 }
 
 export interface ApiQueryConfig{
-  query$: Observable<object | null>
+  query$: Observable<object | null | undefined>
 };
 
 export interface EntityApiQueryConfig extends ApiQueryConfig, Partial<EntityListApiQueryConfig>, Partial<EntityItemApiQueryConfig>, Partial<DateRangeApiQueryConfig> {

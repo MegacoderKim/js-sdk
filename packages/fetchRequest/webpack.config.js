@@ -1,53 +1,51 @@
 var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var webpackRxjsExternals = require('webpack-rxjs-externals');
 
 var path = require('path');
 
 var mainPath = path.resolve(__dirname, 'src', 'ht-fetch-request.ts');
 
-var config = {
-    devtool: 'source-ht-map, inline-source-ht-map',
-    resolve: {
-        modules: ['node_modules'],
-        extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
-        alias: {}
-    },
-    entry: mainPath,
+var nodeConfig = require('./webpack.config.bundle');
+
+var browserSpecConfig = {
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'ht-fetch-request.js',
+        filename: 'ht-fetch-request_browser.js',
         library: "htFetchRequest",
         libraryTarget: "umd"
     },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: [
-                    { loader: 'ts-loader' }
-                ]
-            }
-        ]
-    },
     externals: [
-        'ht-js-client',
-        'ht-js-utils',
-        'moment-mini',
-        'underscore',
-        'whatwg-fetch',
-        /^rxjs\/.+$/
+        {
+            'ht-client': {
+                commonjs: 'htClient',
+                commonjs2: 'htClient',
+                amd: 'htClient',
+                root: 'htClient'
+            }
+        },
+        {
+            'ht-utility': {
+                commonjs: 'htUtility',
+                commonjs2: 'htUtility',
+                amd: 'htUtility',
+                root: 'htUtility'
+            }
+        },
+        webpackRxjsExternals(),
     ],
     plugins: [
         new Webpack.LoaderOptionsPlugin({
             minimize: true,
             debug: false
         }),
-        new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 
-module.exports = config;
+var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
+
+module.exports = [nodeConfig, browserConfig];

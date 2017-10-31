@@ -38,3 +38,30 @@ export class StoreProvider {
   }
 }
 
+export const storeFactory = (reducers: | ActionReducerMap<any, any>, config: StoreConfig<any, any> = {}) => {
+  let INITIAL_STATE = config.initialState;
+  let metaReducers = config.metaReducers;
+  let _REDUCER_FACTORY = config.reducerFactory ? config.reducerFactory : combineReducers;
+  let REDUCER_FACTORY = createReducerFactory(_REDUCER_FACTORY, metaReducers);
+  let dispatcher = new Dispatcher(); //actionSubject
+  let EFFECTS_PROVIDERS = new Effects(dispatcher);
+  let reducerManager = new ReducerManager(dispatcher, INITIAL_STATE, reducers, REDUCER_FACTORY);
+  let SCANNED_ACTIONS_SUBJECT_PROVIDERS = new ScannedActionsSubject();
+  let STATE_PROVIDERS = new State(dispatcher, reducerManager, SCANNED_ACTIONS_SUBJECT_PROVIDERS, INITIAL_STATE);
+  let STORE_PROVIDERS = new Store(STATE_PROVIDERS, dispatcher, reducerManager)
+
+  return {
+    INITIAL_STATE,
+    metaReducers,
+    _REDUCER_FACTORY,
+    dispatcher, //actionSubject
+    SCANNED_ACTIONS_SUBJECT_PROVIDERS,
+    REDUCER_FACTORY,
+    EFFECTS_PROVIDERS,
+    reducerManager,
+    STATE_PROVIDERS,
+    STORE_PROVIDERS
+  };
+
+}
+

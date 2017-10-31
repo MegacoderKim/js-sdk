@@ -14,20 +14,20 @@ export function UpdateSubAccountOfAccount(account: IAccount, updatedSubAccount: 
 
 // export function UpdateAccountOfAccountUser(accountUser: IAccountUser, account: IAccount, config): IAccountUser {
 //   let memberships = _.map(accountUser.memberships, (member: IMembership) => {
-//     let isMember = IsCurrentMember(member, config.token, config.tokenType);
+//     let isMember = IsCurrentMember(member, config.currentToken, config.tokenType);
 //     return isMember ? {...member, account: account} : member;
 //   });
 //   let defaultAccount = account.id == accountUser.default_account.id ? account : accountUser.default_account;
 //   return {...accountUser, memberships: memberships, default_account: defaultAccount};
 // }
 
-// export function GetAccountFromAccountUser (accountUser: IAccountUser, token: string, tokenType: 'test' | 'production') {
+// export function GetAccountFromAccountUser (accountUser: IAccountUser, currentToken: string, tokenType: 'test' | 'production') {
 //   if(!accountUser) return null;
-//   if(isCurrentAccount(accountUser.default_account, token, tokenType)) {
+//   if(isCurrentAccount(accountUser.default_account, currentToken, tokenType)) {
 //     return accountUser.default_account;
 //   }
 //   let membership = _.find(accountUser.memberships, (member: IMembership) => {
-//     return isCurrentAccount(member.account, token, tokenType);
+//     return isCurrentAccount(member.account, currentToken, tokenType);
 //   });
 //   return membership ? membership.account : null
 // }

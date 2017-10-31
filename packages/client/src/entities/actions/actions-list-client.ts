@@ -1,8 +1,7 @@
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import {Partial, Page, IAction} from "ht-models";
-import { GetUrlParam } from "ht-js-utils";
-// import {HtFetchClient} from "ht-js-fetch-client";
+import { GetUrlParam } from "ht-utility";
 import * as _ from  "underscore";
 import {defaultListConfig, IIndexQuery, IListConfig} from "../../interfaces";
 import {HtActionsApi} from "../../api/actions";
@@ -20,8 +19,8 @@ export class HtActionsListClient {
   dateRangeQueryBeh$: BehaviorSubject<object> = new BehaviorSubject({});
   query: Observable<object>;
 
-  constructor(request, public defaultConfigQuery: Partial<IIndexQuery> = {}, private config: IListConfig = defaultListConfig) {
-    this.api =  new HtActionsApi(request);
+  constructor(public defaultConfigQuery: Partial<IIndexQuery> = {}, private config: IListConfig = defaultListConfig) {
+    this.api =  new HtActionsApi();
     this.setDefaultQuery(defaultConfigQuery);
     this.query = Observable.combineLatest(
       this.listQuery$,

@@ -9,6 +9,7 @@ export const SET_PLACELINE_ID = '[USERS] set placeline id';
 export const SET_USER_ID = '[USERS] set user id';
 export const TOGGLE_USER_ID = '[USERS] toggle user id';
 export const TOGGLE_PLACELINE_ID = '[USERS] toggle placeline id';
+export const SET_PLACELINE_QUERY = '[USERS] Set placeline query';
 
 export class SetDateRange implements Action {
   readonly type = SET_DATE_RANGE;
@@ -52,6 +53,11 @@ export class TogglePlacelineId implements Action {
   constructor(public payload: string) {}
 }
 
+export class SetPlacelineQuery implements Action {
+  readonly type = SET_PLACELINE_QUERY;
+  constructor(public payload: object = {}) {}
+}
+
 export type All
   = SetDateRange
   | SetUserQuery
@@ -61,5 +67,6 @@ export type All
   | SetUserId
   | ToggleUserId
   | TogglePlacelineId
+  | SetPlacelineQuery
 
 

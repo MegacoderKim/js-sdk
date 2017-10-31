@@ -1,6 +1,5 @@
 import {UsersIndexClientFactory} from "./users-index-client";
 import {UsersPlacelineClientFactory} from "./users-placeline-client";
-import {HtUsersApi} from "../../api/users";
 import {AllData, ApiType, IDateRange, IUsersClientOptions, QueryLabel} from "../../interfaces";
 import {ISegment, IUser, IUserAnalytics, IUserData, IUserListSummary, Partial} from "ht-models";
 import {UsersAnalyticsClientFactory} from "./users-analytics-client";
@@ -8,13 +7,13 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
 import {usersAnalyticsMarkersFactory} from "./users-analytics-markers";
-import {htUser} from "ht-js-data";
+import {htUser} from "ht-data";
 import {usersIndexMarkersFactory} from "./users-index-markers";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
-import {DateString, IsRangeADay, IsRangeToday} from "ht-js-utils";
-import {HtMapClass} from "ht-js-map";
+import {DateString, IsRangeADay, IsRangeToday} from "ht-utility";
+import {HtMapClass} from "ht-maps";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
@@ -32,6 +31,10 @@ import {UsersAnalytics} from "./users-analytics-interfaces";
 import {IUsersMarkers} from "./users-markers-interfaces";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegment from "../../reducers/segments-reducer";
+import {HtClientConfig} from "../../config";
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+// import {htClient} from "../../client";
 
 /**
  * Class containing all user related client entity like list of user, user placeline etc
@@ -69,10 +72,12 @@ export class HtUsersClient extends EntityClient {
   summary: UsersSummary;
   markers;
   _statusQueryArray: QueryLabel[];
-  constructor(req, private store: Store<fromRoot.State>, public options: IUsersClientOptions = {}) {
+  store;
+  constructor(public options: IUsersClientOptions = {}) {
     super();
-    let api = new HtUsersApi(req);
-
+    let api = clientApi.users;
+    this.api = api;
+    this.store = store;
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
     this.dateRangeObserver.updateData(this.initialDateRange);
@@ -95,7 +100,7 @@ export class HtUsersClient extends EntityClient {
     let analyticsState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => api.analytics(query),
+      api$: (query) => api.analytics(query)
     };
 
     let placelineState: ItemState = {
@@ -104,7 +109,7 @@ export class HtUsersClient extends EntityClient {
     };
 
 
-    this.api = api;
+    // this.api = api;
     // const dateRangeSource$ = this.dateRangeObserver.data$()
     //   .map((range: IDateRange) => {
     //   return this.getQueryFromDateRange(range)
@@ -123,7 +128,7 @@ export class HtUsersClient extends EntityClient {
     let analyticsMarkersState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => api.all$(query, ApiType.analytics),
+      api$: (query) => api.all$(query, ApiType.analytics)
     };
 
     let indexMarkersState: ListState = {
@@ -139,7 +144,7 @@ export class HtUsersClient extends EntityClient {
     let summaryState: ListState = {
       ...entityState,
       ...listState,
-      api$: (query) => api.summary(query),
+      api$: (query) => api.summary(query)
     };
 
     this.summary = HtUsersSummaryFactory(summaryState, {});

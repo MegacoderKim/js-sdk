@@ -8,6 +8,7 @@ export interface State {
   userQuery?: object | null,
   dateRange?: IDateRange
   placelineId?: string | null,
+  placelineQuery?: object | null,
   userId?: string | null
 }
 
@@ -41,6 +42,9 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
       const placelineId = state.placelineId == action.payload ? null : action.payload;
       return {...state, placelineId}
     }
+    case QueryDispatch.SET_PLACELINE_QUERY: {
+      return {...state, placelineQuery: action.payload}
+    }
     default: {
       return state
     }
@@ -49,4 +53,5 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
 
 export const getPlacelineId = (state: State) => state.placelineId;
 export const getUsersQuery = (state: State) => state.userQuery;
+export const getPlacelineQuery = (state: State) => state.placelineQuery;
 export const getUsersId = (state: State) => state.userId;

@@ -8,6 +8,7 @@ import {AddUsersMarkersDispatchers, IUsersMarkers} from "./users-markers-interfa
 import {HListFactory} from "../base/list-client";
 import {AllItemsHelpers} from "../helpers/all-items";
 import {Observable} from "rxjs/Observable";
+import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 
 export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): IUsersMarkers => {
   let {store, api$} = state;
@@ -31,6 +32,9 @@ export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<E
     },
     setLoading(data) {
       store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalyticsAll(data))
+    },
+    setQuery(query = {}) {
+      store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
     }
   };
 

@@ -1,6 +1,6 @@
 {
-  "name": "ht-js-data",
-  "version": "0.0.22",
+  "name": "ht-data",
+  "version": "0.0.1-beta",
   "description": "",
   "main": "dist/ht-data.js",
   "module": "dist/ht-data.js",
@@ -8,13 +8,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
-    "wbuild": "webpack -w --config webpack.config.js",
+    "wbuild": "webpack -w --config webpack.config.bundle.js",
     "prepack": "npm run build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ht-js-utils": "file:../utils",
+    "ht-utility": "file:../utils",
     "ht-models": "file:../models",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
@@ -24,7 +24,6 @@
     "ht-models": "0.0.x",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
-    "ht-js-utils": ">=0.0.9",
-    "rxjs": "^5.4.2"
+    "ht-utility": "^0.0.1-beta"
   }
 }

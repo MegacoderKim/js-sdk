@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>HyperTrack map</title>
+    <!--<script src="../node_modules/whatwg-fetch/fetch.js"></script>-->
+    <script src="../node_modules/rxjs/bundles/Rx.min.js"></script>
+    <script src="../node_modules/moment-mini/moment.min.js"></script>
+    <script src="../node_modules/underscore/underscore-min.js"></script>
+    <script src="../node_modules/ht-utility/dist/ht-utility_browser.js"></script>
+    <script src="../node_modules/ht-data/dist/ht-data_browser.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtboBD4lM6hMR02qtUjJHua9gFs6PFbQE&libraries=geometry"></script>
+    <script src="../js-libs/richmarkers.js"></script>
+    <script src="../node_modules/ht-maps/dist/ht-maps_browser.js"></script>
+    <!--<script src="../../packages/maps/dist/ht-maps_browser.js"></script>-->
+    <script src="../node_modules/ht-client/dist/ht-client_browser.js"></script>
+    <link rel="stylesheet" href="../node_modules/ht-maps/dist/styles.css">
+    <style>
+        #map {
+            height: 400px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.css">
+
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    var mapClass = new htMaps.HtMapClass('google');
+    mapClass.initMap(document.getElementById('map'));
+
+    var data = [
+        {
+            name: 'Test 1',
+            id: '1',
+            position: [37.7533, -122.43913],
+        },
+        {
+            name: 'Test 2',
+            id: '2',
+            position: [37.7364, -122.43042],
+        },
+        {
+            name: 'Test 3',
+            id: '3',
+            position: [37.7564, -122.43042],
+        }
+    ];
+
+    var updatedData = [
+        {
+            name: 'Test 1',
+            id: '1',
+            position: [37.7503, -122.42313],
+        },
+        {
+            name: 'Test 2',
+            id: '2',
+            position: [37.7064, -122.43942],
+        },
+        {
+            name: 'Test 4',
+            id: '4',
+            position: [37.7104, -122.40442],
+        }
+    ];
+
+    var dataFactoryConfig = {
+        getPosition: function(data) {
+            var lat = data.position[0];
+            var lng = data.position[1];
+            return {lat: lat, lng: lng}
+        },
+        getDivContent: function(data) {
+            var string = '<div style="background: #000">' +
+                '<strong style="color: #fff">' +
+                data.name +
+                '</strong>' +
+                '</div>';
+
+            return string
+        }
+    };
+
+    var stylesObj = {
+        google: {
+            default: {
+                flat: true,
+                anchor: RichMarkerPosition.GEOMETRIC_CENTER,
+                zIndex: 1
+            }
+        },
+        leaflet: {
+            default: {
+
+            }
+        }
+    };
+
+    var mapItems = htMaps.mapItemsFactory({
+        stylesObj: stylesObj,
+        dataFactoryConfig: dataFactoryConfig,
+        isDiv: true
+    });
+
+    mapClass.mapItemsSet.push(mapItems);
+
+    mapItems.trace(data);
+    mapClass.resetBounds();
+
+    setTimeout(function () {
+        mapItems.trace(updatedData);
+        mapClass.resetBounds();
+    }, 5000);
+
+
+</script>
+
+</body>
