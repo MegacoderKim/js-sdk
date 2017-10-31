@@ -1,7 +1,7 @@
-import {mapItemsFactory, MarkerFactoryConfig} from "./map-items-factory";
+import {mapItemsFactory, MapItemsFactoryConfig} from "./map-items-factory";
 import {MapEntities, Entity} from "../entities/interfaces";
 
-export const mapItemFactory = (config: MarkerFactoryConfig): MapEntity<any> => {
+export const mapItemFactory = (config: MapItemsFactoryConfig): MapEntity<any> => {
   let markers = mapItemsFactory(config);
   return {
     ...markers,

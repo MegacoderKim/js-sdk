@@ -17,7 +17,7 @@ export const markerRenderConfigFactory = (config: EventConfig = {}): RenderConfi
     },
     update(entity) {
       let position = entity.getPosition();
-      mapUtils.updatePosition(entity.item, position);
+      if(position) mapUtils.updatePosition(entity.item, position);
     },
     removeItem(item) {
       mapUtils.clearItem(item);

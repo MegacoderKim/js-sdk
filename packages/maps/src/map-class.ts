@@ -32,6 +32,7 @@ export class HtMapClass {
     styles: LightColorMapStyle
   };
   leafletMapOptions = {center: [3.505, 0], zoom: 2};
+  mapItemsSet = [];
   // clusters = [];
   // map$ = new ReplaySubject();
 
@@ -39,6 +40,7 @@ export class HtMapClass {
     MapService.setMapType(mapType);
     this.usersCluster = usersClustersFactory();
     this.segmentTrace = new HtSegmentsTrace();
+    this.mapItemsSet.push(this.segmentTrace, this.usersCluster);
   }
 
   get map$(): ReplaySubject<HtMap> {
@@ -86,7 +88,7 @@ export class HtMapClass {
 
   resetBounds(bounds?: HtBounds, options?) {
     setTimeout(() => {
-      let items = [this.segmentTrace, this.usersCluster];
+      let items = this.mapItemsSet;
       bounds = this.getBoundsItem(items);
       if(bounds && MapService.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
     }, 10)

@@ -2,7 +2,7 @@
 // import {MapService} from "../map-service";
 // import {MapEntities, RenderConfig} from "../entities/interfaces";
 //
-// export const clustersFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
+// export const clustersFactory = (config: MapItemsFactoryConfig): MapEntities<any> => {
 //   config = {
 //     ...config,
 //     name: config.name || 'cluster',

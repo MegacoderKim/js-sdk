@@ -21,7 +21,7 @@ export const entityTraceFactory = (mapItems, dataFactoryConfig) => {
 
   return {
     ...mapItems,
-    trace(data, map?) {
+    trace(data: any[] | null, map?) {
       mapItems.map = MapService.map;
       if(!mapItems.map) {
         console.warn("Map is not initialized")

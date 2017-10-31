@@ -9,7 +9,7 @@ import {circleRenderConfigFactory} from "../renderers/circle-render";
 import {divMarkerRender} from "../renderers/div-marker-render";
 import {DataFactoryConfig} from "../helpers/data-factory";
 
-export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
+export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any> => {
   let mapUtils = MapService.mapUtils;
   let state = {
     map: null,
@@ -45,7 +45,7 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
 
 };
 
-export interface MarkerFactoryConfig {
+export interface MapItemsFactoryConfig {
   dataFactoryConfig: DataFactoryConfig<any>,
   stylesObj?: Partial<StyleObj>,
   eventConfig?: EventConfig,
