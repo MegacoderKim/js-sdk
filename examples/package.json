@@ -10,9 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "ht-client": "file:../packages/client",
+    "ht-client": "0.0.3-beta",
     "ht-data": "file:../packages/data",
-    "ht-maps": "file:../packages/maps",
+    "ht-maps": "0.0.2-beta",
     "ht-utility": "file:../packages/utils",
     "leaflet": "^1.2.0",
     "moment-mini": "^2.18.1",
