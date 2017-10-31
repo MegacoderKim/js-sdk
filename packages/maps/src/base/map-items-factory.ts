@@ -7,6 +7,7 @@ import {clusterRenderConfigFactory} from "../renderers/cluster-render";
 import {polylineRenderConfigFactory} from "../renderers/polyline-render";
 import {circleRenderConfigFactory} from "../renderers/circle-render";
 import {divMarkerRender} from "../renderers/div-marker-render";
+import {DataFactoryConfig} from "../helpers/data-factory";
 
 export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> => {
   let mapUtils = MapService.mapUtils;
@@ -33,7 +34,7 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
   };
 
   if(config.isCluster) MapService.addCluster(mapItems);
-  let entityTrace = entityTraceFactory(mapItems, config.data);
+  let entityTrace = entityTraceFactory(mapItems, config.dataFactoryConfig);
 
 
   return entityTrace
@@ -41,7 +42,7 @@ export const mapItemsFactory = (config: MarkerFactoryConfig): MapEntities<any> =
 };
 
 export interface MarkerFactoryConfig {
-  data: any,
+  dataFactoryConfig: DataFactoryConfig<any>,
   stylesObj?: Partial<StyleObj>,
   isCluster?: boolean,
   isPolyline?: boolean,

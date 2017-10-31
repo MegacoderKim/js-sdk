@@ -12,7 +12,6 @@ export * from "./renderers/circle-render";
 export * from "./renderers/cluster-render";
 export * from "./renderers/marker-render";
 export * from "./renderers/polyline-render";
-export * from "./base/clusters-factory";
 export * from "./base/map-item-factory";
 export * from "./base/map-items-factory";
 

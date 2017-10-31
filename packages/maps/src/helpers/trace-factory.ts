@@ -2,11 +2,12 @@ import {Entities} from "../entities/interfaces";
 import * as _ from "underscore";
 import {MapUtils} from "../interfaces";
 import {MapService} from "../map-service";
+import {dataFactory} from "./data-factory";
 
-export const entityTraceFactory = (mapItems, dataFactory) => {
+export const entityTraceFactory = (mapItems, dataFactoryConfig) => {
   let mapUtils = MapService.mapUtils;
-
-  function bustOlditem() {
+  let dataObj = dataFactory(dataFactoryConfig);
+  function bustOldItem() {
     let entities: Entities<any> = mapItems.entities;
     _.each(entities, (entity) => {
       if(entity.isOld) {
@@ -40,7 +41,7 @@ export const entityTraceFactory = (mapItems, dataFactory) => {
           } else {
             item = entity.item;
           }
-          mapItems.entities[id] = {...dataFactory(datum), item, isOld: false};
+          mapItems.entities[id] = {...dataObj(datum), item, isOld: false};
           mapItems.update(mapItems.entities[id]);
           mapItems.setMap && mapUtils.setMap(item, mapItems.map);
         });
@@ -49,7 +50,7 @@ export const entityTraceFactory = (mapItems, dataFactory) => {
         // console.log("remove all", this);
         mapItems.removeAll(mapItems.entities);
       }
-      bustOlditem();
+      bustOldItem();
 
     },
     extendBounds(bounds) {

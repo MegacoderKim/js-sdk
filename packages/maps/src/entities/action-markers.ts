@@ -1,4 +1,4 @@
-import {dataFactory} from "../helpers/data-factory";
+import {dataFactory, DataFactoryConfig, MarkerDataFactoryConfig} from "../helpers/data-factory";
 import {MapEntities} from "./interfaces";
 import {Color} from "ht-utility";
 import {htAction} from "ht-data";
@@ -33,14 +33,22 @@ export const actionsFactory = (): MapEntities<any> => {
     }
   };
 
-  let stop = dataFactory({
+  let dataFactoryConfig: DataFactoryConfig<any> = {
     getPosition(data) {
       let posObj = htAction(data).getPositionsObject();
       return posObj ? posObj.position : null
 
     }
-  });
+  };
+
+  // let stop = dataFactory({
+  //   getPosition(data) {
+  //     let posObj = htAction(data).getPositionsObject();
+  //     return posObj ? posObj.position : null
+  //
+  //   }
+  // });
   let name = " actions";
-  let markers = mapItemsFactory({data: stop, stylesObj, name});
+  let markers = mapItemsFactory({dataFactoryConfig, stylesObj, name});
   return markers
 };
