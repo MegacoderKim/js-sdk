@@ -1,10 +1,7 @@
-import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {HtRequest} from "ht-client";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Headers} from "@angular/http";
 
-@Injectable()
 export class HtRequestService extends HtRequest {
   // http;
 

@@ -14,7 +14,7 @@ export * from "./ht-request.service";
 export * from "./ht-map.service";
 
 export var TOKEN = new InjectionToken('app.token');
-export var CLIENT_API = new InjectionToken<IClientApi>('client.api');
+// export var CLIENT_API = new InjectionToken<IClientApi>('client.api');
 
 export function clientServiceFactory(request, token) {
   clientApi.setRequest(request);
@@ -35,7 +35,7 @@ export function userClientServiceFactory(clientService) {
 }
 
 export function clientConfigFactory() {
-  return htClientConfig;
+  return {};
 }
 
 function actionsClientServiceFactory(clientService) {
@@ -50,7 +50,7 @@ export function forModuleRoot (config): ModuleWithProviders {
       { provide: MAP_TYPE, useValue: config.mapType },
       { provide: HtConfigService, useFactory: clientConfigFactory },
       { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
-      { provide: CLIENT_API, useValue: clientApi },
+      // { provide: CLIENT_API, useValue: clientApi },
       { provide: TOKEN, useValue: config.token },
       { provide: HtRequestService,
         useFactory: requestServiceFactory,
