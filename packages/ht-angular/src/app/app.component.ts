@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import {QueryLabel} from "ht-client";
+import {QueryLabel, clientApi} from "ht-client";
 import {Color} from "ht-utility";
 import {HtUsersService} from "./ht/ht-users.service";
+import {HtConfigService} from "./ht/ht-config.service";
 
 @Component({
   selector: 'ht-root',
@@ -10,7 +11,12 @@ import {HtUsersService} from "./ht/ht-users.service";
 })
 export class AppComponent {
 
-  constructor(private htUsersClientService: HtUsersService) {
+  constructor(
+    private htUsersClientService: HtUsersService,
+    // private config: ClientApiService
+  ) {
+    console.log(clientApi);
+    // console.log(this.config.actions, "log");
     const queryMap: QueryLabel[] = [
       {
         label: 'Logged in',

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IUserData} from "ht-models";
-import { ApiType } from "ht-client"
+import {ApiType, clientApi} from "ht-client"
 import {HtClientService} from "../ht/ht-client.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {HtRequestService} from "../ht/ht-request.service";
@@ -18,7 +18,6 @@ export class UsersMapContainerComponent implements OnInit {
   @Input() showFilter: boolean = true;
   @Input() showSidebar: boolean = true;
   constructor(
-    private requestService: HtRequestService,
     private userClientService: HtUsersService
   ) {
 
@@ -35,7 +34,7 @@ export class UsersMapContainerComponent implements OnInit {
   ngOnInit() {
     this.userClientService.setActive();
     if (this.key) {
-      this.requestService.setToken(this.key)
+      clientApi.setToken(this.key)
     }
   }
 

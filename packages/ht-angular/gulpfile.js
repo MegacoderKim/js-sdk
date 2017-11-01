@@ -286,7 +286,7 @@ startKarmaServer(true, false, cb);
 
 // Prepare 'dist' folder for publication to NPM
 gulp.task('package', (cb) => {
-  let pkgJson = JSON.parse(fs.readFileSync('./src/package.json', 'utf8'));
+  let pkgJson = JSON.parse(fs.readFileSync('./src/_package.json', 'utf8'));
 let targetPkgJson = {};
 let fieldsToCopy = ['version', 'description', 'keywords', 'author', 'repository', 'license', 'bugs', 'homepage', 'dependencies', 'peerDependencies'];
 

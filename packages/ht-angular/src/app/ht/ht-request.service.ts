@@ -13,8 +13,8 @@ export class HtRequestService extends HtRequest {
   }
 
   getObservable<T>(url, options: object = {}) {
-    let obj = super.headerObj();
-    let headers = new HttpHeaders(obj);
+    const obj = super.headerObj();
+    const headers = new HttpHeaders(obj);
     return this.http.get<T>(url, {headers});
   }
 

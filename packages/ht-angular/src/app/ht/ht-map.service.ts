@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
-import {HtMapClass} from "ht-maps";
+import {Inject, Injectable, InjectionToken} from '@angular/core';
+import {HtMapClass, HtMapType} from "ht-maps";
 
-@Injectable()
 export class HtMapService extends HtMapClass {
-
+  // constructor(@Inject(MAP_TYPE) mapType: HtMapType) {
+  //   super(mapType)
+  // }
   // constructor() { }
 
 }
+
+export var MAP_TYPE = new InjectionToken('app.mapType');
+

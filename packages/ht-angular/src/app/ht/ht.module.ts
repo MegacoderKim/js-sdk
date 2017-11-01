@@ -1,57 +1,43 @@
 import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
-import {HtMapService} from "./ht-map.service";
-import {HtClientConfig, HtRequest, HtClient} from "ht-client";
+import {HtMapService, MAP_TYPE} from "./ht-map.service";
+import {HtRequest, HtClient, clientApi, IClientApi, htClientConfig} from "ht-client";
 import {HtClientService} from "./ht-client.service";
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
 import {HtRequestService} from "./ht-request.service";
 import {HtUsersService} from "./ht-users.service";
+import {HtConfigService} from "./ht-config.service";
 
 export * from "./ht-client.service";
 export * from "./ht-request.service";
 export * from "./ht-map.service";
 
-var TOKEN = new InjectionToken('app.token');
-var MAP_TYPE = new InjectionToken('app.mapType');
-/**
- * @param {?} request
- * @return {?}
- */
-export function clientServiceFactory(request) {
-  return new HtClientService(request);
+export var TOKEN = new InjectionToken('app.token');
+export var CLIENT_API = new InjectionToken<IClientApi>('client.api');
+
+export function clientServiceFactory(request, token) {
+  clientApi.setRequest(request);
+  return new HtClientService(token);
 }
 
-/**
- * @param {?} http
- * @param {?} token
- * @return {?}
- */
-export function requestServiceFactory(http, token) {
-  HtClientConfig.setToken(token);
-  var req = new HtRequestService(http);
-  // req.http = http;
-  return req;
+export function requestServiceFactory(http) {
+  return new HtRequestService(http);
 }
-/**
- * @param {?=} mapType
- * @return {?}
- */
+
 export function mapServiceFactory(mapType) {
   if (mapType === void 0) { mapType = 'google'; }
   return new HtMapService(mapType);
 }
-/**
- * @param {?} clientService
- * @return {?}
- */
+
 export function userClientServiceFactory(clientService) {
   return clientService.users;
 }
-/**
- * @param {?} clientService
- * @return {?}
- */
+
+export function clientConfigFactory() {
+  return htClientConfig;
+}
+
 function actionsClientServiceFactory(clientService) {
   return clientService.actions;
 }
@@ -61,16 +47,18 @@ export function forModuleRoot (config): ModuleWithProviders {
     ngModule: HtModule,
     providers: [
       HttpClient,
-      { provide: 'MAP_TYPE', useValue: config.mapType },
-      { provide: HtMapService, useFactory: mapServiceFactory, deps: ['MAP_TYPE'] },
-      { provide: 'TOKEN', useValue: config.token },
+      { provide: MAP_TYPE, useValue: config.mapType },
+      { provide: HtConfigService, useFactory: clientConfigFactory },
+      { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
+      { provide: CLIENT_API, useValue: clientApi },
+      { provide: TOKEN, useValue: config.token },
       { provide: HtRequestService,
         useFactory: requestServiceFactory,
-        deps: [HttpClient, 'TOKEN']
+        deps: [HttpClient]
       },
       { provide: HtClientService,
         useFactory: clientServiceFactory,
-        deps: [HtRequestService]
+        deps: [HtRequestService, TOKEN]
       },
       {
         provide: HtUsersService,
