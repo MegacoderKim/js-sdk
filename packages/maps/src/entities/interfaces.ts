@@ -4,12 +4,12 @@ import {IUser, Partial, IUserAnalytics} from "ht-models";
 import {HtBounds, HtMapUtils} from "../map-utils";
 
 export interface EventConfig {
-  onClick?(data, item): any,
-  onMouseEnter?(data, item): any,
-  onMouseLeave?(data, item): any
+  onClick?(mapItems: MapEntities<any>, entity: Entity<any>): any,
+  onMouseEnter?(mapItems: MapEntities<any>, entity: Entity<any>): any,
+  onMouseLeave?(mapItems: MapEntities<any>, entity: Entity<any>): any
 }
 
-export interface RenderConfig extends EventConfig{
+export interface RenderConfig extends EventConfig, AllDataConfig<any>{
   setMap: boolean,
   getItem: (data) => any,
   update:(data) => any,
@@ -34,21 +34,39 @@ export interface MapEntities<T> extends RenderConfig {
   stylesObj: object,
   stylesType: string;
   cluster?: any,
+  popup?: any,
   // config: RenderConfig,
   // dataClass:  DataObj<T>,
   trace: (data: any[]) => void,
   extendBounds: (bounds) => any
 }
 
-export interface DataObj<T> {
+export interface Entity<T> {
+  item: any,
+  isOld: boolean,
   data: T
-  getPosition(): HtPosition | null,
-  getInfoContent(): string
 }
 
-export interface Entity<T> extends DataObj<T>{
-  item: any,
-  isOld: boolean
+export interface MarkerDataConfig<T> {
+  getPosition(data: T): HtPosition,
+  getInfoContent?(data: T): string,
 }
+
+export interface DivMarkerDataConfig<T> extends MarkerDataConfig<T>{
+  // getPosition?(data: T): HtPosition,
+  // getInfoContent?(data: T): string,
+  getDivContent(data: T): string
+}
+
+export interface PolylineDataConfig<T> {
+  getEncodedPath(data: T): string
+}
+
+export interface AllDataConfig<T> extends Partial<PolylineDataConfig<T>>, Partial<DivMarkerDataConfig<T>>, Partial<MarkerDataConfig<T>> {
+
+}
+export type DataConfig<T> = MarkerDataConfig<T>
+  | DivMarkerDataConfig<any>
+  | PolylineDataConfig<any>
 
 

@@ -1,6 +1,7 @@
 import {HtPosition} from "ht-data";
+import {AllDataConfig} from "../entities/interfaces";
 
-export const dataFactory = <T>(config: AllDataFactoryConfig<T>) => {
+export const dataFactory = <T>(config: AllDataConfig<T>) => {
   return (data) => {
     return {
       data,
@@ -28,27 +29,27 @@ export const dataFactory = <T>(config: AllDataFactoryConfig<T>) => {
   }
 };
 
-export interface MarkerDataFactoryConfig<T> {
-  getPosition(data: T): HtPosition,
-  getInfoContent?(data: T): string,
-}
-
-export interface DivMarkerDataFactoryConfig<T> extends MarkerDataFactoryConfig<T>{
-  // getPosition?(data: T): HtPosition,
-  // getInfoContent?(data: T): string,
-  getDivContent(data: T): string
-}
-
-export interface PolylineDataFactory<T> {
-  getEncodedPath(data: T): string
-}
-
-export interface AllDataFactoryConfig<T> extends Partial<PolylineDataFactory<T>>, Partial<DivMarkerDataFactoryConfig<T>>, Partial<MarkerDataFactoryConfig<T>> {
-
-}
-export type DataFactoryConfig<T> = MarkerDataFactoryConfig<T>
-  | DivMarkerDataFactoryConfig<any>
-  | PolylineDataFactory<any>
+// export interface MarkerDataFactoryConfig<T> {
+//   getPosition(data: T): HtPosition,
+//   getInfoContent?(data: T): string,
+// }
+//
+// export interface DivMarkerDataFactoryConfig<T> extends MarkerDataFactoryConfig<T>{
+//   // getPosition?(data: T): HtPosition,
+//   // getInfoContent?(data: T): string,
+//   getDivContent(data: T): string
+// }
+//
+// export interface PolylineDataFactory<T> {
+//   getEncodedPath(data: T): string
+// }
+//
+// export interface AllDataFactoryConfig<T> extends Partial<PolylineDataFactory<T>>, Partial<DivMarkerDataFactoryConfig<T>>, Partial<MarkerDataFactoryConfig<T>> {
+//
+// }
+// export type DataFactoryConfig<T> = MarkerDataFactoryConfig<T>
+//   | DivMarkerDataFactoryConfig<any>
+//   | PolylineDataFactory<any>
 
 // export interface DataFactoryConfig<T> {
 //   getPosition?(data: T): HtPosition,

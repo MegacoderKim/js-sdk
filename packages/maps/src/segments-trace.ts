@@ -204,12 +204,14 @@ export class HtSegmentsTrace {
   }
 
   getCurrentUserPosition() {
-    return this.userMarker.getEntity().getPosition()
+    let entity = this.userMarker.getEntity();
+    let data = entity.data;
+    // return this.userMarker.getPosition(data)
   }
 
   focusUserMarker(map, config) {
     console.log(this.userMarker);
-    console.error("focus user not implimente");
+    console.error("focus user not implimented");
     MapService.mapUtils.setFocus(this.userMarker.getEntity(), map, {force: true, zoom: 15, center: true, ...config})
     // this.userMarker.setFocus(map);
   }
