@@ -4,9 +4,8 @@ import {HtUserMarker} from "./user-marker";
 import {SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-data";
 import {IUser, IUserAnalytics} from "ht-models";
-import {dataFactory, DataFactoryConfig, DivMarkerDataFactoryConfig} from "../helpers/data-factory";
 import {mapItemsFactory} from "../base/map-items-factory";
-import {EventConfig, MapEntities} from "./interfaces";
+import {DataConfig, EventConfig, MapEntities} from "./interfaces";
 import {StyleObj} from "../helpers/styles-factory";
 import {userDivFactory} from "../helpers/user-div-factory";
 import {MapService} from "../map-service";
@@ -120,7 +119,7 @@ export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
 };
 
 export const usersClustersFactory = (): MapEntities<any> => {
-  let dataFactoryConfig: DataFactoryConfig<any> = {
+  let dataConfig: DataConfig<any> = {
     getPosition(data) {
       return htUser(data).getPosition()
     },
@@ -140,10 +139,17 @@ export const usersClustersFactory = (): MapEntities<any> => {
 
   let mapUtils = MapService.mapUtils;
   let eventConfig: EventConfig = {
-    onClick(entity, item) {
-      let popup = this.popup;
+    onClick(mapItems, entity) {
+      console.log(entity.data, "clicked")
+    },
+    onMouseEnter(mapItems, entity) {
+      let data = entity.data;
+      let popup = mapItems.popup;
       let map = MapService.map;
-      mapUtils.openPopupPosition(entity.getPosition(), map, entity.getInfoContent(), popup);
+      mapUtils.openPopupPosition(mapItems.getPosition(data), map, mapItems.getInfoContent(data), popup);
+    },
+    onMouseLeave(mapItems, entity) {
+      mapUtils.setMap(mapItems.popup, null)
     }
   };
   let stylesObj: StyleObj = {
@@ -162,7 +168,7 @@ export const usersClustersFactory = (): MapEntities<any> => {
   };
   // let data = dataFactory(config);
   return mapItemsFactory({
-    dataFactoryConfig,
+    dataConfig,
     eventConfig,
     name: 'user cluster',
     isDiv: true,

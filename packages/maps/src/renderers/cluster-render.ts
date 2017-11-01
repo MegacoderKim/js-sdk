@@ -1,6 +1,7 @@
-import {Entities, RenderConfig} from "../entities/interfaces";
+import {Entities, RenderConfig, MapEntities, Entity} from "../entities/interfaces";
 import * as _ from "underscore";
 import {MapService} from "../map-service";
+import {HtPosition} from "ht-data";
 
 export const clusterRenderConfigFactory = (renderConfig: RenderConfig) => {
   // console.log(test);

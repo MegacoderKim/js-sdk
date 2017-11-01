@@ -1,4 +1,4 @@
-import {EventConfig, MapEntities} from "../entities/interfaces";
+import {DataConfig, EventConfig, MapEntities} from "../entities/interfaces";
 import {StyleObj, stylesConfigFactory} from "../helpers/styles-factory";
 import {markerRenderConfigFactory} from "../renderers/marker-render";
 import {entityTraceFactory} from "../helpers/trace-factory";
@@ -7,7 +7,6 @@ import {clusterRenderConfigFactory} from "../renderers/cluster-render";
 import {polylineRenderConfigFactory} from "../renderers/polyline-render";
 import {circleRenderConfigFactory} from "../renderers/circle-render";
 import {divMarkerRender} from "../renderers/div-marker-render";
-import {DataFactoryConfig} from "../helpers/data-factory";
 
 export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any> => {
   let mapUtils = MapService.mapUtils;
@@ -17,7 +16,7 @@ export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any>
 
   let stylesConfig = stylesConfigFactory(mapUtils.type, config.stylesObj);
 
-  let renderConfig = markerRenderConfigFactory(config.eventConfig);
+  let renderConfig = markerRenderConfigFactory(config.eventConfig, config.dataConfig);
   if(config.isCircle) renderConfig = circleRenderConfigFactory(renderConfig);
   if(config.isPolyline) renderConfig = polylineRenderConfigFactory(renderConfig);
   if(config.isCluster) renderConfig = clusterRenderConfigFactory(renderConfig);
@@ -34,11 +33,11 @@ export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any>
     ...stylesConfig,
     setMap: !config.isCluster,
     cluster: null,
-    ...popupObj
+    ...popupObj,
   };
 
   if(config.isCluster) MapService.addCluster(mapItems);
-  let entityTrace = entityTraceFactory(mapItems, config.dataFactoryConfig);
+  let entityTrace = entityTraceFactory(mapItems);
 
 
   return entityTrace
@@ -46,7 +45,7 @@ export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any>
 };
 
 export interface MapItemsFactoryConfig {
-  dataFactoryConfig: DataFactoryConfig<any>,
+  dataConfig: DataConfig<any>,
   stylesObj?: Partial<StyleObj>,
   eventConfig?: EventConfig,
   isCluster?: boolean,

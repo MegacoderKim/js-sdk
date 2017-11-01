@@ -1,6 +1,7 @@
-import {RenderConfig} from "../entities/interfaces";
+import {RenderConfig, Entity, MapEntities} from "../entities/interfaces";
 import {MapUtils} from "../interfaces";
 import {MapService} from "../map-service";
+import {HtPosition} from "ht-data";
 
 export const polylineRenderConfigFactory = (renderConfig: RenderConfig) => {
   let mapUtils = MapService.mapUtils;
@@ -16,8 +17,8 @@ export const polylineRenderConfigFactory = (renderConfig: RenderConfig) => {
     getBounds(item, bounds?) {
       return mapUtils.extendBoundsWithPolyline(item, bounds)
     },
-    update(entity) {
-      mapUtils.setEncodedPath(entity.item, entity.getEncodedPath())
+    update({item, data}) {
+      mapUtils.setEncodedPath(item, this.getEncodedPath(data))
     }
   }
 };
