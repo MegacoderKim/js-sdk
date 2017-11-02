@@ -76,20 +76,23 @@
         }
     ];
 
-    var dataFactoryConfig = {
+    var dataConfig = {
         getPosition: function(data) {
             var lat = data.position[0];
             var lng = data.position[1];
             return {lat: lat, lng: lng}
         },
         getDivContent: function(data) {
-            var string = '<div style="background: #000">' +
-                '<strong style="color: #fff">' +
+            var string = '<div style="background: #000; padding: 4px 6px">' +
+                '<div style="color: #fff">' +
                 data.name +
-                '</strong>' +
+                '</div>' +
                 '</div>';
 
             return string
+        },
+        getInfoContent: function (data) {
+            return "Name is "+ data.name
         }
     };
 
@@ -99,6 +102,10 @@
                 flat: true,
                 anchor: RichMarkerPosition.GEOMETRIC_CENTER,
                 zIndex: 1
+            },
+            popup: {
+                disableAutoPan: true,
+                pixelOffset: new google.maps.Size(0, -14)
             }
         },
         leaflet: {
@@ -110,8 +117,9 @@
 
     var mapItems = htMaps.mapItemsFactory({
         stylesObj: stylesObj,
-        dataFactoryConfig: dataFactoryConfig,
-        isDiv: true
+        dataConfig: dataConfig,
+        isDiv: true,
+        hasPopup: true
     });
 
     mapClass.mapItemsSet.push(mapItems);
