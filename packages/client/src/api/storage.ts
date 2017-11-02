@@ -1,4 +1,4 @@
-import {HtClientConfig} from "../config";
+// import {HtClientConfig} from "../config";
 var store = require("store");
 
 export class UsersListStorage {
@@ -38,7 +38,7 @@ export class UsersListStorage {
   }
 
   get token() {
-    return HtClientConfig.request.subToken + "_uls"
+    return "_uls"
   }
 
   get sfx() {

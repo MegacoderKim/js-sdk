@@ -31,7 +31,6 @@ import {UsersAnalytics} from "./users-analytics-interfaces";
 import {IUsersMarkers} from "./users-markers-interfaces";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegment from "../../reducers/segments-reducer";
-import {HtClientConfig} from "../../config";
 import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
 // import {htClient} from "../../client";

@@ -2,7 +2,6 @@ import {HtActionsClient} from "./entities/actions/actions-client";
 import {HtUsersClient} from "./entities/users/users-client";
 import {HtGroupsClient} from "./entities/groups/groups-client";
 import {IClientOptions} from "./interfaces";
-import {HtClientConfig} from "./config";
 import {entityApiFactory, IEntityApi} from "./entity-api";
 import {HtRequest} from "./request";
 import {clientApi} from "./client-api";
