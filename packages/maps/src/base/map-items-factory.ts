@@ -22,8 +22,8 @@ export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any>
   if(config.isCluster) renderConfig = clusterRenderConfigFactory(renderConfig);
   if(config.isDiv) renderConfig = divMarkerRender(renderConfig);
 
-
-  let popupObj = !config.hasPopup ? {} : {popup: mapUtils.getPopup(config.popupConfig)};
+  let popupStyle = stylesConfig.styles('popup');
+  let popupObj = !config.hasPopup ? {} : {popup: mapUtils.getPopup(popupStyle)};
 
   let mapItems = {
     name: config.name || 'marker',
@@ -54,5 +54,5 @@ export interface MapItemsFactoryConfig {
   isDiv?: boolean,
   name?: string,
   hasPopup?: boolean,
-  popupConfig?: object
+  // popupConfig?: object
 }

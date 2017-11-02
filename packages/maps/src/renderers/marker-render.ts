@@ -1,4 +1,4 @@
-import {DataConfig, EventConfig, RenderConfig} from "../entities/interfaces";
+import {DataConfig, Entity, EventConfig, MapEntities, RenderConfig} from "../entities/interfaces";
 import {HtMapUtils} from "../map-utils";
 import {MapUtils} from "../interfaces";
 import * as _ from "underscore";
@@ -6,7 +6,20 @@ import {MapService} from "../map-service";
 
 export const markerRenderConfigFactory = (config: EventConfig = {}, dataConfig: DataConfig<any>): RenderConfig => {
   let mapUtils: MapUtils = MapService.mapUtils;
-
+  let defaultEventConfig: EventConfig = {};
+  if (dataConfig['getInfoContent']) {
+    defaultEventConfig = {
+      onMouseEnter(mapItems: MapEntities<any>, entity: Entity<any>) {
+        let data = entity.data;
+        let popup = mapItems.popup;
+        let map = MapService.map;
+        mapUtils.openPopupPosition(mapItems.getPosition(data), map, mapItems.getInfoContent(data), popup);
+      },
+      onMouseLeave(mapItems: MapEntities<any>, entity: Entity<any>) {
+        mapUtils.setMap(mapItems.popup, null)
+      }
+    }
+  }
   return {
     setMap: true,
     ...dataConfig,
@@ -38,6 +51,7 @@ export const markerRenderConfigFactory = (config: EventConfig = {}, dataConfig: 
       let id = data.id;
       if(this.entities[id]) delete this.entities[id];
     },
+    ...defaultEventConfig,
     ...config,
 
   }

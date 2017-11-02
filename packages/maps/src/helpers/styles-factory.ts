@@ -18,9 +18,10 @@ export const stylesConfigFactory = (mapType: HtMapType, stylesObj: Partial<Style
   return {
     stylesObj,
     stylesType: 'default',
-    styles() {
-      const styleType = this.stylesType;
-      const style = this.stylesObj[mapType][styleType];
+    styles(selectedStyleType?: string) {
+      const mapTypetype = this.stylesObj[mapType];
+      const styleType = selectedStyleType && mapTypetype[selectedStyleType] ? selectedStyleType : this.stylesType;
+      const style = mapTypetype[styleType];
       if(!style) console.error("style type does not exist");
       return this.stylesObj[mapType][styleType]
     }

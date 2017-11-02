@@ -137,21 +137,6 @@ export const usersClustersFactory = (): MapEntities<any> => {
     }
   };
 
-  let mapUtils = MapService.mapUtils;
-  let eventConfig: EventConfig = {
-    onClick(mapItems, entity) {
-      console.log(entity.data, "clicked")
-    },
-    onMouseEnter(mapItems, entity) {
-      let data = entity.data;
-      let popup = mapItems.popup;
-      let map = MapService.map;
-      mapUtils.openPopupPosition(mapItems.getPosition(data), map, mapItems.getInfoContent(data), popup);
-    },
-    onMouseLeave(mapItems, entity) {
-      mapUtils.setMap(mapItems.popup, null)
-    }
-  };
   let stylesObj: StyleObj = {
     google: {
       default: {
@@ -169,7 +154,6 @@ export const usersClustersFactory = (): MapEntities<any> => {
   // let data = dataFactory(config);
   return mapItemsFactory({
     dataConfig,
-    eventConfig,
     name: 'user cluster',
     isDiv: true,
     isCluster: true,
