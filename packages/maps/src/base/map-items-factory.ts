@@ -23,7 +23,20 @@ export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any>
   if(config.isDiv) renderConfig = divMarkerRender(renderConfig);
 
   let popupStyle = stylesConfig.styles('popup');
-  let popupObj = !config.hasPopup ? {} : {popup: mapUtils.getPopup(popupStyle)};
+  let popupObj = !config.hasPopup ?
+    {} : {
+    popup: mapUtils.getPopup(popupStyle),
+    setPopup(id: string | null) {
+      if (id) {
+        let {data} = this.entities['id'];
+        let popup = this.popup;
+        let map = MapService.map;
+        mapUtils.openPopupPosition(mapItems.getPosition(data), map, mapItems.getInfoContent(data), popup);
+      } else {
+        mapUtils.setMap(this.popup, null)
+      }
+    }
+  };
 
   let mapItems = {
     name: config.name || 'marker',

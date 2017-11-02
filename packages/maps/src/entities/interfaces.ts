@@ -35,6 +35,7 @@ export interface MapEntities<T> extends RenderConfig {
   stylesType: string;
   cluster?: any,
   popup?: any,
+  setPopup?(id: string | null): any,
   // config: RenderConfig,
   // dataClass:  DataObj<T>,
   trace: (data: any[]) => void,

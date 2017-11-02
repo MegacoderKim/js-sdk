@@ -12,6 +12,10 @@ export const stopStyles = {
         scale: 8,
         strokeWeight: 2,
       }
+    },
+    popup: {
+      disableAutoPan: true,
+      pixelOffset: new google.maps.Size(0, -10)
     }
   },
   leaflet: {
