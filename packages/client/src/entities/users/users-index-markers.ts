@@ -57,7 +57,8 @@ export const usersIndexMarkersFactory = (state: ListState, config: Partial<Entit
       if(!data.next) {
         listDispatcher.setLoading(false)
       }
-    }
+    },
+    allowedQueryKeys: [],
   };
 
   let entityList = HListFactory(markersState, innerConfig);

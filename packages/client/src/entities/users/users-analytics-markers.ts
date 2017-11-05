@@ -59,7 +59,8 @@ export const usersAnalyticsMarkersFactory = (state: ListState, config: Partial<E
       if(!data.next) {
         listDispatcher.setLoading(false)
       }
-    }
+    },
+    allowedQueryKeys: [],
   };
 
   let entityList = HListFactory(markersState, innerConfig);

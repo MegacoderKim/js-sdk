@@ -342,13 +342,13 @@ export class HtUsersClient extends EntityClient {
     }
   }
 
-  getListClient(apiType: ApiType) {
-    return apiType == ApiType.analytics ? this.analytics : this.index;
-  }
+  // getListClient(apiType: ApiType) {
+  //   return apiType == ApiType.analytics ? this.analytics : this.index;
+  // }
 
-  getMarkerClient(apiType: ApiType) {
-    return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
-  }
+  // getMarkerClient(apiType: ApiType) {
+  //   return apiType == ApiType.analytics ? this.marksAnalytics : this.marksIndex;
+  // }
 
   /**
    * Return array of markers to display. Return [] for selected placeline
@@ -407,9 +407,9 @@ export class HtUsersClient extends EntityClient {
     return this.store.select(fromRoot.getUsersState)
   }
 
-  getPlacelineQuery(): Observable<object> {
-    return Observable.of({})
-  }
+  // getPlacelineQuery(): Observable<object> {
+  //   return Observable.of({})
+  // }
 
   getUsersIndexPage(): Observable<any> {
     return this.store.select(fromRoot.getUsersIndexPage)
@@ -419,17 +419,17 @@ export class HtUsersClient extends EntityClient {
     return this.store.select(fromRoot.getUsersAnalyticsPage)
   }
 
-  getUsersListPage(): Observable<any> {
-    return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
-      return apiType === ApiType.index ? this.getUsersIndexPage() : this.getUsersAnalyticsPage()
-    })
-  }
+  // getUsersListPage(): Observable<any> {
+  //   return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
+  //     return apiType === ApiType.index ? this.getUsersIndexPage() : this.getUsersAnalyticsPage()
+  //   })
+  // }
 
-  fromApiType(obIndex, obAnalytics) {
-    return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
-      return apiType === ApiType.index ? obIndex : obAnalytics
-    })
-  }
+  // fromApiType(obIndex, obAnalytics) {
+  //   return this.getUserListApiType().distinctUntilChanged().switchMap((apiType: ApiType) => {
+  //     return apiType === ApiType.index ? obIndex : obAnalytics
+  //   })
+  // }
 
   // getUsersIndexMarkers(): Observable<any[]> {
   //   return this.store.select(fromRoot.getUsersIndexFilteredMarker)
@@ -445,13 +445,13 @@ export class HtUsersClient extends EntityClient {
   //   })
   // }
 
-  getUserListQuery(): Observable<object> {
-    return this.store.select(fromRoot.getQueryUserQuery) as Observable<object>
-  }
+  // getUserListQuery(): Observable<object> {
+  //   return this.store.select(fromRoot.getQueryUserQuery) as Observable<object>
+  // }
 
-  getUserListApiType() {
-    return this.store.select(fromRoot.getUsersListApiType)
-  }
+  // getUserListApiType() {
+  //   return this.store.select(fromRoot.getUsersListApiType)
+  // }
 
   getSegmentsStates() {
     return this.store.select(fromRoot.getSegmentsState)
