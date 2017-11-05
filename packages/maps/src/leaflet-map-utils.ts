@@ -16,7 +16,7 @@ export const ExtendBoundsWithPolyline = (polyline = null, bounds: L.LatLngBounds
 };
 
 export const SetStyle = (item, style) => {
-  item.setStyle(style)
+  // item.setOptions(style)
 };
 
 export const SetMap = (item, map: L.Map) => {
@@ -35,6 +35,11 @@ export const GetLatlng = ({lat, lng}: HtPosition = {lat: 0, lng: 0}) => {
 export const setEncodedPath = (polyline, encodedPolyline: string) => {
   var path = polyUtil.decode(encodedPolyline);
   return polyline.setLatLngs(path)
+};
+
+export const setPathPositionTimeArray = (polyline, positionTimeArray) => {
+
+  return polyline.setPath(positionTimeArray)
 };
 
 export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption: L.PopupOptions = {}) {
@@ -133,8 +138,8 @@ function removeClusterMarker(cluster, marker) {
 }
 
 function addMarkersToCluster(cluster, markers) {
-  cluster.addLayers(markers);
-  cluster.refreshClusters(markers);
+  // cluster.addLayers(markers);
+  // cluster.refreshClusters(markers);
 }
 
 function getPolyline() {
@@ -168,7 +173,8 @@ function openPopupPosition(position, map, content, popup) {
 }
 
 function setDivContent(marker, content) {
-  console.error('set div content not implemented')
+  setDivMarkerStyle(marker, {html: content});
+  // console.error('set div content not implemented')
 }
 
 function getDivMarker() {
@@ -176,7 +182,12 @@ function getDivMarker() {
 }
 
 function setDivMarkerStyle(item, options) {
-  SetStyle(item, options)
+  let icon = L.divIcon(options);
+  setIcons(item, icon)
+}
+
+function setIcons(marker, icon) {
+  marker.setIcon(icon)
 }
 
 export const LeafletUtils: MapUtils = {
@@ -212,5 +223,6 @@ export const LeafletUtils: MapUtils = {
   openPopupPosition,
   setDivContent,
   getDivMarker,
-  setDivMarkerStyle
+  setDivMarkerStyle,
+  setPathPositionTimeArray
 };

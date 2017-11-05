@@ -1,6 +1,6 @@
 import {HtMapType} from "../interfaces";
 import {HtPosition} from "ht-data";
-import {IUser, Partial, IUserAnalytics} from "ht-models";
+import {IUser, Partial, IUserAnalytics, ISegment} from "ht-models";
 import {HtBounds, HtMapUtils} from "../map-utils";
 
 export interface EventConfig {
@@ -60,7 +60,8 @@ export interface DivMarkerDataConfig<T> extends MarkerDataConfig<T>{
 }
 
 export interface PolylineDataConfig<T> {
-  getEncodedPath(data: T): string
+  getEncodedPath?(data: T): string,
+  getEncodedPositionTime?(data: any): string
 }
 
 export interface AllDataConfig<T> extends Partial<PolylineDataConfig<T>>, Partial<DivMarkerDataConfig<T>>, Partial<MarkerDataConfig<T>> {

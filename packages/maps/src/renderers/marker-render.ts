@@ -11,7 +11,7 @@ export const markerRenderConfigFactory = (config: EventConfig = {}, dataConfig: 
     defaultEventConfig = {
       onMouseEnter(mapItems: MapEntities<any>, entity: Entity<any>) {
         let id = entity.data.id;
-        mapItems.openPopup(id);
+        mapItems.setPopup(id);
         // let popup = mapItems.popup;
         // let map = MapService.map;
         // mapUtils.openPopupPosition(mapItems.getPosition(data), map, mapItems.getInfoContent(data), popup);

@@ -35,6 +35,7 @@ export interface MapUtils {
   setDivContent: (item, content: string) => void,
   getDivMarker: () => any,
   setDivMarkerStyle: (marker, options: object) => any,
+  setPathPositionTimeArray: (polyline, positionTimeArray) => any
 }
 
 export interface SetFocusConfig {

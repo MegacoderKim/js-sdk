@@ -2,6 +2,7 @@ import {RenderConfig, Entity, MapEntities} from "../entities/interfaces";
 import {MapUtils} from "../interfaces";
 import {MapService} from "../map-service";
 import {HtPosition} from "ht-data";
+import {positionTime} from "../helpers/position-time-helper";
 
 export const polylineRenderConfigFactory = (renderConfig: RenderConfig) => {
   let mapUtils = MapService.mapUtils;
@@ -11,6 +12,7 @@ export const polylineRenderConfigFactory = (renderConfig: RenderConfig) => {
     // getEncodedPath(data) {
     //   return data.encoded_polyline;
     // },
+    positionTimeArray: [],
     getItem(data) {
       return mapUtils.getPolyline()
     },
@@ -18,7 +20,13 @@ export const polylineRenderConfigFactory = (renderConfig: RenderConfig) => {
       return mapUtils.extendBoundsWithPolyline(item, bounds)
     },
     update({item, data}) {
-      mapUtils.setEncodedPath(item, this.getEncodedPath(data))
+      if(this.getEncodedPositionTime) {
+        this.positionTimeArray = positionTime.decode(data.time_aware_polyline);
+        mapUtils.setPathPositionTimeArray(item, this.positionTimeArray)
+      } else {
+        mapUtils.setEncodedPath(item, this.getEncodedPath(data))
+      }
+
     }
   }
 };

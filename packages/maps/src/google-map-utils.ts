@@ -2,6 +2,7 @@ import {HtMarker, MapUtils} from "./interfaces";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {HtPosition} from "ht-data";
+import {ITimeAwarePoint} from "ht-models";
 declare var MarkerClusterer:any;
 declare var RichMarker: any;
 export function ExtendBounds (item = null, bounds: google.maps.LatLngBounds, force = false) {
@@ -51,6 +52,14 @@ export const setEncodedPath = (polyline: google.maps.Polyline, encodedPolyline: 
   var path = google.maps.geometry.encoding.decodePath(encodedPolyline);
   return polyline.setPath(path)
 };
+
+export const setPathPositionTimeArray = (polyline, positionTimeArray: ITimeAwarePoint[]) => {
+  let path = _.map(positionTimeArray, (point: ITimeAwarePoint) => {
+
+    return GetLatlng({lat: +point[0], lng: +point[1]})
+  });
+  return polyline.setPath(path)
+}
 
 export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption: L.PopupOptions = {}) {
   marker.setPosition(position);
@@ -292,5 +301,6 @@ export const GoogleMapUtils: MapUtils = {
   openPopupPosition,
   setDivContent,
   getDivMarker,
-  setDivMarkerStyle
+  setDivMarkerStyle,
+  setPathPositionTimeArray
 };
