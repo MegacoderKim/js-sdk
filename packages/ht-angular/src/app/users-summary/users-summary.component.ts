@@ -12,10 +12,20 @@ export class UsersSummaryComponent implements OnInit {
   @Input() summary;
   @Input() hideTotal;
 
+  hoveredQuery;
+
   constructor() { }
 
   ngOnInit() {
 
+  }
+
+  onHoverQuery(query) {
+    this.hoveredQuery = query.label;
+  }
+
+  onHoveroutQuery() {
+    this.hoveredQuery = ""
   }
 
   indexId(index, item) {
