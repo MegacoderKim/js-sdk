@@ -27,7 +27,7 @@ export const mapItemsFactory = (config: MapItemsFactoryConfig): MapEntities<any>
     {} : {
     popup: mapUtils.getPopup(popupStyle),
     setPopup(id: string | null) {
-      if (id) {
+      if (id && this.entities[id]) {
         let {data} = this.entities[id];
         let popup = this.popup;
         let map = MapService.map;
