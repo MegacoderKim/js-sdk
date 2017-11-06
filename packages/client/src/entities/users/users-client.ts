@@ -215,8 +215,9 @@ export class HtUsersClient extends EntityClient {
     })
   }
 
-  listStatusChart$() {
+  listStatusChart$(queryLabels?: QueryLabel[]) {
     // return status_overview.
+    if(queryLabels) this.filterClass.customQueryArray.push(...queryLabels);
     return Observable.combineLatest(
       this.list.query$,
       this.listStatusOverview$()
@@ -226,7 +227,7 @@ export class HtUsersClient extends EntityClient {
         let total = 0;
         let statusTotal;
         let max = 0;
-        let summaryEntity = this._statusQueryArray || this.filterClass.statusQueryArray;
+        let summaryEntity = queryLabels || this.filterClass.statusQueryArray;
         let status = query ? query['status'] : null;
         // let summaryEntity = this.filterClass.activityQueryArray;
         let values = _.map(summaryEntity, (entity) => {
