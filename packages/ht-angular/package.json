@@ -30,9 +30,8 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "bulma": "^0.6.0",
     "core-js": "^2.4.1",
-    "rxjs": "^5.5.2",
-    "zone.js": "^0.8.14",
     "font-awesome": "^4.7.0",
     "gulp-less": "^3.3.2",
     "ht-client": "file:../ht-sdk/packages/client",
@@ -43,7 +42,10 @@
     "js-cookie": "^2.2.0",
     "leaflet": "^1.2.0",
     "moment-mini": "^2.18.1",
-    "popper.js": "^1.12.5"
+    "popper.js": "^1.12.5",
+    "rxjs": "^5.5.2",
+    "uikit": "^3.0.0-beta.33",
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@angular/cli": "^1.5.0",

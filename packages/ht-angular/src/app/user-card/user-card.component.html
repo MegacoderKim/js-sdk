@@ -1,25 +1,25 @@
-<div class="card-content-mid flex-row flex">
+<div class="ht-card-content flex-row flex">
   <div class="text-left flex-row row-gap-10 flex">
     <ht-profile [height]="35" [url]="user.photo"></ht-profile>
-    <div class="user-info-container">
-      <div class="user-name flex-row">
+    <div class="">
+      <div class="flex-row">
         {{user.name | nameCase | dot: 'Unknown users'}}
       </div>
       <ng-template [ngIf]="showStatus">
         <div class="user-status-display" [ngClass]="user.status + '-color'">
           <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
         </div>
-        <div class="flex-row text-muted user-status text-4">
+        <div class="flex-row user-status">
           <div>{{user.display.sub_status_text}}<span *ngIf="user.display.battery">&nbsp; &bull; &nbsp;</span></div>
           <ht-battery-icon *ngIf="user.display.battery" [battery]="user.display.battery"></ht-battery-icon>
         </div>
       </ng-template>
-      <div class="flex-row text-4" *ngIf="!user['segments'] && user['total_distance']">
+      <div class="flex-row" *ngIf="!user['segments'] && user['total_distance']">
         <div>{{user['total_distance'] | distanceLocale}}</div>
         <div>&nbsp; &bull; &nbsp;</div>
         <div>{{user['total_duration'] | hmString:60}}</div>
       </div>
-      <div class="text-4">
+      <div class="">
         {{user['phone']}}
       </div>
     </div>

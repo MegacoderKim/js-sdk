@@ -19,7 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "ht",
       "styles": [
-        "styles.less",
+        "styles.scss",
         "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [
@@ -57,7 +57,7 @@
     }
   },
   "defaults": {
-    "styleExt": "less",
+    "styleExt": "scss",
     "component": {}
   }
 }

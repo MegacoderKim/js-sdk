@@ -28,11 +28,8 @@ import 'rxjs/add/operator/let';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/empty';
-import {GroupKeyResolver} from "./guard/group-key-resolver";
-import {HtModule} from "./ht/ht.module";
-// import {GetToken} from "./get-token";
+import { HtModule } from "./ht/ht.module";
 
-// var token = GetToken();
 
 @NgModule({
   declarations: [
@@ -50,12 +47,3 @@ import {HtModule} from "./ht/ht.module";
 })
 export class AppModule { }
 
-// export function  GetUrlParam(name: string, url?) {
-//   url = url || window.location.href;
-//   name = name.replace(/[\[\]]/g, "\\$&");
-//   var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-//     results = regex.exec(url);
-//   if (!results) return null;
-//   if (!results[2]) return '';
-//   return decodeURIComponent(results[2].replace(/\+/g, " "));
-// };

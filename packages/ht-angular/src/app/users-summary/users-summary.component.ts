@@ -10,6 +10,7 @@ export class UsersSummaryComponent implements OnInit {
   @Output() setQuery: EventEmitter<object> = new EventEmitter();
   @Output() clearQueryKey: EventEmitter<string> = new EventEmitter();
   @Input() summary;
+  @Input() hideTotal;
 
   constructor() { }
 

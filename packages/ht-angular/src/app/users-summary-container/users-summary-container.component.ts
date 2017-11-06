@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../ht/ht-users.service";
+import {QueryLabel} from "ht-client";
 
 @Component({
   selector: 'ht-users-summary-container',
@@ -19,13 +20,15 @@ import {HtUsersService} from "../ht/ht-users.service";
 })
 export class UsersSummaryContainerComponent implements OnInit {
   summary$;
+  @Input() queryLabels: QueryLabel[];
+  @Input() hideTotal: boolean = false;
   constructor(
     private usersClientService: HtUsersService
   ) { }
 
   ngOnInit() {
     this.usersClientService.summary.setActive();
-    this.summary$ = this.usersClientService.listStatusChart$();
+    this.summary$ = this.usersClientService.listStatusChart$(this.queryLabels);
     // this.summary$ = this.usersClientService.summary.data$
 
   }

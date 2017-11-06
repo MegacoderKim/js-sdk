@@ -4,35 +4,92 @@
 <!--<p>Count: {{pageDate.count}}</p>-->
 <!--<p>Page: {{currentPage}}</p>-->
 <!--<p>Pages: {{pagesCount}}</p>-->
-<div class="pagination-container" *ngIf="pagesCount > 1">
-  <div [class.disabled]="!pageDate.previous" (click)="onFetchPage(currentPage - 1)" class="pagination-element">
-    <i class="fa fa-angle-left" aria-hidden="true"></i>
-  </div>
-  <ng-container *ngIf="currentPage - 1 > 1">
-    <div (click)="onFetchPage(1)" class="pagination-element">
-      <span class="pagination-number">1</span>
-    </div>
-    <div>.</div>
-    <div>.</div>
-    <div>.</div>
-  </ng-container>
-
-  <div (click)="onFetchPage(page)" class="pagination-element" *ngFor="let page of visiblePages" [ngClass]="currentPage === page ? 'selected' : ''">
-    <span class="pagination-number">{{page}}</span>
-  </div>
-  <ng-container *ngIf="pagesCount - currentPage > 2">
-    <div>.</div>
-    <div>.</div>
-    <div>.</div>
-    <div (click)="onFetchPage(pagesCount)" class="pagination-element">
-      <span class="pagination-number">{{pagesCount}}</span>
-    </div>
-  </ng-container>
-  <!--<div [class.disabled]="currentPage == pagesCount" (click)="onFetchPage(pagesCount)" class="pagination-element">-->
-  <!--<i class="fa fa-angle-double-right" aria-hidden="true"></i>-->
+<!--<div class="pagination-container columns" *ngIf="pagesCount > 1">-->
+  <!--<div [class.disabled]="!pageDate.previous" (click)="onFetchPage(currentPage - 1)" class="pagination-element">-->
+    <!--<i class="fa fa-angle-left" aria-hidden="true"></i>-->
   <!--</div>-->
-  <div [class.disabled]="!pageDate.next" (click)="onFetchPage(currentPage + 1)" class="pagination-element">
-    <i class="fa fa-angle-right" aria-hidden="true"></i>
-  </div>
-</div>
+  <!--<ng-container *ngIf="currentPage - 1 > 1">-->
+    <!--<div (click)="onFetchPage(1)" class="">-->
+      <!--<span class="pagination-number">1</span>-->
+    <!--</div>-->
+    <!--<span>&hellip;</span>-->
+    <!--&lt;!&ndash;<div>.</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div>.</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div>.</div>&ndash;&gt;-->
+  <!--</ng-container>-->
+
+  <!--<div (click)="onFetchPage(page)" class="" *ngFor="let page of visiblePages" [ngClass]="currentPage === page ? 'is-current' : ''">-->
+    <!--<span class="pagination-number">{{page}}</span>-->
+  <!--</div>-->
+  <!--<ng-container *ngIf="pagesCount - currentPage > 2">-->
+    <!--<span>&hellip;</span>-->
+    <!--&lt;!&ndash;<div>.</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div>.</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div>.</div>&ndash;&gt;-->
+    <!--<div (click)="onFetchPage(pagesCount)" class="">-->
+      <!--<span class="pagination-number">{{pagesCount}}</span>-->
+    <!--</div>-->
+  <!--</ng-container>-->
+  <!--&lt;!&ndash;<div [class.disabled]="currentPage == pagesCount" (click)="onFetchPage(pagesCount)" class="pagination-element">&ndash;&gt;-->
+  <!--&lt;!&ndash;<i class="fa fa-angle-double-right" aria-hidden="true"></i>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--<div [attr.disabled]="!pageDate.next" (click)="onFetchPage(currentPage + 1)" class="">-->
+    <!--<i class="fa fa-angle-right" aria-hidden="true"></i>-->
+  <!--</div>-->
+<!--</div>-->
+
+<nav class="pagination is-small is-centered" role="navigation" aria-label="pagination" *ngIf="pagesCount > 1">
+  <ul class="pagination-list">
+    <li>
+      <a class="pagination-link" [attr.disabled]="!pageDate.previous ? true : null"  (click)="onFetchPage(currentPage - 1)" aria-label="Goto page 1">
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+      </a>
+    </li>
+    <ng-container *ngIf="currentPage - 1 > 1">
+      <li (click)="onFetchPage(1)" class="">
+        <a class="pagination-link">1</a>
+      </li>
+      <li>
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+    </ng-container>
+    <li (click)="onFetchPage(page)" class="" *ngFor="let page of visiblePages">
+      <a class="pagination-link" [ngClass]="currentPage === page ? 'is-current' : ''">{{page}}</a>
+    </li>
+    <ng-container *ngIf="pagesCount - currentPage > 2">
+      <li>
+        <span class="pagination-ellipsis">&hellip;</span>
+      </li>
+      <li (click)="onFetchPage(pagesCount)" class="">
+        <a class="pagination-link">{{pagesCount}}</a>
+      </li>
+    </ng-container>
+
+    <li [attr.disabled]="!pageDate.next ? true : null" (click)="onFetchPage(currentPage + 1)" class="">
+      <a class="pagination-link">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </a>
+    </li>
+
+
+    <!--<li>-->
+      <!--<span class="pagination-ellipsis">&hellip;</span>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a class="pagination-link" aria-label="Goto page 45">45</a>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a class="pagination-link" aria-label="Goto page 47">47</a>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<span class="pagination-ellipsis">&hellip;</span>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a class="pagination-link" aria-label="Goto page 86">86</a>-->
+    <!--</li>-->
+  </ul>
+</nav>
 

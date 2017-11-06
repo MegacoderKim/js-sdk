@@ -1,7 +1,7 @@
-<div class="flex-column card-stack" *ngIf="users">
+<div class="card-stack" *ngIf="users">
   <ht-user-card
     [@card]
-    class="flex-row"
+    class="flex-row card card-clickable is-marginless"
     [class.card-selected]="selectedUserDataId == user.id"
     [action]="getAction(user)" (onAction)="onAction.next($event)"
     (click)="onSelectUser.next(user)"
@@ -13,8 +13,8 @@
       <!--(click)="onAction.next({user: user, action: 'default', event: $event})">-->
       <!--<i class="fa fa-map-marker auto"></i>-->
     <!--</div>-->
-    <div *ngIf="selectedUserId" class="card-content-mid card-action clickable flex-row align-center" (click)="onAction.next({event: $event, action: 'close'})">
-      <i class="fa fa-close auto"></i>
+    <div *ngIf="selectedUserId" class="card-content-mid card-action flex-row align-center" (click)="onAction.next({event: $event, action: 'close'})">
+      <a class="delete is-medium"></a>
     </div>
     <ht-loading-dots
       *ngIf="user.id === loadingUserDataId && !selectedUserId" class="card-content-mid text-1 card-action flex-row align-center">

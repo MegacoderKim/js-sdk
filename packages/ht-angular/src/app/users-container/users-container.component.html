@@ -1,6 +1,7 @@
 <div class="flex-column relative">
   <!--<ht-users-summary [summary]="summary$ | async"></ht-users-summary>-->
   <ht-users-summary-container></ht-users-summary-container>
+  <ht-users-summary-container [hideTotal]="true" [queryLabels]="queryMap"></ht-users-summary-container>
   <ht-users
     [selectedUserDataId]="selectedUserDataId$ | async"
     [selectedUserId]="selectedUserId$ | async"

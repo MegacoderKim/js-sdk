@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {QueryLabel, clientApi} from "ht-client";
-import {Color} from "ht-utility";
+import {Color, GetUrlParam} from "ht-utility";
 import {HtUsersService} from "./ht/ht-users.service";
 import {HtConfigService} from "./ht/ht-config.service";
 
@@ -15,6 +15,8 @@ export class AppComponent {
     private htUsersClientService: HtUsersService,
     // private config: ClientApiService
   ) {
+    const token = GetUrlParam('key');
+    if (token) clientApi.setToken(token);
     console.log(clientApi);
     // console.log(this.config.actions, "log");
     const queryMap: QueryLabel[] = [

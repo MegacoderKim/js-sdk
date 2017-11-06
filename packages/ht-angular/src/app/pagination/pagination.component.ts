@@ -10,7 +10,7 @@ import {GetUrlParam} from "ht-utility";
 })
 export class PaginationComponent implements OnInit {
   @Input() pageDate: Page<any>;
-  @Input() pageSize: number = 15;
+  @Input() pageSize: number = 10;
   @Output() fetchPage: EventEmitter<number> = new EventEmitter();
   constructor() { }
 
@@ -23,7 +23,7 @@ export class PaginationComponent implements OnInit {
     let page = 1;
     if (preUrl) {
       const prevPage = GetUrlParam('page', this.pageDate.previous) || 1;
-      console.log(prevPage);
+      // console.log(prevPage);
       page = +prevPage + 1;
     }
     return page
@@ -39,9 +39,9 @@ export class PaginationComponent implements OnInit {
     return Array(this.pagesCount).fill(1).map((n, i) => n + i).filter((i) => {
       if (this.currentPage === 1) {
         return (this.currentPage - i >= -2 );
-      } else if (this.currentPage - 1 === i) {
-        return false;
       } else if (this.currentPage + 1 === i) {
+        return true;
+      } else if (this.currentPage + 2 === i) {
         return true;
       } else if (this.currentPage === i) {
         return true;
@@ -53,7 +53,7 @@ export class PaginationComponent implements OnInit {
   }
 
   onFetchPage(pageNumber: number) {
-    console.log(pageNumber);
+    // console.log(pageNumber);
     if (pageNumber < 1 || pageNumber > this.pagesCount) return;
     this.fetchPage.next(pageNumber);
     // this.fetchPage.emit(pageNumber);

@@ -1,19 +1,16 @@
 <div class="flex-column justify-center label-container">
-  <div class="count text-center">{{summary.totalUsers}} {{'user' | pluralize: summary.totalUsers}}</div>
-  <div
-    class="graph-label flex-row row-gap-10"
-    [class.graph-active]="datum.selected"
-    (click)="selectLabel(datum)"
-    *ngFor="let datum of summary.chart; trackBy:indexId; let i = index">
+  <div *ngIf="!hideTotal" class="count text-center">{{summary.totalUsers}} {{'user' | pluralize: summary.totalUsers}}</div>
+  <div class="flex-row">
+    <div class="bar" [style.flex-basis.%]="datum.value/summary.totalUsers * 100" [style.background-color]="datum.color" *ngFor="let datum of summary.chart; trackBy:indexId; let i = index"></div>
+  </div>
+  <div class="flex-row wrap row-gap-10">
     <!--<div class="box" [style.background-color]="datum.color"></div>-->
-    <div class="bars flex">
-      <div class="bar" style="height: 10px;" [style.background-color]="datum.color" [style.width.%]="datum.w * 100"></div>
-    </div>
-    <div class="flex-row flex row-gap-10">
-      <div class="box" [style.color]="datum.color">
-        <span class="auto">{{datum.value}}</span>
-      </div>
-      <span>{{datum.label}}</span>
+    <div class="graph-label flex-column flex" [class.graph-active]="datum.selected"
+         (click)="selectLabel(datum)" *ngFor="let datum of summary.chart; trackBy:indexId; let i = index">
+      <strong class="text-center" [style.color]="datum.color">
+        {{datum.value}}
+      </strong>
+      <span class="text-center">{{datum.label}}</span>
 
     </div>
     <!--<div class="box" style="background-color: #ccc;"></div>-->

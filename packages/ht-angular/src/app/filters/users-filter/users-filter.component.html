@@ -1,7 +1,7 @@
-<div class="filter-container" [@filter]="showFilter$ | async">
+<div class="filter-container flex-column" [@filter]="showFilter$ | async">
   <ht-entity-search (onSearchQuery)="onQuery($event)"></ht-entity-search>
-  <div class="" htDropdown>
-    <button type="button" class="ht-btn flex-row row-gap-4" htDropdownToggle>
+  <div class="dropdown" htDropdown>
+    <button type="button" class="button dropdown-trigger flex-row row-gap-4" htDropdownToggle>
       <span>Sorting</span>
       <ng-container *ngIf="ordering$ | async as ordering">
         <span>: {{ordering.string}}</span>
@@ -10,22 +10,29 @@
       <!--<span *ngIf="ordering$ | async as ordering"></span>-->
       <!--<i class="fa fa-filter"></i>-->
     </button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
-      <li class="dropdown-item" (click)="setOrdering(sort.value)" *ngFor="let sort of sortingLabels">{{sort.label}}</li>
-    </ul>
+    <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <div class="dropdown-content">
+        <a class="dropdown-item" (click)="setOrdering(sort.value)" *ngFor="let sort of sortingLabels">{{sort.label}}</a>
+      </div>
+    </div>
   </div>
   <div class="" htDropdown>
-    <button id="dropdown-keyboard-access" type="button" class="ht-btn flex-row row-gap-4" htDropdownToggle>
+    <button id="dropdown-keyboard-access" type="button" class="button flex-row row-gap-4" htDropdownToggle>
       <span>Filters</span> <i class="fa fa-filter"></i>
     </button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
-      <li class="dropdown-item" (click)="setStatus(filter.values.toString(), $event)" *ngFor="let filter of statusFiltes">{{filter.label}}</li>
-    </ul>
+    <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <div class="dropdown-content">
+        <a class="dropdown-item" (click)="setStatus(filter.values.toString(), $event)" *ngFor="let filter of statusFiltes">{{filter.label}}</a>
+      </div>
+
+    </div>
   </div>
-  <div class="flex flex-row row-gap-4" *ngIf="query$ | async as queries">
-    <div (click)="clearQuery(query.key)" class="query-label" *ngFor="let query of queries">
-      <span>{{query.label}}</span>
-      <i class="fa fa-close"></i>
+  <div class="field flex is-grouped is-grouped-multiline" *ngIf="query$ | async as queries">
+    <div class="control is-marginless" *ngFor="let query of queries">
+      <div class="tags has-addons">
+        <div class="tag is-medium is-primary">{{query.label}}</div>
+        <a (click)="clearQuery(query.key)" class="tag is-medium is-primary is-delete"></a>
+      </div>
     </div>
   </div>
   <ht-date-range></ht-date-range>

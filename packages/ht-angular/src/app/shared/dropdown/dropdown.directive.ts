@@ -8,7 +8,7 @@ import {DropdownService, NONINPUT} from "./dropdown.service";
   selector: '[htDropdown]'
 })
 export class DropdownDirective implements OnInit, OnDestroy {
-  @HostBinding('class.open')
+  @HostBinding('class.is-active')
   @Input() public get isOpen(): boolean {
     // return true
     return this._isOpen;

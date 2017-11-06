@@ -1,4 +1,4 @@
 <div [@summaryAnim] *ngIf="summary$ | async as summary">
-  <ht-users-summary (clearQueryKey)="onClearQueryKey($event)" (setQuery)="setQuery($event)" [summary]="summary"></ht-users-summary>
+  <ht-users-summary [hideTotal]="hideTotal" (clearQueryKey)="onClearQueryKey($event)" (setQuery)="setQuery($event)" [summary]="summary"></ht-users-summary>
 </div>
 

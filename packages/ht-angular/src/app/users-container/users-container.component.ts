@@ -5,9 +5,10 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 // import {htUser} from "ht-js-data";
-import {ApiType} from "ht-client";
+import {ApiType, QueryLabel} from "ht-client";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
+import {Color} from "ht-utility";
 
 @Component({
   selector: 'ht-users-container',
@@ -26,7 +27,23 @@ export class UsersContainerComponent implements OnInit {
   loadingUsers$;
   @Input() hasMap: boolean = false;
   @Input() apiType: ApiType = ApiType.analytics;
-
+  queryMap: QueryLabel[] = [
+    {
+      label: 'Logged in',
+      values: ['stopped', 'on_trip', 'network_offline'],
+      color: Color.blue
+    },
+    {
+      label: 'Logged off',
+      values: ['logged_off'],
+      color: '#a8a8a8',
+    },
+    {
+      label: 'Location disabled',
+      values: ['location_disabled'],
+      color: Color.red
+    },
+  ];
   constructor(
     private userService: HtUsersService,
     private mapService: HtMapService
