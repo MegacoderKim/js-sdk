@@ -1,21 +1,24 @@
 import {Observable} from "rxjs/Observable";
 import {IUser} from "ht-models"
-import {AllData} from "../../interfaces";
+import {AllData, ApiType} from "../../interfaces";
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import {EntityListDispatchers, EntityListState, EntityTypeConfig, ListSelectors, ListState} from "../base/interfaces";
+import {EntityListDispatchers, EntityTypeConfig, ListSelectors} from "../base/interfaces";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {HListFactory} from "../base/list-client";
 import {AddUsersMarkersDispatchers, IUsersMarkers} from "./users-markers-interfaces";
 import {AllItemsHelpers} from "../helpers/all-items";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+import {entityClientFactory} from "../base/entity-factory";
 
-export const usersIndexMarkersFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): IUsersMarkers => {
-  let {store, api$} = state;
+export const usersIndexMarkersFactory = ({dateRangeQuery$}): IUsersMarkers => {
 
   let innerConfig: Partial<EntityTypeConfig> = {
-    ...config,
     name: 'users index all',
+    // defaultQuery: {page_size: 200},
+    // updateStrategy: 'once',
+    allowedQueryKeys: ['status']
   };
 
   innerConfig = AllItemsHelpers.getConfig(innerConfig);
@@ -49,25 +52,48 @@ export const usersIndexMarkersFactory = (state: ListState, config: Partial<Entit
     loading$: store.select(fromRoot.getLoadingUserIndexAll)
   };
 
-  let markersState: EntityListState = {
-    ...state,
-    selectors: listSelectors,
-    dispatchers: listDispatcher,
-    firstDataEffect(data) {
-      if(!data.next) {
-        listDispatcher.setLoading(false)
-      }
+  let allSelectors = AllItemsHelpers.getSelectors(listSelectors);
+
+  let api$ = (query) => clientApi.users.all$(query, ApiType.index);
+
+  let state = {
+    api$,
+    selectors: {
+      ...listSelectors,
+      ...allSelectors,
+      dateRangeQuery$
     },
-    allowedQueryKeys: [],
+    dispatchers: {
+      ...indexMarkersDispatchers,
+      ...listDispatcher
+    }
   };
 
-  let entityList = HListFactory(markersState, innerConfig);
+  const userIndexAll = entityClientFactory(state, innerConfig, 'list') as IUsersMarkers;
 
-  return {
-    ...entityList,
-    ...listDispatcher,
-    ...indexMarkersDispatchers,
-    ...listSelectors,
-    ...entityList.selectors
-  }
+  userIndexAll.init();
+
+  return userIndexAll;
+
+  // let markersState = {
+  //   ...state,
+  //     ...listSelectors,
+  //     ...listDispatcher,
+  //   firstDataEffect(data) {
+  //     if(!data.next) {
+  //       listDispatcher.setLoading(false)
+  //     }
+  //   },
+  //   allowedQueryKeys: [],
+  // };
+  //
+  // let entityList = HListFactory(markersState, innerConfig);
+  //
+  // return {
+  //   ...entityList,
+  //   ...listDispatcher,
+  //   ...indexMarkersDispatchers,
+  //   ...listSelectors,
+  //   ...entityList.selectors
+  // }
 };

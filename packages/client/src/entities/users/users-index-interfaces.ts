@@ -1,28 +1,5 @@
-import {
-  EntityList, EntityListDispatchers, EntityListSelectors, EntityTypeConfig, GenListSelectors, ListDispatchers,
-  ListSelectors,
-  ListState
-} from "../base/interfaces";
-import {Observable} from "rxjs/Observable";
+import {IEntityClient} from "../base/entity-factory";
 
-export interface AddUsersIndexSelector {
-
+export interface UsersIndex extends IEntityClient {
+  dataArray$: any
 }
-
-export interface AddUsersIndexDispatchers {
-
-}
-
-export interface UsersIndexSelector extends AddUsersIndexSelector, EntityListSelectors, GenListSelectors {
-
-}
-
-export interface UsersIndexDispatchers extends AddUsersIndexDispatchers, EntityListDispatchers, ListDispatchers {
-
-}
-
-export interface UsersIndex extends EntityList, UsersIndexSelector, UsersIndexDispatchers {
-
-}
-
-export type UsersIndexFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => UsersIndex

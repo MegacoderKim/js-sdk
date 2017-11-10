@@ -8,7 +8,7 @@
 //     name: config.name || 'cluster',
 //     isCluster: true
 //   };
-//   let markers = mapItemsFactory(config);
+//   let listAll = mapItemsFactory(config);
 //   let cluster = {
 //     ...markers,
 //     cluster: null

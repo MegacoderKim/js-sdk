@@ -11,13 +11,13 @@ import {IUsersMarkers} from "./users-markers-interfaces"
 
 export class UsersMarkers extends UsersList {
 
-  constructor(
-    public store: Store<fromRoot.State>,
-    private usersIndexMarkers: IUsersMarkers,
-    private usersAnalyticsMarkers: IUsersMarkers
-  ) {
-    super(store, usersIndexMarkers, usersAnalyticsMarkers)
-  };
+  // constructor(
+  //   public store: Store<fromRoot.State>,
+  //   private usersIndexMarkers: IUsersMarkers,
+  //   private usersAnalyticsMarkers: IUsersMarkers
+  // ) {
+  //   super(store, usersIndexMarkers, usersAnalyticsMarkers)
+  // }; //todo fix later
 
   setActive(isActive: boolean = true) {
     this.store.dispatch(new fromUsersDispatcher.SetMarkersActive(isActive))

@@ -1,7 +1,7 @@
 import {Partial} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {Store} from "../../store/store";
-import {IDateRange} from "../../interfaces";
+import {Subscription} from "rxjs/Subscription";
 
 export type ItemApi<T> = (id: string, query: object | null) => Observable<T>;
 export type ListApi<T> = (query: object | null) => Observable<T>;
@@ -12,26 +12,20 @@ export interface Dispatchers {
   setQuery: (data: object) => any
 };
 
-export type GetData<T> = (queryArray: any[]) => Observable<T>
-
 export interface Selectors {
   query$: Observable<object | null | undefined>
   data$: Observable<any>,
   loading$: Observable<boolean | string>,
+  id$?: Observable<string | null| undefined>
 };
-
-export interface ReqSelectors {
-  apiQuery$: Observable<any[] | null>,
-}
 
 export interface EntityTypeConfig {
   name: string,
   defaultQuery: object,
   pollDuration: number,
   updateStrategy: string,
+  allowedQueryKeys: string[], null
 }
-
-export type EntityTypeConfigFactory = (config: Partial<EntityTypeConfig>) => EntityTypeConfig
 
 export interface EntityTypeState {
   store: Store<any>,
@@ -39,26 +33,19 @@ export interface EntityTypeState {
   dispatchers?: Dispatchers,
 }
 
-export interface EntityType extends EntityTypeConfig {
-  // selectors: Selectors,
-  // dispatchers: Dispatchers,
-}
-
-type EntityTypeFactory = () => EntityType
-
-/**
- * list
- */
-
 export interface ListDispatchers extends Dispatchers {
-  setActive: (data?: boolean) => any
+  setActive: (data?: boolean) => any,
+  setQueryReset?(query): void,
+  clearQueryKey?(key: string): void,
+  toggleId?(id: string): void,
+  setId?(id): void
 }
 
 export interface EntityListDispatchers extends ListDispatchers {
 
 };
 
-export interface GenListSelectors extends ReqSelectors {
+export interface GenListSelectors {
   dataArray$: Observable<any[]>,
 }
 
@@ -66,72 +53,15 @@ export interface ListSelectors extends Selectors {
   active$: Observable<boolean>,
 }
 
-export interface EntityListSelectors extends ReqSelectors, ListSelectors {
-  dateRangeQuery$?: Observable<object>,
-}
-
-export interface PublicEntityListState {
-  api$: (query: object) => Observable<any>
-};
-
-export interface ListState extends EntityTypeState, PublicEntityListState {
-  dateRangeParam?: string
-  dateRangeQuery$?: Observable<object>,
-}
-
-export interface EntityListState extends ListState, PublicEntityListState {
-  selectors: ListSelectors,
-  dispatchers: ListDispatchers,
-  allowedQueryKeys?: string[] | null,
-  firstDataEffect: (data) => any,
-}
-
-export interface EntityList extends EntityTypeConfig, PublicEntityListState {
-  selectors: GenListSelectors,
-}
-
-export type EntityListFactory = (entityListState: ListState, config: Partial<EntityTypeConfig>) => EntityList
-
-/**
- * item
- */
-export interface ItemDispatchers {
-
-}
-
 export interface EntityItemDispatchers extends Dispatchers {
   setId: (id: string | null) => any,
   toggleId?: (userId: string) => any,
 }
 
-export interface GenItemSelectors extends ReqSelectors{
-
-
-}
 
 export interface EntityItemSelectors extends Selectors {
-  id$: Observable<string | null | undefined>
+  id$: Observable<string | null| undefined>
   query$: Observable<object | null | undefined>
 }
 
-export interface PublicEntityItemState {
-  api$: (id: string, query: object) => Observable<any>
-}
 
-export interface EntityItemState extends EntityTypeState, PublicEntityItemState {
-  selectors: EntityItemSelectors,
-  dispatchers: EntityItemDispatchers,
-  firstDataEffect: (data) => any,
-};
-
-export interface ItemState extends EntityTypeState, PublicEntityItemState {
-
-}
-
-export interface EntityItem extends PublicEntityItemState, EntityTypeConfig {
-  selectors: GenItemSelectors,
-  // dispatchers: EntityItemDispatchers
-}
-
-
-export type EntityItemFactory = (state: EntityTypeState, config: Partial<EntityTypeConfig>) => EntityItem;

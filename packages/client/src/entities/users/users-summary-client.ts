@@ -1,23 +1,22 @@
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {Partial} from "ht-models"
-import {UsersSummary, UsersSummaryFactory} from "./users-summary-interface";
-import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/interfaces";
+import {EntityTypeConfig, ListDispatchers, ListSelectors} from "../base/interfaces";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {HListFactory} from "../base/list-client";
 import {Observable} from "rxjs/Observable";
-import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+import {entityClientFactory} from "../base/entity-factory";
+import {UsersSummary} from "./users-summary-interface";
 
-export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListState, config: Partial<EntityTypeConfig>): UsersSummary => {
+export const HtUsersSummaryFactory = ({dateRangeQuery$}): UsersSummary => {
 
   let innerConfig: Partial<EntityTypeConfig> = {
     name: 'users summary',
-    defaultQuery: {},
+    defaultQuery: {page_size: null},
     updateStrategy: 'live',
-    ...config
+    allowedQueryKeys: []
   };
-
-  let {api$, store, dateRangeQuery$, dateRangeParam} = state;
 
   let listSelectors: ListSelectors = {
     active$: store.select(fromRoot.getUsersSummaryActive),
@@ -41,26 +40,21 @@ export const HtUsersSummaryFactory: UsersSummaryFactory = (state: EntityListStat
     }
   };
 
-  let entityListState: EntityListState = {
-    selectors: listSelectors,
-    dispatchers,
-    store,
+  let api$ = (query) => clientApi.users.summary(query);
+
+  let state = {
     api$,
-    dateRangeQuery$,
-    dateRangeParam,
-    firstDataEffect: (data) => dispatchers.setLoading(false),
-    allowedQueryKeys: [
-      'search',
-      'show_all'
-    ]
+    selectors: {
+      ...listSelectors,
+      dateRangeQuery$
+    },
+    dispatchers: {
+      ...dispatchers
+    }
   };
 
-  let entityList = HListFactory(entityListState, innerConfig);
+  let userSummary = entityClientFactory(state, innerConfig, 'list');
+  userSummary.init()
+  return userSummary;
 
-  return {
-    ...entityList,
-    ...dispatchers,
-    ...listSelectors,
-    ...entityList.selectors
-  }
 };

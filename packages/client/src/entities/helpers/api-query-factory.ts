@@ -1,70 +1,69 @@
 import {Observable} from "rxjs/Observable";
-import {AllowedQueryKeys, CombineQuery, DateRangeToQuery, MergeQuery} from "../base/helpers";
-import {IDateRange} from "../../interfaces";
-import {Partial} from "ht-models";
+import {AllowedQueryKeys, CombineQuery, MergeQuery} from "../base/helpers";
 
-export const apiQueryFactory$ = (config: EntityApiQueryConfig): Observable<any[]>  => {
-  let {
-    active$,
-    id$,
-    query$,
-    dateRangeQuery$,
-    defaultQuery,
-    allowedQueryKeys
-  } = config;
+export const apiQueryF = (e, type: 'list' | 'item') => {
 
-
-  let baseQuery$ = query$
-    .let(MergeQuery(defaultQuery))
-    .let(AllowedQueryKeys(allowedQueryKeys))
-    .let(CombineQuery(dateRangeQuery$));
-
-  if(id$) {
-    baseQuery$ = Observable.combineLatest(
+  let apiQueryF = (entity, type: 'list' | 'item') => {
+    let {
+      active$,
       id$,
-      query$
-    )
-  } else {
-    baseQuery$ = baseQuery$.map(data => [data])
+      query$,
+      dateRangeQuery$,
+      defaultQuery,
+      allowedQueryKeys
+    } = entity;
+
+    let baseQuery$ = query$
+      // .do(data => {
+      //   console.log("vase", data);
+      // })
+      .let(MergeQuery(defaultQuery))
+      // .do(data => {
+      //   console.log("quer", data);
+      // })
+      .let(AllowedQueryKeys(allowedQueryKeys))
+      // .do(data => {
+      //   console.log("allowed", data, e.name, allowedQueryKeys);
+      // })
+      .let(CombineQuery(dateRangeQuery$))
+      // .do(data => {
+      //   console.log("data", data);
+      // });
+
+    if(type === 'item') {
+      baseQuery$ = Observable.combineLatest(
+        id$,
+        query$
+      )
+    } else {
+      baseQuery$ = baseQuery$.map(data => {
+        return [data]
+      })
+    }
+    let apiQuery$;
+    if(active$) {
+      apiQuery$ = active$ ? active$.mergeMap((isActive: boolean) => {
+        return isActive ? baseQuery$ : Observable.of(null)
+      }) : baseQuery$;
+    } else {
+      apiQuery$ = baseQuery$
+    }
+    return apiQuery$
+
+
+
+  };
+
+  return {
+    ...e,
+    apiQuery$() {
+      return apiQueryF(this, type)
+    },
+    getApiQuery$() {
+      return this.apiQuery$().map(data => {
+        let queryIndex = type === 'list' ? 0 : 1;
+        return data ? data[queryIndex] : data;
+      })
+    }
   }
-  let apiQuery$;
-  if(active$) {
-    apiQuery$ = active$ ? active$.mergeMap((isActive: boolean) => {
-      return isActive ? baseQuery$ : Observable.of(null)
-    }) : baseQuery$;
-  } else {
-    apiQuery$ = baseQuery$
-  }
-
-  return apiQuery$
 };
-
-export interface DateRangeApiQueryConfig {
-  dateRangeQuery$: Observable<object>,
-}
-
-export interface EntityItemApiQueryConfig {
-  id$: Observable<string | null | undefined>
-};
-
-export interface EntityListApiQueryConfig {
-  allowedQueryKeys?: string[] | null,
-  defaultQuery: object,
-  active$: Observable<boolean>
-}
-
-export interface ApiQueryConfig{
-  query$: Observable<object | null | undefined>
-};
-
-export interface EntityApiQueryConfig extends ApiQueryConfig, Partial<EntityListApiQueryConfig>, Partial<EntityItemApiQueryConfig>, Partial<DateRangeApiQueryConfig> {
-
-}
-
-export interface ListApiQueryConfig extends ApiQueryConfig, EntityListApiQueryConfig, Partial<DateRangeApiQueryConfig> {
-
-}
-
-export interface ItemApiQueryConfig extends ApiQueryConfig, EntityItemApiQueryConfig, Partial<DateRangeApiQueryConfig> {
-
-}

@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "font-awesome": "^4.7.0",
-    "ht-client": "0.0.3-beta",
+    "ht-client": "0.0.6-beta",
     "ht-data": "file:../packages/data",
     "ht-maps": "file:../packages/maps",
     "ht-utility": "file:../packages/utils",

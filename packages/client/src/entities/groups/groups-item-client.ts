@@ -1,27 +1,20 @@
 import {Observable} from "rxjs/Observable";
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {Store} from "../../store/store";
-import {HItemFactory} from "../base/item-client";
-import {GroupsItem, GroupsItemFactory} from "./groups-item-interface";
+import {GroupsItem} from "./groups-item-interface";
 
-import {
-  EntityItemDispatchers,
-  EntityItemFactory, EntityItemSelectors, EntityItemState, EntityTypeConfig, ItemDispatchers, GenItemSelectors,
-  ItemState
-} from "../base/interfaces";
+import {EntityItemDispatchers, EntityItemSelectors} from "../base/interfaces";
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+import {entityClientFactory} from "../base/entity-factory";
 
-export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, config: Partial<EntityTypeConfig> = {}): GroupsItem => {
+export const groupsItemsClientFactory = (config = {}): GroupsItem => {
   let innerConfig = {
     name: 'group',
     defaultQuery: {ordering: '-created_at'},
+    updateStrategy: 'once',
     ...config
   };
-
-  let {
-    api$,
-    store
-  } = state;
 
   let itemSelector: EntityItemSelectors = {
     id$: store.select(fromGroup.getGroupId),
@@ -43,24 +36,17 @@ export const groupsItemsClientFactory: GroupsItemFactory = (state: ItemState, co
     setQuery() {
 
     }
+
   };
 
-  let itemState: EntityItemState = {
-    ...state,
-    selectors: itemSelector,
+  const state = {
+    api$: (id, query?) => clientApi.groups.get(id, query),
     dispatchers,
-    firstDataEffect(data) {
-      dispatchers.setLoading(false)
-    }
+    selectors: itemSelector
   };
 
-  let entityItem = HItemFactory(itemState, innerConfig);
+  let groupsIndex = entityClientFactory(state, innerConfig, 'item');
+  groupsIndex.init();
+  return groupsIndex as GroupsItem;
 
-  return {
-    ...entityItem,
-    ...dispatchers,
-    ...itemSelector,
-    ...entityItem.selectors
-  }
-  // return HItemFactory(api$, store, innerConfig)
 };

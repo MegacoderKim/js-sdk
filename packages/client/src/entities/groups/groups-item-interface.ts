@@ -1,27 +1,6 @@
-import {
-  EntityItem, EntityItemDispatchers, EntityItemSelectors, EntityTypeConfig, ItemDispatchers, GenItemSelectors,
-  ItemState, Selectors
-} from "../base/interfaces";
+import {IEntityClient} from "../base/entity-factory";
 
-export interface AddGroupsItemSelector {
-
-}
-
-export interface AddGroupsItemDispatchers {
-
-}
-
-export interface GroupsItemSelector extends AddGroupsItemSelector, EntityItemSelectors, GenItemSelectors {
-
-}
-
-export interface GroupsItemDispatchers extends AddGroupsItemDispatchers, EntityItemDispatchers, ItemDispatchers {
-
-}
-
-export interface GroupsItem extends EntityItem, GroupsItemSelector, GroupsItemDispatchers {
-
+export interface GroupsItem extends IEntityClient {
+  dataArray$: any
 };
-
-export type GroupsItemFactory = (itemEntityState: ItemState, config: Partial<EntityTypeConfig>) => GroupsItem
 

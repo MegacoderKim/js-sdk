@@ -1,24 +1,18 @@
-import {Page, Partial} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {Store} from "../../store/store";
-import {AllData} from "../../interfaces";
-import {HListFactory} from "../base/list-client";
-import {EntityList, EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/interfaces";
-import {AddGroupsListSelector, GroupListFactory, GroupsList} from "./groups-list-interface"
+import {ListDispatchers, ListSelectors} from "../base/interfaces";
+import {AddGroupsListSelector, GroupsList} from "./groups-list-interface"
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+import {entityClientFactory} from "../base/entity-factory";
 
-export const groupsListClientFactory: GroupListFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): GroupsList => {
+export const groupsListClientFactory = (config = {}): GroupsList => {
   let innerConfig = {
     name: 'group',
     defaultQuery: {ordering: '-created_at'},
     ...config
   };
-
-  let {
-    store,
-    api$
-  } = state;
 
   let listSelectors:  ListSelectors = {
     query$: Observable.of({}),
@@ -27,6 +21,8 @@ export const groupsListClientFactory: GroupListFactory = (state: ListState, conf
     loading$: Observable.of(false),
 
   };
+
+  let api$ = (query) => clientApi.groups.index(query);
 
   let groupSelector: AddGroupsListSelector = {
     getRoots() {
@@ -52,21 +48,38 @@ export const groupsListClientFactory: GroupListFactory = (state: ListState, conf
     }
   };
 
-  let listState: EntityListState = {
-    selectors: listSelectors,
-    dispatchers,
+  let state = {
     api$,
-    store,
-    firstDataEffect: (data) => dispatchers.setLoading(false)
+    selectors: {
+      ...listSelectors,
+      ...groupSelector
+    },
+    dispatchers: {
+      ...dispatchers
+    }
   };
 
-  let entityList: EntityList = HListFactory(listState, innerConfig);
+  let groupIndex = entityClientFactory(state, innerConfig, 'list');
 
-  return {
-    ...entityList,
-    ...entityList.selectors,
-    ...groupSelector,
-    ...listSelectors,
-    ...dispatchers
-  }
+  groupIndex.init();
+
+  return groupIndex as GroupsList;
+
+  // let listState = {
+  //     ...listSelectors,
+  //     ...dispatchers,
+  //   api$,
+  //   store,
+  //   firstDataEffect: (data) => dispatchers.setLoading(false)
+  // };
+  //
+  // let entityList: EntityList = HListFactory(listState, innerConfig);
+  //
+  // return {
+  //   ...entityList,
+  //   ...entityList.selectors,
+  //   ...groupSelector,
+  //   ...listSelectors,
+  //   ...dispatchers
+  // }
 };

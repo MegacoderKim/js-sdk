@@ -1,19 +1,9 @@
 import {PageResults} from "../base/helpers";
-import {apiQueryFactory$, ListApiQueryConfig} from "./api-query-factory";
-import {GenListSelectors, Selectors} from "../base/interfaces";
-import {Observable} from "rxjs/Observable";
+import {GenListSelectors} from "../base/interfaces";
 
-export const ListSelectorsFactory = ({selectors, apiQueryConfig}: ListSelectorsConfig): GenListSelectors => {
-  let listApiQueryConfig: ListApiQueryConfig = apiQueryConfig;
-  let apiQuery$ = apiQueryFactory$(listApiQueryConfig);
+export const ListSelectorsFactory = (selectors): GenListSelectors => {
   let listSelectors: GenListSelectors = {
     dataArray$: selectors.data$.let(PageResults),
-    apiQuery$
   };
   return listSelectors
 };
-
-export interface ListSelectorsConfig {
-  apiQueryConfig: ListApiQueryConfig,
-  selectors: Selectors
-}
