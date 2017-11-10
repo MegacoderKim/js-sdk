@@ -11,7 +11,7 @@ export class UsersSummaryComponent implements OnInit {
   @Output() clearQueryKey: EventEmitter<string> = new EventEmitter();
   @Input() summary;
   @Input() hideTotal;
-
+  @Input() selectable: boolean = false;
   hoveredQuery;
 
   constructor() { }
@@ -42,6 +42,7 @@ export class UsersSummaryComponent implements OnInit {
   }
 
   selectLabel(datum) {
+    if (!this.selectable) return false;
     if (datum.selected) {
       this.clearFilter(datum)
     } else {

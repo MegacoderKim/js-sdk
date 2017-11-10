@@ -22,6 +22,7 @@ export class UsersSummaryContainerComponent implements OnInit {
   summary$;
   @Input() queryLabels: QueryLabel[];
   @Input() hideTotal: boolean = false;
+  @Input() selectable: boolean = false;
   constructor(
     private usersClientService: HtUsersService
   ) { }
@@ -38,7 +39,7 @@ export class UsersSummaryContainerComponent implements OnInit {
   }
 
   setQuery(query: object) {
-    this.usersClientService.list.updateQueryResetPage(query)
+    this.usersClientService.list.setQueryReset(query)
   }
 
 }

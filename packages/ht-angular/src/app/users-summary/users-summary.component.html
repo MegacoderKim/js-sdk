@@ -1,6 +1,6 @@
 <div class="flex-column justify-center label-container">
   <div *ngIf="!hideTotal" class="count text-center">{{summary.totalUsers}} {{'user' | pluralize: summary.totalUsers}}</div>
-  <div class="flex-row">
+  <div class="flex-row" *ngIf="summary.totalUsers">
     <div
       class="bar"
       [style.flex-basis.%]="datum.value/summary.totalUsers * 100"
@@ -9,11 +9,13 @@
       [class.bar-selected]="hoveredQuery && hoveredQuery === datum.label"
       *ngFor="let datum of summary.chart; trackBy:indexId; let i = index"></div>
   </div>
+  <div *ngIf="summary.totalUsers == 0" class="bar" style="width: 100%; background: #ccc"></div>
   <div class="flex-row wrap row-gap-10">
     <!--<div class="box" [style.background-color]="datum.color"></div>-->
     <div
       class="graph-label flex-column flex"
       [class.graph-active]="datum.selected"
+      [class.graph-label-selectable]="selectable"
       (click)="selectLabel(datum)"
       (mouseenter)="onHoverQuery(datum)"
       (mouseleave)="onHoveroutQuery()"
