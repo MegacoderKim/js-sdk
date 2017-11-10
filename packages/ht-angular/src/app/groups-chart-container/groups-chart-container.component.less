@@ -1,17 +1,20 @@
-@import "../../styles/placeholder";
+//@import "../../styles/placeholder";
 @import "../../styles/variables";
 .bar {
   width: 200px;
   min-width: 200px;
 }
+.card-content {
+  padding: 10px 13px;
+}
 .card-active {
   background-color: @ht-blue;
   color: white !important;
-  &:hover {
-    background-color: @ht-blue;
-    color: white;
-  }
-  .action {
+  //&:hover {
+  //  background-color: @ht-blue;
+  //  color: white;
+  //}
+  .button {
     display: none;
   }
 }
@@ -24,9 +27,9 @@
     background-color: @ht-grey-5;
   }
 }
-.card {
-  .flex-column
-}
+//.card {
+//  .flex-column
+//}
 .group-container {
   margin: 20px 0;
   &-list {
@@ -36,7 +39,7 @@
 .msg {
   margin-top: 60px;
 }
-.level {
+.ht-level {
   padding: 8px 16px;
   background-color: @ht-grey-5;
   color: white;
