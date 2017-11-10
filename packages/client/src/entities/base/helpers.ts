@@ -1,7 +1,5 @@
-
-
 import {Observable} from "rxjs/Observable";
-import {Page, Partial} from "ht-models";
+import {Page} from "ht-models";
 import {IDateRange} from "../../interfaces";
 import * as _ from "underscore";
 

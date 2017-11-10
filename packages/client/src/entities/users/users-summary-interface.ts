@@ -1,29 +1,7 @@
-import {
-  EntityItem, EntityItemDispatchers, EntityItemSelectors, EntityList, EntityListDispatchers, EntityListSelectors,
-  EntityTypeConfig,
-  ItemDispatchers, GenItemSelectors,
-  ItemState, ListDispatchers, ListSelectors, ListState, GenListSelectors
-} from "../base/interfaces";
+import {IEntityClient} from "../base/entity-factory";
 
-export interface AddUsersSummarySelector {
-
-}
-
-export interface AddUsersSummaryDispatchers {
-
-}
-
-export interface UsersSummarySelector extends AddUsersSummarySelector, EntityListSelectors, GenListSelectors {
-
-}
-
-export interface UsersSummaryDispatchers extends AddUsersSummaryDispatchers, EntityListDispatchers, ListDispatchers {
-
-}
-
-export interface UsersSummary extends EntityList, UsersSummarySelector, UsersSummaryDispatchers {
+export interface UsersSummary extends IEntityClient {
 
 };
 
-export type UsersSummaryFactory = (itemEntityState: ListState, config: Partial<EntityTypeConfig>) => UsersSummary
 

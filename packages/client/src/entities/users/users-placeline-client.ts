@@ -1,35 +1,19 @@
-import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
-import { Store} from "../../store/store";
-import { State } from "../../reducers/segments-reducer";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import {HItemFactory} from "../base/item-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {
-  AddUsersPlacelineDispatchers, AddUsersPlacelineSelector, UsersPlaceline,
-  UsersPlacelineFactory
-} from "./users-placeline-interfaces";
-import {
-  Dispatchers, EntityItemDispatchers, EntityItemSelectors, EntityItemState, EntityTypeConfig, EntityTypeState,
-  ItemDispatchers, GenItemSelectors,
-  ItemState,
-  ListDispatchers
-} from "../base/interfaces";
+import {AddUsersPlacelineDispatchers, AddUsersPlacelineSelector, UsersPlaceline,} from "./users-placeline-interfaces";
+import {EntityItemDispatchers, EntityItemSelectors, EntityTypeConfig} from "../base/interfaces";
+import {store} from "../../store-provider";
+import {clientApi} from "../../client-api";
+import {entityClientFactory} from "../base/entity-factory";
 
-export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemState, config: Partial<EntityTypeConfig> = {}): UsersPlaceline => {
+export const UsersPlacelineClientFactory = (): UsersPlaceline => {
   let innerConfig: Partial<EntityTypeConfig> = {
     name: 'users placeline',
-    defaultQuery: {ordering: '-last_heartbeat_at'},
     updateStrategy: 'live',
-    ...config
   };
-
-  let {
-    store,
-    api$
-  } = state;
 
   let itemSelectors: EntityItemSelectors = {
     query$: store.select(fromRoot.getQueryPlacelineQuery),
@@ -69,22 +53,24 @@ export const UsersPlacelineClientFactory: UsersPlacelineFactory = (state: ItemSt
     },
   };
 
-  let entityState: EntityItemState = {
-      ...state,
-    selectors: itemSelectors,
-    dispatchers,
-    firstDataEffect(data) {
-        dispatchers.setLoading(false)
+  let api = clientApi.users;
+  let api$ = (id, query) => api.placeline(id, query);
+
+  let state = {
+    api$,
+    selectors: {
+      ...itemSelectors,
+      ...placelineSelectors
+    },
+    dispatchers: {
+      ...dispatchers,
+      ...placelineDispatchers
     }
   };
 
-  let entityItem = HItemFactory(entityState, innerConfig);
+  const placeline = entityClientFactory(state, innerConfig, 'item') as UsersPlaceline;
 
-  return {
-    ...entityItem,
-    ...dispatchers,
-    ...placelineDispatchers,
-    ...entityItem.selectors,
-    ...itemSelectors
-  }
+  placeline.init();
+
+  return placeline
 };

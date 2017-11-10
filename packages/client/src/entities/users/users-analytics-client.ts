@@ -1,27 +1,27 @@
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import {HListFactory} from "../base/list-client";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {UsersAnalytics, UsersAnalyticsFactory} from "./users-analytics-interfaces";
-import {EntityListState, EntityTypeConfig, ListDispatchers, ListSelectors, ListState} from "../base/interfaces";
+import {UsersAnalytics} from "./users-analytics-interfaces";
+import {ListDispatchers, ListSelectors} from "../base/interfaces";
 import {Observable} from "rxjs/Observable";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
+import {clientApi} from "../../client-api";
+import {entityClientFactory} from "../base/entity-factory";
+import {store} from "../../store-provider";
 
-export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListState, config: Partial<EntityTypeConfig> = {}): UsersAnalytics => {
+export const UsersAnalyticsClientFactory = ({dateRangeQuery$}): UsersAnalytics => {
   let innerConfig = {
-    name: 'users analytics',
+    name: 'users analytics test',
     updateStrategy: 'update',
-    ...config,
-    defaultQuery: {ordering: '-last_heartbeat_at', ...config.defaultQuery},
+    defaultQuery: {ordering: '-last_heartbeat_at'},
   };
-
-  let {api$, store, dateRangeQuery$} = state;
 
   let selectors: ListSelectors = {
     query$: store.select(fromRoot.getQueryUserQuery) as Observable<object | null>,
     data$: store.select(fromRoot.getUsersAnalyticsPage),
     active$: store.select(fromRoot.getUsersAnalyticsIsActive),
-    loading$: store.select(fromRoot.getLoadingAnalytics)
+    loading$: store.select(fromRoot.getLoadingAnalytics),
+    id$: store.select(fromRoot.getQueryUserId)
   };
 
   let dispatchers: ListDispatchers = {
@@ -36,29 +36,50 @@ export const UsersAnalyticsClientFactory: UsersAnalyticsFactory = (state: ListSt
     },
     setQuery(query = {}) {
       store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
+    },
+    setQueryReset(query) {
+      store.dispatch(new fromQueryDispatcher.SetUserQueryResetPage(query))
+    },
+    clearQueryKey(key: string) {
+      store.dispatch(new fromQueryDispatcher.ClearUserQueryKey(key))
+    },
+    toggleId(userId: string) {
+      store.dispatch(new fromQueryDispatcher.ToggleUserId(userId))
+    },
+    setId(userId: string | null) {
+      store.dispatch(new fromQueryDispatcher.SetUserId(userId))
     }
   };
 
-  let entityListState: EntityListState = {
-      ...state,
-    selectors,
-    dispatchers,
-    firstDataEffect: (data) => {
-      dispatchers.setLoading(false)
+  let api$ = (query) => clientApi.users.analytics(query);
+
+  let state = {
+    api$,
+    selectors: {
+      ...selectors,
+      dateRangeQuery$
+    },
+    dispatchers: {
+      ...dispatchers,
     }
   };
+  let user = entityClientFactory(state, innerConfig, 'list') as UsersAnalytics;
+  user.init();
+  return user
 
-  let entityList = HListFactory(entityListState, innerConfig);
-
+  // let entityList = HListFactory(entityListState, innerConfig);
+  //
+  // // return {
+  // //   ...entityList,
+  // //   dispatchers,
+  // //   selectors: {...selectors, ...entityList.selectors}
+  // // }
   // return {
   //   ...entityList,
-  //   dispatchers,
-  //   selectors: {...selectors, ...entityList.selectors}
+  //   ...dispatchers,
+  //   ...selectors,
+  //   apiQuery$() {
+  //     return Observable.empty()
+  //   }
   // }
-  return {
-    ...entityList,
-    ...dispatchers,
-    ...selectors,
-    ...entityList.selectors
-  }
 };

@@ -11,10 +11,10 @@ export const SET_USERS_INDEX_ALL = '[USERS] set users index all';
 export const SET_USERS_SUMMARY = '[USERS] set users summary';
 export const SET_USERS_LIST_API_TYPE = '[USERS] set users list api type';
 export const SET_USERS_LIST_DATA_MAP = '[USERS] set users list data map';
-export const SET_USERS_MARKERS_DATA_MAP = '[USERS] set users markers data map';
+export const SET_USERS_MARKERS_DATA_MAP = '[USERS] set users listAll data map';
 
 export const INIT_USERS_LIST = "[USERS] init users list";
-export const INIT_USERS_MARKERS = "[USERS] init users markers";
+export const INIT_USERS_MARKERS = "[USERS] init users listAll";
 export const INIT_USERS = "[USERS] init users";
 export const PAUSE_USERS = "[USERS] pause users";
 

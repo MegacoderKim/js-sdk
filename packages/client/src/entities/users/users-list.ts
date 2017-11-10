@@ -11,8 +11,8 @@ import {Subscription} from "rxjs/Subscription";
 export class UsersList {
   constructor(
     public store: Store<fromRoot.State>,
-    private usersIndexClient: UsersIndex,
-    private usersAnalyticsClient: UsersAnalytics
+    private usersIndexClient,
+    private usersAnalyticsClient
   ) {
 
   }
@@ -72,7 +72,7 @@ export class UsersList {
 
   getApiQuery$() {
     return this.getClient().switchMap((client) => {
-      return client.apiQuery$.map(data => {
+      return client.apiQuery$().map(data => {
         return data ? data[0] : data;
       })
     })

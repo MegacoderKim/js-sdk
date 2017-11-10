@@ -1,20 +1,11 @@
-import {
-  EntityList, EntityListSelectors, EntityTypeConfig, GenListSelectors, ListDispatchers, ListSelectors,
-  ListState
-} from "../base/interfaces";
 import {Observable} from "rxjs/Observable";
+import {IEntityClient} from "../base/entity-factory";
 
 export interface AddGroupsListSelector {
   getRoots: () => Observable<any>
   getChildren: (groupId: string) => Observable<any>
 }
 
-export interface GroupsListSelector extends AddGroupsListSelector, EntityListSelectors, GenListSelectors {
-
+export interface GroupsList extends IEntityClient, AddGroupsListSelector {
+  dataArray$: any
 }
-
-export interface GroupsList extends EntityList, GroupsListSelector, ListDispatchers {
-
-}
-
-export type GroupListFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => GroupsList

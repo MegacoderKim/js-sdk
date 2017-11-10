@@ -1,7 +1,4 @@
-import {
-  EntityItem, EntityItemDispatchers, EntityItemSelectors, EntityTypeConfig, ItemDispatchers, GenItemSelectors,
-  ItemState, Selectors
-} from "../base/interfaces";
+import {IEntityClient} from "../base/entity-factory";
 
 export interface AddUsersPlacelineSelector {
 
@@ -12,17 +9,8 @@ export interface AddUsersPlacelineDispatchers {
   setSegmentResetMapId: (segmentId) => any
 }
 
-export interface UsersPlacelineSelector extends AddUsersPlacelineSelector, EntityItemSelectors, GenItemSelectors {
-
-}
-
-export interface UsersPlacelineDispatchers extends AddUsersPlacelineDispatchers, EntityItemDispatchers, ItemDispatchers {
-
-}
-
-export interface UsersPlaceline extends EntityItem, UsersPlacelineSelector, UsersPlacelineDispatchers {
+export interface UsersPlaceline extends IEntityClient, AddUsersPlacelineDispatchers {
 
 };
 
-export type UsersPlacelineFactory = (itemEntityState: ItemState, config: Partial<EntityTypeConfig>) => UsersPlaceline
 

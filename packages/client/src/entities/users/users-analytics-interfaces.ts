@@ -1,28 +1,12 @@
-import {
-  EntityList, EntityListDispatchers, EntityListSelectors, EntityTypeConfig, GenListSelectors, ListDispatchers,
-  ListSelectors,
-  ListState
-} from "../base/interfaces";
+import {IEntityClient} from "../base/entity-factory";
 import {Observable} from "rxjs/Observable";
 
-export interface AddUsersAnalyticsSelector {
+export interface UsersAnalyticsDispatcher {
+  setQueryReset(query): void,
+  clearQueryKey(key: string): void
+};
 
+export interface UsersAnalytics extends IEntityClient, UsersAnalyticsDispatcher {
+  dataArray$: any,
+  getApiQuery$(): Observable<any>,
 }
-
-export interface AddUsersAnalyticsDispatchers {
-
-}
-
-export interface UsersAnalyticsSelector extends AddUsersAnalyticsSelector, EntityListSelectors, GenListSelectors {
-
-}
-
-export interface UsersAnalyticsDispatchers extends AddUsersAnalyticsDispatchers, EntityListDispatchers, ListDispatchers {
-
-}
-
-export interface UsersAnalytics extends EntityList, UsersAnalyticsSelector, UsersAnalyticsDispatchers {
-
-}
-
-export type UsersAnalyticsFactory = (listEntityState: ListState, config: Partial<EntityTypeConfig>) => UsersAnalytics

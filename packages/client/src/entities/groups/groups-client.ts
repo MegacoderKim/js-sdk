@@ -1,17 +1,16 @@
 import {EntityClient} from "../../base/entity-client";
 import {groupsListClientFactory} from "./groups-list";
 import {HtBaseApi} from "../../api/base";
-import {HtGroupsApi} from "../../api/groups";
 import {groupsItemsClientFactory} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
-import {EntityTypeState, ItemState, ListState} from "../base/interfaces";
 import {GroupsItem} from "./groups-item-interface";
 import {GroupsList} from "./groups-list-interface";
-import {AllData} from "../../interfaces";
-import {Observable} from "rxjs/Observable";
 import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
+import {Observable} from "rxjs/Observable";
+import {AllData} from "../../interfaces";
+
 // import {htClient} from "../../client";
 
 export class HtGroupsClient extends EntityClient{
@@ -24,26 +23,10 @@ export class HtGroupsClient extends EntityClient{
     let api = clientApi.groups;
     this.api = api;
     this.store = store;
-    let entityState: EntityTypeState = {
-      store,
-    };
 
-    let listState: ListState = {
-      ...entityState,
-      api$: (query) => this.api.index(query),
-    };
+    this.list = groupsListClientFactory();
 
-    let itemState: ItemState = {
-      ...entityState,
-      api$: (id, query) => this.api.get(id, query),
-    };
-
-    this.list = groupsListClientFactory(
-      listState,
-      {updateStrategy: 'once'}
-    );
-
-    this.item = groupsItemsClientFactory(itemState, {})
+    this.item = groupsItemsClientFactory()
 
   }
 
@@ -53,13 +36,13 @@ export class HtGroupsClient extends EntityClient{
     });
   }
 
-  lookupIdKey$(lookupId) {
+  lookupIdKey$(lookupId): Observable<any> {
     return this.api.index({lookup_id: lookupId}).map(groupPage => {
       return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
     })
   }
 
-  getChildren(groupId: string) {
+  getChildren(groupId: string): Observable<AllData<any>> {
     return this.api.all$({parent_group_id: groupId})
   }
 
