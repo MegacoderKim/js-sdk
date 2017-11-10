@@ -164,7 +164,7 @@ function removeClusterMarker(cluster, marker) {
 
 
 function addMarkersToCluster(cluster, markers, map) {
-  // if(markers.length) console.log(map, "map", markers[0]);
+  // if(listAll.length) console.log(map, "map", listAll[0]);
   // cluster.setMap(map);
   let clusterMarkers = cluster.getMarkers();
   markers.forEach((marker) => {
@@ -184,7 +184,7 @@ function addMarkersToCluster(cluster, markers, map) {
   // var hasId = clusterMarkers && clusterMarkers.length && clusterMarkers[0]['id'];
   // if(hasId) {
   //   let markerEntity = _.indexBy(clusterMarkers, 'id');
-  //   markers.forEach((marker) => {
+  //   listAll.forEach((marker) => {
   //     if(markerEntity[marker['id']]) {
   //
   //     } else {
@@ -192,7 +192,7 @@ function addMarkersToCluster(cluster, markers, map) {
   //     }
   //   })
   // } else {
-  //   _.each(markers, (marker) => {
+  //   _.each(listAll, (marker) => {
   //     // console.log(marker.getPosition().lng());
   //     cluster.removeMarker(marker);
   //     cluster.addMarker(marker)
@@ -203,9 +203,9 @@ function addMarkersToCluster(cluster, markers, map) {
   //   })
   // }
 
-  // cluster.addMarkers(markers)
-  // this.markerCluster.addLayers(markers);
-  // this.markerCluster.refreshClusters(markers);
+  // cluster.addMarkers(listAll)
+  // this.markerCluster.addLayers(listAll);
+  // this.markerCluster.refreshClusters(listAll);
 }
 
 function getPopup(options: {}) {

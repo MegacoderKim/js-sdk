@@ -138,8 +138,8 @@ function removeClusterMarker(cluster, marker) {
 }
 
 function addMarkersToCluster(cluster, markers) {
-  // cluster.addLayers(markers);
-  // cluster.refreshClusters(markers);
+  // cluster.addLayers(listAll);
+  // cluster.refreshClusters(listAll);
 }
 
 function getPolyline() {
