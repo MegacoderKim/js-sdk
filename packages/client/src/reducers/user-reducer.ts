@@ -127,17 +127,21 @@ export const getIndexFilteredMarkers = createSelector(getIndexAll, getMarkerData
 });
 
 export const getIndexActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
-  return apiType === ApiType.index && isListActive
+  return false
+  // return apiType === ApiType.index && isListActive
 });
 export const getAnalyticsActive = createSelector(getListApiType, getListActive, (apiType, isListActive) => {
-  return apiType === ApiType.analytics && isListActive
+  return isListActive
+  // return apiType === ApiType.analytics && isListActive
 });
 
 export const getIndexMarkersActive = createSelector(getListApiType, getMarkersActive, (apiType, isMarkersActive) => {
-  return apiType === ApiType.index && isMarkersActive
+  return false
+  // return apiType === ApiType.index && isMarkersActive
 });
 export const getAnalyticsMarkersActive = createSelector(getListApiType, getMarkersActive, (apiType, isMarkersActive) => {
-  return apiType === ApiType.analytics && isMarkersActive
+  return isMarkersActive
+  // return apiType === ApiType.analytics && isMarkersActive
 });
 
 
