@@ -30,6 +30,7 @@ export class UsersComponent implements OnInit {
   @Input() showExtraBtn: boolean = true;
   @Output() onSelectUser: EventEmitter<string | null> = new EventEmitter();
   @Output() onAction: EventEmitter<string | null> = new EventEmitter();
+  @Output() onHover: EventEmitter<string | null> = new EventEmitter();
   constructor() { }
 
   ngOnInit() {

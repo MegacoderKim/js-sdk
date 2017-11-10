@@ -26,7 +26,7 @@ export class MapContainerComponent implements OnInit, AfterContentInit {
       .map((data) => !!data && this.showLoading)
       .distinctUntilChanged();
 
-    const loading$2 = this.userClientService.markers.loading$
+    const loading$2 = this.userClientService.listAll.loading$
       .map((data) => !!data)
       .distinctUntilChanged();
 

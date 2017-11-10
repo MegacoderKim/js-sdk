@@ -12,6 +12,7 @@ import {PlacelineModule} from "../placeline/placeline.module";
 import {UsersMapContainerModule} from "../users-map-container/users-map-container.module";
 import {PlacelineContainerModule} from "../placeline-container/placeline-container.module";
 import {PlacelineMapContainerModule} from "../placeline-map-container/placeline-map-container.module";
+import {UsersSummaryContainerModule} from "../users-summary-container/users-summary-container.module";
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {PlacelineMapContainerModule} from "../placeline-map-container/placeline-
     SharedModule,
     UsersContainerModule,
     UserCardModule,
+    UsersSummaryContainerModule,
     PlacelineModule,
     UsersMapContainerModule,
     PlacelineContainerModule,

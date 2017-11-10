@@ -4,6 +4,8 @@
     class="flex-row card card-clickable is-marginless"
     [class.card-selected]="selectedUserDataId == user.id"
     [action]="getAction(user)" (onAction)="onAction.next($event)"
+    (mouseenter)="onHover.next(user.id)"
+    (mouseleave)="onHover.next(null)"
     (click)="onSelectUser.next(user)"
     [user]="user" *ngFor="let user of users; trackBy:indexId">
     <!--<div-->

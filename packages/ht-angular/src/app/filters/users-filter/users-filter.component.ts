@@ -33,7 +33,7 @@ export class UsersFilterComponent implements OnInit {
 
   ngOnInit() {
     this.query$ = this.usersClientService.queryLabel$;
-    this.loading$ = this.usersClientService.list.loading$;
+    this.loading$ = this.usersClientService.list.loading$.map(data => !!data).distinctUntilChanged();
     this.statusFiltes = this.usersClientService.filterClass.statusQueryArray;
     this.sortingLabels = this.usersClientService.filterClass.sortingQueryLabel;
     this.ordering$ = this.usersClientService.ordering$;
@@ -41,7 +41,7 @@ export class UsersFilterComponent implements OnInit {
   }
 
   onQuery(query) {
-    this.usersClientService.list.updateQueryResetPage(query)
+    this.usersClientService.list.setQueryReset(query)
   }
 
   clearQuery(key) {

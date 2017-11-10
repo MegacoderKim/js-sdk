@@ -1,12 +1,13 @@
 <div class="flex-column relative">
   <!--<ht-users-summary [summary]="summary$ | async"></ht-users-summary>-->
-  <ht-users-summary-container></ht-users-summary-container>
-  <ht-users-summary-container [hideTotal]="true" [queryLabels]="queryMap"></ht-users-summary-container>
+  <ht-users-summary-container *ngIf="showStatusSummary" [selectable]="true"></ht-users-summary-container>
+  <ht-users-summary-container *ngIf="showActiveSummary" [selectable]="true" [hideTotal]="true" [queryLabels]="queryMap"></ht-users-summary-container>
   <ht-users
     [selectedUserDataId]="selectedUserDataId$ | async"
     [selectedUserId]="selectedUserId$ | async"
     [loadingUserDataId]="loadingUserDataId$ | async"
     [hasMap]="hasMap"
+    (onHover)="hoverUser($event)"
     (onAction)="onAction($event)"
     (onSelectUser)="selectUserCard($event)"
     [showExtraBtn]="hasPlaceline"
@@ -16,9 +17,7 @@
     <!--&lt;!&ndash;<ht-user-card [user]="userData"></ht-user-card>&ndash;&gt;-->
     <!--<ht-placeline [userData]="userData"></ht-placeline>-->
   <!--</div>-->
-  <div class="loading-box" *ngIf="loadingUsers$ | async">
-
-  </div>
+  <div class="loading-box" *ngIf="loadingUsers$ | async"></div>
   <ng-container *ngIf="usersPage$ | async as usersPage">
     <ht-pagination (fetchPage)="fetchPage($event)" [pageDate]="usersPage"></ht-pagination>
   </ng-container>

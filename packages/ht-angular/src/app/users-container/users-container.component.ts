@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 // import {HtMapService, HtUsersClientService} from "ht-angular-client";
 import {IUserAnalytics, IUserData} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
@@ -15,7 +15,7 @@ import {Color} from "ht-utility";
   templateUrl: './users-container.component.html',
   styleUrls: ['./users-container.component.less']
 })
-export class UsersContainerComponent implements OnInit {
+export class UsersContainerComponent implements OnInit, OnDestroy {
   @Input() hasPlaceline = true;
   usersPage$;
   users$;
@@ -26,6 +26,8 @@ export class UsersContainerComponent implements OnInit {
   loadingUserDataId$;
   loadingUsers$;
   @Input() hasMap: boolean = false;
+  @Input() showStatusSummary: boolean = true;
+  @Input() showActiveSummary: boolean = true;
   @Input() apiType: ApiType = ApiType.analytics;
   queryMap: QueryLabel[] = [
     {
@@ -50,7 +52,7 @@ export class UsersContainerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userService.list.setApiType(this.apiType);
+    // this.userService.list.setApiType(this.apiType);
     this.userService.list.setActive();
     if (this.hasPlaceline) {
       // this.user$ = Observable.empty();
@@ -71,11 +73,10 @@ export class UsersContainerComponent implements OnInit {
       return pageData ? pageData.results : pageData
     });
 
-    this.loadingUsers$ = this.userService.list.loading$;
+    this.loadingUsers$ = this.userService.list.loading$.map(data => !!data).distinctUntilChanged();
 
-    this.loadingUserDataId$ = this.userService.placeline.loading$.distinctUntilChanged();
+    this.loadingUserDataId$ = this.userService.placeline.loading$.map(data => !!data).distinctUntilChanged();
     // this.loadingUserId$ = this.userService.list.loading$.distinctUntilChanged();
-
 
     this.selectedUserDataId$ = this.userService.placeline.id$;
     this.selectedUserId$ = this.userService.list.id$;
@@ -152,7 +153,19 @@ export class UsersContainerComponent implements OnInit {
   }
 
   fetchPage(number) {
-    this.userService.list.updateQuery({page: number})
+    this.userService.list.setQuery({page: number})
+  }
+
+  hoverUser(userId: string | null) {
+    this.mapService.usersCluster.setPopup(userId)
+  }
+
+  closeHoverUser() {
+    this.hoverUser(null)
+  }
+
+  ngOnDestroy() {
+
   }
 
 }

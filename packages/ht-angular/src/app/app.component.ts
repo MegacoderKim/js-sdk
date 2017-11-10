@@ -17,7 +17,7 @@ export class AppComponent {
   ) {
     const token = GetUrlParam('key');
     if (token) clientApi.setToken(token);
-    console.log(clientApi);
+    // console.log(clientApi);
     // console.log(this.config.actions, "log");
     const queryMap: QueryLabel[] = [
       {
