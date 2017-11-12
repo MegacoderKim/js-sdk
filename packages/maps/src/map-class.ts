@@ -92,9 +92,9 @@ export class HtMapClass {
     this.placeline.trace(user)
   }
 
-  resetBounds(bounds?: HtBounds, options?) {
-    MapService.resetBounds(bounds, options)
-  };
+  // resetBounds(bounds?: HtBounds, options?) {
+  //   MapService.resetBounds(bounds, options)
+  // };
 
   getBoundsItem(items) {
     let bounds = MapService.mapUtils.extendBounds();

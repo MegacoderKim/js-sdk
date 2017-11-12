@@ -55,7 +55,7 @@ export class HtUsersClient extends EntityClient {
   filterClass: DefaultUsersFilter = new DefaultUsersFilter();
   dateRangeObserver: QueryObserver;
   initialDateRange: IDateRange;
-  mapClass: HtMapClass;
+  // mapClass: HtMapClass;
   userDispatcher = fromUsersDispatcher;
   queryDispatcher = fromQueryDispatcher;
 
@@ -264,8 +264,11 @@ export class HtUsersClient extends EntityClient {
 
   allMarkers$() {
 
-    let isFirstCb = () => !!this.mapClass && this.mapClass.resetBounds();
-    let userMarkers$ = this.listAll.getResults(isFirstCb).filter(data => !!data);
+    // let isFirstCb = () => !!this.mapClass && this.mapClass.resetBounds();
+    let isFirstCb = () => {
+
+    };
+    let userMarkers$ = this.listAll.dataArray$;
 
     let allMarkers$ = Observable.merge(
       userMarkers$,
@@ -275,7 +278,7 @@ export class HtUsersClient extends EntityClient {
     let hasPlaceline$ = this.placeline.id$.map((data) => !!data).distinctUntilChanged();
 
     let dataArray$ = Observable.combineLatest(
-      allMarkers$,
+      userMarkers$,
       hasPlaceline$,
       (markers, hasPlaceline) => {
         return hasPlaceline ? [] : markers
@@ -295,12 +298,16 @@ export class HtUsersClient extends EntityClient {
     return dataArray$
   }
 
+  markers$() {
+    return this.allMarkers$().pluck('valid');
+  }
+
   getSegmentsStates() {
     return this.store.select(fromRoot.getSegmentsState)
   }
 
-  private initEffects() {
-    Observable.combineLatest(
+  getCurrentPlaceline$() {
+    return Observable.combineLatest(
       this.placeline.data$,
       this.getSegmentsStates(),
       (userData: IUserData, {selectedId, resetMapId}) => {
@@ -313,26 +320,40 @@ export class HtUsersClient extends EntityClient {
         }
         return userData
       }
-    ).filter((data) => !!this.mapClass).do((userData) => {
-      if (userData) {
-        this.mapClass.tracePlaceline(userData);
+    )
 
-        // if (toReset) this.mapClass.resetBounds()
-      } else {
-        this.mapClass.segmentTrace.trace(null, this.mapClass.map)
-      }
-    }).map((userData) => {
-      return userData ? userData.id : null
-    }).distinctUntilChanged().subscribe(() => {
-      this.mapClass.resetBounds()
-    });
+  }
+
+  private initEffects() {
+    // Observable.combineLatest(
+    //   this.placeline.data$,
+    //   this.getSegmentsStates(),
+    //   (userData: IUserData, {selectedId, resetMapId}) => {
+    //     if(userData && (selectedId || resetMapId)) {
+    //       const id = selectedId || resetMapId;
+    //       let segments = _.filter(userData.segments, (segment: ISegment) => {
+    //         return segment.id === id;
+    //       });
+    //       userData = {...userData, segments: segments, events: [], actions: []}
+    //     }
+    //     return userData
+    //   }
+    // ).filter((data) => !!this.mapClass).do((userData) => {
+    //   this.mapClass.segmentTrace.trace(null, this.mapClass.map)
+    // }).map((userData) => {
+    //   return userData ? userData.id : null
+    // }).distinctUntilChanged().subscribe(() => {
+    //   this.mapClass.resetBounds()
+    // });
 
 
-    const marks$ = this.allMarkers$().filter((data) => !!this.mapClass).pluck('valid');
+    // const marks$ = this.allMarkers$().filter((data) => !!this.mapClass).pluck('valid');
 
-    marks$.subscribe((data) => {
-      this.mapClass.usersCluster.trace(data, this.mapClass.map)
-    });
+    // this.mapClass.usersCluster.setData$(marks$);
+
+    // marks$.subscribe((data) => {
+    //   this.mapClass.usersCluster.trace(data, this.mapClass.map)
+    // });
 
     this.list.query$.filter(data => !!data).subscribe((query) => {
       this.setListAllFilter(query)

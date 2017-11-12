@@ -1,7 +1,9 @@
 import {IEntityClient} from "../base/entity-factory";
+import {Observable} from "rxjs/Observable";
 
 export interface AddUsersPlacelineSelector {
-
+  segmentsState$: Observable<any>,
+  getMapData$(): Observable<any>
 }
 
 export interface AddUsersPlacelineDispatchers {
@@ -9,7 +11,7 @@ export interface AddUsersPlacelineDispatchers {
   setSegmentResetMapId: (segmentId) => any
 }
 
-export interface UsersPlaceline extends IEntityClient, AddUsersPlacelineDispatchers {
+export interface UsersPlaceline extends IEntityClient, AddUsersPlacelineDispatchers, AddUsersPlacelineSelector {
 
 };
 

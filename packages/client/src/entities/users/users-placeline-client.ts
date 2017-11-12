@@ -8,6 +8,9 @@ import {EntityItemDispatchers, EntityItemSelectors, EntityTypeConfig} from "../b
 import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
 import {entityClientFactory} from "../base/entity-factory";
+import {Observable} from "rxjs/Observable";
+import {IUserData, ISegment} from "ht-models";
+import * as _ from "underscore";
 
 export const UsersPlacelineClientFactory = (): UsersPlaceline => {
   let innerConfig: Partial<EntityTypeConfig> = {
@@ -23,7 +26,23 @@ export const UsersPlacelineClientFactory = (): UsersPlaceline => {
   };
 
   let placelineSelectors: AddUsersPlacelineSelector = {
-
+    segmentsState$: store.select(fromRoot.getSegmentsState),
+    getMapData$() {
+      return Observable.combineLatest(
+        this.data$,
+        this.segmentsState$,
+        (userData: IUserData, {selectedId, resetMapId}) => {
+          if(userData && (selectedId || resetMapId)) {
+            const id = selectedId || resetMapId;
+            let segments = _.filter(userData.segments, (segment: ISegment) => {
+              return segment.id === id;
+            });
+            userData = {...userData, segments: segments, events: [], actions: []}
+          }
+          return userData
+        }
+      )
+    }
   };
 
   let dispatchers: EntityItemDispatchers = {
