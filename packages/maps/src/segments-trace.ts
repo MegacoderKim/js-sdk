@@ -16,6 +16,10 @@ import {currentUserFactory} from "./entities/current-user";
 import {MapEntities, Entity} from "./entities/interfaces";
 import {MapEntity} from "./base/map-item-factory";
 import {HtPosition} from "ht-data";
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import {filter} from "rxjs/operators/filter";
+import {scan} from "rxjs/operators/scan";
 
 export class HtSegmentsTrace {
 
@@ -29,6 +33,7 @@ export class HtSegmentsTrace {
   eventMarkers = stopFactory();
   allowedEvents = {};
   // map;
+  dataSub: Subscription;
 
   constructor(public options: HtSegmentsTraceOptions = {}) {
     // this.initBaseItems();
@@ -39,6 +44,39 @@ export class HtSegmentsTrace {
 
   get map() {
     return MapService.map
+  }
+
+  setData$(data$: Observable<IUserData | null>) {
+    if (this.dataSub) {
+      this.dataSub.unsubscribe();
+    }
+    this.initDataObserver(data$)
+  }
+
+  initDataObserver(data$: Observable<IUserData | null>) {
+    let userData$ = data$.pipe(
+      filter(data => !!MapService.map),
+      scan((acc: any, data) => {
+        const oldId = acc.user ? acc.user.id : null;
+        const currentId = data ? data.id : null;
+        const isNew = currentId && oldId ? currentId !== oldId : true;
+        return {user: data, isNew, oldId }
+      }, {user: null, oldId: null, isNew: true})
+    );
+    // let userData$ = data$.filter(data => !!MapService.map).scan((acc, data) => {
+    //   const oldId = acc.user ? acc.user.id : null;
+    //   const currentId = data ? data.id : null;
+    //   const isNew = currentId && oldId ? currentId !== oldId : true;
+    //   return {user: data, isNew, oldId }
+    // }, {user: null, oldId: null, isNew: true});
+
+    let sub = userData$.subscribe((acc) => {
+      const userData = acc.user;
+      const isNew = acc.isNew;
+      this.trace(userData);
+      if(isNew) MapService.resetBounds()
+    });
+    this.dataSub = sub;
   }
 
   trace(user, map?) {

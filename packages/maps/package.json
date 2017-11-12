@@ -34,7 +34,7 @@
     "ht-utility": "0.0.x",
     "ht-data": ">=0.0.20",
     "underscore": "^1.8.x",
-    "rxjs": "^5.4.x"
+    "rxjs": "^5.5.2"
   },
   "false": {}
 }

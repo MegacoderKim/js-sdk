@@ -16,7 +16,7 @@ export class HtMapClass {
   // mapUtils: MapUtils;
   // userData$: Observable<IUserData | null>;
   userDataSub: Subscription;
-  segmentTrace: HtSegmentsTrace;
+  placeline: HtSegmentsTrace;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
@@ -39,8 +39,14 @@ export class HtMapClass {
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     MapService.setMapType(mapType);
     this.usersCluster = usersClustersFactory();
-    this.segmentTrace = new HtSegmentsTrace();
-    this.mapItemsSet.push(this.segmentTrace, this.usersCluster);
+    this.placeline = new HtSegmentsTrace();
+    MapService.addToItemsSet(this.placeline);
+    MapService.addToItemsSet(this.usersCluster);
+    // this.mapItemsSet.push(this.placeline, this.usersCluster);
+  }
+
+  get segmentTrace() {
+    return this.placeline
   }
 
   get map$(): ReplaySubject<HtMap> {
@@ -58,41 +64,36 @@ export class HtMapClass {
     return map
   }
 
-  setPlacelineData$(data$: Observable<IUserData | null>) {
-    if (this.userDataSub) {
-      this.userDataSub.unsubscribe();
-    }
-    this.initUserDataObserver(data$)
-  }
-
-  private initUserDataObserver(data$: Observable<IUserData | null>) {
-    let userData$ = data$.scan((acc, data) => {
-      const oldId = acc.user ? acc.user.id : null;
-      const currentId = data ? data.id : null;
-      const isNew = currentId && oldId ? currentId !== oldId : true;
-      return {user: data, isNew, oldId }
-    }, {user: null, oldId: null, isNew: true});
-
-    let sub = userData$.subscribe((acc) => {
-      const userData = acc.user;
-      const isNew = acc.isNew;
-      this.tracePlaceline(userData);
-      if(isNew) this.resetBounds()
-    });
-    this.userDataSub = sub;
-  }
+  // setPlacelineData$(data$: Observable<IUserData | null>) {
+  //   if (this.userDataSub) {
+  //     this.userDataSub.unsubscribe();
+  //   }
+  //   this.initUserDataObserver(data$)
+  // }
+  //
+  // private initUserDataObserver(data$: Observable<IUserData | null>) {
+  //   let userData$ = data$.scan((acc, data) => {
+  //     const oldId = acc.user ? acc.user.id : null;
+  //     const currentId = data ? data.id : null;
+  //     const isNew = currentId && oldId ? currentId !== oldId : true;
+  //     return {user: data, isNew, oldId }
+  //   }, {user: null, oldId: null, isNew: true});
+  //
+  //   let sub = userData$.subscribe((acc) => {
+  //     const userData = acc.user;
+  //     const isNew = acc.isNew;
+  //     this.tracePlaceline(userData);
+  //     if(isNew) this.resetBounds()
+  //   });
+  //   this.userDataSub = sub;
+  // }
 
   tracePlaceline(user: IUserData) {
-    this.segmentTrace.trace(user)
+    this.placeline.trace(user)
   }
 
   resetBounds(bounds?: HtBounds, options?) {
-    setTimeout(() => {
-      let items = this.mapItemsSet;
-      bounds = this.getBoundsItem(items);
-      if(bounds && MapService.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
-    }, 10)
-
+    MapService.resetBounds(bounds, options)
   };
 
   getBoundsItem(items) {

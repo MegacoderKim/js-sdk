@@ -1,14 +1,21 @@
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {HtMapType} from "./map-utils";
+import {HtBounds, HtMapType} from "./map-utils";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtMap} from "./interfaces";
+import {HtMapItem} from "./map-item";
+import * as _ from "underscore";
 
 export const MapService = {
   mapUtils: null,
   map: null,
   map$: new ReplaySubject(),
   clusters: [],
+  itemsSet: [],
+  addToItemsSet(item) {
+    const i = this.itemsSet.indexOf(item);
+    if (i == -1) this.itemsSet.push(item)
+  },
   setMap(map: HtMap) {
     this.map$.next(map)
   },
@@ -24,7 +31,36 @@ export const MapService = {
     if(!this.clusters.includes(cluster)) {
       this.clusters.push(cluster)
     }
+  },
+  getBounds(bounds, item) {
+    return item.extendBounds(bounds)
+  },
+  getItemsSetBounds(items) {
+    console.log("items", items);
+    let bounds = MapService.mapUtils.extendBounds();
+    return _.reduce(items, (bounds, item: HtMapItem<any>) => {
+      return this.getBounds(bounds, item)
+    }, bounds)
+  },
+  resetBounds(bounds?: HtBounds, options?) {
+    console.log("reset", this);
+    setTimeout(() => {
+      let items = this.itemsSet;
+      bounds = this.getItemsSetBounds(items);
+      if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
+    }, 10)
+
+  },
+  leafletSetBoundsOptions: {
+    animate: true,
+    duration: 0.3
+  },
+  googleSetBoundsOptions: {},
+  setBounds(bounds: HtBounds, options?) {
+    options = options || this.mapType == 'leaflet' ? this.leafletSetBoundsOptions : this.googleSetBoundsOptions;
+    MapService.mapUtils.setBounds(this.map, bounds, options)
   }
+
 };
 
 MapService.map$.subscribe(map => {
