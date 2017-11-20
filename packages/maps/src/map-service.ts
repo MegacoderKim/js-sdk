@@ -36,14 +36,12 @@ export const MapService = {
     return item.extendBounds(bounds)
   },
   getItemsSetBounds(items) {
-    console.log("items", items);
     let bounds = MapService.mapUtils.extendBounds();
     return _.reduce(items, (bounds, item: HtMapItem<any>) => {
       return this.getBounds(bounds, item)
     }, bounds)
   },
   resetBounds(bounds?: HtBounds, options?) {
-    console.log("reset", this);
     setTimeout(() => {
       let items = this.itemsSet;
       bounds = this.getItemsSetBounds(items);
