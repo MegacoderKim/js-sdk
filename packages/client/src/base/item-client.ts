@@ -3,7 +3,7 @@ import {ItemQuery} from "../entities/helpers/api-query-factory";
 import {ItemGetData} from "../entities/helpers/get-data-factory";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {applyBaseMixins} from "../entities/helpers/mix";
+import {applyBaseMixins, applyMixins} from "../entities/helpers/mix";
 
 export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
   //listGetData
@@ -13,7 +13,6 @@ export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
   name = "item";
   id$: Observable<undefined | null | string>;
   query$;
-  defaultQuery;
   allowedQueryKeys = null;
   dateRangeQuery$;
   active$ = null;
@@ -24,16 +23,11 @@ export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
   init: () => void;
   getData$: (data) => any;
 
-  // constructor() {
-  //   console.log(this);
-  //   // super.init()
-  // }
-
   firstDataEffect() {
     this.setLoading(false);
   }
-  getDefaultQuery() {
-    return this.defaultQuery;
+  getDefaultQuery(): object {
+    return {};
   }
   get apiParams$() {
     return this.getApiParams$()
@@ -57,4 +51,3 @@ export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
   }
 
 };
-// applyBaseMixins(EntityItemClient, [ItemGetData, ItemQuery, ClientSub]);
