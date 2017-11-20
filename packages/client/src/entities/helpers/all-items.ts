@@ -8,7 +8,7 @@ import {map} from "rxjs/operators/map";
 
 export const AllItemsHelpers = {
   getDefaultQuery(query) {
-    return {ordering: '-created_at', page_size: 200, ...query}
+    return {ordering: '-created_at', page_size: 50, ...query}
   },
   getConfig(config: Partial<EntityTypeConfig>): Partial<EntityTypeConfig> {
     return {

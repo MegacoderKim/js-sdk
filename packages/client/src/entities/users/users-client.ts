@@ -1,57 +1,34 @@
-import {UsersIndexClientFactory} from "./users-index-client";
-import {UsersPlacelineClientFactory} from "./users-placeline-client";
+import {UsersPlacelineClient} from "./users-placeline-client";
 import {AllData, IDateRange, IUsersClientOptions, QueryLabel} from "../../interfaces";
-import {ISegment, IUserData, IUserListSummary, Partial} from "ht-models";
-import {UsersAnalyticsClientFactory} from "./users-analytics-client";
+import {ISegment, IUserAnalytics, IUserData, IUserListSummary, Partial} from "ht-models";
+import {UsersAnalyticsClient} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {EntityClient} from "../../base/entity-client";
-import {usersAnalyticsMarkersFactory} from "./users-analytics-markers";
+import {UsersAnalyticsListAllClient} from "./users-analytics-markers";
 import {htUser} from "ht-data";
-import {usersIndexMarkersFactory} from "./users-index-markers";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import {QueryObserver} from "../../base/query-observer";
 import * as moment from 'moment-mini'
 import {DateString, IsRangeADay, IsRangeToday} from "ht-utility";
-import {HtMapClass} from "ht-maps";
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import {HtUsersSummaryFactory} from "./users-summary-client";
-import {UsersPlaceline} from "./users-placeline-interfaces";
+import { UsersSummaryClient} from "./users-summary-client";
 import {DateRangeToQuery} from "../base/helpers";
-import {UsersIndex} from "./users-index-interfaces";
-import {UsersAnalytics} from "./users-analytics-interfaces";
-import {IUsersMarkers} from "./users-markers-interfaces";
 import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
-import {IUserAnalytics} from "ht-models";
 
-/**
- * Class containing all user related client entity like list of user, user placeline etc
- * @class
- */
 export class HtUsersClient extends EntityClient {
-  /**
-   * Fetches from `/users/`
-   */
-  index: UsersIndex;
-  /**
-   * Fetches from `/users/analytics/`
-   */
-  analytics: UsersAnalytics;
-  /**
-   * Fetches user placeline
-   */
-  placeline: UsersPlaceline;
-  /**
-   * Fetches across the page (complete data of users) from `/users/analytics/`
-   */
-  analyticsAll: IUsersMarkers;
-  /**
-   * Fetches across the page (complete data of users) from `/users/`
-   */
-  indexAll: IUsersMarkers;
+
+  // index: UsersIndex;
+
+  analytics: UsersAnalyticsClient;
+
+  placeline: UsersPlacelineClient;
+
+  analyticsAll: UsersAnalyticsListAllClient;
+  // indexAll: IUsersMarkers;
   filterClass: DefaultUsersFilter = new DefaultUsersFilter();
   dateRangeObserver: QueryObserver;
   initialDateRange: IDateRange;
@@ -59,9 +36,9 @@ export class HtUsersClient extends EntityClient {
   userDispatcher = fromUsersDispatcher;
   queryDispatcher = fromQueryDispatcher;
 
-  list: UsersAnalytics;
-  summary;
-  listAll: IUsersMarkers;
+  list: UsersAnalyticsClient;
+  summary: UsersSummaryClient;
+  listAll: UsersAnalyticsListAllClient;
   _statusQueryArray: QueryLabel[];
   store;
   constructor(public options: IUsersClientOptions = {}) {
@@ -72,23 +49,23 @@ export class HtUsersClient extends EntityClient {
     this.initialDateRange = this.getInitialDateRange();
     this.dateRangeObserver = new QueryObserver({initialData: this.initialDateRange});
     this.dateRangeObserver.updateData(this.initialDateRange);
-
+    const dateRangeQuery$ = this.dateRangeObserver.data$().let(DateRangeToQuery('recorded_at'))
     let listState = {
       dateRangeQuery$: this.dateRangeObserver.data$().let(DateRangeToQuery('recorded_at'))
     };
 
-    this.index = UsersIndexClientFactory(listState);
+    // this.index = UsersIndexClientFactory(listState);
 
-    this.analytics = UsersAnalyticsClientFactory(listState);
+    this.analytics = new UsersAnalyticsClient(dateRangeQuery$);
 
 
-    this.placeline = UsersPlacelineClientFactory();
+    this.placeline = new UsersPlacelineClient();
 
-    this.analyticsAll = usersAnalyticsMarkersFactory(listState);
+    this.analyticsAll = new UsersAnalyticsListAllClient(dateRangeQuery$);
 
-    this.indexAll = usersIndexMarkersFactory(listState);
+    // this.indexAll = usersIndexMarkersFactory(listState);
 
-    this.summary = HtUsersSummaryFactory(listState);
+    this.summary = new UsersSummaryClient(dateRangeQuery$);
 
     this.list = this.analytics;
 
@@ -268,7 +245,8 @@ export class HtUsersClient extends EntityClient {
     let isFirstCb = () => {
 
     };
-    let userMarkers$ = this.listAll.dataArray$;
+    // let userMarkers$ = this.listAll.dataArray$;
+    let userMarkers$ = this.listAll.getDataArray$();
 
     let allMarkers$ = Observable.merge(
       userMarkers$,

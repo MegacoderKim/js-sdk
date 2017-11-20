@@ -1,11 +1,9 @@
 import {EntityClient} from "../../base/entity-client";
-import {groupsListClientFactory} from "./groups-list";
+import {GroupsListClient} from "./groups-list";
 import {HtBaseApi} from "../../api/base";
-import {groupsItemsClientFactory} from "./groups-item-client";
+import {GroupsItemClient} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
-import {GroupsItem} from "./groups-item-interface";
-import {GroupsList} from "./groups-list-interface";
 import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
 import {Observable} from "rxjs/Observable";
@@ -14,8 +12,8 @@ import {AllData} from "../../interfaces";
 // import {htClient} from "../../client";
 
 export class HtGroupsClient extends EntityClient{
-  list: GroupsList;
-  item: GroupsItem;
+  list: GroupsListClient;
+  item: GroupsItemClient;
   api: HtBaseApi;
   store: Store<fromRoot.State>;
   constructor(options = {}) {
@@ -24,9 +22,9 @@ export class HtGroupsClient extends EntityClient{
     this.api = api;
     this.store = store;
 
-    this.list = groupsListClientFactory();
+    this.list = new GroupsListClient();
 
-    this.item = groupsItemsClientFactory()
+    this.item = new GroupsItemClient()
 
   }
 
