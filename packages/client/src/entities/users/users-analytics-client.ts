@@ -3,7 +3,7 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {ListGetData} from "../helpers/get-data-factory";
 import {IUserAnalyticsPage} from "ht-models";
 import {ListQuery} from "../helpers/api-query-factory";

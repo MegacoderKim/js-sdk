@@ -3,7 +3,7 @@ import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
 import {ISegment, IUserData} from "ht-models";
 import * as _ from "underscore";

@@ -15,7 +15,7 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import { UsersSummaryClient} from "./users-summary-client";
 import {DateRangeToQuery} from "../base/helpers";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
 import {pluck, flatMap, zip, switchMap, map, distinctUntilChanged} from "rxjs/operators";

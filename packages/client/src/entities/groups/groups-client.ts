@@ -4,7 +4,7 @@ import {HtBaseApi} from "../../api/base";
 import {GroupsItemClient} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
 import {AllData, IDateRange} from "../../interfaces";
 import {map} from "rxjs/operators";

@@ -1,7 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {EntityItemClient} from "../../base/item-client";
 import {ClientSub} from "../base/client-factory";
 import {ListQuery} from "../helpers/api-query-factory";

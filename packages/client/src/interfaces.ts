@@ -1,6 +1,5 @@
 import {Observable} from "rxjs/Observable";
-import {HtBaseApi} from "./api/base";
-import {Partial, IUserData, Page, IUser, IUserAnalytics, IAction} from "ht-models";
+import {IUserData, Page, IUser, IUserAnalytics} from "ht-models";
 import {Store} from "./store/store";
 import * as fromRoot from "./reducers";
 
@@ -16,20 +15,9 @@ export interface IUsersClientOptions {
   dateRangeOptions?: IDateRange,
 }
 
-export interface IActionsClientOptions {
-  listClientOptions?: Partial<IListClientOptions<Page<IAction>>>,
-  getClientOptions?: Partial<IItemClientOptions<IAction>>
-}
-
 export interface IDateRange {
   start: string,
   end: string
-}
-
-export interface IIndexQuery {
-  pageQuery: object,
-  listQuery: object,
-  dateRangeQuery: object
 }
 
 export interface IListConfig {
@@ -66,32 +54,12 @@ export interface IItemClientOptions<T> {
   store: Store<fromRoot.State>
 }
 
-// export interface IBaseClientOptions<T> extends Partial<IListClientOptions<T>>, Partial<IItemClientOptions<T>>{
-//
-// }
-
-export interface IClientOptions {
-  actionsClientOptions?: IActionsClientOptions,
-  usersClientOptions?: IUsersClientOptions
-}
-
 /**
  * @interface Options for
  */
 export interface DataObserverOptions<T> {
   initialData?: T,
   dataSource$?: Observable<T>
-}
-
-/**
- * Observable for placeline segment selection
- * @type selectedId: Used as hover state of segment
- * @type resetBoundsId: Used as selection state of segment
- */
-export interface PlacelineSegmentId {
-  selectedId?: string | null,
-  resetBoundsId?: string | null,
-  highlightedId?: string | null,
 }
 
 export interface AllData<T> {

@@ -1,6 +1,6 @@
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {EntityItemClient} from "../../base/item-client";
 import {applyMixins} from "../helpers/mix";
 import {ClientSub} from "../base/client-factory";

@@ -2,7 +2,7 @@ import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
-import {store} from "../../store-provider";
+import {store} from "../../global/store-provider";
 import {EntityListClient} from "../../base/list-client";
 import {ClientSub} from "../base/client-factory";
 import {ListQuery} from "../helpers/api-query-factory";

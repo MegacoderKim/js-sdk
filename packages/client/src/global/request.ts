@@ -1,7 +1,7 @@
 import {HtQuerySerialize} from "ht-utility";
 import {Observable} from "rxjs/Observable";
 import {fromPromise} from "rxjs/observable/fromPromise";
-import {htClientService} from "./global/client";
+import {htClientService} from "./client";
 
 export class HtRequest {
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
