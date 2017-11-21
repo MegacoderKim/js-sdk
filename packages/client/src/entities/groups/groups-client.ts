@@ -1,45 +1,49 @@
 import {EntityClient} from "../../base/entity-client";
-import {groupsListClientFactory} from "./groups-list";
+import {GroupsListClient} from "./groups-list";
 import {HtBaseApi} from "../../api/base";
-import {groupsItemsClientFactory} from "./groups-item-client";
+import {GroupsItemClient} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
-import {GroupsItem} from "./groups-item-interface";
-import {GroupsList} from "./groups-list-interface";
-import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
+import {store} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
-import {AllData} from "../../interfaces";
+import {AllData, IDateRange} from "../../interfaces";
+import {map} from "rxjs/operators";
+import {dateRangeService} from "../../global/date-range";
+import {entityApi} from "../../global/entity-api";
 
 // import {htClient} from "../../client";
 
 export class HtGroupsClient extends EntityClient{
-  list: GroupsList;
-  item: GroupsItem;
+  list: GroupsListClient;
+  item: GroupsItemClient;
   api: HtBaseApi;
   store: Store<fromRoot.State>;
   constructor(options = {}) {
     super();
-    let api = clientApi.groups;
+    let api = entityApi.groups;
     this.api = api;
     this.store = store;
 
-    this.list = groupsListClientFactory();
+    this.list = new GroupsListClient();
 
-    this.item = groupsItemsClientFactory()
+    this.item = new GroupsItemClient()
 
   }
 
   key$(id) {
-    return this.api.get(id).map((group) => {
-      return group['token']
-    });
+    return this.api.get(id).pipe(
+      map((group) => {
+        return group['token']
+      })
+    );
   }
 
   lookupIdKey$(lookupId): Observable<any> {
-    return this.api.index({lookup_id: lookupId}).map(groupPage => {
-      return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
-    })
+    return this.api.index({lookup_id: lookupId}).pipe(
+      map(groupPage => {
+        return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
+      })
+    )
   }
 
   getChildren(groupId: string): Observable<AllData<any>> {
@@ -49,4 +53,14 @@ export class HtGroupsClient extends EntityClient{
   getRoot() {
     return this.api.all$({has_parent: false})
   }
+};
+
+export const groupsClientFactory = (options: Partial<IGroupClientConfig> = {}) => {
+  let dateRange$ = options.noDateRange ? null : options.dateRange$ || dateRangeService.getInstance().data$;
+  return new HtGroupsClient({dateRange$})
+};
+
+export interface IGroupClientConfig {
+  dateRange$: Observable<IDateRange>,
+  noDateRange: boolean
 }

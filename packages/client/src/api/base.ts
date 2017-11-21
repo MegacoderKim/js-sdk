@@ -5,8 +5,9 @@ import {AllData, ApiType} from "../interfaces";
 import * as _ from "underscore";
 import {Page} from "ht-models";
 // import {clientApi} from "../client-request";
-import {HtRequest} from "../request";
-import {clientApi} from "../client-api";
+import {HtRequest, htRequestService} from "../global/request";
+import {expand, map} from "rxjs/operators";
+import {empty} from "rxjs/observable/empty";
 // import {HtClientConfig} from "../config";
 // import {HTest, HtRequest} from "../request";
 // import {UsersListStorage} from "./storage";
@@ -20,7 +21,7 @@ export class HtBaseApi {
 
   get request() {
     // return ""
-    return clientApi.request
+    return htRequestService.getInstance()
   }
 
   get<T>(id: string, query = {}): Observable<T> {
@@ -56,15 +57,18 @@ export class HtBaseApi {
     query = {page_size: 200, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$
-      .expand((data: IPageData) => {
-        return data['next'] ? this.request.getObservable(data['next']) : Observable.empty()
-      })
-      .map((value: Page<T>) => {
-        let resultsEntity = _.indexBy(value.results, 'id');
-        let isFirst = !value.previous;
-        let count = value.count;
-        return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
-      })
+      .pipe(
+        expand((data: IPageData) => {
+          return data['next'] ? this.request.getObservable(data['next']) : empty()
+        }),
+        map((value: Page<T>) => {
+          let resultsEntity = _.indexBy(value.results, 'id');
+          let isFirst = !value.previous;
+          let count = value.count;
+          return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
+        })
+      )
+
       // .scan((acc: AllData<T>, value) => {
       //   // let results = [...acc.results, ...value.results];
       //   let resultsEntity = _.indexBy(value.results, 'id');
@@ -76,7 +80,7 @@ export class HtBaseApi {
   }
 
   analytics(query): Observable<any> {
-    return Observable.empty()
+    return empty()
   }
 
   // getObservable(url, options: object = {}): Observable<any> {

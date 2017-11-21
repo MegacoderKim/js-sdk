@@ -2,35 +2,22 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {IDateRange} from "../interfaces";
 import {Page} from "ht-models";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {distinctUntilChanged, map} from "rxjs/operators";
+import {itemAsPage} from "../helpers/operators";
 
 export abstract class EntityClient {
-  /**
-   * API class which handles requests for the entity
-   */
-  api;
 
-  /**
-   * Appended at start of date range params. Example if start date of date range is x the params in query will be
-   * min_<dateRangeParam> like min_created_at
-   * @type {string}
-   */
-  dateRangeParam = 'recorded_at';
-
-  /**
-   * Returns entity array or if selected just the selected entity id as array of length 1
-   * @param id$
-   * @param dataArray$
-   * @param selected$
-   * @returns {any}
-   */
   dataArrayWithSelected$(id$, dataArray$, selected$) {
     const userId$ = id$;
-    const placelinePage$ = selected$.distinctUntilChanged()
-      .map((data) => {
+    const placelinePage$ = selected$.pipe(
+      distinctUntilChanged(),
+      map((data) => {
         return data ? [data] : null;
-      }); //todo take query from placeline
+      })
+    ); //todo take query from placeline
 
-    const array$ = Observable.combineLatest(
+    const array$ = combineLatest(
       placelinePage$,
       userId$,
       dataArray$,
@@ -47,18 +34,19 @@ export abstract class EntityClient {
   }
 
   pageDataWithSelected$(id$, pageData$, selected$) {
-    const userId$ = id$;
-    const placelinePage$ = selected$.distinctUntilChanged()
-      .map((data) => {
-        return data ? [data] : null;
-      }); //todo take query from placeline
+    // const userId$ = id$;
+    const placelinePage$ = selected$.pipe(
+      itemAsPage()
+    );
 
-    const newPageData$ = Observable.combineLatest(
+
+    const newPageData$ = combineLatest(
       placelinePage$,
-      userId$,
+      id$,
       pageData$,
-      (placelineResults, userId, pageData: Page<any>) => {
+      (placelinePage: Page<any>, userId, pageData: Page<any>) => {
         if (!pageData) return pageData;
+        let placelineResults = placelinePage ? placelinePage.results : null;
         const filteredData = _.filter(pageData.results, (user) => {
           return userId ? user.id == userId : true;
         });
@@ -72,25 +60,9 @@ export abstract class EntityClient {
     return newPageData$
   }
 
-  clearData() {
-
-  }
-
-  /**
-   * Converts date range to query params object
-   * @param {IDateRange} range
-   * @returns {Object}
-   */
-  getQueryFromDateRange(range: IDateRange): object {
-    if (!range) return {};
-    let start =  range['start'];
-    let end = range['end'];
-    let param = this.dateRangeParam;
-    return {[`min_${param}`]: start, [`max_${param}`]: end, start: null, end: null}
-  }
 
   getPageFromEntity(item$) {
-    return item$.map()
+    return item$
   }
 
 }

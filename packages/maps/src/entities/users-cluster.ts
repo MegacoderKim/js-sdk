@@ -9,6 +9,7 @@ import {DataConfig, EventConfig, MapEntities} from "./interfaces";
 import {StyleObj} from "../helpers/styles-factory";
 import {userDivFactory} from "../helpers/user-div-factory";
 import {MapService} from "../map-service";
+import {addDataFactory} from "../helpers/add-data-factory";
 declare const RichMarkerPosition: any;
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
@@ -151,14 +152,18 @@ export const usersClustersFactory = (): MapEntities<any> => {
       }
     }
   };
-  // let data = dataFactory(config);
-  return mapItemsFactory({
+
+  let mapItems = mapItemsFactory({
     dataConfig,
     name: 'user cluster',
     isDiv: true,
     isCluster: true,
     hasPopup: true,
     stylesObj
-  })
+  });
+
+  mapItems = addDataFactory(mapItems);
+
+  return mapItems
 };
 

@@ -1,6 +1,6 @@
-import {HtUsersApi} from "./api/users";
-import {HtGroupsApi} from "./api/groups";
-import {HtActionsApi} from "./api/actions";
+import {HtUsersApi} from "../api/users";
+import {HtGroupsApi} from "../api/groups";
+import {HtActionsApi} from "../api/actions";
 
 export const entityApiFactory = (): IEntityApi => {
   return {
@@ -9,6 +9,8 @@ export const entityApiFactory = (): IEntityApi => {
     actions: new HtActionsApi()
   }
 };
+
+export const entityApi = entityApiFactory();
 
 export interface IEntityApi {
   users: HtUsersApi,

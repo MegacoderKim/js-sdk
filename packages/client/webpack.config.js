@@ -8,6 +8,7 @@ var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
 var TypedocWebpackPlugin = require('typedoc-webpack-plugin');
 
 var nodeConfig = require('./webpack.config.bundle.js');
+const rxPaths = require('rxjs/_esm5/path-mapping');
 
 var browserSpecConfig = {
     output: {
@@ -15,6 +16,9 @@ var browserSpecConfig = {
         filename: 'ht-client_browser.js',
         library: "htClient",
         libraryTarget: "umd"
+    },
+    resolve: {
+        alias: rxPaths()
     },
     externals: [
         {
@@ -56,6 +60,7 @@ var browserSpecConfig = {
             minimize: true,
             debug: false
         }),
+        new Webpack.optimize.ModuleConcatenationPlugin(),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };

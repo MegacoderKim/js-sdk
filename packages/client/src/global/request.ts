@@ -1,16 +1,26 @@
 import {HtQuerySerialize} from "ht-utility";
 import {Observable} from "rxjs/Observable";
+import {fromPromise} from "rxjs/observable/fromPromise";
+import {htClientService} from "./client";
 
 export class HtRequest {
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
   subToken: string = '';
-  token: string;
-  constructor(private isAdmin: boolean = false) {
+  isAdmin: boolean = false;
+  constructor() {
     // this.currentToken = currentToken || HtClientConfig.currentToken
   }
 
-  setToken(token) {
-    this.token = token;
+  // setToken(token) {
+  //   this.token = token;
+  // }
+
+  get token() {
+    return htClientService.getInstance().currentToken;
+  }
+
+  get adminToken() {
+    return htClientService.getInstance().token;
   }
 
   setIsAdmin(isAdmin) {
@@ -36,13 +46,13 @@ export class HtRequest {
 
   getObservable<T>(url, options: object = {}): Observable<T> {
     let p = this.getFetch(url, options);
-    return this.fromPromise(p) as Observable<T>
+    return fromPromise(p) as Observable<T>
   }
 
 
   postObservable<T>(url, body, options: object = {}): Observable<any> {
     let p = this.postFetch(url, body, options);
-    return this.fromPromise(p) as Observable<T>
+    return fromPromise(p) as Observable<T>
   }
 
   api$<T>(url: string, query) {
@@ -64,14 +74,25 @@ export class HtRequest {
       .then(res => res.json())
   }
 
-  fromPromise(promise) {
-    return Observable.fromPromise(promise)
+  // fromPromise(promise) {
+  //   return Observable.fromPromise(promise)
+  // }
+
+}
+
+export const htRequestService = (() => {
+  var instance: HtRequest;
+
+  return {
+    getInstance(token?, config = {}) {
+      if ( !instance ) {
+        instance = new HtRequest();
+      }
+      return instance;
+    },
+    setInstance(newintance: HtRequest) {
+      instance = newintance
+    }
   }
-
-}
-
-export class HTest {
-
-}
-
+})();
 // export const htRequest = (options?) => new HtRequest(options);
