@@ -1,5 +1,5 @@
 import {UsersPlacelineClient} from "./users-placeline-client";
-import {AllData, IDateRange, IUsersClientOptions, QueryLabel} from "../../interfaces";
+import {AllData, IDateRange, QueryLabel} from "../../interfaces";
 import {ISegment, IUserAnalytics, IUserData, IUserListSummary, Partial} from "ht-models";
 import {UsersAnalyticsClient} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
@@ -9,18 +9,16 @@ import {UsersAnalyticsListAllClient} from "./users-analytics-markers";
 import {htUser} from "ht-data";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import * as moment from 'moment-mini'
-import {DateString, IsRangeADay, IsRangeToday} from "ht-utility";
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import { UsersSummaryClient} from "./users-summary-client";
-import {DateRangeToQuery} from "../base/helpers";
+import {DateRangeToQuery} from "../../helpers/operators";
 import {store} from "../../global/store-provider";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
 import {pluck, flatMap, zip, switchMap, map, distinctUntilChanged} from "rxjs/operators";
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
 import {dateRangeService} from "../../global/date-range";
@@ -48,6 +46,7 @@ export class HtUsersClient extends EntityClient {
   listAll: UsersAnalyticsListAllClient;
   _statusQueryArray: QueryLabel[];
   store;
+  api;
   constructor(public options: IUsersClientConfig) {
     super();
     let api = entityApi.users;
@@ -100,16 +99,11 @@ export class HtUsersClient extends EntityClient {
     return {...range, start, end}
   }
 
-  /**
-   * Return users list array or array of length 1 with selected user if user is selected (userId not null)
-   * @returns {any}
-   */
   placelineOrList$() {
     const id$ = this.list.id$.pipe(distinctUntilChanged());
     const dataArray$ = this.list.dataArray$;
     const selected$ = this.placeline.data$;
     return this.dataArrayWithSelected$(id$, dataArray$, selected$)
-
   }
 
   listPage$() {

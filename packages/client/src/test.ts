@@ -1,4 +1,4 @@
-import {applyMixins} from "./entities/helpers/mix";
+import {applyMixins} from "./helpers/mix";
 
 export const listF = () => {
   const state = {

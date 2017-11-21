@@ -3,13 +3,13 @@ import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {store} from "../../global/store-provider";
 import {EntityItemClient} from "../../base/item-client";
-import {ClientSub} from "../base/client-factory";
-import {ListQuery} from "../helpers/api-query-factory";
-import {ListGetData} from "../helpers/get-data-factory";
-import {applyMixins} from "../helpers/mix";
+import {ClientSub} from "../../mixins/client-subscription";
+import {ListQuery} from "../../mixins/entity-query";
+import {ListGetData} from "../../mixins/get-data";
+import {applyMixins} from "../../helpers/mix";
 import {of} from "rxjs/observable/of";
 import {EntityListClient} from "../../base/list-client";
-import {PageResults} from "../base/helpers";
+import {PageResults} from "../../helpers/operators";
 import {Page, IGroup} from "ht-models";
 import {entityApi} from "../../global/entity-api";
 

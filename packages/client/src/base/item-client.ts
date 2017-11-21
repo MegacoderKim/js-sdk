@@ -1,9 +1,9 @@
-import {ClientSub} from "../entities/base/client-factory";
-import {ItemQuery} from "../entities/helpers/api-query-factory";
-import {ItemGetData} from "../entities/helpers/get-data-factory";
+import {ClientSub} from "../mixins/client-subscription";
+import {ItemQuery} from "../mixins/entity-query";
+import {ItemGetData} from "../mixins/get-data";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {applyBaseMixins, applyMixins} from "../entities/helpers/mix";
+import {applyBaseMixins, applyMixins} from "../helpers/mix";
 
 export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
   //listGetData

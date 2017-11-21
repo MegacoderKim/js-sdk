@@ -8,10 +8,10 @@ import {Observable} from "rxjs/Observable";
 import {ISegment, IUserData} from "ht-models";
 import * as _ from "underscore";
 import {EntityItemClient} from "../../base/item-client";
-import {applyBaseMixins, applyMixins} from "../helpers/mix";
-import {ItemGetData} from "../helpers/get-data-factory";
-import {ItemQuery} from "../helpers/api-query-factory";
-import {ClientSub} from "../base/client-factory";
+import {applyBaseMixins, applyMixins} from "../../helpers/mix";
+import {ItemGetData} from "../../mixins/get-data";
+import {ItemQuery} from "../../mixins/entity-query";
+import {ClientSub} from "../../mixins/client-subscription";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {entityApi} from "../../global/entity-api";
 

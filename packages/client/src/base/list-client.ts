@@ -1,6 +1,6 @@
-import {ClientSub} from "../entities/base/client-factory";
-import {ListQuery} from "../entities/helpers/api-query-factory";
-import {ListGetData} from "../entities/helpers/get-data-factory";
+import {ClientSub} from "../mixins/client-subscription";
+import {ListQuery} from "../mixins/entity-query";
+import {ListGetData} from "../mixins/get-data";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 

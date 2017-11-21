@@ -3,33 +3,6 @@ import {Subscription} from "rxjs/Subscription";
 import {empty} from "rxjs/observable/empty";
 import {switchMap} from "rxjs/operators";
 
-export const clientSubFactory = (entity) => {
-
-  return {
-    ...entity,
-    dataSub: null,
-    init() {
-      let entity = this;
-      if(!this.dataSub) {
-        this.dataSub = entity.apiQuery$().pipe(
-          switchMap(data => {
-            if (data && data[0]) {
-              let loading = typeof data[0] === 'string' ? data[0] : true;
-              entity.setLoading(loading);
-              return entity.getData$(data)
-            } else {
-              return empty()
-            }
-          })
-        ).subscribe(data => {
-          entity.setData(data)
-        })
-      }
-      return this
-    }
-  }
-};
-
 export class ClientSub {
   dataSub: Subscription;
   setLoading: (data?) => void;

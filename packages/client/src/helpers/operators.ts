@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import {Page} from "ht-models";
-import {IDateRange} from "../../interfaces";
+import {IDateRange} from "../interfaces";
 import * as _ from "underscore";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {distinctUntilChanged, map} from "rxjs/operators";

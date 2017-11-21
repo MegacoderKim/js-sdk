@@ -4,10 +4,10 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
 import {store} from "../../global/store-provider";
 import {EntityListClient} from "../../base/list-client";
-import {ClientSub} from "../base/client-factory";
-import {ListQuery} from "../helpers/api-query-factory";
-import {ListGetData} from "../helpers/get-data-factory";
-import {applyMixins} from "../helpers/mix";
+import {ClientSub} from "../../mixins/client-subscription";
+import {ListQuery} from "../../mixins/entity-query";
+import {ListGetData} from "../../mixins/get-data";
+import {applyMixins} from "../../helpers/mix";
 import {entityApi} from "../../global/entity-api";
 
 export class UsersSummaryClient extends EntityListClient {

@@ -4,13 +4,13 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import {store} from "../../global/store-provider";
-import {ListGetData} from "../helpers/get-data-factory";
+import {ListGetData} from "../../mixins/get-data";
 import {IUserAnalyticsPage} from "ht-models";
-import {ListQuery} from "../helpers/api-query-factory";
-import {ClientSub} from "../base/client-factory";
-import {applyMixins} from "../helpers/mix";
+import {ListQuery} from "../../mixins/entity-query";
+import {ClientSub} from "../../mixins/client-subscription";
+import {applyMixins} from "../../helpers/mix";
 import {EntityListClient} from "../../base/list-client";
-import {PageResults} from "../base/helpers";
+import {PageResults} from "../../helpers/operators";
 import {entityApi} from "../../global/entity-api";
 
 export class UsersAnalyticsClient extends EntityListClient{

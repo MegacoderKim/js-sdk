@@ -8,10 +8,10 @@ import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import {store} from "../../global/store-provider";
 import {EntityAllItemsClient} from "../../base/all-items.client";
 import {htUser} from "ht-data";
-import {ListGetData} from "../helpers/get-data-factory";
-import {ListQuery} from "../helpers/api-query-factory";
-import {ClientSub} from "../base/client-factory";
-import {applyMixins} from "../helpers/mix";
+import {ListGetData} from "../../mixins/get-data";
+import {ListQuery} from "../../mixins/entity-query";
+import {ClientSub} from "../../mixins/client-subscription";
+import {applyMixins} from "../../helpers/mix";
 import {empty} from "rxjs/observable/empty";
 import {entityApi} from "../../global/entity-api";
 
