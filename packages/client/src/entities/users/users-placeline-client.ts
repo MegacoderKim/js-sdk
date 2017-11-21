@@ -4,7 +4,6 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {Observable} from "rxjs/Observable";
 import {ISegment, IUserData} from "ht-models";
 import * as _ from "underscore";
@@ -14,12 +13,13 @@ import {ItemGetData} from "../helpers/get-data-factory";
 import {ItemQuery} from "../helpers/api-query-factory";
 import {ClientSub} from "../base/client-factory";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import {entityApi} from "../../global/entity-api";
 
 export class UsersPlacelineClient extends EntityItemClient {
 
   name = 'users placeline';
   updateStrategy = 'live';
-  api$ = (id, query) => clientApi.users.placeline(id, query);
+  api$ = (id, query) => entityApi.users.placeline(id, query);
 
   constructor() {
     super();

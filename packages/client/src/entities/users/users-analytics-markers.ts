@@ -6,7 +6,6 @@ import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {EntityAllItemsClient} from "../../base/all-items.client";
 import {htUser} from "ht-data";
 import {ListGetData} from "../helpers/get-data-factory";
@@ -14,6 +13,7 @@ import {ListQuery} from "../helpers/api-query-factory";
 import {ClientSub} from "../base/client-factory";
 import {applyMixins} from "../helpers/mix";
 import {empty} from "rxjs/observable/empty";
+import {entityApi} from "../../global/entity-api";
 
 export class UsersAnalyticsListAllClient extends EntityAllItemsClient {
   active$ = store.select(fromRoot.getUsersAnalyticsMarkersIsActive);
@@ -23,7 +23,7 @@ export class UsersAnalyticsListAllClient extends EntityAllItemsClient {
   id$ = empty();
   allowedQueryKeys = ['status'];
   name = 'users analytics all';
-  api$ = (query) => clientApi.users.all$(query, ApiType.analytics);
+  api$ = (query) => entityApi.users.all$(query, ApiType.analytics);
   defaultQuery = {};
   constructor(public dateRangeQuery$: Observable<object> | null = null) {
     super();

@@ -16,7 +16,6 @@ import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import { UsersSummaryClient} from "./users-summary-client";
 import {DateRangeToQuery} from "../base/helpers";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
 import {pluck, flatMap, zip, switchMap, map, distinctUntilChanged} from "rxjs/operators";
@@ -25,6 +24,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
 import {dateRangeService} from "../../global/date-range";
+import {entityApi} from "../../global/entity-api";
 
 export class HtUsersClient extends EntityClient {
 
@@ -50,7 +50,7 @@ export class HtUsersClient extends EntityClient {
   store;
   constructor(public options: IUsersClientConfig) {
     super();
-    let api = clientApi.users;
+    let api = entityApi.users;
     this.api = api;
     this.store = store;
     // this.initialDateRange = this.getInitialDateRange();

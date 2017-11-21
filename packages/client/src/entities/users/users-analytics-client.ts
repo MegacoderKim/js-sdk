@@ -3,7 +3,6 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import {clientApi} from "../../client-api";
 import {store} from "../../store-provider";
 import {ListGetData} from "../helpers/get-data-factory";
 import {IUserAnalyticsPage} from "ht-models";
@@ -12,11 +11,11 @@ import {ClientSub} from "../base/client-factory";
 import {applyMixins} from "../helpers/mix";
 import {EntityListClient} from "../../base/list-client";
 import {PageResults} from "../base/helpers";
-
+import {entityApi} from "../../global/entity-api";
 
 export class UsersAnalyticsClient extends EntityListClient{
   // updateStrategy = 'update';
-  api$ = (query): Observable<IUserAnalyticsPage> => clientApi.users.analytics(query);
+  api$ = (query): Observable<IUserAnalyticsPage> => entityApi.users.analytics(query);
   name = 'users analytics list';
   query$ = store.select(fromRoot.getQueryUserQuery) as Observable<object | null>;
   defaultQuery = {ordering: '-last_heartbeat_at'};

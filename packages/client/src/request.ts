@@ -1,17 +1,26 @@
 import {HtQuerySerialize} from "ht-utility";
 import {Observable} from "rxjs/Observable";
 import {fromPromise} from "rxjs/observable/fromPromise";
+import {htClientService} from "./global/client";
 
 export class HtRequest {
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
   subToken: string = '';
-  token: string;
-  constructor(private isAdmin: boolean = false) {
+  isAdmin: boolean = false;
+  constructor() {
     // this.currentToken = currentToken || HtClientConfig.currentToken
   }
 
-  setToken(token) {
-    this.token = token;
+  // setToken(token) {
+  //   this.token = token;
+  // }
+
+  get token() {
+    return htClientService.getInstance().currentToken;
+  }
+
+  get adminToken() {
+    return htClientService.getInstance().token;
   }
 
   setIsAdmin(isAdmin) {
@@ -71,8 +80,19 @@ export class HtRequest {
 
 }
 
-export class HTest {
+export const htRequestService = (() => {
+  var instance: HtRequest;
 
-}
-
+  return {
+    getInstance(token?, config = {}) {
+      if ( !instance ) {
+        instance = new HtRequest();
+      }
+      return instance;
+    },
+    setInstance(newintance: HtRequest) {
+      instance = newintance
+    }
+  }
+})();
 // export const htRequest = (options?) => new HtRequest(options);

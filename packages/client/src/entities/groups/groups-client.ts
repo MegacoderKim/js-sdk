@@ -5,11 +5,11 @@ import {GroupsItemClient} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {Observable} from "rxjs/Observable";
 import {AllData, IDateRange} from "../../interfaces";
 import {map} from "rxjs/operators";
 import {dateRangeService} from "../../global/date-range";
+import {entityApi} from "../../global/entity-api";
 
 // import {htClient} from "../../client";
 
@@ -20,7 +20,7 @@ export class HtGroupsClient extends EntityClient{
   store: Store<fromRoot.State>;
   constructor(options = {}) {
     super();
-    let api = clientApi.groups;
+    let api = entityApi.groups;
     this.api = api;
     this.store = store;
 

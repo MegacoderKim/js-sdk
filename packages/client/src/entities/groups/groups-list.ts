@@ -2,7 +2,6 @@ import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {EntityItemClient} from "../../base/item-client";
 import {ClientSub} from "../base/client-factory";
 import {ListQuery} from "../helpers/api-query-factory";
@@ -11,8 +10,8 @@ import {applyMixins} from "../helpers/mix";
 import {of} from "rxjs/observable/of";
 import {EntityListClient} from "../../base/list-client";
 import {PageResults} from "../base/helpers";
-import {Page} from "../../../../models/src/common";
-import {IGroup} from "../../../../models/src/account";
+import {Page, IGroup} from "ht-models";
+import {entityApi} from "../../global/entity-api";
 
 export class GroupsListClient extends EntityListClient {
   name = 'group';
@@ -22,7 +21,7 @@ export class GroupsListClient extends EntityListClient {
   active$ = store.select(fromRoot.getGroupListActive);
   loading$ = of(false);
   dataArray$ = this.data$.let(PageResults);
-  api$ = (query) => clientApi.groups.index<Page<IGroup>>(query);
+  api$ = (query) => entityApi.groups.index<Page<IGroup>>(query);
 
   setData(data) {
     store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))

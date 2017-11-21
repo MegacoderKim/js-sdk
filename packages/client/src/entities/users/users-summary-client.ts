@@ -3,12 +3,12 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
 import {Observable} from "rxjs/Observable";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {EntityListClient} from "../../base/list-client";
 import {ClientSub} from "../base/client-factory";
 import {ListQuery} from "../helpers/api-query-factory";
 import {ListGetData} from "../helpers/get-data-factory";
 import {applyMixins} from "../helpers/mix";
+import {entityApi} from "../../global/entity-api";
 
 export class UsersSummaryClient extends EntityListClient {
   name = 'users summary';
@@ -20,7 +20,7 @@ export class UsersSummaryClient extends EntityListClient {
   data$ = store.select(fromRoot.getUsersSummary);
   loading$ = store.select(fromRoot.getLoadingUserSummary);
 
-  api$ = (query) => clientApi.users.summary(query);
+  api$ = (query) => entityApi.users.summary(query);
 
   setActive(isActive: boolean = true) {
     store.dispatch(new fromUsersDispatcher.SetSummaryActive(isActive))

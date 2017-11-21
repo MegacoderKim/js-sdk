@@ -5,8 +5,7 @@ import {AllData, ApiType} from "../interfaces";
 import * as _ from "underscore";
 import {Page} from "ht-models";
 // import {clientApi} from "../client-request";
-import {HtRequest} from "../request";
-import {clientApi} from "../client-api";
+import {HtRequest, htRequestService} from "../request";
 import {expand, map} from "rxjs/operators";
 import {empty} from "rxjs/observable/empty";
 // import {HtClientConfig} from "../config";
@@ -22,7 +21,7 @@ export class HtBaseApi {
 
   get request() {
     // return ""
-    return clientApi.request
+    return htRequestService.getInstance()
   }
 
   get<T>(id: string, query = {}): Observable<T> {

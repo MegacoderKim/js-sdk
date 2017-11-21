@@ -1,7 +1,6 @@
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {store} from "../../store-provider";
-import {clientApi} from "../../client-api";
 import {EntityItemClient} from "../../base/item-client";
 import {applyMixins} from "../helpers/mix";
 import {ClientSub} from "../base/client-factory";
@@ -10,6 +9,7 @@ import {ItemGetData} from "../helpers/get-data-factory";
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
 import {Observable} from "rxjs/Observable";
+import {entityApi} from "../../global/entity-api";
 
 export class GroupsItemClient extends EntityItemClient {
   name = 'group';
@@ -24,7 +24,7 @@ export class GroupsItemClient extends EntityItemClient {
     return {...super.getDefaultQuery(), ...this.defaultQuery}
   }
 
-  api$ = (id, query?) => clientApi.groups.get(id, query);
+  api$ = (id, query?) => entityApi.groups.get(id, query);
 
   setId(id) {
     store.dispatch(new fromGroupDispatcher.SetGroupId(id))
