@@ -24,6 +24,7 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
+import {dateRangeService} from "../../global/date-range";
 
 export class HtUsersClient extends EntityClient {
 
@@ -36,7 +37,7 @@ export class HtUsersClient extends EntityClient {
   analyticsAll: UsersAnalyticsListAllClient;
   // indexAll: IUsersMarkers;
   filterClass: DefaultUsersFilter = new DefaultUsersFilter();
-  dateRangeObserver: BehaviorSubject<IDateRange>;
+  // dateRangeObserver: BehaviorSubject<IDateRange>;
   initialDateRange: IDateRange;
   // mapClass: HtMapClass;
   userDispatcher = fromUsersDispatcher;
@@ -47,18 +48,19 @@ export class HtUsersClient extends EntityClient {
   listAll: UsersAnalyticsListAllClient;
   _statusQueryArray: QueryLabel[];
   store;
-  constructor(public options: IUsersClientOptions = {}) {
+  constructor(public options: IUsersClientConfig) {
     super();
     let api = clientApi.users;
     this.api = api;
     this.store = store;
-    this.initialDateRange = this.getInitialDateRange();
-    this.dateRangeObserver = new BehaviorSubject(this.initialDateRange);
-    this.dateRangeObserver.next(this.initialDateRange);
-    const dateRangeQuery$ = this.dateRangeObserver.asObservable().let(DateRangeToQuery('recorded_at'))
-    let listState = {
-      dateRangeQuery$: this.dateRangeObserver.asObservable().let(DateRangeToQuery('recorded_at'))
-    };
+    // this.initialDateRange = this.getInitialDateRange();
+    // this.dateRangeObserver = new BehaviorSubject(this.initialDateRange);
+    // this.dateRangeObserver.next(this.initialDateRange);
+    let dateRange$ = this.options.dateRange$;
+    const dateRangeQuery$ = dateRange$ ? dateRange$.let(DateRangeToQuery('recorded_at')) : null;
+    // let listState = {
+    //   dateRangeQuery$: this.dateRangeObserver.asObservable().let(DateRangeToQuery('recorded_at'))
+    // };
 
     // this.index = UsersIndexClientFactory(listState);
 
@@ -229,23 +231,6 @@ export class HtUsersClient extends EntityClient {
         }),
         distinctUntilChanged()
       );
-  }
-
-  get dateRangeDisplay$(): Observable<string> {
-    return this.dateRangeObserver.asObservable().pipe(
-      map((range: IDateRange) => {
-        let isSingleDay = IsRangeADay(range);
-        if(isSingleDay) {
-          let isToday = IsRangeToday(range);
-          let suffix = isToday ? 'Today ' : '';
-          let string = suffix + DateString(range.start);
-          return string
-        } else {
-          // console.log(DateString(range.start), range.start);
-          return DateString(range.start) + " - " + DateString(range.end)
-        }
-      })
-    )
   }
 
   private getOrderingMod(ordering: string) {
@@ -456,4 +441,14 @@ export class HtUsersClient extends EntityClient {
     }))
   }
 
+};
+
+export const usersClientFactory = (options: Partial<IUsersClientConfig> = {}) => {
+  let dateRange$ = options.dateRange$ || dateRangeService.getInstance().data$;
+  return new HtUsersClient({dateRange$})
+};
+
+export interface IUsersClientConfig {
+  dateRange$: Observable<IDateRange>
 }
+

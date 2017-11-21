@@ -7,8 +7,9 @@ import * as fromRoot from "../../reducers";
 import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
 import {Observable} from "rxjs/Observable";
-import {AllData} from "../../interfaces";
+import {AllData, IDateRange} from "../../interfaces";
 import {map} from "rxjs/operators";
+import {dateRangeService} from "../../global/date-range";
 
 // import {htClient} from "../../client";
 
@@ -52,4 +53,14 @@ export class HtGroupsClient extends EntityClient{
   getRoot() {
     return this.api.all$({has_parent: false})
   }
+};
+
+export const groupsClientFactory = (options: Partial<IGroupClientConfig> = {}) => {
+  let dateRange$ = options.noDateRange ? null : options.dateRange$ || dateRangeService.getInstance().data$;
+  return new HtGroupsClient({dateRange$})
+};
+
+export interface IGroupClientConfig {
+  dateRange$: Observable<IDateRange>,
+  noDateRange: boolean
 }

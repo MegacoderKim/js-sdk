@@ -35,7 +35,7 @@ export class UsersSummaryClient extends EntityListClient {
 
   }
 
-  constructor(public dateRangeQuery$: Observable<object> | undefined = undefined) {
+  constructor(public dateRangeQuery$: Observable<object> | null = null) {
     super();
     this.init()
   }

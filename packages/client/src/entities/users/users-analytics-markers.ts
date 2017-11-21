@@ -25,7 +25,7 @@ export class UsersAnalyticsListAllClient extends EntityAllItemsClient {
   name = 'users analytics all';
   api$ = (query) => clientApi.users.all$(query, ApiType.analytics);
   defaultQuery = {};
-  constructor(public dateRangeQuery$: Observable<object> | undefined = undefined) {
+  constructor(public dateRangeQuery$: Observable<object> | null = null) {
     super();
     this.init()
   }

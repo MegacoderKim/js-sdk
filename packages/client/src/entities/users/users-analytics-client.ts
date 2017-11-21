@@ -27,7 +27,7 @@ export class UsersAnalyticsClient extends EntityListClient{
   dataArray$ = this.data$.let(PageResults);
   loading$ = store.select(fromRoot.getLoadingAnalytics);
 
-  constructor(public dateRangeQuery$: Observable<object> | undefined = undefined) {
+  constructor(public dateRangeQuery$: Observable<object> | null = null) {
     super();
     this.init()
   }

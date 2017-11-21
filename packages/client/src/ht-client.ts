@@ -28,6 +28,8 @@ export * from "./entities/groups/groups-client";
 export * from "./entities/groups/groups-list";
 export * from "./entities/groups/groups-item-client";
 
+export * from "./global/date-range"
+
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/filter';
 // import 'rxjs/add/operator/catch';

@@ -9,16 +9,20 @@ import {ListQuery} from "../helpers/api-query-factory";
 import {ListGetData} from "../helpers/get-data-factory";
 import {applyMixins} from "../helpers/mix";
 import {of} from "rxjs/observable/of";
+import {EntityListClient} from "../../base/list-client";
+import {PageResults} from "../base/helpers";
+import {Page} from "../../../../models/src/common";
+import {IGroup} from "../../../../models/src/account";
 
-export class GroupsListClient extends EntityItemClient {
+export class GroupsListClient extends EntityListClient {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
   query$ = of({});
   data$ = store.select(fromRoot.getGroupAll);
   active$ = store.select(fromRoot.getGroupListActive);
   loading$ = of(false);
-
-  api$ = (query) => clientApi.groups.index(query);
+  dataArray$ = this.data$.let(PageResults);
+  api$ = (query) => clientApi.groups.index<Page<IGroup>>(query);
 
   setData(data) {
     store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))
@@ -33,10 +37,10 @@ export class GroupsListClient extends EntityItemClient {
 
   }
 
-  getRoots() {
+  getRoots(): Observable<Page<IGroup>> {
     return  this.api$({has_parent: false})
   };
-  getChildren(groupId) {
+  getChildren(groupId): Observable<Page<IGroup>> {
     return this.api$({parent_group_id: groupId})
   }
 

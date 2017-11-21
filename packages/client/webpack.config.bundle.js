@@ -12,7 +12,8 @@ var nodeConfig = {
     resolve: {
         modules: ['node_modules'],
         extensions: ['.webpack.js', '.web.js', '.ts', '.js', '.png'],
-        alias: rxPaths()
+        // alias: rxPaths()
+        alias: {}
     },
     entry: mainPath,
     output: {
@@ -44,13 +45,13 @@ var nodeConfig = {
             minimize: true,
             debug: false
         }),
-        new Webpack.optimize.ModuleConcatenationPlugin(),
+        // new Webpack.optimize.ModuleConcatenationPlugin(), //for rxjs lettable operator
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-client']}),
         // new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-client']}),
         // new Webpack.IgnorePlugin(/moment-mini$/),
         // new Webpack.IgnorePlugin(/underscore$/),
-        new BundleAnalyzerPlugin({analyzerPort: 8088})
+        // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };
 
