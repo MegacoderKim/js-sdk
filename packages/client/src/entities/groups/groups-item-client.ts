@@ -1,4 +1,3 @@
-import {Observable} from "rxjs/Observable";
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {store} from "../../store-provider";
@@ -8,15 +7,18 @@ import {applyMixins} from "../helpers/mix";
 import {ClientSub} from "../base/client-factory";
 import {ItemQuery} from "../helpers/api-query-factory";
 import {ItemGetData} from "../helpers/get-data-factory";
+import {of} from "rxjs/observable/of";
+import {empty} from "rxjs/observable/empty";
+import {Observable} from "rxjs/Observable";
 
 export class GroupsItemClient extends EntityItemClient {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
   updateStrategy = 'once';
   id$ = store.select(fromGroup.getGroupId);
-  query$ = Observable.of({});
-  data$ = Observable.empty();
-  loading$ = Observable.of(false);
+  query$: Observable<object | null> = of({});
+  data$ = empty();
+  loading$ = of(false);
 
   getDefaultQuery() {
     return {...super.getDefaultQuery(), ...this.defaultQuery}

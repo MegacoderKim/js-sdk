@@ -54,11 +54,13 @@ export const AllItemsHelpers = {
 
       },
       getResults(isFirstCb?) {
-        return selectors.data$.map((allData: AllData<any>) => {
-          if(allData && allData.isFirst && isFirstCb) isFirstCb();
-          if(!allData) return allData;
-          return _.values(allData.resultsEntity)
-        })
+        return selectors.data$.pipe(
+          map((allData: AllData<any>) => {
+            if(allData && allData.isFirst && isFirstCb) isFirstCb();
+            if(!allData) return allData;
+            return _.values(allData.resultsEntity)
+          })
+        )
       }
     }
   }

@@ -1,5 +1,9 @@
 import {Observable} from "rxjs/Observable";
 import {AllowedQueryKeys, CombineQuery, MergeQuery} from "../base/helpers";
+import {map, mergeMap} from "rxjs/operators";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {empty} from "rxjs/observable/empty";
+import {of} from "rxjs/observable/of";
 
 export const apiQueryF = (e, type: 'list' | 'item') => {
 
@@ -25,26 +29,30 @@ export const apiQueryF = (e, type: 'list' | 'item') => {
       // .do(data => {
       //   console.log("allowed", data, e.name, allowedQueryKeys);
       // })
-      .let(CombineQuery(dateRangeQuery$))
+      .let(CombineQuery(dateRangeQuery$));
       // .do(data => {
       //   console.log("data", data);
       // });
 
     if(type === 'item') {
-      baseQuery$ = Observable.combineLatest(
+      baseQuery$ = combineLatest(
         id$,
         query$
       )
     } else {
-      baseQuery$ = baseQuery$.map(data => {
-        return [data]
-      })
+      baseQuery$ = baseQuery$.pipe(
+        map(data => {
+          return [data]
+        })
+      )
     }
     let apiQuery$;
     if(active$) {
-      apiQuery$ = active$ ? active$.mergeMap((isActive: boolean) => {
-        return isActive ? baseQuery$ : Observable.of(null)
-      }) : baseQuery$;
+      apiQuery$ = active$ ? active$.pipe(
+        mergeMap((isActive: boolean) => {
+          return isActive ? baseQuery$ : of(null)
+        })
+      ) : baseQuery$;
     } else {
       apiQuery$ = baseQuery$
     }
@@ -60,10 +68,12 @@ export const apiQueryF = (e, type: 'list' | 'item') => {
       return apiQueryF(this, type)
     },
     getApiQuery$() {
-      return this.apiQuery$().map(data => {
-        let queryIndex = type === 'list' ? 0 : 1;
-        return data ? data[queryIndex] : data;
-      })
+      return this.apiQuery$().pipe(
+        map(data => {
+          let queryIndex = type === 'list' ? 0 : 1;
+          return data ? data[queryIndex] : data;
+        })
+      )
     }
   }
 };
@@ -76,34 +86,30 @@ export class ListQuery {
   active$;
   name
   getApiQuery$() {
-    return this.getApiParams$().map(data => {
-      return data[0];
-    })
+    return this.getApiParams$().pipe(
+      map(data => {
+        return data[0];
+      })
+    )
   }
 
   getApiParams$() {
     // console.log(this.getDefaultQuery(), this.name);
     let baseQuery$ = this.query$
-    // .do(data => {
-    //   console.log("vase", data);
-    // })
       .let(AllowedQueryKeys(this.allowedQueryKeys))// .do(data => {
-      //   console.log("allowed", data);
-      // })
       .let(MergeQuery(this.getDefaultQuery()))
-      .do(data => {
-        // console.log("quer", data, this.name);
-      })
       .let(CombineQuery(this.dateRangeQuery$));
 
-    baseQuery$ = baseQuery$.map(data => {
-      return [data]
-    });
+    baseQuery$ = baseQuery$.pipe(
+      map(data => {
+        return [data]
+      })
+    );
     // console.log(this.active$, "$aa");
-    return this.active$ ? this.active$.mergeMap((isActive: boolean) => {
+    return this.active$ ? this.active$.let(mergeMap((isActive: boolean) => {
       // console.log(isActive, "acrr");
-      return isActive ? baseQuery$ : Observable.empty()
-    }) : Observable.empty();
+      return isActive ? baseQuery$ : empty()
+    })) : empty();
   }
 
 }
@@ -114,13 +120,15 @@ export class ItemQuery {
   getDefaultQuery: () => object;
 
   getApiQuery$() {
-    return this.getApiParams$().map(data => {
-      return data[1];
-    })
+    return this.getApiParams$().pipe(
+      map(data => {
+        return data[1];
+      })
+    )
   }
 
   getApiParams$() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.id$,
       this.query$.let(MergeQuery(this.getDefaultQuery()))
     )

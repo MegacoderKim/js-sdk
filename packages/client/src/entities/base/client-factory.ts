@@ -1,5 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
+import {empty} from "rxjs/observable/empty";
+import {switchMap} from "rxjs/operators";
 
 export const clientSubFactory = (entity) => {
 
@@ -9,15 +11,17 @@ export const clientSubFactory = (entity) => {
     init() {
       let entity = this;
       if(!this.dataSub) {
-        this.dataSub = entity.apiQuery$().switchMap(data => {
-          if (data && data[0]) {
-            let loading = typeof data[0] === 'string' ? data[0] : true;
-            entity.setLoading(loading);
-            return entity.getData$(data)
-          } else {
-            return Observable.empty()
-          }
-        }).subscribe(data => {
+        this.dataSub = entity.apiQuery$().pipe(
+          switchMap(data => {
+            if (data && data[0]) {
+              let loading = typeof data[0] === 'string' ? data[0] : true;
+              entity.setLoading(loading);
+              return entity.getData$(data)
+            } else {
+              return empty()
+            }
+          })
+        ).subscribe(data => {
           entity.setData(data)
         })
       }
@@ -39,15 +43,17 @@ export class ClientSub {
     // console.log("hrere", this.getData$({}), this);
     // let entity = this;
     if(!this.dataSub) {
-      this.dataSub = this.getApiParams$().switchMap(data => {
-        if (data && data[0]) {
-          let loading = typeof data[0] === 'string' ? data[0] : true;
-          this.setLoading(loading);
-          return this.getData$(data)
-        } else {
-          return Observable.empty()
-        }
-      }).subscribe(data => {
+      this.dataSub = this.getApiParams$().pipe(
+        switchMap(data => {
+          if (data && data[0]) {
+            let loading = typeof data[0] === 'string' ? data[0] : true;
+            this.setLoading(loading);
+            return this.getData$(data)
+          } else {
+            return empty()
+          }
+        })
+      ).subscribe(data => {
         this.setData(data)
       })
     }

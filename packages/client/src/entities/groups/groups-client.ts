@@ -8,6 +8,7 @@ import {store} from "../../store-provider";
 import {clientApi} from "../../client-api";
 import {Observable} from "rxjs/Observable";
 import {AllData} from "../../interfaces";
+import {map} from "rxjs/operators";
 
 // import {htClient} from "../../client";
 
@@ -29,15 +30,19 @@ export class HtGroupsClient extends EntityClient{
   }
 
   key$(id) {
-    return this.api.get(id).map((group) => {
-      return group['token']
-    });
+    return this.api.get(id).pipe(
+      map((group) => {
+        return group['token']
+      })
+    );
   }
 
   lookupIdKey$(lookupId): Observable<any> {
-    return this.api.index({lookup_id: lookupId}).map(groupPage => {
-      return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
-    })
+    return this.api.index({lookup_id: lookupId}).pipe(
+      map(groupPage => {
+        return groupPage && groupPage['results'] ? groupPage['results'][0]['token'] : null
+      })
+    )
   }
 
   getChildren(groupId: string): Observable<AllData<any>> {

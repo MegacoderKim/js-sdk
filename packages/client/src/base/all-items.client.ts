@@ -4,6 +4,7 @@ import * as _ from "underscore";
 import {EntityListClient} from "./list-client";
 import {Observable} from "rxjs/Observable";
 import {AllData} from "../interfaces";
+import {pluck} from "rxjs/operators";
 
 export class EntityAllItemsClient extends EntityListClient {
   updateStrategy = 'once';
@@ -52,15 +53,18 @@ export class EntityAllItemsClient extends EntityListClient {
     return true;
   }
   getMarkers$() {
-    return this.getAllMarkers$()
-      .pluck('valid')
+    return this.getAllMarkers$().pipe(
+      pluck('valid')
+    )
 
   };
   getResults(isFirstCb?) {
-    return this.data$.map((allData: AllData<any>) => {
-      if(allData && allData.isFirst && isFirstCb) isFirstCb();
-      if(!allData) return allData;
-      return _.values(allData.resultsEntity)
-    })
+    return this.data$.pipe(
+      map((allData: AllData<any>) => {
+        if(allData && allData.isFirst && isFirstCb) isFirstCb();
+        if(!allData) return allData;
+        return _.values(allData.resultsEntity)
+      })
+    )
   }
 }

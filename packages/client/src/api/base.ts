@@ -7,6 +7,8 @@ import {Page} from "ht-models";
 // import {clientApi} from "../client-request";
 import {HtRequest} from "../request";
 import {clientApi} from "../client-api";
+import {expand, map} from "rxjs/operators";
+import {empty} from "rxjs/observable/empty";
 // import {HtClientConfig} from "../config";
 // import {HTest, HtRequest} from "../request";
 // import {UsersListStorage} from "./storage";
@@ -56,15 +58,18 @@ export class HtBaseApi {
     query = {page_size: 200, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return api$
-      .expand((data: IPageData) => {
-        return data['next'] ? this.request.getObservable(data['next']) : Observable.empty()
-      })
-      .map((value: Page<T>) => {
-        let resultsEntity = _.indexBy(value.results, 'id');
-        let isFirst = !value.previous;
-        let count = value.count;
-        return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
-      })
+      .pipe(
+        expand((data: IPageData) => {
+          return data['next'] ? this.request.getObservable(data['next']) : empty()
+        }),
+        map((value: Page<T>) => {
+          let resultsEntity = _.indexBy(value.results, 'id');
+          let isFirst = !value.previous;
+          let count = value.count;
+          return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
+        })
+      )
+
       // .scan((acc: AllData<T>, value) => {
       //   // let results = [...acc.results, ...value.results];
       //   let resultsEntity = _.indexBy(value.results, 'id');
@@ -76,7 +81,7 @@ export class HtBaseApi {
   }
 
   analytics(query): Observable<any> {
-    return Observable.empty()
+    return empty()
   }
 
   // getObservable(url, options: object = {}): Observable<any> {

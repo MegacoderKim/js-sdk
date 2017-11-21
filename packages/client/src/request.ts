@@ -1,5 +1,6 @@
 import {HtQuerySerialize} from "ht-utility";
 import {Observable} from "rxjs/Observable";
+import {fromPromise} from "rxjs/observable/fromPromise";
 
 export class HtRequest {
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
@@ -36,13 +37,13 @@ export class HtRequest {
 
   getObservable<T>(url, options: object = {}): Observable<T> {
     let p = this.getFetch(url, options);
-    return this.fromPromise(p) as Observable<T>
+    return fromPromise(p) as Observable<T>
   }
 
 
   postObservable<T>(url, body, options: object = {}): Observable<any> {
     let p = this.postFetch(url, body, options);
-    return this.fromPromise(p) as Observable<T>
+    return fromPromise(p) as Observable<T>
   }
 
   api$<T>(url: string, query) {
@@ -64,9 +65,9 @@ export class HtRequest {
       .then(res => res.json())
   }
 
-  fromPromise(promise) {
-    return Observable.fromPromise(promise)
-  }
+  // fromPromise(promise) {
+  //   return Observable.fromPromise(promise)
+  // }
 
 }
 

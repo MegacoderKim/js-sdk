@@ -8,14 +8,15 @@ import {ClientSub} from "../base/client-factory";
 import {ListQuery} from "../helpers/api-query-factory";
 import {ListGetData} from "../helpers/get-data-factory";
 import {applyMixins} from "../helpers/mix";
+import {of} from "rxjs/observable/of";
 
 export class GroupsListClient extends EntityItemClient {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
-  query$ = Observable.of({});
+  query$ = of({});
   data$ = store.select(fromRoot.getGroupAll);
   active$ = store.select(fromRoot.getGroupListActive);
-  loading$ = Observable.of(false);
+  loading$ = of(false);
 
   api$ = (query) => clientApi.groups.index(query);
 

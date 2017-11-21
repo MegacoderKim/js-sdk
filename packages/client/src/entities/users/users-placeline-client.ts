@@ -13,6 +13,7 @@ import {applyBaseMixins, applyMixins} from "../helpers/mix";
 import {ItemGetData} from "../helpers/get-data-factory";
 import {ItemQuery} from "../helpers/api-query-factory";
 import {ClientSub} from "../base/client-factory";
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 export class UsersPlacelineClient extends EntityItemClient {
 
@@ -56,7 +57,7 @@ export class UsersPlacelineClient extends EntityItemClient {
 
 
   getMapData$() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.data$,
       this.segmentsState$,
       (userData: IUserData, {selectedId, resetMapId}) => {

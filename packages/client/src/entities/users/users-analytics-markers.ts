@@ -13,13 +13,14 @@ import {ListGetData} from "../helpers/get-data-factory";
 import {ListQuery} from "../helpers/api-query-factory";
 import {ClientSub} from "../base/client-factory";
 import {applyMixins} from "../helpers/mix";
+import {empty} from "rxjs/observable/empty";
 
 export class UsersAnalyticsListAllClient extends EntityAllItemsClient {
   active$ = store.select(fromRoot.getUsersAnalyticsMarkersIsActive);
   query$ = store.select(fromRoot.getQueryUserQuery) as Observable<object | null>;
   data$ = store.select(fromRoot.getUsersAnalyticsFilteredMarker);
   loading$ = store.select(fromRoot.getLoadingUserAnalyticsAll);
-  id$ = Observable.empty();
+  id$ = empty();
   allowedQueryKeys = ['status'];
   name = 'users analytics all';
   api$ = (query) => clientApi.users.all$(query, ApiType.analytics);

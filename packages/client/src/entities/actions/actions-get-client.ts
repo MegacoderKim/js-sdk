@@ -1,4 +1,6 @@
 import {Observable} from "rxjs/Observable";
+import {empty} from "rxjs/observable/empty";
+import {of} from "rxjs/observable/of";
 
 export class HtActionsGetClient{
   name = 'actions get';
@@ -8,7 +10,7 @@ export class HtActionsGetClient{
   // }
 
   get id$() {
-    return Observable.empty()
+    return empty()
   }
 
   get loading$() {
@@ -16,7 +18,7 @@ export class HtActionsGetClient{
   }
 
   get query$() {
-    return Observable.of({})
+    return of({})
   }
 
   setData(data) {

@@ -2,6 +2,8 @@ import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
 import {IDateRange} from "../interfaces";
 import {Page} from "ht-models";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {distinctUntilChanged, map} from "rxjs/operators";
 
 export abstract class EntityClient {
   /**
@@ -25,12 +27,14 @@ export abstract class EntityClient {
    */
   dataArrayWithSelected$(id$, dataArray$, selected$) {
     const userId$ = id$;
-    const placelinePage$ = selected$.distinctUntilChanged()
-      .map((data) => {
+    const placelinePage$ = selected$.pipe(
+      distinctUntilChanged(),
+      map((data) => {
         return data ? [data] : null;
-      }); //todo take query from placeline
+      })
+    ); //todo take query from placeline
 
-    const array$ = Observable.combineLatest(
+    const array$ = combineLatest(
       placelinePage$,
       userId$,
       dataArray$,
@@ -48,12 +52,15 @@ export abstract class EntityClient {
 
   pageDataWithSelected$(id$, pageData$, selected$) {
     const userId$ = id$;
-    const placelinePage$ = selected$.distinctUntilChanged()
-      .map((data) => {
+    const placelinePage$ = selected$.pipe(
+      distinctUntilChanged(),
+      map((data) => {
         return data ? [data] : null;
-      }); //todo take query from placeline
+      }) //todo take query from placeline
+    )
 
-    const newPageData$ = Observable.combineLatest(
+
+    const newPageData$ = combineLatest(
       placelinePage$,
       userId$,
       pageData$,
@@ -90,7 +97,7 @@ export abstract class EntityClient {
   }
 
   getPageFromEntity(item$) {
-    return item$.map()
+    return item$
   }
 
 }
