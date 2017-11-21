@@ -19,7 +19,7 @@ export class EntityAllItemsClient extends EntityListClient {
       this.setLoading(false)
     }
   }
-  getDataArray$() {
+  get dataArray$() {
     let dataArray$ = this.data$.pipe(
       filter((data: any) => !!data),
       map((data: AllData<any>) => {
@@ -30,7 +30,7 @@ export class EntityAllItemsClient extends EntityListClient {
     return dataArray$
   };
   getAllMarkers$(){
-    const allMarkers$ = this.getDataArray$().pipe(
+    const allMarkers$ = this.dataArray$.pipe(
       map((markers) => {
         return _.reduce(markers, (acc, marker) => {
           const isValid = this.isValidMarker(marker);

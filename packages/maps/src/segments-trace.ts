@@ -34,7 +34,7 @@ export class HtSegmentsTrace {
   allowedEvents = {};
   // map;
   dataSub: Subscription;
-
+  data$: Observable<null | IUserData>;
   constructor(public options: HtSegmentsTraceOptions = {}) {
     // this.initBaseItems();
     this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
@@ -50,11 +50,12 @@ export class HtSegmentsTrace {
     if (this.dataSub) {
       this.dataSub.unsubscribe();
     }
-    this.initDataObserver(data$)
+    this.data$ = data$;
+    this.initDataObserver()
   }
 
-  initDataObserver(data$: Observable<IUserData | null>) {
-    let userData$ = data$.pipe(
+  initDataObserver() {
+    let userData$ = this.data$.pipe(
       filter(data => !!MapService.map),
       scan((acc: any, data) => {
         const oldId = acc.user ? acc.user.id : null;

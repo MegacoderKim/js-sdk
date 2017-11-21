@@ -14,6 +14,7 @@ import {ItemQuery} from "../../mixins/entity-query";
 import {ClientSub} from "../../mixins/client-subscription";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {entityApi} from "../../global/entity-api";
+import {dataWithSelectedId$} from "../../helpers/utils";
 
 export class UsersPlacelineClient extends EntityItemClient {
 
@@ -32,6 +33,7 @@ export class UsersPlacelineClient extends EntityItemClient {
   id$ = store.select(fromRoot.getQueryPlacelineId);
 
   segmentsState$ = store.select(fromRoot.getSegmentsState);
+  segmentSelectedId$ = store.select(fromRoot.getSegmentsSelectedId);
 
   setData(data) {
     store.dispatch(new fromUsersDispatcher.SetUserData(data))
@@ -57,20 +59,7 @@ export class UsersPlacelineClient extends EntityItemClient {
 
 
   getMapData$() {
-    return combineLatest(
-      this.data$,
-      this.segmentsState$,
-      (userData: IUserData, {selectedId, resetMapId}) => {
-        if(userData && (selectedId || resetMapId)) {
-          const id = selectedId || resetMapId;
-          let segments = _.filter(userData.segments, (segment: ISegment) => {
-            return segment.id === id;
-          });
-          userData = {...userData, segments: segments, events: [], actions: []}
-        }
-        return userData
-      }
-    )
+    return dataWithSelectedId$(this.data$, this.segmentSelectedId$, 'segments');
   }
 }
 

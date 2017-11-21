@@ -99,31 +99,16 @@ export class HtUsersClient extends EntityClient {
     return {...range, start, end}
   }
 
-  placelineOrList$() {
-    const id$ = this.list.id$.pipe(distinctUntilChanged());
-    const dataArray$ = this.list.dataArray$;
-    const selected$ = this.placeline.data$;
-    return this.dataArrayWithSelected$(id$, dataArray$, selected$)
-  }
-
-  listPage$() {
-    const id$ = this.list.id$.pipe(distinctUntilChanged());
-    const dataArray$ = this.list.data$;
-    const selected$ = this.placeline.data$;
-    // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
-    return this.pageDataWithSelected$(id$, dataArray$, selected$)
-  }
-
-  listSummary$() {
-    return combineLatest(
-      this.summary.data$,
-      this.list.id$,
-      (summary, userId) => userId ? null : summary
-    )
-  }
+  // listPage$() {
+  //   const id$ = this.list.id$.pipe(distinctUntilChanged());
+  //   const dataArray$ = this.list.data$;
+  //   const selected$ = this.placeline.data$;
+  //   // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
+  //   return this.pageDataWithSelected$(id$, dataArray$, selected$)
+  // }
 
   listStatusOverview$() {
-    return this.listSummary$().pipe(
+    return this.summary.data$.pipe(
       map((summary: IUserListSummary) => {
         if(summary) {
           return summary.status_overview
@@ -176,32 +161,6 @@ export class HtUsersClient extends EntityClient {
         })
       )
     // return status_overview ? Object.keys(status_overview) : null
-  }
-
-
-  listMap$() {
-    const withSummary = zip(
-      this.placelineOrList$(),
-      this.summary.data$,
-      (placelineList, summary) => {
-        console.log("sasd", placelineList, summary);
-        return {placelineList, summary}
-      }
-    );
-
-    const list$ = this.placelineOrList$().pipe(
-      map((placelineList) => {
-        console.log("adas");
-        return {placelineList, summary: null}
-      })
-    );
-
-    return this.summary.active$
-      .switchMap((summaryActive: boolean) => {
-      return summaryActive ?
-        withSummary :
-        list$
-    })
   }
 
   get queryLabel$() {

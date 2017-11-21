@@ -4,6 +4,7 @@ import {IDateRange} from "../interfaces";
 import {Page} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {distinctUntilChanged, map} from "rxjs/operators";
+import {itemAsPage} from "../helpers/operators";
 
 export abstract class EntityClient {
 
@@ -33,21 +34,19 @@ export abstract class EntityClient {
   }
 
   pageDataWithSelected$(id$, pageData$, selected$) {
-    const userId$ = id$;
+    // const userId$ = id$;
     const placelinePage$ = selected$.pipe(
-      distinctUntilChanged(),
-      map((data) => {
-        return data ? [data] : null;
-      }) //todo take query from placeline
-    )
+      itemAsPage()
+    );
 
 
     const newPageData$ = combineLatest(
       placelinePage$,
-      userId$,
+      id$,
       pageData$,
-      (placelineResults, userId, pageData: Page<any>) => {
+      (placelinePage: Page<any>, userId, pageData: Page<any>) => {
         if (!pageData) return pageData;
+        let placelineResults = placelinePage ? placelinePage.results : null;
         const filteredData = _.filter(pageData.results, (user) => {
           return userId ? user.id == userId : true;
         });

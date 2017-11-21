@@ -81,4 +81,20 @@ export const AllowedQueryKeys = (allowedQueryKeys?: string[] | null) => {
   }
 };
 
+export const itemAsPage = <T>() => {
+  return (item$): Observable<Page<T>> => {
+    return item$.pipe(
+      map((item) => {
+        console.log("item", item);
+        return item ?
+          {
+            count: 1,
+            next: null,
+            previous: null,
+            results: [item]
+          } : null
+      })
+    )
+  }
+};
 
