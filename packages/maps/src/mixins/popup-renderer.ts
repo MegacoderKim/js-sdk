@@ -1,7 +1,6 @@
 import {MapService} from "../map-service";
-import {Entities, Entity} from "../entities/interfaces";
 import {HtPosition} from "ht-data";
-import {Constructor} from "../interfaces";
+import {Constructor, Entities, Entity} from "../interfaces";
 
 export class PopupRenderer {
   popup;

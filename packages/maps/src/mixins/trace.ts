@@ -1,8 +1,7 @@
 import {MapService} from "../map-service";
-import {Entities} from "../entities/interfaces";
 import {HtBounds} from "../map-utils";
 import * as _ from "underscore";
-import {Constructor} from "../interfaces";
+import {Constructor, Entities} from "../interfaces";
 
 export class Trace {
   map;

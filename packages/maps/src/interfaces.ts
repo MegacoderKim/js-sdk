@@ -89,14 +89,25 @@ export interface IReplayPlayer {
   speed: number
 }
 
-export interface HtMapItemsOptions<T> {
-  getInfoContent?: (data: T) => string,
-  getItem?: (data) => T | any,
-  getPosition?: (data) => HtPosition
+export type Entities<T> = {
+  [id: string]: Entity<T>
 }
 
-export interface HtMapItemOptions<T> {
-
+export interface Entity<T> {
+  item: any,
+  isOld: boolean,
+  data: T
 }
 
-export type Constructor<T = {}> = new (...args: any[]) => T;
+export interface StyleObj {
+  google: {
+    default: object,
+    [key: string]: object
+  },
+  leaflet: {
+    default: object,
+    [key: string]: object
+  }
+}
+
+export type Constructor<T = object> = new (...args: any[]) => T;

@@ -1,6 +1,4 @@
-
-import {Constructor} from "../interfaces";
-import {Entities, Entity} from "../entities/interfaces";
+import {Constructor, Entities, Entity} from "../interfaces";
 
 export function SingleItemMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {

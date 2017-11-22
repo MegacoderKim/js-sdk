@@ -1,6 +1,5 @@
-import {StyleObj} from "../helpers/styles-factory";
 import {MapService} from "../map-service";
-import {Constructor} from "../interfaces";
+import {Constructor, StyleObj} from "../interfaces";
 
 export class Styles {
   styleObj: StyleObj = {

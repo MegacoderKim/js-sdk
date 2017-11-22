@@ -3,7 +3,6 @@ import {HtBounds, HtMapType} from "./map-utils";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {GoogleMapUtils} from "./google-map-utils";
 import {HtMap} from "./interfaces";
-import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 
 export const MapService = {
@@ -37,7 +36,7 @@ export const MapService = {
   },
   getItemsSetBounds(items) {
     let bounds = MapService.mapUtils.extendBounds();
-    return _.reduce(items, (bounds, item: HtMapItem<any>) => {
+    return _.reduce(items, (bounds, item) => {
       return this.getBounds(bounds, item)
     }, bounds)
   },

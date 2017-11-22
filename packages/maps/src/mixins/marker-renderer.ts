@@ -1,5 +1,4 @@
-import {Constructor, HtMap} from "../interfaces";
-import {Entities} from "../entities/interfaces";
+import {Constructor, HtMap, Entities} from "../interfaces";
 import {HtPosition} from "ht-data";
 import {MapService} from "../map-service";
 import * as _ from "underscore";

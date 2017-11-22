@@ -3,13 +3,11 @@ import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
 import {UsersClustersTrace} from "./entities/users-cluster";
 import {LightColorMapStyle} from "./styles/light-color-map";
-import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {MapService} from "./map-service";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {currentId} from "async_hooks";
 
 export class HtMapClass {
   // map: HtMap;
@@ -98,7 +96,7 @@ export class HtMapClass {
 
   getBoundsItem(items) {
     let bounds = MapService.mapUtils.extendBounds();
-    return _.reduce(items, (bounds, item: HtMapItem<any>) => {
+    return _.reduce(items, (bounds, item) => {
       return this.getBounds(bounds, item)
     }, bounds)
   }
