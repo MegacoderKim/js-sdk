@@ -1,7 +1,7 @@
 import {HtBounds, HtMap, HtMapType} from "./interfaces";
 import {HtSegmentsTrace} from "./segments-trace";
 import {IUserData} from "ht-models";
-import {usersClustersFactory} from "./entities/users-cluster";
+import {UsersClustersTrace} from "./entities/users-cluster";
 import {LightColorMapStyle} from "./styles/light-color-map";
 import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
@@ -38,7 +38,7 @@ export class HtMapClass {
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     MapService.setMapType(mapType);
-    this.usersCluster = usersClustersFactory();
+    this.usersCluster = new UsersClustersTrace();
     this.placeline = new HtSegmentsTrace();
     MapService.addToItemsSet(this.placeline);
     MapService.addToItemsSet(this.usersCluster);

@@ -98,3 +98,5 @@ export interface HtMapItemsOptions<T> {
 export interface HtMapItemOptions<T> {
 
 }
+
+export type Constructor<T = {}> = new (...args: any[]) => T;

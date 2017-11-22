@@ -1,23 +1,26 @@
 import {HtMapItems} from "../map-items";
 import * as _ from 'underscore';
 import {HtUserMarker} from "./user-marker";
-import {SetFocusConfig} from "../interfaces";
+import {Constructor, SetFocusConfig} from "../interfaces";
 import {htUser} from "ht-data";
 import {IUser, IUserAnalytics} from "ht-models";
 import {mapItemsFactory} from "../base/map-items-factory";
-import {DataConfig, EventConfig, MapEntities} from "./interfaces";
+import {DataConfig, Entity, EventConfig, MapEntities} from "./interfaces";
 import {StyleObj} from "../helpers/styles-factory";
 import {userDivFactory} from "../helpers/user-div-factory";
 import {MapService} from "../map-service";
 import {addDataFactory} from "../helpers/add-data-factory";
 import {Markers} from "../base/markers";
 import {applyMixins} from "../helpers/apply-mixins";
-import {Clusters} from "../mixins/clusters";
-import {PopupRenderer} from "../mixins/popup-renderer";
-import {Trace} from "../mixins/trace";
-import {Styles} from "../mixins/styles";
+import {ClusterMixin, Clusters} from "../mixins/clusters";
+import {PopupMixin, PopupRenderer} from "../mixins/popup-renderer";
+import {Trace, TraceMixin} from "../mixins/trace";
+import {StyleMixin, Styles} from "../mixins/styles";
 import {HtPosition} from "ht-data";
 import {DivMarkers} from "../base/div-markers";
+import {MarkersMixin} from "../mixins/marker-renderer";
+import {DivMarkersMixin} from "../mixins/div-makrers-renderes";
+import {DataObservableMixin} from "../mixins/data-observable";
 declare const RichMarkerPosition: any;
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
@@ -175,7 +178,8 @@ export const usersClustersFactory = (): MapEntities<any> => {
   return mapItems
 };
 
-export class UsersClusters extends DivMarkers {
+export class UsersClusters {
+  name = "Cluster user"
   styleObj: StyleObj = {
     google: {
       default: {
@@ -195,12 +199,6 @@ export class UsersClusters extends DivMarkers {
     }
   };
 
-  constructor() {
-    super();
-    this.addCluster();
-    this.addPopup();
-  }
-
   getPosition(data): HtPosition {
     return htUser(data).getPosition()
   };
@@ -219,4 +217,15 @@ export class UsersClusters extends DivMarkers {
     return string
   }
 }
-applyMixins(UsersClusters, [Clusters, PopupRenderer, Trace, Styles]);
+// applyMixins(UsersClusters, [Clusters, PopupRenderer, Trace, Styles]);
+
+// export const tuser = DivMarkersMixin(MarkersMixin(TraceMixin(StyleMixin(UsersClusters))));
+export const UsersClustersTrace = _.compose(
+  PopupMixin,
+  ClusterMixin,
+  DivMarkersMixin,
+  MarkersMixin,
+  StyleMixin,
+  TraceMixin,
+  DataObservableMixin,
+)(UsersClusters);

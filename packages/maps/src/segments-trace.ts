@@ -2,9 +2,9 @@ import * as _ from "underscore";
 import {TimelineSegment} from "./timeline-segment";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
 import {HtMapType} from "./interfaces";
-import {segmentFactory} from "./entities/segment-polylines";
-import {stopFactory} from "./entities/stop-markers";
-import {actionsFactory} from "./entities/action-markers";
+import {segmentFactory, SegmentPolylinesTrace} from "./entities/segment-polylines";
+import {stopFactory, StopMarkersTrace} from "./entities/stop-markers";
+import {ActionMarkersTrace, actionsFactory} from "./entities/action-markers";
 import {htAction} from "ht-data";
 import {IEvent} from "ht-models";
 import {LeafletUtils} from "./leaflet-map-utils";
@@ -12,7 +12,7 @@ import {GoogleMapUtils} from "./google-map-utils";
 import {mapItemsFactory} from "./base/map-items-factory";
 import {htUser} from "ht-data";
 import {MapService} from "./map-service";
-import {currentUserFactory} from "./entities/current-user";
+import {currentUserFactory, CurrentUserTrace} from "./entities/current-user";
 import {MapEntities, Entity} from "./entities/interfaces";
 import {MapEntity} from "./base/map-item-factory";
 import {HtPosition} from "ht-data";
@@ -23,12 +23,12 @@ import {scan} from "rxjs/operators/scan";
 
 export class HtSegmentsTrace {
 
-  segmentsPolylines = segmentFactory();
-  stopMarkers = stopFactory();
-  actionMarkers = actionsFactory();
-  actionsPolylines = actionsFactory();
+  segmentsPolylines = new SegmentPolylinesTrace();
+  stopMarkers = new StopMarkersTrace();
+  actionMarkers = new ActionMarkersTrace();
+  actionsPolylines = new ActionMarkersTrace();
   timelineSegment = new TimelineSegment();
-  userMarker: MapEntity<IUserData> = currentUserFactory();
+  userMarker: MapEntity<IUserData> = new CurrentUserTrace();
   replayMarker = stopFactory();
   eventMarkers = stopFactory();
   allowedEvents = {};
@@ -157,7 +157,7 @@ export class HtSegmentsTrace {
     if(currentPosition) {
       let polylines = this.getActionPolylineWithId(currentPosition, ongoingAction);
       // console.log(polylines);
-      this.actionsPolylines.trace(polylines)
+      // this.actionsPolylines.trace(polylines)
 
     } else {
       // this.actionsPolylines.removeAll()
