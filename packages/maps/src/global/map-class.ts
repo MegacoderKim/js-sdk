@@ -1,8 +1,8 @@
-import {HtBounds, HtMap, HtMapType} from "./interfaces";
-import {HtSegmentsTrace} from "./segments-trace";
+import {HtBounds, HtMap, HtMapType} from "../interfaces";
+import {PlacelineTrace} from "../compound-entities/placeline-trace";
 import {IUserData} from "ht-models";
-import {UsersClustersTrace} from "./entities/users-cluster";
-import {LightColorMapStyle} from "./styles/light-color-map";
+import {UsersClustersTrace} from "../entities/users-cluster";
+import {LightColorMapStyle} from "../styles/light-color-map";
 import * as _ from "underscore";
 import {MapService} from "./map-service";
 import {ReplaySubject} from "rxjs/ReplaySubject";
@@ -14,7 +14,7 @@ export class HtMapClass {
   // mapUtils: MapUtils;
   // userData$: Observable<IUserData | null>;
   userDataSub: Subscription;
-  placeline: HtSegmentsTrace;
+  placeline: PlacelineTrace;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
@@ -37,7 +37,7 @@ export class HtMapClass {
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     MapService.setMapType(mapType);
     this.usersCluster = new UsersClustersTrace();
-    this.placeline = new HtSegmentsTrace();
+    this.placeline = new PlacelineTrace();
     MapService.addToItemsSet(this.placeline);
     MapService.addToItemsSet(this.usersCluster);
     // this.mapItemsSet.push(this.placeline, this.usersCluster);

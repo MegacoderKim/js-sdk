@@ -1,16 +1,11 @@
 import {TimeAwarePolyline} from "./time-aware-polyline";
 import * as _ from 'underscore';
 import {Observable} from "rxjs/Observable";
-import "rxjs/add/observable/timer";
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/take';
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/share";
-import "rxjs/add/operator/takeUntil";
 import {HtBounds, HtMapType, IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimelineEvent, IDecodedSegment} from "ht-models";
+import {filter, map, share, switchMap, take, takeUntil} from "rxjs/operators";
+import {timer} from "rxjs/observable/timer";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
@@ -79,11 +74,11 @@ export class TimelineReplay extends TimeAwarePolyline {
   }
 
   getReplayStats() {
-    return this.stats$.share()
+    return this.stats$.pipe(share())
   }
 
   getReplayHead() {
-    return this.head$.share()
+    return this.head$.pipe(share())
   }
 
   currentTimeEffects(time) {
@@ -188,12 +183,23 @@ export class TimelineReplay extends TimeAwarePolyline {
   play() {
     this.setPlayer({isStopped: false, isPlaying: true});
 
-    this.playerSub = Observable.timer(0, this.frameInterval).switchMap(() => this.head$.take(1))
-      .map((head) => this.getNextTimePercent(head))
-      .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
-      .subscribe((timePercent) => {
-        this.goToTimePercent(timePercent)
-      });
+    const playerSub = timer(0, this.frameInterval).pipe(
+      switchMap(() => this.head$.pipe(take(1)))
+    ).pipe(
+      map((head) => this.getNextTimePercent(head)),
+      takeUntil(this.player$.pipe(filter(player => !player.isPlaying), take(1)))
+    ).subscribe((timePercent) => {
+      this.goToTimePercent(timePercent)
+    })
+
+    // this.playerSub = Observable.timer(0, this.frameInterval).switchMap(() => this.head$.take(1))
+    //   .map((head) => this.getNextTimePercent(head))
+    //   .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
+    //   .subscribe((timePercent) => {
+    //     this.goToTimePercent(timePercent)
+    //   });
+
+    this.playerSub = playerSub;
   }
   toggleSkipStops() {
     this.skipStops = !this.skipStops;

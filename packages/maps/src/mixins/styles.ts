@@ -1,4 +1,4 @@
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 import {Constructor, StyleObj} from "../interfaces";
 
 export class Styles {

@@ -1,4 +1,4 @@
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 import {HtPosition} from "ht-data";
 import {Constructor, Entities, Entity} from "../interfaces";
 

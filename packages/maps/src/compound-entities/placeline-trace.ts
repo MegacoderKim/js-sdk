@@ -1,18 +1,18 @@
 import * as _ from "underscore";
-import {TimelineSegment} from "./timeline-segment";
+import {TimelineSegment} from "../timeline-segment";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
-import {SegmentPolylinesTrace} from "./entities/segment-polylines";
-import {StopMarkersTrace} from "./entities/stop-markers";
-import {ActionMarkersTrace} from "./entities/action-markers";
+import {SegmentPolylinesTrace} from "../entities/segment-polylines";
+import {StopMarkersTrace} from "../entities/stop-markers";
+import {ActionMarkersTrace} from "../entities/action-markers";
 import {htAction} from "ht-data";
-import {MapService} from "./map-service";
-import {CurrentUserTrace} from "./entities/current-user";
+import {MapService} from "../global/map-service";
+import {CurrentUserTrace} from "../entities/current-user";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
 
-export class HtSegmentsTrace {
+export class PlacelineTrace {
 
   segmentsPolylines = new SegmentPolylinesTrace();
   stopMarkers = new StopMarkersTrace();
@@ -28,7 +28,7 @@ export class HtSegmentsTrace {
   data$: Observable<null | IUserData>;
   constructor(public options: HtSegmentsTraceOptions = {}) {
     // this.initBaseItems();
-    this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
+    this.timelineSegment.head$.pipe(filter(() => !!this.map)).subscribe((head) => {
       this.setReplayHead(head, this.map)
     })
   }
@@ -55,12 +55,6 @@ export class HtSegmentsTrace {
         return {user: data, isNew, oldId }
       }, {user: null, oldId: null, isNew: true})
     );
-    // let userData$ = data$.filter(data => !!MapService.map).scan((acc, data) => {
-    //   const oldId = acc.user ? acc.user.id : null;
-    //   const currentId = data ? data.id : null;
-    //   const isNew = currentId && oldId ? currentId !== oldId : true;
-    //   return {user: data, isNew, oldId }
-    // }, {user: null, oldId: null, isNew: true});
 
     let sub = userData$.subscribe((acc) => {
       const userData = acc.user;

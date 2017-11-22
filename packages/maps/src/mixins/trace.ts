@@ -1,4 +1,4 @@
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 import {HtBounds} from "../map-utils";
 import * as _ from "underscore";
 import {Constructor, Entities} from "../interfaces";

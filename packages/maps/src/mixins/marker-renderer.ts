@@ -1,6 +1,6 @@
 import {Constructor, HtMap, Entities} from "../interfaces";
 import {HtPosition} from "ht-data";
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 import * as _ from "underscore";
 
 export function MarkersMixin<TBase extends Constructor>(Base: TBase) {

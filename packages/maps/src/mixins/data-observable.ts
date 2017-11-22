@@ -1,7 +1,7 @@
 import {Constructor} from "../interfaces";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 import {filter, scan} from "rxjs/operators";
 
 export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {

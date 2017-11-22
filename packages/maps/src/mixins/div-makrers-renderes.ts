@@ -1,5 +1,5 @@
 import {Constructor} from "../interfaces";
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 
 export function DivMarkersMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {

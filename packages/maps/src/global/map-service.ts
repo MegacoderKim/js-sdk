@@ -1,8 +1,8 @@
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {HtBounds, HtMapType} from "./map-utils";
-import {LeafletUtils} from "./leaflet-map-utils";
-import {GoogleMapUtils} from "./google-map-utils";
-import {HtMap} from "./interfaces";
+import {HtBounds, HtMapType} from "../map-utils";
+import {LeafletUtils} from "../map-utils/leaflet-map-utils";
+import {GoogleMapUtils} from "../map-utils/google-map-utils";
+import {HtMap} from "../interfaces";
 import * as _ from "underscore";
 
 export const MapService = {

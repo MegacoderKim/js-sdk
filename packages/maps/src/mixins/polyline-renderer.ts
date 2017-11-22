@@ -1,6 +1,6 @@
 import {Constructor} from "../interfaces";
 import {positionTime} from "../helpers/position-time-helper";
-import {MapService} from "../map-service";
+import {MapService} from "../global/map-service";
 
 export function PolylinesMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
