@@ -10,6 +10,14 @@ import {StyleObj} from "../helpers/styles-factory";
 import {userDivFactory} from "../helpers/user-div-factory";
 import {MapService} from "../map-service";
 import {addDataFactory} from "../helpers/add-data-factory";
+import {Markers} from "../base/markers";
+import {applyMixins} from "../helpers/apply-mixins";
+import {Clusters} from "../mixins/clusters";
+import {PopupRenderer} from "../mixins/popup-renderer";
+import {Trace} from "../mixins/trace";
+import {Styles} from "../mixins/styles";
+import {HtPosition} from "ht-data";
+import {DivMarkers} from "../base/div-markers";
 declare const RichMarkerPosition: any;
 
 export class UsersCluster extends HtMapItems<IUser | IUserAnalytics> {
@@ -167,3 +175,48 @@ export const usersClustersFactory = (): MapEntities<any> => {
   return mapItems
 };
 
+export class UsersClusters extends DivMarkers {
+  styleObj: StyleObj = {
+    google: {
+      default: {
+        flat: true,
+        anchor: RichMarkerPosition.BOTTOM_CENTER,
+        zIndex: 1
+      },
+      popup: {
+        disableAutoPan: true,
+        pixelOffset: new google.maps.Size(0, -35)
+      }
+    },
+    leaflet: {
+      default: {
+
+      }
+    }
+  };
+
+  constructor() {
+    super();
+    this.addCluster();
+    this.addPopup();
+  }
+
+  getPosition(data): HtPosition {
+    return htUser(data).getPosition()
+  };
+
+  getDivContent(data) {
+    return userDivFactory(data)
+  };
+
+  getInfoContent(data) {
+    // if(this.options.getInfoContent) return this.options.getInfoContent(data);
+    let string = `<div>
+<strong>${data.name}</strong>
+<div>${data.display.status_text}</div>
+<div>${data.display.sub_status_text}</div>
+</div>`;
+    return string
+  }
+}
+applyMixins(UsersClusters, [Clusters, PopupRenderer, Trace, Styles]);

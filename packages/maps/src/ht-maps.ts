@@ -15,4 +15,7 @@ export * from "./renderers/polyline-render";
 export * from "./base/map-item-factory";
 export * from "./base/map-items-factory";
 
+//entities
+export * from "./entities/users-cluster";
+
 // import 'rxjs/add/operator/scan';
