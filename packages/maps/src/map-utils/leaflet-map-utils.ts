@@ -1,4 +1,4 @@
-import {HtMarker, MapUtils, SetFocusConfig} from "../interfaces";
+import {HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 var polyUtil = require('polyline-encoded');
 import * as L from "leaflet"
 import {HtPosition} from "ht-data";

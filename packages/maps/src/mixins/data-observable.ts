@@ -8,16 +8,18 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
     trace: (data, map?) => any;
+    dataSource$: Observable<object | null>;
 
     setData$(data$: Observable<object | null>, dataType: 'list' | 'item' = 'list') {
       if (this.dataSub) {
         this.dataSub.unsubscribe();
       }
-      this._initDataObserver(data$, dataType)
+      this.dataSource$ = data$;
+      this._initDataObserver(dataType)
     };
 
-    _initData$(data$: Observable<object | null>, dataType: 'list' | 'item' = 'list') {
-      let userData$ = data$.pipe(
+    _initData$(dataType: 'list' | 'item' = 'list') {
+      let userData$ = this.dataSource$.pipe(
         filter(data => !!MapService.map),
         scan((acc: {user: any, oldUser: any}, data: object) => {
           const oldUser = acc.user;
@@ -27,7 +29,7 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
       return userData$;
     };
 
-    _initDataObserver(data$: Observable<object | null>, dataType: 'list' | 'item' = 'list') {
+    _initDataObserver(dataType: 'list' | 'item' = 'list') {
       // Observable.of(3).let(
       //   filter((x: number) => !!x)
       // )
@@ -37,7 +39,7 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
       //
       // })
 
-      let userData$ = this._initData$(data$, dataType);
+      let userData$ = this._initData$(dataType);
 
       // let userData$ = data$.pipe(
       //   filter(data => !!MapService.map),

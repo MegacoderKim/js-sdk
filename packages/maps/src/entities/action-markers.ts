@@ -1,11 +1,7 @@
 import {Color} from "ht-utility";
 import {htAction} from "ht-data";
-import * as _ from "underscore";
-import {TraceMixin} from "../mixins/trace";
-import {StyleMixin} from "../mixins/styles";
-import {MarkersMixin} from "../mixins/marker-renderer";
-import {CircleMixin} from "../mixins/circle-renderer";
 import {HtPosition} from "ht-data";
+import {mapItemsFactory} from "../base/map-items-factory";
 
 export class ActionMarkers {
   name = "Action";
@@ -42,11 +38,7 @@ export class ActionMarkers {
 
   }
 }
-
-export const ActionMarkersTrace = _.compose(
-  // PopupMixin,
-  CircleMixin,
-  MarkersMixin,
-  StyleMixin,
-  TraceMixin
-)(ActionMarkers);
+export const ActionMarkersTrace = mapItemsFactory(ActionMarkers, {
+  isCircle: true,
+  hasDataObservable: false
+});

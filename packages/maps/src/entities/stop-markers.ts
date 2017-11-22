@@ -1,16 +1,11 @@
 import {stopStyles} from "../styles/stop-styles";
 import {ISegment} from "ht-models";
 import {Color, HMString, TimeString, DateString} from "ht-utility";
-import * as _ from "underscore";
-import {CircleMixin} from "../mixins/circle-renderer";
-import {MarkersMixin} from "../mixins/marker-renderer";
-import {StyleMixin} from "../mixins/styles";
-import {TraceMixin} from "../mixins/trace";
-import {PopupMixin} from "../mixins/popup-renderer";
+import {mapItemsFactory} from "../base/map-items-factory";
 
 
 export abstract class StopMarkers {
-  name = "Stop"
+  name = "Stop";
   styleObj = stopStyles;
 
   htShow(item) {
@@ -54,10 +49,9 @@ export abstract class StopMarkers {
   }
 }
 
-export const StopMarkersTrace = _.compose(
-  PopupMixin,
-  CircleMixin,
-  MarkersMixin,
-  StyleMixin,
-  TraceMixin
-)(StopMarkers);
+export const StopMarkersTrace = mapItemsFactory(StopMarkers, {
+  hasPopup: true,
+  isCircle: true,
+  hasDataObservable: false
+});
+

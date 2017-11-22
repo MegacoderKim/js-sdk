@@ -1,15 +1,8 @@
-import * as _ from 'underscore';
 import {htUser} from "ht-data";
 import {userDivFactory} from "../helpers/user-div-factory";
-import {ClusterMixin} from "../mixins/clusters";
-import {PopupMixin} from "../mixins/popup-renderer";
-import {TraceMixin} from "../mixins/trace";
-import {StyleMixin} from "../mixins/styles";
 import {HtPosition} from "ht-data";
-import {MarkersMixin} from "../mixins/marker-renderer";
-import {DivMarkersMixin} from "../mixins/div-makrers-renderes";
-import {DataObservableMixin} from "../mixins/data-observable";
 import {StyleObj} from "../interfaces";
+import {mapItemsFactory} from "../base/map-items-factory";
 declare const RichMarkerPosition: any;
 
 
@@ -52,12 +45,9 @@ export class UsersClusters {
   }
 }
 
-export const UsersClustersTrace = _.compose(
-  PopupMixin,
-  ClusterMixin,
-  DivMarkersMixin,
-  MarkersMixin,
-  StyleMixin,
-  TraceMixin,
-  DataObservableMixin,
-)(UsersClusters);
+export const UsersClustersTrace = mapItemsFactory(UsersClusters, {
+  hasPopup: true,
+  isCluster: true,
+  isDiv: true,
+  hasDataObservable: true
+});

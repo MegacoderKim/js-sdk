@@ -1,11 +1,12 @@
 import {TimeAwarePolyline} from "./time-aware-polyline";
 import * as _ from 'underscore';
 import {Observable} from "rxjs/Observable";
-import {HtBounds, HtMapType, IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
+import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimelineEvent, IDecodedSegment} from "ht-models";
 import {filter, map, share, switchMap, take, takeUntil} from "rxjs/operators";
 import {timer} from "rxjs/observable/timer";
+import {HtBounds} from "./map-utils/interfaces";
 
 export class TimelineReplay extends TimeAwarePolyline {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();

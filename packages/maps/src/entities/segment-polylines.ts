@@ -1,10 +1,6 @@
 import {segmentPolylineStyles} from "../styles/segment-polyline-styles";
 import {ISegment} from "ht-models";
-import * as _ from "underscore";
-import {PolylinesMixin} from "../mixins/polyline-renderer";
-import {MarkersMixin} from "../mixins/marker-renderer";
-import {StyleMixin} from "../mixins/styles";
-import {TraceMixin} from "../mixins/trace";
+import {mapItemsFactory} from "../base/map-items-factory";
 
 
 export class SegmentPolylines {
@@ -19,9 +15,14 @@ export class SegmentPolylines {
   }
 }
 
-export const SegmentPolylinesTrace = _.compose(
-  PolylinesMixin,
-  MarkersMixin,
-  StyleMixin,
-  TraceMixin,
-)(SegmentPolylines);
+export const SegmentPolylinesTrace = mapItemsFactory(SegmentPolylines, {
+  isPolyline: true,
+  hasDataObservable: false
+});
+
+// export const SegmentPolylinesTrace = _.compose(
+//   PolylinesMixin,
+//   MarkersMixin,
+//   StyleMixin,
+//   TraceMixin,
+// )(SegmentPolylines);

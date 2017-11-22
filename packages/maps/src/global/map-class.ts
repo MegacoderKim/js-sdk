@@ -1,4 +1,4 @@
-import {HtBounds, HtMap, HtMapType} from "../interfaces";
+import {HtBounds, HtMap, HtMapType} from "../map-utils/interfaces";
 import {PlacelineTrace} from "../compound-entities/placeline-trace";
 import {IUserData} from "ht-models";
 import {UsersClustersTrace} from "../entities/users-cluster";
