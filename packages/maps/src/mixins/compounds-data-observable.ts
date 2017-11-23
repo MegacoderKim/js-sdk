@@ -8,10 +8,12 @@ import {map} from "rxjs/operators/map";
 import {pluck} from "rxjs/operators/pluck";
 import {scan} from "rxjs/operators/scan";
 import * as _ from "underscore";
-import {HtPosition} from "ht-data";
+import {HtPosition, dataWithSelectedId$} from "ht-data";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import {orCombine} from "../../../data/src/rx-helpers/or-combine";
+import {config} from "shelljs";
 
-export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
+export function CompoundDataObservableMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
     trace: (data, map?) => any;
@@ -19,13 +21,13 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
     data$: Observable<object>;
     isValidMapItems?: (data) => boolean;
     getPosition: (data) => HtPosition;
-
+    compoundSetDataConfig: CompoundSetDataConfig;
     _procData$() {
       return (source$: Observable<object | null>) => {
         return source$.pipe(
           map((markers) => {
             return _.reduce(markers, (acc, item) => {
-              const isValid = this.isValidMapItems ? this.isValidMapItems(item) : !!this.getPosition(item);
+              const isValid = true;
               if (isValid) {
                 acc.valid.push(item)
               } else {
@@ -39,26 +41,31 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
       }
     }
 
-    setData$(data$: Observable<object | null>, config: SetDataConfig = {}) {
+    setCompoundData$(data$: Observable<object | null>, config: CompoundSetDataConfig = {}) {
+      this.compoundSetDataConfig = config;
       if (this.dataSub) {
         this.dataSub.unsubscribe();
       }
       const hide$ = config.hide$;
-      this.dataSource$ = hide$ ? combineLatest(
+      const filter$ = config.filter$;
+      let dataSource$ = hide$ ? combineLatest(
         data$,
         hide$.pipe(distinctUntilChanged()),
         (data, hide) => !!hide ? [] : data
       ) : data$;
-      this.data$ = this.dataSource$.pipe(
-        this._procData$()
-      );
+
+      if (config.roots && filter$) dataSource$ = dataWithSelectedId$(dataSource$, filter$, config.roots);
+
+      this.dataSource$ = dataSource$;
+
+      this.data$ = this.dataSource$;
+
       this._initDataObserver()
     };
 
     _initData$() {
       let userData$ = this.data$.pipe(
         filter(data => !!MapService.map),
-        pluck('valid'),
         scan((acc: {user: any, oldUser: any}, data: object) => {
           const oldUser = acc.user;
           return {user: data, oldUser }
@@ -71,45 +78,32 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
 
       let userData$ = this._initData$();
 
-      // let userData$ = data$.pipe(
-      //   filter(data => !!MapService.map),
-      //   scan((acc: {user: any, oldUser: any}, data: IUserData) => {
-      //     const oldUser = acc.user;
-      //     return {user: data, oldUser }
-      //   }, {user: null, oldUser: null})
-      // );
-      // let userData$ = data$.filter(data => !!MapService.map).scan((acc, data) => {
-      //   const oldId = acc.user ? acc.user.id : null;
-      //   const currentId = data ? data.id : null;
-      //   const isNew = currentId && oldId ? currentId !== oldId : true;
-      //   return {user: data, isNew, oldId }
-      // }, {user: null, oldId: null, isNew: true});
-      function isNewId (newItem, old) {
+      function isNewItem (newItem, old) {
         if(!old && newItem) return true;
-        if(newItem && old) return  newItem.id !== old.id
+        if(newItem && old) return  !old && !!newItem
       }
-      function isNewList(newList, old) {
-        if(!old && newList) return true;
-        if(newList && old) return  newList.length !== old.length
-      }
-      let sub = userData$.subscribe((acc: {user: any, oldUser: any}) => {
-        const userData = acc.user;
-        // const isNew = acc.isNew;
-        this.trace(userData);
-        let isNew = false;
-        isNew = isNewList(acc.user, acc.oldUser);
-        // if (dataType == 'list') {
-        //   isNew = isNewList(acc.user, acc.oldUser)
-        // } else {
-        //   isNew = isNewId(acc.user, acc.oldUser)
-        // }
-        if(isNew) MapService.resetBounds()
+
+      let newPlaceline$ = userData$.pipe(
+        map((acc: {user: any, oldUser: any}) => {
+          const userData = acc.user;
+          this.trace(userData);
+          const isNew = isNewItem(acc.user, acc.oldUser);
+          return isNew
+          // if(isNew) MapService.resetBounds()
+        })
+      );
+
+      let sub = orCombine(newPlaceline$, this.compoundSetDataConfig.resetMap$).subscribe(toReset => {
+        if(toReset) MapService.resetBounds()
       });
       this.dataSub = sub;
     }
   }
 };
 
-export interface SetDataConfig {
+export interface CompoundSetDataConfig {
   hide$?: Observable<any>,
+  filter$?: Observable<string | null>,
+  roots?: string[],
+  resetMap$?: Observable<any>
 }

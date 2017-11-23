@@ -4,7 +4,13 @@ import {Observable} from "rxjs/Observable";
 import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimelineEvent, IDecodedSegment} from "ht-models";
-import {filter, map, share, switchMap, take, takeUntil} from "rxjs/operators";
+import {distinctUntilChanged} from "rxjs/operators/distinctUntilChanged";
+import {filter} from "rxjs/operators/filter";
+import {map} from "rxjs/operators/map";
+import {share} from "rxjs/operators/share";
+import {switchMap} from "rxjs/operators/switchMap";
+import {take} from "rxjs/operators/take";
+import {takeUntil} from "rxjs/operators/takeUntil";
 import {timer} from "rxjs/observable/timer";
 import {HtBounds} from "./map-utils/interfaces";
 

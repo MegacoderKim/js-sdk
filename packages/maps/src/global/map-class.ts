@@ -14,7 +14,7 @@ export class HtMapClass {
   // mapUtils: MapUtils;
   // userData$: Observable<IUserData | null>;
   userDataSub: Subscription;
-  placeline: PlacelineTrace;
+  placeline;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,

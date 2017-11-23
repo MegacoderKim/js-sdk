@@ -11,8 +11,10 @@ import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
+import {CompoundDataObservableMixin, CompoundSetDataConfig} from "../mixins/compounds-data-observable";
+import {HtPosition} from "ht-data";
 
-export class PlacelineTrace {
+export class Placeline {
 
   segmentsPolylines = new SegmentPolylinesTrace();
   stopMarkers = new StopMarkersTrace();
@@ -24,8 +26,8 @@ export class PlacelineTrace {
   eventMarkers = new StopMarkersTrace();
   allowedEvents = {};
   // map;
-  dataSub: Subscription;
-  data$: Observable<null | IUserData>;
+  // dataSub: Subscription;
+  // data$: Observable<null | IUserData>;
   constructor(public options: HtSegmentsTraceOptions = {}) {
     // this.initBaseItems();
     this.timelineSegment.head$.pipe(filter(() => !!this.map)).subscribe((head) => {
@@ -37,33 +39,33 @@ export class PlacelineTrace {
     return MapService.map
   }
 
-  setData$(data$: Observable<IUserData | null>) {
-    if (this.dataSub) {
-      this.dataSub.unsubscribe();
-    }
-    this.data$ = data$;
-    this.initDataObserver()
-  }
+  // setData$(data$: Observable<IUserData | null>) {
+  //   if (this.dataSub) {
+  //     this.dataSub.unsubscribe();
+  //   }
+  //   this.data$ = data$;
+  //   this.initDataObserver()
+  // }
 
-  initDataObserver() {
-    let userData$ = this.data$.pipe(
-      filter(data => !!MapService.map),
-      scan((acc: any, data) => {
-        const oldId = acc.user ? acc.user.id : null;
-        const currentId = data ? data.id : null;
-        const isNew = currentId && oldId ? currentId !== oldId : true;
-        return {user: data, isNew, oldId }
-      }, {user: null, oldId: null, isNew: true})
-    );
-
-    let sub = userData$.subscribe((acc) => {
-      const userData = acc.user;
-      const isNew = acc.isNew;
-      this.trace(userData);
-      if(isNew) MapService.resetBounds()
-    });
-    this.dataSub = sub;
-  }
+  // initDataObserver() {
+  //   let userData$ = this.data$.pipe(
+  //     filter(data => !!MapService.map),
+  //     scan((acc: any, data) => {
+  //       const oldId = acc.user ? acc.user.id : null;
+  //       const currentId = data ? data.id : null;
+  //       const isNew = currentId && oldId ? currentId !== oldId : true;
+  //       return {user: data, isNew, oldId }
+  //     }, {user: null, oldId: null, isNew: true})
+  //   );
+  //
+  //   let sub = userData$.subscribe((acc) => {
+  //     const userData = acc.user;
+  //     const isNew = acc.isNew;
+  //     this.trace(userData);
+  //     if(isNew) MapService.resetBounds()
+  //   });
+  //   this.dataSub = sub;
+  // }
 
   trace(user, map?) {
     // this.map = map;
@@ -284,6 +286,8 @@ export class PlacelineTrace {
     this.eventMarkers.trace(eventsWithPosition)
   }
 }
+
+export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
 
 interface ISegmentType {
   tripSegment: ISegment[],

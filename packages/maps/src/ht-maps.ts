@@ -1,4 +1,4 @@
-export * from "./map-utils/leaflet-map-utils"
+export * from "./map-utils/interfaces"
 export * from "./compound-entities/placeline-trace"
 export * from "./time-aware-polyline";
 export * from "./timeline-replay";
@@ -15,6 +15,9 @@ export * from "./entities/action-markers";
 export * from "./entities/segment-polylines";
 export * from "./entities/stop-markers";
 export * from "./entities/current-user";
+
+//mixins
+export * from "./mixins/compounds-data-observable"
 
 //compounds entities
 export * from "./compound-entities/placeline-trace";

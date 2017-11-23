@@ -27,7 +27,10 @@ export const MapService = {
   },
   addCluster(cluster) {
     if(!this.clusters.includes(cluster)) {
-      this.clusters.push(cluster)
+      this.clusters.push(cluster);
+      MapService.map$.subscribe(map => {
+        cluster.cluster = MapService.mapUtils.getMarkerCluster(map);
+      });
     }
   },
   getBounds(bounds, item) {
@@ -61,7 +64,8 @@ export const MapService = {
 
 MapService.map$.subscribe(map => {
   MapService.map = map;
-  MapService.clusters.forEach(clusterEntity => {
-    clusterEntity.cluster = MapService.mapUtils.getMarkerCluster(map);
-  });
+  // MapService.clusters.forEach(clusterEntity => {
+  //   console.log("clust", clusterEntity);
+  //   clusterEntity.cluster = MapService.mapUtils.getMarkerCluster(map);
+  // });
 });

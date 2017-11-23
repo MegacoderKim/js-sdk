@@ -14,6 +14,7 @@ export function ClusterMixin <TBase extends Constructor>(Base: TBase) {
     }
 
     addCluster() {
+      console.log("add cluster");
       MapService.addCluster(this)
     }
 
