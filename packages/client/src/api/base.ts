@@ -49,7 +49,7 @@ export class HtBaseApi {
   }
 
   placeline<T>(id, query = {}): Observable<T> {
-    let tail = `/${id}/timeline/`;
+    let tail = `/${id}/placeline/`;
     return this.getReqFromTail<T>(tail, query)
   }
 
