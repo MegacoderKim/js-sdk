@@ -80,4 +80,10 @@ export type Page<T> = {
   results: T[],
 }
 
+export interface IDateRange {
+  start: string,
+  end: string
+};
+
+export type Constructor<T = object> = new (...args: any[]) => T;
 
