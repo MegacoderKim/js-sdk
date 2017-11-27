@@ -6,14 +6,18 @@ var webpackRxjsExternals = require('webpack-rxjs-externals');
 var nodeConfig = require('./webpack.config.bundle');
 var stylePath = path.resolve(__dirname, 'src', 'css', 'style.js');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const rxPaths = require('../../node_modules/rxjs/_esm5/path-mapping');
 
 var browserSpecConfig = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'ht-maps_browser.js',
         library: "htMaps",
-        libraryTarget: "umd"
+        libraryTarget: 'umd'
     },
+    // resolve: {
+    //     alias: rxPaths()
+    // },
     externals: [
         {
             'moment-mini': {
@@ -41,6 +45,7 @@ var browserSpecConfig = {
                 root: '_'
             }
         },
+        'leaflet',
         webpackRxjsExternals(),
     ],
     plugins: [
@@ -76,6 +81,7 @@ var styleConfig = {
     },
     plugins: [
         new ExtractTextPlugin("styles.css"),
+        // new Webpack.optimize.ModuleConcatenationPlugin(),
     ]
 };
 

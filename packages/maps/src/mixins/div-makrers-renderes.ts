@@ -16,9 +16,13 @@ export function DivMarkersMixin <TBase extends Constructor>(Base: TBase) {
     };
     update({item, data}) {
       let content = this.getDivContent(data);
-      MapService.mapUtils.setDivContent(item, content);
+      this.setContent({item, content});
       this.superUpdate({item, data})
     };
+
+    setContent({item, content}) {
+      MapService.mapUtils.setDivContent(item, content);
+    }
     setStyle(item) {
       let style = this.getStyle();
       MapService.mapUtils.setDivMarkerStyle(item, style)

@@ -5,13 +5,11 @@ import {MapService} from "../global/map-service";
 import {distinctUntilChanged} from "rxjs/operators/distinctUntilChanged";
 import {filter} from "rxjs/operators/filter";
 import {map} from "rxjs/operators/map";
-import {pluck} from "rxjs/operators/pluck";
 import {scan} from "rxjs/operators/scan";
 import * as _ from "underscore";
 import {HtPosition, dataWithSelectedId$} from "ht-data";
 import {combineLatest} from "rxjs/observable/combineLatest";
-import {orCombine} from "../../../data/src/rx-helpers/or-combine";
-import {config} from "shelljs";
+import {orCombine} from "ht-data";
 
 export function CompoundDataObservableMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
@@ -51,7 +49,7 @@ export function CompoundDataObservableMixin <TBase extends Constructor>(Base: TB
       let dataSource$ = hide$ ? combineLatest(
         data$,
         hide$.pipe(distinctUntilChanged()),
-        (data, hide) => !!hide ? [] : data
+        (data, hide) => !!hide ? null : data
       ) : data$;
 
       if (config.roots && filter$) dataSource$ = dataWithSelectedId$(dataSource$, filter$, config.roots);

@@ -9,6 +9,10 @@ export class PopupRenderer {
   getPosition: (data) => HtPosition;
   getInfoContent: (data) => string;
   // setMap: (item, map) => void;
+  defaultPopupStyle =  {
+    disableAutoPan: true,
+    pixelOffset: new google.maps.Size(0, -35)
+  };
 
   addPopup() {
     this.popup = MapService.mapUtils.getPopup(this.getStyle('popup'))
@@ -38,17 +42,20 @@ export class PopupRenderer {
 export function PopupMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
     popup;
-    getStyle: (styleType?) => object;
+    getStyle: (styleType?, fallbackStyle?) => object;
     entities: Entities<any>;
     getPosition: (data) => HtPosition;
     getInfoContent: (data) => string;
-
+    defaultPopupStyle =  {
+      disableAutoPan: true,
+      pixelOffset: new google.maps.Size(0, -35)
+    };
     constructor(...arg: any[]) {
       super(...arg);
       this.addPopup()
     }
     addPopup() {
-      this.popup = MapService.mapUtils.getPopup(this.getStyle('popup'))
+      this.popup = MapService.mapUtils.getPopup(this.getStyle('popup', this.defaultPopupStyle))
     }
 
     setPopup(id: string | null) {

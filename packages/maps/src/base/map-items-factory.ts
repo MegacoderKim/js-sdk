@@ -9,6 +9,10 @@ import {PolylinesMixin} from "../mixins/polyline-renderer";
 import {ClusterMixin} from "../mixins/clusters";
 import * as _ from "underscore";
 import {StyleMixin} from "../mixins/styles";
+import {DataConfig, StyleObj} from "../interfaces";
+import {MarkersBase} from "./markers.factory";
+import {PolylinesBase} from "./polylines.factory";
+import {DivMarkersBase} from "./div-markers.factory";
 
 export const mapItemsFactory = (baseClass, config: Partial<MapItemsFactoryConfig>) => {
   const defaultConfig: MapItemsFactoryConfig = {
@@ -47,4 +51,30 @@ export interface MapItemsFactoryConfig {
   isSingleItem: boolean,
   hasDataObservable: boolean,
   isPolyline: boolean
+};
+
+export const itemsBaseFactory = ({renderConfig, typeConfig, styleObj}: ItemClassFactoryConfig) => {
+  let mapTypesBase = {
+    polylines: PolylinesBase,
+    markers: MarkersBase,
+    divMarkers: DivMarkersBase
+  };
+  typeConfig = typeConfig || {};
+  let MapItemBase: any = mapTypesBase.markers;
+  if(typeConfig.isDiv) MapItemBase = mapTypesBase.divMarkers;
+  if(typeConfig.isPolyline) MapItemBase = mapTypesBase.polylines;
+  var base = mapItemsFactory(MapItemBase, typeConfig);
+  return base;
+};
+
+export const itemsFactory = ({renderConfig, typeConfig, styleObj}: ItemClassFactoryConfig) => {
+  var base = itemsBaseFactory({renderConfig, typeConfig, styleObj});
+  return new base(renderConfig, styleObj)
+};
+
+export interface ItemClassFactoryConfig {
+  renderConfig: DataConfig<any>,
+  typeConfig?: Partial<MapItemsFactoryConfig>,
+  styleObj?: StyleObj,
+  name?: string
 }

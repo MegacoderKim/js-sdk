@@ -17,11 +17,11 @@ export class Styles {
 
   styleType = 'default';
 
-  getStyle(selectedStyleType: string = 'default') {
+  getStyle(selectedStyleType: string = 'default', fallbackStyle?) {
     const mapType = MapService.mapUtils.type;
     const mapTypetype = this.styleObj[mapType];
     const styleType = selectedStyleType && mapTypetype[selectedStyleType] ? selectedStyleType : this.styleType;
-    const style = mapTypetype[styleType];
+    const style = mapTypetype[styleType] || fallbackStyle;
     if(!style) console.error("style type does not exist");
     return this.styleObj[mapType][styleType]
   }
@@ -49,13 +49,13 @@ export function StyleMixin <TBase extends Constructor>(Base: TBase) {
       super(...arg);
     }
 
-    getStyle(selectedStyleType: string = 'default') {
+    getStyle(selectedStyleType: string = 'default', fallbackStyle?) {
       const mapType = MapService.mapUtils.type;
       const styleObj = this.styleObj || this.defaultstyleObj;
       const mapTypetype = styleObj[mapType];
       // console.log(this.name, "style", selectedStyleType, styleObj, this.styleObj);
       // const styleType = mapTypetype[selectedStyleType] ? selectedStyleType : this.styleType;
-      const style = mapTypetype[selectedStyleType];
+      const style = mapTypetype[selectedStyleType] || fallbackStyle;
       if(!style) console.error("style type does not exist ", this.name, selectedStyleType);
       return style
     }

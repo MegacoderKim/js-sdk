@@ -1,7 +1,7 @@
 import {HtBounds, HtMap, HtMapType} from "../map-utils/interfaces";
 import {PlacelineTrace} from "../compound-entities/placeline-trace";
 import {IUserData} from "ht-models";
-import {UsersClustersTrace} from "../entities/users-cluster";
+import {usersClustersTrace} from "../entities/users-cluster";
 import {LightColorMapStyle} from "../styles/light-color-map";
 import * as _ from "underscore";
 import {MapService} from "./map-service";
@@ -36,7 +36,7 @@ export class HtMapClass {
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     MapService.setMapType(mapType);
-    this.usersCluster = new UsersClustersTrace();
+    this.usersCluster = usersClustersTrace();
     this.placeline = new PlacelineTrace();
     MapService.addToItemsSet(this.placeline);
     MapService.addToItemsSet(this.usersCluster);
@@ -112,6 +112,10 @@ export class HtMapClass {
 
   inValidateSize() {
     MapService.mapUtils.invalidateSize(this.map)
+  }
+
+  addEntities(entities) {
+    MapService.addToItemsSet(entities)
   }
 }
 

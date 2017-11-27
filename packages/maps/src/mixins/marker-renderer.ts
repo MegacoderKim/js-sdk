@@ -11,6 +11,10 @@ export function MarkersMixin<TBase extends Constructor>(Base: TBase) {
     getPosition: (data) => HtPosition;
     cluster;
 
+    htShow(item) {
+      return `display: ${item ? 'flex' : 'none'}`
+    };
+
     getItem(data) {
       return MapService.mapUtils.getMarker()
     };

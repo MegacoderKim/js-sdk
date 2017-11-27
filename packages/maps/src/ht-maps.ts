@@ -8,6 +8,7 @@ export * from "./global/map-service";
 export * from "./interfaces";
 
 export * from "./base/map-items-factory"
+export * from "./base/markers.factory"
 
 //entities
 export * from "./entities/users-cluster";

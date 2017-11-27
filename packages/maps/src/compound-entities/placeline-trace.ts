@@ -1,38 +1,35 @@
 import * as _ from "underscore";
 import {TimelineSegment} from "../timeline-segment";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
-import {SegmentPolylinesTrace} from "../entities/segment-polylines";
-import {StopMarkersTrace} from "../entities/stop-markers";
-import {ActionMarkersTrace} from "../entities/action-markers";
+import { segmentsPolylinesTrace} from "../entities/segment-polylines";
+import {stopMarkersTrace} from "../entities/stop-markers";
+import {actionsMarkersTrace} from "../entities/action-markers";
 import {htAction} from "ht-data";
 import {MapService} from "../global/map-service";
-import {CurrentUserTrace} from "../entities/current-user";
+import {currentUserTrace} from "../entities/current-user";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {filter} from "rxjs/operators/filter";
+// import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
 import {CompoundDataObservableMixin, CompoundSetDataConfig} from "../mixins/compounds-data-observable";
 import {HtPosition} from "ht-data";
 
 export class Placeline {
 
-  segmentsPolylines = new SegmentPolylinesTrace();
-  stopMarkers = new StopMarkersTrace();
-  actionMarkers = new ActionMarkersTrace();
-  actionsPolylines = new ActionMarkersTrace();
+  segmentsPolylines = segmentsPolylinesTrace();
+  stopMarkers = stopMarkersTrace();
+  actionMarkers = actionsMarkersTrace();
+  // actionsPolylines = new ActionMarkersTrace();
   timelineSegment = new TimelineSegment();
-  userMarker = new CurrentUserTrace();
-  replayMarker = new StopMarkersTrace();
-  eventMarkers = new StopMarkersTrace();
+  userMarker = currentUserTrace();
+  replayMarker = stopMarkersTrace();
+  eventMarkers = stopMarkersTrace();
   allowedEvents = {};
   // map;
   // dataSub: Subscription;
   // data$: Observable<null | IUserData>;
   constructor(public options: HtSegmentsTraceOptions = {}) {
     // this.initBaseItems();
-    this.timelineSegment.head$.pipe(filter(() => !!this.map)).subscribe((head) => {
-      this.setReplayHead(head, this.map)
-    })
   }
 
   get map() {
