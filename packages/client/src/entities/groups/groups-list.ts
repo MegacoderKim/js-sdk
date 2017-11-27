@@ -1,7 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {store} from "../../global/store-provider";
 import {EntityItemClient} from "../../base/item-client";
 import {ClientSub} from "../../mixins/client-subscription";
 import {ListQuery} from "../../mixins/entity-query";
@@ -12,25 +11,28 @@ import {EntityListClient} from "../../base/list-client";
 import {PageResults$} from "ht-data";
 import {Page, IGroup} from "ht-models";
 import {entityApi} from "../../global/entity-api";
+import {IClientConfig} from "../../interfaces";
 
 export class GroupsListClient extends EntityListClient {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
   query$ = of({});
-  data$ = store.select(fromRoot.getGroupAll);
-  active$ = store.select(fromRoot.getGroupListActive);
+  // data$ = store.select(fromRoot.getGroupAll);
+  // active$ = store.select(fromRoot.getGroupListActive);
+  data$;
+  active$;
   loading$ = of(false);
-  dataArray$ = this.data$.let(PageResults$);
+  dataArray$;
   api$ = (query) => entityApi.groups.index<Page<IGroup>>(query);
-
+  store;
   setData(data) {
-    store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))
+    this.store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))
   };
   setLoading(data) {
     console.log("loading", data);
   };
   setActive(isActive: boolean = true) {
-    store.dispatch(new fromGroupDispatcher.SetListActive(isActive))
+    this.store.dispatch(new fromGroupDispatcher.SetListActive(isActive))
   };
   setQuery() {
 
@@ -47,8 +49,12 @@ export class GroupsListClient extends EntityListClient {
     return {...super.getDefaultQuery(), ...this.defaultQuery}
   }
 
-  constructor() {
+  constructor({store}: IClientConfig) {
     super();
+    this.store = this.store;
+    this.data$ = this.store.select(fromRoot.getGroupAll);
+    this.active$ = store.select(fromRoot.getGroupListActive);
+    this.dataArray$ = this.data$.let(PageResults$);
     this.init()
   }
 

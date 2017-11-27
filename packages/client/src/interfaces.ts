@@ -1,4 +1,8 @@
 
+import {Observable} from "rxjs/Observable";
+import {Store} from "./store/store";
+import * as fromRoot from "./reducers";
+
 export const defaultListConfig: IListConfig = {
   isLive: false,
 };
@@ -32,5 +36,13 @@ export interface QueryLabel {
   values: string[],
   value?: string,
   color?: string
+};
+
+export interface IClientConfig {
+  store: Store<fromRoot.State>
+}
+
+export interface IPageClientConfig extends IClientConfig {
+  dateRangeQuery$?: Observable<object> | null
 }
 

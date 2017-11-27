@@ -14,10 +14,10 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import { UsersSummaryClient} from "./users-summary-client";
 import {DateRangeToQuery$} from "ht-data";
-import {store} from "../../global/store-provider";
+import {ApiStoreService} from "../../global/store-provider";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
-import {pluck, flatMap, zip, switchMap, map, distinctUntilChanged} from "rxjs/operators";
+import {pluck, flatMap, zip, switchMap, map, distinctUntilChanged, skip} from "rxjs/operators";
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
@@ -51,6 +51,7 @@ export class HtUsersClient extends EntityClient {
     super();
     let api = entityApi.users;
     this.api = api;
+    const store = ApiStoreService.getNewInstance();
     this.store = store;
     // this.initialDateRange = this.getInitialDateRange();
     // this.dateRangeObserver = new BehaviorSubject(this.initialDateRange);
@@ -63,16 +64,16 @@ export class HtUsersClient extends EntityClient {
 
     // this.index = UsersIndexClientFactory(listState);
 
-    this.analytics = new UsersAnalyticsClient(dateRangeQuery$);
+    this.analytics = new UsersAnalyticsClient({dateRangeQuery$, store});
 
 
-    this.placeline = new UsersPlacelineClient();
+    this.placeline = new UsersPlacelineClient({store});
 
-    this.analyticsAll = new UsersAnalyticsListAllClient(dateRangeQuery$);
+    this.analyticsAll = new UsersAnalyticsListAllClient({dateRangeQuery$, store});
 
     // this.indexAll = usersIndexMarkersFactory(listState);
 
-    this.summary = new UsersSummaryClient(dateRangeQuery$);
+    this.summary = new UsersSummaryClient({dateRangeQuery$, store});
 
     this.list = this.analytics;
 

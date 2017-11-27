@@ -1,6 +1,5 @@
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {store} from "../../global/store-provider";
 import {EntityItemClient} from "../../base/item-client";
 import {applyMixins} from "../../helpers/mix";
 import {ClientSub} from "../../mixins/client-subscription";
@@ -10,12 +9,13 @@ import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
 import {Observable} from "rxjs/Observable";
 import {entityApi} from "../../global/entity-api";
+import {IClientConfig} from "../../interfaces";
 
 export class GroupsItemClient extends EntityItemClient {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
   updateStrategy = 'once';
-  id$ = store.select(fromGroup.getGroupId);
+
   query$: Observable<object | null> = of({});
   data$ = empty();
   loading$ = of(false);
@@ -27,10 +27,10 @@ export class GroupsItemClient extends EntityItemClient {
   api$ = (id, query?) => entityApi.groups.get(id, query);
 
   setId(id) {
-    store.dispatch(new fromGroupDispatcher.SetGroupId(id))
+    this.store.dispatch(new fromGroupDispatcher.SetGroupId(id))
   };
   setData(data) {
-    store.dispatch(new fromGroupDispatcher.SetGroup(data))
+    this.store.dispatch(new fromGroupDispatcher.SetGroup(data))
   };
   setLoading(data) {
 
@@ -38,9 +38,11 @@ export class GroupsItemClient extends EntityItemClient {
   setQuery() {
 
   }
-
-  constructor() {
+  store;
+  constructor({store}: IClientConfig) {
     super();
+    this.store = store;
+    this.id$ = this.store.select(fromGroup.getGroupId);
     this.init()
   }
 };

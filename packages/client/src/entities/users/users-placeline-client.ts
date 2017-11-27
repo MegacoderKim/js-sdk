@@ -3,7 +3,7 @@ import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {store} from "../../global/store-provider";
+import {ApiStoreService} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
 import {ISegment, IUserData} from "ht-models";
 import * as _ from "underscore";
@@ -15,47 +15,53 @@ import {ClientSub} from "../../mixins/client-subscription";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {entityApi} from "../../global/entity-api";
 import {dataWithSelectedId$} from "ht-data";
+import {IClientConfig} from "../../interfaces";
 
 export class UsersPlacelineClient extends EntityItemClient {
 
   name = 'users placeline';
   updateStrategy = 'live';
   api$ = (id, query) => entityApi.users.placeline(id, query);
+  store;
+  data$;
+  loading$;
+  segmentsState$;
+  segmentSelectedId$;
+  segmentResetId$;
 
-  constructor() {
+  constructor({store}: IClientConfig) {
     super();
+    this.store = store;
+    this.query$ = this.store.select(fromRoot.getQueryPlacelineQuery);
+    this.data$ = this.store.select(fromRoot.getUsersUsersData);
+    this.loading$ = this.store.select(fromRoot.getLoadingUserData);
+    this.id$ = this.store.select(fromRoot.getQueryPlacelineId);
+    this.segmentsState$ = this.store.select(fromRoot.getSegmentsState);
+    this.segmentSelectedId$ = this.store.select(fromRoot.getSegmentsSelectedId);
+    this.segmentResetId$ = this.store.select(fromRoot.getSegmentsResetMapId);
     this.init()
   }
 
-  query$ = store.select(fromRoot.getQueryPlacelineQuery);
-  data$ = store.select(fromRoot.getUsersUsersData);
-  loading$ = store.select(fromRoot.getLoadingUserData);
-  id$ = store.select(fromRoot.getQueryPlacelineId);
-
-  segmentsState$ = store.select(fromRoot.getSegmentsState);
-  segmentSelectedId$ = store.select(fromRoot.getSegmentsSelectedId);
-  segmentResetId$ = store.select(fromRoot.getSegmentsResetMapId);
-
   setData(data) {
-    store.dispatch(new fromUsersDispatcher.SetUserData(data))
+    this.store.dispatch(new fromUsersDispatcher.SetUserData(data))
   };
   setLoading(data) {
-    store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
+    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
   };
   setId(id) {
-    store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
+    this.store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
   };
   toggleId(userId: string) {
-    store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+    this.store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
   };
   setQuery(query) {
-    store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
+    this.store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
   }
   setSegmentSelectedId(segmentId) {
-    store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
+    this.store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
   };
   setSegmentResetMapId(segmentId: string) {
-    store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
+    this.store.dispatch(new fromSegmentsDispatcher.SetResetMapId(segmentId))
   }
 
 
