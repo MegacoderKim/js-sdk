@@ -1,18 +1,24 @@
-export { HtMapItem } from "./map-item"
-export * from "./map-items"
-export * from "./leaflet-map-utils"
-export * from "./marker-item"
-export * from "./segments-trace"
+export * from "./map-utils/interfaces"
+export * from "./compound-entities/placeline-trace"
 export * from "./time-aware-polyline";
 export * from "./timeline-replay";
 export * from "./timeline-segment";
-export * from "./map-class";
+export * from "./global/map-class";
+export * from "./global/map-service";
 export * from "./interfaces";
-export * from "./renderers/circle-render";
-export * from "./renderers/cluster-render";
-export * from "./renderers/marker-render";
-export * from "./renderers/polyline-render";
-export * from "./base/map-item-factory";
-export * from "./base/map-items-factory";
 
-// import 'rxjs/add/operator/scan';
+export * from "./base/map-items-factory"
+export * from "./base/markers.factory"
+
+//entities
+export * from "./entities/users-cluster";
+export * from "./entities/action-markers";
+export * from "./entities/segment-polylines";
+export * from "./entities/stop-markers";
+export * from "./entities/current-user";
+
+//mixins
+export * from "./mixins/compounds-data-observable"
+
+//compounds entities
+export * from "./compound-entities/placeline-trace";

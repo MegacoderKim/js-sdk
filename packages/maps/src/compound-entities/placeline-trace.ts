@@ -1,84 +1,68 @@
 import * as _ from "underscore";
-import {TimelineSegment} from "./timeline-segment";
+import {TimelineSegment} from "../timeline-segment";
 import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
-import {HtMapType} from "./interfaces";
-import {segmentFactory} from "./entities/segment-polylines";
-import {stopFactory} from "./entities/stop-markers";
-import {actionsFactory} from "./entities/action-markers";
+import { segmentsPolylinesTrace} from "../entities/segment-polylines";
+import {stopMarkersTrace} from "../entities/stop-markers";
+import {actionsMarkersTrace} from "../entities/action-markers";
 import {htAction} from "ht-data";
-import {IEvent} from "ht-models";
-import {LeafletUtils} from "./leaflet-map-utils";
-import {GoogleMapUtils} from "./google-map-utils";
-import {mapItemsFactory} from "./base/map-items-factory";
-import {htUser} from "ht-data";
-import {MapService} from "./map-service";
-import {currentUserFactory} from "./entities/current-user";
-import {MapEntities, Entity} from "./entities/interfaces";
-import {MapEntity} from "./base/map-item-factory";
-import {HtPosition} from "ht-data";
+import {MapService} from "../global/map-service";
+import {currentUserTrace} from "../entities/current-user";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {filter} from "rxjs/operators/filter";
+// import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
+import {CompoundDataObservableMixin, CompoundSetDataConfig} from "../mixins/compounds-data-observable";
+import {HtPosition} from "ht-data";
 
-export class HtSegmentsTrace {
+export class Placeline {
 
-  segmentsPolylines = segmentFactory();
-  stopMarkers = stopFactory();
-  actionMarkers = actionsFactory();
-  actionsPolylines = actionsFactory();
+  segmentsPolylines = segmentsPolylinesTrace();
+  stopMarkers = stopMarkersTrace();
+  actionMarkers = actionsMarkersTrace();
+  // actionsPolylines = new ActionMarkersTrace();
   timelineSegment = new TimelineSegment();
-  userMarker: MapEntity<IUserData> = currentUserFactory();
-  replayMarker = stopFactory();
-  eventMarkers = stopFactory();
+  userMarker = currentUserTrace();
+  replayMarker = stopMarkersTrace();
+  eventMarkers = stopMarkersTrace();
   allowedEvents = {};
   // map;
-  dataSub: Subscription;
-  data$: Observable<null | IUserData>;
+  // dataSub: Subscription;
+  // data$: Observable<null | IUserData>;
   constructor(public options: HtSegmentsTraceOptions = {}) {
     // this.initBaseItems();
-    this.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
-      this.setReplayHead(head, this.map)
-    })
   }
 
   get map() {
     return MapService.map
   }
 
-  setData$(data$: Observable<IUserData | null>) {
-    if (this.dataSub) {
-      this.dataSub.unsubscribe();
-    }
-    this.data$ = data$;
-    this.initDataObserver()
-  }
+  // setData$(data$: Observable<IUserData | null>) {
+  //   if (this.dataSub) {
+  //     this.dataSub.unsubscribe();
+  //   }
+  //   this.data$ = data$;
+  //   this.initDataObserver()
+  // }
 
-  initDataObserver() {
-    let userData$ = this.data$.pipe(
-      filter(data => !!MapService.map),
-      scan((acc: any, data) => {
-        const oldId = acc.user ? acc.user.id : null;
-        const currentId = data ? data.id : null;
-        const isNew = currentId && oldId ? currentId !== oldId : true;
-        return {user: data, isNew, oldId }
-      }, {user: null, oldId: null, isNew: true})
-    );
-    // let userData$ = data$.filter(data => !!MapService.map).scan((acc, data) => {
-    //   const oldId = acc.user ? acc.user.id : null;
-    //   const currentId = data ? data.id : null;
-    //   const isNew = currentId && oldId ? currentId !== oldId : true;
-    //   return {user: data, isNew, oldId }
-    // }, {user: null, oldId: null, isNew: true});
-
-    let sub = userData$.subscribe((acc) => {
-      const userData = acc.user;
-      const isNew = acc.isNew;
-      this.trace(userData);
-      if(isNew) MapService.resetBounds()
-    });
-    this.dataSub = sub;
-  }
+  // initDataObserver() {
+  //   let userData$ = this.data$.pipe(
+  //     filter(data => !!MapService.map),
+  //     scan((acc: any, data) => {
+  //       const oldId = acc.user ? acc.user.id : null;
+  //       const currentId = data ? data.id : null;
+  //       const isNew = currentId && oldId ? currentId !== oldId : true;
+  //       return {user: data, isNew, oldId }
+  //     }, {user: null, oldId: null, isNew: true})
+  //   );
+  //
+  //   let sub = userData$.subscribe((acc) => {
+  //     const userData = acc.user;
+  //     const isNew = acc.isNew;
+  //     this.trace(userData);
+  //     if(isNew) MapService.resetBounds()
+  //   });
+  //   this.dataSub = sub;
+  // }
 
   trace(user, map?) {
     // this.map = map;
@@ -157,7 +141,7 @@ export class HtSegmentsTrace {
     if(currentPosition) {
       let polylines = this.getActionPolylineWithId(currentPosition, ongoingAction);
       // console.log(polylines);
-      this.actionsPolylines.trace(polylines)
+      // this.actionsPolylines.trace(polylines)
 
     } else {
       // this.actionsPolylines.removeAll()
@@ -299,6 +283,8 @@ export class HtSegmentsTrace {
     this.eventMarkers.trace(eventsWithPosition)
   }
 }
+
+export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
 
 interface ISegmentType {
   tripSegment: ISegment[],

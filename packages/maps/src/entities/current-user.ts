@@ -1,24 +1,22 @@
 import {htUser} from "ht-data";
-import {MapEntity, mapItemFactory} from "../base/map-item-factory";
-import {IUserData} from "ht-models";
-import {StyleObj} from "../helpers/styles-factory";
-import {MapItemsFactoryConfig} from "../base/map-items-factory";
 import {userDivFactory} from "../helpers/user-div-factory";
-import {DataConfig} from "./interfaces";
 declare var RichMarkerPosition: any;
+import {HtPosition} from "ht-data";
+import {StyleObj} from "../interfaces";
+import {ItemClassFactoryConfig, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
 
-export const currentUserFactory = (): MapEntity<IUserData> => {
-  let dataConfig: DataConfig<any> = {
-    getPosition(data) {
+
+export const currentUserConfig: ItemClassFactoryConfig = {
+  renderConfig: {
+    getPosition(data): HtPosition {
       return htUser(data).getPosition()
     },
     getDivContent(data) {
       return userDivFactory(data)
 
     }
-  };
-  // let data = dataFactory(dataConfig);
-  let stylesObj: StyleObj = {
+  },
+  styleObj: {
     google: {
       default: {
         flat: true,
@@ -30,8 +28,46 @@ export const currentUserFactory = (): MapEntity<IUserData> => {
 
       }
     }
-  };
-  let config: MapItemsFactoryConfig = {dataConfig, stylesObj, isDiv: true};
-
-  return mapItemFactory(config);
+  },
+  typeConfig: {
+    isSingleItem: true,
+    isDiv: true,
+    hasDataObservable: false
+  },
+  name: 'Current user'
 };
+
+export const currentUserTrace = () => {
+  return itemsFactory(currentUserConfig)
+};
+// export class CurrentUser {
+//   name = "Current user";
+//   styleObj: StyleObj = {
+//     google: {
+//       default: {
+//         flat: true,
+//         anchor: RichMarkerPosition.BOTTOM_CENTER,
+//       }
+//     },
+//     leaflet: {
+//       default: {
+//
+//       }
+//     }
+//   };
+//
+//   getPosition(data): HtPosition {
+//     return htUser(data).getPosition()
+//   };
+//
+//   getDivContent(data) {
+//     return userDivFactory(data)
+//
+//   }
+// };
+//
+// export const CurrentUserTrace = mapItemsFactory(CurrentUser, {
+//   isSingleItem: true,
+//   isDiv: true,
+//   hasDataObservable: false
+// });

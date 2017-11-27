@@ -1,10 +1,9 @@
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
-import {IDateRange} from "../interfaces";
 import {Page} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {distinctUntilChanged, map} from "rxjs/operators";
-import {itemAsPage} from "../helpers/operators";
+import {itemAsPage$} from "ht-data";
 
 export abstract class EntityClient {
 
@@ -36,7 +35,7 @@ export abstract class EntityClient {
   pageDataWithSelected$(id$, pageData$, selected$) {
     // const userId$ = id$;
     const placelinePage$ = selected$.pipe(
-      itemAsPage()
+      itemAsPage$()
     );
 
 

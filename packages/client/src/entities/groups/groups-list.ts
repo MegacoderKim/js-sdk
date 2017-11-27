@@ -9,7 +9,7 @@ import {ListGetData} from "../../mixins/get-data";
 import {applyMixins} from "../../helpers/mix";
 import {of} from "rxjs/observable/of";
 import {EntityListClient} from "../../base/list-client";
-import {PageResults} from "../../helpers/operators";
+import {PageResults$} from "ht-data";
 import {Page, IGroup} from "ht-models";
 import {entityApi} from "../../global/entity-api";
 
@@ -20,7 +20,7 @@ export class GroupsListClient extends EntityListClient {
   data$ = store.select(fromRoot.getGroupAll);
   active$ = store.select(fromRoot.getGroupListActive);
   loading$ = of(false);
-  dataArray$ = this.data$.let(PageResults);
+  dataArray$ = this.data$.let(PageResults$);
   api$ = (query) => entityApi.groups.index<Page<IGroup>>(query);
 
   setData(data) {

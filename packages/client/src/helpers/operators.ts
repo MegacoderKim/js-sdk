@@ -16,42 +16,42 @@ export const MergeQuery = (defaultQuery) => {
   }
 };
 
-export const CombineQuery = (addQuery$) => {
-  return (query$) => {
-    if(addQuery$) {
-      return combineLatest(
-        addQuery$,
-        query$,
-        (addQuery, query) => {
-          return query ? {...addQuery, ...query} : query;
-        }
-      )
-    } else {
-      return query$
-    }
+// export const CombineQuery = (addQuery$) => {
+//   return (query$) => {
+//     if(addQuery$) {
+//       return combineLatest(
+//         addQuery$,
+//         query$,
+//         (addQuery, query) => {
+//           return query ? {...addQuery, ...query} : query;
+//         }
+//       )
+//     } else {
+//       return query$
+//     }
+//
+//   }
+// };
 
-  }
-};
+// export const PageResults = (pageData$: Observable<Page<any> | null>): Observable<any[] | any> => {
+//   return pageData$.pipe(map((pageDate: Page<any> | null) => {
+//     return pageDate ? pageDate.results : pageDate;
+//   }))
+// };
 
-export const PageResults = (pageData$: Observable<Page<any> | null>): Observable<any[] | any> => {
-  return pageData$.pipe(map((pageDate: Page<any> | null) => {
-    return pageDate ? pageDate.results : pageDate;
-  }))
-};
-
-export const DateRangeToQuery = (dateRangeParam: string): (param: Observable<IDateRange>) => Observable<object> => {
-  return (dateRangeQuery$: Observable<IDateRange>) => {
-    return dateRangeQuery$.pipe(
-      map((dateRange) => {
-        if (!dateRange) return {};
-        let start =  dateRange['start'];
-        let end = dateRange['end'];
-        let param = dateRangeParam;
-        return {[`min_${param}`]: start, [`max_${param}`]: end}
-      })
-    )
-  }
-};
+// export const DateRangeToQuery = (dateRangeParam: string): (param: Observable<IDateRange>) => Observable<object> => {
+//   return (dateRangeQuery$: Observable<IDateRange>) => {
+//     return dateRangeQuery$.pipe(
+//       map((dateRange) => {
+//         if (!dateRange) return {};
+//         let start =  dateRange['start'];
+//         let end = dateRange['end'];
+//         let param = dateRangeParam;
+//         return {[`min_${param}`]: start, [`max_${param}`]: end}
+//       })
+//     )
+//   }
+// };
 
 export const AllowedQueryKeys = (allowedQueryKeys?: string[] | null) => {
   return (queryStore$) => {
@@ -81,20 +81,19 @@ export const AllowedQueryKeys = (allowedQueryKeys?: string[] | null) => {
   }
 };
 
-export const itemAsPage = <T>() => {
-  return (item$): Observable<Page<T>> => {
-    return item$.pipe(
-      map((item) => {
-        console.log("item", item);
-        return item ?
-          {
-            count: 1,
-            next: null,
-            previous: null,
-            results: [item]
-          } : null
-      })
-    )
-  }
-};
+// export const itemAsPage = <T>() => {
+//   return (item$): Observable<Page<T>> => {
+//     return item$.pipe(
+//       map((item) => {
+//         return item ?
+//           {
+//             count: 1,
+//             next: null,
+//             previous: null,
+//             results: [item]
+//           } : null
+//       })
+//     )
+//   }
+// };
 

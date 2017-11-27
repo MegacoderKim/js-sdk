@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>HyperTrack map</title>
     <!--<script src="../node_modules/whatwg-fetch/fetch.js"></script>-->
-    <script src="../node_modules/rxjs/bundles/Rx.min.js"></script>
+     <script src="../node_modules/rxjs/bundles/Rx.js"></script>
+    <!--<script src="../node_modules/@reactivex/rxjs/dist/global/Rx.min.js"></script>-->
+    <!-- <script src="../node_modules/@reactivex/rxjs/dist/esm5/Rx.js"></script> -->
     <script src="../node_modules/moment-mini/moment.min.js"></script>
     <script src="../node_modules/underscore/underscore-min.js"></script>
     <script src="../node_modules/ht-utility/dist/ht-utility_browser.js"></script>
@@ -115,24 +117,15 @@
         }
     };
 
-    var mapItems = htMaps.mapItemsFactory({
-        stylesObj: stylesObj,
-        dataConfig: dataConfig,
-        isDiv: true,
+    var typeConfig = {
+        isCluster: true,
         hasPopup: true
-    });
+    };
 
-    mapClass.mapItemsSet.push(mapItems);
+    var mapItems = htMaps.itemsFactory({renderConfig: dataConfig, stylesObj: stylesObj, typeConfig: typeConfig});
+//    var mapItems = htMaps.markersItemsFactory({renderConfig: dataConfig, stylesObj: stylesObj, typeConfig: typeConfig});
 
     mapItems.trace(data);
-    mapClass.resetBounds();
-
-    setTimeout(function () {
-        mapItems.trace(updatedData);
-        mapClass.resetBounds();
-    }, 5000);
-
-
 </script>
 
 </body>

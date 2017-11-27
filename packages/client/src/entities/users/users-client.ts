@@ -13,7 +13,7 @@ import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import { UsersSummaryClient} from "./users-summary-client";
-import {DateRangeToQuery} from "../../helpers/operators";
+import {DateRangeToQuery$} from "ht-data";
 import {store} from "../../global/store-provider";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
@@ -56,7 +56,7 @@ export class HtUsersClient extends EntityClient {
     // this.dateRangeObserver = new BehaviorSubject(this.initialDateRange);
     // this.dateRangeObserver.next(this.initialDateRange);
     let dateRange$ = this.options.dateRange$;
-    const dateRangeQuery$ = dateRange$ ? dateRange$.let(DateRangeToQuery('recorded_at')) : null;
+    const dateRangeQuery$ = dateRange$ ? dateRange$.let(DateRangeToQuery$('recorded_at')) : null;
     // let listState = {
     //   dateRangeQuery$: this.dateRangeObserver.asObservable().let(DateRangeToQuery('recorded_at'))
     // };
@@ -205,7 +205,7 @@ export class HtUsersClient extends EntityClient {
 
     };
     // let userMarkers$ = this.listAll.dataArray$;
-    let userMarkers$ = this.listAll.getDataArray$();
+    let userMarkers$ = this.listAll.dataArray$;
 
     // let allMarkers$ = Observable.merge(
     //   userMarkers$,

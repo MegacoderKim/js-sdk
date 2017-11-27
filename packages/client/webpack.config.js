@@ -17,9 +17,9 @@ var browserSpecConfig = {
         library: "htClient",
         libraryTarget: "umd"
     },
-    resolve: {
-        alias: rxPaths()
-    },
+    // resolve: {
+    //     alias: rxPaths()
+    // },
     externals: [
         {
             'moment-mini': {
@@ -60,7 +60,7 @@ var browserSpecConfig = {
             minimize: true,
             debug: false
         }),
-        new Webpack.optimize.ModuleConcatenationPlugin(),
+        // new Webpack.optimize.ModuleConcatenationPlugin(),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
     ]
 };

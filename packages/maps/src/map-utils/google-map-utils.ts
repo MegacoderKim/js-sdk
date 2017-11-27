@@ -1,5 +1,4 @@
 import {HtMarker, MapUtils} from "./interfaces";
-import {HtMapItem} from "./map-item";
 import * as _ from "underscore";
 import {HtPosition} from "ht-data";
 import {ITimeAwarePoint} from "ht-models";

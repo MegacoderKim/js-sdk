@@ -1,22 +1,20 @@
-import {HtBounds, HtMap, HtMapType} from "./interfaces";
-import {HtSegmentsTrace} from "./segments-trace";
+import {HtBounds, HtMap, HtMapType} from "../map-utils/interfaces";
+import {PlacelineTrace} from "../compound-entities/placeline-trace";
 import {IUserData} from "ht-models";
-import {usersClustersFactory} from "./entities/users-cluster";
-import {LightColorMapStyle} from "./styles/light-color-map";
-import {HtMapItem} from "./map-item";
+import {usersClustersTrace} from "../entities/users-cluster";
+import {LightColorMapStyle} from "../styles/light-color-map";
 import * as _ from "underscore";
 import {MapService} from "./map-service";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {currentId} from "async_hooks";
 
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
   // userData$: Observable<IUserData | null>;
   userDataSub: Subscription;
-  placeline: HtSegmentsTrace;
+  placeline;
   usersCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
@@ -38,8 +36,8 @@ export class HtMapClass {
 
   constructor(public mapType: HtMapType = 'leaflet', options: HtMapClassOptions = {}) {
     MapService.setMapType(mapType);
-    this.usersCluster = usersClustersFactory();
-    this.placeline = new HtSegmentsTrace();
+    this.usersCluster = usersClustersTrace();
+    this.placeline = new PlacelineTrace();
     MapService.addToItemsSet(this.placeline);
     MapService.addToItemsSet(this.usersCluster);
     // this.mapItemsSet.push(this.placeline, this.usersCluster);
@@ -98,7 +96,7 @@ export class HtMapClass {
 
   getBoundsItem(items) {
     let bounds = MapService.mapUtils.extendBounds();
-    return _.reduce(items, (bounds, item: HtMapItem<any>) => {
+    return _.reduce(items, (bounds, item) => {
       return this.getBounds(bounds, item)
     }, bounds)
   }
@@ -114,6 +112,10 @@ export class HtMapClass {
 
   inValidateSize() {
     MapService.mapUtils.invalidateSize(this.map)
+  }
+
+  addEntities(entities) {
+    MapService.addToItemsSet(entities)
   }
 }
 

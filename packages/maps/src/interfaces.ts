@@ -1,57 +1,6 @@
 import {ISegment, ITimeAwarePoint, Partial} from "ht-models";
 import {HtPosition} from "ht-data";
 
-export interface MapUtils {
-  type: HtMapType,
-  setMap: (item: HtMapItem, map: HtMap) => void,
-  setStyle: (item: HtMapItem, style) => void,
-  clearItem: (item: HtMapItem) => void,
-  extendBounds: (item?: HtMapItem, bounds?: HtBounds, force?: boolean) => HtBounds
-  extendBoundsWithPolyline: (item?: HtPolyline, bounds?: HtBounds) => HtBounds,
-  getLatlng: (position: HtPosition) => HtLatLng,
-  updatePosition: (marker: HtMarker, position: HtLatLng, content?: string, options?) => void,
-  openTooltip: (item: HtMapItem, content?: string) => void
-  closeTooltip: (item: HtMapItem) => void
-  openPopup: (item: HtMapItem | {}, map, content?: string, popup?) => void
-  openPopupPosition: (position: HtPosition, map, content, popup) => void
-  closePopup: (item: HtMapItem) => void
-  bringToFront: (item: HtMapItem) => void,
-  setFocus: (item: HtMapItem, map: HtMap, config?: SetFocusConfig) =>  void,
-  renderMap: (elem: Element, options: object) => HtMap,
-  updateCirclePosition?: (item, position, info?: string, options?: object) => any,
-  getCircleMarker: () => any,
-  getMarker: () => any,
-  getMarkerCluster: (map: HtMap) =>  any,
-  addMarkersToCluster: (cluster, markers: HtMarker[], map?) => any,
-  removeClusterMarkers: (cluster) =>  any,
-  removeClusterMarker: (cluster, marker) => any,
-  getPopup: (options?) => any,
-  getPolyline: () => any,
-  setEncodedPath: (item, path: string) => void,
-  setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
-  isValidBounds: (bounds: HtBounds) => boolean,
-  invalidateSize: (map) => void,
-  onEvent: (item, event, cb) => void,
-  setDivContent: (item, content: string) => void,
-  getDivMarker: () => any,
-  setDivMarkerStyle: (marker, options: object) => any,
-  setPathPositionTimeArray: (polyline, positionTimeArray) => any
-}
-
-export interface SetFocusConfig {
-  zoom?: number,
-  force?: boolean,
-  center?: boolean
-}
-
-export type HtMap = L.Map | google.maps.Map
-export type HtBounds = L.LatLngBounds | google.maps.LatLngBounds
-export type HtPolyline = L.Polyline | google.maps.Polyline
-export type HtLatLng = L.LatLng | google.maps.LatLng
-export type HtMarker = L.CircleMarker | L.Circle | L.Marker | L.DivIcon | google.maps.Marker | google.maps.Circle
-export type HtMapItem = HtMarker | HtPolyline
-export type HtMapType = 'google' | 'leaflet'
-
 export interface IReplayHead {
   timePercent: number,
   currentTime: string,
@@ -89,12 +38,54 @@ export interface IReplayPlayer {
   speed: number
 }
 
-export interface HtMapItemsOptions<T> {
-  getInfoContent?: (data: T) => string,
-  getItem?: (data) => T | any,
-  getPosition?: (data) => HtPosition
+export type Entities<T> = {
+  [id: string]: Entity<T>
 }
 
-export interface HtMapItemOptions<T> {
+export interface Entity<T> {
+  item: any,
+  isOld: boolean,
+  data: T
+}
 
+export interface StyleObj {
+  google: {
+    default: object,
+    [key: string]: object
+  },
+  leaflet: {
+    default: object,
+    [key: string]: object
+  }
+}
+
+export type Constructor<T = object> = new (...args: any[]) => T;
+
+export interface MarkerDataConfig<T> {
+  getPosition(data: T): HtPosition,
+  getInfoContent?(data: T): string,
+}
+
+export interface DivMarkerDataConfig<T> extends MarkerDataConfig<T>{
+  // getPosition?(data: T): HtPosition,
+  // getInfoContent?(data: T): string,
+  getDivContent(data: T): string
+}
+
+export interface PolylineDataConfig<T> {
+  getEncodedPath?(data: T): string,
+  getEncodedPositionTime?(data: any): string
+}
+
+export interface AllDataConfig<T> extends Partial<PolylineDataConfig<T>>, Partial<DivMarkerDataConfig<T>>, Partial<MarkerDataConfig<T>> {
+
+}
+export type DataConfig<T> = MarkerDataConfig<T>
+  | DivMarkerDataConfig<any>
+  | PolylineDataConfig<any>
+
+export interface EventConfig {
+  onClick?(mapItems, entity: Entity<any>): any,
+  onMouseEnter?(entity: Entity<any>): any,
+  onMouseLeave?(entity: Entity<any>): any
 }

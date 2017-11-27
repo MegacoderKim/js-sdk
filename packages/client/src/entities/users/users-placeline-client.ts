@@ -14,7 +14,7 @@ import {ItemQuery} from "../../mixins/entity-query";
 import {ClientSub} from "../../mixins/client-subscription";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {entityApi} from "../../global/entity-api";
-import {dataWithSelectedId$} from "../../helpers/utils";
+import {dataWithSelectedId$} from "ht-data";
 
 export class UsersPlacelineClient extends EntityItemClient {
 
@@ -34,6 +34,7 @@ export class UsersPlacelineClient extends EntityItemClient {
 
   segmentsState$ = store.select(fromRoot.getSegmentsState);
   segmentSelectedId$ = store.select(fromRoot.getSegmentsSelectedId);
+  segmentResetId$ = store.select(fromRoot.getSegmentsResetMapId);
 
   setData(data) {
     store.dispatch(new fromUsersDispatcher.SetUserData(data))
@@ -59,7 +60,7 @@ export class UsersPlacelineClient extends EntityItemClient {
 
 
   getMapData$() {
-    return dataWithSelectedId$(this.data$, this.segmentSelectedId$, 'segments');
+    return dataWithSelectedId$(this.data$, this.segmentSelectedId$, ['segments']);
   }
 }
 
