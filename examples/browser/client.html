@@ -30,23 +30,17 @@
     var userId = "44e37638-0bd9-428a-9d74-556092ac712a";
 
     var client = new htClient.HtClient(token);
-    var users = client.users;
+    var users = htClient.usersClientFactory();
 
     users.list.setActive();
     users.list.data$.subscribe(function (data) {
         console.log(data, "data");
     });
 
-//    users.list.data$.filter(function (data) {
-//        return !!data
-//    }).take(1).subscribe(function (data) {
-//        var firstUser = data.results.length ? data.results[0] : null;
-//        if(firstUser) getPlaceline(firstUser)
-//    });
 
     getPlaceline(userId);
+
     function getPlaceline(id) {
-//        var id = user.id;
         users.placeline.setId(id);
     }
 

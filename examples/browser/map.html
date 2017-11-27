@@ -41,13 +41,16 @@
     var userId = "44e37638-0bd9-428a-9d74-556092ac712a";
 
     var mapClass = new htMaps.HtMapClass('google');
+
     mapClass.initMap(document.getElementById('map'));
+
     var client = new htClient.HtClient(token);
-    var users = client.users;
+
+    var users = htClient.usersClientFactory();
 
     users.listAll.setActive();
 
-    mapClass.usersCluster.setData$(users.listAll.getMarkers$());
+    mapClass.usersCluster.setData$(users.listAll.dataArray$);
 
 </script>
 
