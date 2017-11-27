@@ -17,9 +17,8 @@
   "devDependencies": {
     "@types/googlemaps": "^3.26.20",
     "ht-data": "file:../data",
-    "ht-maps": "file:../maps",
-    "ht-utility": "file:../utils",
     "ht-models": "file:../models",
+    "ht-utility": "file:../utils",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3"

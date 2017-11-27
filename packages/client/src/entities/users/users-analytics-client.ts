@@ -10,7 +10,7 @@ import {ListQuery} from "../../mixins/entity-query";
 import {ClientSub} from "../../mixins/client-subscription";
 import {applyMixins} from "../../helpers/mix";
 import {EntityListClient} from "../../base/list-client";
-import {PageResults} from "../../helpers/operators";
+import {PageResults$} from "ht-data";
 import {entityApi} from "../../global/entity-api";
 
 export class UsersAnalyticsClient extends EntityListClient{
@@ -23,7 +23,7 @@ export class UsersAnalyticsClient extends EntityListClient{
   active$ = store.select(fromRoot.getUsersAnalyticsIsActive);
   data$ = store.select(fromRoot.getUsersAnalyticsPage);
   id$ = store.select(fromRoot.getQueryUserId);
-  dataArray$ = this.data$.let(PageResults);
+  dataArray$ = this.data$.let(PageResults$);
   loading$ = store.select(fromRoot.getLoadingAnalytics);
 
   constructor(public dateRangeQuery$: Observable<object> | null = null) {

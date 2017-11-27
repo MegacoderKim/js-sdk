@@ -30,8 +30,7 @@ export * from "./reducers/index"
 export * from "./dispatchers/index"
 
 //helper
-export * from "./helpers/operators"
-export * from "./helpers/utils"
+// export * from "./helpers/operators"
 
 import "rxjs/add/operator/let";
 

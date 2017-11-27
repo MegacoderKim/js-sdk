@@ -1,8 +1,10 @@
 import {Observable} from "rxjs/Observable";
-import {AllowedQueryKeys, CombineQuery, MergeQuery} from "../helpers/operators";
+// import {MergeQuery} from "ht-data";
+import { CombineQueries, AllowedQueryKeys$} from "ht-data";
 import {map, mergeMap} from "rxjs/operators";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {empty} from "rxjs/observable/empty";
+import {MergeQuery, AllowedQueryKeys} from "../helpers/operators";
 
 export class ListQuery {
   query$: Observable<null | object>;
@@ -24,7 +26,7 @@ export class ListQuery {
     let baseQuery$ = this.query$
       .let(AllowedQueryKeys(this.allowedQueryKeys))// .do(data => {
       .let(MergeQuery(this.getDefaultQuery()))
-      .let(CombineQuery(this.dateRangeQuery$));
+      .let(CombineQueries([this.dateRangeQuery$]));
 
     baseQuery$ = baseQuery$.pipe(
       map(data => {
