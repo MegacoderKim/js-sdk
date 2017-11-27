@@ -122,7 +122,8 @@
         hasPopup: true
     };
 
-    var mapItems = htMaps.markersItemsFactory({renderConfig: dataConfig, stylesObj: stylesObj, typeConfig: typeConfig});
+    var mapItems = htMaps.itemsFactory({renderConfig: dataConfig, stylesObj: stylesObj, typeConfig: typeConfig});
+//    var mapItems = htMaps.markersItemsFactory({renderConfig: dataConfig, stylesObj: stylesObj, typeConfig: typeConfig});
 
     mapItems.trace(data);
 </script>
