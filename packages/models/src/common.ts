@@ -85,5 +85,14 @@ export interface IDateRange {
   end: string
 };
 
+export interface AllData<T> {
+  resultsEntity: {[id: string]: T},
+  isFirst: boolean,
+  timestamp?: string,
+  count?: number,
+  next?: string,
+  previous?: string
+}
+
 export type Constructor<T = object> = new (...args: any[]) => T;
 
