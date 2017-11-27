@@ -4,14 +4,12 @@ import {HtBaseApi} from "../../api/base";
 import {GroupsItemClient} from "./groups-item-client";
 import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
-import {store} from "../../global/store-provider";
+import { ApiStoreService} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
 import {AllData, IDateRange} from "../../interfaces";
 import {map} from "rxjs/operators";
 import {dateRangeService} from "../../global/date-range";
 import {entityApi} from "../../global/entity-api";
-
-// import {htClient} from "../../client";
 
 export class HtGroupsClient extends EntityClient{
   list: GroupsListClient;
@@ -22,11 +20,12 @@ export class HtGroupsClient extends EntityClient{
     super();
     let api = entityApi.groups;
     this.api = api;
+    const store = ApiStoreService.getNewInstance();
     this.store = store;
 
-    this.list = new GroupsListClient();
+    this.list = new GroupsListClient({store});
 
-    this.item = new GroupsItemClient()
+    this.item = new GroupsItemClient({store})
 
   }
 
