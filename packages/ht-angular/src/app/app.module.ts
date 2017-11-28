@@ -7,27 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 require('leaflet');
 
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/shareReplay';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/expand';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/exhaustMap';
-import 'rxjs/add/operator/skip';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/pluck';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/let';
-
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/observable/empty';
 import { HtModule } from "./ht/ht.module";
 
 

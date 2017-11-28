@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {IGroup} from "ht-models";
-import {HtClientService} from "../ht/ht-client.service";
 
 @Injectable()
 export class GroupKeyGuard implements CanActivate {
-  constructor(private clientService: HtClientService) {}
+  constructor() {}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {

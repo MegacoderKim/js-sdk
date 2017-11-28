@@ -1,14 +1,14 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-// import {HtMapService, HtUsersClientService} from "ht-angular-client";
-import {IUserAnalytics, IUserData} from "ht-models";
+import {IUserAnalytics, IUserData, Page} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
-// import {htUser} from "ht-js-data";
 import {ApiType, QueryLabel} from "ht-client";
+import {listwithSelectedId$, listWithItem$} from "ht-data";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {Color} from "ht-utility";
+import {distinctUntilChanged, map} from "rxjs/operators";
 
 @Component({
   selector: 'ht-users-container',
@@ -21,6 +21,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   users$;
   user$;
   selectedUserId$;
+  showSummary$;
   selectedUserDataId$;
   loadingUserId$;
   loadingUserDataId$;
@@ -52,34 +53,53 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // this.userService.list.setApiType(this.apiType);
     this.userService.list.setActive();
     if (this.hasPlaceline) {
-      // this.user$ = Observable.empty();
+      const selectedUser$ = listwithSelectedId$(
+        this.userService.list.data$,
+        this.userService.list.id$
+      );
       this.user$ = this.userService.placeline.data$;
-      // this.users$ = this.userService.placelineOrList$();
-      this.usersPage$ = this.userService.listPage$();
-      this.mapService.usersCluster.onClick = (mapItems, entity) => {
+      this.usersPage$ = listWithItem$(
+        selectedUser$,
+        this.user$
+      );
+      this.mapService.usersCluster.onClick = (entity) => {
         this.selectUserCard(entity.data);
       };
-      // this.mapService.usersCluster.onClick = (data, marker) => {
-      //   this.selectUserCard(data)
-      // }
+
     } else {
       this.usersPage$ = this.userService.list.data$;
-      // this.users$ = this.userService.list.dataArray$;
     }
-    this.users$ = this.usersPage$.map((pageData) => {
-      return pageData ? pageData.results : pageData
-    });
 
-    this.loadingUsers$ = this.userService.list.loading$.map(data => !!data).distinctUntilChanged();
+    this.users$ = this.usersPage$.pipe(
+      map((pageData: Page<any>) => {
+        return pageData ? pageData.results : pageData
+      })
+    );
 
-    this.loadingUserDataId$ = this.userService.placeline.loading$.map(data => !!data).distinctUntilChanged();
-    // this.loadingUserId$ = this.userService.list.loading$.distinctUntilChanged();
+    this.loadingUsers$ = this.userService.list.loading$
+      .pipe(
+        map(data => !!data),
+        distinctUntilChanged()
+      );
+
+    this.loadingUserDataId$ = this.userService.placeline.loading$
+      .pipe(
+        map(data => !!data),
+        distinctUntilChanged()
+      );
 
     this.selectedUserDataId$ = this.userService.placeline.id$;
     this.selectedUserId$ = this.userService.list.id$;
+
+    this.showSummary$ = this.selectedUserId$.pipe(
+      map(id => {
+        return id ? false : true
+      }),
+      distinctUntilChanged(),
+      // startWith(true)
+    )
   }
 
   clear() {

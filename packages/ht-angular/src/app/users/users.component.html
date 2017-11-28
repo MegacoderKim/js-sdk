@@ -1,13 +1,13 @@
-<div class="card-stack" *ngIf="users">
+<div class="card-stack" *ngIf="users" [@cardStack]="users.length">
   <ht-user-card
-    [@card]
+    [@sort]="i"
     class="flex-row card card-clickable is-marginless"
     [class.card-selected]="selectedUserDataId == user.id"
     [action]="getAction(user)" (onAction)="onAction.next($event)"
     (mouseenter)="onHover.next(user.id)"
     (mouseleave)="onHover.next(null)"
     (click)="onSelectUser.next(user)"
-    [user]="user" *ngFor="let user of users; trackBy:indexId">
+    [user]="user" *ngFor="let user of users; let i = index; trackBy:indexId">
     <!--<div-->
       <!--[ngClass]="selectedUserDataId == user.id ? 'card-action-clicked '+ user.status + '-bg' : user.status+'-color'"-->
       <!--*ngIf="!selectedUserId && user.id != loadingUserDataId && showExtraBtn"-->

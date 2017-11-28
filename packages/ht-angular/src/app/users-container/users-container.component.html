@@ -1,7 +1,9 @@
 <div class="flex-column relative">
-  <!--<ht-users-summary [summary]="summary$ | async"></ht-users-summary>-->
-  <ht-users-summary-container *ngIf="showStatusSummary" [selectable]="true"></ht-users-summary-container>
-  <ht-users-summary-container *ngIf="showActiveSummary" [selectable]="true" [hideTotal]="true" [queryLabels]="queryMap"></ht-users-summary-container>
+  <ng-container *ngIf="showSummary$ | async">
+    <ht-users-summary-container *ngIf="showStatusSummary" [selectable]="true"></ht-users-summary-container>
+    <ht-users-summary-container *ngIf="showActiveSummary" [selectable]="true" [hideTotal]="true" [queryLabels]="queryMap"></ht-users-summary-container>
+  </ng-container>
+
   <ht-users
     [selectedUserDataId]="selectedUserDataId$ | async"
     [selectedUserId]="selectedUserId$ | async"

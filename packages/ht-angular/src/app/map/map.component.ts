@@ -51,7 +51,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     const el = this.elRef.nativeElement;
     this.mapService.initMap(el, this.options);
     window['ht-map'] = this.mapService.map;
-    this.mapService.resetBounds()
+    // this.mapService.resetBounds()
   }
 
 }

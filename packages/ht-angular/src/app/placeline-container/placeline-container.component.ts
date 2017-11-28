@@ -28,7 +28,6 @@ export class PlacelineContainerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-      // this.userClientService.placeline.initListener();
       this.userData$ = this.userClientService.placeline.data$;
 
     if (this.userId) {
@@ -37,12 +36,14 @@ export class PlacelineContainerComponent implements OnInit {
   }
 
   onSegmentId(segmentId: string) {
-    // console.log(segmentId, "segmentId");
     this.userClientService.placeline.setSegmentSelectedId(segmentId);
   }
 
   onSelectSegmentId(segmentId: string) {
-
+    this.userClientService.placeline.setSegmentResetMapId(segmentId);
+    setTimeout(() => {
+      this.userClientService.placeline.setSegmentResetMapId(null);
+    })
   }
 
 }

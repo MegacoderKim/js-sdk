@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AllData} from "ht-client";
 import {IGroup} from "ht-models";
 import * as _ from "underscore";
-import {HtClientService} from "../ht/ht-client.service";
+import {HtGroupsService} from "../ht/ht-groups.service";
 
 @Component({
   selector: 'ht-groups-chart-container',
@@ -10,16 +10,16 @@ import {HtClientService} from "../ht/ht-client.service";
   styleUrls: ['./groups-chart-container.component.less']
 })
 export class GroupsChartContainerComponent implements OnInit {
-  groupService;
+  // groupService;
   progress: number = 0;
   groupsLevels = [];
   selectedGroups = [];
   loading: boolean = false;
   noChild: boolean = false;
   constructor(
-    private clientService: HtClientService
+    private groupService: HtGroupsService
   ) {
-    this.groupService = clientService.groups;
+    // this.groupService = clientService.groups;
   }
 
   ngOnInit() {
@@ -51,7 +51,7 @@ export class GroupsChartContainerComponent implements OnInit {
       if (isDone) {
         this.loading = false;
         this.progress = 100;
-        let groups = _.values(data.resultsEntity);
+        const groups = _.values(data.resultsEntity);
         this.setGroups(groups, level)
       }
     })

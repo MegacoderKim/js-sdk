@@ -1,6 +1,6 @@
 <div class="flex-column column-gap-10" *ngIf="userData$ | async as userData; else loading">
   <ht-user-card *ngIf="showUserCard" [user]="userData"></ht-user-card>
-  <ht-placeline (segmentId)="onSegmentId($event)" [userData]="userData"></ht-placeline>
+  <ht-placeline (selectedSegment)="onSelectSegmentId($event)" (segmentId)="onSegmentId($event)" [userData]="userData"></ht-placeline>
 </div>
 <ng-template #loading>
   <ht-loading-dots class="text-1 text-center flex-row"></ht-loading-dots>

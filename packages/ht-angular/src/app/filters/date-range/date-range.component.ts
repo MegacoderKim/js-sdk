@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import * as moment from 'moment-mini'
 import moment from 'moment-mini'
-import {IDateRange} from "ht-client";
+import {IDateRange, dateRangeService} from "ht-client";
 import {HtUsersService} from "../../ht/ht-users.service";
 
 @Component({
@@ -55,12 +55,11 @@ export class DateRangeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dateRange$ = this.usersClientService.dateRangeDisplay$;
+    this.dateRange$ = dateRangeService.getInstance().display$;
   }
 
   setDateRange(range: IDateRange) {
-    console.log(range);
-    this.usersClientService.dateRangeObserver.updateData(range)
+    dateRangeService.getInstance().data$.next(range)
   }
 
 }

@@ -1,8 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {htClientService} from "ht-client";
 import {HtClientService} from "../ht/ht-client.service";
-import {HtRequestService} from "../ht/ht-request.service";
-import {clientApi} from "ht-client";
 
 @Component({
   selector: 'ht-group-test',
@@ -14,6 +13,7 @@ export class GroupTestComponent implements OnInit, OnDestroy {
   key;
   constructor(
     private route: ActivatedRoute,
+    private htClient: HtClientService
   ) { }
 
   ngOnInit() {
@@ -21,7 +21,7 @@ export class GroupTestComponent implements OnInit, OnDestroy {
     // const id = this.route.snapshot.paramMap.get('id');
     // let data = this.route.snapshot.data;
     const key = this.route.snapshot.data['key'];
-    clientApi.setToken(key);
+    this.htClient.tempToken = key;
     this.key = key;
     // console.log(data, "data");
     // console.log("init");

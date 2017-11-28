@@ -25,10 +25,9 @@ import {UsersMapContainerComponent} from "./app/users-map-container/users-map-co
 import { GroupKeyResolver} from "./app/guard/group-key-resolver";
 import { GroupLookupKeyResolver } from "./app/guard/group-lookup-key-resolver";
 import {HtModule} from "./app/ht/ht.module";
+import {HtClientService} from "./app/ht/ht-client.service";
 import {HtUsersService} from "./app/ht/ht-users.service";
 import {HtMapService} from "./app/ht/ht-map.service";
-import {HtClientService} from "./app/ht/ht-client.service";
-import {HtRequestService} from "./app/ht/ht-request.service";
 
 export {
   UserCardComponent,
@@ -61,6 +60,5 @@ export {
   HtUsersService,
   HtMapService,
   HtClientService,
-  HtRequestService,
 }
 

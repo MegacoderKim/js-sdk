@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../../ht/ht-users.service";
+import {distinctUntilChanged, map, skip} from "rxjs/operators";
+import {defer} from "rxjs/observable/defer";
+import {of} from "rxjs/observable/of";
 
 @Component({
   selector: 'ht-users-filter',
   templateUrl: './users-filter.component.html',
   styleUrls: ['./users-filter.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('filter', [
       state('hide', style({
@@ -21,8 +25,8 @@ import {HtUsersService} from "../../ht/ht-users.service";
   ]
 })
 export class UsersFilterComponent implements OnInit {
-  query$;
-  loading$;
+  query$ = of(null);
+  loading$ = of(false);
   statusFiltes;
   sortingLabels;
   ordering$;
@@ -32,12 +36,25 @@ export class UsersFilterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.query$ = this.usersClientService.queryLabel$;
-    this.loading$ = this.usersClientService.list.loading$.map(data => !!data).distinctUntilChanged();
+
+    setTimeout(() => {
+      this.query$ = this.usersClientService.queryLabel$;
+      this.loading$ = this.usersClientService.list.loading$
+        .pipe(
+          skip(1),
+          map(data => !!data),
+          distinctUntilChanged(),
+        );
+
+    })
+
+
     this.statusFiltes = this.usersClientService.filterClass.statusQueryArray;
     this.sortingLabels = this.usersClientService.filterClass.sortingQueryLabel;
     this.ordering$ = this.usersClientService.ordering$;
-    this.showFilter$ = this.usersClientService.list.id$.map((id) => !id ? 'show' : 'hide');
+    this.showFilter$ = this.usersClientService.list.id$.pipe(
+      map((id) => !id ? 'show' : 'hide')
+    );
   }
 
   onQuery(query) {

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import {QueryLabel, clientApi} from "ht-client";
+import {QueryLabel} from "ht-client";
 import {Color, GetUrlParam} from "ht-utility";
-import {HtUsersService} from "./ht/ht-users.service";
-import {HtConfigService} from "./ht/ht-config.service";
+import {HtClientService} from "./ht/ht-client.service";
 
 @Component({
   selector: 'ht-root',
@@ -12,13 +11,11 @@ import {HtConfigService} from "./ht/ht-config.service";
 export class AppComponent {
 
   constructor(
-    private htUsersClientService: HtUsersService,
-    // private config: ClientApiService
+    private htClient: HtClientService,
   ) {
     const token = GetUrlParam('key');
-    if (token) clientApi.setToken(token);
-    // console.log(clientApi);
-    // console.log(this.config.actions, "log");
+    if (token) htClient.token = token;
+
     const queryMap: QueryLabel[] = [
       {
         label: 'Logged in',
