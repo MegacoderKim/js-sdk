@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IUserAnalytics, IUserAnalyticsPage} from "ht-models";
 // import {entryLeaveTransition} from "../../animations/appear";
 // import {anim} from "../../animations/appear";
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'ht-users',
@@ -70,8 +71,8 @@ import {animate, keyframes, query, stagger, state, style, transition, trigger} f
     ])
   ]
 })
-export class UsersComponent implements OnInit {
-  userCardAction;
+export class UsersComponent implements OnInit, OnDestroy {
+  // userCardAction;
   @Input() users: IUserAnalytics[];
   @Input() selectedUserId: string | null;
   @Input() selectedUserDataId: string | null;
@@ -109,15 +110,16 @@ export class UsersComponent implements OnInit {
     return item.id
   }
 
+  selectUser(user) {
+    this.onSelectUser.next(user)
+  }
+
+  hover(id: string | null) {
+    this.onHover.next(id)
+  }
+
+  ngOnDestroy() {
+
+  }
+
 }
-// export function entryLeaveTransition(name: string, entryStyle: {[key: string]: string | number}, duration: string = '0.4s') {
-//   return trigger(name, [
-//     transition(':enter', [
-//       style(entryStyle),
-//       animate(duration + ' ease-out')
-//     ]),
-//     transition(':leave', [
-//       animate(duration + ' ease-in', style(entryStyle))
-//     ])
-//   ]);
-// }

@@ -3,18 +3,10 @@
     [@sort]="i"
     class="flex-row card card-clickable is-marginless"
     [class.card-selected]="selectedUserDataId == user.id"
-    [action]="getAction(user)" (onAction)="onAction.next($event)"
-    (mouseenter)="onHover.next(user.id)"
-    (mouseleave)="onHover.next(null)"
-    (click)="onSelectUser.next(user)"
+    (mouseenter)="hover(user.id)"
+    (mouseleave)="hover(null)"
+    (click)="selectUser(user)"
     [user]="user" *ngFor="let user of users; let i = index; trackBy:indexId">
-    <!--<div-->
-      <!--[ngClass]="selectedUserDataId == user.id ? 'card-action-clicked '+ user.status + '-bg' : user.status+'-color'"-->
-      <!--*ngIf="!selectedUserId && user.id != loadingUserDataId && showExtraBtn"-->
-      <!--class="card-content-mid card-action clickable flex-row align-center"-->
-      <!--(click)="onAction.next({user: user, action: 'default', event: $event})">-->
-      <!--<i class="fa fa-map-marker auto"></i>-->
-    <!--</div>-->
     <div *ngIf="selectedUserId" class="card-content-mid card-action flex-row align-center" (click)="onAction.next({event: $event, action: 'close'})">
       <a class="delete is-medium"></a>
     </div>
