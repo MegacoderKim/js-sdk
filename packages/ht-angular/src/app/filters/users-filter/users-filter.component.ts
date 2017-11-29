@@ -2,8 +2,8 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../../ht/ht-users.service";
 import {distinctUntilChanged, map, skip} from "rxjs/operators";
-import {defer} from "rxjs/observable/defer";
 import {of} from "rxjs/observable/of";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'ht-users-filter',
