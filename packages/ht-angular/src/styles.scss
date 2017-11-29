@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import "./styles/global";
+@import "./styles/global.scss";
+@import "./styles/bulma.scss";
 
 //@import "styles/bulma-customized";
 //@import "./styles/variables";
@@ -9,23 +10,5 @@
 //@import "../node_modules/uikit/src/scss/mixins-theme";
 //@import "./styles/uikit";
 
-.m-marker {
-  position: relative;
-  width: 35px;
-  text-align: center;
-  .fa {
-    font-size: 42px;
-    color: #4e4d58;
-  }
-}
 
-.m-box {
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  border-radius: 50%;
-  border: 2px solid #4e4d58;
-  top: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+

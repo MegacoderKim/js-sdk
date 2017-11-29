@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-@import "bulma";
 html, body {
   height: 100%;
   //font-family: 'Source Sans Pro', sans-serif;
@@ -9,3 +8,4 @@ html, body {
 body {
   margin: 0;
 }
+@import "~ht-maps/dist/styles.css";
