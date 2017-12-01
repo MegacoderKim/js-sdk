@@ -1,8 +1,8 @@
 {
   "name": "ht-utility",
-  "version": "0.0.1-beta",
+  "version": "0.0.2-beta",
   "description": "HyperTrack utils library",
-  "main": "dist/ht-utility.js",
+  "main": "dist/ht-utility_browser.js",
   "module": "dist/ht-utility.js",
   "typings": "dist/typings/ht-utility.d.ts",
   "scripts": {
