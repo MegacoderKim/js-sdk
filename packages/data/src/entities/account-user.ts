@@ -67,5 +67,9 @@ function getSubAccountToken(account: IAccount, type) {
   return _.find(account.sub_accounts, subAccount => {
     return subAccount.type == type;
   }).tokens
+};
+
+export const getAuthHeaders = (token) => {
+  return {Authorization: `token ${token}`}
 }
 
