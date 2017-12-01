@@ -11,19 +11,19 @@ import {IUserData, IUser, IUserAnalytics, IGroup, IUserListSummary } from "ht-mo
 import {ApiType, AllData} from "../interfaces"
 
 export interface State {
-  users: fromUsers.State,
-  segments: fromSegments.State,
+  // users: fromUsers.State,
+  // segments: fromSegments.State,
   query: fromQuery.State,
   loading: fromLoading.State
-  groups: fromGroups.State
+  // groups: fromGroups.State
 };
 
 export const reducers: ActionReducerMap<State> = {
-  users: fromUsers.usersReducer,
-  segments: fromSegments.segmentsReducer,
+  // users: fromUsers.usersReducer,
+  // segments: fromSegments.segmentsReducer,
   query: fromQuery.queryReducer,
   loading: fromLoading.loadingReducer,
-  groups: fromGroups.groupsReducer
+  // groups: fromGroups.groupsReducer
 };
 
 

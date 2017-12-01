@@ -23,6 +23,8 @@ import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
 import {dateRangeService} from "../../global/date-range";
 import {entityApi} from "../../global/entity-api";
+import * as fromUsers from "../../reducers/user-reducer";
+import * as fromSegments from "../../reducers/segments-reducer";
 
 export class HtUsersClient extends EntityClient {
 
@@ -52,6 +54,8 @@ export class HtUsersClient extends EntityClient {
     let api = entityApi.users;
     this.api = api;
     const store = ApiStoreService.getNewInstance();
+    store.addReducer('users', fromUsers.usersReducer);
+    store.addReducer('segments', fromSegments.segmentsReducer);
     this.store = store;
     // this.initialDateRange = this.getInitialDateRange();
     // this.dateRangeObserver = new BehaviorSubject(this.initialDateRange);

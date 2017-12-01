@@ -10,6 +10,7 @@ import {AllData, IDateRange} from "../../interfaces";
 import {map} from "rxjs/operators";
 import {dateRangeService} from "../../global/date-range";
 import {entityApi} from "../../global/entity-api";
+import * as fromGroups from "../../reducers/groups-reducer";
 
 export class HtGroupsClient extends EntityClient{
   list: GroupsListClient;
@@ -21,6 +22,7 @@ export class HtGroupsClient extends EntityClient{
     let api = entityApi.groups;
     this.api = api;
     const store = ApiStoreService.getNewInstance();
+    store.addReducer('groups', fromGroups.groupsReducer);
     this.store = store;
 
     this.list = new GroupsListClient({store});
