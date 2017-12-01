@@ -16,7 +16,7 @@ var config = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'ht-models.js',
-        library: "htMaps",
+        library: "htModels",
         libraryTarget: "umd"
     },
     module: {
