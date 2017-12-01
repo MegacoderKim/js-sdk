@@ -11,7 +11,7 @@ export class HtUsersApi extends HtBaseApi{
   }
 
   analytics(query): Observable<IUserAnalyticsPage> {
-    let tail = `/analytics/`;
-    return this.getReqFromTail<IUserAnalyticsPage>(tail, query)
+    let path = `${this.base}/analytics/`;
+    return this.api$<IUserAnalyticsPage>(path, query)
   }
 }

@@ -23,9 +23,9 @@ export class HtRequest {
     return htClientService.getInstance().token;
   }
 
-  setIsAdmin(isAdmin) {
-    this.isAdmin = isAdmin;
-  }
+  // setIsAdmin(isAdmin) {
+  //   this.isAdmin = isAdmin;
+  // }
 
   get currentToken() {
     return this.subToken && !this.isAdmin ? this.subToken : this.token;
@@ -55,9 +55,9 @@ export class HtRequest {
     return fromPromise(p) as Observable<T>
   }
 
-  api$<T>(url: string, query) {
+  api$<T>(url: string, query, options = {}) {
     url = this.url(url, query);
-    return this.getObservable<T>(url)
+    return this.getObservable<T>(url, options)
   }
 
   postApi$(url, body, options?) {

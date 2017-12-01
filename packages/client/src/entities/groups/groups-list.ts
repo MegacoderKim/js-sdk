@@ -51,7 +51,7 @@ export class GroupsListClient extends EntityListClient {
 
   constructor({store}: IClientConfig) {
     super();
-    this.store = this.store;
+    this.store = store;
     this.data$ = this.store.select(fromRoot.getGroupAll);
     this.active$ = store.select(fromRoot.getGroupListActive);
     this.dataArray$ = this.data$.let(PageResults$);

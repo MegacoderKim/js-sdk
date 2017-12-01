@@ -15,7 +15,7 @@ import {empty} from "rxjs/observable/empty";
 export class HtBaseApi {
   // request: HtRequest;
 
-  constructor(private base: string) {
+  constructor(public base: string) {
 
   }
 
@@ -25,42 +25,51 @@ export class HtBaseApi {
   }
 
   get<T>(id: string, query = {}): Observable<T> {
-    let tail = `/${id}/`;
-    return this.getReqFromTail<T>(tail, query)
+    let path = `${this.base}/${id}/`;
+    return this.api$<T>(path, query)
   }
 
   index<T>(query = {}): Observable<T> {
-    let tail = `/`;
-    return this.getReqFromTail<T>(tail, query)
+    let path = `${this.base}/`;
+    return this.api$<T>(path, query)
   }
 
   summary<T>(query = {}): Observable<T> {
-    let tail =  `/summary/`;
-    return this.getReqFromTail<T>(tail, query)
+    let path =  `${this.base}/summary/`;
+    return this.api$<T>(path, query)
   }
 
   heatmap<T>(query = {}): Observable<T> {
-    let tail =  `/heatmap/`;
-    return this.getReqFromTail<T>(tail, query)
+    let path =  `${this.base}/heatmap/`;
+    return this.api$(path, query)
   }
 
-  getReqFromTail<T>(tail, query = {}): Observable<T> {
-    return this.request.api$(this.base + tail, query)
+  api$<T>(path, query = {}, options = {}): Observable<T> {
+    return this.request.api$(path, query, options)
   }
+
+  postApi$<T>(path: string, body, options = {}): Observable<T> {
+    return this.request.postApi$(path, body, options)
+  }
+
+  // getReqFromTail<T>(tail, query = {}, options = {}): Observable<T> {
+  //   return this.request.api$(this.base + tail, query, options)
+  // }
+  //
+  // postReqFromTail<T>(tail, body, options?): Observable<T> {
+  //   return this.request.postApi$(this.base + tail, body, options)
+  // }
 
   placeline<T>(id, query = {}): Observable<T> {
-    let tail = `/${id}/placeline/`;
-    return this.getReqFromTail<T>(tail, query)
+    let tail = this.base + `/${id}/placeline/`;
+    return this.api$<T>(tail, query)
   }
 
   all$<T>(query, apiType: ApiType = ApiType.index): Observable<AllData<T>> {
     query = {page_size: 200, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
-    return api$
+    return this.allPages<T>(api$)
       .pipe(
-        expand((data: IPageData) => {
-          return data['next'] ? this.request.getObservable(data['next']) : empty()
-        }),
         map((value: Page<T>) => {
           let resultsEntity = _.indexBy(value.results, 'id');
           let isFirst = !value.previous;
@@ -68,37 +77,18 @@ export class HtBaseApi {
           return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
         })
       )
+  }
 
-      // .scan((acc: AllData<T>, value) => {
-      //   // let results = [...acc.results, ...value.results];
-      //   let resultsEntity = _.indexBy(value.results, 'id');
-      //   let isFirst = Object.keys(acc.resultsEntity).length ? false : true;
-      //   let next = value['next'];
-      //   return {resultsEntity, isFirst, next}
-      // }, {resultsEntity: {}, isFirst: true, next: null})
-
+  allPages<T = any>(api$, options = {}) {
+    return api$
+      .pipe(
+        expand((data: IPageData) => {
+          return data['next'] ? this.request.getObservable(data['next'], options) : empty()
+        })
+      )
   }
 
   analytics(query): Observable<any> {
     return empty()
   }
-
-  // getObservable(url, options: object = {}): Observable<any> {
-  //   return Observable.of({}?
-  // }
-  //
-  //
-  // postObservable(url, body, options: object = {}) {
-  //   return Observable.of({})
-  // }
-  //
-  // api$(tail: string, query) {
-  //   let url = this.request.url(this.base + tail, query);
-  //   return this.getObservable(url)
-  // }
-  //
-  // url$(url, query) {
-  //   url = this.request.url(url, query);
-  //   return this.getObservable(url)
-  // }
 }

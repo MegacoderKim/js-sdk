@@ -18,11 +18,15 @@ export * from "./entities/groups/groups-client";
 export * from "./entities/groups/groups-list";
 export * from "./entities/groups/groups-item-client";
 
+//accountUsers
+export * from "./entities/account-user/account-user-client"
+
 //globals
 export * from "./global/date-range"
 export * from "./global/client"
 export * from "./global/entity-api"
 export * from "./global/request";
+
 
 //reducers
 export * from "./reducers/index"
