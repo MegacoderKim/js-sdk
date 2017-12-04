@@ -33,7 +33,7 @@ export class UsersSummaryClient extends EntityListClient {
     this.store.dispatch(new fromUsersDispatcher.SetUsersSummary(usersSummary))
   };
   setLoading(data) {
-    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserSummary(data))
+    this.store.dispatch(new fromUsersDispatcher.SetSummaryLoading(data))
   };
   setQuery(query) {
 
@@ -47,10 +47,10 @@ export class UsersSummaryClient extends EntityListClient {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
-    this.query$ = this.store.select(fromRoot.getQueryUserQuery);
+    this.query$ = this.store.select(fromRoot.getUsersListQuery);
     this.active$ = this.store.select(fromRoot.getUsersSummaryActive);
     this.data$ = this.store.select(fromRoot.getUsersSummary);
-    this.loading$ = this.store.select(fromRoot.getLoadingUserSummary);
+    this.loading$ = this.store.select(fromRoot.getUsersSummaryLoading);
     this.init()
   }
 };

@@ -32,10 +32,10 @@ export class UsersPlacelineClient extends EntityItemClient {
   constructor({store}: IClientConfig) {
     super();
     this.store = store;
-    this.query$ = this.store.select(fromRoot.getQueryPlacelineQuery);
+    this.query$ = this.store.select(fromRoot.getUsersPlacelineQuery);
     this.data$ = this.store.select(fromRoot.getUsersUsersData);
-    this.loading$ = this.store.select(fromRoot.getLoadingUserData);
-    this.id$ = this.store.select(fromRoot.getQueryPlacelineId);
+    this.loading$ = this.store.select(fromRoot.getUsersPlacelineLoading);
+    this.id$ = this.store.select(fromRoot.getUsersPlacelineId);
     this.segmentsState$ = this.store.select(fromRoot.getSegmentsState);
     this.segmentSelectedId$ = this.store.select(fromRoot.getSegmentsSelectedId);
     this.segmentResetId$ = this.store.select(fromRoot.getSegmentsResetMapId);
@@ -46,16 +46,16 @@ export class UsersPlacelineClient extends EntityItemClient {
     this.store.dispatch(new fromUsersDispatcher.SetUserData(data))
   };
   setLoading(data) {
-    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
+    this.store.dispatch(new fromUsersDispatcher.SetPlacelineLoading(data))
   };
   setId(id) {
-    this.store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
+    this.store.dispatch(new fromUsersDispatcher.SetPlacelineId(id))
   };
   toggleId(userId: string) {
-    this.store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+    this.store.dispatch(new fromUsersDispatcher.TogglePlacelineId(userId))
   };
   setQuery(query) {
-    this.store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
+    this.store.dispatch(new fromUsersDispatcher.SetPlacelineQuery(query))
   }
   setSegmentSelectedId(segmentId) {
     this.store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))

@@ -42,11 +42,11 @@ export class UsersAnalyticsListAllClient extends EntityAllItemsClient {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
-    this.query$ = this.store.select(fromRoot.getQueryUserQuery) as Observable<object | null>;
+    this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<object | null>;
     this.active$ = this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive);
     this.data$ = this.store.select(fromRoot.getUsersAnalyticsFilteredMarker);
     // this.id$ = this.store.select(fromRoot.getQueryUserId);
-    this.loading$ = this.store.select(fromRoot.getLoadingUserAnalyticsAll);
+    this.loading$ = this.store.select(fromRoot.getUsersAnalyticsAllLoading);
     // this.dataArray$ = this.data$.let(PageResults$);
     this.init()
   }
@@ -64,11 +64,11 @@ export class UsersAnalyticsListAllClient extends EntityAllItemsClient {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
   };
   setLoading(data) {
-    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalyticsAll(data))
+    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAllLoading(data))
   };
-  setQuery(query = {}) {
-    this.store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
-  };
+  // setQuery(query = {}) {
+  //   this.store.dispatch(new fromUsersDispatcher.AddListQuery(query))
+  // };
   setDataMap(mapFunc) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(mapFunc))
   };

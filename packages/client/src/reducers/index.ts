@@ -7,22 +7,24 @@ import * as fromSegments from "./segments-reducer";
 import * as fromQuery from "./query-reducer";
 import * as fromLoading from "./loading-reducer";
 import * as fromGroups from "./groups-reducer";
-import {IUserData, IUser, IUserAnalytics, IGroup, IUserListSummary } from "ht-models"
+import * as fromAccounts from "./account-reducer";
+import {IUserData, IUser, IUserAnalytics, IGroup, IUserListSummary, IAccountUser, IMembership } from "ht-models"
 import {ApiType, AllData} from "../interfaces"
+import {Observable} from "rxjs/Observable";
 
 export interface State {
   // users: fromUsers.State,
   // segments: fromSegments.State,
-  query: fromQuery.State,
-  loading: fromLoading.State
+  // query: fromQuery.State,
+  // loading: fromLoading.State
   // groups: fromGroups.State
 };
 
 export const reducers: ActionReducerMap<State> = {
   // users: fromUsers.usersReducer,
   // segments: fromSegments.segmentsReducer,
-  query: fromQuery.queryReducer,
-  loading: fromLoading.loadingReducer,
+  // query: fromQuery.queryReducer,
+  // loading: fromLoading.loadingReducer,
   // groups: fromGroups.groupsReducer
 };
 
@@ -37,21 +39,33 @@ export const metaReducers: ActionReducer<any, any>[] = [];
  * Users selectors
  */
 export const getUsersState = createFeatureSelector<fromUsers.State>('users');
+
 export const getUsersUsersData = createSelector(getUsersState, fromUsers.getUserData);
-export const getUsersIndexPage = createSelector(getUsersState, fromUsers.getIndexPage);
-export const getUsersAnalyticsPage = createSelector(getUsersState, fromUsers.getAnalyticsPage);
-export const getUsersListApiType = createSelector(getUsersState, fromUsers.getListApiType);
+export const getUsersPlacelineId = createSelector(getUsersState, fromUsers.getPlacelineId);
+export const getUsersPlacelineQuery = createSelector(getUsersState, fromUsers.getPlacelineQuery);
+export const getUsersPlacelineLoading = createSelector(getUsersState, fromUsers.getPlacelineLoading);
+
 export const getUsersListActive = createSelector(getUsersState, fromUsers.getListActive);
+export const getUsersListId = createSelector(getUsersState, fromUsers.getListId);
+export const getUsersListQuery = createSelector(getUsersState, fromUsers.getListQuery);
+
+export const getUsersAnalyticsPage = createSelector(getUsersState, fromUsers.getAnalyticsPage);
+export const getUsersAnalyticsLoading = createSelector(getUsersState, fromUsers.getAnalyticsLoading);
+
+export const getUsersIndexPage = createSelector(getUsersState, fromUsers.getIndexPage);
+// export const getUsersListApiType = createSelector(getUsersState, fromUsers.getListApiType);
 export const getUsersIndexIsActive = createSelector(getUsersState, fromUsers.getIndexActive);
 export const getUsersAnalyticsIsActive = createSelector(getUsersState, fromUsers.getAnalyticsActive);
 export const getUsersIndexMarkersIsActive = createSelector(getUsersState, fromUsers.getIndexMarkersActive);
 export const getUsersAnalyticsMarkersIsActive = createSelector(getUsersState, fromUsers.getAnalyticsMarkersActive);
+export const getUsersAnalyticsAllLoading = createSelector(getUsersState, fromUsers.getAnalyticsAllLoading);
 export const getUsersIndexFilteredMarker = createSelector(getUsersState, fromUsers.getIndexFilteredMarkers);
 export const getUsersAnalyticsFilteredMarker = createSelector(getUsersState, fromUsers.getAnalyticFilteredMarkers);
 export const getUsersIndexAll = createSelector(getUsersState, fromUsers.getIndexAll);
 export const getUsersAnalyticsAll = createSelector(getUsersState, fromUsers.getAnalyticsAll);
 export const getUsersSummary = createSelector(getUsersState, fromUsers.getSummary);
 export const getUsersSummaryActive = createSelector(getUsersState, fromUsers.getSummaryActive);
+export const getUsersSummaryLoading = createSelector(getUsersState, fromUsers.getSummaryLoading);
 
 /**
  * Segment selectors
@@ -61,27 +75,6 @@ export const getSegmentsSelectedId = createSelector(getSegmentsState, fromSegmen
 export const getSegmentsResetMapId = createSelector(getSegmentsState, fromSegments.getResetMapId);
 
 /**
- * Query selectors
- */
-export const getQueryState = createFeatureSelector<fromQuery.State>('query');
-export const getQueryPlacelineId = createSelector(getQueryState, fromQuery.getPlacelineId);
-export const getQueryPlacelineQuery = createSelector(getQueryState, fromQuery.getPlacelineQuery);
-export const getQueryUserQuery = createSelector(getQueryState, fromQuery.getUsersQuery);
-export const getQueryUserId = createSelector(getQueryState, fromQuery.getUsersId);
-
-/**
- *
- * Loading selectors.
- */
-export const getLoadingState = createFeatureSelector<fromLoading.State>('loading');
-export const getLoadingUserData = createSelector(getLoadingState, fromLoading.getUserData);
-export const getLoadingAnalytics = createSelector(getLoadingState, fromLoading.getUserAnalytics);
-export const getLoadingUserIndex = createSelector(getLoadingState, fromLoading.getUserIndex);
-export const getLoadingUserAnalyticsAll = createSelector(getLoadingState, fromLoading.getUserAnalyticsAll);
-export const getLoadingUserIndexAll = createSelector(getLoadingState, fromLoading.getUserIndexAll);
-export const getLoadingUserSummary = createSelector(getLoadingState, fromLoading.getUserSummary);
-
-/**
  *
  * Groups reducer
  */
@@ -89,3 +82,14 @@ export const getGroupsState = createFeatureSelector<fromGroups.State>('groups');
 export const getGroupId = createSelector(getGroupsState, fromGroups.getId);
 export const getGroupAll = createSelector(getGroupsState, fromGroups.getAllGroups);
 export const getGroupListActive = createSelector(getGroupsState, fromGroups.getListActive);
+
+/**
+ Account
+ */
+export const getAccountState = createFeatureSelector<fromAccounts.State>('accounts');
+export const getAccountUser = createSelector(getAccountState, fromAccounts.getAccountUser);
+export const getAccountMembershipsAll = createSelector(getAccountState, fromAccounts.getMembershipsAll);
+export const getAccountKey = createSelector(getAccountState, fromAccounts.getKey);
+export const getAccountTempKey = createSelector(getAccountState, fromAccounts.getTempKey);
+export const getAccountCurrentKey = createSelector(getAccountState, fromAccounts.getCurrentKey);
+export const getAccountUserId = createSelector(getAccountState, fromAccounts.getUserId);

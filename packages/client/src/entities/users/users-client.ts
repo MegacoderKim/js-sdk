@@ -28,63 +28,35 @@ import * as fromSegments from "../../reducers/segments-reducer";
 
 export class HtUsersClient extends EntityClient {
 
-  // index: UsersIndex;
-
   analytics: UsersAnalyticsClient;
-
   placeline: UsersPlacelineClient;
-
   analyticsAll: UsersAnalyticsListAllClient;
-  // indexAll: IUsersMarkers;
   filterClass: DefaultUsersFilter = new DefaultUsersFilter();
-  // dateRangeObserver: BehaviorSubject<IDateRange>;
-  initialDateRange: IDateRange;
-  // mapClass: HtMapClass;
-  userDispatcher = fromUsersDispatcher;
-  queryDispatcher = fromQueryDispatcher;
-
   list: UsersAnalyticsClient;
   summary: UsersSummaryClient;
   listAll: UsersAnalyticsListAllClient;
   _statusQueryArray: QueryLabel[];
   store;
   api;
+  key$;
   constructor(public options: IUsersClientConfig) {
     super();
     let api = entityApi.users;
+    this.key$ = ApiStoreService.getInstance().select(fromRoot.getAccountCurrentKey);
     this.api = api;
     const store = ApiStoreService.getNewInstance();
     store.addReducer('users', fromUsers.usersReducer);
     store.addReducer('segments', fromSegments.segmentsReducer);
     this.store = store;
-    // this.initialDateRange = this.getInitialDateRange();
-    // this.dateRangeObserver = new BehaviorSubject(this.initialDateRange);
-    // this.dateRangeObserver.next(this.initialDateRange);
     let dateRange$ = this.options.dateRange$;
     const dateRangeQuery$ = dateRange$ ? dateRange$.let(DateRangeToQuery$('recorded_at')) : null;
-    // let listState = {
-    //   dateRangeQuery$: this.dateRangeObserver.asObservable().let(DateRangeToQuery('recorded_at'))
-    // };
-
-    // this.index = UsersIndexClientFactory(listState);
 
     this.analytics = new UsersAnalyticsClient({dateRangeQuery$, store});
-
-
     this.placeline = new UsersPlacelineClient({store});
-
     this.analyticsAll = new UsersAnalyticsListAllClient({dateRangeQuery$, store});
-
-    // this.indexAll = usersIndexMarkersFactory(listState);
-
     this.summary = new UsersSummaryClient({dateRangeQuery$, store});
-
     this.list = this.analytics;
-
-
     this.listAll = this.analyticsAll;
-
-    // this.filterClass = new DefaultUsersFilter();
 
     this.initEffects()
   }
@@ -94,23 +66,11 @@ export class HtUsersClient extends EntityClient {
     this.filterClass.customQueryArray = data
   }
 
-  setActive(): void {
-    this.store.dispatch(new fromUsersDispatcher.InitUsers())
-  }
-
   getInitialDateRange(range: Partial<IDateRange> = {}): IDateRange {
     let start = moment().startOf('day').toISOString();
     let end =  moment().endOf('day').toISOString();
     return {...range, start, end}
   }
-
-  // listPage$() {
-  //   const id$ = this.list.id$.pipe(distinctUntilChanged());
-  //   const dataArray$ = this.list.data$;
-  //   const selected$ = this.placeline.data$;
-  //   // let selected$ = this.placeline.data$.distinctUntilChanged(); //todo take query from placeline
-  //   return this.pageDataWithSelected$(id$, dataArray$, selected$)
-  // }
 
   listStatusOverview$() {
     return this.summary.data$.pipe(
@@ -203,51 +163,41 @@ export class HtUsersClient extends EntityClient {
     }
   }
 
-  allMarkers$() {
+  // allMarkers$() {
+  //
+  //   let userMarkers$ = this.listAll.dataArray$;
+  //
+  //   let hasPlaceline$ = this.placeline.id$.pipe(
+  //     map((data) => !!data),
+  //     distinctUntilChanged()
+  //   );
+  //
+  //   let dataArray$ = combineLatest(
+  //     userMarkers$,
+  //     hasPlaceline$,
+  //     (markers, hasPlaceline) => {
+  //       return hasPlaceline ? [] : markers
+  //     }
+  //   ).pipe(
+  //     map((markers) => {
+  //       return _.reduce(markers, (acc, marker) => {
+  //         const isValid = htUser(marker).isValidMarker();
+  //         if (isValid) {
+  //           acc.valid.push(marker)
+  //         } else {
+  //           acc.invalid.push(marker)
+  //         };
+  //         return acc
+  //       }, {valid: [], invalid: []})
+  //     })
+  //   );
+  //
+  //   return dataArray$
+  // }
 
-    // let isFirstCb = () => !!this.mapClass && this.mapClass.resetBounds();
-    let isFirstCb = () => {
-
-    };
-    // let userMarkers$ = this.listAll.dataArray$;
-    let userMarkers$ = this.listAll.dataArray$;
-
-    // let allMarkers$ = Observable.merge(
-    //   userMarkers$,
-    //   // this.list.dataArray$
-    // );
-
-    let hasPlaceline$ = this.placeline.id$.pipe(
-      map((data) => !!data),
-      distinctUntilChanged()
-    );
-
-    let dataArray$ = combineLatest(
-      userMarkers$,
-      hasPlaceline$,
-      (markers, hasPlaceline) => {
-        return hasPlaceline ? [] : markers
-      }
-    ).pipe(
-      map((markers) => {
-        return _.reduce(markers, (acc, marker) => {
-          const isValid = htUser(marker).isValidMarker();
-          if (isValid) {
-            acc.valid.push(marker)
-          } else {
-            acc.invalid.push(marker)
-          };
-          return acc
-        }, {valid: [], invalid: []})
-      })
-    );
-
-    return dataArray$
-  }
-
-  markers$() {
-    return this.allMarkers$().pipe(pluck('valid'));
-  }
+  // markers$() {
+  //   return this.allMarkers$().pipe(pluck('valid'));
+  // }
 
   getSegmentsStates() {
     return this.store.select(fromRoot.getSegmentsState)

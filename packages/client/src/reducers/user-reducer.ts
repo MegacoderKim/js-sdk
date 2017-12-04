@@ -26,31 +26,89 @@ const initialState: State = {
 
 export interface State {
   userData?: IUserData | undefined | null, //placeline data,
+  placelineId?: string | null,
+  placelineQuery?: object,
+  placelineLoading?: boolean,
+
+  usersListActive: boolean,
+  listQuery?: object,
+  listId?: string | null,
+  usersListDataMap?: (data) => any,
+
   usersAnalyticsPage?: Page<IUserAnalytics>,
+  analyticsLoading?: boolean,
+
+  usersMarkersActive: boolean,
+  usersAnalyticsAll?: AllData<IUserAnalytics>,
+  analyticsAllLoading?: boolean,
+  usersMarkersDataMap?: (data) => any,
+  //summary
+  usersSummaryActive: boolean,
+  usersSummary?: IUserListSummary | null,
+  summaryLoading?: boolean,
+
+  usersIndexAll?: AllData<IUser>,
   usersIndexPage?: Page<IUser>,
   listApiType: ApiType
-  usersAnalyticsAll?: AllData<IUserAnalytics>,
-  usersIndexAll?: AllData<IUser>,
-  usersListDataMap?: (data) => any,
-  usersMarkersDataMap?: (data) => any,
-  usersSummary?: IUserListSummary | null,
-  usersListActive: boolean,
-  usersMarkersActive: boolean,
-  usersSummaryActive: boolean,
 }
 
 export function usersReducer(state: State = initialState, action : UserDispatch.All): State {
   switch (action.type) {
+    /*
+    placeline
+     */
     case UserDispatch.SET_USER_DATA: {
       return {...state, userData: action.payload}
     }
+    case UserDispatch.SET_PLACELINE_ID: {
+      return {...state, placelineId: action.payload}
+    }
+    case UserDispatch.TOGGLE_PLACELINE_ID: {
+      const placelineId = state.placelineId == action.payload ? null : action.payload;
+      return {...state, placelineId}
+    }
+    case UserDispatch.SET_PLACELINE_QUERY: {
+      return {...state, placelineQuery: action.payload}
+    }
+    case UserDispatch.ADD_PLACELINE_QUERY: {
+      return {...state, placelineQuery: {...state.placelineQuery, ...action.payload}}
+    }
+    case UserDispatch.SET_PLACELINE_LOADING: {
+      return {...state, placelineLoading: !!action.payload}
+    }
+    /*
+    List
+     */
+    case UserDispatch.SET_LIST_ID: {
+      return {...state, listId: action.payload}
+    }
+    case UserDispatch.TOGGLE_LIST_ID: {
+      const listId = state.listId == action.payload ? null : action.payload;
+      return {...state, listId: listId}
+    }
+    case UserDispatch.SET_LIST_ACTIVE: {
+      return {...state, usersListActive: action.payload}
+    }
+    case UserDispatch.ADD_LIST_QUERY: {
+      return {...state, listQuery: {...state.listQuery, ...action.payload}}
+    }
+    case UserDispatch.SET_LIST_QUERY: {
+      return {...state, listQuery: action.payload}
+    }
+    /*
+    Analytics page
+     */
+
     case UserDispatch.SET_USERS_ANALYTICS_PAGE: {
       return {...state, usersAnalyticsPage: action.payload}
+    }
+    case UserDispatch.SET_USERS_ANALYTICS_LOADING: {
+      return {...state, analyticsLoading: action.payload}
     }
     case UserDispatch.SET_USERS_INDEX_PAGE: {
       return {...state, usersIndexPage: action.payload}
     }
-    case UserDispatch.SET_USERS_ANALYTICS_ALL: {
+    case UserDispatch.ADD_USERS_ANALYTICS_ALL: {
       let resultsEntity = {};
       if(state.usersAnalyticsAll) {
         resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ...action.payload.resultsEntity};
@@ -58,13 +116,13 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
 
       return {...state, usersAnalyticsAll: {...action.payload, resultsEntity}}
     }
-    case UserDispatch.SET_USERS_INDEX_ALL: {
+    case UserDispatch.SET_USERS_ANALYTICS_ALL_LOADING: {
+      return {...state, analyticsAllLoading: action.payload}
+    }
+    case UserDispatch.ADD_USERS_INDEX_ALL: {
       // const newEntities = _.indexBy(action.payload.results, 'id');
       const resultsEntity = state.usersIndexAll ? {...state.usersIndexAll.resultsEntity, ...action.payload.resultsEntity} : {};
       return {...state, usersIndexAll: {...action.payload, resultsEntity}}
-    }
-    case UserDispatch.SET_USERS_SUMMARY: {
-      return {...state, usersSummary: action.payload}
     }
     case UserDispatch.SET_USERS_LIST_DATA_MAP: {
       return {...state, usersListDataMap: action.payload}
@@ -72,29 +130,23 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
     case UserDispatch.SET_USERS_MARKERS_DATA_MAP: {
       return {...state, usersMarkersDataMap: action.payload}
     }
-    case UserDispatch.INIT_USERS_LIST: {
-      return {...state, usersListActive: action.payload}
-    }
-    case UserDispatch.INIT_USERS_MARKERS: {
-      return {...state, usersMarkersActive: action.payload}
-    }
-    case UserDispatch.INIT_USERS: {
-      return {...state, usersMarkersActive: true, usersListActive: true}
-    }
-    case UserDispatch.PAUSE_USERS: {
-      return {...state, usersMarkersActive: false, usersListActive: false}
-    }
     case UserDispatch.SET_USERS_LIST_API_TYPE: {
       return {...state, listApiType: action.payload}
-    }
-    case UserDispatch.SET_LIST_ACTIVE: {
-      return {...state, usersListActive: action.payload}
     }
     case UserDispatch.SET_MARKERS_ACTIVE: {
       return {...state, usersMarkersActive: action.payload}
     }
+    /*
+    Summary
+     */
     case UserDispatch.SET_SUMMARY_ACTIVE: {
       return {...state, usersSummaryActive: action.payload}
+    }
+    case UserDispatch.SET_USERS_SUMMARY: {
+      return {...state, usersSummary: action.payload}
+    }
+    case UserDispatch.SET_USERS_SUMMARY_LOADING: {
+      return {...state, summaryLoading: !!action.payload}
     }
     default: {
       return state
@@ -103,18 +155,31 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
 }
 
 export const getUserData = (state: State) => state.userData;
+export const getPlacelineId = (state: State) => state.placelineId;
+export const getPlacelineQuery = (state: State) => state.placelineQuery;
+export const getPlacelineLoading = (state: State) => state.placelineLoading;
+
+export const getListActive = (state: State) => state.usersListActive;
+export const getListId = (state: State) => state.listId;
+export const getListQuery = (state: State) => state.listQuery;
+
+export const getAnalyticsPage = (state: State) => state.usersAnalyticsPage;
+export const getAnalyticsLoading = (state: State) => state.analyticsLoading;
+
 export const getAnalyticsAll = (state: State) => state.usersAnalyticsAll;
-export const getIndexAll = (state: State) => state.usersIndexAll;
+export const getAnalyticsAllLoading = (state: State) => state.analyticsAllLoading;
 export const getMarkerDataMap = (state: State) => state.usersMarkersDataMap;
+
+export const getIndexAll = (state: State) => state.usersIndexAll;
 // export const getAnalyticFilteredsMarkers = (state: State) => validMarkers(state.usersAnalyticsAll);
 // export const getIndexFilteredMarkers = (state: State) => validMarkers(state.usersIndexAll);
 export const getIndexPage = (state: State) => state.usersIndexPage;
-export const getAnalyticsPage = (state: State) => state.usersAnalyticsPage;
 export const getListApiType = (state: State) => state.listApiType;
-export const getListActive = (state: State) => state.usersListActive;
 export const getMarkersActive = (state: State) => state.usersMarkersActive;
+
 export const getSummary = (state: State) => state.usersSummary;
 export const getSummaryActive = (state: State) => state.usersSummaryActive;
+export const getSummaryLoading = (state: State) => state.summaryLoading;
 
 export const getAnalyticFilteredMarkers = createSelector(getAnalyticsAll, getMarkerDataMap,
   (allData: AllData<any>, mapFunc) => {

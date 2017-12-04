@@ -1,7 +1,6 @@
 import {Action} from "./models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
-import {GetEffect} from "./effects";
 
 export class Dispatcher extends BehaviorSubject<Action> {
 

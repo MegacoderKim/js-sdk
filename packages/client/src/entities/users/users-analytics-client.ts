@@ -32,11 +32,11 @@ export class UsersAnalyticsClient extends EntityListClient{
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
-    this.query$ = this.store.select(fromRoot.getQueryUserQuery) as Observable<object | null>;
+    this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<object | null>;
     this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
     this.data$ = this.store.select(fromRoot.getUsersAnalyticsPage);
-    this.id$ = this.store.select(fromRoot.getQueryUserId);
-    this.loading$ = this.store.select(fromRoot.getLoadingAnalytics);
+    this.id$ = this.store.select(fromRoot.getUsersListId);
+    this.loading$ = this.store.select(fromRoot.getUsersAnalyticsLoading);
     this.dataArray$ = this.data$.let(PageResults$);
     this.init()
   }
@@ -51,7 +51,7 @@ export class UsersAnalyticsClient extends EntityListClient{
   }
 
   setLoading(data) {
-    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserAnalytics(data))
+    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsLoading(data))
   };
 
   setData(data) {
@@ -68,19 +68,19 @@ export class UsersAnalyticsClient extends EntityListClient{
   }
 
   setQuery(query = {}) {
-    this.store.dispatch(new fromQueryDispatcher.SetUserQuery(query))
+    this.store.dispatch(new fromUsersDispatcher.AddListQuery(query))
   };
   setQueryReset(query) {
-    this.store.dispatch(new fromQueryDispatcher.SetUserQueryResetPage(query))
+    this.store.dispatch(new fromUsersDispatcher.AddListQuery({...query, page: null}))
   };
   clearQueryKey(key: string) {
-    this.store.dispatch(new fromQueryDispatcher.ClearUserQueryKey(key))
+    this.store.dispatch(new fromUsersDispatcher.AddListQuery({[key]: null}))
   };
   toggleId(userId: string) {
-    this.store.dispatch(new fromQueryDispatcher.ToggleUserId(userId))
+    this.store.dispatch(new fromUsersDispatcher.ToggleUsersListId(userId))
   };
   setId(userId: string | null) {
-    this.store.dispatch(new fromQueryDispatcher.SetUserId(userId))
+    this.store.dispatch(new fromUsersDispatcher.SetUsersListId(userId))
   }
 };
 

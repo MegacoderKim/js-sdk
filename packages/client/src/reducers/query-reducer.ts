@@ -7,8 +7,6 @@ const initialState: State = {
 export interface State {
   userQuery?: object | null,
   dateRange?: IDateRange
-  placelineId?: string | null,
-  placelineQuery?: object | null,
   userId?: string | null
 }
 
@@ -28,9 +26,6 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
       delete query[action.payload];
       return {...state, userQuery: query}
     }
-    case QueryDispatch.SET_PLACELINE_ID: {
-      return {...state, placelineId: action.payload}
-    }
     case QueryDispatch.SET_USER_ID: {
       return {...state, userId: action.payload}
     }
@@ -38,20 +33,11 @@ export function queryReducer(state: State = initialState, action : QueryDispatch
       const userId = state.userId == action.payload ? null : action.payload;
       return {...state, userId}
     }
-    case QueryDispatch.TOGGLE_PLACELINE_ID: {
-      const placelineId = state.placelineId == action.payload ? null : action.payload;
-      return {...state, placelineId}
-    }
-    case QueryDispatch.SET_PLACELINE_QUERY: {
-      return {...state, placelineQuery: action.payload}
-    }
     default: {
       return state
     }
   }
 }
 
-export const getPlacelineId = (state: State) => state.placelineId;
 export const getUsersQuery = (state: State) => state.userQuery;
-export const getPlacelineQuery = (state: State) => state.placelineQuery;
 export const getUsersId = (state: State) => state.userId;
