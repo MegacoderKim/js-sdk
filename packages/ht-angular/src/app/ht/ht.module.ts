@@ -61,7 +61,8 @@ export class HtModule {
         },
         {
           provide: HtAccountService,
-          useClass: AccountsClient
+          useFactory: accountUsersClientServiceFactory
+          // useClass: AccountsClient
         },
 
       ]
