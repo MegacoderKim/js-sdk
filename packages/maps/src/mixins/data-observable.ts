@@ -21,7 +21,8 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
     trace: (data, map?) => any;
-    dataSource$: Observable<Page<any>>;
+    dataPageSource$: Observable<Page<any>>;
+    dataArraySource$: Observable<any[]>;
     data$: Observable<IMarkersArray>;
     isValidMapItems?: (data) => boolean;
     getPosition: (data) => HtPosition;
@@ -31,19 +32,22 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
         return source$.pipe(
           map((pageData) => {
             let isNew = pageData && pageData.count && !pageData.next;
-            return _.reduce(pageData.results, (acc, item) => {
-              const isValid = this.isValidMapItems ? this.isValidMapItems(item) : !!this.getPosition(item);
-              if (isValid) {
-                acc.valid.push(item)
-              } else {
-                acc.invalid.push(item)
-              };
-              return acc
-            }, {valid: [], invalid: [], isNew})
-            // return markers
+            return this.getMarkersArray(pageData.results, isNew);
           })
         )
       }
+    };
+
+    getMarkersArray(array: any[], isNew: boolean = false) {
+      return _.reduce(array, (acc, item) => {
+        const isValid = this.isValidMapItems ? this.isValidMapItems(item) : !!this.getPosition(item);
+        if (isValid) {
+          acc.valid.push(item)
+        } else {
+          acc.invalid.push(item)
+        };
+        return acc
+      }, {valid: [], invalid: [], isNew})
     }
 
     setPageData$(data$: Observable<Page<any> | null>, config: SetDataConfig = {}) { //todo take page data, add diff apis
@@ -51,19 +55,37 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
         this.dataSub.unsubscribe();
       }
       const hide$ = config.hide$;
-      this.dataSource$ = hide$ ? combineLatest(
+      this.dataPageSource$ = hide$ ? combineLatest(
         data$,
         hide$.pipe(distinctUntilChanged()),
         (data, hide) => !!hide ? {results: [], count: 0, next: '', previous: ''} : data
       ) : data$;
-      this.data$ = this.dataSource$.pipe(
+      this.data$ = this.dataPageSource$.pipe(
         this._procData$()
       );
       this._initDataObserver()
     };
 
+    setData$(data$: Observable<any[]>, config: SetDataConfig = {}) {
+      if (this.dataSub) {
+        this.dataSub.unsubscribe();
+      };
+      const hide$ = config.hide$;
+      this.dataArraySource$ = hide$ ? combineLatest(
+        data$,
+        hide$.pipe(distinctUntilChanged()),
+        (data, hide) => !!hide ? [] : data
+      ) : data$;
+      this.data$ = this.dataArraySource$.pipe(
+        map((dataArray: any[]) => {
+          return this.getMarkersArray(dataArray, !!dataArray);
+        })
+      );
+      this._initDataObserver()
+    }
+
     // _initData$() {
-    //   let userData$ = this.dataSource$.pipe(
+    //   let userData$ = this.dataPageSource$.pipe(
     //     filter(data => !!MapService.map),
     //     pluck('valid'),
     //     scan((acc: {user: any, oldUser: any}, data: object) => {
