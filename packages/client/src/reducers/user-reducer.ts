@@ -1,6 +1,6 @@
 import * as UserDispatch from "../dispatchers/user-dispatcher";
-import {IUserData, Page, IUser, IUserAnalytics, IUserListSummary} from "ht-models";
-import {AllData, ApiType} from "../interfaces";
+import {IUserData, AllData, Page, IUser, IUserAnalytics, IUserListSummary} from "ht-models";
+import { ApiType} from "../interfaces";
 import {createSelector, MemoizedSelector} from "../store/selector";
 import * as _ from "underscore";
 import {htUser} from "ht-data";
@@ -111,10 +111,10 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
     case UserDispatch.ADD_USERS_ANALYTICS_ALL: {
       let resultsEntity = {};
       if(state.usersAnalyticsAll) {
-        resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ...action.payload.resultsEntity};
+        resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ..._.indexBy(action.payload.results, 'id')};
       }
 
-      return {...state, usersAnalyticsAll: {...action.payload, resultsEntity}}
+      return {...state, usersAnalyticsAll: {next: action.payload.next, previous: action.payload.previous, count: action.payload.count, resultsEntity}}
     }
     case UserDispatch.SET_USERS_ANALYTICS_ALL_LOADING: {
       return {...state, analyticsAllLoading: action.payload}

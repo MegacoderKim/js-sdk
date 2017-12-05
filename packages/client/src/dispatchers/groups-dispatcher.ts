@@ -1,6 +1,6 @@
 import {Action} from "../store/models";
-import {AllData} from "../interfaces";
-import {IGroup} from "ht-models";
+// import {AllData} from "../interfaces";
+import {IGroup, AllData} from "ht-models";
 
 export const SET_LIST_ACTIVE = "[GROUPS] set list active";
 export const SET_ID = "[GROUPS] set id";

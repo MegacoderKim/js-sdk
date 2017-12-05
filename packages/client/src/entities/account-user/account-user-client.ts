@@ -1,17 +1,17 @@
 import {entityApi} from "../../global/entity-api";
-import * as fromAccount from "../../reducers/account-reducer"
-import {ApiStoreService} from "../../global/store-provider";
-import {getIdPageDataMixin, getItemDataMixin} from "../../mixins/get-data";
+import {getIdQueryDataMixin} from "../../mixins/get-data";
 import {clientSubMixin} from "../../mixins/client-subscription";
-import {itemQueryMixin, listQueryMixin} from "../../mixins/entity-query";
+import {itemQueryMixin} from "../../mixins/entity-query";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import * as fromRoot from "../../reducers";
 import * as fromAccounts from "../../dispatchers/accounts-dispatcher"
 import {IPageClientConfig} from "../../interfaces";
+import {getFirstDataMixin} from "../../mixins/get-first-data";
+import {EntityItemClient} from "../../base/item-client";
 
-export class AccountUser {
+export class AccountUser extends EntityItemClient {
   query$: Observable<object> = of({});
   id$;
   updateStrategy = 'once';
@@ -21,6 +21,7 @@ export class AccountUser {
   loading$;
 
   constructor({dateRangeQuery$, store}: IPageClientConfig) {
+    super();
     this.store = store;
     // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
     this.data$ = this.store.select(fromRoot.getAccountUser);
@@ -48,4 +49,4 @@ export class AccountUser {
   api$ = (id, query) => entityApi.accounts.get(id, query);
 }
 
-export const AccountUserClient = clientSubMixin(getItemDataMixin(itemQueryMixin(AccountUser)))
+export const AccountUserClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(AccountUser))));

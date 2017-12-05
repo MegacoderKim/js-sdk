@@ -1,7 +1,7 @@
 import {Action} from "../store/models";
-import {IUserData} from "ht-models"
+import {IUserData, AllData} from "ht-models"
 import {IUserAnalytics, IUser, Page, IUserListSummary} from "ht-models";
-import {AllData, ApiType} from "../interfaces";
+import {ApiType} from "../interfaces";
 
 //placeline
 export const SET_USER_DATA = '[USERS] set user data';
@@ -111,7 +111,7 @@ export class SetUsersIndexPage implements Action {
 
 export class SetUsersAnalyticsAll implements Action { //todo change name
   readonly type = ADD_USERS_ANALYTICS_ALL;
-  constructor(public payload: AllData<IUserAnalytics>) {}
+  constructor(public payload: Page<IUserAnalytics>) {}
 }
 
 export class SetUsersAnalyticsAllLoading implements Action {

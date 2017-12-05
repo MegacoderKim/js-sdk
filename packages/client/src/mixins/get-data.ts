@@ -8,196 +8,98 @@ import {Subscription} from "rxjs/Subscription";
 import {empty} from "rxjs/observable/empty";
 import {Page} from "ht-models";
 
-
-export abstract class ListGetData {
-  abstract updateStrategy: string;
-  abstract pollDuration: number;
-  abstract api$: (...arg: any[]) => Observable<any>;
-  abstract firstDataEffect: (data) => void;
-  getData$([query]) {
-    let entity = this;
-    // console.log(entity.nam , "nam");
-    let updateStrategy = entity.updateStrategy;
-    let first = entity.api$(query).pipe(
-      tap((data) => {
-        if(entity.firstDataEffect) {
-          entity.firstDataEffect(data)
-        }
-      })
-    );
-    let update = first.pipe(
-      expand((data) => {
-        return timer(entity.pollDuration).pipe(
-          switchMap(() => {
-            // console.log(entity.pollDuration);
-            if(updateStrategy == 'live') {
-              return entity.api$(query)
-            } else {
-              let ids: string[] = _.map(data.results, (item) => {
-                return item['id']
-              });
-              let updateQuery = {...query, id: ids.toString(), status: null, page: null};
-              return entity.api$(updateQuery).pipe(
-                map(newData => {
-                  return {...data, results: newData.results}
-                })
-              )
-            }
-
-          })
-        )
-      })
-    );
-
-    return entity.updateStrategy != 'once' ? update : first
-  }
-}
-
-
-export class ItemGetData {
-  updateStrategy: string;
-  pollDuration: number;
-  api$: (...arg: any[]) => Observable<any>;
-  firstDataEffect: (data) => void;
-
-  getData$([query, y]) {
-    let entity = this;
-    console.log(query, "iem q", y);
-    let updateStrategy = entity.updateStrategy;
-    let first = entity.api$(query).pipe(
-      tap((data) => {
-        if(entity.firstDataEffect) {
-          entity.firstDataEffect(data)
-        }
-      })
-    );
-    let update = first.pipe(
-      expand((data) => {
-        return timer(entity.pollDuration).pipe(
-          switchMap(() => {
-            return entity.api$(query)
-          })
-        )
-      })
-    );
-
-    return entity.updateStrategy != 'once' ? update : first
-  }
-}
-
-
-export interface IItemDataBase {
+export interface IIdQueryDataBase {
   updateStrategy: string,
-  // firstDataEffect(data): void,
+  getFirstData$([id, query]): Observable<any>,
   pollDuration: number,
-  setLoading(any): void,
-  api$(id, query): Observable<any>
+  api$(id: string, query: object): Observable<any>
 }
 
-export function getItemDataMixin <TBase extends Constructor<IItemDataBase>>(Base: TBase) {
+export function getIdQueryDataMixin <TBase extends Constructor<IIdQueryDataBase>>(Base: TBase) {
   return class extends Base {
     getData$([id, query]) {
-      let entity = this;
-      let first = entity.api$(id, query).pipe(
-        tap((data) => {
-          this.setLoading(false);
-        })
-      );
-      let update = first.pipe(
+      let update = this.getFirstData$([id, query]).pipe(
         expand((data) => {
-          return timer(entity.pollDuration).pipe(
+          return timer(this.pollDuration).pipe(
             switchMap(() => {
-              return entity.api$(id, query)
+              return this.api$(id, query)
             })
           )
         })
       );
 
-      return entity.updateStrategy != 'once' ? update : first
+      return this.updateStrategy != 'once' ? update : this.getFirstData$([id, query])
     }
   }
 }
 
 export interface IGetPageDataBase {
   updateStrategy: string,
-  firstDataEffect(data): void,
+  getFirstData$([query]): Observable<any>,
   pollDuration: number,
-  api$(query): Observable<Page<any>>
+  api$(query: object): Observable<Page<any>>
 }
 
 export function getPageDataMixin <TBase extends Constructor<IGetPageDataBase>>(Base: TBase) {
   return class extends Base {
     getData$([query]) {
-      let entity = this;
-      let updateStrategy = entity.updateStrategy;
-      let first = entity.api$(query).pipe(
-        tap((data) => {
-          if(entity.firstDataEffect) {
-            entity.firstDataEffect(data)
-          }
-        })
-      );
-      let update = first.pipe(
+      let update = this.getFirstData$([query]).pipe(
         expand((data) => {
-          return timer(entity.pollDuration).pipe(
+          return timer(this.pollDuration).pipe(
             switchMap(() => {
-              if(updateStrategy == 'live') {
-                return entity.api$(query)
+              if(this.updateStrategy == 'live') {
+                return this.api$(query)
               } else {
                 let ids: string[] = _.map(data.results, (item) => {
                   return item['id']
                 });
                 let updateQuery = {...query, id: ids.toString(), status: null, page: null};
-                return entity.api$(updateQuery).pipe(map(newData => {
+                return this.api$(updateQuery).pipe(map(newData => {
                   return {...data, results: newData.results}
                 }))
               }
-
             })
           )
         })
       );
-
-      return entity.updateStrategy != 'once' ? update : first
+      return this.updateStrategy != 'once' ? update : this.getFirstData$([query])
     }
   }
 }
 
-export interface IIdGetPageDataBase {
+export interface IGetQueryDataBase {
   updateStrategy: string,
-  firstDataEffect(data): void,
+  getFirstData$([query]): Observable<any>,
   pollDuration: number,
-  active$: Observable<boolean>,
-  api$(id, query): Observable<Page<any>>
+  api$(query): Observable<any>
 }
 
-export function getIdPageDataMixin <TBase extends Constructor<IIdGetPageDataBase>>(Base: TBase) {
+export function getQueryDataMixin <TBase extends Constructor<IGetQueryDataBase>>(Base: TBase) {
   return class extends Base {
-    getData$([id, query]) {
-      let entity = this;
-      let updateStrategy = entity.updateStrategy;
-      let first = entity.api$(id, query).pipe(
-        tap((data) => {
-          if(entity.firstDataEffect) {
-            entity.firstDataEffect(data)
-          }
-        })
-      );
-      let update = first.pipe(
+    getData$([query]) {
+      let update = this.getFirstData$([query]).pipe(
         expand((data) => {
-          return timer(entity.pollDuration).pipe(
+          return timer(this.pollDuration).pipe(
             switchMap(() => {
-              return entity.api$(id, query)
-
+              return this.api$(query)
             })
           )
-        }),
-        takeUntil(this.active$.pipe(
-          filter(data => !data)
-        ))
+        })
       );
+      return this.updateStrategy != 'once' ? update : this.getFirstData$([query])
+    }
+  }
+}
 
-      return entity.updateStrategy != 'once' ? update : first
+export interface IGetAllPageDataBase {
+  getFirstData$([query]): Observable<any>,
+  api$(query): Observable<Page<any>>
+}
+
+export function getAllPageDataMixin <TBase extends Constructor<IGetAllPageDataBase>>(Base: TBase) {
+  return class extends Base {
+    getData$([query]) {
+      return this.getFirstData$([query])
     }
   }
 }

@@ -1,23 +1,19 @@
 import * as fromRoot from "../../reducers";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {ApiStoreService} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
-import {ISegment, IUserData} from "ht-models";
 import * as _ from "underscore";
 import {EntityItemClient} from "../../base/item-client";
-import {applyBaseMixins, applyMixins} from "../../helpers/mix";
-import {ItemGetData} from "../../mixins/get-data";
-import {ItemQuery} from "../../mixins/entity-query";
-import {ClientSub} from "../../mixins/client-subscription";
-import {combineLatest} from "rxjs/observable/combineLatest";
+import {getIdQueryDataMixin} from "../../mixins/get-data";
+import {itemQueryMixin} from "../../mixins/entity-query";
+import {clientSubMixin} from "../../mixins/client-subscription";
 import {entityApi} from "../../global/entity-api";
 import {dataWithSelectedId$} from "ht-data";
 import {IClientConfig} from "../../interfaces";
+import {Subscription} from "rxjs/Subscription";
+import {getFirstDataMixin} from "../../mixins/get-first-data";
 
-export class UsersPlacelineClient extends EntityItemClient {
+export class UsersPlaceline extends EntityItemClient {
 
   name = 'users placeline';
   updateStrategy = 'live';
@@ -39,7 +35,7 @@ export class UsersPlacelineClient extends EntityItemClient {
     this.segmentsState$ = this.store.select(fromRoot.getSegmentsState);
     this.segmentSelectedId$ = this.store.select(fromRoot.getSegmentsSelectedId);
     this.segmentResetId$ = this.store.select(fromRoot.getSegmentsResetMapId);
-    this.init()
+    // this.init()
   }
 
   setData(data) {
@@ -70,7 +66,9 @@ export class UsersPlacelineClient extends EntityItemClient {
   }
 }
 
-applyMixins(UsersPlacelineClient, [ItemGetData, ItemQuery, ClientSub]);
+export const UsersPlacelineClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(UsersPlaceline))));
+
+// applyMixins(UsersPlacelineClient, [ItemGetData, ItemQuery, ClientSub]);
 
 // export const UsersPlacelineClientFactory = (): UsersPlaceline => {
 //   let innerConfig: Partial<EntityTypeConfig> = {

@@ -1,27 +1,24 @@
-import {ClientSub} from "../mixins/client-subscription";
-import {ListQuery} from "../mixins/entity-query";
-import {ListGetData} from "../mixins/get-data";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 
-export class EntityListClient implements ClientSub, ListQuery, ListGetData  {
+export abstract class EntityListClient  {
   //listGetData
   updateStrategy = 'live';
   pollDuration = 10000;
-  api$;
+  // api$;
   name = "list";
   query$;
+  dateRangeQuery$?: Observable<object> | null;
+  // allowedQueryKeys: string[] | null = null;
   // defaultQuery;
-  allowedQueryKeys: string[] | null = null;
-  dateRangeQuery$;
-  active$ = null;
+  active$?: Observable<boolean>;
   // apiQuery$;
   // apiParams$;
   getApiParams$: () => Observable<any[]>;
   getApiQuery$: () => Observable<any>;
-  init: () => void;
-  getData$: (data) => any;
-  dataSub: Subscription;
+  // init: () => void;
+  // getData$: (data) => any;
+  // dataSub: Subscription;
 
   firstDataEffect(data) {
     this.setLoading(false);
@@ -39,16 +36,14 @@ export class EntityListClient implements ClientSub, ListQuery, ListGetData  {
   }
 
 
-  setLoading(data) {
-
-  };
-
-  setData(data) {
-
-  };
-
-  setActive(isActive: boolean = true){
-
-  }
+  abstract setLoading(data)
+  //
+  // setData(data) {
+  //
+  // };
+  //
+  // setActive(isActive: boolean = true){
+  //
+  // }
 
 };

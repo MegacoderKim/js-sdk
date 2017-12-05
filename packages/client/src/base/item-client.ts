@@ -1,27 +1,24 @@
-import {ClientSub} from "../mixins/client-subscription";
-import {ItemQuery} from "../mixins/entity-query";
-import {ItemGetData} from "../mixins/get-data";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {applyBaseMixins, applyMixins} from "../helpers/mix";
 
-export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
+export abstract class EntityItemClient {
   //listGetData
   updateStrategy = 'live';
   pollDuration = 10000;
-  api$;
+  // api$;
   name = "item";
-  id$: Observable<undefined | null | string>;
-  query$;
+  id$: Observable<null | string>;
+  query$: Observable<object>;
   allowedQueryKeys = null;
   dateRangeQuery$;
-  active$ = null;
+  // active$ = null;
   // apiQuery$;
   // apiParams$;
   getApiParams$: () => Observable<any[]>;
   getApiQuery$: () => Observable<any>;
-  init: () => void;
-  getData$: (data) => any;
+  // init: () => void;
+  // getData$: (data) => any;
 
   firstDataEffect() {
     this.setLoading(false);
@@ -38,16 +35,14 @@ export class EntityItemClient implements ClientSub, ItemQuery, ItemGetData  {
 
   dataSub: Subscription;
 
-  setLoading(data) {
+  abstract setLoading(data)
 
-  };
+  // setData(data) {
+  //
+  // };
 
-  setData(data) {
-
-  };
-
-  setActive(isActive: boolean = true){
-
-  }
+  // setActive(isActive: boolean = true){
+  //
+  // }
 
 };

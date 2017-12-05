@@ -8,8 +8,8 @@ import * as fromQuery from "./query-reducer";
 import * as fromLoading from "./loading-reducer";
 import * as fromGroups from "./groups-reducer";
 import * as fromAccounts from "./account-reducer";
-import {IUserData, IUser, IUserAnalytics, IGroup, IUserListSummary, IAccountUser, IMembership } from "ht-models"
-import {ApiType, AllData} from "../interfaces"
+import {IUserData, IUser, IUserAnalytics, IGroup, IUserListSummary, IAccountUser, IMembership, AllData } from "ht-models"
+import {ApiType} from "../interfaces"
 import {Observable} from "rxjs/Observable";
 
 export interface State {

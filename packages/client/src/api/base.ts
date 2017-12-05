@@ -1,7 +1,7 @@
 // import {HtRequest} from "../request";
 import { Observable } from "rxjs/Observable";
 import {IPageData} from "ht-models";
-import {AllData, ApiType} from "../interfaces";
+import { ApiType} from "../interfaces";
 import * as _ from "underscore";
 import {Page} from "ht-models";
 // import {clientApi} from "../client-request";
@@ -65,18 +65,18 @@ export class HtBaseApi {
     return this.api$<T>(tail, query)
   }
 
-  all$<T>(query, apiType: ApiType = ApiType.index): Observable<AllData<T>> {
+  all$<T>(query, apiType: ApiType = ApiType.index): Observable<Page<T>> {
     query = {page_size: 200, ...query};
     let api$ = apiType == ApiType.index ? this.index(query) : this.analytics(query);
     return this.allPages<T>(api$)
-      .pipe(
-        map((value: Page<T>) => {
-          let resultsEntity = _.indexBy(value.results, 'id');
-          let isFirst = !value.previous;
-          let count = value.count;
-          return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
-        })
-      )
+      // .pipe(
+      //   map((value: Page<T>) => {
+      //     let resultsEntity = _.indexBy(value.results, 'id');
+      //     let isFirst = !value.previous;
+      //     let count = value.count;
+      //     return {resultsEntity, isFirst, next: value.next, previous: value.previous, count}
+      //   })
+      // )
   }
 
   allPages<T = any>(api$, options = {}) {

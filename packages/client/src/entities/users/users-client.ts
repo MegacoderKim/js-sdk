@@ -1,6 +1,6 @@
 import {UsersPlacelineClient} from "./users-placeline-client";
-import {AllData, IDateRange, QueryLabel} from "../../interfaces";
-import {ISegment, IUserAnalytics, IUserData, IUserListSummary, Partial} from "ht-models";
+import {IDateRange, QueryLabel} from "../../interfaces";
+import {AllData, ISegment, IUserAnalytics, IUserData, IUserListSummary, Partial} from "ht-models";
 import {UsersAnalyticsClient} from "./users-analytics-client";
 import {Observable} from "rxjs/Observable";
 import * as _ from "underscore";
@@ -10,14 +10,12 @@ import {htUser} from "ht-data";
 import {DefaultUsersFilter} from "../../filters/users-filter";
 import * as moment from 'moment-mini'
 import * as fromRoot from "../../reducers";
-import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
 import { UsersSummaryClient} from "./users-summary-client";
 import {DateRangeToQuery$} from "ht-data";
 import {ApiStoreService} from "../../global/store-provider";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
-import {pluck, flatMap, zip, switchMap, map, distinctUntilChanged, skip} from "rxjs/operators";
+import {pluck, flatMap, map, distinctUntilChanged} from "rxjs/operators";
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
@@ -28,13 +26,13 @@ import * as fromSegments from "../../reducers/segments-reducer";
 
 export class HtUsersClient extends EntityClient {
 
-  analytics: UsersAnalyticsClient;
-  placeline: UsersPlacelineClient;
-  analyticsAll: UsersAnalyticsListAllClient;
+  analytics;
+  placeline;
+  analyticsAll;
   filterClass: DefaultUsersFilter = new DefaultUsersFilter();
-  list: UsersAnalyticsClient;
-  summary: UsersSummaryClient;
-  listAll: UsersAnalyticsListAllClient;
+  list;
+  summary;
+  listAll;
   _statusQueryArray: QueryLabel[];
   store;
   api;
@@ -125,7 +123,6 @@ export class HtUsersClient extends EntityClient {
           return null
         })
       )
-    // return status_overview ? Object.keys(status_overview) : null
   }
 
   get queryLabel$() {
@@ -163,42 +160,6 @@ export class HtUsersClient extends EntityClient {
     }
   }
 
-  // allMarkers$() {
-  //
-  //   let userMarkers$ = this.listAll.dataArray$;
-  //
-  //   let hasPlaceline$ = this.placeline.id$.pipe(
-  //     map((data) => !!data),
-  //     distinctUntilChanged()
-  //   );
-  //
-  //   let dataArray$ = combineLatest(
-  //     userMarkers$,
-  //     hasPlaceline$,
-  //     (markers, hasPlaceline) => {
-  //       return hasPlaceline ? [] : markers
-  //     }
-  //   ).pipe(
-  //     map((markers) => {
-  //       return _.reduce(markers, (acc, marker) => {
-  //         const isValid = htUser(marker).isValidMarker();
-  //         if (isValid) {
-  //           acc.valid.push(marker)
-  //         } else {
-  //           acc.invalid.push(marker)
-  //         };
-  //         return acc
-  //       }, {valid: [], invalid: []})
-  //     })
-  //   );
-  //
-  //   return dataArray$
-  // }
-
-  // markers$() {
-  //   return this.allMarkers$().pipe(pluck('valid'));
-  // }
-
   getSegmentsStates() {
     return this.store.select(fromRoot.getSegmentsState)
   }
@@ -222,35 +183,6 @@ export class HtUsersClient extends EntityClient {
   }
 
   private initEffects() {
-    // Observable.combineLatest(
-    //   this.placeline.data$,
-    //   this.getSegmentsStates(),
-    //   (userData: IUserData, {selectedId, resetMapId}) => {
-    //     if(userData && (selectedId || resetMapId)) {
-    //       const id = selectedId || resetMapId;
-    //       let segments = _.filter(userData.segments, (segment: ISegment) => {
-    //         return segment.id === id;
-    //       });
-    //       userData = {...userData, segments: segments, events: [], actions: []}
-    //     }
-    //     return userData
-    //   }
-    // ).filter((data) => !!this.mapClass).do((userData) => {
-    //   this.mapClass.segmentTrace.trace(null, this.mapClass.map)
-    // }).map((userData) => {
-    //   return userData ? userData.id : null
-    // }).distinctUntilChanged().subscribe(() => {
-    //   this.mapClass.resetBounds()
-    // });
-
-
-    // const marks$ = this.allMarkers$().filter((data) => !!this.mapClass).pluck('valid');
-
-    // this.mapClass.usersCluster.setData$(marks$);
-
-    // marks$.subscribe((data) => {
-    //   this.mapClass.usersCluster.trace(data, this.mapClass.map)
-    // });
 
     this.list.query$.let(filter(data => !!data)).subscribe((query) => {
       this.setListAllFilter(query)
@@ -327,7 +259,6 @@ export class HtUsersClient extends EntityClient {
       return {...allResults, resultsEntity}
     };
     this.listAll.setDataMap(dataMap);
-    // this.store.dispatch(new fromUsersDispatcher.SetUsersMarkersDataMap(dataMap))
   }
 
 

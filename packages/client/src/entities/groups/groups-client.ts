@@ -6,15 +6,16 @@ import {Store} from "../../store/store";
 import * as fromRoot from "../../reducers";
 import { ApiStoreService} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
-import {AllData, IDateRange} from "../../interfaces";
+import { IDateRange} from "../../interfaces";
 import {map} from "rxjs/operators";
 import {dateRangeService} from "../../global/date-range";
 import {entityApi} from "../../global/entity-api";
 import * as fromGroups from "../../reducers/groups-reducer";
+import {Page, IGroup} from "ht-models";
 
 export class HtGroupsClient extends EntityClient{
-  list: GroupsListClient;
-  item: GroupsItemClient;
+  list;
+  item;
   api: HtBaseApi;
   store: Store<fromRoot.State>;
   constructor(options = {}) {
@@ -47,11 +48,11 @@ export class HtGroupsClient extends EntityClient{
     )
   }
 
-  getChildren(groupId: string): Observable<AllData<any>> {
+  getChildren(groupId: string): Observable<Page<IGroup>> {
     return this.api.all$({parent_group_id: groupId})
   }
 
-  getRoot() {
+  getRoot(): Observable<Page<IGroup>> {
     return this.api.all$({has_parent: false})
   }
 };

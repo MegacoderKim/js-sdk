@@ -2,13 +2,14 @@ import {itemQueryMixin, listQueryMixin} from "../../mixins/entity-query";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
 import {clientSubMixin} from "../../mixins/client-subscription";
-import {getIdPageDataMixin, getPageDataMixin} from "../../mixins/get-data";
+import {getIdQueryDataMixin, getPageDataMixin} from "../../mixins/get-data";
 import {entityApi} from "../../global/entity-api";
 import {Subscription} from "rxjs/Subscription";
 import * as fromRoot from "../../reducers";
 import * as fromAccount from "../../dispatchers/accounts-dispatcher";
 import {IPageClientConfig} from "../../interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {getFirstDataMixin} from "../../mixins/get-first-data";
 
 export class MembershipsAll {
   query$: Observable<object> = of({});
@@ -46,4 +47,4 @@ export class MembershipsAll {
   }
 }
 
-export const MemberShipsClient = clientSubMixin(getIdPageDataMixin(itemQueryMixin(MembershipsAll)));
+export const MemberShipsClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(MembershipsAll))));
