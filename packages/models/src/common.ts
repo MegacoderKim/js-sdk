@@ -87,7 +87,7 @@ export interface IDateRange {
 
 export interface AllData<T> {
   resultsEntity: {[id: string]: T},
-  isFirst: boolean,
+  isFirst?: boolean,
   timestamp?: string,
   count?: number,
   next?: string,
