@@ -6,7 +6,7 @@ export const CombineQueries = (addQueries$: Observable<any>[]) => {
     if(addQueries$ && addQueries$.length) {
       return combineLatest(
         query$,
-        ...addQueries$,
+        ...addQueries$.filter(data => !!data),
         (query, ...addQueries) => {
           if(!query) return query;
           return addQueries.reduce((acc, currentQ) => {

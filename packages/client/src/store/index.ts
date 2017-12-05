@@ -38,7 +38,7 @@ export class StoreProvider {
   }
 }
 
-export const storeFactory = (reducers: | ActionReducerMap<any, any>, config: StoreConfig<any, any> = {}) => {
+export const storeFactory = (reducers: | ActionReducerMap<any, any>, config: StoreConfig<any, any> = {}): StoreProvider => {
   let INITIAL_STATE = config.initialState;
   let metaReducers = config.metaReducers;
   let _REDUCER_FACTORY = config.reducerFactory ? config.reducerFactory : combineReducers;

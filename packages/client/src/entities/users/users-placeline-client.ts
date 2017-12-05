@@ -1,23 +1,19 @@
 import * as fromRoot from "../../reducers";
 import * as fromSegmentsDispatcher from "../../dispatchers/segments-dispatcher";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import * as fromQueryDispatcher from "../../dispatchers/query-dispatcher";
-import * as fromLoadingDispatcher from "../../dispatchers/loading-dispatcher";
-import {ApiStoreService} from "../../global/store-provider";
 import {Observable} from "rxjs/Observable";
-import {ISegment, IUserData} from "ht-models";
 import * as _ from "underscore";
 import {EntityItemClient} from "../../base/item-client";
-import {applyBaseMixins, applyMixins} from "../../helpers/mix";
-import {ItemGetData} from "../../mixins/get-data";
-import {ItemQuery} from "../../mixins/entity-query";
-import {ClientSub} from "../../mixins/client-subscription";
-import {combineLatest} from "rxjs/observable/combineLatest";
+import {getIdQueryDataMixin} from "../../mixins/get-data";
+import {itemQueryMixin} from "../../mixins/entity-query";
+import {clientSubMixin} from "../../mixins/client-subscription";
 import {entityApi} from "../../global/entity-api";
 import {dataWithSelectedId$} from "ht-data";
 import {IClientConfig} from "../../interfaces";
+import {Subscription} from "rxjs/Subscription";
+import {getFirstDataMixin} from "../../mixins/get-first-data";
 
-export class UsersPlacelineClient extends EntityItemClient {
+export class UsersPlaceline extends EntityItemClient {
 
   name = 'users placeline';
   updateStrategy = 'live';
@@ -32,30 +28,30 @@ export class UsersPlacelineClient extends EntityItemClient {
   constructor({store}: IClientConfig) {
     super();
     this.store = store;
-    this.query$ = this.store.select(fromRoot.getQueryPlacelineQuery);
+    this.query$ = this.store.select(fromRoot.getUsersPlacelineQuery);
     this.data$ = this.store.select(fromRoot.getUsersUsersData);
-    this.loading$ = this.store.select(fromRoot.getLoadingUserData);
-    this.id$ = this.store.select(fromRoot.getQueryPlacelineId);
+    this.loading$ = this.store.select(fromRoot.getUsersPlacelineLoading);
+    this.id$ = this.store.select(fromRoot.getUsersPlacelineId);
     this.segmentsState$ = this.store.select(fromRoot.getSegmentsState);
     this.segmentSelectedId$ = this.store.select(fromRoot.getSegmentsSelectedId);
     this.segmentResetId$ = this.store.select(fromRoot.getSegmentsResetMapId);
-    this.init()
+    // this.init()
   }
 
   setData(data) {
     this.store.dispatch(new fromUsersDispatcher.SetUserData(data))
   };
   setLoading(data) {
-    this.store.dispatch(new fromLoadingDispatcher.SetLoadingUserData(data))
+    this.store.dispatch(new fromUsersDispatcher.SetPlacelineLoading(data))
   };
   setId(id) {
-    this.store.dispatch(new fromQueryDispatcher.SetPlacelineId(id))
+    this.store.dispatch(new fromUsersDispatcher.SetPlacelineId(id))
   };
   toggleId(userId: string) {
-    this.store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
+    this.store.dispatch(new fromUsersDispatcher.TogglePlacelineId(userId))
   };
   setQuery(query) {
-    this.store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
+    this.store.dispatch(new fromUsersDispatcher.SetPlacelineQuery(query))
   }
   setSegmentSelectedId(segmentId) {
     this.store.dispatch(new fromSegmentsDispatcher.SetSelectedId(segmentId))
@@ -70,7 +66,9 @@ export class UsersPlacelineClient extends EntityItemClient {
   }
 }
 
-applyMixins(UsersPlacelineClient, [ItemGetData, ItemQuery, ClientSub]);
+export const UsersPlacelineClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(UsersPlaceline))));
+
+// applyMixins(UsersPlacelineClient, [ItemGetData, ItemQuery, ClientSub]);
 
 // export const UsersPlacelineClientFactory = (): UsersPlaceline => {
 //   let innerConfig: Partial<EntityTypeConfig> = {

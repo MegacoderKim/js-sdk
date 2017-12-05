@@ -1,22 +1,23 @@
 import {Observable} from "rxjs/Observable";
 import * as fromRoot from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
-import {EntityItemClient} from "../../base/item-client";
-import {ClientSub} from "../../mixins/client-subscription";
-import {ListQuery} from "../../mixins/entity-query";
-import {ListGetData} from "../../mixins/get-data";
-import {applyMixins} from "../../helpers/mix";
+import {clientSubMixin} from "../../mixins/client-subscription";
+import {listQueryMixin} from "../../mixins/entity-query";
+import {getPageDataMixin} from "../../mixins/get-data";
 import {of} from "rxjs/observable/of";
-import {EntityListClient} from "../../base/list-client";
 import {PageResults$} from "ht-data";
 import {Page, IGroup} from "ht-models";
 import {entityApi} from "../../global/entity-api";
 import {IClientConfig} from "../../interfaces";
+import {Subscription} from "rxjs/Subscription";
+import {getFirstDataMixin} from "../../mixins/get-first-data";
 
-export class GroupsListClient extends EntityListClient {
+export class GroupsList {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
   query$ = of({});
+  updateStrategy = 'once';
+  pollDuration = 10000;
   // data$ = store.select(fromRoot.getGroupAll);
   // active$ = store.select(fromRoot.getGroupListActive);
   data$;
@@ -38,6 +39,10 @@ export class GroupsListClient extends EntityListClient {
 
   }
 
+  firstDataEffect(data) {
+    this.setLoading(false);
+  }
+
   getRoots(): Observable<Page<IGroup>> {
     return  this.api$({has_parent: false})
   };
@@ -46,77 +51,20 @@ export class GroupsListClient extends EntityListClient {
   }
 
   getDefaultQuery() {
-    return {...super.getDefaultQuery(), ...this.defaultQuery}
+    return {page_size: 10, ...this.defaultQuery}
   }
 
   constructor({store}: IClientConfig) {
-    super();
     this.store = store;
     this.data$ = this.store.select(fromRoot.getGroupAll);
     this.active$ = store.select(fromRoot.getGroupListActive);
     this.dataArray$ = this.data$.let(PageResults$);
-    this.init()
   }
 
 };
 
-applyMixins(GroupsListClient, [ListGetData, ListQuery, ClientSub]);
-// export const groupsListClientFactory = (config = {}): GroupsList => {
-//   let innerConfig = {
-//     name: 'group',
-//     defaultQuery: {ordering: '-created_at'},
-//     ...config
-//   };
-//
-//   let listSelectors:  ListSelectors = {
-//     query$: Observable.of({}),
-//     data$: store.select(fromRoot.getGroupAll),
-//     active$: store.select(fromRoot.getGroupListActive),
-//     loading$: Observable.of(false),
-//
-//   };
-//
-//   let api$ = (query) => clientApi.groups.index(query);
-//
-//   let groupSelector: AddGroupsListSelector = {
-//     getRoots() {
-//       return  api$({has_parent: false})
-//     },
-//     getChildren(groupId) {
-//       return api$({parent_group_id: groupId})
-//     }
-//   };
-//
-//   let dispatchers: ListDispatchers = {
-//     setData(data) {
-//       store.dispatch(new fromGroupDispatcher.SetGroupsAll(data))
-//     },
-//     setLoading(data) {
-//       console.log("loading", data);
-//     },
-//     setActive(isActive: boolean = true) {
-//       store.dispatch(new fromGroupDispatcher.SetListActive(isActive))
-//     },
-//     setQuery() {
-//
-//     }
-//   };
-//
-//   let state = {
-//     api$,
-//     selectors: {
-//       ...listSelectors,
-//       ...groupSelector
-//     },
-//     dispatchers: {
-//       ...dispatchers
-//     }
-//   };
-//
-//   let groupIndex = entityClientFactory(state, innerConfig, 'list');
-//
-//   groupIndex.init();
-//
-//   return groupIndex as GroupsList;
-//
-// };
+export const GroupsListClient = clientSubMixin(getPageDataMixin(getFirstDataMixin(listQueryMixin(GroupsList))));
+
+
+// applyMixins(GroupsListClient, [ListGetData, ListQuery, ClientSub]);
+

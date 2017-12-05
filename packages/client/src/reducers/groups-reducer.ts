@@ -1,6 +1,5 @@
 import * as GroupDispatcher from "../dispatchers/groups-dispatcher";
-import {IGroup} from "ht-models";
-import {AllData} from "../interfaces";
+import {IGroup, AllData} from "ht-models";
 
 export interface State {
   selectedId?: string | null

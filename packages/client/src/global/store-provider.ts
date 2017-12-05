@@ -1,5 +1,6 @@
 import {storeFactory, StoreProvider} from "../store/index";
 import * as fromRoot from "../reducers";
+import {Store} from "../store/store";
 
 // const storeProvider: StoreProvider = storeFactory(fromRoot.reducers);
 
@@ -12,7 +13,7 @@ export const apiStoreFactory = () => {
 };
 
 export const ApiStoreService = (() => {
-  var instance: StoreProvider;
+  var instance: Store<fromRoot.State>;
 
   return {
     getInstance() {

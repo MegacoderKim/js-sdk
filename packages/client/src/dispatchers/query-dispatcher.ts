@@ -5,10 +5,8 @@ export const SET_DATE_RANGE = '[QUERY] set date range';
 export const SET_USER_QUERY = '[QUERY] set user query';
 export const SET_USER_QUERY_RESET_PAGE = '[QUERY] set user query reset page';
 export const CLEAR_USER_QUERY_KEY = '[QUERY] clear user query key';
-export const SET_PLACELINE_ID = '[USERS] set placeline id';
 export const SET_USER_ID = '[USERS] set user id';
 export const TOGGLE_USER_ID = '[USERS] toggle user id';
-export const TOGGLE_PLACELINE_ID = '[USERS] toggle placeline id';
 export const SET_PLACELINE_QUERY = '[USERS] Set placeline query';
 
 export class SetDateRange implements Action {
@@ -32,12 +30,6 @@ export class ClearUserQueryKey implements Action {
 }
 
 
-export class SetPlacelineId implements Action {
-  readonly type = SET_PLACELINE_ID;
-
-  constructor(public payload: string | null) {}
-}
-
 export class SetUserId implements Action {
   readonly type = SET_USER_ID;
   constructor(public payload: string | null) {}
@@ -45,11 +37,6 @@ export class SetUserId implements Action {
 
 export class ToggleUserId implements Action {
   readonly type = TOGGLE_USER_ID;
-  constructor(public payload: string) {}
-}
-
-export class TogglePlacelineId implements Action {
-  readonly type = TOGGLE_PLACELINE_ID;
   constructor(public payload: string) {}
 }
 
@@ -63,10 +50,8 @@ export type All
   | SetUserQuery
   | SetUserQueryResetPage
   | ClearUserQueryKey
-  | SetPlacelineId
   | SetUserId
   | ToggleUserId
-  | TogglePlacelineId
   | SetPlacelineQuery
 
 

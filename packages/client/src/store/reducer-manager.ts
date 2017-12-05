@@ -14,7 +14,8 @@ export const UPDATE = '@ngrx/store/update-reducers' as '@ngrx/store/update-reduc
 export class ReducerManager extends BehaviorSubject<ActionReducer<any, any>> {
   constructor(
     private dispatcher: ReducerManagerDispatcher,
-    private initialState: any,private reducers: ActionReducerMap<any, any>,
+    private initialState: any,
+    private reducers: ActionReducerMap<any, any>,
     private reducerFactory: ActionReducerFactory<any, any>
   ) {
     super(reducerFactory(reducers, initialState));
@@ -29,7 +30,7 @@ export class ReducerManager extends BehaviorSubject<ActionReducer<any, any>> {
              }: StoreFeature<any, any>) {
     const reducer =
       typeof reducers === 'function'
-        ? (state = initialState, action: any) => reducers(state, action)
+        ? (state: any, action: any) => reducers(state || initialState, action)
         : createReducerFactory(reducerFactory, metaReducers)(
         reducers,
         initialState

@@ -1,22 +1,23 @@
 import * as fromGroup from "../../reducers";
 import * as fromGroupDispatcher from "../../dispatchers/groups-dispatcher";
 import {EntityItemClient} from "../../base/item-client";
-import {applyMixins} from "../../helpers/mix";
-import {ClientSub} from "../../mixins/client-subscription";
-import {ItemQuery} from "../../mixins/entity-query";
-import {ItemGetData} from "../../mixins/get-data";
+import {clientSubMixin} from "../../mixins/client-subscription";
+import {itemQueryMixin} from "../../mixins/entity-query";
+import {getIdQueryDataMixin} from "../../mixins/get-data";
 import {of} from "rxjs/observable/of";
 import {empty} from "rxjs/observable/empty";
 import {Observable} from "rxjs/Observable";
 import {entityApi} from "../../global/entity-api";
 import {IClientConfig} from "../../interfaces";
+import {Subscription} from "rxjs/Subscription";
+import {getFirstDataMixin} from "../../mixins/get-first-data";
 
-export class GroupsItemClient extends EntityItemClient {
+export class GroupsItem extends EntityItemClient {
   name = 'group';
   defaultQuery = {ordering: '-created_at'};
   updateStrategy = 'once';
 
-  query$: Observable<object | null> = of({});
+  query$: Observable<object> = of({});
   data$ = empty();
   loading$ = of(false);
 
@@ -43,11 +44,12 @@ export class GroupsItemClient extends EntityItemClient {
     super();
     this.store = store;
     this.id$ = this.store.select(fromGroup.getGroupId);
-    this.init()
+    // this.init()
   }
 };
 
-applyMixins(GroupsItemClient, [ItemGetData, ItemQuery, ClientSub]);
+export const GroupsItemClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(GroupsItem))))
+// applyMixins(GroupsItemClient, [ItemGetData, ItemQuery, ClientSub]);
 
 // export const groupsItemsClientFactory = (config = {}): GroupsItem => {
 //   let innerConfig = {

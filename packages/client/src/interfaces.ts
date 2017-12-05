@@ -17,14 +17,14 @@ export interface IListConfig {
   isLive?: boolean
 }
 
-export interface AllData<T> {
-  resultsEntity: {[id: string]: T},
-  isFirst: boolean,
-  timestamp?: string,
-  count?: number,
-  next?: string,
-  previous?: string
-}
+// export interface AllData<T> {
+//   resultsEntity: {[id: string]: T},
+//   // isFirst: boolean,
+//   timestamp?: string,
+//   count?: number,
+//   next?: string,
+//   previous?: string
+// }
 
 export enum ApiType {
   index = 'index',
