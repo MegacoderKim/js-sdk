@@ -20,6 +20,8 @@ export * from "./entities/groups/groups-item-client";
 
 //accountUsers
 export * from "./entities/account-user/accounts-client"
+export * from "./entities/account-user/account-user-client"
+export * from "./entities/account-user/memberships-all-client"
 
 //globals
 export * from "./global/date-range"
