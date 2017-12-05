@@ -21,19 +21,13 @@ import {ActionSortingStringPipe} from '../pipes/action-sorting-string.pipe';
 import {SafeUrlPipe} from "../pipes/safe-url.pipe";
 import { PluralizePipe } from '../pipes/pluralize.pipe';
 import { ButtonComponent } from './button/button.component';
-import { DropdownOptionsComponent } from './dropdown-options/dropdown-options.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { DropdownDirective } from './dropdown/dropdown.directive';
-import {DropdownService} from "./dropdown/dropdown.service";
-import { DropdownToggleDirective } from './dropdown/dropdown-toggle.directive';
 
 @NgModule({
   imports: [
     CommonModule,
       RouterModule
-  ],
-  providers: [
-    DropdownService
   ],
   declarations: [
     ProfileComponent,
@@ -56,10 +50,8 @@ import { DropdownToggleDirective } from './dropdown/dropdown-toggle.directive';
     ActionSortingStringPipe,
     PluralizePipe,
     ButtonComponent,
-    DropdownOptionsComponent,
     LoadingBarComponent,
     DropdownDirective,
-    DropdownToggleDirective
   ],
   exports: [
     ProfileComponent,
@@ -81,10 +73,8 @@ import { DropdownToggleDirective } from './dropdown/dropdown-toggle.directive';
     UserSortingStringPipe,
     ActionSortingStringPipe,
     PluralizePipe,
-    DropdownOptionsComponent,
     LoadingBarComponent,
     DropdownDirective,
-    DropdownToggleDirective
   ]
 })
 export class SharedModule { }

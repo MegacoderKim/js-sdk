@@ -1,0 +1,36 @@
+<nav class="navbar is-dark">
+  <div class="navbar-brand">
+    <a *ngIf="accountsUser$ | async as accountsUser; else demo" class="navbar-item">Hypertrack Dashboard</a>
+    <ng-template #demo>
+      <a [routerLink]="['users']" class="navbar-item">Hypertrack Demo</a>
+    </ng-template>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-end">
+      <!--<div class="navbar-item has-dropdown is-hoverable" *ngIf="memberships$ | async as memberships">-->
+        <!--<a class="navbar-link">-->
+          <!--Account-->
+        <!--</a>-->
+        <!--<div class="navbar-dropdown is-boxed memberships is-right">-->
+          <!--<a (click)="setMembership(membership)" class="navbar-item" *ngFor="let membership of memberships.results">-->
+            <!--{{membership.account.name}}-->
+          <!--</a>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="navbar-item has-dropdown is-hoverable" *ngIf="accountsUser$ | async as accountsUser; else login">
+        <a class="navbar-link">
+          <span>{{accountsUser.email}}</span>
+        </a>
+        <div class="navbar-dropdown is-boxed memberships is-right">
+          <a (click)="logout()" class="navbar-item has-text-danger">Logout</a>
+          <a class="navbar-item" (click)="setAccount(accountsUser.default_account)">Default account</a>
+          <a class="navbar-item" [routerLink]="[{outlets: {modal: ['accounts']}}]">Set accounts</a>
+          <a class="navbar-item">Set groups</a>
+        </div>
+      </div>
+      <ng-template #login>
+        <a [routerLink]="[{ outlets: { modal: ['login'] } }]" class="navbar-item">Login</a>
+      </ng-template>
+    </div>
+  </div>
+</nav>

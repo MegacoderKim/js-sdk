@@ -3,7 +3,7 @@
     <div class="text-center ht-level">
       <span class="">Level {{i + 1}}</span>
     </div>
-    <a [routerLink]="['/groups', group.id]" class="card is-primary" [class.card-active]="selectedGroups[i] == group.id" *ngFor="let group of groups">
+    <div (click)="setGroup(group)" class="card card-clickable is-primary" [class.card-active]="selectedGroups[i] == group.id" *ngFor="let group of groups">
       <div class="card-content is-primary flex-row">
         <div class="flex">
           {{group.name}}
@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-    </a>
+    </div>
   </div>
   <h3 class="text-center msg bar" *ngIf="loading">
     Loading

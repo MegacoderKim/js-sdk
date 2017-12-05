@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {HtClientService} from "../../";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ht-groups-test',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GroupsTestComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private htClient: HtClientService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
-
+  setGroup(group) {
+    const token = group.token;
+    this.htClient.tempToken = token;
+    this.router.navigate([''])
+  }
 }

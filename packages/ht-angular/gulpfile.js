@@ -377,7 +377,7 @@ gulp.task('npm-package', (cb) => {
   // defines project's dependencies as 'peerDependencies' for final users
   targetPkgJson.dependencies = {};
   Object.keys(pkgJson.dependencies).forEach((dependency) => {
-    targetPkgJson.dependencies[dependency] = `^${pkgJson.dependencies[dependency]}`;
+    targetPkgJson.peerDependencies[dependency] = `^${pkgJson.dependencies[dependency]}`;
   });
 
   // copy styles in the 'dist' folder
@@ -661,7 +661,7 @@ gulp.task('create-new-tag', (cb) => {
 });
 
 // Build and then Publish 'dist' folder to NPM
-gulp.task('npm-publish', ['build'], () => {
+gulp.task('publish', ['build'], () => {
   return execExternalCmd('npm', `publish ${config.outputDir}`)
 });
 

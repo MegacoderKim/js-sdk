@@ -10,5 +10,8 @@
 //@import "../node_modules/uikit/src/scss/mixins-theme";
 //@import "./styles/uikit";
 
-
+body {
+  display: flex;
+  flex-direction: row;
+}
 

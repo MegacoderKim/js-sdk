@@ -5,8 +5,8 @@ import {GroupsContainerComponent} from "../groups-container/groups-container.com
 import {GroupsChartContainerComponent} from "../groups-chart-container/groups-chart-container.component";
 
 const routes: Routes = [
-  { path: "", component: GroupsContainerComponent},
-  { path: "chart", component: GroupsChartContainerComponent},
+  { path: "", component: GroupsTestComponent},
+  // { path: "chart", component: GroupsChartContainerComponent},
 ];
 
 @NgModule({

@@ -6,7 +6,8 @@ import {HtRequestService} from "./ht-request.service";
 import {HtUsersService} from "./ht-users.service";
 import {HtGroupsService} from "./ht-groups.service";
 import {HtClientService} from "./ht-client.service";
-import {HtClient, HtUsersClient, HtGroupsClient} from "ht-client";
+import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient} from "ht-client";
+import {HtAccountService} from "./ht-account-users.service";
 
 export var TOKEN = new InjectionToken('app.token');
 
@@ -28,6 +29,10 @@ export function userClientServiceFactory() {
 
 export function groupClientServiceFactory() {
   return groupsClientFactory()
+}
+
+export function accountUsersClientServiceFactory() {
+  return new AccountsClient();
 }
 
 @NgModule({
@@ -53,6 +58,10 @@ export class HtModule {
         {
           provide: HtGroupsService,
           useFactory: groupClientServiceFactory
+        },
+        {
+          provide: HtAccountService,
+          useClass: AccountsClient
         },
 
       ]

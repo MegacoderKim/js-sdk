@@ -1,6 +1,6 @@
 {
     "name": "ht-angular",
-    "version": "0.2.1-beta",
+    "version": "0.2.2-beta",
     "repository": {
       "type": "git",
       "url": "https://github.com/hypertrack/ht-angular"
@@ -25,11 +25,7 @@
     "typings": "index.d.ts",
     "private": false,
     "dependencies": {
-      "ht-client": "0.0.8-beta",
-      "ht-data": "0.0.2-beta",
-      "ht-maps": "0.0.10-beta",
-      "ht-models": "0.0.11",
-      "ht-utility": "0.0.1-beta"
+
     },
     "devDependencies": {
       "@angular/cli": "1.3.2",
@@ -65,6 +61,11 @@
       "underscore": "^1.8.3"
     },
     "peerDependencies": {
+      "ht-client": ">=0.0.9-beta",
+      "ht-data": ">=0.0.2-beta",
+      "ht-maps": ">=0.0.10-beta",
+      "ht-models": ">=0.0.11",
+      "ht-utility": ">=0.0.1-beta",
       "font-awesome": "^4.7.0",
       "leaflet": "^1.2.0",
       "moment-mini": "^2.18.1",

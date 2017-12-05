@@ -1,7 +1,7 @@
 <div class="filter-container flex-column" [@filter]="showFilter$ | async">
   <ht-entity-search (onSearchQuery)="onQuery($event)"></ht-entity-search>
   <div class="dropdown" htDropdown>
-    <button type="button" class="button dropdown-trigger flex-row row-gap-4" htDropdownToggle>
+    <button type="button" class="button dropdown-trigger flex-row row-gap-4">
       <span>Sorting</span>
       <ng-container *ngIf="ordering$ | async as ordering">
         <span>: {{ordering.string}}</span>
@@ -16,8 +16,8 @@
       </div>
     </div>
   </div>
-  <div class="" htDropdown>
-    <button id="dropdown-keyboard-access" type="button" class="button flex-row row-gap-4" htDropdownToggle>
+  <div class="dropdown is-hoverable">
+    <button id="dropdown-keyboard-access" type="button" class="button flex-row row-gap-4">
       <span>Filters</span> <i class="fa fa-filter"></i>
     </button>
     <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">

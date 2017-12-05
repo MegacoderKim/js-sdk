@@ -12,12 +12,12 @@ export class HtRequestService extends HtRequest {
 
   getObservable<T>(url, options: object = {}) {
     const headers = super.headerObj();
-    // const headers = new HttpHeaders(obj);
-    return this.http.get<T>(url, {headers});
+    return this.http.get<T>(url, {headers, ...options});
   }
 
 
-  postObservable(url, body, options: object = {}) {
-    return of({});
+  postObservable<T>(url, body, options: object = {}) {
+    const headers = super.headerObj();
+    return this.http.post<T>(url, body, {headers, ...options});
   }
 }

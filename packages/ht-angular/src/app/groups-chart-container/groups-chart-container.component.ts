@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {AllData} from "ht-client";
 import {IGroup} from "ht-models";
 import * as _ from "underscore";
@@ -16,6 +16,7 @@ export class GroupsChartContainerComponent implements OnInit {
   selectedGroups = [];
   loading: boolean = false;
   noChild: boolean = false;
+  @Output() onGroup: EventEmitter<IGroup> = new EventEmitter();
   constructor(
     private groupService: HtGroupsService
   ) {
@@ -65,6 +66,10 @@ export class GroupsChartContainerComponent implements OnInit {
     } else {
       this.groupsLevels[level] = groups;
     }
+  };
+
+  setGroup(group) {
+    this.onGroup.next(group)
   }
 
   selectGroup(group, level, event) {
