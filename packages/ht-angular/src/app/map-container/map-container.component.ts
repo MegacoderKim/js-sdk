@@ -23,7 +23,7 @@ export class MapContainerComponent implements OnInit, AfterContentInit {
   ) { }
 
   ngOnInit() {
-    this.mapService.usersCluster.setData$(this.userClientService.listAll.dataArray$, {
+    this.mapService.usersCluster.setPageData$(this.userClientService.listAll.data$, {
       hide$: this.userClientService.placeline.id$
     });
 

@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AllData} from "ht-client";
-import {IGroup} from "ht-models";
+import {IGroup, AllData} from "ht-models";
 import * as _ from "underscore";
 import {HtGroupsService} from "../ht/ht-groups.service";
+import {Page} from "ht-models/dist/typings/common";
 
 @Component({
   selector: 'ht-groups-chart-container',
@@ -44,15 +44,15 @@ export class GroupsChartContainerComponent implements OnInit {
     this.clearTree(level);
     this.loading = true;
     const groups$ = id ? this.groupService.getChildren(id) : this.groupService.getRoot();
-    groups$.subscribe((data: AllData<IGroup>) => {
+    groups$.subscribe((data: Page<IGroup>) => {
       const totalCount = data.count;
-      const currentCount = data ? Object.keys(data.resultsEntity).length : 0;
+      const currentCount = data ? data.count : 0;
       this.progress = 100 * currentCount / totalCount;
       const isDone = data && !data.next;
       if (isDone) {
         this.loading = false;
         this.progress = 100;
-        const groups = _.values(data.resultsEntity);
+        const groups = data.results;
         this.setGroups(groups, level)
       }
     })
