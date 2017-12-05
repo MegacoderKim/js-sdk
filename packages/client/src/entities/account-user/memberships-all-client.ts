@@ -10,6 +10,8 @@ import * as fromAccount from "../../dispatchers/accounts-dispatcher";
 import {IPageClientConfig} from "../../interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
+import {EntityAllItemsClient} from "../../base/all-items.client";
+import {AllData, Page} from "ht-models";
 
 export class MembershipsAll {
   query$: Observable<object> = of({});

@@ -15,7 +15,7 @@ import {getFirstDataMixin} from "../../mixins/get-first-data";
 
 export class UsersAnalyticsListAll extends EntityAllItemsClient {
 
-  data$: Observable<AllData<IUserAnalytics>>;
+  data$: Observable<Page<IUserAnalytics>>;
   loading$: Observable<boolean>;
   id$ = empty();
   allowedQueryKeys = ['status'];
@@ -24,6 +24,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   defaultQuery = {};
   store;
   dataArray$;
+  dataEntities$: Observable<AllData<any>>;
 
   constructor({dateRangeQuery$, store}: IPageClientConfig) {
     super();
@@ -31,7 +32,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<object | null>;
     this.active$ = this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive);
-    this.data$ = this.store.select(fromRoot.getUsersAnalyticsFilteredMarker);
+    this.dataEntities$ = this.store.select(fromRoot.getUsersAnalyticsFilteredMarker);
     // this.id$ = this.store.select(fromRoot.getQueryUserId);
     this.loading$ = this.store.select(fromRoot.getUsersAnalyticsAllLoading);
     // this.dataArray$ = this.data$.let(PageResults$);
