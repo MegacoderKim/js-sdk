@@ -2,7 +2,6 @@ var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var webpackRxjsExternals = require('../../webpack-rxjs-externals');
-// var webpackRxjsExternals = require('webpack-rxjs-externals');
 var path = require('path');
 var WebpackShellPlugin = require('webpack-shell-plugin');
 var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
