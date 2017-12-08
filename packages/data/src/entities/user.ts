@@ -189,9 +189,9 @@ export const htUser = (user?: IUser | IUserData | IUserAnalytics) => {
       const lng =  data.last_location.geojson.coordinates[0];
       return {lat, lng}
     },
-    update(user) {
-      return {...this, ...user}
-    },
+    // update(user) {
+    //   return {...this, ...user}
+    // },
     getInfoContent() {
       let user = this;
       return user.name;

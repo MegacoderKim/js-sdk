@@ -1,6 +1,6 @@
 {
   "name": "ht-data",
-  "version": "0.0.2-beta",
+  "version": "0.0.3-beta",
   "description": "",
   "main": "dist/ht-data.js",
   "module": "dist/ht-data.js",
@@ -24,6 +24,7 @@
     "ht-models": "0.0.x",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
-    "ht-utility": "^0.0.1-beta"
+    "ht-utility": "^0.0.1-beta",
+    "rxjs": "^5.5.2"
   }
 }

@@ -2,7 +2,7 @@ var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
-
+var webpackRxjsExternals = require('../../webpack-rxjs-externals');
 var mainPath = path.resolve(__dirname, 'src', 'ht-data.ts');
 var nodeConfig = require('./webpack.config.bundle');
 
@@ -12,6 +12,11 @@ var browserSpecConfig = {
         filename: 'ht-data_browser.js',
         library: "htData",
         libraryTarget: "umd"
+    },
+    resolve: {
+        extensions: [".ts", ".js"],
+        modules: [path.resolve('./src'), 'node_modules', '../../node_modules'],
+        alias: webpackRxjsExternals.alias()
     },
     externals: [
         {
@@ -33,7 +38,8 @@ var browserSpecConfig = {
                 amd: 'underscore',
                 root: '_'
             }
-        }
+        },
+        webpackRxjsExternals(),
     ],
     plugins: [
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
