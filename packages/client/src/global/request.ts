@@ -5,7 +5,7 @@ import {htClientService} from "./client";
 
 export class HtRequest {
   baseUrl: string = 'https://api.hypertrack.com/api/v1/';
-  subToken: string = '';
+  // subToken: string = '';
   isAdmin: boolean = false;
   constructor() {
     // this.currentToken = currentToken || HtClientConfig.currentToken
@@ -16,10 +16,6 @@ export class HtRequest {
   // }
 
   get token() {
-    return htClientService.getInstance().currentToken;
-  }
-
-  get adminToken() {
     return htClientService.getInstance().token;
   }
 
@@ -28,7 +24,8 @@ export class HtRequest {
   // }
 
   get currentToken() {
-    return this.subToken && !this.isAdmin ? this.subToken : this.token;
+    const token = htClientService.getInstance().currentToken;
+    return token;
   }
 
   headerObj() {

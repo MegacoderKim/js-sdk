@@ -20,7 +20,7 @@ export class HtAccountUserApi extends HtBaseApi{
 
   get<IAccountUser>(id, token): Observable<IAccountUser> {
     let path = `${this.base}/${id}/`;
-    let headers = getAuthHeaders(this.request.adminToken);
+    let headers = getAuthHeaders(this.request.token);
     return this.api$(path, {}, {headers})
   }
 
@@ -30,7 +30,7 @@ export class HtAccountUserApi extends HtBaseApi{
   }
 
   membershipsAll(id, query, options) {
-    let headers = getAuthHeaders(this.request.adminToken);
+    let headers = getAuthHeaders(this.request.token);
     options = {headers, ...options};
     return this.allPages(this.memberships(id, query, options), options).pipe(
       scan((acc: null | Page<IMembership>, membershipsPage: Page<IMembership>) => {

@@ -1,11 +1,12 @@
 export class HtClient {
   _token: string;
   _tempToken: string;
+  _groupToken: string;
   pollDuration: number = 10000;
 
-  constructor(token: string = "", {pollDuration}) {
+  constructor(token: string = "", options = {}) {
     this.token = token;
-    this.pollDuration = pollDuration || this.pollDuration;
+    this.pollDuration = options['pollDuration'] || this.pollDuration;
   }
 
   set token(token) {
@@ -17,6 +18,7 @@ export class HtClient {
   }
 
   set tempToken(token) {
+    this._groupToken = '';
     this._tempToken = token;
   }
 
@@ -24,10 +26,22 @@ export class HtClient {
     return this._tempToken;
   }
 
+  set groupToken(token) {
+    this._groupToken = token;
+  }
+
+  get groupToken() {
+    return this._groupToken;
+  }
+
   get currentToken() {
-    return this.tempToken || this.token;
+    return this.groupToken || this.tempToken || this.token;
   }
 }
+
+export const initClient = (token, config = {}) => {
+  return htClientService.getInstance(token, config)
+};
 
 export const htClientFactory = (token, config) => {
   return new HtClient(token, config)
