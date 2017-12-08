@@ -2,7 +2,7 @@ var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var path = require('path');
-var webpackRxjsExternals = require('webpack-rxjs-externals');
+var webpackRxjsExternals = require('../../webpack-rxjs-externals');
 var nodeConfig = require('./webpack.config.bundle');
 var stylePath = path.resolve(__dirname, 'src', 'css', 'style.js');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -15,9 +15,11 @@ var browserSpecConfig = {
         library: "htMaps",
         libraryTarget: 'umd'
     },
-    // resolve: {
-    //     alias: rxPaths()
-    // },
+    resolve: {
+        extensions: [".ts", ".js"],
+        modules: [path.resolve('./src'), 'node_modules', '../../node_modules'],
+        alias: webpackRxjsExternals.alias()
+    },
     externals: [
         {
             'moment-mini': {
@@ -50,6 +52,7 @@ var browserSpecConfig = {
     ],
     plugins: [
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new Webpack.optimize.ModuleConcatenationPlugin(),
         // new WebpackShellPlugin({onBuildStart:['echo "Webpack Start"'], onBuildExit:['cp -r dist ../../../ht-angular/node_modules/ht-js-map']}),
         // new WebpackShellPlugin({onBuildEnd:['cp -r src ../../../ht-angular/node_modules/ht-js-map']}),
         // new BundleAnalyzerPlugin({analyzerPort: 8088})
