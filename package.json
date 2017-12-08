@@ -21,7 +21,7 @@
     "leaflet.markercluster": "^1.1.0",
     "moment-mini": "^2.18.1",
     "polyline-encoded": "0.0.8",
-    "rxjs": "^5.5.2",
+    "rxjs": "^5.5.5",
     "store": "^2.0.12",
     "time-aware-polyline": "^0.1.19",
     "tslint": "^5.8.0",
@@ -43,9 +43,9 @@
     "typedoc": "^0.8.0",
     "typedoc-webpack-plugin": "^1.1.4",
     "typescript": "^2.4.2",
-    "webpack": "^3.8.1",
+    "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.8.3",
-    "webpack-rxjs-externals": "^1.0.0",
+    "webpack-rxjs-externals": "^1.1.0",
     "webpack-shell-plugin": "^0.5.0"
   }
 }

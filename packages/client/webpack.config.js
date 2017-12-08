@@ -1,7 +1,7 @@
 var Webpack = require('webpack');
 var fs = require('fs');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var webpackRxjsExternals = require('webpack-rxjs-externals');
+var webpackRxjsExternals = require('../../webpack-rxjs-externals');
 var path = require('path');
 var WebpackShellPlugin = require('webpack-shell-plugin');
 var mainPath = path.resolve(__dirname, 'src', 'ht-client.ts');
@@ -17,9 +17,11 @@ var browserSpecConfig = {
         library: "htClient",
         libraryTarget: "umd"
     },
-    // resolve: {
-    //     alias: rxPaths()
-    // },
+    resolve: {
+        extensions: [".ts", ".js"],
+        modules: [path.resolve('./src'), 'node_modules', '../../node_modules'],
+        alias: webpackRxjsExternals.alias()
+    },
     externals: [
         {
             'moment-mini': {

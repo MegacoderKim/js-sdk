@@ -1,8 +1,8 @@
 {
   "name": "ht-client",
-  "version": "0.0.9-beta",
+  "version": "0.0.11-beta",
   "description": "",
-  "main": "dist/ht-client.js",
+  "main": "dist/ht-client_browser.js",
   "module": "dist/ht-client.js",
   "typings": "dist/typings/ht-client.d.ts",
   "scripts": {
