@@ -44,7 +44,7 @@
 
     mapClass.initMap(document.getElementById('map'));
 
-    var client = new htClient.HtClient(token);
+    var client = new htClient.initClient(token);
 
     var users = htClient.usersClientFactory();
 
