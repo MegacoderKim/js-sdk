@@ -60,7 +60,7 @@ export const setPathPositionTimeArray = (polyline, positionTimeArray: ITimeAware
   return polyline.setPath(path)
 }
 
-export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption: L.PopupOptions = {}) {
+export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption = {}) {
   marker.setPosition(position);
   HtUpdatePopup(marker, infoContent, defaultOption)
 }
@@ -73,7 +73,7 @@ export function HtUpdatePopup(marker, infoContent, defaultOption) {
   // }
 }
 
-export function HtUpdatePositionTooltip(marker, position, infoContent: string = "", defaultOption: L.TooltipOptions = {}) {
+export function HtUpdatePositionTooltip(marker, position, infoContent: string = "", defaultOption = {}) {
   position = GetLatlng(position);
   marker.setPosition(position);
   // if(infoContent) HtUpdateTooltip(marker, infoContent, defaultOption)

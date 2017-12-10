@@ -1,14 +1,16 @@
 import {HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 var polyUtil = require('polyline-encoded');
-import * as L from "leaflet"
+// import L from "leaflet";
 import {HtPosition} from "ht-data";
+import {circleMarker, divIcon, latLng, latLngBounds, map, marker, point, polyline, popup, tileLayer} from "leaflet";
+import {markerCluster} from "./leaflet.markercluster";
 
-export function ExtendBounds (item = null, bounds: L.LatLngBounds = L.latLngBounds([])) {
-  if(item && item.getElement()) bounds.extend(item.getLatLng());
+export function ExtendBounds (item = null, bounds: L.LatLngBounds = latLngBounds([]), force: boolean = false) {
+  if((item && item.getElement()) || force) bounds.extend(item.getLatLng());
   return bounds
 };
 
-export const ExtendBoundsWithPolyline = (polyline = null, bounds: L.LatLngBounds = L.latLngBounds([])): L.LatLngBounds => {
+export const ExtendBoundsWithPolyline = (polyline = null, bounds: L.LatLngBounds = latLngBounds([])): L.LatLngBounds => {
   if(polyline && polyline.getElement() ) {
     bounds.extend(polyline.getBounds())
   }
@@ -29,7 +31,7 @@ export const ClearItem = (item) => {
 };
 
 export const GetLatlng = ({lat, lng}: HtPosition = {lat: 0, lng: 0}) => {
-  return L.latLng(lat, lng)
+  return latLng(lat, lng)
 };
 
 export const setEncodedPath = (polyline, encodedPolyline: string) => {
@@ -103,11 +105,11 @@ function getItemLatlng(item) {
 }
 
 function renderMap(elem, options) {
-  let map = L.map(elem, options);
-  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  let newmap = map(elem, options);
+  tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-  return map
+  }).addTo(newmap);
+  return newmap
 }
 
 function updateCirclePosition(circle, position, infoContent: string = "", defaultOption: L.TooltipOptions = {}) {
@@ -115,17 +117,17 @@ function updateCirclePosition(circle, position, infoContent: string = "", defaul
 }
 
 function getCircleMarker() {
-  return L.circleMarker([0, 0])
+  return circleMarker([0, 0])
 }
 
 function getMarker() {
-  return L.marker([0, 0])
+  return marker([0, 0])
 }
 
 function  getMarkerCluster(map) {
-  // let cluster = L.markerClusterGroup();
-  // map.addTo(cluster);
-  // return cluster
+  let cluster = markerCluster();
+  map.addLayer(cluster);
+  return cluster
 
 }
 
@@ -138,12 +140,13 @@ function removeClusterMarker(cluster, marker) {
 }
 
 function addMarkersToCluster(cluster, markers) {
-  // cluster.addLayers(listAll);
-  // cluster.refreshClusters(listAll);
+  let marker = markers[0];
+  cluster.addLayers(markers);
+  cluster.refreshClusters(markers);
 }
 
 function getPolyline() {
-  return L.polyline([])
+  return polyline([])
 }
 
 function setBounds(map: L.Map, bounds: L.LatLngBounds, options?) {
@@ -159,7 +162,7 @@ function invalidateSize(map: L.Map) {
 }
 
 function getPopup(options) {
-  return L.popup(options)
+  return popup(options)
 }
 
 function onEvent(item, event, cb) {
@@ -182,7 +185,7 @@ function getDivMarker() {
 }
 
 function setDivMarkerStyle(item, options) {
-  let icon = L.divIcon(options);
+  let icon = divIcon({...options, className: '', bgPos: point(15, -41)});
   setIcons(item, icon)
 }
 
