@@ -34,6 +34,7 @@ var config = {
         'ht-models',
         'moment-mini',
         'leaflet',
+        'leaflet.markercluster',
         'underscore',
         webpackRxjsExternals(),
         /^rxjs\/.+$/
