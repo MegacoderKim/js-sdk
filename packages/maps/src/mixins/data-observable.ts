@@ -98,7 +98,9 @@ export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
 
     _initDataObserver() {
 
-      let userData$ = this.data$;
+      let userData$ = this.data$.pipe(
+        filter(data =>  !!MapService.map)
+      );
 
       // function isNewId (newItem, old) {
       //   if(!old && newItem) return true;
