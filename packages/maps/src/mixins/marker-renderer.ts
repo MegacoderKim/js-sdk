@@ -20,7 +20,7 @@ export function MarkersMixin<TBase extends Constructor>(Base: TBase) {
     };
 
     getBounds(item, bounds?) {
-      return MapService.mapUtils.extendBounds(item, bounds)
+      return MapService.mapUtils.extendBounds(item, bounds, !!this.cluster)
     };
 
     update({item, data}) {
