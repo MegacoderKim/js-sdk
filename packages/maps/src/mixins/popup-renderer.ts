@@ -2,14 +2,17 @@ import {MapService} from "../global/map-service";
 import {HtPosition} from "ht-data";
 import {Constructor, Entities, Entity} from "../interfaces";
 
+export interface PopupBase {
+  getStyle: (styleType?, fallbackStyle?) => object;
+  entities: Entities<any>;
+  getPosition: (data) => HtPosition;
+  getInfoContent: (data) => string;
 
-export function PopupMixin <TBase extends Constructor>(Base: TBase) {
+}
+
+export function PopupMixin <TBase extends Constructor<PopupBase>>(Base: TBase) {
   return class extends Base {
     popup;
-    getStyle: (styleType?, fallbackStyle?) => object;
-    entities: Entities<any>;
-    getPosition: (data) => HtPosition;
-    getInfoContent: (data) => string;
     defaultPopupStyle =  {
       disableAutoPan: true,
       pixelOffset: new google.maps.Size(0, -35)

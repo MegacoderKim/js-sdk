@@ -3,24 +3,28 @@ import * as _ from "underscore";
 import {Constructor, Entities} from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces"
 
-export function TraceMixin <TBase extends Constructor>(Base: TBase) {
+export interface ITraceBase {
+  getItem: (data) => any;
+  onMouseLeave: (trace) => void;
+  onClick: (trace) => void;
+  onMouseEnter: (trace) => void;
+  setStyle: (item) => void;
+  update: (entity) => void;
+  traceEffect: () => void;
+  removeAll: (entities) => void;
+  getBounds: (item, bounds?) => HtBounds;
+  removeItem: (item) => void;
+  removeData: (data) => void;
+  toSetMap: boolean;
+  cluster?: any
+}
+export function TraceMixin <TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
     map;
     entities: Entities<any> = {};
-    getItem: (data) => any;
-    onMouseLeave: (trace) => void;
-    onClick: (trace) => void;
-    onMouseEnter: (trace) => void;
-    setStyle: (item) => void;
-    update: (entity) => void;
+
     // setMap: (item, map) => void;
-    traceEffect: () => void;
-    removeAll: (entities) => void;
-    getBounds: (item, bounds?) => HtBounds;
-    removeItem: (item) => void;
-    removeData: (data) => void;
-    toSetMap: boolean;
-    cluster;
+
     trace(data: any[] | null, map?) {
       this.map = MapService.map;
       let mapUtils = MapService.mapUtils;

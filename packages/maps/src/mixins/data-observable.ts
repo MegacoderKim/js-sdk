@@ -17,15 +17,18 @@ export interface IMarkersArray {
   invalid: any[],
   isNew: boolean,
 }
-export function DataObservableMixin <TBase extends Constructor>(Base: TBase) {
+
+export interface IDataObservableBase {
+  trace: (data, map?) => any;
+  isValidMapItems?: (data) => boolean;
+  getPosition: (data) => HtPosition;
+}
+export function DataObservableMixin <TBase extends Constructor<IDataObservableBase>>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
-    trace: (data, map?) => any;
     dataPageSource$: Observable<Page<any>>;
     dataArraySource$: Observable<any[]>;
     data$: Observable<IMarkersArray>;
-    isValidMapItems?: (data) => boolean;
-    getPosition: (data) => HtPosition;
 
     _procData$() {
       return (source$: Observable<Page<any>>) => {

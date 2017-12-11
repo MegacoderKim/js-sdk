@@ -1,12 +1,15 @@
 import {Constructor, Entities, Entity} from "../interfaces";
 
-export function SingleItemMixin <TBase extends Constructor>(Base: TBase) {
+export interface ISingleItemBase {
+  entities: Entities<any>;
+  trace(data, map?): void
+}
+export function SingleItemMixin <TBase extends Constructor<ISingleItemBase>>(Base: TBase) {
   return class extends Base {
-    entities: Entities<any>;
 
-    trace(user) {
+    trace(user, map?) {
       let data = user ? [user] : [];
-      super['trace'](data)
+      super.trace(data, map)
     };
 
     getEntity(): Entity<any> {

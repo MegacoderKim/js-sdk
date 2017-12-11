@@ -2,12 +2,15 @@ import {Constructor} from "../interfaces";
 import {positionTime} from "../helpers/position-time-helper";
 import {MapService} from "../global/map-service";
 
-export function PolylinesMixin <TBase extends Constructor>(Base: TBase) {
+export interface IPolylinesBase {
+  getEncodedPositionTime;
+  getEncodedPath(data): any;
+  getStyle: (string?) => object;
+}
+
+export function PolylinesMixin <TBase extends Constructor<IPolylinesBase>>(Base: TBase) {
   return class extends Base {
     positionTimeArray = [];
-    getEncodedPositionTime;
-    getEncodedPath;
-    getStyle: (string?) => object;
 
     getItem(data) {
       return MapService.mapUtils.getPolyline()

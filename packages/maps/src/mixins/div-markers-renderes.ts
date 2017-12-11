@@ -1,15 +1,15 @@
 import {Constructor} from "../interfaces";
 import {MapService} from "../global/map-service";
 
-export function DivMarkersMixin <TBase extends Constructor>(Base: TBase) {
+
+export interface IDivMarkersBase {
+  getDivContent: (data) => string;
+  getStyle: (type?) => object;
+  update(entity): void
+};
+
+export function DivMarkersMixin <TBase extends Constructor<IDivMarkersBase>>(Base: TBase) {
   return class extends Base {
-    getDivContent: (data) => string;
-    getStyle: (type?) => object;
-    superUpdate;
-    constructor(...arg) {
-      super(...arg);
-      this.superUpdate = super['update']
-    }
 
     getItem(data) {
       return MapService.mapUtils.getDivMarker()
@@ -17,7 +17,7 @@ export function DivMarkersMixin <TBase extends Constructor>(Base: TBase) {
     update({item, data}) {
       let content = this.getDivContent(data);
       this.setContent({item, content});
-      this.superUpdate({item, data})
+      super.update({item, data})
     };
 
     setContent({item, content}) {

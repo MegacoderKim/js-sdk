@@ -11,14 +11,17 @@ import {HtPosition, dataWithSelectedId$} from "ht-data";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {orCombine} from "ht-data";
 
-export function CompoundDataObservableMixin <TBase extends Constructor>(Base: TBase) {
+export interface ICompoundsDataObservableBase {
+  trace: (data, map?) => any;
+  isValidMapItems?: (data) => boolean;
+  // getPosition: (data) => HtPosition;
+}
+
+export function CompoundDataObservableMixin <TBase extends Constructor<ICompoundsDataObservableBase>>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
-    trace: (data, map?) => any;
     dataSource$: Observable<object | null>;
     data$: Observable<object>;
-    isValidMapItems?: (data) => boolean;
-    getPosition: (data) => HtPosition;
     compoundSetDataConfig: CompoundSetDataConfig;
     _procData$() {
       return (source$: Observable<object | null>) => {

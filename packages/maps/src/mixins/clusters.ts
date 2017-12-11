@@ -1,12 +1,17 @@
 import {MapService} from "../global/map-service";
 import * as _ from "underscore";
 import {Constructor, Entities} from "../interfaces";
+import {HtMap} from "../map-utils/interfaces";
 
-export function ClusterMixin <TBase extends Constructor>(Base: TBase) {
+export interface IClusterBase {
+  cluster: any,
+  entities: Entities<any>,
+  map: HtMap,
+  removeItem(item): void,
+  removeAll(entities): void
+}
+export function ClusterMixin <TBase extends Constructor<IClusterBase>>(Base: TBase) {
   return class extends Base {
-    cluster;
-    entities: Entities<any>;
-    map;
 
     constructor(...arg: any[]) {
       super(...arg);
@@ -34,12 +39,12 @@ export function ClusterMixin <TBase extends Constructor>(Base: TBase) {
 
     removeItem(item) {
       MapService.mapUtils.removeClusterMarker(this.cluster, item);
-      super['removeItem'](item)
+      super.removeItem(item)
     };
 
     removeAll(entities) {
       this.cluster && MapService.mapUtils.removeClusterMarkers(this.cluster);
-      super['removeAll'](entities);
+      super.removeAll(entities);
 
     };
   }
