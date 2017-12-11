@@ -39,6 +39,10 @@ const usersClustersConfig: ItemClassFactoryConfig = {
     leaflet: {
       default: {
         iconAnchor: point(15, 43)
+      },
+      popup: {
+        offset: point(0, -35),
+        closeButton: false
       }
     }
   },

@@ -4,6 +4,7 @@ declare var RichMarkerPosition: any;
 import {HtPosition} from "ht-data";
 import {StyleObj} from "../interfaces";
 import {ItemClassFactoryConfig, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
+import {point} from "leaflet";
 
 
 export const currentUserConfig: ItemClassFactoryConfig = {
@@ -25,7 +26,7 @@ export const currentUserConfig: ItemClassFactoryConfig = {
     },
     leaflet: {
       default: {
-
+        iconAnchor: point(15, 43)
       }
     }
   },

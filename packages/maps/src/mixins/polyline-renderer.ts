@@ -5,8 +5,9 @@ import {MapService} from "../global/map-service";
 export function PolylinesMixin <TBase extends Constructor>(Base: TBase) {
   return class extends Base {
     positionTimeArray = [];
-    getEncodedPositionTime
-    getEncodedPath
+    getEncodedPositionTime;
+    getEncodedPath;
+    getStyle: (string?) => object;
 
     getItem(data) {
       return MapService.mapUtils.getPolyline()
@@ -25,5 +26,10 @@ export function PolylinesMixin <TBase extends Constructor>(Base: TBase) {
       }
 
     }
+
+    setStyle(item) {
+      let style = this.getStyle();
+      MapService.mapUtils.setPolylineStyle(item, style)
+    };
   }
 }

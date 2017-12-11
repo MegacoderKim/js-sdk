@@ -31,6 +31,10 @@ export const SetStyle = (item, style) => {
   item.setOptions(style)
 };
 
+export const setPolylineStyle = (polyline, style) => {
+  SetStyle(polyline, style)
+}
+
 export const SetMap = (item, map: google.maps.Map) => {
   if(!map) {
     item.setMap(null)
@@ -272,6 +276,7 @@ export const GoogleMapUtils: MapUtils = {
   type: 'google',
   setMap: SetMap,
   setStyle: SetStyle,
+  setPolylineStyle,
   clearItem: ClearItem,
   extendBounds: ExtendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
@@ -302,5 +307,5 @@ export const GoogleMapUtils: MapUtils = {
   setDivContent,
   getDivMarker,
   setDivMarkerStyle,
-  setPathPositionTimeArray
+  setPathPositionTimeArray,
 };

@@ -4,6 +4,7 @@ export interface MapUtils {
   type: HtMapType,
   setMap: (item: HtMapItem, map: HtMap) => void,
   setStyle: (item: HtMapItem, style) => void,
+  setPolylineStyle: (polyline, style) => void,
   clearItem: (item: HtMapItem) => void,
   extendBounds: (item?: HtMapItem, bounds?: HtBounds, force?: boolean) => HtBounds
   extendBoundsWithPolyline: (item?: HtPolyline, bounds?: HtBounds) => HtBounds,
@@ -34,7 +35,7 @@ export interface MapUtils {
   setDivContent: (item, content: string, options?: object) => void,
   getDivMarker: () => any,
   setDivMarkerStyle: (marker, options: object) => any,
-  setPathPositionTimeArray: (polyline, positionTimeArray) => any
+  setPathPositionTimeArray: (polyline, positionTimeArray) => any,
 }
 
 export interface SetFocusConfig {

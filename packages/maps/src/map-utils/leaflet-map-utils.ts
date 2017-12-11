@@ -1,6 +1,5 @@
 import {HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 var polyUtil = require('polyline-encoded');
-// import L from "leaflet";
 import {HtPosition} from "ht-data";
 import {circleMarker, divIcon, latLng, latLngBounds, map, marker, point, polyline, popup, tileLayer} from "leaflet";
 import {markerCluster} from "./leaflet.markercluster";
@@ -18,7 +17,11 @@ export const ExtendBoundsWithPolyline = (polyline = null, bounds: L.LatLngBounds
 };
 
 export const SetStyle = (item, style) => {
-  // item.setOptions(style)
+  if (item.setStyle) item.setStyle(style)
+};
+
+export const setPolylineStyle = (polyline, style) => {
+  polyline.setStyle(style)
 };
 
 export const SetMap = (item, map: L.Map) => {
@@ -41,7 +44,7 @@ export const setEncodedPath = (polyline, encodedPolyline: string) => {
 
 export const setPathPositionTimeArray = (polyline, positionTimeArray) => {
 
-  return polyline.setPath(positionTimeArray)
+  return polyline.setLatLngs(positionTimeArray)
 };
 
 export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption: L.PopupOptions = {}) {
@@ -132,11 +135,11 @@ function  getMarkerCluster(map) {
 }
 
 function removeClusterMarkers(cluster) {
-
+  cluster.clearLayers()
 }
 
 function removeClusterMarker(cluster, marker) {
-
+  cluster.removeLayer(marker)
 }
 
 function addMarkersToCluster(cluster, markers) {
@@ -172,7 +175,7 @@ function onEvent(item, event, cb) {
 }
 
 function openPopupPosition(position, map, content, popup) {
-
+  popup.setLatLng(position).setContent(content).openOn(map)
 }
 
 function setDivContent(marker, content, options = {}) {
@@ -197,6 +200,7 @@ export const LeafletUtils: MapUtils = {
   type: 'leaflet',
   setMap: SetMap,
   setStyle: SetStyle,
+  setPolylineStyle,
   clearItem: ClearItem,
   extendBounds: ExtendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
@@ -227,5 +231,5 @@ export const LeafletUtils: MapUtils = {
   setDivContent,
   getDivMarker,
   setDivMarkerStyle,
-  setPathPositionTimeArray
+  setPathPositionTimeArray,
 };
