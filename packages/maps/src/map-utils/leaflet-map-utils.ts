@@ -175,8 +175,8 @@ function openPopupPosition(position, map, content, popup) {
 
 }
 
-function setDivContent(marker, content) {
-  setDivMarkerStyle(marker, {html: content});
+function setDivContent(marker, content, options = {}) {
+  setDivMarkerStyle(marker, {html: content, ...options});
   // console.error('set div content not implemented')
 }
 

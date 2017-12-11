@@ -1,6 +1,6 @@
 import {SingleItemMixin} from "../mixins/single-item";
 import {PopupMixin} from "../mixins/popup-renderer";
-import {DivMarkersMixin} from "../mixins/div-makrers-renderes";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {CircleMixin} from "../mixins/circle-renderer";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {TraceMixin} from "../mixins/trace";

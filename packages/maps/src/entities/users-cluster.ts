@@ -3,6 +3,7 @@ import {userDivFactory} from "../helpers/user-div-factory";
 import {HtPosition} from "ht-data";
 import {StyleObj} from "../interfaces";
 import {ItemClassFactoryConfig, itemsBaseFactory, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
+import {point} from "leaflet";
 declare const RichMarkerPosition: any;
 
 
@@ -37,7 +38,7 @@ const usersClustersConfig: ItemClassFactoryConfig = {
     },
     leaflet: {
       default: {
-
+        iconAnchor: point(15, 43)
       }
     }
   },

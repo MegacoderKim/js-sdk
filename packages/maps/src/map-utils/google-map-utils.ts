@@ -252,8 +252,9 @@ function openPopupPosition(position: HtPosition, map, content, popup) {
   popup.setMap(map)
 }
 
-function setDivContent(marker, content) {
-  marker.setContent(content)
+function setDivContent(marker, content, options) {
+  marker.setContent(content);
+  setDivMarkerStyle(marker, options)
 }
 
 function getDivMarker() {

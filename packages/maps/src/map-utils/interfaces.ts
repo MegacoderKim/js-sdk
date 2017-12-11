@@ -27,11 +27,11 @@ export interface MapUtils {
   getPopup: (options?) => any,
   getPolyline: () => any,
   setEncodedPath: (item, path: string) => void,
-  setBounds: (map: HtMap, bounds: HtBounds, options?: any) => void
+  setBounds: (map: HtMap, bounds: HtBounds) => void
   isValidBounds: (bounds: HtBounds) => boolean,
   invalidateSize: (map) => void,
   onEvent: (item, event, cb) => void,
-  setDivContent: (item, content: string) => void,
+  setDivContent: (item, content: string, options?: object) => void,
   getDivMarker: () => any,
   setDivMarkerStyle: (marker, options: object) => any,
   setPathPositionTimeArray: (polyline, positionTimeArray) => any
