@@ -2,6 +2,7 @@ import {Color} from "ht-utility";
 import {htAction} from "ht-data";
 import {HtPosition} from "ht-data";
 import {ItemClassFactoryConfig, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
+import {point} from "leaflet";
 
 
 export const actionMarkersConfig: ItemClassFactoryConfig = {
@@ -29,12 +30,16 @@ export const actionMarkersConfig: ItemClassFactoryConfig = {
     leaflet: {
       default: {
         radius: 10,
-        fillColor: Color.stop,
+        fillColor: Color.blue,
         fillOpacity: 1,
-        weight: 1,
+        weight: 4,
         opacity: 1,
-        color: Color.stopDark,
+        color: Color.grey5,
         pane: 'markerPane'
+      },
+      popup: {
+        offset: point(0, -5),
+        closeButton: false
       }
     }
   },

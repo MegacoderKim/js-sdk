@@ -10,7 +10,8 @@ export const segmentPolylineStyles = {
   },
   leaflet: {
     default: {
-
+      weight: 5,
+      color: Color.blue
     }
   }
 }

@@ -48,6 +48,7 @@ var browserSpecConfig = {
             }
         },
         'leaflet',
+        'leaflet.markercluster',
         webpackRxjsExternals(),
     ],
     plugins: [

@@ -31,6 +31,10 @@ export const SetStyle = (item, style) => {
   item.setOptions(style)
 };
 
+export const setPolylineStyle = (polyline, style) => {
+  SetStyle(polyline, style)
+}
+
 export const SetMap = (item, map: google.maps.Map) => {
   if(!map) {
     item.setMap(null)
@@ -60,7 +64,7 @@ export const setPathPositionTimeArray = (polyline, positionTimeArray: ITimeAware
   return polyline.setPath(path)
 }
 
-export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption: L.PopupOptions = {}) {
+export function HtUpdatePositionPopup(marker, position, infoContent: string, defaultOption = {}) {
   marker.setPosition(position);
   HtUpdatePopup(marker, infoContent, defaultOption)
 }
@@ -73,7 +77,7 @@ export function HtUpdatePopup(marker, infoContent, defaultOption) {
   // }
 }
 
-export function HtUpdatePositionTooltip(marker, position, infoContent: string = "", defaultOption: L.TooltipOptions = {}) {
+export function HtUpdatePositionTooltip(marker, position, infoContent: string = "", defaultOption = {}) {
   position = GetLatlng(position);
   marker.setPosition(position);
   // if(infoContent) HtUpdateTooltip(marker, infoContent, defaultOption)
@@ -252,8 +256,9 @@ function openPopupPosition(position: HtPosition, map, content, popup) {
   popup.setMap(map)
 }
 
-function setDivContent(marker, content) {
-  marker.setContent(content)
+function setDivContent(marker, content, options) {
+  marker.setContent(content);
+  setDivMarkerStyle(marker, options)
 }
 
 function getDivMarker() {
@@ -271,6 +276,7 @@ export const GoogleMapUtils: MapUtils = {
   type: 'google',
   setMap: SetMap,
   setStyle: SetStyle,
+  setPolylineStyle,
   clearItem: ClearItem,
   extendBounds: ExtendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
@@ -301,5 +307,5 @@ export const GoogleMapUtils: MapUtils = {
   setDivContent,
   getDivMarker,
   setDivMarkerStyle,
-  setPathPositionTimeArray
+  setPathPositionTimeArray,
 };

@@ -1,4 +1,5 @@
 import {Color} from "ht-utility";
+import {point} from "leaflet";
 
 export const stopStyles = {
   google: {
@@ -23,9 +24,13 @@ export const stopStyles = {
       radius: 10,
       fillColor: Color.stop,
       fillOpacity: 1,
-      weight: 1,
+      weight: 2,
       color: Color.stopDark,
       pane: 'markerPane'
+    },
+    popup: {
+      offset: point(0, -5),
+      closeButton: false
     }
   }
 };

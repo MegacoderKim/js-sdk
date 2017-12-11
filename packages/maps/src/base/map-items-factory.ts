@@ -1,6 +1,6 @@
 import {SingleItemMixin} from "../mixins/single-item";
 import {PopupMixin} from "../mixins/popup-renderer";
-import {DivMarkersMixin} from "../mixins/div-makrers-renderes";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {CircleMixin} from "../mixins/circle-renderer";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {TraceMixin} from "../mixins/trace";
@@ -30,17 +30,18 @@ export const mapItemsFactory = (baseClass, config: Partial<MapItemsFactoryConfig
   };
 
   let mixins = [];
-  if(finalConfig.isSingleItem) mixins.push(SingleItemMixin);
-  if(finalConfig.hasPopup) mixins.push(PopupMixin);
-  if(finalConfig.isCluster) mixins.push(ClusterMixin);
-  if(finalConfig.isDiv) mixins.push(DivMarkersMixin);
-  if(finalConfig.isCircle) mixins.push(CircleMixin);
-  if(finalConfig.isPolyline) mixins.push(PolylinesMixin);
-  mixins.push(MarkersMixin);
-  mixins.push(StyleMixin);
-  mixins.push(TraceMixin);
-  if(finalConfig.hasDataObservable) mixins.push(DataObservableMixin);
-  return _.compose(...mixins)(baseClass)
+  var itemClass = baseClass;
+  itemClass = MarkersMixin(itemClass);
+  itemClass = StyleMixin(itemClass);
+  itemClass = TraceMixin(itemClass);
+  if(finalConfig.isSingleItem) itemClass = SingleItemMixin(itemClass);
+  if(finalConfig.hasPopup) itemClass = PopupMixin(itemClass);
+  if(finalConfig.isCluster) itemClass = ClusterMixin(itemClass);
+  if(finalConfig.isDiv) itemClass = DivMarkersMixin(itemClass);
+  if(finalConfig.isCircle) itemClass = CircleMixin(itemClass);
+  if(finalConfig.isPolyline) itemClass = PolylinesMixin(itemClass);
+  if(finalConfig.hasDataObservable) itemClass = DataObservableMixin(itemClass);
+  return itemClass
 };
 
 export interface MapItemsFactoryConfig {

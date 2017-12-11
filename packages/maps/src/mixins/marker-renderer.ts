@@ -4,11 +4,14 @@ import {HtPosition} from "ht-data";
 import {MapService} from "../global/map-service";
 import * as _ from "underscore";
 
-export function MarkersMixin<TBase extends Constructor>(Base: TBase) {
+export interface IMarkersBase {
+  getStyle: (styleType?) => object;
+  getPosition: (data) => HtPosition;
+}
+
+export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(Base: TBase) {
   return class extends Base {
-    getStyle: (styleType?) => object;
     entities: Entities<any> = {};
-    getPosition: (data) => HtPosition;
     cluster;
 
     htShow(item) {
@@ -20,7 +23,7 @@ export function MarkersMixin<TBase extends Constructor>(Base: TBase) {
     };
 
     getBounds(item, bounds?) {
-      return MapService.mapUtils.extendBounds(item, bounds)
+      return MapService.mapUtils.extendBounds(item, bounds, !!this.cluster)
     };
 
     update({item, data}) {
