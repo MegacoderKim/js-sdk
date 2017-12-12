@@ -65,8 +65,12 @@ export class UsersAnalytics extends EntityListClient{
     return this.getApiQuery$();
   }
 
-  setQuery(query = {}) {
+  addQuery(query = {}) {
     this.store.dispatch(new fromUsersDispatcher.AddListQuery(query))
+  };
+
+  setQuery(query = {}) {
+    this.store.dispatch(new fromUsersDispatcher.SetListQuery(query))
   };
   setQueryReset(query) {
     this.store.dispatch(new fromUsersDispatcher.AddListQuery({...query, page: null}))
@@ -82,7 +86,8 @@ export class UsersAnalytics extends EntityListClient{
   };
 
   clearData() {
-    this.setData(null)
+    this.setData(null);
+    this.setQuery({})
   }
 };
 

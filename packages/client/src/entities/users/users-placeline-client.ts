@@ -66,7 +66,8 @@ export class UsersPlaceline extends EntityItemClient {
   }
 
   clearData() {
-    this.setData(null)
+    this.setData(null);
+    this.setQuery({})
   }
 }
 
@@ -120,7 +121,7 @@ export const UsersPlacelineClient = clientSubMixin(getIdQueryDataMixin(getFirstD
 //     toggleId(userId: string) {
 //       store.dispatch(new fromQueryDispatcher.TogglePlacelineId(userId))
 //     },
-//     setQuery(query) {
+//     addQuery(query) {
 //       store.dispatch(new fromQueryDispatcher.SetPlacelineQuery(query))
 //     }
 //   };
