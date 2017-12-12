@@ -15,6 +15,7 @@ export const SET_LIST_ACTIVE = "[USERS] set list active";
 export const SET_LIST_ID = "[USERS] set list id";
 export const SET_LIST_QUERY = "[USERS] set list query";
 export const ADD_LIST_QUERY = "[USERS] add list query";
+export const CLEAR_QUERY_KEY = "[USERS] clear query key";
 export const TOGGLE_LIST_ID = "[USERS] toggle list id";
 //analytics page
 export const SET_USERS_ANALYTICS_PAGE = '[USERS] set user analytics page';
@@ -91,6 +92,11 @@ export class SetListQuery implements Action {
 export class AddListQuery implements Action {
   readonly type = ADD_LIST_QUERY;
   constructor(public payload: object) {}
+}
+
+export class ClearQueryKey implements Action {
+  readonly type = CLEAR_QUERY_KEY;
+  constructor(public payload: string) {}
 }
 
 export class SetUsersAnalyticsPage implements Action {
@@ -182,6 +188,7 @@ export type All
   | ToggleUsersListId
   | SetListQuery
   | AddListQuery
+  | ClearQueryKey
   | SetUsersAnalyticsPage
   | SetUsersAnalyticsLoading
   | SetUsersIndexPage

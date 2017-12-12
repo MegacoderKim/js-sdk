@@ -76,7 +76,7 @@ export class UsersAnalytics extends EntityListClient{
     this.store.dispatch(new fromUsersDispatcher.AddListQuery({...query, page: null}))
   };
   clearQueryKey(key: string) {
-    this.store.dispatch(new fromUsersDispatcher.AddListQuery({[key]: null}))
+    this.store.dispatch(new fromUsersDispatcher.ClearQueryKey(key))
   };
   toggleId(userId: string) {
     this.store.dispatch(new fromUsersDispatcher.ToggleUsersListId(userId))

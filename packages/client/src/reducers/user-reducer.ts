@@ -95,6 +95,11 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
     case UserDispatch.SET_LIST_QUERY: {
       return {...state, listQuery: action.payload}
     }
+    case UserDispatch.CLEAR_QUERY_KEY: {
+      let listQuery = {...state.listQuery};
+      if(listQuery) delete listQuery[action.payload];
+      return {...state, listQuery: listQuery}
+    }
     /*
     Analytics page
      */
