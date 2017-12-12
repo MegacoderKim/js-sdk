@@ -179,7 +179,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   }
 
   fetchPage(number) {
-    this.userService.list.setQuery({page: number})
+    this.userService.list.addQuery({page: number})
   }
 
   hoverUser(userId: string | null) {

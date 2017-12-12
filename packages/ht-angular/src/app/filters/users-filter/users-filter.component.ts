@@ -58,7 +58,7 @@ export class UsersFilterComponent implements OnInit {
   }
 
   onQuery(query) {
-    this.usersClientService.list.setQueryReset(query)
+    this.usersClientService.list.addQueryReset(query)
   }
 
   clearQuery(key) {
