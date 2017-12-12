@@ -19,7 +19,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   data$: Observable<Page<IUserAnalytics>>;
   loading$: Observable<boolean>;
   id$ = empty();
-  allowedQueryKeys = ['status', 'show_all'];
+  allowedQueryKeys = ['status', 'show_all', 'search'];
   name = 'users analytics all';
   api$ = (query) => entityApi.users.all$(query, ApiType.analytics);
   defaultQuery = {};

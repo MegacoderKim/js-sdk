@@ -1,6 +1,6 @@
 {
   "name": "ht-client",
-  "version": "0.0.13-beta",
+  "version": "0.0.15-beta",
   "description": "",
   "main": "dist/ht-client_browser.js",
   "module": "dist/ht-client.js",

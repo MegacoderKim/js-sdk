@@ -15,7 +15,7 @@ export class UsersSummary extends EntityListClient {
   name = 'users summary';
   defaultQuery = {page_size: null};
   updateStrategy = 'live';
-  allowedQueryKeys = ['show_all'];
+  allowedQueryKeys = ['show_all', 'search'];
   data$: Observable<IUserListSummary>;
   loading$: Observable<boolean>;
   store;
