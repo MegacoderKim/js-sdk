@@ -101,7 +101,6 @@ export class HtUsersClient extends EntityClient {
             let statusTotal;
             let max = 0;
             let summaryEntity = queryLabels || this.filterClass.getStatusQueryArray(this.showAll);
-            console.log(summaryEntity, "summary");
             let status = query ? query['status'] : null;
             // let summaryEntity = this.filterClass.activityQueryArray;
             let values = _.map(summaryEntity, (entity) => {
