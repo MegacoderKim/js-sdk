@@ -1,8 +1,8 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {IGroup, AllData} from "ht-models";
-import * as _ from "underscore";
-import {HtGroupsService} from "../ht/ht-groups.service";
-import {Page} from "ht-models/dist/typings/common";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {IGroup} from "ht-models";
+import {GroupsChartService} from "./groups-chart.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'ht-groups-chart-container',
@@ -10,63 +10,42 @@ import {Page} from "ht-models/dist/typings/common";
   styleUrls: ['./groups-chart-container.component.less']
 })
 export class GroupsChartContainerComponent implements OnInit {
-  // groupService;
-  progress: number = 0;
-  groupsLevels = [];
-  selectedGroups = [];
   loading: boolean = false;
-  noChild: boolean = false;
+
+  @Input() groupId: string;
   @Output() onGroup: EventEmitter<IGroup> = new EventEmitter();
   constructor(
-    private groupService: HtGroupsService
+    public groupsChartService: GroupsChartService
   ) {
-    // this.groupService = clientService.groups;
+
   }
 
   ngOnInit() {
-    // this.fillChildren("ecaec5e3-accb-4f77-a8bc-9dd54e38dc47")
-    this.fillChildren()
-    // this.groupService.getChildren("ecaec5e3-accb-4f77-a8bc-9dd54e38dc47").do((data: AllData<IGroup>) => {
-    //   const totalCount = data.count;
-    //   const currentCount = data ? Object.keys(data.resultsEntity).length : 0;
-    //   this.progress = 100 * currentCount / totalCount;
-    //   const isDone = data && !data.next;
-    //   if (isDone) {
-    //     this.progress = 100;
-    //     let groups = _.values(data.resultsEntity);
-    //     this.setGroups(groups, 1)
-    //   }
-    //   console.log("all groups", data);
-    // })
+    const groupId = this.groupId ? this.groupId : null;
+    this.groupsChartService.setRootGroupId(groupId)
+
+
   }
 
-  fillChildren(id?, level: number = 0) {
-    this.clearTree(level);
-    this.loading = true;
-    const groups$ = id ? this.groupService.getChildren(id) : this.groupService.getRoot();
-    groups$.subscribe((data: Page<IGroup>) => {
-      const totalCount = data.count;
-      const currentCount = data ? data.count : 0;
-      this.progress = 100 * currentCount / totalCount;
-      const isDone = data && !data.next;
-      if (isDone) {
-        this.loading = false;
-        this.progress = 100;
-        const groups = data.results;
-        this.setGroups(groups, level)
-      }
-    })
+  get selectedGroups$(): BehaviorSubject<Array<IGroup | null>> {
+    return this.groupsChartService.selectedGroups$;
   }
 
-  setGroups(groups, level) {
-    // this.groupsLevels.splice(level, this.groupsLevels.length, groups)
+  get groupsLevels$(): Observable<any[]> {
+    return this.groupsChartService.groupsLevels$;
+  }
 
-    if (groups.length === 0) {
-      this.noChild = true;
-    } else {
-      this.groupsLevels[level] = groups;
-    }
-  };
+  // get selectedGroups() {
+  //   return this.groupsChartService.selectedGroups;
+  // }
+  //
+  // get groupsLevels() {
+  //   return this.groupsChartService.groupsLevels;
+  // }
+  //
+  // get selectedGroup$() {
+  //   return this.groupsChartService.selectedGroup$;
+  // }
 
   setGroup(group) {
     this.onGroup.next(group)
@@ -76,16 +55,8 @@ export class GroupsChartContainerComponent implements OnInit {
     const id = group.id;
     event.stopPropagation();
     event.preventDefault();
-    // this.selectedGroups.splice(level, this.selectedGroups.length, id);
-    this.selectedGroups[level] = id;
-    level = +level + 1;
-    this.fillChildren(id, level)
-  }
+    this.groupsChartService.setSelectedGroup(group, level + 1)
 
-  clearTree(level) {
-    this.selectedGroups.splice(level);
-    this.groupsLevels.splice(level);
-    this.noChild = false;
   }
 
 }

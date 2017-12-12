@@ -5,10 +5,9 @@ import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-require('leaflet');
+// require('leaflet');
 
 import { HtModule } from "./ht/ht.module";
-import {ModalComponent} from "./modal/modal.component";
 import {ModalModule} from "./modal/modal.module";
 import {InternalModule} from "./internal/internal.module";
 

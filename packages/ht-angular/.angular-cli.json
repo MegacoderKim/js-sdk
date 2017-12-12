@@ -20,7 +20,9 @@
       "prefix": "ht",
       "styles": [
         "styles.scss",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+        "../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
       ],
       "scripts": [
         "js/richmarkers.js"

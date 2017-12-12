@@ -1,6 +1,6 @@
 {
     "name": "ht-angular",
-    "version": "0.2.3-beta",
+    "version": "0.2.5-beta",
     "repository": {
       "type": "git",
       "url": "https://github.com/hypertrack/ht-angular"

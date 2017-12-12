@@ -6,6 +6,7 @@ import {GroupsChartContainerComponent} from "../groups-chart-container/groups-ch
 
 const routes: Routes = [
   { path: "", component: GroupsTestComponent},
+  { path: ":id", component: GroupsTestComponent},
   // { path: "chart", component: GroupsChartContainerComponent},
 ];
 

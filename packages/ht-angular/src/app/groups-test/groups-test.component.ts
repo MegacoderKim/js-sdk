@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HtClientService} from "../../";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'ht-groups-test',
@@ -8,13 +8,15 @@ import {Router} from "@angular/router";
   styleUrls: ['./groups-test.component.less']
 })
 export class GroupsTestComponent implements OnInit {
-
+  groupId: string;
   constructor(
     private htClient: HtClientService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.groupId = this.route.snapshot.paramMap.get('id')
   }
   setGroup(group) {
     const token = group.token;

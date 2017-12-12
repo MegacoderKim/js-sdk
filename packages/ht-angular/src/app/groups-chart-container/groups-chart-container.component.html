@@ -1,25 +1,56 @@
-<div class="flex-row wrap group-container">
-  <div class="flex-column group-container-list bar card-stack" *ngFor="let groups of groupsLevels; let i = index">
-    <div class="text-center ht-level">
-      <span class="">Level {{i + 1}}</span>
-    </div>
-    <div (click)="setGroup(group)" class="card card-clickable is-primary" [class.card-active]="selectedGroups[i] == group.id" *ngFor="let group of groups">
-      <div class="card-content is-primary flex-row">
-        <div class="flex">
-          {{group.name}}
+<ng-container *ngIf="selectedGroups$ | async as selectedGroups">
+  <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+    <ul>
+      <li [class.is-active]="l" (click)="groupsChartService.setLevel(i)" *ngFor="let group of selectedGroups; let l = last; let i = index">
+        <a *ngIf="group; else root">
+          <span>{{group.name}}</span>
+        </a>
+        <ng-template #root>
+          <a>
+            <span class="icon is-small"><i class="fa fa-home"></i></span>
+            <span>Root groups</span>
+          </a>
+        </ng-template>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <ng-template #notFound>
+      <div>
+        No Group found
+      </div>
+    </ng-template>
+    <div class="flex-row wrap group-container" *ngIf="!error">
+      <div class="flex-column group-container-list bar card-stack" *ngFor="let groups of groupsLevels$ | async; let i = index">
+        <div class="text-center ht-level">
+          <span class="">Level {{i + 1}}</span>
         </div>
-        <div (click)="selectGroup(group, i, $event)" class="button is-small is-primary">
-          <div class="icon">
-            <i class="fa fa-angle-right"></i>
+        <div class="flex-column" *ngIf="groups; else empty">
+          <div (click)="setGroup(group)" class="card card-clickable is-primary" [class.card-active]="selectedGroups[i + 1] && selectedGroups[i + 1].id == group.id" *ngFor="let group of groups">
+            <div class="card-content is-primary flex-row">
+              <div class="flex">
+                {{group.name}}
+              </div>
+              <div (click)="selectGroup(group, i, $event)" class="button is-small is-primary">
+                <div class="icon">
+                  <i class="fa fa-angle-right"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-content has-text-grey-light has-text-centered" *ngIf="groups.length == 0">
+            No Sub-group
           </div>
         </div>
+        <ng-template #empty>
+          <h3 class="text-center msg bar has-text-grey-light has-text-centered">
+            Loading
+          </h3>
+        </ng-template>
       </div>
+
+
     </div>
   </div>
-  <h3 class="text-center msg bar" *ngIf="loading">
-    Loading
-  </h3>
-  <h3 class="text-center msg bar" *ngIf="noChild">
-   No sub-group
-  </h3>
-</div>
+</ng-container>
