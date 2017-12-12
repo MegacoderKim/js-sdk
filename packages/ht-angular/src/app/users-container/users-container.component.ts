@@ -30,7 +30,8 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   @Input() showStatusSummary: boolean = true;
   @Input() showActiveSummary: boolean = true;
   @Input() apiType: ApiType = ApiType.analytics;
-  queryMap: QueryLabel[] = [
+  @Input() showAll: boolean = false;
+  _queryMap: QueryLabel[] = [
     {
       label: 'Logged in',
       values: ['stopped', 'on_trip', 'network_offline'],
@@ -100,6 +101,11 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       // startWith(true)
     )
+  }
+
+  get queryMap() {
+    const showAllLabel = this.userService.filterClass.showAllQueryArray;
+    return this.showAll ? [...this._queryMap, ...showAllLabel] : this._queryMap;
   }
 
   clear() {

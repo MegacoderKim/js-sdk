@@ -15,6 +15,7 @@ export class UsersMapContainerComponent implements OnInit {
   @Input() apiType: ApiType = ApiType.analytics;
   @Input() showFilter: boolean = true;
   @Input() showSidebar: boolean = true;
+  @Input() showAll: boolean = false;
   constructor(
     private userClientService: HtUsersService
   ) {

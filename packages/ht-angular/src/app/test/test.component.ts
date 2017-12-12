@@ -19,7 +19,7 @@ export class TestComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.userService.setShowAll();
   }
 
 
