@@ -25,6 +25,7 @@ export const SET_USERS_LIST_DATA_MAP = '[USERS] set users list data map';
 
 //analytics all
 export const SET_MARKERS_ACTIVE = "[USERS] set markerS active";
+export const SET_USERS_ANALYTICS_ALL = '[USERS] set users analytics all';
 export const ADD_USERS_ANALYTICS_ALL = '[USERS] add users analytics all';
 export const SET_USERS_ANALYTICS_ALL_QUERY = '[USERS] add analytics all query';
 export const ADD_USERS_ANALYTICS_ALL_QUERY = '[USERS] set analytics all query';
@@ -109,8 +110,13 @@ export class SetUsersIndexPage implements Action {
   constructor(public payload: Page<IUser>) {}
 }
 
-export class SetUsersAnalyticsAll implements Action { //todo change name
+export class AddUsersAnalyticsAll implements Action {
   readonly type = ADD_USERS_ANALYTICS_ALL;
+  constructor(public payload: Page<IUserAnalytics>) {}
+}
+
+export class SetUsersAnalyticsAll implements Action {
+  readonly type = SET_USERS_ANALYTICS_ALL;
   constructor(public payload: Page<IUserAnalytics>) {}
 }
 
@@ -141,17 +147,17 @@ export class SetUsersMarkersDataMap implements Action {
 
 export class SetListActive implements Action {
   readonly type = SET_LIST_ACTIVE;
-  constructor(public payload: boolean = true) {}
+  constructor(public payload: boolean | boolean = true) {}
 }
 
 export class SetMarkersActive implements Action {
   readonly type = SET_MARKERS_ACTIVE;
-  constructor(public payload: boolean = true) {}
+  constructor(public payload: boolean | string = true) {}
 }
 
 export class SetSummaryActive implements Action {
   readonly type = SET_SUMMARY_ACTIVE;
-  constructor(public payload: boolean = true) {}
+  constructor(public payload: boolean | string = true) {}
 }
 
 export class SetUsersSummary implements Action {
@@ -179,6 +185,7 @@ export type All
   | SetUsersAnalyticsPage
   | SetUsersAnalyticsLoading
   | SetUsersIndexPage
+  | AddUsersAnalyticsAll
   | SetUsersAnalyticsAll
   | SetUsersAnalyticsAllLoading
   | SetUsersIndexAll
