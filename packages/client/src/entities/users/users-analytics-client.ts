@@ -56,7 +56,8 @@ export class UsersAnalytics extends EntityListClient{
   };
 
 
-  setActive(isActive: boolean = true){
+  setActive(isActive: boolean | string = true){
+    isActive = isActive ? new Date().toISOString() : isActive;
     this.store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
   }
 

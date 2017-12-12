@@ -21,7 +21,8 @@ export class UsersSummary extends EntityListClient {
   store;
   api$ = (query) => entityApi.users.summary(query);
 
-  setActive(isActive: boolean = true) {
+  setActive(isActive: boolean | string = true) {
+    isActive = isActive ? new Date().toISOString() : isActive;
     this.store.dispatch(new fromUsersDispatcher.SetSummaryActive(isActive))
   };
   setData(usersSummary) {

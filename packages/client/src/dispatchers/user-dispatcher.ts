@@ -147,7 +147,7 @@ export class SetUsersMarkersDataMap implements Action {
 
 export class SetListActive implements Action {
   readonly type = SET_LIST_ACTIVE;
-  constructor(public payload: boolean | boolean = true) {}
+  constructor(public payload: boolean | string = true) {}
 }
 
 export class SetMarkersActive implements Action {

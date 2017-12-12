@@ -30,7 +30,7 @@ export interface State {
   placelineQuery?: object,
   placelineLoading?: boolean,
 
-  usersListActive: boolean,
+  usersListActive: boolean | string,
   listQuery?: object,
   listId?: string | null,
   usersListDataMap?: (data) => any,
