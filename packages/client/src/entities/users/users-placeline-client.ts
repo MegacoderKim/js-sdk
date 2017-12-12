@@ -64,6 +64,10 @@ export class UsersPlaceline extends EntityItemClient {
   getMapData$() {
     return dataWithSelectedId$(this.data$, this.segmentSelectedId$, ['segments']);
   }
+
+  clearData() {
+    this.setData(null)
+  }
 }
 
 export const UsersPlacelineClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(UsersPlaceline))));

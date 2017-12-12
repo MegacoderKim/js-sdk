@@ -34,6 +34,10 @@ export class UsersSummary extends EntityListClient {
 
   }
 
+  clearData() {
+    this.setData(null)
+  }
+
   constructor({dateRangeQuery$, store}: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;

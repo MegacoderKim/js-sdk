@@ -78,6 +78,10 @@ export class UsersAnalytics extends EntityListClient{
   };
   setId(userId: string | null) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersListId(userId))
+  };
+
+  clearData() {
+    this.setData(null)
   }
 };
 
