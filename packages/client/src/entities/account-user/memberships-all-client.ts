@@ -12,6 +12,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
 import {EntityAllItemsClient} from "../../base/all-items.client";
 import {AllData, Page} from "ht-models";
+import {listAllClientSubMixin} from "../../mixins/list-all-client-sub";
 
 export class MembershipsAll {
   query$: Observable<object> = of({});
@@ -44,9 +45,9 @@ export class MembershipsAll {
     this.loading$.next(loading)
   }
 
-  setData(data) {
+  addData(data) {
     this.store.dispatch(new fromAccount.SetMembershipsAll(data))
   }
 }
 
-export const MemberShipsClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(MembershipsAll))));
+export const MemberShipsClient = listAllClientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(MembershipsAll))));

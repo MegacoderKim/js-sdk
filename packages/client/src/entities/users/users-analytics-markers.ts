@@ -12,6 +12,7 @@ import {empty} from "rxjs/observable/empty";
 import {entityApi} from "../../global/entity-api";
 import {Subscription} from "rxjs/Subscription";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
+import {listAllClientSubMixin} from "../../mixins/list-all-client-sub";
 
 export class UsersAnalyticsListAll extends EntityAllItemsClient {
 
@@ -48,14 +49,21 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
     if(!data.next) this.setLoading(false);
   }
 
-  setActive(isActive: boolean = true) {
+  setActive(isActive: boolean | string = true) {
+    isActive = isActive ? new Date().toISOString() : isActive;
     this.store.dispatch(new fromUsersDispatcher.SetMarkersActive(isActive))
   };
 
+  addData(data: Page<IUserAnalytics>) {
+    data = data || {results: [], next: "no_next", count: 0};
+    this.store.dispatch(new fromUsersDispatcher.AddUsersAnalyticsAll(data))
+  };
+
   setData(data: Page<IUserAnalytics>) {
-    data = data || {results: [], next: "no_next"};
+    data = data || {results: [], next: "no_next", count: 0};
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data))
   };
+
   setLoading(data) {
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAllLoading(data))
   };
@@ -67,5 +75,10 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   isValidMarker(marker) {
     return htUser(marker).isValidMarker();
   }
+
+  clearData() {
+    let nullData = {results: [], next: "no_next", count: 0, previous: ""};
+    this.setData(nullData)
+  }
 }
-export const UsersAnalyticsListAllClient = clientSubMixin(getAllPageDataMixin(getFirstDataMixin(listQueryMixin(UsersAnalyticsListAll))));
+export const UsersAnalyticsListAllClient = listAllClientSubMixin(getAllPageDataMixin(getFirstDataMixin(listQueryMixin(UsersAnalyticsListAll))));
