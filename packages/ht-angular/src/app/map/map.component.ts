@@ -16,7 +16,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     private userService: HtUsersService,
   ) { }
 
-  @HostListener('resize')
+  @HostListener('resize', ['$event'])
   onMapResize() {
     this.mapService.inValidateSize()
     // todo this.mapService.map.resize();

@@ -31,7 +31,6 @@ export class UsersMapContainerComponent implements OnInit {
   // }
 
   ngOnInit() {
-    console.log("setting active");
     this.userClientService.listAll.setActive();
     if (this.key) {
       htClientService.getInstance().tempToken = this.key;

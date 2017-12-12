@@ -23,8 +23,6 @@ export class GroupsChartContainerComponent implements OnInit {
   ngOnInit() {
     const groupId = this.groupId ? this.groupId : null;
     this.groupsChartService.setRootGroupId(groupId)
-
-
   }
 
   get selectedGroups$(): BehaviorSubject<Array<IGroup | null>> {

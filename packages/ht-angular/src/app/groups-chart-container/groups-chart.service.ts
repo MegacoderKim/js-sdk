@@ -69,6 +69,7 @@ export class GroupsChartService {
     if (this.groupsSub) return false;
 
     this.groupsSub = this.selectedGroups$.pipe(
+      filter(data => !!data.length),
       withLatestFrom(this.groupsLevelsEntity$),
       switchMap(([selectedGroups, groupsLevels]) => {
         const level = selectedGroups.length;

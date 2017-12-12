@@ -21,6 +21,6 @@ export class GroupsTestComponent implements OnInit {
   setGroup(group) {
     const token = group.token;
     this.htClient.tempToken = token;
-    this.router.navigate([''])
+    this.router.navigate(['users'], {queryParamsHandling: 'merge'})
   }
 }

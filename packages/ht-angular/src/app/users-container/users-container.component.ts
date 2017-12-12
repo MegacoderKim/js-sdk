@@ -191,7 +191,8 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
+    this.userService.list.clearData();
+    this.userService.list.setId(null)
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../ht/ht-users.service";
 import {QueryLabel} from "ht-client";
@@ -18,7 +18,7 @@ import {QueryLabel} from "ht-client";
       ])])
   ]
 })
-export class UsersSummaryContainerComponent implements OnInit {
+export class UsersSummaryContainerComponent implements OnInit, OnDestroy {
   summary$;
   @Input() queryLabels: QueryLabel[];
   @Input() hideTotal: boolean = false;
@@ -40,6 +40,10 @@ export class UsersSummaryContainerComponent implements OnInit {
 
   setQuery(query: object) {
     this.usersClientService.list.setQueryReset(query)
+  }
+
+  ngOnDestroy() {
+    this.usersClientService.summary.clearData()
   }
 
 }

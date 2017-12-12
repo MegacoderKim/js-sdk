@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Input, OnInit} from '@angular/core';
+import {AfterContentInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IUserData} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {HtUsersService} from "../ht/ht-users.service";
@@ -13,7 +13,7 @@ import { merge } from 'rxjs/observable/merge';
   templateUrl: './map-container.component.html',
   styleUrls: ['./map-container.component.less']
 })
-export class MapContainerComponent implements OnInit, AfterContentInit {
+export class MapContainerComponent implements OnInit, AfterContentInit, OnDestroy {
   @Input() showLoading: boolean = true;
   subs = [];
   loading$;
@@ -56,6 +56,11 @@ export class MapContainerComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit() {
 
+  }
+
+  ngOnDestroy() {
+    this.userClientService.listAll.clearData();
+    this.mapService.usersCluster.trace([])
   }
 
 }

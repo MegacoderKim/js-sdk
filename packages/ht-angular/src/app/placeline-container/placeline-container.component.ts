@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IUserData} from "ht-models";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../ht/ht-users.service";
@@ -19,7 +19,7 @@ import {HtUsersService} from "../ht/ht-users.service";
   //   ])
   // ]
 })
-export class PlacelineContainerComponent implements OnInit {
+export class PlacelineContainerComponent implements OnInit, OnDestroy {
   @Input() userId: string | null;
   @Input() showUserCard: boolean = true;
   userData$;
@@ -44,6 +44,11 @@ export class PlacelineContainerComponent implements OnInit {
     setTimeout(() => {
       this.userClientService.placeline.setSegmentResetMapId(null);
     })
+  }
+
+  ngOnDestroy() {
+    this.userClientService.placeline.clearData();
+    this.userClientService.placeline.setId(null)
   }
 
 }
