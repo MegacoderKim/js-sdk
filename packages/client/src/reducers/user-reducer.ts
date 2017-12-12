@@ -35,15 +35,15 @@ export interface State {
   listId?: string | null,
   usersListDataMap?: (data) => any,
 
-  usersAnalyticsPage?: Page<IUserAnalytics>,
+  usersAnalyticsPage?: Page<IUserAnalytics> | null,
   analyticsLoading?: boolean,
 
-  usersMarkersActive: boolean,
+  usersMarkersActive: boolean | string,
   usersAnalyticsAll?: AllData<IUserAnalytics>,
   analyticsAllLoading?: boolean,
   usersMarkersDataMap?: (data) => any,
   //summary
-  usersSummaryActive: boolean,
+  usersSummaryActive: boolean | string,
   usersSummary?: IUserListSummary | null,
   summaryLoading?: boolean,
 
@@ -114,6 +114,13 @@ export function usersReducer(state: State = initialState, action : UserDispatch.
         resultsEntity = {...state.usersAnalyticsAll.resultsEntity, ..._.indexBy(action.payload.results, 'id')};
       }
 
+      return {...state, usersAnalyticsAll: {next: action.payload.next, previous: action.payload.previous, count: action.payload.count, resultsEntity}}
+    }
+    case UserDispatch.SET_USERS_ANALYTICS_ALL: {
+      let resultsEntity = {};
+      if(state.usersAnalyticsAll) {
+        resultsEntity = _.indexBy(action.payload.results, 'id');
+      }
       return {...state, usersAnalyticsAll: {next: action.payload.next, previous: action.payload.previous, count: action.payload.count, resultsEntity}}
     }
     case UserDispatch.SET_USERS_ANALYTICS_ALL_LOADING: {
