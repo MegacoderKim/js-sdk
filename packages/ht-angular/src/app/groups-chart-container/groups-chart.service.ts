@@ -96,7 +96,7 @@ export class GroupsChartService {
     })
   };
 
-  getGroups(parentId: string | null) {
+  getGroups(parentId: string | null): Observable<Page<IGroup>> {
     return parentId ? this.groupsService.getChildren(parentId) : this.groupsService.getRoot();
   }
 
