@@ -37,6 +37,7 @@ export class HtUsersClient extends EntityClient {
   store;
   api;
   key$;
+  showAll: boolean = false;
   constructor(public options: IUsersClientConfig) {
     super();
     let api = entityApi.users;
@@ -62,6 +63,11 @@ export class HtUsersClient extends EntityClient {
   set statusQueryArray(data: QueryLabel[]) {
     this._statusQueryArray = data;
     this.filterClass.customQueryArray = data
+  }
+
+  setShowAll(showAll: boolean = true) {
+    this.showAll = showAll;
+    this.list.setQuery({show_all: true})
   }
 
   getInitialDateRange(range: Partial<IDateRange> = {}): IDateRange {
@@ -94,7 +100,8 @@ export class HtUsersClient extends EntityClient {
             let total = 0;
             let statusTotal;
             let max = 0;
-            let summaryEntity = queryLabels || this.filterClass.statusQueryArray;
+            let summaryEntity = queryLabels || this.filterClass.getStatusQueryArray(this.showAll);
+            console.log(summaryEntity, "summary");
             let status = query ? query['status'] : null;
             // let summaryEntity = this.filterClass.activityQueryArray;
             let values = _.map(summaryEntity, (entity) => {
