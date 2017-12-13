@@ -1,24 +1,26 @@
-import {timer} from "rxjs/observable/timer";
-import {expand, switchMap, tap} from "rxjs/operators";
-import {Observable} from "rxjs/Observable";
-import {Constructor} from "../../../models";
+import { timer } from "rxjs/observable/timer";
+import { expand, switchMap, tap } from "rxjs/operators";
+import { Observable } from "rxjs/Observable";
+import { Constructor } from "../../../models";
 
 export interface IIdQueryFirstDataBase {
-  firstDataEffect(any): void,
-  api$(...args: any[]): Observable<any>
+  firstDataEffect(any): void;
+  api$(...args: any[]): Observable<any>;
 }
 
-export function getFirstDataMixin <TBase extends Constructor<IIdQueryFirstDataBase>>(Base: TBase) {
+export function getFirstDataMixin<
+  TBase extends Constructor<IIdQueryFirstDataBase>
+>(Base: TBase) {
   return class extends Base {
     getFirstData$(args) {
       let entity = this;
       return entity.api$(...args).pipe(
-        tap((data) => {
+        tap(data => {
           this.firstDataEffect(data);
         })
       );
     }
-  }
+  };
 }
 //
 // export interface IQueryFirstDataBase {

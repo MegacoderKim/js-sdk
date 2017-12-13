@@ -1,20 +1,19 @@
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Subscription} from "rxjs/Subscription";
-import {Dispatcher} from "./dispatcher";
-import {Observable} from "rxjs/Observable";
-import {Action, ActionReducer} from "./models";
-import {observeOn} from "rxjs/operator/observeOn";
-import {queue} from "rxjs/scheduler/queue";
-import {withLatestFrom} from "rxjs/operator/withLatestFrom";
-import {scan} from "rxjs/operator/scan";
-import {ScannedActionsSubject} from "./scanned-action";
-import {ReducerObservable} from "./reducer-manager";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Subscription } from "rxjs/Subscription";
+import { Dispatcher } from "./dispatcher";
+import { Observable } from "rxjs/Observable";
+import { Action, ActionReducer } from "./models";
+import { observeOn } from "rxjs/operator/observeOn";
+import { queue } from "rxjs/scheduler/queue";
+import { withLatestFrom } from "rxjs/operator/withLatestFrom";
+import { scan } from "rxjs/operator/scan";
+import { ScannedActionsSubject } from "./scanned-action";
+import { ReducerObservable } from "./reducer-manager";
 
 export abstract class StateObservable extends Observable<any> {}
 
 export class State<T> extends BehaviorSubject<any> {
-
-  static readonly INIT = 'INIT';
+  static readonly INIT = "INIT";
 
   private stateSubscription: Subscription;
 
@@ -29,7 +28,7 @@ export class State<T> extends BehaviorSubject<any> {
     const actionsOnQueue$: Observable<Action> = observeOn.call(actions$, queue);
     const withLatestReducer$: Observable<
       [Action, ActionReducer<any, Action>]
-      > = withLatestFrom.call(actionsOnQueue$, reducer$);
+    > = withLatestFrom.call(actionsOnQueue$, reducer$);
     const stateAndAction$: Observable<{
       state: any;
       action: Action;

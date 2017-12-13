@@ -1,21 +1,21 @@
-import {IEvent} from "ht-models";
-import {IEventDisplay} from "../interfaces";
+import { IEvent } from "ht-models";
+import { IEventDisplay } from "../interfaces";
 
 export class HtEvent {
   constructor(public data?: IEvent) {}
 
   getEventDisplay(): IEventDisplay {
     let event = this.data;
-    switch(event.type) {
-      case 'tracking.started':
+    switch (event.type) {
+      case "tracking.started":
         return {
-          text: 'Tracking started',
-          subText: ''
+          text: "Tracking started",
+          subText: ""
         };
-      case 'tracking.ended':
+      case "tracking.ended":
         return {
-          text: 'Tracking ended',
-          subText: ''
+          text: "Tracking ended",
+          subText: ""
         };
       // case 'device.location.disabled':
       //   return {
@@ -37,10 +37,10 @@ export class HtEvent {
       //     text: 'Location permission enabled',
       //     subtext: ''
       //   };
-      case 'device.secondary.ignored':
+      case "device.secondary.ignored":
         return {
-          text: 'Secondary device ignored',
-          subText: ''
+          text: "Secondary device ignored",
+          subText: ""
         };
     }
   }

@@ -6,11 +6,11 @@ export class HtClient {
 
   constructor(token: string = "", options = {}) {
     this.token = token;
-    this.pollDuration = options['pollDuration'] || this.pollDuration;
+    this.pollDuration = options["pollDuration"] || this.pollDuration;
   }
 
   set token(token) {
-    this._token = token
+    this._token = token;
   }
 
   get token() {
@@ -18,7 +18,7 @@ export class HtClient {
   }
 
   set tempToken(token) {
-    this._groupToken = '';
+    this._groupToken = "";
     this._tempToken = token;
   }
 
@@ -40,11 +40,11 @@ export class HtClient {
 }
 
 export const initClient = (token, config = {}) => {
-  return htClientService.getInstance(token, config)
+  return htClientService.getInstance(token, config);
 };
 
 export const htClientFactory = (token, config) => {
-  return new HtClient(token, config)
+  return new HtClient(token, config);
 };
 
 export const htClientService = (() => {
@@ -52,10 +52,10 @@ export const htClientService = (() => {
 
   return {
     getInstance(token?, config = {}) {
-      if ( !instance ) {
-        instance = htClientFactory(token, config = {});
+      if (!instance) {
+        instance = htClientFactory(token, (config = {}));
       }
       return instance;
     }
-  }
+  };
 })();

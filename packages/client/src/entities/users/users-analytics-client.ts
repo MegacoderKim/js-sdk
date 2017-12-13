@@ -1,23 +1,24 @@
 import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
-import {Observable} from "rxjs/Observable";
-import {getPageDataMixin} from "../../mixins/get-data";
-import {IUserAnalyticsPage} from "ht-models";
-import {listQueryMixin} from "../../mixins/entity-query";
-import { clientSubMixin} from "../../mixins/client-subscription";
-import {EntityListClient} from "../../base/list-client";
-import {PageResults$} from "ht-data";
-import {entityApi} from "../../global/entity-api";
-import {IPageClientConfig} from "../../interfaces";
-import {Page} from "ht-models";
-import {Subscription} from "rxjs/Subscription";
-import {getFirstDataMixin} from "../../mixins/get-first-data";
+import { Observable } from "rxjs/Observable";
+import { getPageDataMixin } from "../../mixins/get-data";
+import { IUserAnalyticsPage } from "ht-models";
+import { listQueryMixin } from "../../mixins/entity-query";
+import { clientSubMixin } from "../../mixins/client-subscription";
+import { EntityListClient } from "../../base/list-client";
+import { PageResults$ } from "ht-data";
+import { entityApi } from "../../global/entity-api";
+import { IPageClientConfig } from "../../interfaces";
+import { Page } from "ht-models";
+import { Subscription } from "rxjs/Subscription";
+import { getFirstDataMixin } from "../../mixins/get-first-data";
 
-export class UsersAnalytics extends EntityListClient{
+export class UsersAnalytics extends EntityListClient {
   // updateStrategy = 'update';
-  api$ = (query): Observable<IUserAnalyticsPage> => entityApi.users.analytics(query);
-  name = 'users analytics list';
-  defaultQuery = {ordering: '-last_heartbeat_at'};
+  api$ = (query): Observable<IUserAnalyticsPage> =>
+    entityApi.users.analytics(query);
+  name = "users analytics list";
+  defaultQuery = { ordering: "-last_heartbeat_at" };
   // allowedQueryKeys = null;
   // active$ = store.select(fromRoot.getUsersAnalyticsIsActive);
   data$: Observable<Page<IUserAnalyticsPage>>;
@@ -25,12 +26,16 @@ export class UsersAnalytics extends EntityListClient{
   id$: Observable<string | null>;
   loading$: Observable<boolean | string>;
   store;
-  constructor({dateRangeQuery$, store}: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
-    this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<object | null>;
-    this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive) as Observable<boolean>;
+    this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<
+      object | null
+    >;
+    this.active$ = this.store.select(
+      fromRoot.getUsersAnalyticsIsActive
+    ) as Observable<boolean>;
     this.data$ = this.store.select(fromRoot.getUsersAnalyticsPage);
     this.id$ = this.store.select(fromRoot.getUsersListId);
     this.loading$ = this.store.select(fromRoot.getUsersAnalyticsLoading);
@@ -39,26 +44,25 @@ export class UsersAnalytics extends EntityListClient{
   }
 
   getDefaultQuery() {
-    return {...super.getDefaultQuery(), ...this.defaultQuery}
+    return { ...super.getDefaultQuery(), ...this.defaultQuery };
     // return {...this.defaultQuery}
   }
 
   firstDataEffect() {
-    this.setLoading(false)
+    this.setLoading(false);
   }
 
   setLoading(data) {
-    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsLoading(data))
-  };
+    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsLoading(data));
+  }
 
   setData(data) {
-    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data))
-  };
+    this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsPage(data));
+  }
 
-
-  setActive(isActive: boolean | string = true){
+  setActive(isActive: boolean | string = true) {
     isActive = isActive ? new Date().toISOString() : isActive;
-    this.store.dispatch(new fromUsersDispatcher.SetListActive(isActive))
+    this.store.dispatch(new fromUsersDispatcher.SetListActive(isActive));
   }
 
   get apiQuery$() {
@@ -66,32 +70,35 @@ export class UsersAnalytics extends EntityListClient{
   }
 
   addQuery(query = {}) {
-    this.store.dispatch(new fromUsersDispatcher.AddListQuery(query))
-  };
+    this.store.dispatch(new fromUsersDispatcher.AddListQuery(query));
+  }
 
   setQuery(query = {}) {
-    this.store.dispatch(new fromUsersDispatcher.SetListQuery(query))
-  };
+    this.store.dispatch(new fromUsersDispatcher.SetListQuery(query));
+  }
   setQueryReset(query) {
-    this.store.dispatch(new fromUsersDispatcher.AddListQuery({...query, page: null}))
-  };
+    this.store.dispatch(
+      new fromUsersDispatcher.AddListQuery({ ...query, page: null })
+    );
+  }
   clearQueryKey(key: string) {
-    this.store.dispatch(new fromUsersDispatcher.ClearQueryKey(key))
-  };
+    this.store.dispatch(new fromUsersDispatcher.ClearQueryKey(key));
+  }
   toggleId(userId: string) {
-    this.store.dispatch(new fromUsersDispatcher.ToggleUsersListId(userId))
-  };
+    this.store.dispatch(new fromUsersDispatcher.ToggleUsersListId(userId));
+  }
   setId(userId: string | null) {
-    this.store.dispatch(new fromUsersDispatcher.SetUsersListId(userId))
-  };
+    this.store.dispatch(new fromUsersDispatcher.SetUsersListId(userId));
+  }
 
   clearData() {
     this.setData(null);
-    this.setQuery({})
+    this.setQuery({});
   }
-};
+}
 
-export const UsersAnalyticsClient = clientSubMixin(getPageDataMixin(getFirstDataMixin(listQueryMixin(UsersAnalytics))));
-
+export const UsersAnalyticsClient = clientSubMixin(
+  getPageDataMixin(getFirstDataMixin(listQueryMixin(UsersAnalytics)))
+);
 
 // applyMixins(UsersAnalytics, [ListGetData, ListQuery, ClientSub]);

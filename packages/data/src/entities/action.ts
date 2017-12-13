@@ -1,68 +1,60 @@
-import {IAction, IActionMap, Partial} from "ht-models";
+import { IAction, IActionMap, Partial } from "ht-models";
 import * as _ from "underscore";
-import {HtPosition, IActionPositions} from "../interfaces";
+import { HtPosition, IActionPositions } from "../interfaces";
 import moment from "moment-mini";
-import { GetDateRangeQuery } from "ht-utility"
+import { GetDateRangeQuery } from "ht-utility";
 
 export class HtAction {
-
-  types = [
-    'delivery',
-    'pickup',
-    'task',
-    'visit',
-    'stopover',
-    'trip'
-  ];
+  types = ["delivery", "pickup", "task", "visit", "stopover", "trip"];
 
   sortingQueryMap: object = {
-    assigned_at: 'Assigned',
-    completed_at: 'Completed',
-    type: 'Type',
-    user__name: 'User name',
-    status: 'Status'
+    assigned_at: "Assigned",
+    completed_at: "Completed",
+    type: "Type",
+    user__name: "User name",
+    status: "Status"
   };
 
   ontimeFilters = [
-    {event_flags: 'action.delayed'},
-    {event_flags: 'action.completed_late'}
+    { event_flags: "action.delayed" },
+    { event_flags: "action.completed_late" }
   ];
 
   statusQueryMap = {
-    created: 'Not yet started',
-    "assigned,started": 'Assigned',
-    "started,assigned": 'Assigned',
-    completed: 'Completed'
+    created: "Not yet started",
+    "assigned,started": "Assigned",
+    "started,assigned": "Assigned",
+    completed: "Completed"
   };
 
   ontimeQueryMap = {
-    'action.delayed': 'Running delayed',
-    'action.completed_late': 'Completed late'
+    "action.delayed": "Running delayed",
+    "action.completed_late": "Completed late"
   };
 
   markerFilterMap = {
-    'assigned,started': (action: IAction) => {
-      return action.status == 'assigned' || action.status == 'started'
+    "assigned,started": (action: IAction) => {
+      return action.status == "assigned" || action.status == "started";
     },
-    'started,assigned': (action: IAction) => {
-      return action.status == 'assigned' || action.status == 'started'
+    "started,assigned": (action: IAction) => {
+      return action.status == "assigned" || action.status == "started";
     },
     completed: (action: IAction) => {
-      return action.status == 'completed'
+      return action.status == "completed";
     },
     created: (action: IAction) => {
-      return action.status == 'created'
+      return action.status == "created";
     }
   };
 
-  constructor(public data?: IAction) {};
+  constructor(public data?: IAction) {}
 
   get filterQueryMap() {
-    return {...this.statusQueryMap, ...this.ontimeQueryMap}
+    return { ...this.statusQueryMap, ...this.ontimeQueryMap };
   }
 
   get sortings(): string[] {
-    return Object.keys(this.sortingQueryMap)
+    return Object.keys(this.sortingQueryMap);
   }
 
   getStatusString(status: string) {
@@ -83,41 +75,49 @@ export class HtAction {
 
   getMarkerFilter(key: string) {
     let filter = this.markerFilterMap[key];
-    if(key) {
-      if(filter) {
+    if (key) {
+      if (filter) {
         return filter;
       } else {
-        return () => false
+        return () => false;
       }
     } else {
-      return () => true
+      return () => true;
     }
   }
 
   getMarkerSeached(key: string) {
     return (action: IAction) => {
-      return (action.lookup_id && action.lookup_id.indexOf(key) > -1) || (action.user && action.user.name.indexOf(key) > -1);
-    }
+      return (
+        (action.lookup_id && action.lookup_id.indexOf(key) > -1) ||
+        (action.user && action.user.name.indexOf(key) > -1)
+      );
+    };
   }
 
   isAwayFromExpected() {
     let action = this.data;
-    if(action.expected_place && action.event_flags) {
-      let flag = _.find(action.event_flags, (flag) => {
-        return flag['type'] == 'action.completed_at_different_place_than_expected'
+    if (action.expected_place && action.event_flags) {
+      let flag = _.find(action.event_flags, flag => {
+        return (
+          flag["type"] == "action.completed_at_different_place_than_expected"
+        );
       });
-      return !!flag
+      return !!flag;
     }
     return false;
   }
 
   isValidMarker(action?: IActionMap | IAction) {
     action = action || this.data;
-    return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
+    return !!(
+      (action.expected_place && action.expected_place.location) ||
+      (action.completed_place && action.completed_place.location)
+    );
   }
 
   getDateRangeQuery(query) {
-    return GetDateRangeQuery(query, 'created_at');
+    return GetDateRangeQuery(query, "created_at");
   }
 
   getPositionsObject(): IActionPositions | null {
@@ -130,16 +130,16 @@ export class HtAction {
       isAwayFromExpected,
       hasEnded: this.hasEnded(),
       position: completedPosition || expectedPosition
-    }
+    };
   }
 
   getCompletedPosition(): HtPosition | null {
     let action = this.data;
-    if(action && action.completed_place && action.completed_place.location) {
+    if (action && action.completed_place && action.completed_place.location) {
       let compLoc = action.completed_place.location.coordinates;
       let lat = compLoc[1];
       let lng = compLoc[0];
-      return {lat, lng};
+      return { lat, lng };
       // return [compLoc[1], compLoc[0]]
     }
     return null;
@@ -147,11 +147,11 @@ export class HtAction {
 
   getExpectedPosition(): HtPosition | null {
     let action = this.data;
-    if(action && action.expected_place && action.expected_place.location) {
+    if (action && action.expected_place && action.expected_place.location) {
       let expLoc = action.expected_place.location.coordinates;
       let lat = expLoc[1];
       let lng = expLoc[0];
-      return {lat, lng};
+      return { lat, lng };
       // return [expLoc[1], expLoc[0]]
     }
     return null;
@@ -162,17 +162,18 @@ export class HtAction {
   }
 
   hasEnded(): boolean {
-    return !!this.data.display.ended_at
+    return !!this.data.display.ended_at;
   }
 
   getETATimestamp() {
     let action = this.data;
     if (action.display.duration_remaining) {
-      return moment(Date.now()).add(action.display.duration_remaining, 'seconds').toISOString();
+      return moment(Date.now())
+        .add(action.display.duration_remaining, "seconds")
+        .toISOString();
     }
     return null;
-  };
-
+  }
 }
 
 export const htAction = (action?: IAction) => new HtAction(action);

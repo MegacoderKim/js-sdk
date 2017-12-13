@@ -1,6 +1,6 @@
-import {Action} from "../store/models";
+import { Action } from "../store/models";
 // import {AllData} from "../interfaces";
-import {IGroup, AllData} from "ht-models";
+import { IGroup, AllData } from "ht-models";
 
 export const SET_LIST_ACTIVE = "[GROUPS] set list active";
 export const SET_ID = "[GROUPS] set id";
@@ -27,8 +27,4 @@ export class SetGroup implements Action {
   constructor(public payload: IGroup) {}
 }
 
-export type All
-  = SetGroupId
-  | SetGroupsAll
-  | SetGroup
-  | SetListActive
+export type All = SetGroupId | SetGroupsAll | SetGroup | SetListActive;

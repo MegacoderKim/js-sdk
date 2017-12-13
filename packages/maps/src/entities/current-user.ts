@@ -1,27 +1,29 @@
-import {htUser} from "ht-data";
-import {userDivFactory} from "../helpers/user-div-factory";
+import { htUser } from "ht-data";
+import { userDivFactory } from "../helpers/user-div-factory";
 declare var RichMarkerPosition: any;
-import {HtPosition} from "ht-data";
-import {StyleObj} from "../interfaces";
-import {ItemClassFactoryConfig, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
-import {point} from "leaflet";
-
+import { HtPosition } from "ht-data";
+import { StyleObj } from "../interfaces";
+import {
+  ItemClassFactoryConfig,
+  itemsFactory,
+  mapItemsFactory
+} from "../base/map-items-factory";
+import { point } from "leaflet";
 
 export const currentUserConfig: ItemClassFactoryConfig = {
   renderConfig: {
     getPosition(data): HtPosition {
-      return htUser(data).getPosition()
+      return htUser(data).getPosition();
     },
     getDivContent(data) {
-      return userDivFactory(data)
-
+      return userDivFactory(data);
     }
   },
   styleObj: {
     google: {
       default: {
         flat: true,
-        anchor: RichMarkerPosition.BOTTOM_CENTER,
+        anchor: RichMarkerPosition.BOTTOM_CENTER
       }
     },
     leaflet: {
@@ -35,11 +37,11 @@ export const currentUserConfig: ItemClassFactoryConfig = {
     isDiv: true,
     hasDataObservable: false
   },
-  name: 'Current user'
+  name: "Current user"
 };
 
 export const currentUserTrace = () => {
-  return itemsFactory(currentUserConfig)
+  return itemsFactory(currentUserConfig);
 };
 // export class CurrentUser {
 //   name = "Current user";

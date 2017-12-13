@@ -1,22 +1,20 @@
-import {MarkerDataConfig, StyleObj} from "../interfaces";
+import { MarkerDataConfig, StyleObj } from "../interfaces";
 
-
-export class MarkersBase implements MarkerDataConfig<any>, MarkersFactoryConfig{
+export class MarkersBase
+  implements MarkerDataConfig<any>, MarkersFactoryConfig {
   // styleObj: StyleObj;
-  constructor(public renderConfig, public styleObj: StyleObj, public name?) {
-
-  }
+  constructor(public renderConfig, public styleObj: StyleObj, public name?) {}
 
   getPosition(data) {
-    return this.renderConfig.getPosition(data)
+    return this.renderConfig.getPosition(data);
   }
 
   getInfoContent(data) {
-    return this.renderConfig.getInfoContent(data)
+    return this.renderConfig.getInfoContent(data);
   }
 }
 
 export interface MarkersFactoryConfig {
-  renderConfig: MarkerDataConfig<any>,
-  styleObj: StyleObj
+  renderConfig: MarkerDataConfig<any>;
+  styleObj: StyleObj;
 }

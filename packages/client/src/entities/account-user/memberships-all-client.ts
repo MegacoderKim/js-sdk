@@ -1,22 +1,22 @@
-import {itemQueryMixin, listQueryMixin} from "../../mixins/entity-query";
-import {of} from "rxjs/observable/of";
-import {Observable} from "rxjs/Observable";
-import {clientSubMixin} from "../../mixins/client-subscription";
-import {getIdQueryDataMixin, getPageDataMixin} from "../../mixins/get-data";
-import {entityApi} from "../../global/entity-api";
-import {Subscription} from "rxjs/Subscription";
+import { itemQueryMixin, listQueryMixin } from "../../mixins/entity-query";
+import { of } from "rxjs/observable/of";
+import { Observable } from "rxjs/Observable";
+import { clientSubMixin } from "../../mixins/client-subscription";
+import { getIdQueryDataMixin, getPageDataMixin } from "../../mixins/get-data";
+import { entityApi } from "../../global/entity-api";
+import { Subscription } from "rxjs/Subscription";
 import * as fromRoot from "../../reducers";
 import * as fromAccount from "../../dispatchers/accounts-dispatcher";
-import {IPageClientConfig} from "../../interfaces";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {getFirstDataMixin} from "../../mixins/get-first-data";
-import {EntityAllItemsClient} from "../../base/all-items.client";
-import {AllData, Page} from "ht-models";
-import {listAllClientSubMixin} from "../../mixins/list-all-client-sub";
+import { IPageClientConfig } from "../../interfaces";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { getFirstDataMixin } from "../../mixins/get-first-data";
+import { EntityAllItemsClient } from "../../base/all-items.client";
+import { AllData, Page } from "ht-models";
+import { listAllClientSubMixin } from "../../mixins/list-all-client-sub";
 
 export class MembershipsAll {
   query$: Observable<object> = of({});
-  updateStrategy = 'once';
+  updateStrategy = "once";
   pollDuration = 10000;
   active$ = of(true);
   api$ = (id, query) => entityApi.accounts.membershipsAll(id, query, {});
@@ -24,7 +24,7 @@ export class MembershipsAll {
   data$;
   id$;
   loading$: BehaviorSubject<string | boolean> = new BehaviorSubject(false);
-  constructor({dateRangeQuery$, store}: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
     this.store = store;
     // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
     this.data$ = this.store.select(fromRoot.getAccountMembershipsAll);
@@ -34,20 +34,22 @@ export class MembershipsAll {
   }
 
   firstDataEffect() {
-    this.setLoading()
+    this.setLoading();
   }
 
   getDefaultQuery() {
-    return {page_size: 100}
+    return { page_size: 100 };
   }
 
   setLoading(loading: string | boolean = true) {
-    this.loading$.next(loading)
+    this.loading$.next(loading);
   }
 
   addData(data) {
-    this.store.dispatch(new fromAccount.SetMembershipsAll(data))
+    this.store.dispatch(new fromAccount.SetMembershipsAll(data));
   }
 }
 
-export const MemberShipsClient = listAllClientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(MembershipsAll))));
+export const MemberShipsClient = listAllClientSubMixin(
+  getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(MembershipsAll)))
+);

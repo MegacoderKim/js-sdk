@@ -1,19 +1,19 @@
-import {Observable} from "rxjs/Observable";
-import {Page} from "ht-models";
-import {IDateRange} from "../interfaces";
+import { Observable } from "rxjs/Observable";
+import { Page } from "ht-models";
+import { IDateRange } from "../interfaces";
 import * as _ from "underscore";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {distinctUntilChanged, map} from "rxjs/operators";
-import {of} from "rxjs/observable/of";
+import { combineLatest } from "rxjs/observable/combineLatest";
+import { distinctUntilChanged, map } from "rxjs/operators";
+import { of } from "rxjs/observable/of";
 
-export const MergeQuery = (defaultQuery) => {
-  return (query$) => {
+export const MergeQuery = defaultQuery => {
+  return query$ => {
     return query$.pipe(
-      map((query) => {
-        return {...defaultQuery, ...query}
+      map(query => {
+        return { ...defaultQuery, ...query };
       })
-    )
-  }
+    );
+  };
 };
 
 // export const CombineQuery = (addQuery$) => {
@@ -54,31 +54,34 @@ export const MergeQuery = (defaultQuery) => {
 // };
 
 export const AllowedQueryKeys = (allowedQueryKeys?: string[] | null) => {
-  return (queryStore$) => {
-    if(allowedQueryKeys && allowedQueryKeys.length) {
+  return queryStore$ => {
+    if (allowedQueryKeys && allowedQueryKeys.length) {
       let keys$ = _.map(allowedQueryKeys, (key: string) => {
-        return queryStore$
-          .pipe(
-            map(store => store ? store[key] : null),
-            distinctUntilChanged(),
-            map(value => {
-              return value ? {[key]: value} : null
-            })
-          )
+        return queryStore$.pipe(
+          map(store => (store ? store[key] : null)),
+          distinctUntilChanged(),
+          map(value => {
+            return value ? { [key]: value } : null;
+          })
+        );
       });
       return combineLatest(...keys$).pipe(
         map(obsArray => {
-          return _.reduce(obsArray, (acc, query) => {
-            return query ? {...acc, ...query} : acc
-          }, {});
+          return _.reduce(
+            obsArray,
+            (acc, query) => {
+              return query ? { ...acc, ...query } : acc;
+            },
+            {}
+          );
         })
-      )
-    } else if(allowedQueryKeys) {
-      return of({})
+      );
+    } else if (allowedQueryKeys) {
+      return of({});
     } else {
-      return queryStore$
+      return queryStore$;
     }
-  }
+  };
 };
 
 // export const itemAsPage = <T>() => {
@@ -96,4 +99,3 @@ export const AllowedQueryKeys = (allowedQueryKeys?: string[] | null) => {
 //     )
 //   }
 // };
-

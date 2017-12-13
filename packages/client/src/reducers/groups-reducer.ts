@@ -1,30 +1,33 @@
 import * as GroupDispatcher from "../dispatchers/groups-dispatcher";
-import {IGroup, AllData} from "ht-models";
+import { IGroup, AllData } from "ht-models";
 
 export interface State {
-  selectedId?: string | null
-  allGroups?: AllData<IGroup> | null,
-  group?: IGroup | null,
-  listActive: boolean
+  selectedId?: string | null;
+  allGroups?: AllData<IGroup> | null;
+  group?: IGroup | null;
+  listActive: boolean;
 }
 
 export const initialState: State = {
   listActive: false
 };
 
-export function groupsReducer(state: State = initialState, action : GroupDispatcher.All): State {
+export function groupsReducer(
+  state: State = initialState,
+  action: GroupDispatcher.All
+): State {
   switch (action.type) {
     case GroupDispatcher.SET_LIST_ACTIVE: {
-      return {...state, listActive: action.payload}
+      return { ...state, listActive: action.payload };
     }
     case GroupDispatcher.SET_ID: {
-      return {...state, selectedId: action.payload}
+      return { ...state, selectedId: action.payload };
     }
     case GroupDispatcher.SET_GROUPS: {
-      return {...state, allGroups: action.payload}
+      return { ...state, allGroups: action.payload };
     }
     case GroupDispatcher.SET_GROUP: {
-      return {...state, group: action.payload}
+      return { ...state, group: action.payload };
     }
     default: {
       return state;

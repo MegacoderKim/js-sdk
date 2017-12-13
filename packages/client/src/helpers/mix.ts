@@ -2,18 +2,30 @@ export function applyMixins(derivedCtor: any, baseCtors: any[]) {
   baseCtors.forEach(baseCtor => {
     Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
       // console.log(derivedCtor.prototype[name], baseCtor.prototype[name], name);
-      derivedCtor.prototype[name] = derivedCtor.prototype[name] && !name.includes('_') ? derivedCtor.prototype[name] : baseCtor.prototype[name];
+      derivedCtor.prototype[name] =
+        derivedCtor.prototype[name] && !name.includes("_")
+          ? derivedCtor.prototype[name]
+          : baseCtor.prototype[name];
     });
   });
 }
 
 export function applyBaseMixins(derivedCtor: any, baseCtors: any[]) {
   baseCtors.forEach(baseCtor => {
-    console.log(Object.getOwnPropertyNames(derivedCtor), Object.getOwnPropertyNames(baseCtor));
-    console.log(Object.getOwnPropertyNames(derivedCtor.prototype), Object.getOwnPropertyNames(baseCtor.prototype));
+    console.log(
+      Object.getOwnPropertyNames(derivedCtor),
+      Object.getOwnPropertyNames(baseCtor)
+    );
+    console.log(
+      Object.getOwnPropertyNames(derivedCtor.prototype),
+      Object.getOwnPropertyNames(baseCtor.prototype)
+    );
     Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
       // console.log(derivedCtor.prototype[name], baseCtor.prototype[name], name);
-      derivedCtor[name] = derivedCtor.prototype[name] && !name.includes('_') ? derivedCtor[name] : baseCtor.prototype[name];
+      derivedCtor[name] =
+        derivedCtor.prototype[name] && !name.includes("_")
+          ? derivedCtor[name]
+          : baseCtor.prototype[name];
     });
     // console.log(derivedCtor.prototype, derivedCtor, baseCtor, baseCtor.prototype);
   });
@@ -51,10 +63,10 @@ export function extend<T, U>(first: T, second: U): T & U {
 //   return fn;
 // }
 
-export let mix = (superclass) => new MixinBuilder(superclass);
+export let mix = superclass => new MixinBuilder(superclass);
 
 export class MixinBuilder {
-  constructor(public  superclass) {
+  constructor(public superclass) {
     // this.superclass = superclass;
   }
 

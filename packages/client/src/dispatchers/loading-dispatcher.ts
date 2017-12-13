@@ -1,4 +1,4 @@
-import {Action} from "../store/models";
+import { Action } from "../store/models";
 
 export const SET_USER_ANALYTICS = "[LOADING] set user analytics";
 export const SET_USER_INDEX = "[LOADING] set user index";
@@ -25,9 +25,8 @@ export class SetLoadingUserIndexAll implements Action {
   constructor(public payload: boolean) {}
 }
 
-
-export type All
-  = SetLoadingUserAnalytics
+export type All =
+  | SetLoadingUserAnalytics
   | SetLoadingUserIndex
   | SetLoadingUserAnalyticsAll
-  | SetLoadingUserIndexAll
+  | SetLoadingUserIndexAll;

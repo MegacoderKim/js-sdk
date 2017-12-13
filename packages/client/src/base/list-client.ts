@@ -1,9 +1,9 @@
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 
-export abstract class EntityListClient  {
+export abstract class EntityListClient {
   //listGetData
-  updateStrategy = 'live';
+  updateStrategy = "live";
   pollDuration = 10000;
   // api$;
   name = "list";
@@ -25,18 +25,17 @@ export abstract class EntityListClient  {
   }
 
   getDefaultQuery(): object {
-    return {page_size: 10};
+    return { page_size: 10 };
   }
 
   get apiParams$() {
-    return this.getApiParams$()
+    return this.getApiParams$();
   }
   get apiQuery$() {
     return this.getApiQuery$();
   }
 
-
-  abstract setLoading(data)
+  abstract setLoading(data);
   //
   // setData(data) {
   //
@@ -45,5 +44,4 @@ export abstract class EntityListClient  {
   // setActive(isActive: boolean = true){
   //
   // }
-
-};
+}

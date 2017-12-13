@@ -1,12 +1,12 @@
-import {Action} from "../store/models";
-import {IAccountUser} from "ht-models";
-import {Page, IMembership} from "ht-models";
+import { Action } from "../store/models";
+import { IAccountUser } from "ht-models";
+import { Page, IMembership } from "ht-models";
 
-export const SET_ACCOUNT_USER = '[ACCOUNT] set account user';
-export const SET_MEMBERHSHIPS_ALL = '[ACCOUNT] set memberships all';
-export const SET_KEY = '[ACCOUNT] set key';
-export const SET_TEMP_KEY = '[ACCOUNT] set temp key';
-export const SET_USER_ID = '[ACCOUNT] set user id';
+export const SET_ACCOUNT_USER = "[ACCOUNT] set account user";
+export const SET_MEMBERHSHIPS_ALL = "[ACCOUNT] set memberships all";
+export const SET_KEY = "[ACCOUNT] set key";
+export const SET_TEMP_KEY = "[ACCOUNT] set temp key";
+export const SET_USER_ID = "[ACCOUNT] set user id";
 
 export class SetAccountUser implements Action {
   readonly type = SET_ACCOUNT_USER;
@@ -33,10 +33,9 @@ export class SetUserId implements Action {
   constructor(public payload: string | null) {}
 }
 
-export type All
-  = SetAccountUser
+export type All =
+  | SetAccountUser
   | SetMembershipsAll
   | SetKey
   | SetTempKey
-  | SetUserId
-
+  | SetUserId;

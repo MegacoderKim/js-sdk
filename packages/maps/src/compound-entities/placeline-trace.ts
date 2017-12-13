@@ -1,21 +1,23 @@
 import * as _ from "underscore";
-import {TimelineSegment} from "../timeline-segment";
-import {IAction, ISegment, ITimelineEvent, IUserData} from "ht-models";
-import { segmentsPolylinesTrace} from "../entities/segment-polylines";
-import {stopMarkersTrace} from "../entities/stop-markers";
-import {actionsMarkersTrace} from "../entities/action-markers";
-import {htAction} from "ht-data";
-import {MapService} from "../global/map-service";
-import {currentUserTrace} from "../entities/current-user";
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
+import { TimelineSegment } from "../timeline-segment";
+import { IAction, ISegment, ITimelineEvent, IUserData } from "ht-models";
+import { segmentsPolylinesTrace } from "../entities/segment-polylines";
+import { stopMarkersTrace } from "../entities/stop-markers";
+import { actionsMarkersTrace } from "../entities/action-markers";
+import { htAction } from "ht-data";
+import { MapService } from "../global/map-service";
+import { currentUserTrace } from "../entities/current-user";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 // import {filter} from "rxjs/operators/filter";
-import {scan} from "rxjs/operators/scan";
-import {CompoundDataObservableMixin, CompoundSetDataConfig} from "../mixins/compounds-data-observable";
-import {HtPosition} from "ht-data";
+import { scan } from "rxjs/operators/scan";
+import {
+  CompoundDataObservableMixin,
+  CompoundSetDataConfig
+} from "../mixins/compounds-data-observable";
+import { HtPosition } from "ht-data";
 
 export class Placeline {
-
   segmentsPolylines = segmentsPolylinesTrace();
   stopMarkers = stopMarkersTrace();
   actionMarkers = actionsMarkersTrace();
@@ -33,7 +35,7 @@ export class Placeline {
   }
 
   get map() {
-    return MapService.map
+    return MapService.map;
   }
 
   // setData$(data$: Observable<IUserData | null>) {
@@ -68,10 +70,11 @@ export class Placeline {
     // this.map = map;
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
-    if(this.segmentsPolylines) this.segmentsPolylines.trace(segType.tripSegment);
-    if(this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
+    if (this.segmentsPolylines)
+      this.segmentsPolylines.trace(segType.tripSegment);
+    if (this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
     this.traceAction(user);
-    this.userMarker.trace(user)
+    this.userMarker.trace(user);
     // this.traceCurrentUser(_.last(userSegments));
     // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     // this.traceEvents(user, ht-map)
@@ -88,7 +91,7 @@ export class Placeline {
     bounds = this.actionMarkers.extendBounds(bounds);
     // bounds = this.userMarker.extendBounds(bounds);
     // console.log(bounds, "final");
-    return bounds
+    return bounds;
   }
 
   highlightSegmentId(segmentId: string) {
@@ -105,16 +108,16 @@ export class Placeline {
   }
 
   unselectSegment(segment: ISegment) {
-    if(segment.type == 'trip') {
+    if (segment.type == "trip") {
       // this.segmentsPolylines.resetHighlights();
       // this.stopMarkers.resetHighlights();
-    } else if (segment.type == 'stop') {
+    } else if (segment.type == "stop") {
       // console.log("stop select");
       // this.stopMarkers.resetHighlights();
       // this.stopMarkers.resetHighlights();
       // this.segmentsPolylines.resetHighlights();
     }
-    this.unselectSegmentEffect(segment)
+    this.unselectSegmentEffect(segment);
   }
 
   selectSegmentEffect(segment) {
@@ -131,18 +134,19 @@ export class Placeline {
       return htAction(action).isValidMarker();
       // return !!((action.expected_place && action.expected_place.location) || (action.completed_place && action.completed_place.location));
     });
-    if(this.actionMarkers) this.actionMarkers.trace(filteredActions);
+    if (this.actionMarkers) this.actionMarkers.trace(filteredActions);
   }
 
   traceActionPolyline(user, map, currentPosition) {
     let actions = user && user.actions ? user.actions : [];
-    let ongoingAction = currentPosition ?
-      actions : [];
-    if(currentPosition) {
-      let polylines = this.getActionPolylineWithId(currentPosition, ongoingAction);
+    let ongoingAction = currentPosition ? actions : [];
+    if (currentPosition) {
+      let polylines = this.getActionPolylineWithId(
+        currentPosition,
+        ongoingAction
+      );
       // console.log(polylines);
       // this.actionsPolylines.trace(polylines)
-
     } else {
       // this.actionsPolylines.removeAll()
     }
@@ -150,56 +154,74 @@ export class Placeline {
 
   getActionPolylineWithId(currentPosition, items: IAction[]) {
     let sortedAction = _.sortBy(items, action => {
-      return action.eta || action.expected_at
+      return action.eta || action.expected_at;
     });
     let polylinesWithId = sortedAction.reduce((acc, action: IAction) => {
       let finalEta = action.eta || action.expected_at;
-      if(finalEta && !action.display.show_summary) {
-        let {lat, lng} = htAction(action).getPositionsObject().position;
+      if (finalEta && !action.display.show_summary) {
+        let { lat, lng } = htAction(action).getPositionsObject().position;
         let actionPosition = [lat, lng];
-        if(acc.length == 0) {
-          return actionPosition ? [...acc, {
-            path: [currentPosition, actionPosition],
-            id: action.id
-          }]: acc
+        if (acc.length == 0) {
+          return actionPosition
+            ? [
+                ...acc,
+                {
+                  path: [currentPosition, actionPosition],
+                  id: action.id
+                }
+              ]
+            : acc;
         } else {
           let pastPoint = _.last(acc).path[1];
-          return actionPosition ? [...acc, {
-            path: [pastPoint, actionPosition],
-            id: action.id
-          }] : acc
-
+          return actionPosition
+            ? [
+                ...acc,
+                {
+                  path: [pastPoint, actionPosition],
+                  id: action.id
+                }
+              ]
+            : acc;
         }
       } else {
-        return acc
+        return acc;
       }
     }, []);
     return polylinesWithId;
   }
 
   selectAction(actionId: string) {
-    if(actionId) {
+    if (actionId) {
       // this.actionMarkers.highlight({id: actionId});
     } else {
       // this.actionMarkers.resetHighlights()
     }
-    this.highlightAll(!!actionId)
+    this.highlightAll(!!actionId);
   }
 
   protected getSegmentTypes(userSegments: ISegment[]) {
-    return _.reduce(userSegments, (segmentType: ISegmentType, segment: ISegment) => {
-      if(segment.type == 'stop') {
-        if(segment.location && segment.location.geojson) segmentType.stopSegment.push(segment)
-      } else {
-        if(segment.encoded_polyline) segmentType.tripSegment.push(segment)
-      }
-      return segmentType;
-    }, {tripSegment: [], stopSegment: []});
+    return _.reduce(
+      userSegments,
+      (segmentType: ISegmentType, segment: ISegment) => {
+        if (segment.type == "stop") {
+          if (segment.location && segment.location.geojson)
+            segmentType.stopSegment.push(segment);
+        } else {
+          if (segment.encoded_polyline) segmentType.tripSegment.push(segment);
+        }
+        return segmentType;
+      },
+      { tripSegment: [], stopSegment: [] }
+    );
   }
 
   traceCurrentUser(segment) {
     console.log("seg,emt", segment);
-    if(segment && this.timelineSegment.timeAwareArray && this.timelineSegment.timeAwareArray.length) {
+    if (
+      segment &&
+      this.timelineSegment.timeAwareArray &&
+      this.timelineSegment.timeAwareArray.length
+    ) {
       // let lastSegment = segment;
       let positionBearing = this.timelineSegment.getLastPositionBearing();
       console.log(positionBearing);
@@ -211,11 +233,11 @@ export class Placeline {
 
   //segments replay
   clearTimeline() {
-    this.timelineSegment.clearTimeline()
+    this.timelineSegment.clearTimeline();
   }
 
   get stats() {
-    return this.timelineSegment.stats
+    return this.timelineSegment.stats;
   }
 
   // get segments() {
@@ -223,7 +245,7 @@ export class Placeline {
   // }
 
   updateTimeline(user: IUserData) {
-    this.timelineSegment.update(user)
+    this.timelineSegment.update(user);
   }
 
   getCurrentUserPosition() {
@@ -235,16 +257,21 @@ export class Placeline {
   focusUserMarker(map, config) {
     console.log(this.userMarker);
     console.error("focus user not implimented");
-    MapService.mapUtils.setFocus(this.userMarker.getEntity(), map, {force: true, zoom: 15, center: true, ...config})
+    MapService.mapUtils.setFocus(this.userMarker.getEntity(), map, {
+      force: true,
+      zoom: 15,
+      center: true,
+      ...config
+    });
     // this.userMarker.setFocus(map);
   }
 
   setSegmentPlayCallback(cb) {
-    this.timelineSegment.playSegmentCallback = cb
+    this.timelineSegment.playSegmentCallback = cb;
   }
 
   setReplayHead(head, map) {
-    if(head && head.currentPosition) {
+    if (head && head.currentPosition) {
       // this.replayMarker.setPositionBearing([head.currentPosition[0], head.currentPosition[1]], head.bearing, map);
     } else {
       // this.replayMarker.clear()
@@ -253,44 +280,43 @@ export class Placeline {
 
   private traceEvents(user: IUserData, map) {
     let events: ITimelineEvent[] = user && user.events ? user.events : [];
-    let locations = this.timelineSegment.getLocationsAtTimesT(events.map(event => event.recorded_at));
+    let locations = this.timelineSegment.getLocationsAtTimesT(
+      events.map(event => event.recorded_at)
+    );
     let eventsWithPosition = events.reduce((acc, event, i) => {
       let info = this.allowedEvents[event.type];
-      if(info) {
+      if (info) {
         var lastEvent = _.last(acc);
-        let sameAsLastEvent = lastEvent && lastEvent.recorded_at == event.recorded_at;
+        let sameAsLastEvent =
+          lastEvent && lastEvent.recorded_at == event.recorded_at;
         if (sameAsLastEvent) {
-          let lastInfo = lastEvent.info + ', ' + info;
-          let newLastEvent = {...lastEvent, info: lastInfo};
+          let lastInfo = lastEvent.info + ", " + info;
+          let newLastEvent = { ...lastEvent, info: lastInfo };
           acc.pop();
-          return [...acc, newLastEvent]
+          return [...acc, newLastEvent];
         } else {
           let position = locations[i];
           // let position = this.timelinePolyline.getLocationAtTime(event.recorded_at);
-          if(position.length) {
-            let eventWithPosition = {...event, position, info};
-            return [...acc, eventWithPosition]
+          if (position.length) {
+            let eventWithPosition = { ...event, position, info };
+            return [...acc, eventWithPosition];
           } else {
-            return acc
+            return acc;
           }
         }
-
       } else {
-        return acc
+        return acc;
       }
-
     }, []);
-    this.eventMarkers.trace(eventsWithPosition)
+    this.eventMarkers.trace(eventsWithPosition);
   }
 }
 
 export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
 
 interface ISegmentType {
-  tripSegment: ISegment[],
-  stopSegment: ISegment[]
-};
-
-export interface HtSegmentsTraceOptions {
-
+  tripSegment: ISegment[];
+  stopSegment: ISegment[];
 }
+
+export interface HtSegmentsTraceOptions {}

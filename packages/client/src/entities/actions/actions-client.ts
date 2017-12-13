@@ -1,5 +1,5 @@
-import {HtActionsGetClient} from "./actions-get-client";
-import {HtActionsApi} from "../../api/actions";
+import { HtActionsGetClient } from "./actions-get-client";
+import { HtActionsApi } from "../../api/actions";
 
 export class HtActionsClient {
   item: HtActionsGetClient;
@@ -9,12 +9,5 @@ export class HtActionsClient {
     this.api = api;
   }
 
-  updateListQuery() {
-
-  }
+  updateListQuery() {}
 }
-
-
-
-
-

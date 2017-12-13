@@ -1,6 +1,6 @@
-import {BaseFilter} from "./base-filter";
-import {Color} from "ht-utility";
-import {QueryLabel} from "../interfaces";
+import { BaseFilter } from "./base-filter";
+import { Color } from "ht-utility";
+import { QueryLabel } from "../interfaces";
 
 export class DefaultUsersFilter extends BaseFilter {
   customQueryArray: QueryLabel[] = [];
@@ -8,94 +8,94 @@ export class DefaultUsersFilter extends BaseFilter {
   statusQueryArray: QueryLabel[] = [
     {
       label: "Stopped",
-      values: ['stopped'],
+      values: ["stopped"],
       color: Color.stop
     },
     {
       label: "Moving",
-      values: ['on_trip'],
+      values: ["on_trip"],
       color: Color.blue
     },
     {
       label: "Logged off",
-      values: ['logged_off'],
-      color: '#8a91a0'
+      values: ["logged_off"],
+      color: "#8a91a0"
     },
     {
-      label: 'Location disabled',
-      values: ['location_disabled'],
+      label: "Location disabled",
+      values: ["location_disabled"],
       color: Color.red
     },
     {
       label: "Network offline",
-      values: ['network_offline'],
-      color: '#ccc',
+      values: ["network_offline"],
+      color: "#ccc"
     }
   ];
 
   activityQueryArray: QueryLabel[] = [
     {
-      label: 'Logged in',
-      values: ['stopped', 'on_trip', 'network_offline'],
+      label: "Logged in",
+      values: ["stopped", "on_trip", "network_offline"],
       color: Color.blue
     },
     {
-      label: 'Logged off',
-      values: ['logged_off'],
-      color: '#a8a8a8',
+      label: "Logged off",
+      values: ["logged_off"],
+      color: "#a8a8a8"
     },
     {
-      label: 'Location disabled',
-      values: ['location_disabled'],
+      label: "Location disabled",
+      values: ["location_disabled"],
       color: Color.red
-    },
+    }
   ];
 
   genericQueryArray: QueryLabel[] = [
     {
       label: "Show all",
-      values: ['show_all']
+      values: ["show_all"]
     }
   ];
 
   showAllQueryArray: QueryLabel[] = [
     {
       label: "Never tracked",
-      values: ['never_tracked'],
+      values: ["never_tracked"],
       color: "#575757"
     }
   ];
 
   sortingQueryMap = {
-    num_trips: 'Trips',
-    name: 'Name',
-    status: 'Status',
-    num_places: 'Places',
-    total_distance: 'Distance',
-    total_duration: 'Duration',
-    stop_duration: 'Stop duration',
-    location_disabled_duration: 'Location disabled',
-    network_offline_duration: 'Network offline',
-    num_actions: 'Actions',
-    last_heartbeat_at: 'Last updated'
+    num_trips: "Trips",
+    name: "Name",
+    status: "Status",
+    num_places: "Places",
+    total_distance: "Distance",
+    total_duration: "Duration",
+    stop_duration: "Stop duration",
+    location_disabled_duration: "Location disabled",
+    network_offline_duration: "Network offline",
+    num_actions: "Actions",
+    last_heartbeat_at: "Last updated"
   };
 
   get allQueryArray() {
-    return [...this.statusQueryArray, ...this.genericQueryArray, ...this.showAllQueryArray, ...this.customQueryArray]
+    return [
+      ...this.statusQueryArray,
+      ...this.genericQueryArray,
+      ...this.showAllQueryArray,
+      ...this.customQueryArray
+    ];
   }
 
   getStatusQueryArray(showAll: boolean = false) {
-    return showAll ? [...this.statusQueryArray, ...this.showAllQueryArray] : this.statusQueryArray
+    return showAll
+      ? [...this.statusQueryArray, ...this.showAllQueryArray]
+      : this.statusQueryArray;
   }
 
-  mapQueries = [
+  mapQueries = [];
 
-  ];
-
-  statusOverviewQueries = [
-    'search',
-    'show_all'
-  ]
-
-
+  statusOverviewQueries = ["search", "show_all"];
 }

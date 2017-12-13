@@ -1,4 +1,4 @@
-import {Action} from "../store/models";
+import { Action } from "../store/models";
 
 export const SET_SELECTED_ID = "[SEGMENTS] set selected id";
 export const SET_HIGHLIGHTED_ID = "[SEGMENTS] set highlighted id";
@@ -25,8 +25,4 @@ export class SetPopupId implements Action {
   constructor(public payload: string | null) {}
 }
 
-export type All
-  = SetSelectedId
-  | SetHighlightedId
-  | SetResetMapId
-  | SetPopupId
+export type All = SetSelectedId | SetHighlightedId | SetResetMapId | SetPopupId;

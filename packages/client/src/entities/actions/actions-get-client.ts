@@ -1,28 +1,25 @@
-import {Observable} from "rxjs/Observable";
-import {empty} from "rxjs/observable/empty";
-import {of} from "rxjs/observable/of";
+import { Observable } from "rxjs/Observable";
+import { empty } from "rxjs/observable/empty";
+import { of } from "rxjs/observable/of";
 
-export class HtActionsGetClient{
-  name = 'actions get';
+export class HtActionsGetClient {
+  name = "actions get";
 
   // api$(id, query) {
   //   return this.api.get<IAction>(id, {...this.defaultQuery, ...query})
   // }
 
   get id$() {
-    return empty()
+    return empty();
   }
 
   get loading$() {
-    return this.id$
+    return this.id$;
   }
 
   get query$() {
-    return of({})
+    return of({});
   }
 
-  setData(data) {
-
-  }
-
+  setData(data) {}
 }

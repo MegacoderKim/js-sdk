@@ -12,7 +12,7 @@ export interface ActionReducer<T, V extends Action = Action> {
 
 export type ActionReducerMap<T, V extends Action = Action> = {
   [p in keyof T]: ActionReducer<T[p], V>
-  };
+};
 
 export interface ActionReducerFactory<T, V extends Action = Action> {
   (

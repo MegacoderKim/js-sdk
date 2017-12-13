@@ -1,20 +1,23 @@
-import {SingleItemMixin} from "../mixins/single-item";
-import {PopupMixin} from "../mixins/popup-renderer";
-import {DivMarkersMixin} from "../mixins/div-markers-renderes";
-import {CircleMixin} from "../mixins/circle-renderer";
-import {MarkersMixin} from "../mixins/marker-renderer";
-import {TraceMixin} from "../mixins/trace";
-import {DataObservableMixin} from "../mixins/data-observable";
-import {PolylinesMixin} from "../mixins/polyline-renderer";
-import {ClusterMixin} from "../mixins/clusters";
+import { SingleItemMixin } from "../mixins/single-item";
+import { PopupMixin } from "../mixins/popup-renderer";
+import { DivMarkersMixin } from "../mixins/div-markers-renderes";
+import { CircleMixin } from "../mixins/circle-renderer";
+import { MarkersMixin } from "../mixins/marker-renderer";
+import { TraceMixin } from "../mixins/trace";
+import { DataObservableMixin } from "../mixins/data-observable";
+import { PolylinesMixin } from "../mixins/polyline-renderer";
+import { ClusterMixin } from "../mixins/clusters";
 import * as _ from "underscore";
-import {StyleMixin} from "../mixins/styles";
-import {DataConfig, StyleObj} from "../interfaces";
-import {MarkersBase} from "./markers.factory";
-import {PolylinesBase} from "./polylines.factory";
-import {DivMarkersBase} from "./div-markers.factory";
+import { StyleMixin } from "../mixins/styles";
+import { DataConfig, StyleObj } from "../interfaces";
+import { MarkersBase } from "./markers.factory";
+import { PolylinesBase } from "./polylines.factory";
+import { DivMarkersBase } from "./div-markers.factory";
 
-export const mapItemsFactory = (baseClass, config: Partial<MapItemsFactoryConfig>) => {
+export const mapItemsFactory = (
+  baseClass,
+  config: Partial<MapItemsFactoryConfig>
+) => {
   const defaultConfig: MapItemsFactoryConfig = {
     isCluster: false,
     hasPopup: false,
@@ -34,27 +37,31 @@ export const mapItemsFactory = (baseClass, config: Partial<MapItemsFactoryConfig
   itemClass = MarkersMixin(itemClass);
   itemClass = StyleMixin(itemClass);
   itemClass = TraceMixin(itemClass);
-  if(finalConfig.isSingleItem) itemClass = SingleItemMixin(itemClass);
-  if(finalConfig.hasPopup) itemClass = PopupMixin(itemClass);
-  if(finalConfig.isCluster) itemClass = ClusterMixin(itemClass);
-  if(finalConfig.isDiv) itemClass = DivMarkersMixin(itemClass);
-  if(finalConfig.isCircle) itemClass = CircleMixin(itemClass);
-  if(finalConfig.isPolyline) itemClass = PolylinesMixin(itemClass);
-  if(finalConfig.hasDataObservable) itemClass = DataObservableMixin(itemClass);
-  return itemClass
+  if (finalConfig.isSingleItem) itemClass = SingleItemMixin(itemClass);
+  if (finalConfig.hasPopup) itemClass = PopupMixin(itemClass);
+  if (finalConfig.isCluster) itemClass = ClusterMixin(itemClass);
+  if (finalConfig.isDiv) itemClass = DivMarkersMixin(itemClass);
+  if (finalConfig.isCircle) itemClass = CircleMixin(itemClass);
+  if (finalConfig.isPolyline) itemClass = PolylinesMixin(itemClass);
+  if (finalConfig.hasDataObservable) itemClass = DataObservableMixin(itemClass);
+  return itemClass;
 };
 
 export interface MapItemsFactoryConfig {
-  isCluster: boolean,
-  hasPopup: boolean,
-  isDiv: boolean,
-  isCircle: boolean,
-  isSingleItem: boolean,
-  hasDataObservable: boolean,
-  isPolyline: boolean
-};
+  isCluster: boolean;
+  hasPopup: boolean;
+  isDiv: boolean;
+  isCircle: boolean;
+  isSingleItem: boolean;
+  hasDataObservable: boolean;
+  isPolyline: boolean;
+}
 
-export const itemsBaseFactory = ({renderConfig, typeConfig, styleObj}: ItemClassFactoryConfig) => {
+export const itemsBaseFactory = ({
+  renderConfig,
+  typeConfig,
+  styleObj
+}: ItemClassFactoryConfig) => {
   let mapTypesBase = {
     polylines: PolylinesBase,
     markers: MarkersBase,
@@ -62,20 +69,24 @@ export const itemsBaseFactory = ({renderConfig, typeConfig, styleObj}: ItemClass
   };
   typeConfig = typeConfig || {};
   let MapItemBase: any = mapTypesBase.markers;
-  if(typeConfig.isDiv) MapItemBase = mapTypesBase.divMarkers;
-  if(typeConfig.isPolyline) MapItemBase = mapTypesBase.polylines;
+  if (typeConfig.isDiv) MapItemBase = mapTypesBase.divMarkers;
+  if (typeConfig.isPolyline) MapItemBase = mapTypesBase.polylines;
   var base = mapItemsFactory(MapItemBase, typeConfig);
   return base;
 };
 
-export const itemsFactory = ({renderConfig, typeConfig, styleObj}: ItemClassFactoryConfig) => {
-  var base = itemsBaseFactory({renderConfig, typeConfig, styleObj});
-  return new base(renderConfig, styleObj)
+export const itemsFactory = ({
+  renderConfig,
+  typeConfig,
+  styleObj
+}: ItemClassFactoryConfig) => {
+  var base = itemsBaseFactory({ renderConfig, typeConfig, styleObj });
+  return new base(renderConfig, styleObj);
 };
 
 export interface ItemClassFactoryConfig {
-  renderConfig: DataConfig<any>,
-  typeConfig?: Partial<MapItemsFactoryConfig>,
-  styleObj?: StyleObj,
-  name?: string
+  renderConfig: DataConfig<any>;
+  typeConfig?: Partial<MapItemsFactoryConfig>;
+  styleObj?: StyleObj;
+  name?: string;
 }

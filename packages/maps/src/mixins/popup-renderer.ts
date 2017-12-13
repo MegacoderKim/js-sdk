@@ -1,51 +1,56 @@
-import {MapService} from "../global/map-service";
-import {HtPosition} from "ht-data";
-import {Constructor, Entities, Entity} from "../interfaces";
+import { MapService } from "../global/map-service";
+import { HtPosition } from "ht-data";
+import { Constructor, Entities, Entity } from "../interfaces";
 
 export interface PopupBase {
   getStyle: (styleType?, fallbackStyle?) => object;
   entities: Entities<any>;
   getPosition: (data) => HtPosition;
   getInfoContent: (data) => string;
-
 }
 
-export function PopupMixin <TBase extends Constructor<PopupBase>>(Base: TBase) {
+export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
   return class extends Base {
     popup;
-    defaultPopupStyle =  {
+    defaultPopupStyle = {
       disableAutoPan: true,
       pixelOffset: new google.maps.Size(0, -35)
     };
     constructor(...arg: any[]) {
       super(...arg);
-      this.addPopup()
+      this.addPopup();
     }
     addPopup() {
-      this.popup = MapService.mapUtils.getPopup(this.getStyle('popup', this.defaultPopupStyle))
+      this.popup = MapService.mapUtils.getPopup(
+        this.getStyle("popup", this.defaultPopupStyle)
+      );
     }
 
     setPopup(id: string | null) {
       if (id && this.entities[id]) {
-        let {data} = this.entities[id];
+        let { data } = this.entities[id];
         let popup = this.popup;
         let map = MapService.map;
-        MapService.mapUtils.openPopupPosition(this.getPosition(data), map, this.getInfoContent(data), popup);
+        MapService.mapUtils.openPopupPosition(
+          this.getPosition(data),
+          map,
+          this.getInfoContent(data),
+          popup
+        );
       } else {
-        MapService.mapUtils.clearItem(this.popup)
+        MapService.mapUtils.clearItem(this.popup);
       }
-    };
+    }
 
     onMouseEnter(entity: Entity<any>) {
       let id = entity.data.id;
       this.setPopup(id);
-
-    };
+    }
 
     onMouseLeave(entity: Entity<any>) {
-      this.popup && MapService.mapUtils.clearItem(this.popup)
+      this.popup && MapService.mapUtils.clearItem(this.popup);
     }
-  }
+  };
 }
 
 // export class PopupRenderer {

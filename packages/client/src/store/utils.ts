@@ -1,4 +1,10 @@
-import {Action, ActionReducer, ActionReducerFactory, ActionReducerMap, MetaReducer} from "./models";
+import {
+  Action,
+  ActionReducer,
+  ActionReducerFactory,
+  ActionReducerMap,
+  MetaReducer
+} from "./models";
 
 export function combineReducers<T, V extends Action = Action>(
   reducers: ActionReducerMap<T, V>,
@@ -13,7 +19,7 @@ export function combineReducers(
 
   for (let i = 0; i < reducerKeys.length; i++) {
     const key = reducerKeys[i];
-    if (typeof reducers[key] === 'function') {
+    if (typeof reducers[key] === "function") {
       finalReducers[key] = reducers[key];
     }
   }

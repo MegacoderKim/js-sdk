@@ -1,5 +1,5 @@
-import {Color} from "ht-utility";
-import {point} from "leaflet";
+import { Color } from "ht-utility";
+import { point } from "leaflet";
 
 export const stopStyles = {
   google: {
@@ -11,7 +11,7 @@ export const stopStyles = {
         strokeOpacity: 1,
         path: google.maps.SymbolPath.CIRCLE,
         scale: 8,
-        strokeWeight: 2,
+        strokeWeight: 2
       }
     },
     popup: {
@@ -26,7 +26,7 @@ export const stopStyles = {
       fillOpacity: 1,
       weight: 2,
       color: Color.stopDark,
-      pane: 'markerPane'
+      pane: "markerPane"
     },
     popup: {
       offset: point(0, -5),

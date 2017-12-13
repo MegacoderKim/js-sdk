@@ -1,13 +1,13 @@
-import {Action, ActionReducer} from "./models";
-import {Operator} from "rxjs/Operator";
-import {distinctUntilChanged} from "rxjs/operator/distinctUntilChanged";
-import {map} from "rxjs/operator/map";
-import {Observer} from "rxjs/Observer";
-import {Observable} from "rxjs/Observable";
-import {ReducerManager} from "./reducer-manager";
-import {Dispatcher} from "./dispatcher";
-import {pluck} from "rxjs/operator/pluck";
-import {StateObservable} from "./state";
+import { Action, ActionReducer } from "./models";
+import { Operator } from "rxjs/Operator";
+import { distinctUntilChanged } from "rxjs/operator/distinctUntilChanged";
+import { map } from "rxjs/operator/map";
+import { Observer } from "rxjs/Observer";
+import { Observable } from "rxjs/Observable";
+import { ReducerManager } from "./reducer-manager";
+import { Dispatcher } from "./dispatcher";
+import { pluck } from "rxjs/operator/pluck";
+import { StateObservable } from "./state";
 
 export class Store<T> extends Observable<T> implements Observer<Action> {
   constructor(
@@ -36,14 +36,14 @@ export class Store<T> extends Observable<T> implements Observer<Action> {
     b extends keyof T[a],
     c extends keyof T[a][b],
     d extends keyof T[a][b][c]
-    >(key1: a, key2: b, key3: c, key4: d): Store<T[a][b][c][d]>;
+  >(key1: a, key2: b, key3: c, key4: d): Store<T[a][b][c][d]>;
   select<
     a extends keyof T,
     b extends keyof T[a],
     c extends keyof T[a][b],
     d extends keyof T[a][b][c],
     e extends keyof T[a][b][c][d]
-    >(key1: a, key2: b, key3: c, key4: d, key5: e): Store<T[a][b][c][d][e]>;
+  >(key1: a, key2: b, key3: c, key4: d, key5: e): Store<T[a][b][c][d][e]>;
   select<
     a extends keyof T,
     b extends keyof T[a],
@@ -51,7 +51,7 @@ export class Store<T> extends Observable<T> implements Observer<Action> {
     d extends keyof T[a][b][c],
     e extends keyof T[a][b][c][d],
     f extends keyof T[a][b][c][d][e]
-    >(
+  >(
     key1: a,
     key2: b,
     key3: c,
@@ -65,14 +65,14 @@ export class Store<T> extends Observable<T> implements Observer<Action> {
   ): Store<any> {
     let mapped$: Store<any>;
 
-    if (typeof pathOrMapFn === 'string') {
+    if (typeof pathOrMapFn === "string") {
       mapped$ = pluck.call(this, pathOrMapFn, ...paths);
-    } else if (typeof pathOrMapFn === 'function') {
+    } else if (typeof pathOrMapFn === "function") {
       mapped$ = map.call(this, pathOrMapFn);
     } else {
       throw new TypeError(
         `Unexpected type '${typeof pathOrMapFn}' in select operator,` +
-        ` expected 'string' or 'function'`
+          ` expected 'string' or 'function'`
       );
     }
 

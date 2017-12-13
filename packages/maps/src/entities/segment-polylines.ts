@@ -1,6 +1,10 @@
-import {segmentPolylineStyles} from "../styles/segment-polyline-styles";
-import {ISegment} from "ht-models";
-import {ItemClassFactoryConfig, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
+import { segmentPolylineStyles } from "../styles/segment-polyline-styles";
+import { ISegment } from "ht-models";
+import {
+  ItemClassFactoryConfig,
+  itemsFactory,
+  mapItemsFactory
+} from "../base/map-items-factory";
 
 export const SegmentPolylinesConfig: ItemClassFactoryConfig = {
   renderConfig: {
@@ -8,7 +12,7 @@ export const SegmentPolylinesConfig: ItemClassFactoryConfig = {
       return data.encoded_polyline;
     },
     getEncodedPositionTime(data: ISegment) {
-      return data.time_aware_polyline
+      return data.time_aware_polyline;
     }
   },
   styleObj: segmentPolylineStyles,
@@ -16,11 +20,11 @@ export const SegmentPolylinesConfig: ItemClassFactoryConfig = {
     isPolyline: true,
     hasDataObservable: false
   },
-  name: 'segment polyline'
+  name: "segment polyline"
 };
 
 export const segmentsPolylinesTrace = () => {
-  return itemsFactory(SegmentPolylinesConfig)
+  return itemsFactory(SegmentPolylinesConfig);
 };
 
 // export class SegmentPolylines {

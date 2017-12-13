@@ -11,4 +11,3 @@ export const Dispatcher = {
   query: QueryDispatcher,
   Segment: SegmentsDispatcher
 };
-

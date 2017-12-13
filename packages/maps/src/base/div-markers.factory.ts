@@ -1,18 +1,16 @@
-import {DivMarkerDataConfig, StyleObj} from "../interfaces";
+import { DivMarkerDataConfig, StyleObj } from "../interfaces";
 
-
-export class DivMarkersBase implements DivMarkerDataConfig<any>, DivMarkersFactoryConfig{
+export class DivMarkersBase
+  implements DivMarkerDataConfig<any>, DivMarkersFactoryConfig {
   // styleObj: StyleObj;
-  constructor(public renderConfig, public styleObj) {
-
-  }
+  constructor(public renderConfig, public styleObj) {}
 
   getPosition(data) {
-    return this.renderConfig.getPosition(data)
+    return this.renderConfig.getPosition(data);
   }
 
   getInfoContent(data) {
-    return this.renderConfig.getInfoContent(data)
+    return this.renderConfig.getInfoContent(data);
   }
 
   getDivContent(data) {
@@ -21,6 +19,6 @@ export class DivMarkersBase implements DivMarkerDataConfig<any>, DivMarkersFacto
 }
 
 export interface DivMarkersFactoryConfig {
-  renderConfig: DivMarkerDataConfig<any>,
-  styleObj: StyleObj
+  renderConfig: DivMarkerDataConfig<any>;
+  styleObj: StyleObj;
 }

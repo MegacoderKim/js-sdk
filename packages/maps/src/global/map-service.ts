@@ -1,7 +1,7 @@
-import {ReplaySubject} from "rxjs/ReplaySubject";
-import {LeafletUtils} from "../map-utils/leaflet-map-utils";
-import {GoogleMapUtils} from "../map-utils/google-map-utils";
-import {HtBounds, HtMap, HtMapType} from "../map-utils/interfaces";
+import { ReplaySubject } from "rxjs/ReplaySubject";
+import { LeafletUtils } from "../map-utils/leaflet-map-utils";
+import { GoogleMapUtils } from "../map-utils/google-map-utils";
+import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
 import * as _ from "underscore";
 
 export const MapService = {
@@ -12,21 +12,21 @@ export const MapService = {
   itemsSet: [],
   addToItemsSet(item) {
     const i = this.itemsSet.indexOf(item);
-    if (i == -1) this.itemsSet.push(item)
+    if (i == -1) this.itemsSet.push(item);
   },
   setMap(map: HtMap) {
-    this.map$.next(map)
+    this.map$.next(map);
   },
   getMap() {
     this.map$.take(1).subscribe(map => {
-      return map
-    })
+      return map;
+    });
   },
   setMapType(mapType: HtMapType) {
-    this.mapUtils = mapType == 'leaflet' ? LeafletUtils : GoogleMapUtils;
+    this.mapUtils = mapType == "leaflet" ? LeafletUtils : GoogleMapUtils;
   },
   addCluster(cluster) {
-    if(!this.clusters.includes(cluster)) {
+    if (!this.clusters.includes(cluster)) {
       this.clusters.push(cluster);
       MapService.map$.subscribe(map => {
         cluster.cluster = MapService.mapUtils.getMarkerCluster(map);
@@ -34,21 +34,25 @@ export const MapService = {
     }
   },
   getBounds(bounds, item) {
-    return item.extendBounds(bounds)
+    return item.extendBounds(bounds);
   },
   getItemsSetBounds(items) {
     let bounds = MapService.mapUtils.extendBounds();
-    return _.reduce(items, (bounds, item) => {
-      return this.getBounds(bounds, item)
-    }, bounds)
+    return _.reduce(
+      items,
+      (bounds, item) => {
+        return this.getBounds(bounds, item);
+      },
+      bounds
+    );
   },
   resetBounds(bounds?: HtBounds, options?) {
     setTimeout(() => {
       let items = this.itemsSet;
       bounds = this.getItemsSetBounds(items);
-      if(bounds && this.mapUtils.isValidBounds(bounds)) this.setBounds(bounds, options)
-    }, 10)
-
+      if (bounds && this.mapUtils.isValidBounds(bounds))
+        this.setBounds(bounds, options);
+    }, 10);
   },
   leafletSetBoundsOptions: {
     animate: true,
@@ -56,10 +60,12 @@ export const MapService = {
   },
   googleSetBoundsOptions: {},
   setBounds(bounds: HtBounds, options?) {
-    options = options || this.mapType == 'leaflet' ? this.leafletSetBoundsOptions : this.googleSetBoundsOptions;
-    MapService.mapUtils.setBounds(this.map, bounds, options)
+    options =
+      options || this.mapType == "leaflet"
+        ? this.leafletSetBoundsOptions
+        : this.googleSetBoundsOptions;
+    MapService.mapUtils.setBounds(this.map, bounds, options);
   }
-
 };
 
 MapService.map$.subscribe(map => {

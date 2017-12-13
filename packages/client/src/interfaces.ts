@@ -1,20 +1,19 @@
-
-import {Observable} from "rxjs/Observable";
-import {Store} from "./store/store";
+import { Observable } from "rxjs/Observable";
+import { Store } from "./store/store";
 import * as fromRoot from "./reducers";
 
 export const defaultListConfig: IListConfig = {
-  isLive: false,
+  isLive: false
 };
 
 export interface IDateRange {
-  start: string,
-  end: string
+  start: string;
+  end: string;
 }
 
 export interface IListConfig {
-  initialQuery?: object,
-  isLive?: boolean
+  initialQuery?: object;
+  isLive?: boolean;
 }
 
 // export interface AllData<T> {
@@ -27,22 +26,21 @@ export interface IListConfig {
 // }
 
 export enum ApiType {
-  index = 'index',
-  analytics = 'analytics'
+  index = "index",
+  analytics = "analytics"
 }
 
 export interface QueryLabel {
-  label: string,
-  values: string[],
-  value?: string,
-  color?: string
-};
+  label: string;
+  values: string[];
+  value?: string;
+  color?: string;
+}
 
 export interface IClientConfig {
-  store: Store<fromRoot.State>
+  store: Store<fromRoot.State>;
 }
 
 export interface IPageClientConfig extends IClientConfig {
-  dateRangeQuery$?: Observable<object> | null
+  dateRangeQuery$?: Observable<object> | null;
 }
-

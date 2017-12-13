@@ -1,6 +1,6 @@
-import {storeFactory, StoreProvider} from "../store/index";
+import { storeFactory, StoreProvider } from "../store/index";
 import * as fromRoot from "../reducers";
-import {Store} from "../store/store";
+import { Store } from "../store/store";
 
 // const storeProvider: StoreProvider = storeFactory(fromRoot.reducers);
 
@@ -17,13 +17,13 @@ export const ApiStoreService = (() => {
 
   return {
     getInstance() {
-      if ( !instance ) {
+      if (!instance) {
         instance = apiStoreFactory();
       }
       return instance;
     },
     getNewInstance() {
-      return apiStoreFactory()
+      return apiStoreFactory();
     }
-  }
+  };
 })();

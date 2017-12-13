@@ -1,17 +1,16 @@
-import {Observable} from "rxjs/Observable";
+import { Observable } from "rxjs/Observable";
 import * as _ from "underscore";
-import {Page} from "ht-models";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {distinctUntilChanged, map} from "rxjs/operators";
-import {itemAsPage$} from "ht-data";
+import { Page } from "ht-models";
+import { combineLatest } from "rxjs/observable/combineLatest";
+import { distinctUntilChanged, map } from "rxjs/operators";
+import { itemAsPage$ } from "ht-data";
 
 export abstract class EntityClient {
-
   dataArrayWithSelected$(id$, dataArray$, selected$) {
     const userId$ = id$;
     const placelinePage$ = selected$.pipe(
       distinctUntilChanged(),
-      map((data) => {
+      map(data => {
         return data ? [data] : null;
       })
     ); //todo take query from placeline
@@ -21,23 +20,19 @@ export abstract class EntityClient {
       userId$,
       dataArray$,
       (placelinePage, userId, dataArray) => {
-        const filteredData = _.filter(dataArray, (user) => {
+        const filteredData = _.filter(dataArray, user => {
           return userId ? user.id == userId : true;
         });
-        return placelinePage && userId ? placelinePage : filteredData
+        return placelinePage && userId ? placelinePage : filteredData;
       }
     );
 
-
-    return array$
+    return array$;
   }
 
   pageDataWithSelected$(id$, pageData$, selected$) {
     // const userId$ = id$;
-    const placelinePage$ = selected$.pipe(
-      itemAsPage$()
-    );
-
+    const placelinePage$ = selected$.pipe(itemAsPage$());
 
     const newPageData$ = combineLatest(
       placelinePage$,
@@ -46,22 +41,20 @@ export abstract class EntityClient {
       (placelinePage: Page<any>, userId, pageData: Page<any>) => {
         if (!pageData) return pageData;
         let placelineResults = placelinePage ? placelinePage.results : null;
-        const filteredData = _.filter(pageData.results, (user) => {
+        const filteredData = _.filter(pageData.results, user => {
           return userId ? user.id == userId : true;
         });
-        let results = placelineResults && userId ? placelineResults : filteredData;
+        let results =
+          placelineResults && userId ? placelineResults : filteredData;
         let count = userId ? 0 : pageData.count;
-        return {...pageData, results, count}
+        return { ...pageData, results, count };
       }
     );
 
-
-    return newPageData$
+    return newPageData$;
   }
-
 
   getPageFromEntity(item$) {
-    return item$
+    return item$;
   }
-
 }

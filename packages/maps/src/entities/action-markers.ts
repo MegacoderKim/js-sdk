@@ -1,16 +1,18 @@
-import {Color} from "ht-utility";
-import {htAction} from "ht-data";
-import {HtPosition} from "ht-data";
-import {ItemClassFactoryConfig, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
-import {point} from "leaflet";
-
+import { Color } from "ht-utility";
+import { htAction } from "ht-data";
+import { HtPosition } from "ht-data";
+import {
+  ItemClassFactoryConfig,
+  itemsFactory,
+  mapItemsFactory
+} from "../base/map-items-factory";
+import { point } from "leaflet";
 
 export const actionMarkersConfig: ItemClassFactoryConfig = {
   renderConfig: {
     getPosition(data): HtPosition {
       let posObj = htAction(data).getPositionsObject();
-      return posObj ? posObj.position : null
-
+      return posObj ? posObj.position : null;
     }
   },
   styleObj: {
@@ -23,7 +25,7 @@ export const actionMarkersConfig: ItemClassFactoryConfig = {
           strokeOpacity: 1,
           path: google.maps.SymbolPath.CIRCLE,
           scale: 7,
-          strokeWeight: 4,
+          strokeWeight: 4
         }
       }
     },
@@ -35,7 +37,7 @@ export const actionMarkersConfig: ItemClassFactoryConfig = {
         weight: 4,
         opacity: 1,
         color: Color.grey5,
-        pane: 'markerPane'
+        pane: "markerPane"
       },
       popup: {
         offset: point(0, -5),
@@ -51,8 +53,8 @@ export const actionMarkersConfig: ItemClassFactoryConfig = {
 };
 
 export const actionsMarkersTrace = () => {
-  return itemsFactory(actionMarkersConfig)
-}
+  return itemsFactory(actionMarkersConfig);
+};
 
 // export class ActionMarkers {
 //   name = "Action";

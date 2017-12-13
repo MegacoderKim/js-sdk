@@ -1,10 +1,10 @@
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
-import {applyBaseMixins, applyMixins} from "../helpers/mix";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import { applyBaseMixins, applyMixins } from "../helpers/mix";
 
 export abstract class EntityItemClient {
   //listGetData
-  updateStrategy = 'live';
+  updateStrategy = "live";
   pollDuration = 10000;
   // api$;
   name = "item";
@@ -27,7 +27,7 @@ export abstract class EntityItemClient {
     return {};
   }
   get apiParams$() {
-    return this.getApiParams$()
+    return this.getApiParams$();
   }
   get apiQuery$() {
     return this.getApiQuery$();
@@ -35,7 +35,7 @@ export abstract class EntityItemClient {
 
   dataSub: Subscription;
 
-  abstract setLoading(data)
+  abstract setLoading(data);
 
   // setData(data) {
   //
@@ -44,5 +44,4 @@ export abstract class EntityItemClient {
   // setActive(isActive: boolean = true){
   //
   // }
-
-};
+}

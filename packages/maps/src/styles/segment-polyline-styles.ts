@@ -1,4 +1,4 @@
-import {Color} from "ht-utility";
+import { Color } from "ht-utility";
 
 export const segmentPolylineStyles = {
   google: {
@@ -14,4 +14,4 @@ export const segmentPolylineStyles = {
       color: Color.blue
     }
   }
-}
+};

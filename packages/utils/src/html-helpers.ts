@@ -1,3 +1,3 @@
-export function HtShow(toShow: boolean, className: string = 'flex') {
-    return `display: ${toShow ? className : 'none'};`
+export function HtShow(toShow: boolean, className: string = "flex") {
+  return `display: ${toShow ? className : "none"};`;
 }

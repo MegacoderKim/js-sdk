@@ -1,39 +1,54 @@
-import {IUserData, IAction, IEvent, ISegment} from "ht-models";
-import {IActionMark, IActivitySegment, IEventMark, IPlacelineSegment, IProcSegment} from "../interfaces";
-import {htEvent} from "./event";
-import {NameCase, GetMinute} from "ht-utility";
+import { IUserData, IAction, IEvent, ISegment } from "ht-models";
+import {
+  IActionMark,
+  IActivitySegment,
+  IEventMark,
+  IPlacelineSegment,
+  IProcSegment
+} from "../interfaces";
+import { htEvent } from "./event";
+import { NameCase, GetMinute } from "ht-utility";
 import * as _ from "underscore";
-import {CommonFunctions} from "../common";
+import { CommonFunctions } from "../common";
 
 export class HtPlaceline {
-  constructor(public userData: IUserData) {
-
-  }
+  constructor(public userData: IUserData) {}
 
   getPlacelineSegments() {
     let userData = this.userData;
-    let {lastSegment, activitySegments} = this.createActivitiesSegments(userData);
+    let { lastSegment, activitySegments } = this.createActivitiesSegments(
+      userData
+    );
     let actionsMarks = this.createActionsMarks(userData.actions);
-    let eventsMarks = _.map(userData.events, (event) => this.createEventMark(event))
+    let eventsMarks = _.map(userData.events, event =>
+      this.createEventMark(event)
+    );
   }
 
   createActivitiesSegments(userData) {
     let segments = userData.segments;
-    let {lastSegment, activitySegments} = _.reduce([...segments, {}], ({lastSegment, activitySegments}, segment: ISegment) => {
-      let nextLastSegment: ISegment | IPlacelineSegment = segment;
-      if(lastSegment) {
-        if(segment.id) {
-          let activitySegment = this.createActivitySegment(lastSegment);
-          if(activitySegment) activitySegments.push(activitySegment)
-        } else {
-          //last segment
-          nextLastSegment = this.getLastSegment(segment, userData.last_heartbeat_at)
+    let { lastSegment, activitySegments } = _.reduce(
+      [...segments, {}],
+      ({ lastSegment, activitySegments }, segment: ISegment) => {
+        let nextLastSegment: ISegment | IPlacelineSegment = segment;
+        if (lastSegment) {
+          if (segment.id) {
+            let activitySegment = this.createActivitySegment(lastSegment);
+            if (activitySegment) activitySegments.push(activitySegment);
+          } else {
+            //last segment
+            nextLastSegment = this.getLastSegment(
+              segment,
+              userData.last_heartbeat_at
+            );
+          }
         }
-      }
-      return {lastSegment: nextLastSegment, activitySegments}
-    }, {activitySegments: [], lastSegment: null});
+        return { lastSegment: nextLastSegment, activitySegments };
+      },
+      { activitySegments: [], lastSegment: null }
+    );
 
-    return {lastSegment, activitySegments}
+    return { lastSegment, activitySegments };
   }
 
   createActivitySegment(segment: ISegment): IActivitySegment | null {
@@ -49,32 +64,56 @@ export class HtPlaceline {
       segment,
       start: new Date(placelineTime).getTime(),
       end
-    }
+    };
   }
 
-  createEventSegment(eventMark: IEventMark, segment: IActivitySegment): IProcSegment {
-    return {...segment, placelineTime: eventMark.event.recorded_at, ...eventMark}
+  createEventSegment(
+    eventMark: IEventMark,
+    segment: IActivitySegment
+  ): IProcSegment {
+    return {
+      ...segment,
+      placelineTime: eventMark.event.recorded_at,
+      ...eventMark
+    };
   }
 
-  createActionSegment(actionMark: IActionMark, segment: IActivitySegment): IProcSegment {
-    return {...segment, placelineTime: actionMark.actionTime, ...actionMark}
+  createActionSegment(
+    actionMark: IActionMark,
+    segment: IActivitySegment
+  ): IProcSegment {
+    return { ...segment, placelineTime: actionMark.actionTime, ...actionMark };
   }
 
   createActionsMarks(actions: IAction[]): IActionMark[] {
-    let actionMarksObj = _.reduce(actions, (acc, action: IAction) => {
-      acc.actionCountMap = this.setActionCountMap(action, acc.actionCountMap);
-      let assign: IActionMark = this.getActionMark(action, acc.actionCountMap, false, false);
-      if(assign.actionTime) acc.push(assign);
-      let end = this.getActionMark(action, acc.actionMap, true, !!action.display.ended_at);
-      acc.actionMarks.push(end);
-      return acc
-    }, {actionMarks: [], actionCountMap: {}});
+    let actionMarksObj = _.reduce(
+      actions,
+      (acc, action: IAction) => {
+        acc.actionCountMap = this.setActionCountMap(action, acc.actionCountMap);
+        let assign: IActionMark = this.getActionMark(
+          action,
+          acc.actionCountMap,
+          false,
+          false
+        );
+        if (assign.actionTime) acc.push(assign);
+        let end = this.getActionMark(
+          action,
+          acc.actionMap,
+          true,
+          !!action.display.ended_at
+        );
+        acc.actionMarks.push(end);
+        return acc;
+      },
+      { actionMarks: [], actionCountMap: {} }
+    );
 
-    return actionMarksObj.actionMarks
+    return actionMarksObj.actionMarks;
   }
 
   createEventMark(event: IEvent): IEventMark {
-    return {event, display: htEvent(event).getEventDisplay()}
+    return { event, display: htEvent(event).getEventDisplay() };
   }
 
   getLastSegment(lastSeg: ISegment, lastHearbeatAt: string): IPlacelineSegment {
@@ -82,13 +121,19 @@ export class HtPlaceline {
     let pipeClass = "";
     let placelineTime;
     let isLive = false;
-    if(lastSeg.ended_at) {
-      placelineTime = lastSeg.ended_at
+    if (lastSeg.ended_at) {
+      placelineTime = lastSeg.ended_at;
     } else {
       isLive = true;
-      placelineTime = lastHearbeatAt
+      placelineTime = lastHearbeatAt;
     }
-    return {placelineTime, isLive, isLast: true, segmentId: lastSeg.id, ...this.getActivityStyleClass(lastSeg)}
+    return {
+      placelineTime,
+      isLive,
+      isLast: true,
+      segmentId: lastSeg.id,
+      ...this.getActivityStyleClass(lastSeg)
+    };
   }
 
   //helpers
@@ -97,28 +142,33 @@ export class HtPlaceline {
     return this.getActivityStyle(activityClass);
   }
 
-  private getActivityStyle(activityClass = 'no-info') {
+  private getActivityStyle(activityClass = "no-info") {
     return {
       activityBg: `${activityClass}-bg`,
       activityBorder: `${activityClass}-border`,
       activityClass,
       activityColor: `${activityClass}-color`
-    }
+    };
   }
 
   private getActivityClass(segment): string {
     let type = segment.type;
-    if(type == 'location_void') {
-      return 'warning'
+    if (type == "location_void") {
+      return "warning";
     }
-    return type == 'stop' ? 'stop' : 'trip'
+    return type == "stop" ? "stop" : "trip";
   }
 
   private setActionCountMap(action, actionCountMap) {
-    return CommonFunctions.setEntityCountMap(action, actionCountMap, 'type');
+    return CommonFunctions.setEntityCountMap(action, actionCountMap, "type");
   }
 
-  private getActionMark(action: IAction, actionMap, isEnd: boolean, isDone: boolean): IActionMark {
+  private getActionMark(
+    action: IAction,
+    actionMap,
+    isEnd: boolean,
+    isDone: boolean
+  ): IActionMark {
     return {
       actionText: `${NameCase(action.type)} scheduled`,
       actionTime: action.eta || null,
@@ -126,52 +176,52 @@ export class HtPlaceline {
       isEnd,
       isDone,
       action
-    }
+    };
   }
 
   private getActivityText(segment: ISegment | any) {
-    if(segment.activity) {
-      return segment.activity
-    } else if(segment.type == 'stop') {
-      return 'Stop'
-    } else if(segment.reason) {
-      return this.getLocationVoidText(segment)
+    if (segment.activity) {
+      return segment.activity;
+    } else if (segment.type == "stop") {
+      return "Stop";
+    } else if (segment.reason) {
+      return this.getLocationVoidText(segment);
     } else {
-      return NameCase(segment.type)
+      return NameCase(segment.type);
     }
   }
 
   private getActivityPlaceAddress(segment: ISegment) {
-    if(segment.type == 'stop' && segment.place && segment.place.locality) {
-      return segment.place.locality
+    if (segment.type == "stop" && segment.place && segment.place.locality) {
+      return segment.place.locality;
     }
-    return ""
+    return "";
   }
 
   private getLocationVoidText(segment) {
-    switch(segment.reason) {
-      case 'disabled':
+    switch (segment.reason) {
+      case "disabled":
         return "Location disabled";
-      case 'no_permission':
+      case "no_permission":
         return "Location permission unavailable";
-      case 'unknown':
+      case "unknown":
         return "Location unavailable";
       default:
-        return "Location unavailable"
+        return "Location unavailable";
     }
   }
 
   private getEventDisplay(event) {
-    switch(event.type) {
-      case 'tracking.started':
+    switch (event.type) {
+      case "tracking.started":
         return {
-          text: 'Tracking started',
-          subtext: ''
+          text: "Tracking started",
+          subtext: ""
         };
-      case 'tracking.ended':
+      case "tracking.ended":
         return {
-          text: 'Tracking ended',
-          subtext: ''
+          text: "Tracking ended",
+          subtext: ""
         };
       // case 'device.location.disabled':
       //   return {
@@ -193,29 +243,38 @@ export class HtPlaceline {
       //     text: 'Location permission enabled',
       //     subtext: ''
       //   };
-      case 'device.secondary.ignored':
+      case "device.secondary.ignored":
         return {
-          text: 'Secondary device ignored',
-          subtext: ''
+          text: "Secondary device ignored",
+          subtext: ""
         };
     }
   }
 
   private getGapSegment(segment, lastSeg) {
     let gaps = [];
-    if(!lastSeg) return [];
-    if(segment.started_at && lastSeg.ended_at) {
+    if (!lastSeg) return [];
+    if (segment.started_at && lastSeg.ended_at) {
       let endMin = GetMinute(segment.started_at);
       let startMin = GetMinute(lastSeg.ended_at);
-      let duration = (new Date(segment.started_at).getTime() -  new Date(lastSeg.ended_at).getTime()) / 1000
-      if(endMin != startMin && startMin < endMin) {
-        let gap = {...this.getActivityStyle('no-info'), time: lastSeg.ended_at, activityText: 'No information', events: [], duration, id: "asd"};
-        gaps.push(gap)
+      let duration =
+        (new Date(segment.started_at).getTime() -
+          new Date(lastSeg.ended_at).getTime()) /
+        1000;
+      if (endMin != startMin && startMin < endMin) {
+        let gap = {
+          ...this.getActivityStyle("no-info"),
+          time: lastSeg.ended_at,
+          activityText: "No information",
+          events: [],
+          duration,
+          id: "asd"
+        };
+        gaps.push(gap);
       }
     }
-    return gaps
+    return gaps;
   }
-
 }
 
 export const htPlaceline = (userData: IUserData) => new HtPlaceline(userData);

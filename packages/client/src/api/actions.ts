@@ -1,9 +1,9 @@
-import {HtBaseApi} from "./base";
+import { HtBaseApi } from "./base";
 
-export class HtActionsApi extends HtBaseApi{
+export class HtActionsApi extends HtBaseApi {
   name = "Action";
   constructor() {
-    super('actions')
+    super("actions");
   }
 }
 

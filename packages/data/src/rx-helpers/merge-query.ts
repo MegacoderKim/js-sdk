@@ -1,12 +1,12 @@
-import {map} from "rxjs/operators";
+import { map } from "rxjs/operators";
 
-export const MergeQuery = (defaultQuery) => {
-  return (query$) => {
+export const MergeQuery = defaultQuery => {
+  return query$ => {
     return query$.pipe(
-      map((query) => {
+      map(query => {
         console.log(query);
-        return query ? {...defaultQuery, ...query} : query
+        return query ? { ...defaultQuery, ...query } : query;
       })
-    )
-  }
+    );
+  };
 };

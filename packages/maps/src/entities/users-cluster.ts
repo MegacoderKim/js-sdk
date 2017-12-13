@@ -1,19 +1,23 @@
-import {htUser} from "ht-data";
-import {userDivFactory} from "../helpers/user-div-factory";
-import {HtPosition} from "ht-data";
-import {StyleObj} from "../interfaces";
-import {ItemClassFactoryConfig, itemsBaseFactory, itemsFactory, mapItemsFactory} from "../base/map-items-factory";
-import {point} from "leaflet";
+import { htUser } from "ht-data";
+import { userDivFactory } from "../helpers/user-div-factory";
+import { HtPosition } from "ht-data";
+import { StyleObj } from "../interfaces";
+import {
+  ItemClassFactoryConfig,
+  itemsBaseFactory,
+  itemsFactory,
+  mapItemsFactory
+} from "../base/map-items-factory";
+import { point } from "leaflet";
 declare const RichMarkerPosition: any;
-
 
 const usersClustersConfig: ItemClassFactoryConfig = {
   renderConfig: {
     getPosition(data): HtPosition {
-      return htUser(data).getPosition()
+      return htUser(data).getPosition();
     },
     getDivContent(data) {
-      return userDivFactory(data)
+      return userDivFactory(data);
     },
     getInfoContent(data) {
       let string = `<div>
@@ -21,7 +25,7 @@ const usersClustersConfig: ItemClassFactoryConfig = {
 <div>${data.display.status_text}</div>
 <div>${data.display.sub_status_text}</div>
 </div>`;
-      return string
+      return string;
     }
   },
   styleObj: {
@@ -55,7 +59,7 @@ const usersClustersConfig: ItemClassFactoryConfig = {
 };
 
 export const usersClustersTrace = () => {
-  return itemsFactory(usersClustersConfig)
+  return itemsFactory(usersClustersConfig);
 };
 
 // export class UsersClusters {

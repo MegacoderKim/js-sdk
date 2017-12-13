@@ -1,21 +1,21 @@
-import {Constructor} from "../interfaces";
-import {Subscription} from "rxjs/Subscription";
-import {Observable} from "rxjs/Observable";
-import {MapService} from "../global/map-service";
-import {distinctUntilChanged} from "rxjs/operators/distinctUntilChanged";
-import {filter} from "rxjs/operators/filter";
-import {map} from "rxjs/operators/map";
-import {pluck} from "rxjs/operators/pluck";
-import {scan} from "rxjs/operators/scan";
+import { Constructor } from "../interfaces";
+import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
+import { MapService } from "../global/map-service";
+import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
+import { filter } from "rxjs/operators/filter";
+import { map } from "rxjs/operators/map";
+import { pluck } from "rxjs/operators/pluck";
+import { scan } from "rxjs/operators/scan";
 import * as _ from "underscore";
-import {HtPosition} from "ht-data";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {AllData, Page} from "ht-models";
+import { HtPosition } from "ht-data";
+import { combineLatest } from "rxjs/observable/combineLatest";
+import { AllData, Page } from "ht-models";
 
 export interface IMarkersArray {
-  valid: any[],
-  invalid: any[],
-  isNew: boolean,
+  valid: any[];
+  invalid: any[];
+  isNew: boolean;
 }
 
 export interface IDataObservableBase {
@@ -23,7 +23,9 @@ export interface IDataObservableBase {
   isValidMapItems?: (data) => boolean;
   getPosition: (data) => HtPosition;
 }
-export function DataObservableMixin <TBase extends Constructor<IDataObservableBase>>(Base: TBase) {
+export function DataObservableMixin<
+  TBase extends Constructor<IDataObservableBase>
+>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
     dataPageSource$: Observable<Page<any>>;
@@ -33,58 +35,71 @@ export function DataObservableMixin <TBase extends Constructor<IDataObservableBa
     _procData$() {
       return (source$: Observable<Page<any>>) => {
         return source$.pipe(
-          map((pageData) => {
+          map(pageData => {
             let isNew = pageData && pageData.count && !pageData.next;
             return this.getMarkersArray(pageData.results, isNew);
           })
-        )
-      }
-    };
-
-    getMarkersArray(array: any[], isNew: boolean = false) {
-      return _.reduce(array, (acc, item) => {
-        const isValid = this.isValidMapItems ? this.isValidMapItems(item) : !!this.getPosition(item);
-        if (isValid) {
-          acc.valid.push(item)
-        } else {
-          acc.invalid.push(item)
-        };
-        return acc
-      }, {valid: [], invalid: [], isNew})
+        );
+      };
     }
 
-    setPageData$(data$: Observable<Page<any> | null>, config: SetDataConfig = {}) { //todo take page data, add diff apis
+    getMarkersArray(array: any[], isNew: boolean = false) {
+      return _.reduce(
+        array,
+        (acc, item) => {
+          const isValid = this.isValidMapItems
+            ? this.isValidMapItems(item)
+            : !!this.getPosition(item);
+          if (isValid) {
+            acc.valid.push(item);
+          } else {
+            acc.invalid.push(item);
+          }
+          return acc;
+        },
+        { valid: [], invalid: [], isNew }
+      );
+    }
+
+    setPageData$(
+      data$: Observable<Page<any> | null>,
+      config: SetDataConfig = {}
+    ) {
+      //todo take page data, add diff apis
       if (this.dataSub) {
         this.dataSub.unsubscribe();
       }
       const hide$ = config.hide$;
-      this.dataPageSource$ = hide$ ? combineLatest(
-        data$,
-        hide$.pipe(distinctUntilChanged()),
-        (data, hide) => !!hide ? {results: [], count: 0, next: '', previous: ''} : data
-      ) : data$;
-      this.data$ = this.dataPageSource$.pipe(
-        this._procData$()
-      );
-      this._initDataObserver()
-    };
+      this.dataPageSource$ = hide$
+        ? combineLatest(
+            data$,
+            hide$.pipe(distinctUntilChanged()),
+            (data, hide) =>
+              !!hide ? { results: [], count: 0, next: "", previous: "" } : data
+          )
+        : data$;
+      this.data$ = this.dataPageSource$.pipe(this._procData$());
+      this._initDataObserver();
+    }
 
     setData$(data$: Observable<any[]>, config: SetDataConfig = {}) {
       if (this.dataSub) {
         this.dataSub.unsubscribe();
-      };
+      }
       const hide$ = config.hide$;
-      this.dataArraySource$ = hide$ ? combineLatest(
-        data$,
-        hide$.pipe(distinctUntilChanged()),
-        (data, hide) => !!hide ? [] : data
-      ) : data$;
+      this.dataArraySource$ = hide$
+        ? combineLatest(
+            data$,
+            hide$.pipe(distinctUntilChanged()),
+            (data, hide) => (!!hide ? [] : data)
+          )
+        : data$;
       this.data$ = this.dataArraySource$.pipe(
         map((dataArray: any[]) => {
           return this.getMarkersArray(dataArray, !!dataArray);
         })
       );
-      this._initDataObserver()
+      this._initDataObserver();
     }
 
     // _initData$() {
@@ -100,10 +115,7 @@ export function DataObservableMixin <TBase extends Constructor<IDataObservableBa
     // };
 
     _initDataObserver() {
-
-      let userData$ = this.data$.pipe(
-        filter(data =>  !!MapService.map)
-      );
+      let userData$ = this.data$.pipe(filter(data => !!MapService.map));
 
       // function isNewId (newItem, old) {
       //   if(!old && newItem) return true;
@@ -113,15 +125,15 @@ export function DataObservableMixin <TBase extends Constructor<IDataObservableBa
       //   if(!old && newList) return true;
       //   if(newList && old) return !newList.next && newList.count
       // }
-      let sub = userData$.subscribe(({valid, invalid, isNew}) => {
+      let sub = userData$.subscribe(({ valid, invalid, isNew }) => {
         this.trace(valid);
-        if(isNew) MapService.resetBounds()
+        if (isNew) MapService.resetBounds();
       });
       this.dataSub = sub;
     }
-  }
-};
+  };
+}
 
 export interface SetDataConfig {
-  hide$?: Observable<any>,
+  hide$?: Observable<any>;
 }

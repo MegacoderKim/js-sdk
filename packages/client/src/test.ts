@@ -1,11 +1,9 @@
-import {applyMixins} from "./helpers/mix";
+import { applyMixins } from "./helpers/mix";
 
 export const listF = () => {
   const state = {
-    name: 'list',
-    hi: () => {
-
-    }
+    name: "list",
+    hi: () => {}
   };
 
   return {
@@ -13,23 +11,23 @@ export const listF = () => {
     ...sayHi(state),
     ...setName(state),
     ...excl(state)
-  }
+  };
 };
 
-export const sayHi = (state) => ({
+export const sayHi = state => ({
   hi: () => {
     return "hi " + state.name;
   }
 });
-export const setName = (state) => ({
-  set: (name) => {
+export const setName = state => ({
+  set: name => {
     state.name = name;
   }
 });
-export const excl = (state) => ({
+export const excl = state => ({
   ex: () => {
     // console.log(state);
-    return `${state.hi()}!`
+    return `${state.hi()}!`;
   }
 });
 
@@ -39,7 +37,7 @@ export class Main implements Base, Ex, Ex2 {
   exc;
   comp;
   log;
-};
+}
 
 export class Base {
   name: string;
@@ -51,25 +49,25 @@ export class Base {
 export class Ex {
   say;
   exc() {
-    return this.say() + '!'
-  };
+    return this.say() + "!";
+  }
   comp() {
-    return "Hi"
+    return "Hi";
   }
 }
 
 export class Ex2 {
   comp() {
-    return "So hi"
-  };
+    return "So hi";
+  }
   say;
   log(name) {
-    return name + " Say " + this.comp() + this.say()
+    return name + " Say " + this.comp() + this.say();
   }
 }
 
 applyMixins(Main, [Ex, Base, Ex2]);
 
 export class Sup extends Main {
-  name = "hoho"
+  name = "hoho";
 }

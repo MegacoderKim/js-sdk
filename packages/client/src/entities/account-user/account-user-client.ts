@@ -1,26 +1,26 @@
-import {entityApi} from "../../global/entity-api";
-import {getIdQueryDataMixin} from "../../mixins/get-data";
-import {clientSubMixin} from "../../mixins/client-subscription";
-import {itemQueryMixin} from "../../mixins/entity-query";
-import {of} from "rxjs/observable/of";
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
+import { entityApi } from "../../global/entity-api";
+import { getIdQueryDataMixin } from "../../mixins/get-data";
+import { clientSubMixin } from "../../mixins/client-subscription";
+import { itemQueryMixin } from "../../mixins/entity-query";
+import { of } from "rxjs/observable/of";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 import * as fromRoot from "../../reducers";
-import * as fromAccounts from "../../dispatchers/accounts-dispatcher"
-import {IPageClientConfig} from "../../interfaces";
-import {getFirstDataMixin} from "../../mixins/get-first-data";
-import {EntityItemClient} from "../../base/item-client";
+import * as fromAccounts from "../../dispatchers/accounts-dispatcher";
+import { IPageClientConfig } from "../../interfaces";
+import { getFirstDataMixin } from "../../mixins/get-first-data";
+import { EntityItemClient } from "../../base/item-client";
 
 export class AccountUser extends EntityItemClient {
   query$: Observable<object> = of({});
   id$;
-  updateStrategy = 'once';
+  updateStrategy = "once";
   pollDuration = 10000;
   store;
   data$;
   loading$;
 
-  constructor({dateRangeQuery$, store}: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
     super();
     this.store = store;
     // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
@@ -31,22 +31,22 @@ export class AccountUser extends EntityItemClient {
   }
 
   getDefaultQuery() {
-    return {}
+    return {};
   }
 
   setId(id) {
-    this.store.dispatch(new fromAccounts.SetUserId(id))
+    this.store.dispatch(new fromAccounts.SetUserId(id));
   }
 
-  setLoading(loading) {
-
-  }
+  setLoading(loading) {}
 
   setData(data) {
-    this.store.dispatch(new fromAccounts.SetAccountUser(data))
+    this.store.dispatch(new fromAccounts.SetAccountUser(data));
   }
 
   api$ = (id, query) => entityApi.accounts.get(id, query);
 }
 
-export const AccountUserClient = clientSubMixin(getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(AccountUser))));
+export const AccountUserClient = clientSubMixin(
+  getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(AccountUser)))
+);
