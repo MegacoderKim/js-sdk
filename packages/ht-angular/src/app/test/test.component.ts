@@ -12,14 +12,14 @@ import {empty} from "rxjs/observable/empty";
   styleUrls: ['./test.component.less']
 })
 export class TestComponent implements OnInit {
-
+  showAll: boolean = true;
   userId = "43fbf0db-530b-4f79-9093-6f565ea6d37e";
   constructor(
     private userService: HtUsersService,
   ) { }
 
   ngOnInit() {
-    // this.userService.setShowAll();
+    if (this.showAll) this.userService.setShowAll();
   }
 
 
