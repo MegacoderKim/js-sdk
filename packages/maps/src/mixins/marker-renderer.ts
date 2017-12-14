@@ -40,7 +40,6 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
     }
 
     removeAll(entities) {
-      this.cluster && MapService.mapUtils.removeClusterMarkers(this.cluster);
       _.each(entities, (entity: any) => {
         this.removeItem(entity.item);
       });

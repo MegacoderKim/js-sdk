@@ -49,7 +49,8 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
 
     removeAll(entities) {
       this.cluster && MapService.mapUtils.removeClusterMarkers(this.cluster);
-      super.removeAll(entities);
+      this.entities = {}
+      // super.removeAll(entities);
     }
   };
 }

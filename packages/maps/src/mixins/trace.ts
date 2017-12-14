@@ -33,6 +33,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
         return false;
       }
       if (data && data.length) {
+        this.clearAllClusters(data);
         _.each(data, datum => {
           let id = datum["id"];
           let entity = this.entities[id];
@@ -90,6 +91,11 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
         bounds
       );
       return newBounds;
+    }
+    clearAllClusters(data: any[]) {
+      if(this.cluster && Object.keys(this.entities).length > 400) {
+        this.removeAll(this.entities)
+      }
     }
   };
 }
