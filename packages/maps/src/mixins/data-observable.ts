@@ -24,8 +24,7 @@ export interface IDataObservableBase {
   getPosition: (data) => HtPosition;
 }
 export function DataObservableMixin<
-  TBase extends Constructor<IDataObservableBase>
->(Base: TBase) {
+  TBase extends Constructor<IDataObservableBase>>(Base: TBase) {
   return class extends Base {
     dataSub: Subscription;
     dataPageSource$: Observable<Page<any>>;
@@ -36,7 +35,7 @@ export function DataObservableMixin<
       return (source$: Observable<Page<any>>) => {
         return source$.pipe(
           map(pageData => {
-            let isNew = pageData && pageData.count && !pageData.next;
+            let isNew = pageData && pageData.count && !pageData.previous;
             return this.getMarkersArray(pageData.results, isNew);
           })
         );
