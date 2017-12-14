@@ -1,9 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../../ht/ht-users.service";
 import {distinctUntilChanged, map, skip} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {empty} from "rxjs/observable/empty";
 
 @Component({
   selector: 'ht-users-filter',
@@ -32,7 +34,8 @@ export class UsersFilterComponent implements OnInit {
   ordering$;
   showFilter$;
   constructor(
-    private usersClientService: HtUsersService
+    private usersClientService: HtUsersService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -45,8 +48,8 @@ export class UsersFilterComponent implements OnInit {
           map(data => !!data),
           distinctUntilChanged(),
         );
-
-    })
+      this.cd.detectChanges();
+    });
 
 
     this.statusFiltes = this.usersClientService.filterClass.statusQueryArray;

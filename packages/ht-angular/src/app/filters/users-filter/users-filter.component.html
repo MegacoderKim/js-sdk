@@ -27,8 +27,8 @@
 
     </div>
   </div>
-  <div class="field flex is-grouped is-grouped-multiline" *ngIf="query$">
-    <div class="control is-marginless" *ngFor="let query of query$ | async as queries">
+  <div class="flex flex-row row-gap-4" *ngIf="query$">
+    <div class="" *ngFor="let query of query$ | async as queries">
       <div class="tags has-addons">
         <div class="tag is-medium is-primary">{{query.label}}</div>
         <a (click)="clearQuery(query.key)" class="tag is-medium is-primary is-delete"></a>
