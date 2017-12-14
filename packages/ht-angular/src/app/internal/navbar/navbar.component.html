@@ -25,7 +25,7 @@
           <a (click)="logout()" class="navbar-item has-text-danger">Logout</a>
           <a class="navbar-item" (click)="setAccount(accountsUser.default_account)">Default account</a>
           <a class="navbar-item" [routerLink]="[{outlets: {modal: ['accounts']}}]">Set accounts</a>
-          <a class="navbar-item">Set groups</a>
+          <a class="navbar-item" [routerLink]="['groups']">Set groups</a>
         </div>
       </div>
       <ng-template #login>

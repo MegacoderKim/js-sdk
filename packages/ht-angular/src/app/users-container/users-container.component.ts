@@ -9,6 +9,7 @@ import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {Color} from "ht-utility";
 import {distinctUntilChanged, map} from "rxjs/operators";
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'ht-users-container',
@@ -79,11 +80,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.loadingUsers$ = this.userService.list.loading$
-      .pipe(
-        map(data => !!data),
-        distinctUntilChanged()
-      );
+    this.loadingUsers$ = this.userService.getLoading$();
 
     this.loadingUserDataId$ = this.userService.placeline.loading$
       .pipe(
