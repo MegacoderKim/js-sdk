@@ -10,6 +10,7 @@ import { IPageClientConfig } from "../../interfaces";
 import { IUserListSummary } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
+import { IAllowedQueryMap } from "ht-data";
 
 export class UsersSummary extends EntityListClient {
   name = "users summary";
@@ -19,6 +20,14 @@ export class UsersSummary extends EntityListClient {
   data$: Observable<IUserListSummary>;
   loading$: Observable<boolean>;
   store;
+  allowedQueryMap: IAllowedQueryMap[] = [
+    {
+      key: "show_all",
+    },
+    {
+      key: "search"
+    }
+  ];
   api$ = query => entityApi.users.summary(query);
 
   setActive(isActive: boolean | string = true) {

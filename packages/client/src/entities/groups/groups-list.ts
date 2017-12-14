@@ -11,6 +11,7 @@ import { entityApi } from "../../global/entity-api";
 import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
+import { IAllowedQueryMap } from "ht-data";
 
 export class GroupsList {
   name = "group";

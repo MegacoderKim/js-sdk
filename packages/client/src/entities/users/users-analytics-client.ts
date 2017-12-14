@@ -12,6 +12,7 @@ import { IPageClientConfig } from "../../interfaces";
 import { Page } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
+import { IAllowedQueryMap } from "ht-data";
 
 export class UsersAnalytics extends EntityListClient {
   // updateStrategy = 'update';

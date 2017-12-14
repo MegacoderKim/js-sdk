@@ -4,7 +4,7 @@ import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import { Observable } from "rxjs/Observable";
 import { EntityAllItemsClient } from "../../base/all-items.client";
-import { htUser } from "ht-data";
+import { htUser, IAllowedQueryMap } from "ht-data";
 import { getAllPageDataMixin } from "../../mixins/get-data";
 import { listQueryMixin } from "../../mixins/entity-query";
 import { clientSubMixin } from "../../mixins/client-subscription";
@@ -25,6 +25,19 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   store;
   dataArray$;
   dataEntities$: Observable<AllData<any>>;
+  allowedQueryMap: IAllowedQueryMap[] = [
+    {
+      key: "status",
+      filter: (value, oldValue) => !!value
+    },
+    {
+      key: "show_all",
+      filter: (value, oldValue) => {
+        if(!value) this.clearData();
+        return true
+      }
+    }
+  ];
 
   constructor({ dateRangeQuery$, store }: IPageClientConfig) {
     super();

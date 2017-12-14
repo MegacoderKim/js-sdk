@@ -155,9 +155,10 @@ export class HtUsersClient extends EntityClient {
   }
 
   get queryLabel$() {
-    let query$ = this.list.getApiQuery$().pipe(filter(data => !!data));
+    let query$ = this.list.getBaseQuery$().pipe(filter(data => !!data));
     return query$.pipe(
       map(query => {
+        // console.log("cl", query);
         let queryLabel = this.filterClass.getQueryLabel(query);
         return queryLabel;
       })
