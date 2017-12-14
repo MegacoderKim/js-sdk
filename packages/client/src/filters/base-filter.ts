@@ -48,7 +48,7 @@ export abstract class BaseFilter {
 
   getQueryLabelFromValue(value: string, key?: string): string | null {
     if (key === "search") return value;
-    if (key === "show_all") return "Show All";
+    // if (key === "show_all") return "Show All"; //todo add this after clear on show all removed
     let queryLabel = _.find(this.allQueryArray, (queryLabel: QueryLabel) => {
       let valueString;
       if (queryLabel.values) {

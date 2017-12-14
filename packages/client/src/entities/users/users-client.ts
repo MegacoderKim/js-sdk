@@ -22,7 +22,7 @@ import { DateRangeToQuery$ } from "ht-data";
 import { ApiStoreService } from "../../global/store-provider";
 import { filter } from "rxjs/operators/filter";
 import { scan } from "rxjs/operators/scan";
-import { pluck, flatMap, map, distinctUntilChanged } from "rxjs/operators";
+import {pluck, flatMap, map, distinctUntilChanged, share} from "rxjs/operators";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { of } from "rxjs/observable/of";
 import { empty } from "rxjs/observable/empty";
@@ -30,6 +30,7 @@ import { dateRangeService } from "../../global/date-range";
 import { entityApi } from "../../global/entity-api";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
+import {CombineLoadings$} from "ht-data";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -71,6 +72,10 @@ export class HtUsersClient extends EntityClient {
     this.listAll = this.analyticsAll;
 
     this.initEffects();
+  }
+
+  getLoading$(): Observable<boolean> {
+    return CombineLoadings$(this.list.loading$, this.summary.loading$);
   }
 
   set statusQueryArray(data: QueryLabel[]) {
