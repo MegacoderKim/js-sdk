@@ -1,6 +1,6 @@
 {
   "name": "ht-data",
-  "version": "0.0.3-beta",
+  "version": "0.0.4-beta",
   "description": "",
   "main": "dist/ht-data.js",
   "module": "dist/ht-data.js",
