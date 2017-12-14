@@ -93,7 +93,8 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
       return newBounds;
     }
     clearAllClusters(data: any[]) {
-      if(this.cluster && Object.keys(this.entities).length > 400) {
+      const entitiesCount = Object.keys(this.entities).length;
+      if(this.cluster && entitiesCount > 400 && entitiesCount - data.length > 100) {
         this.removeAll(this.entities)
       }
     }
