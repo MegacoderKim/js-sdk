@@ -128,6 +128,8 @@ export class HTTrackActions {
         return `${GetBaseUrl()}actions/deeplink/?short_code=${identifier}`;
       case 'lookupId':
         return `${GetBaseUrl()}actions/deeplink/?lookup_id=${identifier}`;
+      case 'collectionId':
+        return `${GetBaseUrl()}actions/deeplink/?collection_id=${identifier}`;
       case 'actionId':
         return `${GetBaseUrl()}actions/deeplink/?action_id=${identifier}`;
       default:
