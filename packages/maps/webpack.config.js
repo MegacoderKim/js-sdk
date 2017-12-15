@@ -18,7 +18,7 @@ var browserSpecConfig = {
     resolve: {
         extensions: [".ts", ".js"],
         modules: [path.resolve('./src'), 'node_modules', '../../node_modules'],
-        alias: webpackRxjsExternals.alias()
+        alias: Object.assign({}, webpackRxjsExternals.alias())
     },
     externals: [
         {
@@ -45,9 +45,16 @@ var browserSpecConfig = {
                 commonjs2: 'underscore',
                 amd: 'underscore',
                 root: '_'
-            }
+            },
+            'leaflet': {
+                umd: 'L',
+                root: 'L',
+                global: 'L',
+                commonjs2: 'leaflet',
+                commonjs: 'leaflet',
+                amd: 'leaflet'
+            },
         },
-        'leaflet',
         'leaflet.markercluster',
         webpackRxjsExternals(),
     ],
