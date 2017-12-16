@@ -15,33 +15,42 @@ export const actionMarkersConfig: ItemClassFactoryConfig = {
       return posObj ? posObj.position : null;
     }
   },
-  styleObj: {
-    google: {
-      default: {
-        icon: {
-          fillColor: Color.blue,
-          fillOpacity: 1,
-          strokeColor: Color.grey5,
-          strokeOpacity: 1,
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 7,
-          strokeWeight: 4
-        }
-      }
-    },
-    leaflet: {
-      default: {
-        radius: 10,
-        fillColor: Color.blue,
-        fillOpacity: 1,
-        weight: 4,
-        opacity: 1,
-        color: Color.grey5,
-        pane: "markerPane"
-      },
-      popup: {
-        offset: point(0, -5),
-        closeButton: false
+  styleFunct: {
+    get(type) {
+      switch (type) {
+        case 'google': {
+          return {
+            default: {
+              icon: {
+                fillColor: Color.blue,
+                fillOpacity: 1,
+                strokeColor: Color.grey5,
+                strokeOpacity: 1,
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 7,
+                strokeWeight: 4
+              }
+            }
+          }
+        };
+        case "leaflet": {
+          return {
+            default: {
+              radius: 10,
+              fillColor: Color.blue,
+              fillOpacity: 1,
+              weight: 4,
+              opacity: 1,
+              color: Color.grey5,
+              pane: "markerPane"
+            },
+            popup: {
+              offset: [0, -5],
+              // offset: point(0, -5),
+              closeButton: false
+            }
+          }
+        };
       }
     }
   },
@@ -58,7 +67,7 @@ export const actionsMarkersTrace = () => {
 
 // export class ActionMarkers {
 //   name = "Action";
-//   styleObj = {
+//   styleFunct = {
 //     google: {
 //       default: {
 //         icon: {

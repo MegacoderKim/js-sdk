@@ -2,7 +2,7 @@ import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
 declare var RichMarkerPosition: any;
 import { HtPosition } from "ht-data";
-import { StyleObj } from "../interfaces";
+import { StyleFunct } from "../interfaces";
 import {
   ItemClassFactoryConfig,
   itemsFactory,
@@ -19,16 +19,26 @@ export const currentUserConfig: ItemClassFactoryConfig = {
       return userDivFactory(data);
     }
   },
-  styleObj: {
-    google: {
-      default: {
-        flat: true,
-        anchor: RichMarkerPosition.BOTTOM_CENTER
-      }
-    },
-    leaflet: {
-      default: {
-        iconAnchor: point(15, 43)
+
+  styleFunct: {
+    get(type) {
+      switch (type) {
+        case "google": {
+          return {
+            default: {
+              flat: true,
+              anchor: RichMarkerPosition.BOTTOM_CENTER
+            }
+          }
+        };
+        case "leaflet": {
+          return {
+            default: {
+              // iconAnchor: point(15, 43)
+              iconAnchor: [15, 43]
+            }
+          }
+        }
       }
     }
   },
@@ -45,7 +55,7 @@ export const currentUserTrace = () => {
 };
 // export class CurrentUser {
 //   name = "Current user";
-//   styleObj: StyleObj = {
+//   styleFunct: StyleFunct = {
 //     google: {
 //       default: {
 //         flat: true,

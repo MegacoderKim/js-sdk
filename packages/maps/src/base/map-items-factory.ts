@@ -9,7 +9,7 @@ import { PolylinesMixin } from "../mixins/polyline-renderer";
 import { ClusterMixin } from "../mixins/clusters";
 import * as _ from "underscore";
 import { StyleMixin } from "../mixins/styles";
-import { DataConfig, StyleObj } from "../interfaces";
+import {DataConfig, StyleFunct, StyleObj} from "../interfaces";
 import { MarkersBase } from "./markers.factory";
 import { PolylinesBase } from "./polylines.factory";
 import { DivMarkersBase } from "./div-markers.factory";
@@ -60,7 +60,7 @@ export interface MapItemsFactoryConfig {
 export const itemsBaseFactory = ({
   renderConfig,
   typeConfig,
-  styleObj
+  styleFunct
 }: ItemClassFactoryConfig) => {
   let mapTypesBase = {
     polylines: PolylinesBase,
@@ -78,15 +78,25 @@ export const itemsBaseFactory = ({
 export const itemsFactory = ({
   renderConfig,
   typeConfig,
+  styleFunct,
   styleObj
 }: ItemClassFactoryConfig) => {
-  var base = itemsBaseFactory({ renderConfig, typeConfig, styleObj });
-  return new base(renderConfig, styleObj);
+  var base = itemsBaseFactory({ renderConfig, typeConfig, styleFunct: styleFunct });
+
+  function getStyleFunct(styleObj: StyleObj): StyleFunct {
+    return {
+      get(type) {
+        return styleObj[type];
+      }
+    }
+  }
+  return new base(renderConfig, styleFunct || getStyleFunct(styleObj));
 };
 
 export interface ItemClassFactoryConfig {
   renderConfig: DataConfig<any>;
   typeConfig?: Partial<MapItemsFactoryConfig>;
+  styleFunct?: StyleFunct;
   styleObj?: StyleObj;
   name?: string;
 }

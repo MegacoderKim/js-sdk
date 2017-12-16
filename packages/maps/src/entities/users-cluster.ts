@@ -1,7 +1,7 @@
 import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
 import { HtPosition } from "ht-data";
-import { StyleObj } from "../interfaces";
+import { StyleFunct } from "../interfaces";
 import {
   ItemClassFactoryConfig,
   itemsBaseFactory,
@@ -28,25 +28,35 @@ const usersClustersConfig: ItemClassFactoryConfig = {
       return string;
     }
   },
-  styleObj: {
-    google: {
-      default: {
-        flat: true,
-        anchor: RichMarkerPosition.BOTTOM_CENTER,
-        zIndex: 1
-      },
-      popup: {
-        disableAutoPan: true,
-        pixelOffset: new google.maps.Size(0, -35)
-      }
-    },
-    leaflet: {
-      default: {
-        iconAnchor: point(15, 43)
-      },
-      popup: {
-        offset: point(0, -35),
-        closeButton: false
+  styleFunct: {
+    get(type) {
+      switch (type) {
+        case "google": {
+          return {
+            default: {
+              flat: true,
+              anchor: RichMarkerPosition.BOTTOM_CENTER,
+              zIndex: 1
+            },
+            popup: {
+              disableAutoPan: true,
+              pixelOffset: new google.maps.Size(0, -35)
+            }
+          }
+        };
+        case "leaflet": {
+          return {
+            default: {
+              // iconAnchor: point(15, 43)
+              iconAnchor: [15, 43]
+            },
+            popup: {
+              // offset: point(0, -35),
+              offset: [0, -35],
+              closeButton: false
+            }
+          }
+        }
       }
     }
   },
@@ -64,7 +74,7 @@ export const usersClustersTrace = () => {
 
 // export class UsersClusters {
 //   name = "Cluster user";
-//   styleObj: StyleObj = {
+//   styleFunct: StyleFunct = {
 //     google: {
 //       default: {
 //         flat: true,

@@ -15,7 +15,7 @@ export const SegmentPolylinesConfig: ItemClassFactoryConfig = {
       return data.time_aware_polyline;
     }
   },
-  styleObj: segmentPolylineStyles,
+  styleFunct: segmentPolylineStyles,
   typeConfig: {
     isPolyline: true,
     hasDataObservable: false
@@ -28,7 +28,7 @@ export const segmentsPolylinesTrace = () => {
 };
 
 // export class SegmentPolylines {
-//   styleObj = segmentPolylineStyles;
+//   styleFunct = segmentPolylineStyles;
 //
 //   getEncodedPath(data) {
 //     return data.encoded_polyline;
