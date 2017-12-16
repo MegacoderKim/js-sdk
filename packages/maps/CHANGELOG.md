@@ -1,3 +1,12 @@
+# 0.0.15-beta
+- Use array instead of `Leaflet.point` to fix umd bundle
+- Fix umd bundle by adding leaflet and leaflet.markercluster in externals of webpack config
+- Create `StyleFunct` interface to pass style info. Removes dependency on both google maps and leaflet
+- Add `StyleFunct` to entities
+
+# 0.0.14-beta
+- Remove leaflet styles, fix leaflet dependencies
+
 # 0.0.13-beta
 - Change google map default style
 - Fire reset map on `!page.previous` condition. Resets map when first page is fetched

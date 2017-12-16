@@ -4,6 +4,7 @@ export interface MapUtils {
   type: HtMapType;
   setMap: (item: HtMapItem, map: HtMap) => void;
   setStyle: (item: HtMapItem, style) => void;
+  setCircleStyle: (item: HtMapItem, style) => void;
   setPolylineStyle: (polyline, style) => void;
   clearItem: (item: HtMapItem) => void;
   extendBounds: (

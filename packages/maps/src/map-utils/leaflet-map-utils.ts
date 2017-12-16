@@ -38,6 +38,10 @@ export const SetStyle = (item, style) => {
   if (item.setStyle) item.setStyle(style);
 };
 
+export const setCircleStyle = (item, style) => {
+  SetStyle(item, style)
+};
+
 export const setPolylineStyle = (polyline, style) => {
   polyline.setStyle(style);
 };
@@ -236,6 +240,7 @@ export const LeafletUtils: MapUtils = {
   type: "leaflet",
   setMap: SetMap,
   setStyle: SetStyle,
+  setCircleStyle,
   setPolylineStyle,
   clearItem: ClearItem,
   extendBounds: ExtendBounds,

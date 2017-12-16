@@ -1,5 +1,6 @@
 import { ISegment, ITimeAwarePoint, Partial } from "ht-models";
 import { HtPosition } from "ht-data";
+import {HtMapType} from "./map-utils/interfaces";
 
 export interface IReplayHead {
   timePercent: number;
@@ -46,6 +47,13 @@ export interface Entity<T> {
   item: any;
   isOld: boolean;
   data: T;
+}
+
+export interface StyleFunct {
+  get: (type: HtMapType) => {
+    default: object;
+    [key: string]: object;
+  }
 }
 
 export interface StyleObj {

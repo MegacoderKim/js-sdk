@@ -14,12 +14,13 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
     popup;
     defaultPopupStyle = {
       disableAutoPan: true,
-      pixelOffset: new google.maps.Size(0, -35)
+      // pixelOffset: new google.maps.Size(0, -35)
     };
     constructor(...arg: any[]) {
       super(...arg);
       this.addPopup();
     }
+
     addPopup() {
       this.popup = MapService.mapUtils.getPopup(
         this.getStyle("popup", this.defaultPopupStyle)

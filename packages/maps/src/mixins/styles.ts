@@ -1,27 +1,26 @@
 import { MapService } from "../global/map-service";
-import { Constructor, StyleObj } from "../interfaces";
+import { Constructor, StyleFunct } from "../interfaces";
 
 export interface IStyleBase {
-  styleObj: StyleObj;
+  styleFunct: StyleFunct;
   name?: string;
 }
 export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
   return class extends Base {
-    defaultstyleObj: StyleObj = {
-      google: {
-        default: {}
-      },
-      leaflet: {
-        default: {}
+    defaultstyleFunct: StyleFunct = {
+      get(type) {
+        return {
+          default: {}
+        }
       }
     };
     styleType: string;
 
     getStyle(selectedStyleType: string = "default", fallbackStyle?) {
       const mapType = MapService.mapUtils.type;
-      const styleObj = this.styleObj || this.defaultstyleObj;
-      const mapTypetype = styleObj[mapType];
-      // console.log(this.name, "style", selectedStyleType, styleObj, this.styleObj);
+      const styleFunct = this.styleFunct || this.defaultstyleFunct;
+      const mapTypetype = styleFunct.get(mapType);
+      // console.log(this.name, "style", selectedStyleType, styleFunct, this.styleFunct);
       // const styleType = mapTypetype[selectedStyleType] ? selectedStyleType : this.styleType;
       const style = mapTypetype[selectedStyleType] || fallbackStyle;
       if (!style)
@@ -36,7 +35,7 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
 }
 
 // export class Styles {
-//   styleObj: StyleObj = {
+//   styleFunct: StyleFunct = {
 //     google: {
 //       default: {
 //
@@ -53,10 +52,10 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
 //
 //   getStyle(selectedStyleType: string = 'default', fallbackStyle?) {
 //     const mapType = MapService.mapUtils.type;
-//     const mapTypetype = this.styleObj[mapType];
+//     const mapTypetype = this.styleFunct[mapType];
 //     const styleType = selectedStyleType && mapTypetype[selectedStyleType] ? selectedStyleType : this.styleType;
 //     const style = mapTypetype[styleType] || fallbackStyle;
 //     if(!style) console.error("style type does not exist");
-//     return this.styleObj[mapType][styleType]
+//     return this.styleFunct[mapType][styleType]
 //   }
 // }

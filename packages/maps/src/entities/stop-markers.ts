@@ -62,7 +62,7 @@ export const stopMarkersConfig: ItemClassFactoryConfig = {
 </div>`;
     }
   },
-  styleObj: stopStyles,
+  styleFunct: stopStyles,
   typeConfig: {
     hasPopup: true,
     isCircle: true,
@@ -77,7 +77,7 @@ export const stopMarkersTrace = () => {
 
 // export abstract class StopMarkers {
 //   name = "Stop";
-//   styleObj = stopStyles;
+//   styleFunct = stopStyles;
 //
 //   htShow(item) {
 //     return `display: ${item ? 'flex' : 'none'}`

@@ -2,6 +2,7 @@ import { HtMarker, MapUtils } from "./interfaces";
 import * as _ from "underscore";
 import { HtPosition } from "ht-data";
 import { ITimeAwarePoint } from "ht-models";
+import {Color} from "../../../utils";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 export function ExtendBounds(
@@ -37,6 +38,17 @@ export const ExtendBoundsWithPolyline = (
 export const SetStyle = (item, style) => {
   item.setOptions(style);
 };
+
+export const setCircleStyle = (item, style) => {
+  let circleStyle = {
+    ...style,
+    icon: {
+      ...style.icon,
+      path: google.maps.SymbolPath.CIRCLE,
+    }
+  };
+  SetStyle(item, circleStyle)
+}
 
 export const setPolylineStyle = (polyline, style) => {
   SetStyle(polyline, style);
@@ -307,6 +319,7 @@ export const GoogleMapUtils: MapUtils = {
   type: "google",
   setMap: SetMap,
   setStyle: SetStyle,
+  setCircleStyle,
   setPolylineStyle,
   clearItem: ClearItem,
   extendBounds: ExtendBounds,
