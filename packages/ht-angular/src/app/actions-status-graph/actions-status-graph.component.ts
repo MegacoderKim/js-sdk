@@ -13,6 +13,7 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
   @Input( ) service;
   data;
   chart;
+  noData: boolean = false;
   constructor() {
 
   }
@@ -32,10 +33,11 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
 
   setChart(data) {
     if (data.labels.length <= 1) {
-      alert("Please select a data range");
+      this.noData = true;
       return false;
     }
     if (this.chart) {
+      this.noData = false;
       const labels = data.labels;
       const dataset = data.datasets;
       this.chart.update_values(dataset, labels);
@@ -50,9 +52,11 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
         is_series: 1,
         colors: ['#7cd6fd', 'red'],
         region_fill: 1,
+        // x_axis_mode: 'tick',
         format_tooltip_x: d => moment(d).format('ddd, MMM Do'),
         format_tooltip_y: d => d
-      })
+      });
+      // this.chart.show_averages();
     }
 
   }

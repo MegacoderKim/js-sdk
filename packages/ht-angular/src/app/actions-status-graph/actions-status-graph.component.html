@@ -6,7 +6,7 @@
   </div>
   <div class="level-right">
     <div class="level-item">
-      <ht-date-range [dateRangeService$]="service.dateRangeService$"></ht-date-range>
+      <ht-date-range [showSingleDay]="false" [dateRangeService$]="service.dateRangeService$"></ht-date-range>
     </div>
   </div>
 </div>
@@ -15,6 +15,11 @@
   <div class="loading-page" *ngIf="service.client.graph.loading$ | async">
     <div class="icon auto has-text-grey-light">
       <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+  </div>
+  <div class="loading-page" *ngIf="noData">
+    <div class="auto has-text-grey-light is-size-1">
+      No Data
     </div>
   </div>
 </div>
