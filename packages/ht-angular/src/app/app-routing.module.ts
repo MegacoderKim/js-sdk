@@ -8,8 +8,9 @@ const routes: Routes = [
   // { path: 'ui', component: UikitComponent},
   { path: 'users', loadChildren: "./test/test.module#TestModule"},
   { path: 'groups', loadChildren: "./groups-test/groups-test.module#GroupsTestModule"},
+  { path: 'analytics', loadChildren: "./analytics-test/analytics-test.module#AnalyticsTestModule"},
   { path: 'groups/:id', loadChildren: "./group-test/group-test.module#GroupTestModule"},
-  { path: '',   redirectTo: '/users', pathMatch: 'full' },
+  { path: '',   redirectTo: '/analytics', pathMatch: 'full' },
 ];
 
 @NgModule({

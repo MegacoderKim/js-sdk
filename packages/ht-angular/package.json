@@ -22,6 +22,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^5.1.0",
+    "@angular/cdk": "^5.0.1",
     "@angular/common": "^5.1.0",
     "@angular/compiler": "^5.1.0",
     "@angular/core": "^5.1.0",
@@ -32,6 +33,7 @@
     "bulma": "^0.6.0",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
+    "frappe-charts": "0.0.8",
     "gulp-less": "^3.3.2",
     "ht-client": "file:../ht-sdk/packages/client",
     "ht-data": "file:../ht-sdk/packages/data",

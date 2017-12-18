@@ -1,10 +1,10 @@
-<div class="dropdown is-right" htDropdown *ngIf="dateRange$ | async as dateRange">
-  <button type="button dropdown-trigger" class="button flex-row row-gap-4" htDropdownToggle>
+<div class="dropdown is-hoverable" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+  <button type="button dropdown-trigger" class="button flex-row row-gap-4">
     {{dateRange}}
     <!--<span *ngIf="ordering$ | async as ordering"></span>-->
     <!--<i class="fa fa-filter"></i>-->
   </button>
-  <div class="dropdown-menu dropdown-menu-right">
+  <div class="dropdown-menu dropdown-menu-right is-boxed">
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <a class="dropdown-item" (click)="setDateRange(date.range)" *ngFor="let date of customDates">{{date.label}}</a>
     </div>

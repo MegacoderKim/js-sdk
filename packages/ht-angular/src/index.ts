@@ -28,6 +28,10 @@ export {HtClientService} from "./app/ht/ht-client.service";
 export {HtUsersService} from "./app/ht/ht-users.service";
 export {HtMapService} from "./app/ht/ht-map.service";
 export {HtGroupsService} from "./app/ht/ht-groups.service";
+export { UsersAnalyticsListModule } from "./app/users-analytics-list/users-analytics-list.module"
+export { UsersAnalyticsListComponent } from "./app/users-analytics-list/users-analytics-list.component"
+export { ActionsStatusGraphModule } from "./app/actions-status-graph/actions-status-graph.module"
+export { ActionsStatusGraphComponent } from "./app/actions-status-graph/actions-status-graph.component"
 
 export * from "./app/ht/ht.module"
 

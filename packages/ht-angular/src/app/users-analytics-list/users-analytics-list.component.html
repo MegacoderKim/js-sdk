@@ -1,0 +1,28 @@
+<!--<div class="flex-column">-->
+  <!--<div class="card card-content" *ngFor="let user of data$ | async">-->
+    <!--{{user.name}}-->
+  <!--</div>-->
+<!--</div>-->
+<div class="level">
+  <div class="level-left has-text-weight-bold">
+    {{listService.title}}
+  </div>
+  <div class="level-right">
+    <ht-date-range [dateRangeService$]="listService.dateRangeService$"></ht-date-range>
+  </div>
+</div>
+<!--<pre>-->
+  <!--{{dataTable$ | async | json}}-->
+<!--</pre>-->
+<table class="table is-fullwidth is-bordered is-striped ">
+  <thead>
+    <tr>
+      <th *ngFor="let column of listService.columns">{{column}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of listService.dataTable$ | async">
+      <td *ngFor="let item of row">{{item}}</td>
+    </tr>
+  </tbody>
+</table>

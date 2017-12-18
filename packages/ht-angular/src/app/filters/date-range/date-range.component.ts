@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 // import * as moment from 'moment-mini'
 import moment from 'moment-mini'
 import {IDateRange, dateRangeService} from "ht-client";
@@ -10,7 +10,10 @@ import {HtUsersService} from "../../ht/ht-users.service";
   styleUrls: ['./date-range.component.less']
 })
 export class DateRangeComponent implements OnInit {
+  @Input() dateRangeService$ = dateRangeService.getInstance();
+  @Input() isRight: boolean = false;
   dateRange$;
+  // todo add all date range
 
   customDates = [
     {
@@ -55,11 +58,11 @@ export class DateRangeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dateRange$ = dateRangeService.getInstance().display$;
+    this.dateRange$ = this.dateRangeService$.display$;
   }
 
   setDateRange(range: IDateRange) {
-    dateRangeService.getInstance().data$.next(range)
+    this.dateRangeService$.data$.next(range)
   }
 
 }
