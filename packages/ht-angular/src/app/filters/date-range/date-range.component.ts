@@ -2,7 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 // import * as moment from 'moment-mini'
 import moment from 'moment-mini'
 import {IDateRange, dateRangeService} from "ht-client";
-import {HtUsersService} from "../../ht/ht-users.service";
+import {DateRangeMap, isSameDateRange, DateRangeLabelMap} from "ht-data";
+import {of} from "rxjs/observable/of";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'ht-date-range',
@@ -12,53 +14,31 @@ import {HtUsersService} from "../../ht/ht-users.service";
 export class DateRangeComponent implements OnInit {
   @Input() dateRangeService$ = dateRangeService.getInstance();
   @Input() isRight: boolean = false;
+  @Input() showSingleDay: boolean = true;
   dateRange$;
   // todo add all date range
-
-  customDates = [
-    {
-      label: "Today",
-      range: {
-        start: moment().startOf('day').toISOString(),
-        end: moment().endOf('day').toISOString()
-      }
-    },
-    {
-      label: "Yesterday",
-      range: {
-        start: moment().subtract(1, 'days').toISOString(),
-        end: moment().subtract(1, 'days').endOf('day').toISOString()
-      }
-    },
-    {
-      label: "Last 7 days",
-      range: {
-        start: moment().subtract(6, 'days').toISOString(),
-        end: moment().endOf('day').toISOString()
-      }
-    },
-    {
-      label: "This month",
-      range: {
-        start: moment().startOf('month').toISOString(),
-        end: moment().endOf('day').toISOString()
-      }
-    },
-    {
-      label: "Last 30 days",
-      range: {
-        start: moment().subtract(29, 'days').toISOString(),
-        end: moment().endOf('day').toISOString()
-      }
-    }
-  ];
+  dateRangeOptions$;
+  customDates$;
+  customDates = DateRangeLabelMap;
 
   constructor(
-    private usersClientService: HtUsersService
+
   ) { }
 
   ngOnInit() {
     this.dateRange$ = this.dateRangeService$.display$;
+    // this.customDates$ = of(this.customDates);
+    this.dateRangeOptions$ = this.dateRangeService$.data$.pipe(
+      map((dateRange: IDateRange) => {
+        return this.customDates.filter(customRange => {
+          return this.showSingleDay ? true : !customRange.isSingleDay;
+        }).map((customRange) => {
+          return isSameDateRange(customRange.range, dateRange) ? {...customRange, isActive: true} : {...customRange}
+        })
+      })
+    )
+
+    this.dateRangeOptions$.subscribe()
   }
 
   setDateRange(range: IDateRange) {
