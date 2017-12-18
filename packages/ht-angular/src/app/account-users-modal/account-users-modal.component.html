@@ -14,10 +14,11 @@
               </div>
             </div>
           </div>
+          <div class="card card-content is-small">
+            <input (input)="searchAccount(search)" #search type="text" placeholder="Search Accounts" class="input">
+          </div>
           <ng-container *ngIf="filteredMemberhips$ | async as memberships; else loading">
-            <div class="card card-content is-small">
-              <input (input)="searchAccount(search)" #search type="text" placeholder="Search Accounts" class="input">
-            </div>
+
             <div (click)="setMembership(membership)" class="card card-content is-small card-clickable" *ngFor="let membership of memberships">
               {{membership.account.name}}
             </div>
