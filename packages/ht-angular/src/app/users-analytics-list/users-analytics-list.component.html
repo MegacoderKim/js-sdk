@@ -14,15 +14,23 @@
 <!--<pre>-->
   <!--{{dataTable$ | async | json}}-->
 <!--</pre>-->
-<table class="table is-fullwidth is-bordered is-striped ">
-  <thead>
+<div class="table-container relative">
+  <table class="table is-fullwidth is-bordered is-striped ">
+    <thead>
     <tr>
       <th *ngFor="let column of listService.columns">{{column}}</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <tr *ngFor="let row of listService.dataTable$ | async">
       <td *ngFor="let item of row">{{item}}</td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <div class="loading-page" *ngIf="listService.client.list.loading$ | async">
+    <div class="icon auto has-text-grey-light">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+  </div>
+</div>
+

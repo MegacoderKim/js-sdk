@@ -43,7 +43,7 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
     } else {
       this.chart = new Chart({
         parent: "#chart", // or a DOM element
-        title: "Action Graph",
+        // title: "Action Graph",
         data: data,
         type: 'line', // or 'line', 'scatter', 'pie', 'percentage'
         height: 250,
@@ -51,7 +51,7 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
         colors: ['#7cd6fd', 'red'],
         region_fill: 1,
         format_tooltip_x: d => moment(d).format('ddd, MMM Do'),
-        format_tooltip_y: d => d + ' pts'
+        format_tooltip_y: d => d
       })
     }
 

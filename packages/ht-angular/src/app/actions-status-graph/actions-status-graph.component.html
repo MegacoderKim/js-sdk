@@ -1,7 +1,7 @@
 <div class="level">
   <div class="level-left">
-    <div class="level-item">
-      Chart name
+    <div class="level-item has-text-weight-bold">
+      {{service.title}}
     </div>
   </div>
   <div class="level-right">
@@ -10,4 +10,11 @@
     </div>
   </div>
 </div>
-<div id="chart"></div>
+<div class="chart-container">
+  <div id="chart"></div>
+  <div class="loading-page" *ngIf="service.client.graph.loading$ | async">
+    <div class="icon auto has-text-grey-light">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+  </div>
+</div>
