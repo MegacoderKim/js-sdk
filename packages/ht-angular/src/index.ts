@@ -34,6 +34,8 @@ export { ActionsStatusGraphModule } from "./app/actions-status-graph/actions-sta
 export { ActionsStatusGraphComponent } from "./app/actions-status-graph/actions-status-graph.component"
 export { UserTableModule } from "./app/user-table/user-table.module"
 export { UserTableComponent } from "./app/user-table/user-table.component"
+export { AnalyticsContainerModule } from "./app/analytics-container/analytics-container.module"
+export { AnalyticsContainerComponent } from "./app/analytics-container/analytics-container.component"
 
 export * from "./app/ht/ht.module"
 
