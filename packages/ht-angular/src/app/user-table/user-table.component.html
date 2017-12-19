@@ -1,0 +1,23 @@
+<!--<pre>-->
+  <!--{{user | json}}-->
+<!--</pre>-->
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <ht-profile [url]="user.photo"></ht-profile>
+    </div>
+    <div class="level-item">
+      {{user.name | nameCase}}
+    </div>
+  </div>
+  <div class="level-right">
+    <ng-content></ng-content>
+  </div>
+</div>
+<table class="table is-fullwidth is-bordered is-striped">
+  <tbody>
+  <tr *ngFor="let row of tableData">
+    <td *ngFor="let item of row">{{item}}</td>
+  </tr>
+  </tbody>
+</table>

@@ -6,10 +6,11 @@ import { IActionStatusGraph} from "ht-models";
 import {filter, map} from "rxjs/operators";
 import * as moment from "moment-mini"
 import {IActionsTrendlineConfig} from "../interfaces/trendline";
+import {ActionsGraph} from "ht-client";
 
 @Injectable()
 export class ActionsStatusGraphService {
-  client;
+  client: ActionsGraph;
   dateRangeService$;
   data$;
   title;
@@ -26,8 +27,9 @@ export class ActionsStatusGraphService {
   }
 
   private initClient() {
-    this.client = actionsClientFactory({dateRange$: this.dateRangeService$.data$});
-    this.data$ = this.client.graph.data$.pipe(
+    const graphClient = actionsClientFactory({dateRange$: this.dateRangeService$.data$});
+    this.client = graphClient.graph;
+    this.data$ = this.client.data$.pipe(
       filter(data => !!data),
       map((data: IActionStatusGraph[]) => {
         return this.getCompletedActionChart(data)

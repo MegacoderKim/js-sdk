@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import Chart from "frappe-charts/dist/frappe-charts.min.esm"
 import * as moment from "moment-mini"
 // import {filter} from "rxjs/operators";
@@ -7,7 +7,8 @@ import * as moment from "moment-mini"
 @Component({
   selector: 'ht-actions-status-graph',
   templateUrl: './actions-status-graph.component.html',
-  styleUrls: ['./actions-status-graph.component.scss']
+  styleUrls: ['./actions-status-graph.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
   @Input( ) service;

@@ -32,6 +32,8 @@ export { UsersAnalyticsListModule } from "./app/users-analytics-list/users-analy
 export { UsersAnalyticsListComponent } from "./app/users-analytics-list/users-analytics-list.component"
 export { ActionsStatusGraphModule } from "./app/actions-status-graph/actions-status-graph.module"
 export { ActionsStatusGraphComponent } from "./app/actions-status-graph/actions-status-graph.component"
+export { UserTableModule } from "./app/user-table/user-table.module"
+export { UserTableComponent } from "./app/user-table/user-table.component"
 
 export * from "./app/ht/ht.module"
 

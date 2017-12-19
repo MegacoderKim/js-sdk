@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import {IDateRange} from "ht-models";
 import {dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {filter, map} from "rxjs/operators";
-import {HtUsersClient} from "ht-client";
 import {usersClientFactory} from "ht-client";
 import {IAnalyticsList, IUsersAnalyticsListConfig} from "../interfaces/analytics-list";
 import {DistanceLocale, HMString} from "ht-utility";
 import {IUserAnalytics} from "ht-models";
+import {UsersAnalytics} from "ht-client";
 
 @Injectable()
 export class UsersAnalyticsListService implements IAnalyticsList {
@@ -16,7 +15,7 @@ export class UsersAnalyticsListService implements IAnalyticsList {
   tableFormat;
   query;
   columns;
-  client: HtUsersClient;
+  client: UsersAnalytics;
   dataArray$;
   dataTable$;
   constructor(config: IUsersAnalyticsListConfig) {
@@ -33,16 +32,18 @@ export class UsersAnalyticsListService implements IAnalyticsList {
   }
 
   private initClient() {
-    this.client  = usersClientFactory({dateRange$: this.dateRangeService$.data$});
-    this.client.list.updateStrategy = "once";
-    this.client.list.setQuery(this.query);
-    this.client.list.setActive();
-    const data$ = this.client.list.dataArray$;
+    const userClient  = usersClientFactory({dateRange$: this.dateRangeService$.data$});
+    this.client = userClient.list;
+    this.client.updateStrategy = "once";
+    this.client.setQuery(this.query);
+    this.client.setActive();
+    const data$ = this.client.dataArray$;
     this.dataTable$ = data$.pipe(
       filter(data => !!data),
       map((users: any[]) => {
         return users.map(user => {
-          return this.tableFormat.map(data => data.selector(user))
+          const values = this.tableFormat.map(data => data.selector(user));
+          return {data: user, values}
         })
 
       })

@@ -1,6 +1,8 @@
 # ht-angular
 
-This is a client side Angular library to visualize and fetch HyperTrack entities. This library can be used to replicated any view available on HyperTrack dashboard, or create a new view. Example implimentation using this library is [here](https://github.com/hypertrack/angular-dashboard-demo)
+This is a client side Angular library to visualize and fetch HyperTrack entities. This library can be used to replicated any view available on HyperTrack dashboard, or create a new view. Example implimentation using this library is [here](https://github.com/hypertrack/angular-dashboard-demo);
+
+A working app is available [here](https://dashboard-library-demo.s3-website-us-west-2.amazonaws.com)
 
 ## Steps to build your dashboard
 
