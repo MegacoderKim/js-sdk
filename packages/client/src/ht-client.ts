@@ -2,14 +2,13 @@ export * from "./api/actions";
 export * from "./api/users";
 export * from "./api/base";
 export * from "./interfaces";
-export * from "./entities/actions/actions-client";
-export * from "./entities/actions/actions-get-client";
 
 //users
 export * from "./entities/users/users-client";
 export * from "./entities/users/users-placeline-client";
 export * from "./entities/users/users-analytics-client";
 export * from "./entities/users/users-analytics-markers";
+export * from "./entities/users/users-summary-client"
 
 export * from "./filters/users-filter";
 
@@ -22,6 +21,11 @@ export * from "./entities/groups/groups-item-client";
 export * from "./entities/account-user/accounts-client";
 export * from "./entities/account-user/account-user-client";
 export * from "./entities/account-user/memberships-all-client";
+
+
+//actions
+export * from "./entities/actions/actions-client";
+export * from "./entities/actions/actions-graph"
 
 //globals
 export * from "./global/date-range";
@@ -37,4 +41,4 @@ export * from "./dispatchers/index";
 //helper
 // export * from "./helpers/operators"
 
-import "rxjs/add/operator/let";
+// import "rxjs/add/operator/let";
