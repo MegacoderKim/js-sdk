@@ -4,15 +4,10 @@ import * as moment from "moment-mini";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
 import { IsRangeADay, IsRangeToday, DateString } from "ht-utility";
+import {DateRangeMap} from "ht-data";
 
-export const defaultDateRange = {
-  start: moment()
-    .startOf("day")
-    .toISOString(),
-  end: moment()
-    .endOf("day")
-    .toISOString()
-};
+export const defaultDateRange = {...DateRangeMap.today};
+
 
 export class DateRange {
   data$: BehaviorSubject<IDateRange>;
