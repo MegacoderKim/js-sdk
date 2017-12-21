@@ -27,6 +27,7 @@ export class GroupsList {
   dataArray$;
   api$ = query => entityApi.groups.index<Page<IGroup>>(query);
   store;
+  dataSub: Subscription;
   setData(data) {
     this.store.dispatch(new fromGroupDispatcher.SetGroupsAll(data));
   }
@@ -56,8 +57,18 @@ export class GroupsList {
   constructor({ store }: IClientConfig) {
     this.store = store;
     this.data$ = this.store.select(fromRoot.getGroupAll);
-    this.active$ = store.select(fromRoot.getGroupListActive);
-    this.dataArray$ = this.data$.let(PageResults$);
+    this.active$ = this.store.select(fromRoot.getGroupListActive);
+    this.dataArray$ = this.data$.pipe(PageResults$);
+  }
+
+  clearData() {
+    this.setData(null);
+  }
+
+  destroy() {
+    this.clearData();
+    this.setActive(false);
+    this.dataSub.unsubscribe();
   }
 }
 

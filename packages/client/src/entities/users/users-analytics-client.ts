@@ -20,6 +20,7 @@ export class UsersAnalytics extends EntityListClient {
     entityApi.users.analytics(query);
   name = "users analytics list";
   defaultQuery = { ordering: "-last_heartbeat_at" };
+  dataSub: Subscription;
   // allowedQueryKeys = null;
   // active$ = store.select(fromRoot.getUsersAnalyticsIsActive);
   data$: Observable<Page<IUserAnalyticsPage>>;
@@ -40,7 +41,7 @@ export class UsersAnalytics extends EntityListClient {
     this.data$ = this.store.select(fromRoot.getUsersAnalyticsPage);
     this.id$ = this.store.select(fromRoot.getUsersListId);
     this.loading$ = this.store.select(fromRoot.getUsersAnalyticsLoading);
-    this.dataArray$ = this.data$.let(PageResults$);
+    this.dataArray$ = this.data$.pipe(PageResults$);
     // this.init()
   }
 
@@ -94,7 +95,13 @@ export class UsersAnalytics extends EntityListClient {
 
   clearData() {
     this.setData(null);
+    this.setActive(false)
     this.setQuery({});
+  }
+
+  destroy() {
+    this.clearData();
+    this.dataSub.unsubscribe();
   }
 }
 

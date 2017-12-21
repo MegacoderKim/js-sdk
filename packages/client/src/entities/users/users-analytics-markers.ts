@@ -38,7 +38,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
       }
     }
   ];
-
+  dataSub: Subscription;
   constructor({ dateRangeQuery$, store }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
@@ -52,7 +52,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
     );
     // this.id$ = this.store.select(fromRoot.getQueryUserId);
     this.loading$ = this.store.select(fromRoot.getUsersAnalyticsAllLoading);
-    // this.dataArray$ = this.data$.let(PageResults$);
+    // this.dataArray$ = this.data$.pipe(PageResults$);
     // this.init()
   }
 
@@ -99,6 +99,12 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   clearData() {
     let nullData = { results: [], next: "no_next", count: 0, previous: "" };
     this.setData(nullData);
+  }
+
+  destroy() {
+    this.clearData();
+    this.setActive(false)
+    this.dataSub.unsubscribe();
   }
 }
 export const UsersAnalyticsListAllClient = listAllClientSubMixin(

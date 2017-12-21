@@ -18,7 +18,7 @@
 //   //   private usersAnalyticsMarkers: IUsersMarkers
 //   // ) {
 //   //   super(store, usersIndexMarkers, usersAnalyticsMarkers)
-//   // }; //todo fix later
+//   // };
 //
 //   setActive(isActive: boolean = true) {
 //     this.store.dispatch(new fromUsersDispatcher.SetMarkersActive(isActive))
@@ -84,7 +84,7 @@
 //   }
 //
 //   getUpdateQuery$(overview, query) {
-//     return this.data$.let(
+//     return this.data$.pipe(
 //       flatMap((allData: AllData<any>) => {
 //         let results = _.values(allData.resultsEntity);
 //         let currentTotalUsers = results.length;

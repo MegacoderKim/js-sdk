@@ -36,11 +36,21 @@ export class GroupsItem extends EntityItemClient {
   setLoading(data) {}
   setQuery() {}
   store;
+  dataSub: Subscription;
   constructor({ store }: IClientConfig) {
     super();
     this.store = store;
     this.id$ = this.store.select(fromGroup.getGroupId);
     // this.init()
+  }
+
+  clearData() {
+    this.setData(null);
+  }
+
+  destroy() {
+    this.clearData();
+    this.dataSub.unsubscribe();
   }
 }
 

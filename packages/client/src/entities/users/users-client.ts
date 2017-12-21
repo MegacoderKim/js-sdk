@@ -58,7 +58,7 @@ export class HtUsersClient extends EntityClient {
     this.store = store;
     let dateRange$ = this.options.dateRange$;
     const dateRangeQuery$ = dateRange$
-      ? dateRange$.let(DateRangeToQuery$("recorded_at"))
+      ? dateRange$.pipe(DateRangeToQuery$("recorded_at"))
       : null;
 
     this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store });
@@ -220,11 +220,11 @@ export class HtUsersClient extends EntityClient {
   }
 
   private initEffects() {
-    this.list.query$.let(filter(data => !!data)).subscribe(query => {
+    this.list.query$.pipe(filter(data => !!data)).subscribe(query => {
       this.setListAllFilter(query);
     });
 
-    // this.listAll.active$.let(filter(data => !!data)).flatMap(() => {
+    // this.listAll.active$.pipe(filter(data => !!data)).flatMap(() => {
     //   return this.listStatusChart$()
     // })
     //   .takeUntil(this.listAll.active$.filter(data => !data).skip(1))
@@ -312,7 +312,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   getListAllUpdateQuery$(overview, query) {
-    return this.listAll.data$.let(
+    return this.listAll.data$.pipe(
       flatMap((allData: AllData<any>) => {
         let results = _.values(allData.resultsEntity);
         let currentTotalUsers = results.length;
@@ -341,4 +341,19 @@ export const usersClientFactory = (
 
 export interface IUsersClientConfig {
   dateRange$: Observable<IDateRange>;
+}
+
+export interface IUsersSummaryData {
+  totalUsers: number,
+  hasSelected: boolean,
+  chart: IUsersSummaryChart[]
+}
+
+export interface IUsersSummaryChart {
+  label: string
+  color: string,
+  selected: boolean,
+  value: number,
+  values: string[],
+  w: number
 }

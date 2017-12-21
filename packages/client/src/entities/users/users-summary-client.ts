@@ -28,6 +28,7 @@ export class UsersSummary extends EntityListClient {
       key: "search"
     }
   ];
+  dataSub: Subscription;
   api$ = query => entityApi.users.summary(query);
 
   setActive(isActive: boolean | string = true) {
@@ -54,6 +55,12 @@ export class UsersSummary extends EntityListClient {
     this.active$ = this.store.select(fromRoot.getUsersSummaryActive);
     this.data$ = this.store.select(fromRoot.getUsersSummary);
     this.loading$ = this.store.select(fromRoot.getUsersSummaryLoading);
+  }
+
+  destroy() {
+    this.clearData();
+    this.setActive(false);
+    this.dataSub.unsubscribe();
   }
 }
 
