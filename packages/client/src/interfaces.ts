@@ -38,7 +38,7 @@ export interface QueryLabel {
 }
 
 export interface IClientConfig {
-  store: Store<fromRoot.State>;
+  store?: Store<fromRoot.State>;
 }
 
 export interface IPageClientConfig extends IClientConfig {
