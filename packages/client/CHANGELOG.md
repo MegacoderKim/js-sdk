@@ -1,3 +1,10 @@
+# 0.0.18-beta
+- Start fetching data when `active$` is not defined
+- Add actions graph client
+- Fix `destroy` function entity client
+- Use pipe instead of let operator
+- Use `DateRangeMap` for `initialDateRange`
+
 # 0.0.17-beta
 - Add get loading for `usersClient` using `CombineLoadings` from `ht-data`
 - Add `AllowedQueryMaps` and remove `AllowedQueryKeys`
