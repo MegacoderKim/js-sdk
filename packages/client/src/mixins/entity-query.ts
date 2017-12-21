@@ -47,13 +47,13 @@ export function listQueryMixin<TBase extends Constructor<IListQueryBase>>(
         })
       );
       return this.active$
-        ? this.active$.let(
+        ? this.active$.pipe(
             mergeMap((isActive: boolean) => {
               // console.log(isActive, "acrr");
               return isActive ? baseQuery$ : empty();
             })
           )
-        : empty();
+        : baseQuery$;
     }
   };
 }
@@ -82,7 +82,7 @@ export function itemQueryMixin<TBase extends Constructor<IItemQueryBase>>(
     getApiParams$() {
       return combineLatest(
         this.id$,
-        this.query$.let(MergeQuery(this.getDefaultQuery()))
+        this.query$.pipe(MergeQuery(this.getDefaultQuery()))
       );
     }
   };
