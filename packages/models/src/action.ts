@@ -83,3 +83,11 @@ export interface IActionPage extends IPageData {
 export interface IActionMapPage extends IPageData {
   results: IActionMap[];
 }
+
+export interface IActionStatusGraph {
+  created_date: string,
+  created: number,
+  completed: number,
+  assigned: number,
+  started: number
+}
