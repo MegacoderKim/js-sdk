@@ -1,0 +1,126 @@
+import { Injectable } from '@angular/core';
+import {IAnalyticsItem} from "../interfaces/analytics-item";
+import { UsersAnalyticsListService} from "../users-analytics-list/users-analytics-list.service";
+import {ActionsStatusGraphService} from "../actions-status-graph/actions-status-graph.service";
+import {usersAnalyticsListPresets} from "./analytics-presets/users-list-preset";
+import {actionsConfigPreset} from "./analytics-presets/actions-status-graph-preset";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {map, take} from "rxjs/operators";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {Observable} from "rxjs/Observable";
+import {usersClientFactory, dateRangeFactory} from "ht-client";
+import {DateRangeMap} from "ht-data";
+import {HtUsersService} from "../ht/ht-users.service";
+
+@Injectable()
+export class AnalyticsItemsService {
+
+  presets;
+  items$: BehaviorSubject<IAnalyticsItem[]>;
+  // items$: BehaviorSubject<IAnalyticsItem[]> = new BehaviorSubject([]);
+  filteredItems$: Observable<IAnalyticsItem[]>;
+  allTags$: Observable<string[]>;
+  tags$: Observable<ISelectedTag[]>;
+  selectedTags$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  totalTags: number;
+  // selectedTags$: BehaviorSubject<string[]>;
+  constructor(usersService: HtUsersService) {
+    const usersSummaryClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
+    const activityQueryLabel = usersService.filterClass.activityQueryArray;
+    this.presets = [
+      usersAnalyticsListPresets.users_summary(usersSummaryClient),
+      usersAnalyticsListPresets.users_summary(usersSummaryClient, 'Users activity summary', activityQueryLabel),
+      actionsConfigPreset.status,
+      usersAnalyticsListPresets.max_location_disabled_duration(),
+      usersAnalyticsListPresets.max_stop_duration(),
+      usersAnalyticsListPresets.max_network_offline(),
+      usersAnalyticsListPresets.max_distance(),
+    ];
+    this.items$ = new BehaviorSubject(this.getItems(this.presets));
+    this.allTags$ = this.items$.pipe(
+      map(items => {
+        this.totalTags = items.length;
+        return items.reduce((tags, item) => {
+          const itemTags = item.tags;
+          return itemTags.reduce((currentTags, tag) => {
+            return currentTags.includes(tag) ? currentTags : [...currentTags, tag]
+          }, tags)
+          // return tags.includes()
+        }, [])
+      })
+    );
+
+    this.tags$ = combineLatest(
+      this.allTags$,
+      this.selectedTags$,
+      (allTags, selectedTags) => {
+        // console.log("eit tags", allTags, selectedTags);
+        // if (selectedTags.length === 0) {
+        //   return allTags.map(tag => {
+        //     return {key: tag, isActive: true}
+        //   })
+        // } else {
+        //   return allTags.map(tag => {
+        //     const isActive = selectedTags.includes(tag);
+        //     return {key: tag, isActive}
+        //   })
+        // }
+        return allTags.map(tag => {
+          const isActive = selectedTags.includes(tag);
+          return {key: tag, isActive}
+        })
+      }
+    );
+
+    this.filteredItems$ = combineLatest(
+      this.items$,
+      this.selectedTags$,
+      (items, tags) => {
+        return tags.length ? items.filter((item) => {
+          return tags.reduce((pass, existingTag) => {
+            return pass || item.tags.includes(existingTag)
+          }, false)
+        }) : items;
+      }
+    )
+  }
+
+  toggleTag(tag: string) {
+    this.selectedTags$.pipe(
+      take(1)
+    )
+      .subscribe((tags) => {
+
+        // if (tags.includes(tag)) {
+        //   tags.splice(tags.indexOf(tag), 1)
+        // } else {
+        //   tags.push(tag)
+        // }
+        if (tags.includes(tag)) {
+          tags = []
+        } else {
+          tags = [tag]
+        }
+        // if (tags.length === this.totalTags) {
+        //   tags = [];
+        // }
+      this.selectedTags$.next([...tags])
+    })
+  };
+
+  setPreset(choosenPreset) {
+    this.items$.next(this.getItems(choosenPreset));
+  }
+
+  getItems(itemsConfigs) {
+    return itemsConfigs.map(preset => {
+      return new preset.service(preset.initialConfig)
+    })
+  }
+
+}
+
+export interface ISelectedTag {
+  key: string,
+  isActive: boolean,
+}

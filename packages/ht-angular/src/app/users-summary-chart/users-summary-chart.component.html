@@ -1,0 +1,17 @@
+<ht-analytics-tags [tags]="service.tags"></ht-analytics-tags>
+<div class="level">
+  <div class="level-left">
+    <div class="level-item has-text-weight-bold">
+      {{service.title}}
+    </div>
+  </div>
+  <div class="level-right" *ngIf="service.summary$ | async as summary">
+    Total: {{summary.totalUsers}}
+  </div>
+</div>
+<ht-analytics-item-load [loading$]="service.client.loading$" [minHeight]="50">
+  <ng-container *ngIf="service.summary$ | async as summary">
+    <ht-users-summary [summary]="summary" [selectable]="false" [hideTotal]="true"></ht-users-summary>
+  </ng-container>
+</ht-analytics-item-load>
+

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {usersAnalyticsListPresets, UsersAnalyticsListService} from "../users-analytics-list/users-analytics-list.service";
-import {actionsConfigPreset, ActionsStatusGraphService} from "../actions-status-graph/actions-status-graph.service";
 
 @Component({
   selector: 'ht-analytics-test',

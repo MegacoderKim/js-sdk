@@ -1,3 +1,4 @@
+<ht-analytics-tags [tags]="service.tags"></ht-analytics-tags>
 <div class="level">
   <div class="level-left">
     <div class="level-item has-text-weight-bold">
@@ -10,16 +11,15 @@
     </div>
   </div>
 </div>
-<div class="chart-container">
-  <div id="chart"></div>
-  <div class="loading-page" *ngIf="service.client.loading$ | async">
-    <div class="icon auto has-text-grey-light">
-      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
-    </div>
-  </div>
-  <div class="loading-page" *ngIf="noData">
-    <div class="auto has-text-grey-light is-size-1">
-      No Data
-    </div>
-  </div>
-</div>
+<ht-analytics-item-load [loading$]="service.client.loading$" [noData]="noData">
+  <div #chart id="chart"></div>
+</ht-analytics-item-load>
+<!--<div class="chart-container">-->
+  <!---->
+  <!--<div class="loading-page" *ngIf="service.client.loading$ | async">-->
+    <!--<div class="icon auto has-text-grey-light">-->
+      <!--<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!---->
+<!--</div>-->

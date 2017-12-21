@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {GroupKeyGuard} from "./guard/group-key.guard";
 import {GroupKeyResolver} from "./guard/group-key-resolver";
 import {ModalComponent} from "./modal/modal.component";
+import {environment} from "../environments/environment";
 
 const routes: Routes = [
   // { path: 'ui', component: UikitComponent},
@@ -15,9 +16,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes,
-  //   {
-  //   onSameUrlNavigation: 'reload'
-  // }
+    {
+      useHash: environment.production
+    // onSameUrlNavigation: 'reload'
+  }
   )],
   exports: [RouterModule],
 })

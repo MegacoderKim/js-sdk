@@ -1,6 +1,7 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import Chart from "frappe-charts/dist/frappe-charts.min.esm"
 import * as moment from "moment-mini"
+import {untilDestroy} from "../until-destroy";
 // import {filter} from "rxjs/operators";
 
 
@@ -10,19 +11,23 @@ import * as moment from "moment-mini"
   styleUrls: ['./actions-status-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
+export class ActionsStatusGraphComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input( ) service;
   data;
   chart;
   noData: boolean = false;
+  @ViewChild('chart') charElem;
   constructor() {
 
   }
 
   ngOnInit() {
-    this.service.data$
+    this.service.data$.pipe(
+      untilDestroy(this)
+    )
       .subscribe((data) => {
-      this.setChart(data);
+        // console.log("setchart");
+        this.setChart(data);
     })
 
   }
@@ -45,7 +50,7 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
       const type = data.labels.length > 1 ? 'line' : 'bar';
     } else {
       this.chart = new Chart({
-        parent: "#chart", // or a DOM element
+        parent: this.charElem.nativeElement, // or a DOM element
         // title: "Action Graph",
         data: data,
         type: 'line', // or 'line', 'scatter', 'pie', 'percentage'
@@ -59,6 +64,10 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit {
       });
       // this.chart.show_averages();
     }
+
+  }
+
+  ngOnDestroy() {
 
   }
 }

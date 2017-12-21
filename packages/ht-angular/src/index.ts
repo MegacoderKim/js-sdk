@@ -36,6 +36,8 @@ export { UserTableModule } from "./app/user-table/user-table.module"
 export { UserTableComponent } from "./app/user-table/user-table.component"
 export { AnalyticsContainerModule } from "./app/analytics-container/analytics-container.module"
 export { AnalyticsContainerComponent } from "./app/analytics-container/analytics-container.component"
+export { UsersSummaryChartComponent } from "./app/users-summary-chart/users-summary-chart.component"
+export { UsersSummaryChartModule } from "./app/users-summary-chart/users-summary-chart.module"
 
 export * from "./app/ht/ht.module"
 

@@ -7,14 +7,19 @@ import {filter, map} from "rxjs/operators";
 import * as moment from "moment-mini"
 import {IActionsTrendlineConfig} from "../interfaces/trendline";
 import {ActionsGraph} from "ht-client";
+import {IAnalyticsItem, IAnalyticsItemService} from "../interfaces/analytics-item";
+import {ActionsStatusGraphComponent} from "./actions-status-graph.component";
 
 @Injectable()
-export class ActionsStatusGraphService {
+export class ActionsStatusGraphService implements IAnalyticsItemService {
+  component = ActionsStatusGraphComponent;
   client: ActionsGraph;
   dateRangeService$;
   data$;
   title;
   chartFormat;
+  tags = ['actions'];
+  className = "is-12";
   constructor(config: IActionsTrendlineConfig) {
     this.initState(config);
     this.initClient();
@@ -24,6 +29,7 @@ export class ActionsStatusGraphService {
     this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
     this.title = config.title || "Actions graph";
     this.chartFormat = config.chartFormat;
+    if (config.tags && config.tags.length) this.tags = [...this.tags, ...config.tags];
   }
 
   private initClient() {
@@ -55,31 +61,12 @@ export class ActionsStatusGraphService {
       datasets
     }
   }
-}
 
-export interface IActionsConfigPreset {
-  [name: string]: IActionsTrendlineConfig
-}
-export const actionsConfigPreset: IActionsConfigPreset = {
-  "status": {
-    title: "Actions status chart",
-    initialDateRange: DateRangeMap.last_30_days,
-    chartFormat: [
-      {
-        title: "Completed",
-        selector(graphData: IActionStatusGraph) {
-          return graphData.completed
-        }
-      },
-      {
-        title: "Assigned",
-        selector(graphData: IActionStatusGraph) {
-          return graphData.assigned
-        }
-      }
-
-    ]
+  setData(instance: ActionsStatusGraphComponent) {
+    instance.service = this
   }
-};
+}
+
+
 
 

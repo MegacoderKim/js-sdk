@@ -28,7 +28,7 @@ export class UsersAnalyticsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.listService.client.destroy();
+    // this.listService.client.destroy();
     // this.listService.client.list.dataSub.unsubscribe()
   }
 

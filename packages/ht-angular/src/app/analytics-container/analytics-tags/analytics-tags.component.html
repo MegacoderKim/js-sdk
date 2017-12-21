@@ -1,0 +1,25 @@
+<div class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <div class="tags">
+        <span class="tag" *ngFor="let tag of tags">{{tag}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="level-right">
+    <div class="level-item">
+      <button class="button is-small" (click)="edit.next(true)">
+        <span class="icon">
+          <i class="fa fa-edit"></i>
+        </span>
+      </button>
+    </div>
+    <div class="level-item">
+      <button class="button is-small" (click)="remove.next(true)">
+        <span class="icon">
+          <i class="fa fa-remove"></i>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="loading-container" [style.min-height.px]="minHeight">
+  <ng-content></ng-content>
+  <div class="loading-page" *ngIf="loading$ | async">
+    <div class="icon auto has-text-grey-light">
+      <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+    </div>
+  </div>
+  <div class="loading-page" *ngIf="noData">
+    <div class="auto has-text-grey-light is-size-1">
+      No Data
+    </div>
+  </div>
+</div>

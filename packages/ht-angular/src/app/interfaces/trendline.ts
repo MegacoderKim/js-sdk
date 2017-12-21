@@ -7,5 +7,6 @@ export interface IChartFormat {
 export interface IActionsTrendlineConfig {
   initialDateRange?: IDateRange,
   title: string,
-  chartFormat: IChartFormat[]
+  chartFormat: IChartFormat[],
+  tags?: string[]
 }
