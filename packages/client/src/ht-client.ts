@@ -26,6 +26,7 @@ export * from "./entities/account-user/memberships-all-client";
 //actions
 export * from "./entities/actions/actions-client";
 export * from "./entities/actions/actions-graph"
+export * from "./entities/actions/actions-list-client"
 
 //globals
 export * from "./global/date-range";

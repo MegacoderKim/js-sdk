@@ -12,6 +12,7 @@ import * as fromQuery from "./query-reducer";
 import * as fromLoading from "./loading-reducer";
 import * as fromGroups from "./groups-reducer";
 import * as fromAccounts from "./account-reducer";
+import * as fromActions from "./actions-reducer";
 import {
   IUserData,
   IUser,
@@ -20,7 +21,10 @@ import {
   IUserListSummary,
   IAccountUser,
   IMembership,
-  AllData
+  AllData,
+  IActionStatusGraph,
+  IActionsSummary,
+  IAction
 } from "ht-models";
 import { ApiType } from "../interfaces";
 import { Observable } from "rxjs/Observable";
@@ -205,3 +209,63 @@ export const getAccountUserId = createSelector(
   getAccountState,
   fromAccounts.getUserId
 );
+
+/**
+ * Actions
+ */
+export const getActionsState = createFeatureSelector<fromActions.State>("actions");
+export const getActionsList = createSelector(
+  getActionsState,
+  fromActions.getList
+);
+
+export const getActionsListLoading = createSelector(
+  getActionsState,
+  fromActions.getListLoading
+);
+
+export const getActionsListActive = createSelector(
+  getActionsState,
+  fromActions.getListActive
+);
+
+export const getActionsListQuery = createSelector(
+  getActionsState,
+  fromActions.getListQuery
+);
+
+export const getActionsSummary = createSelector(
+  getActionsState,
+  fromActions.getSummary
+);
+
+export const getActionsSummaryActive = createSelector(
+  getActionsState,
+  fromActions.getSummaryActive
+);
+
+export const getActionsSummaryLoading = createSelector(
+  getActionsState,
+  fromActions.getSummaryLoading
+);
+
+export const getActionsSummaryQuery = createSelector(
+  getActionsState,
+  fromActions.getSummaryQuery
+);
+
+export const getActionsGraph = createSelector(
+  getActionsState,
+  fromActions.getGraph
+);
+
+export const getActionsGraphLoading = createSelector(
+  getActionsState,
+  fromActions.getGraphLoading
+);
+
+export const getActionsGraphQuery = createSelector(
+  getActionsState,
+  fromActions.getGraphQuery
+);
+

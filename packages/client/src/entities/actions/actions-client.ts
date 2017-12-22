@@ -5,20 +5,28 @@ import {dateRangeService} from "../../global/date-range";
 import {entityApi} from "../../global/entity-api";
 import {ActionsGraphClient} from "./actions-graph";
 import { DateRangeToQuery$ } from "ht-data";
-
+import * as fromActions from "../../reducers/actions-reducer";
+import {ApiStoreService} from "../../global/store-provider";
+import {ActionsListClient} from "./actions-list-client"
 export class HtActionsClient {
   // item: HtActionsGetClient;
   api;
   graph;
+  store;
+  list;
   constructor(config: IActionsClientConfig) {
     let api = entityApi.actions;
     this.api = api;
+    const store = ApiStoreService.getNewInstance();
+    store.addReducer("actions", fromActions.actionsReducer);
+    this.store = store;
     let dateRange$ = config.dateRange$;
     const dateRangeQuery$ = dateRange$
       ? dateRange$.pipe(DateRangeToQuery$("created_at"))
       : null;
 
-    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$})
+    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$});
+    this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store});
   }
 }
 
