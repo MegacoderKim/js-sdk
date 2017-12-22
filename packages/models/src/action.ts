@@ -91,3 +91,11 @@ export interface IActionStatusGraph {
   assigned: number,
   started: number
 }
+
+export interface IActionsSummary {
+  created: number,
+  assigned: number,
+  started: number,
+  completed: number,
+  suspended: number,
+}
