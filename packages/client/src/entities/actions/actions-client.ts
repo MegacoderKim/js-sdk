@@ -8,12 +8,16 @@ import { DateRangeToQuery$ } from "ht-data";
 import * as fromActions from "../../reducers/actions-reducer";
 import {ApiStoreService} from "../../global/store-provider";
 import {ActionsListClient} from "./actions-list-client"
+import {ActionsSummaryClient} from "./actions-summary-client"
+import {ActionsFilter} from "../../filters/actions-filter";
 export class HtActionsClient {
   // item: HtActionsGetClient;
   api;
   graph;
   store;
   list;
+  summary;
+  filters = new ActionsFilter();
   constructor(config: IActionsClientConfig) {
     let api = entityApi.actions;
     this.api = api;
@@ -27,6 +31,7 @@ export class HtActionsClient {
 
     this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$});
     this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store});
+    this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store})
   }
 }
 
