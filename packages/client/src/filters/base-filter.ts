@@ -2,8 +2,8 @@ import * as _ from "underscore";
 import { QueryLabel } from "../interfaces";
 
 export abstract class BaseFilter {
-  statusQueryArray: QueryLabel[] = [];
-  sortingQueryMap: object = {};
+  abstract statusQueryArray: QueryLabel[];
+  abstract sortingQueryMap: object = {};
 
   get sortingQueryLabel() {
     return this.getLabelArrayFromMap(this.sortingQueryMap);
@@ -61,6 +61,43 @@ export abstract class BaseFilter {
       return valueString === value;
     });
     return queryLabel ? queryLabel.label : null;
+  };
+
+  summaryCharts(queryLabels: QueryLabel[], data: object, status?: string) {
+    if(data) {
+      let max;
+      let total = 0;
+      let values = _.map(queryLabels, entity => {
+        let sum = _.reduce(
+          entity.values,
+          (acc, key: string) => {
+            return acc + data[key];
+          },
+          0
+        );
+        let value = entity.value || 0 + sum;
+        max = max && value < max ? max : value;
+        total = total + value;
+        return { ...entity, value };
+      });
+      let totalUsers = total;
+      let hasSelected = false;
+      let chart = _.map(values, datum => {
+        let selected = false;
+        if (status && status == datum.values.toString()) {
+          selected = true;
+          hasSelected = true;
+        }
+        let w = max ? datum.value / max : 0;
+
+        return { ...datum, w, selected };
+      });
+      return { totalUsers, chart, hasSelected }
+    } else {
+      return data;
+    }
+    // return data;
+
   }
 
   abstract get allQueryArray();
