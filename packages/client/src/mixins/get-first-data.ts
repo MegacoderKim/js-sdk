@@ -1,7 +1,6 @@
-import { timer } from "rxjs/observable/timer";
 import { expand, switchMap, tap } from "rxjs/operators";
 import { Observable } from "rxjs/Observable";
-import { Constructor } from "../../../models";
+import { Constructor } from "ht-models";
 
 export interface IIdQueryFirstDataBase {
   firstDataEffect(any): void;

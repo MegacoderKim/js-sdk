@@ -1,5 +1,4 @@
 import { HtBaseApi } from "./base";
-import {IUserAnalyticsPage} from "../../../models";
 import {Observable} from "rxjs/Observable";
 import {IActionStatusGraph} from "ht-models";
 import {map} from "rxjs/operators";
