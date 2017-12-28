@@ -1,26 +1,30 @@
-<div class="flex-column justify-center label-container">
+<div class="flex-column justify-center label-container has-text-grey">
   <div *ngIf="!hideTotal" class="count text-center">{{summary.totalUsers}} {{'user' | pluralize: summary.totalUsers}}</div>
+
   <div class="flex-row" *ngIf="summary.totalUsers">
-    <div
-      class="bar"
-      [style.flex-basis.%]="datum.value/summary.totalUsers * 100"
-      [style.background-color]="datum.color"
-      [class.faded]="hoveredQuery && hoveredQuery !== datum.label"
-      [class.bar-selected]="hoveredQuery && hoveredQuery === datum.label"
-      *ngFor="let datum of summary.chart; trackBy:indexId; let i = index"></div>
+    <ng-container *ngFor="let datum of summary.chart; trackBy:indexId; let i = index">
+      <div
+        class="bar"
+        [style.flex-basis.%]="datum.value/summary.totalUsers * 100"
+        [style.background-color]="datum.color"
+        [class.faded]="hoveredQuery && hoveredQuery !== datum.label"
+        [class.bar-selected]="hoveredQuery && hoveredQuery === datum.label"
+      *ngIf="datum.value"></div>
+    </ng-container>
+
   </div>
   <div *ngIf="summary.totalUsers == 0" class="bar" style="width: 100%; background: #ccc"></div>
   <div class="flex-row wrap row-gap-10">
     <!--<div class="box" [style.background-color]="datum.color"></div>-->
     <div
-      class="graph-label flex-column flex"
+      class="graph-label flex-column"
       [class.graph-active]="datum.selected"
       [class.graph-label-selectable]="selectable"
       (click)="selectLabel(datum)"
       (mouseenter)="onHoverQuery(datum)"
       (mouseleave)="onHoveroutQuery()"
       *ngFor="let datum of summary.chart; trackBy:indexId; let i = index">
-      <strong class="text-center" [style.color]="datum.color">
+      <strong class="text-center is-size-4" [style.color]="datum.color">
         {{datum.value}}
       </strong>
       <span class="text-center">{{datum.label}}</span>

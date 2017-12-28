@@ -11,11 +11,13 @@ import {Observable} from "rxjs/Observable";
 import {usersClientFactory, dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {HtUsersService} from "../ht/ht-users.service";
+import {actionsClientFactory} from "ht-client";
 
 @Injectable()
 export class AnalyticsItemsService {
 
   presets;
+  chosenItemCreater = [];
   items$: BehaviorSubject<IAnalyticsItem[]>;
   // items$: BehaviorSubject<IAnalyticsItem[]> = new BehaviorSubject([]);
   filteredItems$: Observable<IAnalyticsItem[]>;
@@ -25,17 +27,29 @@ export class AnalyticsItemsService {
   totalTags: number;
   // selectedTags$: BehaviorSubject<string[]>;
   constructor(usersService: HtUsersService) {
-    const usersSummaryClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
-    const activityQueryLabel = usersService.filterClass.activityQueryArray;
+    const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
+    const activityQueryLabel = usersClient.filterClass.activityQueryArray;
+    const actionDateRangeService = dateRangeFactory(DateRangeMap.today);
+    const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$});
+    const actionsStatusQueryLabel = [];
     this.presets = [
-      usersAnalyticsListPresets.users_summary(usersSummaryClient),
-      usersAnalyticsListPresets.users_summary(usersSummaryClient, 'Users activity summary', activityQueryLabel),
-      actionsConfigPreset.status,
+      // actionsConfigPreset.max_distance(),
+      // actionsConfigPreset.max_duration(),
+      actionsConfigPreset.summary(actionsClient, actionDateRangeService),
+      // usersAnalyticsListPresets.users_summary(usersClient),
+      usersAnalyticsListPresets.users_summary(usersClient, 'Users activity summary', activityQueryLabel),
+      actionsConfigPreset.status(),
+      actionsConfigPreset.recently_assigned(),
+      actionsConfigPreset.recently_completed(),
+      actionsConfigPreset.users_on_action(),
+      usersAnalyticsListPresets.last_recorded(),
+      usersAnalyticsListPresets.users_actions(),
       usersAnalyticsListPresets.max_location_disabled_duration(),
       usersAnalyticsListPresets.max_stop_duration(),
       usersAnalyticsListPresets.max_network_offline(),
       usersAnalyticsListPresets.max_distance(),
     ];
+    this.chosenItemCreater = this.presets;
     this.items$ = new BehaviorSubject(this.getItems(this.presets));
     this.allTags$ = this.items$.pipe(
       map(items => {
@@ -46,7 +60,7 @@ export class AnalyticsItemsService {
             return currentTags.includes(tag) ? currentTags : [...currentTags, tag]
           }, tags)
           // return tags.includes()
-        }, [])
+        }, ['users', 'actions'])
       })
     );
 
@@ -77,12 +91,28 @@ export class AnalyticsItemsService {
       this.selectedTags$,
       (items, tags) => {
         return tags.length ? items.filter((item) => {
-          return tags.reduce((pass, existingTag) => {
-            return pass || item.tags.includes(existingTag)
-          }, false)
+          return tags.reduce((pass, selectedTag) => {
+            return pass && item.tags.includes(selectedTag)
+          }, true);
+          // return tags.reduce((pass, existingTag) => {
+          //   return pass || item.tags.includes(existingTag)
+          // }, false)
         }) : items;
       }
     )
+  };
+
+  // toggleItemCreator(preset) {
+  //   if (this.isItemCreatorActive(preset)) {
+  //     const index = this.choosenPreset.indexOf(preset);
+  //     this.choosenPreset.splice(index, 1)
+  //   } else {
+  //     this.choosenPreset.push(preset)
+  //   }
+  // };
+
+  private isItemCreatorActive(itemCreator) {
+    return this.chosenItemCreater.includes(itemCreator)
   }
 
   toggleTag(tag: string) {
@@ -91,22 +121,40 @@ export class AnalyticsItemsService {
     )
       .subscribe((tags) => {
 
-        // if (tags.includes(tag)) {
-        //   tags.splice(tags.indexOf(tag), 1)
-        // } else {
-        //   tags.push(tag)
-        // }
         if (tags.includes(tag)) {
-          tags = []
+          tags.splice(tags.indexOf(tag), 1)
         } else {
-          tags = [tag]
+          tags.push(tag)
         }
+        // if (tags.includes(tag)) {
+        //   tags = []
+        // } else {
+        //   tags = [tag]
+        // }
         // if (tags.length === this.totalTags) {
         //   tags = [];
         // }
       this.selectedTags$.next([...tags])
     })
   };
+
+  selectTag(tag: string) {
+    this.selectedTags$.pipe(
+      take(1)
+    )
+      .subscribe((tags) => {
+
+        if (tags.includes(tag)) {
+          tags.splice(tags.indexOf(tag), 1)
+        } else {
+          tags = [tag]
+        }
+        // if (tags.length === this.totalTags) {
+        //   tags = [];
+        // }
+        this.selectedTags$.next([...tags])
+      })
+  }
 
   setPreset(choosenPreset) {
     this.items$.next(this.getItems(choosenPreset));

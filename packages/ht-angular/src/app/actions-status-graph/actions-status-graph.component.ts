@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import Chart from "frappe-charts/dist/frappe-charts.min.esm"
-import * as moment from "moment-mini"
+import moment from "moment-mini";
 import {untilDestroy} from "../until-destroy";
 // import {filter} from "rxjs/operators";
 
@@ -26,7 +26,6 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit, OnDes
       untilDestroy(this)
     )
       .subscribe((data) => {
-        // console.log("setchart");
         this.setChart(data);
     })
 
@@ -59,7 +58,15 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit, OnDes
         colors: ['#7cd6fd', 'red'],
         region_fill: 1,
         // x_axis_mode: 'tick',
-        format_tooltip_x: d => moment(d).format('ddd, MMM Do'),
+        format_tooltip_x: d => {
+          // console.log(d, moment(d).format('ddd, MMM Do'));
+          return d
+          // return moment(d).format('ddd, MMM Do')
+        },
+        // format_label_x: d => {
+        //   console.log("daa");
+        //   return d
+        // },
         format_tooltip_y: d => d
       });
       // this.chart.show_averages();

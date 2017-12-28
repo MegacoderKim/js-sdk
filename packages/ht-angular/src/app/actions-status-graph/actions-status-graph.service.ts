@@ -4,7 +4,7 @@ import {DateRangeMap} from "ht-data";
 import { actionsClientFactory} from "ht-client";
 import { IActionStatusGraph} from "ht-models";
 import {filter, map} from "rxjs/operators";
-import * as moment from "moment-mini"
+import moment from "moment-mini";
 import {IActionsTrendlineConfig} from "../interfaces/trendline";
 import {ActionsGraph} from "ht-client";
 import {IAnalyticsItem, IAnalyticsItemService} from "../interfaces/analytics-item";
@@ -26,6 +26,7 @@ export class ActionsStatusGraphService implements IAnalyticsItemService {
   }
 
   initState(config: IActionsTrendlineConfig) {
+    // console.log(config.initialDateRange);
     this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
     this.title = config.title || "Actions graph";
     this.chartFormat = config.chartFormat;
@@ -46,9 +47,9 @@ export class ActionsStatusGraphService implements IAnalyticsItemService {
   }
 
   private getCompletedActionChart(data: IActionStatusGraph[]) {
-    const format = data.length < 15 ? 'MMM D' : "MMM D";
+    // const format = data.length < 15 ? 'MMM D' : "MMM D";
     const labels = data.map((item) => {
-      return moment(item.created_date).format(format)
+      return moment(item.created_date).format('ddd, MMM Do')
     });
     const datasets = this.chartFormat.map((item) => {
       return {

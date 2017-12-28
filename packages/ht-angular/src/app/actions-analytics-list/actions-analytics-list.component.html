@@ -1,0 +1,35 @@
+<!--<div class="level">-->
+  <!--<div class="level-left has-text-weight-bold has-text-primary">-->
+    <!--{{listService.title}}-->
+  <!--</div>-->
+  <!--<div class="level-right" *ngIf="!listService.hideDatePicker">-->
+    <!--<ht-date-range [dateRangeService$]="listService.dateRangeService$"></ht-date-range>-->
+  <!--</div>-->
+<!--</div>-->
+<ht-analytics-item-load [loading$]="listService.client.loading$">
+  <table class="table is-fullwidth is-bordered is-striped is-hoverable">
+    <thead>
+    <tr>
+      <th *ngFor="let column of listService.columns">{{column}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="clickable" (click)="showActionDetail(row)" *ngFor="let row of listService.dataTable$ | async">
+      <td *ngFor="let item of row.values">{{item}}</td>
+    </tr>
+    </tbody>
+  </table>
+</ht-analytics-item-load>
+
+<div class="modal is-active" *ngIf="selectedAction">
+  <div class="modal-background" (click)="closeModal()"></div>
+  <div class="modal-card">
+    <section class="modal-card-body">
+      <ht-action-table [action]="selectedAction"></ht-action-table>
+      <!--<ht-user-table [user]="selectedUser">-->
+        <!--{{listService.dateRangeService$.display$ | async}}-->
+      <!--</ht-user-table>-->
+    </section>
+  </div>
+  <button class="modal-close is-large" aria-label="close" (click)="closeModal()"></button>
+</div>

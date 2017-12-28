@@ -1,12 +1,11 @@
-<ht-analytics-tags [tags]="listService.tags"></ht-analytics-tags>
-<div class="level">
-  <div class="level-left has-text-weight-bold">
-    {{listService.title}}
-  </div>
-  <div class="level-right">
-    <ht-date-range [dateRangeService$]="listService.dateRangeService$"></ht-date-range>
-  </div>
-</div>
+<!--<div class="level">-->
+  <!--<div class="level-left has-text-weight-bold has-text-primary">-->
+    <!--{{listService.title}}-->
+  <!--</div>-->
+  <!--<div class="level-right" *ngIf="!listService.hideDatePicker">-->
+    <!--<ht-date-range [dateRangeService$]="listService.dateRangeService$"></ht-date-range>-->
+  <!--</div>-->
+<!--</div>-->
 <ht-analytics-item-load [loading$]="listService.client.loading$">
   <table class="table is-fullwidth is-bordered is-striped is-hoverable">
     <thead>
@@ -15,7 +14,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr (click)="showUserDetail(row)" *ngFor="let row of listService.dataTable$ | async">
+    <!--<ht-data-table (select)="showUserDetail($event)" [clickable]="true" [tableData]="listService.dataTable$ | async"></ht-data-table>-->
+    <tr class="clickable" (click)="showUserDetail(row)" *ngFor="let row of listService.dataTable$ | async">
       <td *ngFor="let item of row.values">{{item}}</td>
     </tr>
     </tbody>
@@ -27,7 +27,7 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <ht-user-table [user]="selectedUser">
-        {{listService.dateRangeService$.display$ | async}}
+        <span *ngIf="!listService.hideDatePicker">{{listService.dateRangeService$.display$ | async}}</span>
       </ht-user-table>
     </section>
   </div>

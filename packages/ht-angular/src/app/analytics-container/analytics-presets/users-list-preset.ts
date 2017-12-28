@@ -1,18 +1,20 @@
-import {DistanceLocale, HMString} from "ht-utility";
-import {IUsersAnalyticsListConfig} from "../../interfaces/analytics-list";
+import {DateString, DistanceLocale, HMString, TimeString} from "ht-utility";
+import {IAnalyticsListConfig} from "../../interfaces/analytics-list";
 import {IUserAnalytics} from "ht-models";
 import {UsersAnalyticsListService} from "../../users-analytics-list/users-analytics-list.service";
 import {UsersSummaryService} from "../../users-summary-chart/users-summary.service";
-import {IUsersSummaryConfig} from "../../interfaces/users-analytics";
+import {ISummaryConfig} from "../../interfaces/users-analytics";
+import {IActionsTrendlineConfig} from "../../interfaces/trendline";
+import {DateRangeMap, userTableFormat} from "ht-data";
 
 export interface IPreset {
   service: any,
-  initialConfig: IUsersAnalyticsListConfig | IUsersSummaryConfig
+  initialConfig: IAnalyticsListConfig | ISummaryConfig<any> | IActionsTrendlineConfig
 }
-export interface IUsersListPreset {
+export interface IAnalyticsPresets {
   [name: string]: (...args: any[]) => IPreset
 }
-export const usersAnalyticsListPresets: IUsersListPreset = {
+export const usersAnalyticsListPresets: IAnalyticsPresets = {
   max_location_disabled_duration() {
     return {
       service: UsersAnalyticsListService,
@@ -22,19 +24,14 @@ export const usersAnalyticsListPresets: IUsersListPreset = {
         tags: ['user behaviour', 'device health'],
         tableFormat: [
           {
-            column: "Name",
+            label: "Name",
             selector(user: IUserAnalytics) {
               return user.name
             }
           },
+          userTableFormat.location_disabled_duration,
           {
-            column: "Location disabled duration",
-            selector(user: IUserAnalytics) {
-              return user.location_disabled_duration ? HMString(user.location_disabled_duration / 60) : "--"
-            }
-          },
-          {
-            column: "% of total duration",
+            label: "% of total duration",
             selector(user: IUserAnalytics) {
               return user.total_duration && user.location_disabled_duration ?
                 (100 * (user.location_disabled_duration / user.total_duration)).toFixed(1) :
@@ -51,22 +48,17 @@ export const usersAnalyticsListPresets: IUsersListPreset = {
       initialConfig: {
         title: "Users with max stop duration",
         query: {ordering: "-stop_duration"},
-        tags: ['utilization'],
+        tags: ['activity'],
         tableFormat: [
           {
-            column: "Name",
+            label: "Name",
             selector(user: IUserAnalytics) {
               return user.name
             }
           },
+          userTableFormat.stop_duration,
           {
-            column: "Stop duration",
-            selector(user: IUserAnalytics) {
-              return user.stop_duration ? HMString(user.stop_duration / 60) : "--"
-            }
-          },
-          {
-            column: "% of total duration",
+            label: "% of total duration",
             selector(user: IUserAnalytics) {
               return user.total_duration && user.stop_duration ?
                 (100 * (user.stop_duration / user.total_duration)).toFixed(1) :
@@ -87,19 +79,14 @@ export const usersAnalyticsListPresets: IUsersListPreset = {
         tags: ['device health'],
         tableFormat: [
           {
-            column: "Name",
+            label: "Name",
             selector(user: IUserAnalytics) {
               return user.name
             }
           },
+          userTableFormat.network_offline_duration,
           {
-            column: "network offline duration",
-            selector(user: IUserAnalytics) {
-              return user.network_offline_duration ? HMString(user.network_offline_duration / 60) : "--"
-            }
-          },
-          {
-            column: "% of total duration",
+            label: "% of total duration",
             selector(user: IUserAnalytics) {
               return user.total_duration && user.network_offline_duration ?
                 (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) :
@@ -117,20 +104,15 @@ export const usersAnalyticsListPresets: IUsersListPreset = {
       initialConfig: {
         title: "Users with max distance",
         query: {ordering: "-total_distance"},
-        tags: ['utilization'],
+        tags: ['distance'],
         tableFormat: [
           {
-            column: "Name",
+            label: "Name",
             selector(user: IUserAnalytics) {
               return user.name
             }
           },
-          {
-            column: "total distance",
-            selector(user: IUserAnalytics) {
-              return user.total_distance ? DistanceLocale(user.total_distance) : "--"
-            }
-          }
+          userTableFormat.total_distance
         ]
       }
     }
@@ -142,7 +124,48 @@ export const usersAnalyticsListPresets: IUsersListPreset = {
       initialConfig: {
         title: title || "Users status summary",
         queryLabels,
-        usersClient,
+        client: usersClient,
+      }
+    }
+  },
+  last_recorded() {
+    return {
+      service: UsersAnalyticsListService,
+      initialConfig: {
+        title: "Most Recent active users",
+        query: {ordering: "-last_heartbeat_at"},
+        tags: ['live'],
+        initialDateRange: DateRangeMap.last_30_days,
+        hideDatePicker: true,
+        tableFormat: [
+          {
+            label: "Name",
+            selector(user: IUserAnalytics) {
+              return user.name
+            }
+          },
+          userTableFormat.last_heartbeat_at
+        ]
+      }
+    }
+  },
+  users_actions() {
+    return {
+      service: UsersAnalyticsListService,
+      initialConfig: {
+        title: "Users with max actions",
+        query: {ordering: "-num_actions"},
+        tags: ['actions'],
+        initialDateRange: DateRangeMap.today,
+        tableFormat: [
+          {
+            label: "Name",
+            selector(user: IUserAnalytics) {
+              return user.name
+            }
+          },
+          userTableFormat.num_actions
+        ]
       }
     }
   }

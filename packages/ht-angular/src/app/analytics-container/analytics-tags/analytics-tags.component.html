@@ -1,25 +1,45 @@
 <div class="level">
   <div class="level-left">
     <div class="level-item">
+      <div class="icon">
+        <i class="fa fa-tag has-text-grey"></i>
+      </div>
+    </div>
+    <div class="level-item">
       <div class="tags">
-        <span class="tag" *ngFor="let tag of tags">{{tag}}</span>
+        <span class="tag clickable" (click)="selectTag.next(tag)" [class.is-primary]="isTagActive(tag)" *ngFor="let tag of tags">
+          {{tag}}
+          <span class="icon" *ngIf="tag === 'live'">
+            &nbsp;
+            <i class="fa fa-circle" style="color: #99d8ac;"></i>
+          </span>
+        </span>
       </div>
     </div>
   </div>
-  <div class="level-right">
-    <div class="level-item">
-      <button class="button is-small" (click)="edit.next(true)">
-        <span class="icon">
-          <i class="fa fa-edit"></i>
-        </span>
-      </button>
-    </div>
-    <div class="level-item">
-      <button class="button is-small" (click)="remove.next(true)">
-        <span class="icon">
-          <i class="fa fa-remove"></i>
-        </span>
-      </button>
-    </div>
-  </div>
+  <!--<div class="level-right">-->
+    <!--<div class="level-item">-->
+      <!--<div class="dropdown is-hoverable is-right">-->
+        <!--<div class="dropdown-trigger">-->
+          <!--<button class="button is-white has-text-grey" aria-haspopup="true" aria-controls="dropdown-menu4">-->
+        <!--<span class="icon">-->
+          <!--<i class="fa fa-ellipsis-v"></i>-->
+        <!--</span>-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--<div class="dropdown-menu" id="dropdown-menu4" role="menu">-->
+          <!--<div class="dropdown-content">-->
+            <!--<a class="dropdown-item flex-row align-center">-->
+              <!--<span class="icon"><i class="fa fa-edit"></i></span>-->
+              <!--<span class="flex">Edit</span>-->
+            <!--</a>-->
+            <!--<a class="dropdown-item flex-row align-center has-text-danger">-->
+              <!--<span class="icon"><i class="fa fa-remove"></i></span>-->
+              <!--<span class="flex">Remove</span>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 </div>

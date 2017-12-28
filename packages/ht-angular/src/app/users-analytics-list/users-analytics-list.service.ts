@@ -3,7 +3,7 @@ import {dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {filter, map} from "rxjs/operators";
 import {usersClientFactory} from "ht-client";
-import {IAnalyticsList, IUsersAnalyticsListConfig} from "../interfaces/analytics-list";
+import {IAnalyticsList, IAnalyticsListConfig} from "../interfaces/analytics-list";
 
 import {UsersAnalytics} from "ht-client";
 import {IAnalyticsItemService} from "../interfaces/analytics-item";
@@ -22,24 +22,26 @@ export class UsersAnalyticsListService implements IAnalyticsItemService {
   dataTable$;
   className = "is-6";
   tags = ['users'];
-  constructor(config: IUsersAnalyticsListConfig) {
+  hideDatePicker: boolean;
+  constructor(config: IAnalyticsListConfig) {
     this.initState(config);
-    this.initClient()
+    this.initClient(config)
   }
 
-  initState(config: IUsersAnalyticsListConfig) {
-    this.dateRangeService$ = dateRangeFactory(config.initialDateRange$ || DateRangeMap.last_7_days);
+  initState(config: IAnalyticsListConfig) {
+    this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
     this.title = config.title;
     this.tableFormat = config.tableFormat;
     this.query = config.query;
-    this.columns = this.tableFormat.map(data => data.column);
+    this.columns = this.tableFormat.map(data => data.label);
+    this.hideDatePicker = config.hideDatePicker;
     if (config.tags && config.tags.length) this.tags = [...this.tags, ...config.tags]
   }
 
-  private initClient() {
+  private initClient(config) {
     const userClient  = usersClientFactory({dateRange$: this.dateRangeService$.data$});
     this.client = userClient.list;
-    this.client.updateStrategy = "once";
+    this.client.updateStrategy = config.updateStrategy || "once";
     this.client.setQuery(this.query);
     this.client.setActive();
     const data$ = this.client.dataArray$;

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 // import * as moment from 'moment-mini'
-import moment from 'moment-mini'
 import {IDateRange, dateRangeService} from "ht-client";
 import {DateRangeMap, isSameDateRange, DateRangeLabelMap} from "ht-data";
 import {of} from "rxjs/observable/of";

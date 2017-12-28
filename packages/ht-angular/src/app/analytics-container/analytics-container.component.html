@@ -1,11 +1,67 @@
 <div class="toolbar">
   <div class="level">
     <div class="level-left">
-      <div class="level-item">Tags:</div>
+      <!--<div class="level-item">-->
+        <!--<div class="icon">-->
+          <!--<i class="fa fa-tags has-text-grey"></i>-->
+        <!--</div>-->
+        <!--Filter by Tags:-->
+      <!--</div>-->
+      <div class="level-item">
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span class="icon">
+                <i class="fa fa-tags has-text-grey"></i>
+              </span>
+              <span>Filter by Tags:</span>
+              <span class="icon is-small">
+        <i class="fa fa-angle-down" aria-hidden="true"></i>
+      </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a (click)="analyticsItemsService.toggleTag(tag.key)" class="dropdown-item" *ngFor="let tag of analyticsItemsService.tags$ | async">
+                <label class="checkbox">
+                  <input type="checkbox" [checked]="tag.isActive">
+                  {{tag.key}}
+                </label>
+              </a>
+              <!--<a class="dropdown-item">-->
+                <!--Other dropdown item-->
+              <!--</a>-->
+              <!--<a href="#" class="dropdown-item is-active">-->
+                <!--Active dropdown item-->
+              <!--</a>-->
+              <!--<a href="#" class="dropdown-item">-->
+                <!--Other dropdown item-->
+              <!--</a>-->
+              <!--<hr class="dropdown-divider">-->
+              <!--<a href="#" class="dropdown-item">-->
+                <!--With a divider-->
+              <!--</a>-->
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="level-item" *ngFor="let tag of analyticsItemsService.tags$ | async">
-        <span class="tag clickable is-medium"
-              (click)="analyticsItemsService.toggleTag(tag.key)"
-              [class.is-primary]="tag.isActive">{{tag.key}}</span>
+        <button
+          class="button"
+          [class.is-primary]="tag.isActive"
+          (click)="analyticsItemsService.selectTag(tag.key)">
+
+          <span>{{tag.key}}</span>
+          <span *ngIf="tag.isActive" class="icon is-small">
+              <i class="fa fa-times"></i>
+            </span>
+        </button>
+        <!--<span class="tag clickable is-medium"-->
+
+              <!--(click)="analyticsItemsService.selectTag(tag.key)"-->
+              <!--[class.is-primary]="tag.isActive">-->
+          <!--{{tag.key}} <span *ngIf="tag.isActive" class="delete"></span>-->
+        <!--</span>-->
       </div>
     </div>
     <div class="level-right">
@@ -21,16 +77,24 @@
   </div>
 </div>
 <div class="container">
-  <div class="columns is-multiline" *ngIf="analyticsItemsService.filteredItems$ | async as items">
-    <div class="column" [ngClass]="item.className" *ngFor="let item of items">
+  <div class="columns is-multiline is-centered" *ngIf="analyticsItemsService.filteredItems$ | async as items">
+    <div class="column" [@card-appear] [ngClass]="item.className" *ngFor="let item of items">
       <div class="card card-content">
+        <ht-analytics-tags
+          (selectTag)="analyticsItemsService.toggleTag($event)"
+          [tags]="item.tags"
+          [selectedTags]="analyticsItemsService.selectedTags$ | async"></ht-analytics-tags>
+        <ht-analytics-title
+          [title]="item.title"
+          [hideDatePicker]="item.hideDatePicker"
+          [dateRangeService$]="item.dateRangeService$"></ht-analytics-title>
         <ht-analytics-item [item]="item"></ht-analytics-item>
       </div>
     </div>
     <div class="column is-6 auto setup" *ngIf="items.length == 0">
-      <div class="is-size-1">Add analytics views</div>
+      <div class="is-size-1 has-text-centered has-text-grey-light">No view is selected</div>
     </div>
-    <div class="modal is-active" *ngIf="(items.length == 0) || configure">
+    <div class="modal is-active" *ngIf="configure">
       <div class="modal-background" (click)="configure = false"></div>
       <div class="modal-card">
         <header class="modal-card-head">

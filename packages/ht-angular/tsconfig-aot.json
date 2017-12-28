@@ -11,8 +11,10 @@
     "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "stripInternal": true,
+    "allowSyntheticDefaultImports": true,
     "lib": [
       "es2015",
+      "es7",
       "dom"
     ]
   }

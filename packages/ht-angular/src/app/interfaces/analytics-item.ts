@@ -1,8 +1,9 @@
 import {ComponentRef} from "@angular/core/src/linker/component_factory";
 import {IActionsTrendlineConfig} from "./trendline";
-import {IUsersAnalyticsListConfig} from "./analytics-list";
+import {IAnalyticsListConfig} from "./analytics-list";
+import {Observable} from "rxjs/Observable";
 
-export type IInitialConfig = IActionsTrendlineConfig | IUsersAnalyticsListConfig;
+export type IInitialConfig = IActionsTrendlineConfig | IAnalyticsListConfig;
 
 export type IAnalyticsItem = IAnalyticsItemService
 // export interface IAnalyticsItem {
@@ -13,6 +14,8 @@ export type IAnalyticsItem = IAnalyticsItemService
 export interface IAnalyticsItemService {
   component: any,
   className: string,
-  tags: string[]
+  tags: string[],
+  title: string,
+  // loading$: Observable<boolean>
   setData(instance): void,
 }

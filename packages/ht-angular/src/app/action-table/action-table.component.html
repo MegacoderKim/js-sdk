@@ -1,0 +1,30 @@
+<div class="level">
+  <div class="level-right has-text-grey">
+    <div class="level-item">
+      <div class="icon-box">
+        <i class="fa fa-briefcase"></i>
+      </div>
+      <!--<span class="fa-stack fa-lg">-->
+          <!--<i class="fa fa-square-o fa-stack-2x"></i>-->
+          <!--<i class="fa fa-briefcase fa-stack-1x"></i>-->
+        <!--</span>-->
+    </div>
+    <div class="level-item is-size-4 is-capitalized">
+      {{action.type}}
+      <!--<span *ngIf="action.display.duration_remaining && action.display.show_summary">-->
+        <!--{{action.display.duration_remaining | HMString}}-->
+      <!--</span>-->
+    </div>
+    <div class="level-item is-size-4">
+      {{action.display.status_text}}
+    </div>
+    <div class="level-item is-size-4">
+      {{action.display.sub_status_text}}
+    </div>
+  </div>
+  <div class="level-left">
+    # {{action.lookup_id}}
+  </div>
+</div>
+<ht-data-table [tableData]="tableData"></ht-data-table>
+<ht-user-table [user]="action.user"></ht-user-table>
