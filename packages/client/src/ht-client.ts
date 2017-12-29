@@ -11,6 +11,7 @@ export * from "./entities/users/users-analytics-markers";
 export * from "./entities/users/users-summary-client"
 
 export * from "./filters/users-filter";
+export * from "./filters/actions-filter";
 
 //groups
 export * from "./entities/groups/groups-client";

@@ -22,7 +22,7 @@ export abstract class BaseFilter {
 
   getQueryDisplay(queryArray: QueryLabel[], key): QueryLabel[] {
     return _.map(queryArray, queryLabel => {
-      let value = queryLabel.keys ? queryLabel.keys.toString() : queryLabel.key;
+      let value = queryLabel.values ? queryLabel.values.toString() : queryLabel.value;
       return { ...queryLabel, param: { [key]: value } };
     });
   }
@@ -36,8 +36,8 @@ export abstract class BaseFilter {
         const label = this.getQueryLabelFromValue(value, key);
         let queryLabel = {
           label,
-          keys: [key],
-          key: key,
+          values: [key],
+          value: key,
           param: { [key]: value }
         };
         return label ? [...acc, queryLabel] : acc;

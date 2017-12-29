@@ -1,3 +1,7 @@
+# 0.0.19-beta
+- Add rollup
+- Add action filters
+
 # 0.0.18-beta
 - Start fetching data when `active$` is not defined
 - Add actions graph, actions list, actions summary client

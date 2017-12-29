@@ -19,7 +19,7 @@ export abstract class EntityClient {
       placelinePage$,
       userId$,
       dataArray$,
-      (placelinePage, userId, dataArray) => {
+      (placelinePage, userId, dataArray: any[]) => {
         const filteredData = _.filter(dataArray, user => {
           return userId ? user.id == userId : true;
         });
@@ -41,7 +41,7 @@ export abstract class EntityClient {
       (placelinePage: Page<any>, userId, pageData: Page<any>) => {
         if (!pageData) return pageData;
         let placelineResults = placelinePage ? placelinePage.results : null;
-        const filteredData = _.filter(pageData.results, user => {
+        const filteredData = _.filter(pageData.results, (user: any) => {
           return userId ? user.id == userId : true;
         });
         let results =

@@ -314,7 +314,7 @@ export class HtUsersClient extends EntityClient {
         let { totalUsers, chart } = overview;
         let status = query["status"];
         if (!!status) {
-          let value = _.find(chart, datum => {
+          let value = _.find(chart, (datum: any) => {
             return datum.keys.toString(",") == status;
           });
           return value && value !== currentTotalUsers ? of(true) : empty();
