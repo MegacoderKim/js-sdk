@@ -44,4 +44,5 @@ var browserSpecConfig = {
 };
 
 var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
-module.exports = [nodeConfig, browserConfig];
+// module.exports = [nodeConfig, browserConfig];
+module.exports = nodeConfig;
