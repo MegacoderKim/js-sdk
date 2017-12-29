@@ -8,7 +8,7 @@ import {
   ITimelineEvent
 } from "ht-models";
 import { ISegmentType, HtPosition } from "../interfaces";
-import * as _ from "underscore";
+import _ from "underscore";
 
 export class HtUser {
   statusQueryMap = {

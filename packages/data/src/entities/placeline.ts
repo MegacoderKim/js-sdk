@@ -8,7 +8,7 @@ import {
 } from "../interfaces";
 import { htEvent } from "./event";
 import { NameCase, GetMinute } from "ht-utility";
-import * as _ from "underscore";
+import _ from "underscore";
 import { CommonFunctions } from "../common";
 
 export class HtPlaceline {

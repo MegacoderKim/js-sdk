@@ -1,6 +1,6 @@
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { Observable } from "rxjs/Observable";
-import * as _ from "underscore";
+import _ from "underscore";
 import { Page } from "ht-models";
 import { distinctUntilChanged } from "rxjs/operators";
 import { itemAsPage$ } from "./item-as-page";
