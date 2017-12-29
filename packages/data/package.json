@@ -10,7 +10,8 @@
     "build": "rimraf dist && webpack --config webpack.config.js",
     "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
     "start": "tsc -w & rollup -c rollup.config.ts -w",
-    "wbuild": "webpack -w --config webpack.config.bundle.js"
+    "wbuild": "webpack -w --config webpack.config.bundle.js",
+    "prepack": "npm run lib"
   },
   "author": "",
   "license": "ISC",
