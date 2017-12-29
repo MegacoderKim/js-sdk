@@ -29,15 +29,48 @@ var config = {
         ]
     },
     externals: [
-        'ht-utility',
-        'ht-data',
-        'ht-models',
-        'moment-mini',
-        'leaflet',
+        {
+            'moment-mini': {
+                commonjs: 'moment',
+                commonjs2: 'moment',
+                amd: 'moment',
+                root: 'moment'
+            },
+            'ht-utility': {
+                commonjs: 'htUtility',
+                commonjs2: 'htUtility',
+                amd: 'htUtility',
+                root: 'htUtility',
+                umd: "htUtility",
+                global: "htUtility"
+            },
+            'ht-data': {
+                commonjs: 'htData',
+                commonjs2: 'htData',
+                amd: 'htData',
+                root: 'htData',
+                umd: "htData",
+                global: "htData"
+            },
+            'underscore': {
+                commonjs: 'underscore',
+                commonjs2: 'underscore',
+                amd: 'underscore',
+                root: '_'
+            },
+            'leaflet': {
+                umd: 'L',
+                root: 'L',
+                global: 'L',
+                commonjs2: 'leaflet',
+                commonjs: 'leaflet',
+                amd: 'leaflet'
+            },
+        },
+        // 'ht-data',
+        // 'ht-utility',
         'leaflet.markercluster',
-        'underscore',
         webpackRxjsExternals(),
-        /^rxjs\/.+$/
     ],
     plugins: [
         new Webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
