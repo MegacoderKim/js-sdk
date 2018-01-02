@@ -1,15 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IUserAnalytics, IUserData, Page} from "ht-models";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
-import * as _ from "underscore";
 import {ApiType, QueryLabel} from "ht-client";
 import {listwithSelectedId$, listWithItem$} from "ht-data";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {Color} from "ht-utility";
 import {distinctUntilChanged, map} from "rxjs/operators";
-import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'ht-users-container',

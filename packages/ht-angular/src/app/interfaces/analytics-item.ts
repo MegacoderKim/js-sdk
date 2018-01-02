@@ -1,4 +1,3 @@
-import {ComponentRef} from "@angular/core/src/linker/component_factory";
 import {IActionsTrendlineConfig} from "./trendline";
 import {IAnalyticsListConfig} from "./analytics-list";
 import {Observable} from "rxjs/Observable";

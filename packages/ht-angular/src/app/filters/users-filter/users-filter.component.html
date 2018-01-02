@@ -31,7 +31,7 @@
     <div class="" *ngFor="let query of query$ | async as queries">
       <div class="tags has-addons">
         <div class="tag is-medium is-primary">{{query.label}}</div>
-        <a (click)="clearQuery(query.key)" class="tag is-medium is-primary is-delete"></a>
+        <a (click)="clearQuery(query.value)" class="tag is-medium is-primary is-delete"></a>
       </div>
     </div>
   </div>

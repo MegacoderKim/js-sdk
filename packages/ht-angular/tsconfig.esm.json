@@ -5,6 +5,11 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "experimentalDecorators": true,
     "stripInternal": true,
     "declaration": true,

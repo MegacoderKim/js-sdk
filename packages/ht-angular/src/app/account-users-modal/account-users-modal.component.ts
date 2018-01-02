@@ -2,10 +2,9 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
 import {AccountsService} from "../accounts/accounts.service";
 import {filter, map, pluck, take, tap} from "rxjs/operators";
-import {IMembership} from "ht-models";
+import {IMembership, IAccount} from "ht-models";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {combineLatest} from "rxjs/observable/combineLatest";
-import {IAccount} from "ht-models/dist/typings/account";
 
 @Component({
   selector: 'ht-account-users-modal',

@@ -16,7 +16,7 @@ export class DataTableComponent implements OnInit {
   }
 
   selectRow(row) {
-    if(this.clickable) {
+    if (this.clickable) {
       this.select.next(row)
     }
   }

@@ -12,7 +12,7 @@ import {empty} from "rxjs/observable/empty";
   styleUrls: ['./test.component.less']
 })
 export class TestComponent implements OnInit {
-  showAll: boolean = true;
+  showAll: boolean = false;
   userId = "43fbf0db-530b-4f79-9093-6f565ea6d37e";
   constructor(
     private userService: HtUsersService,

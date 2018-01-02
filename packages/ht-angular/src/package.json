@@ -1,5 +1,5 @@
 {
-    "name": "ht-angular",
+  "name": "ht-angular",
     "version": "0.2.12-beta",
     "repository": {
       "type": "git",
@@ -20,9 +20,6 @@
     "bugs": {
       "url": "https://github.com/hypertrack/ht-angular/issues"
     },
-    "main": "bundles/ht-angular.umd.js",
-    "module": "index.js",
-    "typings": "index.d.ts",
     "private": false,
     "dependencies": {
 

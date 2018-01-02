@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IAnalyticsList} from "../interfaces/analytics-list";
-import {IUserAnalytics} from "ht-models/dist/typings/user";
+import {IUserAnalytics} from "ht-models";
 
 @Component({
   selector: 'ht-users-analytics-list',

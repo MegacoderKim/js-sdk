@@ -4,12 +4,23 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "@angular/*": [
         "../node_modules/@angular/*"
       ],
       "rxjs/*": [
         "../node_modules/rxjs/*"
+      ],
+      "moment-mini": [
+        "../node_modules/moment-mini/*"
+      ],
+      "underscore": [
+        "../node_modules/underscore/*"
       ]
     }
   },

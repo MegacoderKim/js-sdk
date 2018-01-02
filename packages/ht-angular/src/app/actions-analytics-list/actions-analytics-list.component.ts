@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IAnalyticsList} from "../interfaces/analytics-list";
-import {IAction} from "ht-models/dist/typings/action";
+import {IAction} from "ht-models";
 
 @Component({
   selector: 'ht-actions-analytics-list',

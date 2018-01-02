@@ -4,6 +4,10 @@
     "target": "es5",
     "outDir": "../tmp/lib-es5/",
     "allowSyntheticDefaultImports": true,
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "baseUrl": ""
   },
   "files": [

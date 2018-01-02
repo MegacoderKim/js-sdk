@@ -56,7 +56,7 @@ export class AnalyticsItemsService {
         this.totalTags = items.length;
         return items.reduce((tags, item) => {
           const itemTags = item.tags;
-          return itemTags.reduce((currentTags, tag) => {
+          return itemTags.reduce((currentTags: string[], tag) => {
             return currentTags.includes(tag) ? currentTags : [...currentTags, tag]
           }, tags)
           // return tags.includes()

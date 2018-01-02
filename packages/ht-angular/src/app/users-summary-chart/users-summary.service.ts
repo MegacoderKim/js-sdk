@@ -5,8 +5,7 @@ import {dateRangeFactory, UsersSummaryClient, usersClientFactory, QueryLabel} fr
 import {DateRangeMap} from "ht-data";
 import {UsersSummaryChartComponent} from "./users-summary-chart.component";
 import {ISummaryConfig} from "../interfaces/users-analytics";
-import {share} from "rxjs/operators";
-import {HtUsersClient} from "ht-client/dist/typings/entities/users/users-client";
+import {HtUsersClient} from "ht-client";
 
 @Injectable()
 export class UsersSummaryService implements IAnalyticsItemService {

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountsService} from "../../accounts/accounts.service";
 import {share} from "rxjs/operators";
-import {IMembership} from "ht-models";
-import {IAccount} from "ht-models/dist/typings/account";
+import {IAccount} from "ht-models";
 
 @Component({
   selector: 'ht-navbar',
