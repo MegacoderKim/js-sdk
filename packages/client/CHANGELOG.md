@@ -1,3 +1,6 @@
+# 0.0.20-beta
+- Stop fetching client data on `setActive(false)`
+
 # 0.0.19-beta
 - Add rollup
 - Add action filters

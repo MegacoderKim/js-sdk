@@ -1,7 +1,7 @@
 import { Observable } from "rxjs/Observable";
 // import {MergeQuery} from "ht-data";
 import { CombineQueries, AllowedQueryMap, IAllowedQueryMap } from "ht-data";
-import { map, mergeMap } from "rxjs/operators";
+import {filter, map, mergeMap, switchMap, takeUntil} from "rxjs/operators";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { empty } from "rxjs/observable/empty";
 import { MergeQuery, AllowedQueryKeys } from "../helpers/operators";
@@ -48,9 +48,9 @@ export function listQueryMixin<TBase extends Constructor<IListQueryBase>>(
       );
       return this.active$
         ? this.active$.pipe(
-            mergeMap((isActive: boolean) => {
-              // console.log(isActive, "acrr");
-              return isActive ? baseQuery$ : empty();
+            switchMap((isActive: boolean) => {
+              // console.log(isActive, "accc");
+              return isActive ? baseQuery$ : of([]);
             })
           )
         : baseQuery$;
