@@ -17,4 +17,5 @@ export interface IAnalyticsItemService {
   title: string,
   // loading$: Observable<boolean>
   setData(instance): void,
+  setActive(active?: boolean): void,
 }

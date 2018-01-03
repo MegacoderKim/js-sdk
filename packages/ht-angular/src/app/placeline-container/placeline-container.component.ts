@@ -47,8 +47,8 @@ export class PlacelineContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.userClientService.placeline.setId(null);
     this.userClientService.placeline.clearData();
-    this.userClientService.placeline.setId(null)
   }
 
 }

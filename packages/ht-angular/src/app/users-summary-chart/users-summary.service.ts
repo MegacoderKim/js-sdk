@@ -19,7 +19,7 @@ export class UsersSummaryService implements IAnalyticsItemService {
   hideDatePicker = true;
   constructor(config: ISummaryConfig<HtUsersClient>) {
     this.setState(config);
-    this.initClient()
+    // this.initClient()
   }
 
   setData(instance: UsersSummaryChartComponent) {
@@ -34,12 +34,16 @@ export class UsersSummaryService implements IAnalyticsItemService {
     this.summary$ = client.listStatusChart$(config.queryLabels);
   }
 
-  private initClient() {
-    this.client.setActive()
-  }
+  // private initClient() {
+  //   this.client.setActive()
+  // }
 
   destroy() {
     this.client.destroy()
+  }
+
+  setActive(isActive: boolean = true) {
+    this.client.setActive(isActive)
   }
 }
 

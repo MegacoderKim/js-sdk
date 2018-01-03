@@ -66,6 +66,10 @@ export class ActionsStatusGraphService implements IAnalyticsItemService {
   setData(instance: ActionsStatusGraphComponent) {
     instance.service = this
   }
+
+  setActive(isActive: boolean = true) {
+    // this.client.setActive(isActive)
+  }
 }
 
 

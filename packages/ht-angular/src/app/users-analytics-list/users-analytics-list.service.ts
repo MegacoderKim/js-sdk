@@ -43,7 +43,7 @@ export class UsersAnalyticsListService implements IAnalyticsItemService {
     this.client = userClient.list;
     this.client.updateStrategy = config.updateStrategy || "once";
     this.client.setQuery(this.query);
-    this.client.setActive();
+    // this.client.setActive();
     const data$ = this.client.dataArray$;
     this.dataTable$ = data$.pipe(
       filter(data => !!data),
@@ -59,6 +59,10 @@ export class UsersAnalyticsListService implements IAnalyticsItemService {
 
   setData(instance: UsersAnalyticsListComponent) {
     instance.listService = this;
+  }
+
+  setActive(isActive: boolean = true) {
+    this.client.setActive(isActive)
   }
 }
 

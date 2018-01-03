@@ -31,6 +31,10 @@ export class ActionsSummaryService implements IAnalyticsItemService {
     if (config.dateRangeService) this.dateRangeService$ = config.dateRangeService;
     this.client = client.summary;
     this.summary$ = this.client.summaryChart$;
-    this.client.setActive()
+    // this.client.setActive()
+  }
+
+  setActive(isActive: boolean = true) {
+    this.client.setActive(isActive)
   }
 }

@@ -10,7 +10,8 @@
       "ht-utility": "htUtility",
       "ht-data": "htData",
       "ht-maps": "htMaps",
-      "ht-client": "htClient"
+      "ht-client": "htClient",
+      "leaflet": "L"
     }
   }
 }

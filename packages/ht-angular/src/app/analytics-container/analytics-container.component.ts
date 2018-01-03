@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {AnalyticsItemsService} from "./analytics-items.service";
 import {animate, query, style, transition, trigger} from "@angular/animations";
 
@@ -32,18 +32,22 @@ import {animate, query, style, transition, trigger} from "@angular/animations";
     ])
   ]
 })
-export class AnalyticsContainerComponent implements OnInit {
+export class AnalyticsContainerComponent implements OnInit, OnDestroy {
   configure: boolean = false;
   constructor(
     public analyticsItemsService: AnalyticsItemsService
   ) { }
 
   ngOnInit() {
-
+    this.analyticsItemsService.initServices()
   }
 
   openConfig() {
     this.configure = true
+  }
+
+  ngOnDestroy() {
+    this.analyticsItemsService.destroy()
   }
 
 }

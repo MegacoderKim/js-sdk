@@ -26,7 +26,7 @@ export class AnalyticsItemsService {
   selectedTags$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   totalTags: number;
   // selectedTags$: BehaviorSubject<string[]>;
-  constructor(usersService: HtUsersService) {
+  constructor() {
     const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
     const activityQueryLabel = usersClient.filterClass.activityQueryArray;
     const actionDateRangeService = dateRangeFactory(DateRangeMap.today);
@@ -158,12 +158,30 @@ export class AnalyticsItemsService {
 
   setPreset(choosenPreset) {
     this.items$.next(this.getItems(choosenPreset));
+    this.initServices()
   }
 
   getItems(itemsConfigs) {
     return itemsConfigs.map(preset => {
-      return new preset.service(preset.initialConfig)
+      const service = new preset.service(preset.initialConfig);
+      return service;
     })
+  };
+
+  initServices() {
+    this.setServicesActive(true);
+  }
+
+  private setServicesActive(isActive: boolean = true) {
+    this.items$.pipe(take(1)).subscribe((items) => {
+      items.forEach(item => {
+        item.setActive(isActive)
+      })
+    })
+  }
+
+  destroy() {
+    this.setServicesActive(false)
   }
 
 }
