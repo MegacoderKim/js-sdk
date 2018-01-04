@@ -4,7 +4,7 @@ import {DateRangeMap} from "ht-data";
 import { actionsClientFactory} from "ht-client";
 import { IActionStatusGraph} from "ht-models";
 import {filter, map} from "rxjs/operators";
-import moment from "moment-mini";
+import {moment} from "moment-mini";
 import {IActionsTrendlineConfig} from "../interfaces/trendline";
 import {ActionsGraph} from "ht-client";
 import {IAnalyticsItem, IAnalyticsItemService} from "../interfaces/analytics-item";

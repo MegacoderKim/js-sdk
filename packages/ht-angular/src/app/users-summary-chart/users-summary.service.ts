@@ -30,6 +30,7 @@ export class UsersSummaryService implements IAnalyticsItemService {
     this.dateRangeService$ = dateRangeFactory(DateRangeMap.last_30_days);
     this.title = config.title;
     const client: HtUsersClient = config.client || usersClientFactory({dateRange$: this.dateRangeService$.data$});
+    client.setShowAll();
     this.client = client.summary;
     this.summary$ = client.listStatusChart$(config.queryLabels);
   }
