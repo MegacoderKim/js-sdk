@@ -3,6 +3,7 @@
 - Pause analytics component on destroy
 - Add recent users with location disabled
 - Show all users in analytics summary chart 
+- Add `dateFns` to fix moment import issue
 
 # 0.2.12-beta
 - use `ng-packagr` for minimizing bundle size

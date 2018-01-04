@@ -11,6 +11,7 @@
       "ht-data": "htData",
       "ht-maps": "htMaps",
       "ht-client": "htClient",
+      "date-fns": "dateFns",
       "leaflet": "L"
     }
   }
