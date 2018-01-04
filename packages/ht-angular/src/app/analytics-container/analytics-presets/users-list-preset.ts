@@ -42,6 +42,27 @@ export const usersAnalyticsListPresets: IAnalyticsPresets = {
       }
     }
   },
+  current_location_disabled() {
+    return {
+      service: UsersAnalyticsListService,
+      initialConfig: {
+        title: "Most recent users with location disabled",
+        query: {status: 'location_disabled', show_all: true, ordering: '-last_heartbeat'},
+        updateStrategy: 'live',
+        hideDatePicker: true,
+        tags: ['user behaviour', 'device health', 'live'],
+        tableFormat: [
+          {
+            label: "Name",
+            selector(user: IUserAnalytics) {
+              return user.name
+            }
+          },
+          userTableFormat.last_heartbeat_at
+        ]
+      }
+    }
+  },
   max_stop_duration() {
     return {
       service: UsersAnalyticsListService,

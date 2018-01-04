@@ -28,7 +28,9 @@ export class AnalyticsItemsService {
   // selectedTags$: BehaviorSubject<string[]>;
   constructor() {
     const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
-    const activityQueryLabel = usersClient.filterClass.activityQueryArray;
+    const usersFilter = usersClient.filterClass;
+    const activityQueryLabel = usersFilter.activityQueryArray;
+    const showAllQueryLable = usersFilter.showAllQueryArray;
     const actionDateRangeService = dateRangeFactory(DateRangeMap.today);
     const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$});
     const actionsStatusQueryLabel = [];
@@ -37,7 +39,10 @@ export class AnalyticsItemsService {
       // actionsConfigPreset.max_duration(),
       actionsConfigPreset.summary(actionsClient, actionDateRangeService),
       // usersAnalyticsListPresets.users_summary(usersClient),
-      usersAnalyticsListPresets.users_summary(usersClient, 'Users activity summary', activityQueryLabel),
+      usersAnalyticsListPresets.users_summary(
+        usersClient, 'Users activity summary',
+        [...activityQueryLabel, ...showAllQueryLable]
+      ),
       actionsConfigPreset.status(),
       actionsConfigPreset.recently_assigned(),
       actionsConfigPreset.recently_completed(),
@@ -45,8 +50,9 @@ export class AnalyticsItemsService {
       usersAnalyticsListPresets.last_recorded(),
       usersAnalyticsListPresets.users_actions(),
       usersAnalyticsListPresets.max_location_disabled_duration(),
+      usersAnalyticsListPresets.current_location_disabled(),
       usersAnalyticsListPresets.max_stop_duration(),
-      usersAnalyticsListPresets.max_network_offline(),
+      // usersAnalyticsListPresets.max_network_offline(),
       usersAnalyticsListPresets.max_distance(),
     ];
     this.chosenItemCreater = this.presets;
