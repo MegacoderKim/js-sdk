@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "marked": "^0.3.9",
     "moment-mini": "^2.18.1",
     "polyline-encoded": "0.0.8",
     "rxjs": "^5.5.5",
