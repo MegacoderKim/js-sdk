@@ -1,31 +1,33 @@
 {
-  "name": "ht-js-data",
-  "version": "0.0.8",
+  "name": "ht-data",
+  "version": "0.0.5-beta",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/ht-data_browser.js",
+  "module": "dist/ht-data.es5.js",
+  "typings": "dist/types/ht-data.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js -p",
-    "prepack": "npm run build"
+    "build": "rimraf dist && webpack --config webpack.config.js",
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "wbuild": "webpack -w --config webpack.config.bundle.js",
+    "prepack": "npm run lib"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/leaflet": "^1.0.66",
-    "ht-js-utils": "file:../utils",
-    "ht-models": "file:../model",
+    "ht-models": "0.0.13",
+    "ht-utility": "file:../utils",
     "moment-mini": "^2.18.1",
-    "rxjs": "^5.4.2",
-    "ts-loader": "^2.3.1",
-    "typescript": "^2.3.2",
+    "rollup": "^0.53.1",
     "underscore": "^1.8.3",
-    "webpack": "^3.3.0",
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "peerDependencies": {
     "ht-models": "0.0.x",
     "moment-mini": "^2.18.1",
     "underscore": "^1.8.3",
-    "ht-js-utils": ">=0.0.9"
+    "ht-utility": "^0.0.1-beta",
+    "rxjs": "^5.5.2"
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@reactivex/rxjs": "^5.5.2",
+    "font-awesome": "^4.7.0",
+    "ht-client": "file:../packages/client",
+    "ht-data": "file:../packages/data",
+    "ht-maps": "file:../packages/maps",
+    "ht-utility": "file:../packages/utils",
+    "leaflet": "^1.2.0",
+    "leaflet.markercluster": "^1.2.0",
+    "moment-mini": "^2.18.1",
+    "rxjs": "^5.5.5",
+    "underscore": "^1.8.3",
+    "whatwg-fetch": "^2.0.3"
+  }
+}

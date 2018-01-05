@@ -1,0 +1,44 @@
+{
+  "name": "ht-maps",
+  "version": "0.0.16-beta",
+  "description": "hypertrack maps",
+  "main": "dist/ht-maps_browser.js",
+  "module": "dist/ht-maps.es5.js",
+  "typings": "dist/types/ht-maps.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && webpack --config webpack.config.js",
+    "wbuild": "webpack -w --config webpack.config.bundle.js",
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src && webpack --config webpack.config.js",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "prepack": "npm run lib"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/googlemaps": "^3.26.14",
+    "@types/leaflet": "^1.2.3",
+    "@types/leaflet.markercluster": "^1.0.2",
+    "@types/node": "^8.0.4",
+    "ht-data": "file:../data",
+    "ht-models": "file:../models",
+    "ht-utility": "file:../utils",
+    "leaflet": "^1.2.0",
+    "leaflet.markercluster": "^1.2.0",
+    "moment-mini": "~2.18.1",
+    "rollup": "^0.53.1",
+    "time-aware-polyline": "^0.1.19",
+    "underscore": "^1.8.x"
+  },
+  "dependencies": {
+    "polyline-encoded": "0.0.8"
+  },
+  "peerDependencies": {
+    "ht-models": "^0.0.x",
+    "ht-utility": "0.0.x",
+    "ht-data": ">=0.0.20",
+    "underscore": "^1.8.x",
+    "rxjs": "^5.5.2"
+  },
+  "false": {}
+}
