@@ -1,6 +1,6 @@
 {
   "name": "ht-client",
-  "version": "0.0.19-beta",
+  "version": "0.0.20-beta",
   "description": "",
   "main": "dist/ht-client_browser.js",
   "module": "dist/ht-client.es5.js",
@@ -19,7 +19,6 @@
     "ht-data": "file:../data",
     "ht-models": "file:../models",
     "ht-utility": "0.0.3-beta",
-    "moment-mini": "^2.18.1",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3",

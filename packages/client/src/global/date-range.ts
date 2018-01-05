@@ -1,6 +1,5 @@
 import { IDateRange } from "../interfaces";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import * as moment from "moment-mini";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
 import { IsRangeADay, IsRangeToday, DateString } from "ht-utility";
