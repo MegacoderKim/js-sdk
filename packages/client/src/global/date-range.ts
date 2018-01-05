@@ -1,10 +1,10 @@
 import { IDateRange } from "../interfaces";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import * as moment from "moment-mini";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
 import { IsRangeADay, IsRangeToday, DateString } from "ht-utility";
-import {DateRangeMap} from "ht-data";
+import {DateRangeMap, isSameDateRange} from "ht-data";
+import {DateRangeLabelMap} from "ht-data";
 
 export const defaultDateRange = {...DateRangeMap.today};
 
@@ -17,6 +17,15 @@ export class DateRange {
   get display$(): Observable<string> {
     return this.data$.asObservable().pipe(
       map((range: IDateRange) => {
+        // console.log("range", range, DateRangeMap);
+        let rangeItem = DateRangeLabelMap.find(item => {
+          return isSameDateRange(item.range, range)
+        });
+        if(rangeItem) return  rangeItem.label;
+        // const matchKey = Object.keys(DateRangeMap).find((key) => {
+        //   return isSameDateRange(DateRangeMap[key], range)
+        // });
+        // return "";
         let isSingleDay = IsRangeADay(range);
         if (isSingleDay) {
           let isToday = IsRangeToday(range);

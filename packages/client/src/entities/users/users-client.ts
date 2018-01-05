@@ -15,7 +15,6 @@ import { EntityClient } from "../../base/entity-client";
 import { UsersAnalyticsListAllClient } from "./users-analytics-markers";
 import { htUser } from "ht-data";
 import { DefaultUsersFilter } from "../../filters/users-filter";
-import * as moment from "moment-mini";
 import * as fromRoot from "../../reducers";
 import { UsersSummaryClient } from "./users-summary-client";
 import { DateRangeToQuery$ } from "ht-data";
@@ -30,7 +29,7 @@ import { dateRangeService } from "../../global/date-range";
 import { entityApi } from "../../global/entity-api";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
-import {CombineLoadings$} from "ht-data";
+import {CombineLoadings$, DateRangeMap} from "ht-data";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -89,13 +88,9 @@ export class HtUsersClient extends EntityClient {
   }
 
   getInitialDateRange(range: Partial<IDateRange> = {}): IDateRange {
-    let start = moment()
-      .startOf("day")
-      .toISOString();
-    let end = moment()
-      .endOf("day")
-      .toISOString();
-    return { ...range, start, end };
+
+    const initialRange = DateRangeMap.today;
+    return { ...range, ...initialRange };
   }
 
   listStatusOverview$() {
@@ -319,7 +314,7 @@ export class HtUsersClient extends EntityClient {
         let { totalUsers, chart } = overview;
         let status = query["status"];
         if (!!status) {
-          let value = _.find(chart, datum => {
+          let value = _.find(chart, (datum: any) => {
             return datum.keys.toString(",") == status;
           });
           return value && value !== currentTotalUsers ? of(true) : empty();

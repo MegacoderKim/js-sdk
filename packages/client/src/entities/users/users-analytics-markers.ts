@@ -71,12 +71,12 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   }
 
   addData(data: Page<IUserAnalytics>) {
-    data = data || { results: [], next: "no_next", count: 0 };
+    data = data || { results: [], next: "no_next", count: 0, previous: "" };
     this.store.dispatch(new fromUsersDispatcher.AddUsersAnalyticsAll(data));
   }
 
   setData(data: Page<IUserAnalytics>) {
-    data = data || { results: [], next: "no_next", count: 0 };
+    data = data || { results: [], next: "no_next", count: 0, previous: "" };
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data));
   }
 

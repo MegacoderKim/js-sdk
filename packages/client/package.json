@@ -1,27 +1,28 @@
 {
   "name": "ht-client",
-  "version": "0.0.17-beta",
+  "version": "0.0.20-beta",
   "description": "",
   "main": "dist/ht-client_browser.js",
-  "module": "dist/ht-client.js",
+  "module": "dist/ht-client.es5.js",
   "typings": "dist/typings/ht-client.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.bundle.js",
-    "prepack": "npm run build",
-    "lint": "tslint src",
-    "doc": "typedoc --out doc src"
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "prepack": "npm run lib"
   },
   "author": "",
   "devDependencies": {
     "@types/googlemaps": "^3.26.20",
     "ht-data": "file:../data",
     "ht-models": "file:../models",
-    "ht-utility": "file:../utils",
-    "moment-mini": "^2.18.1",
+    "ht-utility": "0.0.3-beta",
+    "rollup": "^0.53.1",
     "underscore": "^1.8.3",
-    "webpack-bundle-analyzer": "^2.8.3"
+    "webpack-bundle-analyzer": "^2.8.3",
+    "webpack-config-utils": "^2.3.0"
   },
   "peerDependencies": {
     "rxjs": "^5.4.2",

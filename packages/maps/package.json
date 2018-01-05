@@ -1,15 +1,17 @@
 {
   "name": "ht-maps",
-  "version": "0.0.14-beta",
+  "version": "0.0.16-beta",
   "description": "hypertrack maps",
   "main": "dist/ht-maps_browser.js",
-  "module": "dist/ht-maps.js",
-  "typings": "dist/typings/ht-maps.d.ts",
+  "module": "dist/ht-maps.es5.js",
+  "typings": "dist/types/ht-maps.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
     "wbuild": "webpack -w --config webpack.config.bundle.js",
-    "prepack": "npm run build"
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src && webpack --config webpack.config.js",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "prepack": "npm run lib"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +26,7 @@
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
     "moment-mini": "~2.18.1",
+    "rollup": "^0.53.1",
     "time-aware-polyline": "^0.1.19",
     "underscore": "^1.8.x"
   },

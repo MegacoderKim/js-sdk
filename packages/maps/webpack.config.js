@@ -98,4 +98,4 @@ var styleConfig = {
 
 var browserConfig = Object.assign({}, nodeConfig, browserSpecConfig);
 
-module.exports = [nodeConfig, browserConfig, styleConfig];
+module.exports = styleConfig;

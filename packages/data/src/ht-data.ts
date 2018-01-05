@@ -16,3 +16,4 @@ export * from "./rx-helpers/allowed-query";
 export * from "./rx-helpers/combine-loadings";
 
 export * from "./utils/date-range"
+export * from "./utils/table-format"

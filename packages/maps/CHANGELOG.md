@@ -1,3 +1,7 @@
+# 0.0.16-beta
+- fix stop icon style
+- Add rollup
+
 # 0.0.15-beta
 - Use array instead of `Leaflet.point` to fix umd bundle
 - Fix umd bundle by adding leaflet and leaflet.markercluster in externals of webpack config

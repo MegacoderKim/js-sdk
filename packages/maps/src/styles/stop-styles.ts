@@ -13,7 +13,7 @@ export const stopStyles: StyleFunct = {
               fillOpacity: 1,
               strokeColor: Color.stopDark,
               strokeOpacity: 1,
-              // path: google.maps.SymbolPath.CIRCLE,
+              path: google.maps.SymbolPath.CIRCLE,
               scale: 8,
               strokeWeight: 2
             }

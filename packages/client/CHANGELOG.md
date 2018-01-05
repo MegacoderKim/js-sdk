@@ -1,6 +1,14 @@
+# 0.0.20-beta
+- Stop fetching client data on `setActive(false)`
+- Remove `moment` as dependency
+
+# 0.0.19-beta
+- Add rollup
+- Add action filters
+
 # 0.0.18-beta
 - Start fetching data when `active$` is not defined
-- Add actions graph client
+- Add actions graph, actions list, actions summary client
 - Fix `destroy` function entity client
 - Use pipe instead of let operator
 - Use `DateRangeMap` for `initialDateRange`

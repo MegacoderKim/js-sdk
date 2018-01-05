@@ -11,6 +11,7 @@ export * from "./entities/users/users-analytics-markers";
 export * from "./entities/users/users-summary-client"
 
 export * from "./filters/users-filter";
+export * from "./filters/actions-filter";
 
 //groups
 export * from "./entities/groups/groups-client";
@@ -26,6 +27,8 @@ export * from "./entities/account-user/memberships-all-client";
 //actions
 export * from "./entities/actions/actions-client";
 export * from "./entities/actions/actions-graph"
+export * from "./entities/actions/actions-list-client"
+export * from "./entities/actions/actions-summary-client"
 
 //globals
 export * from "./global/date-range";
