@@ -1,11 +1,11 @@
-import { IEvent } from "ht-models";
+import { IEvent, ITimelineEvent } from "ht-models";
 import { IEventDisplay } from "../interfaces";
 
 export class HtEvent {
   constructor(public data?: IEvent) {}
 
-  getEventDisplay(): IEventDisplay {
-    let event = this.data;
+  getEventDisplay(event?: IEvent | ITimelineEvent): IEventDisplay {
+    event = event || this.data;
     switch (event.type) {
       case "tracking.started":
         return {

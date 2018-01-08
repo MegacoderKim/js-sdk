@@ -1,4 +1,4 @@
-import { IUserData, IAction, IEvent, ISegment } from "ht-models";
+import { IUserData, IAction, IEvent, ISegment, ITimelineEvent } from "ht-models";
 import {
   IActionMark,
   IActivitySegment,
@@ -89,21 +89,21 @@ export class HtPlaceline {
     let actionMarksObj = _.reduce(
       actions,
       (acc, action: IAction) => {
-        acc.actionCountMap = this.setActionCountMap(action, acc.actionCountMap);
-        let assign: IActionMark = this.getActionMark(
-          action,
-          acc.actionCountMap,
-          false,
-          false
-        );
-        if (assign.actionTime) acc.push(assign);
-        let end = this.getActionMark(
-          action,
-          acc.actionMap,
-          true,
-          !!action.display.ended_at
-        );
-        acc.actionMarks.push(end);
+        // acc.actionCountMap = this.setActionCountMap(action, acc.actionCountMap);
+        // let assign: IActionMark = this.getActionMark(
+        //   action,
+        //   acc.actionCountMap,
+        //   false,
+        //   false
+        // );
+        // if (assign.actionTime) acc.actionMarks.push(assign);
+        // let end = this.getActionMark(
+        //   action,
+        //   acc.actionMarks,
+        //   true,
+        //   !!action.display.ended_at
+        // );
+        // acc.actionMarks.push(end);
         return acc;
       },
       { actionMarks: [], actionCountMap: {} }
@@ -112,8 +112,8 @@ export class HtPlaceline {
     return actionMarksObj.actionMarks;
   }
 
-  createEventMark(event: IEvent): IEventMark {
-    return { event, display: htEvent(event).getEventDisplay() };
+  createEventMark(event: IEvent | ITimelineEvent): IEventMark {
+    return { event, display: htEvent().getEventDisplay(event) };
   }
 
   getLastSegment(lastSeg: ISegment, lastHearbeatAt: string): IPlacelineSegment {

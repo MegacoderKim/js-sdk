@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.0.63",
-    "ht-models": "^0.0.1",
+    "ht-models": "^0.0.13",
     "moment-mini": "^2.18.1",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
