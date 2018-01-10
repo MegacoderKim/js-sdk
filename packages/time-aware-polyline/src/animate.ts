@@ -1,7 +1,8 @@
 import {PolylineUtils} from "./polyline";
+import {ITimeAwarePoint} from "../../models";
 
 export class TimeAwareAnimation {
-  timeAwarePolyline: PolylineUtils = new PolylineUtils();
+  polylineUtils: PolylineUtils = new PolylineUtils();
   currentTime: string;
   animationPoll;
   animationSpeed: number = 20;
@@ -9,15 +10,26 @@ export class TimeAwareAnimation {
   constructor() {
 
   }
-
-  start(timeAwarePolylineString: string) {
-    if (!timeAwarePolylineString) return false;
-    this.timeAwarePolyline.updateTimeAwarePolyline(timeAwarePolylineString);
-    this.handleAnimation(timeAwarePolylineString);
+  
+  /*
+  Initialize animation from encoded polyline string 
+   */
+  initPolylineString(timeAwarePolylineString: string) {
+    let timeAwarePolyline = this.polylineUtils.timeAware.decodeTimeAwarePolyline(timeAwarePolylineString);
+    this.init(timeAwarePolyline)
   }
 
-  private handleAnimation(timeAwarePolylineString: string) {
-    if (!timeAwarePolylineString) return;
+  /*
+  Initialize animation from encoded time aware array [lat, lng, time] 
+   */
+  init(timeAwarePolyline: ITimeAwarePoint[]) {
+    if (!timeAwarePolyline) return false;
+    this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
+    this.handleAnimation(timeAwarePolyline);
+  }
+
+  private handleAnimation(timeAwarePolyline: ITimeAwarePoint[]) {
+    if (!timeAwarePolyline) return;
     if(this.animationPoll) this.clearAnimationPoll();
     this.animationPoll = setInterval(() => {
       this.updateCurrentTime();
@@ -30,7 +42,7 @@ export class TimeAwareAnimation {
       let timeToAdd = this.getTimeToAdd();
       this.currentTime = this.addISOTime(this.currentTime, timeToAdd);
     } else {
-      let last = this.timeAwarePolyline.getLatestTime();
+      let last = this.polylineUtils.getLatestTime();
       this.currentTime = this.addISOTime(last, -20000);
     }
     this.capTime(() => {
@@ -48,8 +60,8 @@ export class TimeAwareAnimation {
   }
 
   private capTime(callback?): boolean {
-    if(new Date(this.currentTime) > new Date(this.timeAwarePolyline.getLatestTime())) {
-      this.currentTime = this.timeAwarePolyline.getLatestTime();
+    if(new Date(this.currentTime) > new Date(this.polylineUtils.getLatestTime())) {
+      this.currentTime = this.polylineUtils.getLatestTime();
       if(callback && typeof callback == 'function') callback();
       return true
     } else {
@@ -63,7 +75,7 @@ export class TimeAwareAnimation {
   }
 
   private getTimeToAdd(): number {
-    let lastTime = new Date(this.timeAwarePolyline.getLatestTime()).getTime();
+    let lastTime = new Date(this.polylineUtils.getLatestTime()).getTime();
     let currentTime = new Date(this.currentTime).getTime();
     let totalDuration = (lastTime - currentTime)/ 1000;
     let factor = 1;
@@ -78,17 +90,28 @@ export class TimeAwareAnimation {
   }
 
   private currentTimePolylineData() {
-    let polylineData = this.timeAwarePolyline.getPolylineToTime(this.currentTime);
+    let polylineData = this.polylineUtils.getPolylineToTime(this.currentTime);
     let path = polylineData.path.map((array) => {
       return {lat: array[0], lng: array[1]};
     });
     return {path: path, bearing: polylineData.bearing}
   }
+  
+  /*
+  Update animation from encoded polyline string 
+   */
+  updatePolylineString(timeAwarePolylineString: string) {
+    let timeAwarePolyline = this.polylineUtils.timeAware.decodeTimeAwarePolyline(timeAwarePolylineString);
+    this.update(timeAwarePolyline)
+  }
 
-  update(timeAwarePolylineString: string) {
-    if (!timeAwarePolylineString) return;
-    this.timeAwarePolyline.updateTimeAwarePolyline(timeAwarePolylineString);
-    if(!this.animationPoll) this.handleAnimation(timeAwarePolylineString);
+  /*
+  Update animation from encoded time aware array [lat, lng, time] 
+   */
+  update(timeAwarePolyline: ITimeAwarePoint[]) {
+    if (!timeAwarePolyline) return;
+    this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
+    if(!this.animationPoll) this.handleAnimation(timeAwarePolyline);
   }
 
   clear() {
