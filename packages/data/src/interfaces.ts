@@ -1,4 +1,4 @@
-import { ISegment, IEvent, IAction, ITimeAwarePoint, Partial } from "ht-models";
+import { ISegment, IEvent, IAction, ITimeAwarePoint, Partial, ITimelineEvent } from "ht-models";
 
 export interface IActionPositions {
   position: HtPosition | null;
@@ -68,7 +68,7 @@ export interface IActionMark {
 
 export interface IEventMark {
   display: IEventDisplay;
-  event: IEvent;
+  event: IEvent | ITimelineEvent;
 }
 
 export interface IEventDisplay {

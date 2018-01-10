@@ -1,4 +1,4 @@
-import {DistanceLocale, TimeString, DateString, HMString, NameCase} from "ht-utility";
+import {DistanceLocale, TimeString, DateString, HMString, NameCase, DotString} from "ht-utility";
 import {IUserAnalytics, IAction, IUser} from "ht-models";
 
 export const tableFormat = (data: object, config: ITableFormatConfig) => {
@@ -66,6 +66,12 @@ export const actionTableFormat = {
     selector(action: IAction) {
       return `${actionTableFormat.distance.selector(action)}/${actionTableFormat.duration.selector(action)}`
     }
+  },
+  "type": {
+    label: "Type",
+    selector(action: IAction) {
+      return NameCase(DotString(action.type))
+    }
   }
 };
 
@@ -127,6 +133,7 @@ export const userTableFormat = {
   "num_actions": {
     label: "Number of actions",
     selector(user: IUserAnalytics) {
+      var e = DateHumanize()
       return user.num_actions
     }
   }
