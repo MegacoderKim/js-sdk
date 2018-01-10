@@ -17,17 +17,18 @@
   "license": "ISC",
   "devDependencies": {
     "ht-models": "0.0.13",
-    "ht-utility": "file:../utils",
+    "ht-utility": "^0.0.4-beta",
     "moment-mini": "^2.18.1",
     "rollup": "^0.53.1",
+    "rxjs": "^5.5.6",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "peerDependencies": {
     "ht-models": "0.0.x",
-    "moment-mini": "^2.18.1",
-    "underscore": "^1.8.3",
     "ht-utility": "^0.0.1-beta",
-    "rxjs": "^5.5.2"
+    "moment-mini": "^2.18.1",
+    "rxjs": "^5.5.2",
+    "underscore": "^1.8.3"
   }
 }

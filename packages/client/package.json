@@ -16,18 +16,20 @@
   "author": "",
   "devDependencies": {
     "@types/googlemaps": "^3.26.20",
-    "ht-data": "file:../data",
-    "ht-models": "file:../models",
-    "ht-utility": "0.0.3-beta",
+    "ht-data": "^0.0.5-beta",
+    "ht-models": "^0.0.13",
+    "ht-utility": "^0.0.4-beta",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-config-utils": "^2.3.0"
   },
   "peerDependencies": {
-    "rxjs": "^5.4.2",
+    "ht-data": "~0.0.5-beta",
     "ht-utility": "^0.0.1-beta",
     "moment-mini": "^2.18.1",
+    "rxjs": "^5.4.2",
     "underscore": "^1.8.3"
-  }
+  },
+  "dependencies": {}
 }

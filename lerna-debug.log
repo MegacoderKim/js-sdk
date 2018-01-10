@@ -1,0 +1,19 @@
+0 silly input [ '../time-aware-polyline-js' ]
+1 silly flags { _: [ 'import' ],
+1 silly flags   'reject-cycles': false,
+1 silly flags   rejectCycles: false,
+1 silly flags   pathToRepo: '../time-aware-polyline-js' }
+2 verbose rootPath /Users/gauravmukherjee/website/sdk/ht-sdk
+3 info version 2.5.1
+4 info versioning independent
+5 silly isInitialized
+6 silly isInitialized true
+7 silly existsSync /Users/gauravmukherjee/website/sdk/ht-sdk/VERSION
+8 silly initialize attempt
+9 silly statSync /Users/gauravmukherjee/website/sdk/time-aware-polyline-js
+10 silly existsSync /Users/gauravmukherjee/website/sdk/ht-sdk/packages/time-aware-polyline-js
+11 silly getCurrentSHA
+12 verbose getCurrentSHA 22b1d52ce9c543d9ac5c53b079be99880d1a39ea
+13 error initialize callback with error
+14 error Error: Local repository has un-committed changes
+14 error     at ImportCommand.initialize (/usr/local/lib/node_modules/lerna/lib/commands/ImportCommand.js:148:25)
