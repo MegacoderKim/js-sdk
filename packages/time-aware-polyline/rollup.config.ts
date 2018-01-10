@@ -2,7 +2,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import camelCase from 'lodash.camelcase'
-
+import bundleWorker from 'rollup-plugin-bundle-worker';
 const pkg = require('./package.json')
 
 const libraryName = 'time-aware-polyline';
@@ -37,7 +37,7 @@ export default {
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve(),
-
+    bundleWorker()
     // Resolve source maps to the original source
     // sourceMaps(),
   ],

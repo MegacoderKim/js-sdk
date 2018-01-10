@@ -1,6 +1,6 @@
 {
   "name": "time-aware-polyline",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "time aware polyline hypertrack decode encode",
   "main": "dist/time-aware-polyline_browser.js",
   "module": "dist/time-aware-polyline.es5.js",
@@ -8,11 +8,15 @@
   "scripts": {
     "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
     "start": "tsc -w & rollup -c rollup.config.ts -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover _mocha"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "ht-models": "0.0.13",
     "rollup": "^0.53.3"
+  },
+  "dependencies": {
+    "rollup-plugin-bundle-worker": "https://github.com/andyearnshaw/rollup-plugin-bundle-worker.git"
   }
 }
