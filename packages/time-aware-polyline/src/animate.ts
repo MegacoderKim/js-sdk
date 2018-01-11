@@ -1,5 +1,5 @@
 import {PolylineUtils} from "./polyline";
-import {ITimeAwarePoint} from "../../models";
+import {ITimeAwarePoint} from "ht-models";
 
 export class TimeAwareAnimation {
   polylineUtils: PolylineUtils = new PolylineUtils();
@@ -27,6 +27,24 @@ export class TimeAwareAnimation {
     this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
     this.handleAnimation(timeAwarePolyline);
   }
+
+  /*
+ Update animation from encoded polyline string
+  */
+  updatePolylineString(timeAwarePolylineString: string) {
+    let timeAwarePolyline = this.polylineUtils.timeAware.decodeTimeAwarePolyline(timeAwarePolylineString);
+    this.update(timeAwarePolyline)
+  }
+
+  /*
+  Update animation from encoded time aware array [lat, lng, time]
+   */
+  update(timeAwarePolyline: ITimeAwarePoint[]) {
+    if (!timeAwarePolyline) return;
+    this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
+    if(!this.animationPoll) this.handleAnimation(timeAwarePolyline);
+  }
+
 
   private handleAnimation(timeAwarePolyline: ITimeAwarePoint[]) {
     if (!timeAwarePolyline) return;
@@ -97,22 +115,6 @@ export class TimeAwareAnimation {
     return {path: path, bearing: polylineData.bearing}
   }
   
-  /*
-  Update animation from encoded polyline string 
-   */
-  updatePolylineString(timeAwarePolylineString: string) {
-    let timeAwarePolyline = this.polylineUtils.timeAware.decodeTimeAwarePolyline(timeAwarePolylineString);
-    this.update(timeAwarePolyline)
-  }
-
-  /*
-  Update animation from encoded time aware array [lat, lng, time] 
-   */
-  update(timeAwarePolyline: ITimeAwarePoint[]) {
-    if (!timeAwarePolyline) return;
-    this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
-    if(!this.animationPoll) this.handleAnimation(timeAwarePolyline);
-  }
 
   clear() {
     this.clearAnimationPoll();

@@ -1,7 +1,7 @@
 import {ITimeAwarePoint} from "ht-models";
 
 
-export class TimeAwarePolyline {
+export class TimeAwareEncoder {
   encodeTimeAwarePolyline(points: ITimeAwarePoint[]) {
     return this.extendTimeAwarePolyline("", points, null);
   }

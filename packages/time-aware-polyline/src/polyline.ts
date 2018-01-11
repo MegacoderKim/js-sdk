@@ -22,7 +22,7 @@ export class PolylineUtils {
   getLatestTime() {
     if(this.timeAwarePolyline) {
       let lastI = this.timeAwarePolyline.length - 1;
-      return this.timeAwarePolyline[lastI][2]
+      return lastI > -1 ? this.timeAwarePolyline[lastI][2] : null
     } else {
       return null;
     }
