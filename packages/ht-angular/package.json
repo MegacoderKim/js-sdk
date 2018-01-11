@@ -1,6 +1,6 @@
 {
   "name": "ht-angular",
-  "version": "0.2.14-beta",
+  "version": "0.2.15-0",
   "repository": {
     "type": "git",
     "url": "https://github.com/hypertrack/ht-angular"
@@ -52,9 +52,9 @@
     "font-awesome": "^4.7.0",
     "frappe-charts": "0.0.8",
     "gulp-less": "^3.3.2",
-    "ht-client": "0.1.0",
-    "ht-data": "0.1.0",
-    "ht-maps": "0.1.0",
+    "ht-client": "^0.1.1-0",
+    "ht-data": "^0.1.1-0",
+    "ht-maps": "^0.1.1-0",
     "ht-utility": "0.1.0",
     "js-cookie": "^2.2.0",
     "leaflet": "^1.2.0",
@@ -63,7 +63,7 @@
     "ngx-sharebuttons": "^4.1.4",
     "popper.js": "^1.12.5",
     "rxjs": "^5.5.6",
-    "time-aware-polyline": "^0.0.1",
+    "time-aware-polyline": "^0.0.2-0",
     "uikit": "^3.0.0-beta.33",
     "zone.js": "^0.8.14"
   },
@@ -131,7 +131,7 @@
     "s3": "^4.4.0",
     "sass-loader": "6.0.6",
     "source-map-loader": "0.2.2",
-    "time-aware-polyline": "^0.0.1",
+    "time-aware-polyline": "^0.0.2-0",
     "to-string-loader": "1.1.5",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
