@@ -1,19 +1,67 @@
-0 silly input [ '../time-aware-polyline-js' ]
-1 silly flags { _: [ 'import' ],
+0 silly input [ 'lib' ]
+1 silly flags { _: [ 'run' ],
 1 silly flags   'reject-cycles': false,
 1 silly flags   rejectCycles: false,
-1 silly flags   pathToRepo: '../time-aware-polyline-js' }
+1 silly flags   script: 'lib',
+1 silly flags   args: [] }
 2 verbose rootPath /Users/gauravmukherjee/website/sdk/ht-sdk
 3 info version 2.5.1
 4 info versioning independent
-5 silly isInitialized
-6 silly isInitialized true
-7 silly existsSync /Users/gauravmukherjee/website/sdk/ht-sdk/VERSION
-8 silly initialize attempt
-9 silly statSync /Users/gauravmukherjee/website/sdk/time-aware-polyline-js
-10 silly existsSync /Users/gauravmukherjee/website/sdk/ht-sdk/packages/time-aware-polyline-js
-11 silly getCurrentSHA
-12 verbose getCurrentSHA 22b1d52ce9c543d9ac5c53b079be99880d1a39ea
-13 error initialize callback with error
-14 error Error: Local repository has un-committed changes
-14 error     at ImportCommand.initialize (/usr/local/lib/node_modules/lerna/lib/commands/ImportCommand.js:148:25)
+5 silly existsSync /Users/gauravmukherjee/website/sdk/ht-sdk/VERSION
+6 silly initialize attempt
+7 silly initialize success
+8 silly execute attempt
+9 silly runScriptInDir lib [] models
+10 silly getExecOpts { cwd: '/Users/gauravmukherjee/website/sdk/ht-sdk/packages/models' }
+11 silly runScriptInDir lib [] client
+12 silly getExecOpts { cwd: '/Users/gauravmukherjee/website/sdk/ht-sdk/packages/client' }
+13 silly runScriptInDir lib [] data
+14 silly getExecOpts { cwd: '/Users/gauravmukherjee/website/sdk/ht-sdk/packages/data' }
+15 silly runScriptInDir lib [] ht-angular
+16 silly getExecOpts { cwd: '/Users/gauravmukherjee/website/sdk/ht-sdk/packages/ht-angular' }
+17 silly runScriptInDir lib [] time-aware-polyline
+18 silly getExecOpts { cwd: '/Users/gauravmukherjee/website/sdk/ht-sdk/packages/time-aware-polyline' }
+19 error lib Errored while running script in 'ht-client'
+20 error execute callback with error
+21 error Error: Command failed: npm run lib
+21 error npm ERR! code ELIFECYCLE
+21 error npm ERR! errno 2
+21 error npm ERR! ht-client@0.1.0 lib: `tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts`
+21 error npm ERR! Exit status 2
+21 error npm ERR!
+21 error npm ERR! Failed at the ht-client@0.1.0 lib script.
+21 error npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+21 error
+21 error npm ERR! A complete log of this run can be found in:
+21 error npm ERR!     /Users/gauravmukherjee/.npm/_logs/2018-01-11T14_48_07_803Z-debug.log
+21 error
+21 error > ht-client@0.1.0 lib /Users/gauravmukherjee/website/sdk/ht-sdk/packages/client
+21 error > tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts
+21 error
+21 error src/api/account-user.ts(4,32): error TS2307: Cannot find module 'ht-data'.
+21 error src/base/entity-client.ts(6,29): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/actions/actions-client.ts(7,35): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/actions/actions-graph.ts(11,32): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/actions/actions-list-client.ts(5,28): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/actions/actions-list-client.ts(14,34): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/actions/actions-summary-client.ts(13,32): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/groups/groups-list.ts(8,30): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/groups/groups-list.ts(14,34): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-analytics-client.ts(9,30): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-analytics-client.ts(15,34): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-analytics-markers.ts(7,42): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-client.ts(16,24): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-client.ts(20,35): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-client.ts(32,46): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-placeline-client.ts(11,37): error TS2307: Cannot find module 'ht-data'.
+21 error src/entities/users/users-summary-client.ts(13,34): error TS2307: Cannot find module 'ht-data'.
+21 error src/filters/actions-filter.ts(3,21): error TS2307: Cannot find module 'ht-utility'.
+21 error src/filters/users-filter.ts(2,23): error TS2307: Cannot find module 'ht-utility'.
+21 error src/global/date-range.ts(5,55): error TS2307: Cannot find module 'ht-utility'.
+21 error src/global/date-range.ts(6,45): error TS2307: Cannot find module 'ht-data'.
+21 error src/global/date-range.ts(7,33): error TS2307: Cannot find module 'ht-data'.
+21 error src/global/request.ts(1,34): error TS2307: Cannot find module 'ht-utility'.
+21 error src/mixins/entity-query.ts(3,67): error TS2307: Cannot find module 'ht-data'.
+21 error src/reducers/user-reducer.ts(13,24): error TS2307: Cannot find module 'ht-data'.
+21 error
+21 error     at Promise.all.then.arr (/usr/local/lib/node_modules/lerna/node_modules/execa/index.js:236:11)
