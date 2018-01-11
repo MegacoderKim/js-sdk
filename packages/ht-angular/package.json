@@ -1,6 +1,6 @@
 {
   "name": "ht-angular",
-  "version": "0.2.13-beta",
+  "version": "0.2.14-beta",
   "repository": {
     "type": "git",
     "url": "https://github.com/hypertrack/ht-angular"
@@ -63,7 +63,7 @@
     "ngx-sharebuttons": "^4.1.4",
     "popper.js": "^1.12.5",
     "rxjs": "^5.5.6",
-    "time-aware-polyline": "^0.1.19",
+    "time-aware-polyline": "^0.0.1",
     "uikit": "^3.0.0-beta.33",
     "zone.js": "^0.8.14"
   },
