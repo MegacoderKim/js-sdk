@@ -15,7 +15,7 @@ export class TimeAwareAnimation {
   Initialize animation from encoded polyline string 
    */
   initPolylineString(timeAwarePolylineString: string) {
-    let timeAwarePolyline = this.polylineUtils.timeAware.decodeTimeAwarePolyline(timeAwarePolylineString);
+    let timeAwarePolyline = this.polylineUtils.encoder.decodeTimeAwarePolyline(timeAwarePolylineString);
     this.init(timeAwarePolyline)
   }
 
@@ -32,7 +32,7 @@ export class TimeAwareAnimation {
  Update animation from encoded polyline string
   */
   updatePolylineString(timeAwarePolylineString: string) {
-    let timeAwarePolyline = this.polylineUtils.timeAware.decodeTimeAwarePolyline(timeAwarePolylineString);
+    let timeAwarePolyline = this.polylineUtils.encoder.decodeTimeAwarePolyline(timeAwarePolylineString);
     this.update(timeAwarePolyline)
   }
 

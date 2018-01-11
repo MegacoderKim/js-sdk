@@ -8,12 +8,14 @@
   "scripts": {
     "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
     "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "prepack": "npm run lib",
     "test": "istanbul cover _mocha"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "ht-models": "0.0.13",
+    "istanbul": "^0.4.5",
     "rollup": "^0.53.3"
   },
   "dependencies": {

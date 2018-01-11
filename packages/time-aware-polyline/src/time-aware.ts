@@ -7,7 +7,7 @@ export class TimeAwareEncoder {
   }
 
   decodeTimeAwarePolyline(polyline: string) {
-    // Method to decode a time aware timeAware and return gpx logs
+    // Method to decode a time aware encoder and return gpx logs
     var gpxLogs = [];
     var index = 0;
     var lat = 0;
@@ -138,14 +138,14 @@ export class TimeAwareEncoder {
   }
 
   private isDifferentSegment(end, start) {
-    // function to determine whether a timeAware
+    // function to determine whether a encoder
     // segment split should happen
     var distance = this.getDistance(start, end);
     return distance > 500;
   }
 
   private getPolylineSegments(decoded, timeLimit) {
-    // this method breaks timeAware till timeStamp when
+    // this method breaks encoder till timeStamp when
     // consecutive time difference is greater than 10 minutes
     var segments = [], currentSegment = [];
     var index = 0;
@@ -278,7 +278,7 @@ export class TimeAwareEncoder {
   Helpers
    */
   private getDecodedDimensionFromPolyline(polyline: string, index: number) {
-    // Method to decode one dimension of the timeAware
+    // Method to decode one dimension of the encoder
     var result = 1;
     var shift = 0;
 
