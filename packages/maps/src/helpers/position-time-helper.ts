@@ -1,10 +1,10 @@
 import { IPathSegment, ITimeAwarePoint } from "ht-models";
-var Polyline = require("time-aware-polyline");
+import { TimeAwareEncoder} from "time-aware-polyline";
 
 export const positionTime = {
   positionTimePoints: [],
   decode(encodedPolyline): ITimeAwarePoint[] {
-    this.positionTimePoints = Polyline.decodeTimeAwarePolyline(encodedPolyline);
+    this.positionTimePoints = new TimeAwareEncoder().decodeTimeAwarePolyline(encodedPolyline);
     return this.positionTimePoints;
   }
 };

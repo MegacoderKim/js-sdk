@@ -1,5 +1,5 @@
 import { HtMarker, MapUtils, SetFocusConfig } from "./interfaces";
-var polyUtil = require("polyline-encoded");
+import {PolylineUtil} from "./encoded-polyline";
 import { HtPosition } from "ht-data";
 import {
   circleMarker,
@@ -61,7 +61,7 @@ export const GetLatlng = ({ lat, lng }: HtPosition = { lat: 0, lng: 0 }) => {
 };
 
 export const setEncodedPath = (polyline, encodedPolyline: string) => {
-  var path = polyUtil.decode(encodedPolyline);
+  var path = PolylineUtil.decode(encodedPolyline);
   return polyline.setLatLngs(path);
 };
 

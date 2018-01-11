@@ -1,5 +1,6 @@
+import { TimeAwareEncoder} from "../src/time-aware";
 var should = require('chai').should(),
-polyline = require('../index'),
+polyline = new TimeAwareEncoder(),
 decoder = polyline.decodeTimeAwarePolyline,
 encoder = polyline.encodeTimeAwarePolyline,
 locationFinder = polyline.getLocationsAtTimestamps,
