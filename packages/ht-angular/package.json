@@ -31,8 +31,7 @@
     "build:stats": "ng build --prod --preserve-symlink --stats-json",
     "bundle-report": "npm run build:stats && webpack-bundle-analyzer dist/stats.json",
     "dist": "rimraf dist && gulp build",
-    "lib": "ng build",
-    "lib:g": "ng-packagr -p ./ng-package.json",
+    "lib": "ng-packagr -p ./src/ng-package.json",
     "link": "gulp link",
     "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
     "doc": "typedoc --out doc src/app"
@@ -53,10 +52,10 @@
     "font-awesome": "^4.7.0",
     "frappe-charts": "0.0.8",
     "gulp-less": "^3.3.2",
-    "ht-client": "file:../client",
-    "ht-data": "file:../data",
-    "ht-maps": "0.0.16-beta",
-    "ht-utility": "0.0.4-beta",
+    "ht-client": "0.1.0",
+    "ht-data": "0.1.0",
+    "ht-maps": "0.1.0",
+    "ht-utility": "0.1.0",
     "js-cookie": "^2.2.0",
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
@@ -136,7 +135,7 @@
     "to-string-loader": "1.1.5",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "^2.6.2",
+    "typescript": "^2.4.2",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.9.1"
   }

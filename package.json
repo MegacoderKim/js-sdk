@@ -48,7 +48,7 @@
     "tslint-circular-dependencies": "^0.1.0",
     "typedoc": "^0.8.0",
     "typedoc-webpack-plugin": "^1.1.4",
-    "typescript": "^2.6.2",
+    "typescript": "^2.4.1",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-config-utils": "^2.3.0",
