@@ -1,0 +1,23 @@
+<!--<div class="card">-->
+  <!--<div class="card-header">-->
+    <!--<div class="card-header-title">-->
+      <!--Choose preset views-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="card-content">-->
+    <!---->
+  <!--</div>-->
+<!--</div>-->
+<div class="field" *ngFor="let preset of analyticsItemsService.presets">
+  <div class="control">
+    <label class="checkbox">
+      <input type="checkbox" (click)="togglePreset(preset)" [checked]="isActive(preset)">
+      {{preset.initialConfig.title}}
+    </label>
+  </div>
+</div>
+<div class="field">
+  <div class="control">
+    <button class="button" (click)="setPreset()">Create views</button>
+  </div>
+</div>

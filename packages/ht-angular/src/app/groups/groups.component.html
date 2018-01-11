@@ -1,0 +1,7 @@
+<div class="card-stack">
+  <a [routerLink]="['/groups', group[groupIdParam]]" class="card" *ngFor="let group of groups">
+    <div class="card-content-mid">
+      {{group.name}}
+    </div>
+  </a>
+</div>
