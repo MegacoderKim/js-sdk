@@ -1,0 +1,20 @@
+{
+  "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../dist",
+  "lib": {
+    "entryFile": "./index.ts",
+    "externals": {
+      "underscore": "_",
+      "moment-mini": "moment",
+      "ht-models": "htModels",
+      "ht-utility": "htUtility",
+      "ht-data": "htData",
+      "ht-maps": "htMaps",
+      "ht-client": "htClient",
+      "time-aware-polyline": "timeAwarePolyline",
+      "date-fns": "dateFns",
+      "leaflet": "L",
+      "rxjs/operators": "Rx.operators"
+    }
+  }
+}
