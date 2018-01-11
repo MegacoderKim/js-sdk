@@ -88,7 +88,10 @@
           [title]="item.title"
           [hideDatePicker]="item.hideDatePicker"
           [dateRangeService$]="item.dateRangeService$"></ht-analytics-title>
-        <ht-analytics-item [item]="item"></ht-analytics-item>
+        <ht-analytics-item-load [minHeight]="item.minHeight" [loading$]="item.loading$" [noData]="item.noData">
+          <ht-analytics-item [item]="item"></ht-analytics-item>
+        </ht-analytics-item-load>
+
       </div>
     </div>
     <div class="column is-6 auto setup" *ngIf="items.length == 0">

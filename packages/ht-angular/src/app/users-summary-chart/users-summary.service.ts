@@ -17,6 +17,9 @@ export class UsersSummaryService implements IAnalyticsItemService {
   client;
   summary$;
   hideDatePicker = true;
+  noData = false;
+  loading$;
+  minHeight = 50;
   constructor(config: ISummaryConfig<HtUsersClient>) {
     this.setState(config);
     // this.initClient()
@@ -32,6 +35,7 @@ export class UsersSummaryService implements IAnalyticsItemService {
     const client: HtUsersClient = config.client || usersClientFactory({dateRange$: this.dateRangeService$.data$});
     client.setShowAll();
     this.client = client.summary;
+    this.loading$ = this.client.loading$;
     this.summary$ = client.listStatusChart$(config.queryLabels);
   }
 

@@ -15,7 +15,9 @@ export interface IAnalyticsItemService {
   className: string,
   tags: string[],
   title: string,
-  // loading$: Observable<boolean>
+  noData: boolean,
+  loading$: Observable<boolean>,
+  minHeight?: number,
   setData(instance): void,
   setActive(active?: boolean): void,
 }

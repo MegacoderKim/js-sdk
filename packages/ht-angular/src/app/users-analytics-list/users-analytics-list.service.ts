@@ -23,6 +23,8 @@ export class UsersAnalyticsListService implements IAnalyticsItemService {
   className = "is-6";
   tags = ['users'];
   hideDatePicker: boolean;
+  noData;
+  loading$;
   constructor(config: IAnalyticsListConfig) {
     this.initState(config);
     this.initClient(config)
@@ -43,11 +45,13 @@ export class UsersAnalyticsListService implements IAnalyticsItemService {
     this.client = userClient.list;
     this.client.updateStrategy = config.updateStrategy || "once";
     this.client.setQuery(this.query);
+    this.loading$ = this.client.loading$;
     // this.client.setActive();
     const data$ = this.client.dataArray$;
     this.dataTable$ = data$.pipe(
       filter(data => !!data),
       map((users: any[]) => {
+        this.noData = users.length ? false : true;
         return users.map(user => {
           const values = this.tableFormat.map(data => data.selector(user));
           return {data: user, values}

@@ -46,7 +46,7 @@ export const usersAnalyticsListPresets: IAnalyticsPresets = {
     return {
       service: UsersAnalyticsListService,
       initialConfig: {
-        title: "Most recent users with location disabled",
+        title: "Recent users with location disabled",
         query: {status: 'location_disabled', show_all: true, ordering: '-last_heartbeat'},
         updateStrategy: 'live',
         hideDatePicker: true,
@@ -153,7 +153,7 @@ export const usersAnalyticsListPresets: IAnalyticsPresets = {
     return {
       service: UsersAnalyticsListService,
       initialConfig: {
-        title: "Most Recent active users",
+        title: "Recent active users",
         query: {ordering: "-last_heartbeat_at"},
         tags: ['live'],
         initialDateRange: DateRangeMap.last_30_days,

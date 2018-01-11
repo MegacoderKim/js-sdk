@@ -16,6 +16,9 @@ export class ActionsSummaryService implements IAnalyticsItemService {
   summary$;
   title;
   hideDatePicker = false;
+  noData = false;
+  loading$;
+  minHeight = 50;
   constructor(config: ISummaryConfig<HtActionsClient>) {
     this.initState(config);
   }
@@ -30,6 +33,7 @@ export class ActionsSummaryService implements IAnalyticsItemService {
     const client = config.client || actionsClientFactory({dateRange$: this.dateRangeService$.data$});
     if (config.dateRangeService) this.dateRangeService$ = config.dateRangeService;
     this.client = client.summary;
+    this.loading$ = this.client.loading$;
     this.summary$ = this.client.summaryChart$;
     // this.client.setActive()
   }

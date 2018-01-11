@@ -55,7 +55,7 @@ export class ActionsStatusGraphComponent implements OnInit, AfterViewInit, OnDes
         type: 'line', // or 'line', 'scatter', 'pie', 'percentage'
         height: 250,
         is_series: 1,
-        colors: ['#7cd6fd', 'red'],
+        colors: ['#60c1fd', 'red'],
         region_fill: 1,
         // x_axis_mode: 'tick',
         format_tooltip_x: d => {

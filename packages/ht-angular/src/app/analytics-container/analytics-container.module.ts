@@ -18,6 +18,7 @@ import {ActionsSummaryChartModule} from "../actions-summary-chart/actions-summar
 import {ActionsSummaryChartComponent} from "../actions-summary-chart/actions-summary-chart.component";
 import { AnalyticsTitleComponent } from './analytics-title/analytics-title.component';
 import {DateRangeModule} from "../filters/date-range/date-range.module";
+import {AnalyticsItemLoadModule} from "./analytics-item-load/analytics-item-load.module";
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import {DateRangeModule} from "../filters/date-range/date-range.module";
     AnalyticsTagsModule,
     ActionsAnalyticsListModule,
     ActionsSummaryChartModule,
+    AnalyticsItemLoadModule,
     DateRangeModule
   ],
   declarations: [

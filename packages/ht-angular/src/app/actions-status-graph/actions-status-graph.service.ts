@@ -20,6 +20,8 @@ export class ActionsStatusGraphService implements IAnalyticsItemService {
   chartFormat;
   tags = ['actions'];
   className = "is-12";
+  noData;
+  loading$;
   constructor(config: IActionsTrendlineConfig) {
     this.initState(config);
     this.initClient();
@@ -36,9 +38,11 @@ export class ActionsStatusGraphService implements IAnalyticsItemService {
   private initClient() {
     const graphClient = actionsClientFactory({dateRange$: this.dateRangeService$.data$});
     this.client = graphClient.graph;
+    this.loading$ = this.client.loading$;
     this.data$ = this.client.data$.pipe(
       filter(data => !!data),
       map((data: IActionStatusGraph[]) => {
+        this.noData = data.length ? false : true;
         return this.getCompletedActionChart(data)
       })
     );

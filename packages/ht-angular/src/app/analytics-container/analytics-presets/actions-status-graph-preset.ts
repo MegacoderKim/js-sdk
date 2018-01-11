@@ -17,17 +17,18 @@ export const actionsConfigPreset: IAnalyticsPresets = {
         tags: [],
         chartFormat: [
           {
+            title: "Assigned",
+            selector(graphData: IActionStatusGraph) {
+              return graphData.assigned
+            }
+          },
+          {
             title: "Completed",
             selector(graphData: IActionStatusGraph) {
               return graphData.completed
             }
           },
-          {
-            title: "Assigned",
-            selector(graphData: IActionStatusGraph) {
-              return graphData.assigned
-            }
-          }
+
 
         ]
       }
@@ -63,7 +64,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
     return {
       service: ActionsAnalyticsListService,
       initialConfig: {
-        title: "Most Recent assigned actions",
+        title: "Recent assigned actions",
         tags: ['live'],
         query: {ordering: '-assigned_at', status: 'assigned,started'},
         updateStrategy: "live",
@@ -105,7 +106,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
     return {
       service: ActionsAnalyticsListService,
       initialConfig: {
-        title: "Most Recent completed actions",
+        title: "Recent completed actions",
         tags: ['live'],
         query: {ordering: '-completed_at', status: 'completed'},
         updateStrategy: "live",
@@ -165,7 +166,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
     return {
       service: ActionsAnalyticsListService,
       initialConfig: {
-        title: "Most recent user on action",
+        title: "Recent user on action",
         query: {ordering: '-assigned_at'},
         tags: ['users', 'live'],
         updateStrategy: 'live',

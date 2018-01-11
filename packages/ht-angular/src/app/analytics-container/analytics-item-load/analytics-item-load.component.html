@@ -1,4 +1,4 @@
-<div class="loading-container" [style.min-height.px]="minHeight">
+<div class="loading-container" [style.min-height.px]="_minHeight">
   <ng-content></ng-content>
   <div class="loading-page" *ngIf="loading$ | async">
     <div class="icon auto has-text-grey-light">

@@ -5,9 +5,7 @@
     </div>
   </div>
 </div>
-<ht-analytics-item-load [loading$]="service.client.loading$" [minHeight]="50">
-  <ng-container *ngIf="service.summary$ | async as summary">
-    <ht-users-summary [summary]="summary" [selectable]="false" [hideTotal]="true"></ht-users-summary>
-  </ng-container>
-</ht-analytics-item-load>
+<ng-container *ngIf="service.summary$ | async as summary">
+  <ht-users-summary [summary]="summary" [selectable]="false" [hideTotal]="true"></ht-users-summary>
+</ng-container>
 
