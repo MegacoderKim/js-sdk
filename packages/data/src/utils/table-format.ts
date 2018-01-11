@@ -133,7 +133,6 @@ export const userTableFormat = {
   "num_actions": {
     label: "Number of actions",
     selector(user: IUserAnalytics) {
-      var e = DateHumanize()
       return user.num_actions
     }
   }

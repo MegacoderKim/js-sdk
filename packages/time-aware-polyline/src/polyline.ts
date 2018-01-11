@@ -1,9 +1,9 @@
-import { TimeAwarePolyline } from "./time-aware";
+import { TimeAwareEncoder } from "./time-aware";
 
 export class PolylineUtils {
   encodedPolyline: string;
   timeAwarePolyline: Array<Array<any>>;
-  timeAware = new TimeAwarePolyline();
+  encoder = new TimeAwareEncoder();
   constructor() {
 
   }
@@ -11,18 +11,18 @@ export class PolylineUtils {
   updateTimeAwarePolyline(encodedPolyline) {
     if(this.isNewPolyline(encodedPolyline)) {
       this.encodedPolyline = encodedPolyline;
-      this.timeAwarePolyline = this.timeAware.decodeTimeAwarePolyline(this.encodedPolyline);
+      this.timeAwarePolyline = this.encoder.decodeTimeAwarePolyline(this.encodedPolyline);
     }
   }
 
   getPolylineToTime(timestamp: string) {
-    return this.timeAware.getLocationsElapsedByTimestamp(this.timeAwarePolyline, timestamp)
+    return this.encoder.getLocationsElapsedByTimestamp(this.timeAwarePolyline, timestamp)
   }
 
   getLatestTime() {
     if(this.timeAwarePolyline) {
       let lastI = this.timeAwarePolyline.length - 1;
-      return this.timeAwarePolyline[lastI][2]
+      return lastI > -1 ? this.timeAwarePolyline[lastI][2] : null
     } else {
       return null;
     }

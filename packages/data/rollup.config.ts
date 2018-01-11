@@ -266,7 +266,7 @@ const globals = {
   'rxjs/operator/withLatestFrom': 'Rx.Observable.prototype',
   'rxjs/operator/zipAll': 'Rx.Observable.prototype',
   'rxjs/operator/zipProto': 'Rx.Observable.prototype',
-  'rxjs/operators': 'Rx',
+  'rxjs/operators': 'Rx.operators',
   'rxjs/symbol/iterator': 'Rx.Symbol',
   'rxjs/symbol/observable': 'Rx.Symbol',
   'rxjs/symbol/rxSubscriber': 'Rx.Symbol',

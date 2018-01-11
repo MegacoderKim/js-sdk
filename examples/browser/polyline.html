@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../node_modules/moment-mini/moment.min.js"></script>
+    <script src="../node_modules/rxjs/bundles/Rx.min.js"></script>
+    <script src="../node_modules/underscore/underscore-min.js"></script>
+    <script src="../node_modules/ht-utility/dist/ht-utility_browser.js"></script>
+    <script src="../../packages/data/dist/ht-data_browser.js"></script>
+    <script src="../../packages/time-aware-polyline/dist/time-aware-polyline_browser.js"></script>
+    <script src="../../packages/maps/dist/ht-maps_browser.js"></script>
+    <script src="../../packages/client/dist/ht-client_browser.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtboBD4lM6hMR02qtUjJHua9gFs6PFbQE&libraries=geometry"></script>
+    <script src="../js-libs/richmarkers.js"></script>
+    <style>
+        #map {
+            height: 400px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<div id="map"></div>
+</body>
+<script>
+    var anim = new timeAwarePolyline.TimeAwareAnimation();
+    anim.updatePathBearing = function (path, bearing) {
+        // console.log(path, "bearing");
+        var last = _.last(path);
+        if(last) {
+            marker.setPosition(last);
+            map.setCenter(last)
+        }
+        polyline.setPath(path)
+    };
+    var token = "sk_4b9d77e030ec14ef403f7bc9c4027e24e24b4432";
+    var id = "d3b51c53-14b2-4605-a04a-31e2c3c5be6d";
+    var client = new htClient.initClient(token);
+
+    var users = htClient.usersClientFactory();
+    users.placeline.setId(id);
+    users.placeline.data$.subscribe(placeline => {
+        if(placeline) {
+            var segments = placeline.segments.filter(s => s.time_aware_polyline);
+            var lastSegIndex = segments.length - 1;
+            if(lastSegIndex > 0) {
+                var lastSeg = segments[lastSegIndex];
+                var timeAwareString = lastSeg.time_aware_polyline;
+                var a = new timeAwarePolyline.TimeAwareEncoder().decodeTimeAwarePolyline(timeAwareString);
+                anim.init(a)
+            }
+
+        }
+    });
+    // var encoded = "i|teFtugjVg|uziyA??A???";
+    var polyline = new google.maps.Polyline();
+    // anim.initPolylineString(encoded);
+    var marker = new google.maps.Marker();
+    var mapClass = new htMaps.HtMapClass('google');
+
+    mapClass.initMap(document.getElementById('map'), {center: {lat: 37.79541, lng: -122.43307}, zoom: 10});
+    var map = mapClass.map;
+    polyline.setMap(map);
+    marker.setMap(map)
+</script>
+</html>
