@@ -269,7 +269,7 @@ const globals = {
   'rxjs/symbol/iterator': 'Rx.Symbol',
   'rxjs/symbol/observable': 'Rx.Symbol',
   'rxjs/symbol/rxSubscriber': 'Rx.Symbol',
-  'rxjs/operators': 'Rx',
+  'rxjs/operators': 'Rx.operators',
   'underscore': '-',
   'ht-utility': 'htUtility',
   'ht-data': 'htData',
