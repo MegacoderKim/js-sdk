@@ -1,3 +1,7 @@
+# 0.2.13
+- Add loading and no data to analytics
+- Fix analytics table styling
+- Move to mono repo
 # 0.2.13-beta
 - fix `package.json` dependencies. User `src/package.json` to manage dependencies
 - Pause analytics component on destroy
