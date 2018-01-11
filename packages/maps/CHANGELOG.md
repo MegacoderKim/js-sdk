@@ -1,3 +1,8 @@
+# 0.1.0-beta
+- Fix `rxjs` operator bundling for umd bundle
+- Remove replay feature
+- Add `time-aware-polyline` as dependency
+
 # 0.0.16-beta
 - fix stop icon style
 - Add rollup
