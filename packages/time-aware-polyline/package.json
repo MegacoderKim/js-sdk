@@ -6,7 +6,8 @@
   "module": "dist/time-aware-polyline.es5.js",
   "typings": "dist/types/time-aware-polyline.d.ts",
   "scripts": {
-    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
+    "build": "npm run lib && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts",
     "start": "tsc -w & rollup -c rollup.config.ts -w",
     "prepack": "npm run lib",
     "test": "istanbul cover _mocha"
@@ -19,6 +20,6 @@
     "rollup": "^0.53.3"
   },
   "dependencies": {
-    "rollup-plugin-bundle-worker": "https://github.com/andyearnshaw/rollup-plugin-bundle-worker.git"
+
   }
 }
