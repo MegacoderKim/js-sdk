@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/hypertrack/ht-angular/issues"
   },
-  "private": true,
+  "private": false,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
