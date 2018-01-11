@@ -1,5 +1,4 @@
 import * as _ from "underscore";
-import { TimelineSegment } from "../timeline-segment";
 import { IAction, ISegment, ITimelineEvent, IUserData } from "ht-models";
 import { segmentsPolylinesTrace } from "../entities/segment-polylines";
 import { stopMarkersTrace } from "../entities/stop-markers";
@@ -22,7 +21,7 @@ export class Placeline {
   stopMarkers = stopMarkersTrace();
   actionMarkers = actionsMarkersTrace();
   // actionsPolylines = new ActionMarkersTrace();
-  timelineSegment = new TimelineSegment();
+  // timelineSegment = new TimelineSegment();
   userMarker = currentUserTrace();
   replayMarker = stopMarkersTrace();
   eventMarkers = stopMarkersTrace();
@@ -215,37 +214,37 @@ export class Placeline {
     );
   }
 
-  traceCurrentUser(segment) {
-    console.log("seg,emt", segment);
-    if (
-      segment &&
-      this.timelineSegment.timeAwareArray &&
-      this.timelineSegment.timeAwareArray.length
-    ) {
-      // let lastSegment = segment;
-      let positionBearing = this.timelineSegment.getLastPositionBearing();
-      console.log(positionBearing);
-      // this.userMarker.trace({segment, positionBearing})
-    } else {
-      // this.userMarker.removeAll();
-    }
-  }
+  // traceCurrentUser(segment) {
+  //   console.log("seg,emt", segment);
+  //   if (
+  //     segment &&
+  //     this.timelineSegment.timeAwareArray &&
+  //     this.timelineSegment.timeAwareArray.length
+  //   ) {
+  //     // let lastSegment = segment;
+  //     let positionBearing = this.timelineSegment.getLastPositionBearing();
+  //     console.log(positionBearing);
+  //     // this.userMarker.trace({segment, positionBearing})
+  //   } else {
+  //     // this.userMarker.removeAll();
+  //   }
+  // }
 
   //segments replay
   clearTimeline() {
-    this.timelineSegment.clearTimeline();
+    // this.timelineSegment.clearTimeline();
   }
 
-  get stats() {
-    return this.timelineSegment.stats;
-  }
+  // get stats() {
+  //   return this.timelineSegment.stats;
+  // }
 
   // get segments() {
   //   return this.timelineSegment.segments
   // }
 
   updateTimeline(user: IUserData) {
-    this.timelineSegment.update(user);
+    // this.timelineSegment.update(user);
   }
 
   getCurrentUserPosition() {
@@ -267,7 +266,7 @@ export class Placeline {
   }
 
   setSegmentPlayCallback(cb) {
-    this.timelineSegment.playSegmentCallback = cb;
+    // this.timelineSegment.playSegmentCallback = cb;
   }
 
   setReplayHead(head, map) {
@@ -279,42 +278,42 @@ export class Placeline {
   }
 
   private traceEvents(user: IUserData, map) {
-    let events: ITimelineEvent[] = user && user.events ? user.events : [];
-    let locations = this.timelineSegment.getLocationsAtTimesT(
-      events.map(event => event.recorded_at)
-    );
-    let eventsWithPosition = events.reduce((acc, event, i) => {
-      let info = this.allowedEvents[event.type];
-      if (info) {
-        var lastEvent = _.last(acc);
-        let sameAsLastEvent =
-          lastEvent && lastEvent.recorded_at == event.recorded_at;
-        if (sameAsLastEvent) {
-          let lastInfo = lastEvent.info + ", " + info;
-          let newLastEvent = { ...lastEvent, info: lastInfo };
-          acc.pop();
-          return [...acc, newLastEvent];
-        } else {
-          let position = locations[i];
-          // let position = this.timelinePolyline.getLocationAtTime(event.recorded_at);
-          if (position.length) {
-            let eventWithPosition = { ...event, position, info };
-            return [...acc, eventWithPosition];
-          } else {
-            return acc;
-          }
-        }
-      } else {
-        return acc;
-      }
-    }, []);
-    this.eventMarkers.trace(eventsWithPosition);
+    // let events: ITimelineEvent[] = user && user.events ? user.events : [];
+    // let locations = this.timelineSegment.getLocationsAtTimesT(
+    //   events.map(event => event.recorded_at)
+    // );
+    // let eventsWithPosition = events.reduce((acc, event, i) => {
+    //   let info = this.allowedEvents[event.type];
+    //   if (info) {
+    //     var lastEvent = _.last(acc);
+    //     let sameAsLastEvent =
+    //       lastEvent && lastEvent.recorded_at == event.recorded_at;
+    //     if (sameAsLastEvent) {
+    //       let lastInfo = lastEvent.info + ", " + info;
+    //       let newLastEvent = { ...lastEvent, info: lastInfo };
+    //       acc.pop();
+    //       return [...acc, newLastEvent];
+    //     } else {
+    //       let position = locations[i];
+    //       // let position = this.timelinePolyline.getLocationAtTime(event.recorded_at);
+    //       if (position.length) {
+    //         let eventWithPosition = { ...event, position, info };
+    //         return [...acc, eventWithPosition];
+    //       } else {
+    //         return acc;
+    //       }
+    //     }
+    //   } else {
+    //     return acc;
+    //   }
+    // }, []);
+    // this.eventMarkers.trace(eventsWithPosition);
   }
 }
 
 export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
 
-interface ISegmentType {
+export interface ISegmentType {
   tripSegment: ISegment[];
   stopSegment: ISegment[];
 }

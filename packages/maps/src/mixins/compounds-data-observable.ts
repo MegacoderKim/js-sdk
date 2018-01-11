@@ -26,7 +26,7 @@ export function CompoundDataObservableMixin<
     data$: Observable<object>;
     compoundSetDataConfig: CompoundSetDataConfig;
     _procData$() {
-      return (source$: Observable<object | null>) => {
+      return (source$: Observable<any | null>) => {
         return source$.pipe(
           map(markers => {
             return _.reduce(
