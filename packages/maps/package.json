@@ -23,7 +23,7 @@
     "@types/node": "^8.0.4",
     "ht-data": "^0.0.5-beta",
     "ht-models": "^0.0.13",
-    "ht-utility": "^0.0.4-beta",
+    "ht-utility": "^0.1.0",
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
     "moment-mini": "~2.18.1",
@@ -36,7 +36,7 @@
   "peerDependencies": {
     "ht-data": ">=0.0.20",
     "ht-models": "^0.0.x",
-    "ht-utility": "0.0.x",
+    "ht-utility": "^0.1.0",
     "rxjs": "^5.5.2",
     "underscore": "^1.8.x"
   },
