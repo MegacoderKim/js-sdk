@@ -17,24 +17,24 @@
   ],
   "author": "",
   "license": "ISC",
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "marked": "^0.3.9",
     "moment-mini": "^2.18.1",
     "polyline-encoded": "0.0.8",
     "rxjs": "^5.5.6",
     "store": "^2.0.12",
-    "time-aware-polyline": "^0.1.19",
     "tslint": "^5.8.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "@types/googlemaps": "^3.30.4",
     "@types/node": "^8.0.3",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.7",
     "css-raw-loader": "^0.1.2",
     "extract-text-webpack-plugin": "^2.1.2",
-    "ht-models": "0.0.13",
     "lerna": "^2.5.1",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",

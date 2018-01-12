@@ -1,5 +1,32 @@
 {
   "lerna": "2.5.1",
+  "commands": {
+    "publish": {
+      "ignore": [
+        "*.md"
+      ]
+    },
+    "bootstrap": {
+      "ignore": [
+        "ht-angular"
+      ]
+    },
+    "run": {
+      "ignore": [
+        "ht-angular"
+      ]
+    },
+    "exec": {
+      "ignore": [
+        "ht-angular"
+      ]
+    },
+    "publish": {
+      "ignore": [
+        "angular-components"
+      ]
+    }
+  },
   "packages": [
     "packages/*"
   ],

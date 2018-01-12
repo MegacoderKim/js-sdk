@@ -1,5 +1,5 @@
 {
-  "name": "ht-angular",
+  "name": "angular-components",
   "version": "0.2.15-0",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/hypertrack/ht-angular/issues"
   },
-  "private": false,
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -31,10 +31,11 @@
     "build:stats": "ng build --prod --preserve-symlink --stats-json",
     "bundle-report": "npm run build:stats && webpack-bundle-analyzer dist/stats.json",
     "dist": "rimraf dist && gulp build",
-    "lib": "ng-packagr -p ./src/ng-package.json",
+    "lib": "ng-packagr -p ./src/ng-package.json && npm run copy:styles",
     "link": "gulp link",
     "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
-    "doc": "typedoc --out doc src/app"
+    "copy:styles": "copyfiles -u 2 src/styles/**/* ../ht-angular/src/styles",
+    "doc": "typedoc -f --out doc src/app"
   },
   "dependencies": {
     "@angular/animations": "^5.2.0",
@@ -80,6 +81,7 @@
     "autoprefixer": "7.1.5",
     "codelyzer": "~3.2.0",
     "conventional-github-releaser": "^2.0.0",
+    "copyfiles": "^1.2.0",
     "css-loader": "0.28.7",
     "cssnano": "3.10.0",
     "del": "^3.0.0",

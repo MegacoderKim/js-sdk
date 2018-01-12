@@ -51,3 +51,4 @@ node_modules
 /packages/**/node_modules/
 /examples/node_modules/
 /packages/**/dist/
+/packages/ht-angular/
