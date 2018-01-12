@@ -1,0 +1,25 @@
+<div class="modal is-active">
+  <div (click)="close()" class="modal-background"></div>
+  <div class="modal-card container">
+    <div class="modal-card-body">
+      <form #loginForm="ngForm" (submit)="login()" class="form">
+        <div class="field">
+          <div class="label">Email</div>
+          <div class="control">
+            <input [(ngModel)]="user.username" name="username" type="text" class="input">
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">password</div>
+          <div class="control"><input required [(ngModel)]="user.password" name="password" type="password" class="input"></div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button type="submit" [class.is-loading]="loading" class="button is-primary">Login</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <button (click)="close()" class="modal-close is-large" aria-label="close"></button>
+</div>

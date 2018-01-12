@@ -1,0 +1,45 @@
+@import "../../../styles/variables";
+@import "../../../styles/placeholder";
+
+:host {
+  //width: 250px;
+  position: relative;
+}
+#results {
+  position: absolute;
+  left: 0;
+  top: 37px;
+  background: #fff;
+  width: 100%;
+  border: 1px solid @ht-grey-border;
+  z-index: 11;
+}
+.input-search {
+  border: 0;
+  border-bottom: 1px solid #ffffff;
+  &:focus {
+    outline: 0;
+    border-bottom: 1px solid @ht-grey-5;
+  }
+  &::placeholder {
+    //color: #cbcbcb;
+  }
+}
+.item {
+  padding: 4px 10px;
+  color: @ht-grey-5;
+  &:hover {
+    background: #f7f7f7;
+  }
+}
+
+.clickable {
+  color: @ht-blue;
+}
+.input-sm {
+  border: 0;
+  outline: 0;
+  box-shadow: 0 0;
+  border-bottom: 1px solid @ht-grey-border-light;
+  font-size: 15px;
+}

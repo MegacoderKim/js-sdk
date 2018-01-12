@@ -1,0 +1,6 @@
+.clickable {
+  &:hover {
+    box-shadow:  1px 1px grey;
+    z-index: 2;
+  }
+}

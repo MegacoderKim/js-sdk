@@ -1,0 +1,10 @@
+.icon-box {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  border: 1px solid grey;
+  border-radius: 50%;
+  .fa {
+    margin: auto;
+  }
+}

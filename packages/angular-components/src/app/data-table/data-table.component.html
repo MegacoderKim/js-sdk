@@ -1,0 +1,7 @@
+<table class="table is-fullwidth is-bordered is-striped">
+  <tbody>
+  <tr [class.clickable]="clickable" (click)="selectRow(row)" *ngFor="let row of tableData">
+    <td *ngFor="let item of row">{{item}}</td>
+  </tr>
+  </tbody>
+</table>

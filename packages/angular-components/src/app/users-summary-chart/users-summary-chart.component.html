@@ -1,0 +1,11 @@
+<div class="level">
+  <div class="level-left">
+    <div class="level-item is-size-5" *ngIf="service.summary$ | async as summary">
+      Total: {{summary.totalUsers}} {{'users'}}
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="service.summary$ | async as summary">
+  <ht-users-summary [summary]="summary" [selectable]="false" [hideTotal]="true"></ht-users-summary>
+</ng-container>
+
