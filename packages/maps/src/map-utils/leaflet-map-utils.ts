@@ -11,23 +11,26 @@ import {
   point,
   polyline,
   popup,
-  tileLayer
+  tileLayer,
+  Map,
+  LatLng,
+  LatLngBounds
 } from "leaflet";
 import { markerCluster } from "./leaflet.markercluster";
 
 export function ExtendBounds(
   item = null,
-  bounds: L.LatLngBounds = latLngBounds([]),
+  bounds: LatLngBounds = latLngBounds([]),
   force: boolean = false
-): L.LatLngBounds {
+): LatLngBounds {
   if ((item && item.getElement()) || force) bounds.extend(item.getLatLng());
   return bounds;
 }
 
 export const ExtendBoundsWithPolyline = (
   polyline = null,
-  bounds: L.LatLngBounds = latLngBounds([])
-): L.LatLngBounds => {
+  bounds: LatLngBounds = latLngBounds([])
+): LatLngBounds => {
   if (polyline && polyline.getElement()) {
     bounds.extend(polyline.getBounds());
   }
@@ -46,7 +49,7 @@ export const setPolylineStyle = (polyline, style) => {
   polyline.setStyle(style);
 };
 
-export const SetMap = (item, map: L.Map) => {
+export const SetMap = (item, map: Map) => {
   if ((item && !item.getElement()) || (item && !item.getElement))
     item.addTo(map);
 };
