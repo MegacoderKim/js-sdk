@@ -1,6 +1,6 @@
 {
   "name": "ht-maps",
-  "version": "0.1.1-0",
+  "version": "0.1.1",
   "description": "hypertrack maps",
   "main": "dist/ht-maps_browser.js",
   "module": "dist/ht-maps.es5.js",
@@ -32,7 +32,7 @@
     "underscore": "^1.8.x"
   },
   "dependencies": {
-    "time-aware-polyline": "^0.0.2-0"
+    "time-aware-polyline": "^0.0.2"
   },
   "peerDependencies": {
     "ht-data": ">=0.0.20",
