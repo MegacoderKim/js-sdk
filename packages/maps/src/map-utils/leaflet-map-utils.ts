@@ -19,7 +19,7 @@ export function ExtendBounds(
   item = null,
   bounds: L.LatLngBounds = latLngBounds([]),
   force: boolean = false
-) {
+): L.LatLngBounds {
   if ((item && item.getElement()) || force) bounds.extend(item.getLatLng());
   return bounds;
 }
