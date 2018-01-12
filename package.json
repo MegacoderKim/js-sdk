@@ -34,7 +34,6 @@
     "css-loader": "^0.28.7",
     "css-raw-loader": "^0.1.2",
     "extract-text-webpack-plugin": "^2.1.2",
-    "ht-models": "0.0.13",
     "lerna": "^2.5.1",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
