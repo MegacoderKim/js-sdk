@@ -2954,6 +2954,7 @@ class PlacelineComponent {
         this.segmentId = new EventEmitter();
         this.hoveredAction = new EventEmitter();
         this.selectedSegment = new EventEmitter();
+        this.selectedPartialSegmentId = "__";
         this.isMobile = false;
         this.selectedAction = null;
         this.selectedActivity = "";
@@ -3194,8 +3195,8 @@ class PlacelineComponent {
         // let last = {time: lastSeg['last_heartbeat_at']};
         let /** @type {?} */ pipeClass = "";
         let /** @type {?} */ time;
-        let /** @type {?} */ isLive = false;
-        if (lastSeg.ended_at) {
+        let /** @type {?} */ isLive = this.isSegmentLive(placeline);
+        if (!this.isSegmentLive(placeline)) {
             time = lastSeg.ended_at;
         }
         else {
@@ -3204,6 +3205,15 @@ class PlacelineComponent {
         }
         const /** @type {?} */ activityClass = this.getActivityClass(lastSeg);
         return { time, pipeClass, lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg` };
+    }
+    /**
+     * @param {?} placeline
+     * @return {?}
+     */
+    isSegmentLive(placeline) {
+        let /** @type {?} */ old = placeline.display.seconds_elapsed_since_last_heartbeat;
+        let /** @type {?} */ status = placeline.display.status_text;
+        return status !== 'Logged off' && old < 15 * 60;
     }
     /**
      * @param {?} segment

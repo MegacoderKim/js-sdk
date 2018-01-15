@@ -1346,6 +1346,7 @@ var PlacelineComponent = (function () {
         this.segmentId = new EventEmitter();
         this.hoveredAction = new EventEmitter();
         this.selectedSegment = new EventEmitter();
+        this.selectedPartialSegmentId = "__";
         this.isMobile = false;
         this.selectedAction = null;
         this.selectedActivity = "";
@@ -1595,8 +1596,8 @@ var PlacelineComponent = (function () {
         // let last = {time: lastSeg['last_heartbeat_at']};
         var /** @type {?} */ pipeClass = "";
         var /** @type {?} */ time;
-        var /** @type {?} */ isLive = false;
-        if (lastSeg.ended_at) {
+        var /** @type {?} */ isLive = this.isSegmentLive(placeline);
+        if (!this.isSegmentLive(placeline)) {
             time = lastSeg.ended_at;
         }
         else {
@@ -1605,6 +1606,15 @@ var PlacelineComponent = (function () {
         }
         var /** @type {?} */ activityClass = this.getActivityClass(lastSeg);
         return { time: time, pipeClass: pipeClass, lastSeg: true, isLive: isLive, ended: true, activityClass: activityClass, activityBg: this.getActivityClass(lastSeg) + "-bg" };
+    };
+    /**
+     * @param {?} placeline
+     * @return {?}
+     */
+    PlacelineComponent.prototype.isSegmentLive = function (placeline) {
+        var /** @type {?} */ old = placeline.display.seconds_elapsed_since_last_heartbeat;
+        var /** @type {?} */ status = placeline.display.status_text;
+        return status !== 'Logged off' && old < 15 * 60;
     };
     /**
      * @param {?} segment

@@ -25,6 +25,7 @@ export declare class PlacelineComponent implements OnInit {
     private getMinute(time);
     private currentExpActions(actions);
     private lastSeg(placeline);
+    private isSegmentLive(placeline);
     private getActivityClass(segment);
     getPipeClass(status: string): "stop solid" | "trip solid";
     private getActivityText(segment);
