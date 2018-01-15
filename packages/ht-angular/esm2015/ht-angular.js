@@ -2954,12 +2954,12 @@ class PlacelineComponent {
         this.segmentId = new EventEmitter();
         this.hoveredAction = new EventEmitter();
         this.selectedSegment = new EventEmitter();
+        this.isMobile = false;
         this.selectedAction = null;
         this.selectedActivity = "";
         this.hardSelectedActivity = "";
         // icons = TaskCardIcon;
         this.actionMap = {};
-        this.isMobile = false;
     }
     /**
      * @param {?} segment
@@ -3455,9 +3455,9 @@ PlacelineComponent.decorators = [
             </tr>
             </tbody>
           </table>
-          <!--<div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">-->
-            <!--<i class="fa fa-times-circle fa-2x"></i>-->
-          <!--</div>-->
+          <div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
+            <i class="fa fa-times-circle fa-2x"></i>
+          </div>
         </div>
         <div *ngIf="segment.isLive" class="text-muted heatbeat">
           Last heartbeat
@@ -4262,7 +4262,8 @@ a:focus {
   padding-left: 12px;
   font-size: 13px;
 }
-`]
+`],
+                changeDetection: ChangeDetectionStrategy.OnPush
             },] },
 ];
 /** @nocollapse */
@@ -4275,6 +4276,7 @@ PlacelineComponent.propDecorators = {
     "selectedSegment": [{ type: Output },],
     "userData": [{ type: Input },],
     "selectedPartialSegmentId": [{ type: Input },],
+    "isMobile": [{ type: Input },],
 };
 
 /**

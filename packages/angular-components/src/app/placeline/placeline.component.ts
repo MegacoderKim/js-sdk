@@ -1,4 +1,7 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit,
+  Output
+} from '@angular/core';
 import {IAction, ISegment, IUserData} from "ht-models";
 import {NameCase} from "ht-utility";
 import * as _ from "underscore";
@@ -6,7 +9,8 @@ import * as _ from "underscore";
 @Component({
   selector: 'ht-placeline',
   templateUrl: './placeline.component.html',
-  styleUrls: ['./placeline.component.less']
+  styleUrls: ['./placeline.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlacelineComponent implements OnInit {
 
@@ -15,12 +19,12 @@ export class PlacelineComponent implements OnInit {
   @Output() selectedSegment = new EventEmitter();
   @Input() userData: IUserData;
   @Input() selectedPartialSegmentId: string;
+  @Input() isMobile: boolean = false;
   selectedAction: string | null = null;
   selectedActivity: string | null = "";
   hardSelectedActivity: string | null = "";
   // icons = TaskCardIcon;
   actionMap = {};
-  isMobile: boolean = false;
   constructor(private ref: ChangeDetectorRef) {
 
   }

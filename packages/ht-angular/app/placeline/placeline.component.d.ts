@@ -7,11 +7,11 @@ export declare class PlacelineComponent implements OnInit {
     selectedSegment: EventEmitter<{}>;
     userData: IUserData;
     selectedPartialSegmentId: string;
+    isMobile: boolean;
     selectedAction: string | null;
     selectedActivity: string | null;
     hardSelectedActivity: string | null;
     actionMap: {};
-    isMobile: boolean;
     constructor(ref: ChangeDetectorRef);
     selectInUserData(segment: any, event?: any): void;
     selectSegment(segment: any, toShow?: boolean): void;

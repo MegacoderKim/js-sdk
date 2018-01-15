@@ -1,5 +1,5 @@
 {
-  "name": "angular-components",
+  "name": "ht-angular",
   "version": "0.2.15-0",
   "repository": {
     "type": "git",
@@ -16,11 +16,14 @@
     "javascript",
     "typescript"
   ],
+  "main": "src/index.ts",
+  "typings": "src/index.ts",
+  "module": "src/index.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hypertrack/ht-angular/issues"
   },
-  "private": true,
+  "private": false,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
