@@ -1,4 +1,7 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit,
+  Output
+} from '@angular/core';
 import {IAction, ISegment, IUserData} from "ht-models";
 import {NameCase} from "ht-utility";
 import * as _ from "underscore";
@@ -6,7 +9,8 @@ import * as _ from "underscore";
 @Component({
   selector: 'ht-placeline',
   templateUrl: './placeline.component.html',
-  styleUrls: ['./placeline.component.less']
+  styleUrls: ['./placeline.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlacelineComponent implements OnInit {
 
@@ -14,13 +18,13 @@ export class PlacelineComponent implements OnInit {
   @Output() hoveredAction = new EventEmitter();
   @Output() selectedSegment = new EventEmitter();
   @Input() userData: IUserData;
-  @Input() selectedPartialSegmentId: string;
+  @Input() selectedPartialSegmentId: string = "__";
+  @Input() isMobile: boolean = false;
   selectedAction: string | null = null;
   selectedActivity: string | null = "";
   hardSelectedActivity: string | null = "";
   // icons = TaskCardIcon;
   actionMap = {};
-  isMobile: boolean = false;
   constructor(private ref: ChangeDetectorRef) {
 
   }
@@ -257,8 +261,8 @@ export class PlacelineComponent implements OnInit {
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
     let time;
-    let isLive = false;
-    if(lastSeg.ended_at) {
+    let isLive = this.isSegmentLive(placeline);
+    if(!this.isSegmentLive(placeline)) {
       time = lastSeg.ended_at
     } else {
       isLive = true;
@@ -266,6 +270,12 @@ export class PlacelineComponent implements OnInit {
     }
     const activityClass = this.getActivityClass(lastSeg);
     return {time, pipeClass, lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg`}
+  }
+
+  private isSegmentLive(placeline: IUserData) {
+    let old = placeline.display.seconds_elapsed_since_last_heartbeat;
+    let status = placeline.display.status_text;
+    return status !== 'Logged off' && old < 15 * 60;
   }
 
   private getActivityClass(segment) {

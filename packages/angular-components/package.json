@@ -16,6 +16,9 @@
     "javascript",
     "typescript"
   ],
+  "main": "src/index.ts",
+  "typings": "src/index.ts",
+  "module": "src/index.ts",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hypertrack/ht-angular/issues"
