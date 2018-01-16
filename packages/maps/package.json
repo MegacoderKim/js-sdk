@@ -1,6 +1,6 @@
 {
   "name": "ht-maps",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "hypertrack maps",
   "main": "dist/ht-maps_browser.js",
   "module": "dist/ht-maps.es5.js",
@@ -23,9 +23,9 @@
     "@types/leaflet.heat": "^0.2.0",
     "@types/leaflet.markercluster": "^1.0.2",
     "@types/node": "^8.0.4",
-    "ht-data": "^0.0.5-beta",
-    "ht-models": "^0.0.13",
-    "ht-utility": "^0.1.0",
+    "ht-data": "^0.1.2",
+    "ht-models": "^0.0.14",
+    "ht-utility": "^0.1.1",
     "leaflet": "^1.2.0",
     "leaflet.markercluster": "^1.2.0",
     "rollup": "^0.53.1",
@@ -33,14 +33,14 @@
   },
   "dependencies": {
     "date-fns": "^1.29.0",
-    "ht-data": "^0.1.1-0",
+    "ht-data": "^0.1.2",
     "leaflet.heat": "^0.2.0",
-    "time-aware-polyline": "^0.0.2"
+    "time-aware-polyline": "^0.0.3"
   },
   "peerDependencies": {
-    "ht-data": ">=0.0.20",
-    "ht-models": "^0.0.x",
-    "ht-utility": "^0.1.0",
+    "ht-data": "^0.1.2",
+    "ht-models": "^0.0.14",
+    "ht-utility": "^0.1.1",
     "rxjs": "^5.5.2",
     "underscore": "^1.8.x"
   },

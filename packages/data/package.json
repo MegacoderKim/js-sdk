@@ -1,6 +1,6 @@
 {
   "name": "ht-data",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "main": "dist/ht-data_browser.js",
   "module": "dist/ht-data.es5.js",
@@ -17,15 +17,15 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ht-models": "0.0.13",
-    "ht-utility": "^0.1.0",
+    "ht-models": "^0.0.14",
+    "ht-utility": "^0.1.1",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3"
   },
   "peerDependencies": {
-    "ht-models": "0.0.x",
-    "ht-utility": "^0.1.0",
+    "ht-models": "^0.0.14",
+    "ht-utility": "^0.1.1",
     "underscore": "^1.8.3"
   },
   "dependencies": {
