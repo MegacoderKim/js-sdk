@@ -19,7 +19,6 @@
   "devDependencies": {
     "ht-models": "0.0.13",
     "ht-utility": "^0.1.0",
-    "moment-mini": "^2.18.1",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3"
@@ -27,7 +26,9 @@
   "peerDependencies": {
     "ht-models": "0.0.x",
     "ht-utility": "^0.1.0",
-    "moment-mini": "^2.18.1",
     "underscore": "^1.8.3"
+  },
+  "dependencies": {
+    "date-fns": "^1.29.0"
   }
 }
