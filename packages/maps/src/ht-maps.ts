@@ -20,6 +20,7 @@ export * from "./entities/stop-markers";
 export * from "./entities/current-user";
 export * from "./entities/actions-heatmap";
 export * from "./entities/stops-heatmap";
+export * from "./entities/actions-cluster";
 
 //mixins
 export * from "./mixins/compounds-data-observable";
