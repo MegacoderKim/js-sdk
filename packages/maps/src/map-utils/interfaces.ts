@@ -1,4 +1,4 @@
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 
 export interface MapUtils {
   type: HtMapType;

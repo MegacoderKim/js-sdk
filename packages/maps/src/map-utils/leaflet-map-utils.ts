@@ -1,6 +1,6 @@
 import { HtMarker, MapUtils, SetFocusConfig } from "./interfaces";
 import {PolylineUtil} from "./encoded-polyline";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import {
   circleMarker,
   divIcon,
@@ -245,7 +245,7 @@ function getHeatmap(options = {}) {
 }
 
 function updateHeatMapLatlng(latlngs: HtPosition[], heatmap) {
-  let latlngArray = latlngs.map((pos: HtPosition) => ([pos.lat, pos.lng]))
+  let latlngArray = latlngs.map((pos: HtPosition) => ([pos.lat, pos.lng, pos.weight || 1]));
   heatmap.setLatLngs(latlngArray)
 }
 

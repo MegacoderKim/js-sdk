@@ -1,5 +1,5 @@
 import { Constructor, Entities } from "../interfaces";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { GlobalMap } from "../global/map-service";
 import {leafletHeat} from "../map-utils/leaflet.heatmap";
 

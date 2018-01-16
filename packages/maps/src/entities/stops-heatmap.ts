@@ -1,13 +1,12 @@
 import {HeatmapMixin} from "../mixins/heatmap";
-import {htAction} from "ht-data";
-import { HtPosition } from "ht-models"
+import { HtPosition, IPlaceHeat } from "ht-models"
 import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-observable";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {StyleMixin} from "../mixins/styles";
 import {StyleFunct} from "../interfaces";
 
-export class ActionsHeatmap {
+export class StopsHeatmap {
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
@@ -30,13 +29,14 @@ export class ActionsHeatmap {
     }
   };
 
-  getPosition(item): HtPosition {
+  getPosition(item: IPlaceHeat): HtPosition {
     return {
-      lat: item.completed_place__location[1],
-      lng: item.completed_place__location[0],
+      lat: item.place__location[1],
+      lng: item.place__location[0],
+      weight: item.intensity
     }
   }
 
 };
 
-export const ActionsHeatmapTrace = DataObservableMixin(HeatmapMixin(StyleMixin(ActionsHeatmap)));
+export const StopsHeatmapTrace = DataObservableMixin(HeatmapMixin(StyleMixin(StopsHeatmap)));

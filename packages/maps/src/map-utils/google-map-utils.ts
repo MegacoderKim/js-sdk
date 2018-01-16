@@ -1,7 +1,6 @@
 import { HtMarker, MapUtils } from "./interfaces";
 import * as _ from "underscore";
-import { HtPosition } from "ht-data";
-import { ITimeAwarePoint } from "ht-models";
+import { ITimeAwarePoint, HtPosition } from "ht-models";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 export function ExtendBounds(
