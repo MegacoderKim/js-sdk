@@ -30,6 +30,7 @@ import { entityApi } from "../../global/entity-api";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
+import { UsersHeatmapClient } from "./users-heatmap-client";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -39,6 +40,7 @@ export class HtUsersClient extends EntityClient {
   list;
   summary;
   listAll;
+  heatmap;
   _statusQueryArray: QueryLabel[];
   store;
   api;
@@ -68,7 +70,7 @@ export class HtUsersClient extends EntityClient {
     this.summary = new UsersSummaryClient({ dateRangeQuery$, store, dateParam });
     this.list = this.analytics;
     this.listAll = this.analyticsAll;
-
+    this.heatmap = new UsersHeatmapClient({ dateRangeQuery$, dateParam });
     this.initEffects();
   }
 

@@ -2,18 +2,18 @@ import {listQueryMixin} from "../../mixins/entity-query";
 import {listAllClientSubMixin} from "../../mixins/list-all-client-sub";
 import {getAllPageDataMixin} from "../../mixins/get-data";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
-import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
-import {entityApi} from "../../global/entity-api";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {IActionHeat, Page} from "ht-models"
-import {IAllowedQueryMap, PageResults$} from "ht-data";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
+import {IActionHeat, Page} from "../../../../models";
+import {of} from "rxjs/observable/of";
+import {entityApi} from "../../global/entity-api";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {IAllowedQueryMap, PageResults$} from "ht-data";
 
-export class ActionsHeatmap {
+export class UsersHeatmap {
   query$: Observable<object> = of({});
-  api$ = query => entityApi.actions.allPages(entityApi.actions.heatmap(query));
+  api$ = query => entityApi.users.allPages(entityApi.users.heatmap(query));
   loadingState$ = new BehaviorSubject(false);
   loading$ = this.loadingState$.asObservable();
   dataState$: BehaviorSubject<Page<IActionHeat> | null> = new BehaviorSubject(null);
@@ -23,7 +23,6 @@ export class ActionsHeatmap {
   active$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
-
   constructor({ dateRangeQuery$, dateParam }: IPageClientConfig) {
     this.dateRangeQuery$ = dateRangeQuery$;
     this.dateParam = dateParam;
@@ -54,9 +53,8 @@ export class ActionsHeatmap {
   addData(data) {
     this.dataState$.next(data)
   }
+};
 
-}
-
-export const ActionsHeatmapClient = listAllClientSubMixin(
-  getAllPageDataMixin(getFirstDataMixin(listQueryMixin(ActionsHeatmap)))
+export const UsersHeatmapClient = listAllClientSubMixin(
+  getAllPageDataMixin(getFirstDataMixin(listQueryMixin(UsersHeatmap)))
 );
