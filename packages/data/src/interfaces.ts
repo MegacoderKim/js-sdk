@@ -1,4 +1,4 @@
-import { ISegment, IEvent, IAction, ITimeAwarePoint, Partial, ITimelineEvent } from "ht-models";
+import { ISegment, IEvent, IAction, ITimeAwarePoint, Partial, ITimelineEvent, HtPosition } from "ht-models";
 
 export interface IActionPositions {
   position: HtPosition | null;
@@ -13,10 +13,10 @@ export interface ISegmentType {
   stopSegment: ISegment[];
 }
 
-export interface HtPosition {
-  lat: number;
-  lng: number;
-}
+// export interface HtPosition {
+//   lat: number;
+//   lng: number;
+// }
 
 export interface IPlacelineSegment extends Partial<IProcSegment> {
   segmentId: string;

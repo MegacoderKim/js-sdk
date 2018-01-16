@@ -1,6 +1,6 @@
-import { IAction, IActionMap, IActionHeat } from "ht-models";
+import { IAction, IActionMap, IActionHeat, HtPosition } from "ht-models";
 import _ from "underscore";
-import { HtPosition, IActionPositions } from "../interfaces";
+import { IActionPositions } from "../interfaces";
 import moment from "moment-mini";
 import { GetDateRangeQuery } from "ht-utility";
 
