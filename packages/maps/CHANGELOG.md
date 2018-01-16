@@ -1,6 +1,6 @@
 # 0.1.1
 - Refactor `MapService` to `GlobalMap`
-- Add `leaflet.heat`
+- Add `leaflet.heat` and `heatmapMixin`
 
 # 0.1.0-beta
 - Fix `rxjs` operator bundling for umd bundle

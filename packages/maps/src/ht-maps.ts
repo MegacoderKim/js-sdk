@@ -18,6 +18,7 @@ export * from "./entities/action-markers";
 export * from "./entities/segment-polylines";
 export * from "./entities/stop-markers";
 export * from "./entities/current-user";
+export * from "./entities/actions-heatmap";
 
 //mixins
 export * from "./mixins/compounds-data-observable";

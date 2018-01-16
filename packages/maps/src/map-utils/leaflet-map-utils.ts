@@ -17,6 +17,7 @@ import {
   LatLngBounds
 } from "leaflet";
 import { markerCluster } from "./leaflet.markercluster";
+import {leafletHeat} from "./leaflet.heatmap";
 
 export function ExtendBounds(
   item = null,
@@ -239,6 +240,15 @@ function setIcons(marker, icon) {
   marker.setIcon(icon);
 }
 
+function getHeatmap(options = {}) {
+  return leafletHeat([], options)
+}
+
+function updateHeatMapLatlng(latlngs: HtPosition[], heatmap) {
+  let latlngArray = latlngs.map((pos: HtPosition) => ([pos.lat, pos.lng]))
+  heatmap.setLatLngs(latlngArray)
+}
+
 export const LeafletUtils: MapUtils = {
   type: "leaflet",
   setMap: SetMap,
@@ -275,5 +285,7 @@ export const LeafletUtils: MapUtils = {
   setDivContent,
   getDivMarker,
   setDivMarkerStyle,
-  setPathPositionTimeArray
+  setPathPositionTimeArray,
+  getHeatmap,
+  updateHeatMapLatlng
 };

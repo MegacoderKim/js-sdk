@@ -51,6 +51,8 @@ export interface MapUtils {
   getDivMarker: () => any;
   setDivMarkerStyle: (marker, options: object) => any;
   setPathPositionTimeArray: (polyline, positionTimeArray) => any;
+  getHeatmap: (options?) => any,
+  updateHeatMapLatlng: (latlngs: HtPosition[], heatmap) => void;
 }
 
 export interface SetFocusConfig {

@@ -33,6 +33,7 @@
     "underscore": "^1.8.x"
   },
   "dependencies": {
+    "ht-data": "^0.1.1-0",
     "leaflet.heat": "^0.2.0",
     "time-aware-polyline": "^0.0.2-0"
   },
