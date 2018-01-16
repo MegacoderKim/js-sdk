@@ -10,6 +10,7 @@ import { htEvent } from "./event";
 import { NameCase, GetMinute } from "ht-utility";
 import _ from "underscore";
 import { CommonFunctions } from "../common";
+import {isToday} from "date-fns";
 
 export class HtPlaceline {
   constructor(public userData?: IUserData) {}
@@ -138,8 +139,9 @@ export class HtPlaceline {
 
   isLive(placeline: IUserData) {
     let old = placeline.display.seconds_elapsed_since_last_heartbeat;
+    let date = placeline.timeline_date;
     let status = placeline.display.status_text;
-    return status !== 'Logged off' && old < 15 * 60;
+    return status !== 'Logged off' && old < 15 * 60 && isToday(new Date(date));
   }
 
   getSegmentTypes(userSegments: ISegment[]) {
