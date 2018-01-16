@@ -5619,7 +5619,7 @@ HtModule.ctorParameters = function () { return []; };
 // import { GroupLookupKeyResolver } from "./app/guard/group-lookup-key-resolver";
 // import {HtClientService} from "./app/ht/ht-client.service";
 // import {HtUsersService} from "./app/ht/ht-users.service";
-// import {HtMapService} from "./app/ht/ht-map.service";
+// import {GlobalMap} from "./app/ht/ht-map.service";
 // import {HtGroupsService} from "./app/ht/ht-groups.service";
 //
 // export {
@@ -5650,7 +5650,7 @@ HtModule.ctorParameters = function () { return []; };
 //   GroupKeyResolver,
 //   GroupLookupKeyResolver,
 //   HtUsersService,
-//   HtMapService,
+//   GlobalMap,
 //   HtClientService,
 //   HtGroupsService
 // }
