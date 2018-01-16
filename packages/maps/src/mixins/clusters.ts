@@ -1,4 +1,4 @@
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
 import { HtMap } from "../map-utils/interfaces";
@@ -20,7 +20,7 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
     }
 
     addCluster() {
-      MapService.addCluster(this);
+      GlobalMap.addCluster(this);
     }
 
     traceEffect() {
@@ -30,7 +30,7 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
             return userMarker.item;
           }
         );
-        MapService.mapUtils.addMarkersToCluster(
+        GlobalMap.mapUtils.addMarkersToCluster(
           this.cluster,
           userMarkerArray,
           this.map
@@ -39,16 +39,16 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
     }
 
     getBounds(item, bounds?) {
-      return MapService.mapUtils.extendBounds(item, bounds, true);
+      return GlobalMap.mapUtils.extendBounds(item, bounds, true);
     }
 
     removeItem(item) {
-      MapService.mapUtils.removeClusterMarker(this.cluster, item);
+      GlobalMap.mapUtils.removeClusterMarker(this.cluster, item);
       super.removeItem(item);
     }
 
     removeAll(entities) {
-      this.cluster && MapService.mapUtils.removeClusterMarkers(this.cluster);
+      this.cluster && GlobalMap.mapUtils.removeClusterMarkers(this.cluster);
       this.entities = {}
       // super.removeAll(entities);
     }

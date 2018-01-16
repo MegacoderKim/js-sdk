@@ -1,4 +1,4 @@
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 import { HtPosition } from "ht-data";
 import { Constructor, Entities, Entity } from "../interfaces";
 
@@ -22,7 +22,7 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
     }
 
     addPopup() {
-      this.popup = MapService.mapUtils.getPopup(
+      this.popup = GlobalMap.mapUtils.getPopup(
         this.getStyle("popup", this.defaultPopupStyle)
       );
     }
@@ -31,15 +31,15 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
       if (id && this.entities[id]) {
         let { data } = this.entities[id];
         let popup = this.popup;
-        let map = MapService.map;
-        MapService.mapUtils.openPopupPosition(
+        let map = GlobalMap.map;
+        GlobalMap.mapUtils.openPopupPosition(
           this.getPosition(data),
           map,
           this.getInfoContent(data),
           popup
         );
       } else {
-        MapService.mapUtils.clearItem(this.popup);
+        GlobalMap.mapUtils.clearItem(this.popup);
       }
     }
 
@@ -49,7 +49,7 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
     }
 
     onMouseLeave(entity: Entity<any>) {
-      this.popup && MapService.mapUtils.clearItem(this.popup);
+      this.popup && GlobalMap.mapUtils.clearItem(this.popup);
     }
   };
 }
@@ -67,17 +67,17 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
 //   };
 //
 //   addPopup() {
-//     this.popup = MapService.mapUtils.getPopup(this.getStyle('popup'))
+//     this.popup = GlobalMap.mapUtils.getPopup(this.getStyle('popup'))
 //   }
 //
 //   setPopup(id: string | null) {
 //     if (id && this.entities[id]) {
 //       let {data} = this.entities[id];
 //       let popup = this.popup;
-//       let map = MapService.map;
-//       MapService.mapUtils.openPopupPosition(this.getPosition(data), map, this.getInfoContent(data), popup);
+//       let map = GlobalMap.map;
+//       GlobalMap.mapUtils.openPopupPosition(this.getPosition(data), map, this.getInfoContent(data), popup);
 //     } else {
-//       MapService.mapUtils.setMap(this.popup, null)
+//       GlobalMap.mapUtils.setMap(this.popup, null)
 //     }
 //   };
 //
@@ -88,6 +88,6 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
 //   };
 //
 //   onMouseLeave(entity: Entity<any>) {
-//     this.popup && MapService.mapUtils.setMap(this.popup, null)
+//     this.popup && GlobalMap.mapUtils.setMap(this.popup, null)
 //   }
 // }

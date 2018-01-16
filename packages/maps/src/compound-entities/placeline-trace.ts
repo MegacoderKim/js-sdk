@@ -4,7 +4,7 @@ import { segmentsPolylinesTrace } from "../entities/segment-polylines";
 import { stopMarkersTrace } from "../entities/stop-markers";
 import { actionsMarkersTrace } from "../entities/action-markers";
 import { htAction } from "ht-data";
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 import { currentUserTrace } from "../entities/current-user";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
@@ -34,7 +34,7 @@ export class Placeline {
   }
 
   get map() {
-    return MapService.map;
+    return GlobalMap.map;
   }
 
   // setData$(data$: Observable<IUserData | null>) {
@@ -47,7 +47,7 @@ export class Placeline {
 
   // initDataObserver() {
   //   let userData$ = this.data$.pipe(
-  //     filter(data => !!MapService.map),
+  //     filter(data => !!GlobalMap.map),
   //     scan((acc: any, data) => {
   //       const oldId = acc.user ? acc.user.id : null;
   //       const currentId = data ? data.id : null;
@@ -60,7 +60,7 @@ export class Placeline {
   //     const userData = acc.user;
   //     const isNew = acc.isNew;
   //     this.trace(userData);
-  //     if(isNew) MapService.resetBounds()
+  //     if(isNew) GlobalMap.resetBounds()
   //   });
   //   this.dataSub = sub;
   // }
@@ -256,7 +256,7 @@ export class Placeline {
   focusUserMarker(map, config) {
     console.log(this.userMarker);
     console.error("focus user not implimented");
-    MapService.mapUtils.setFocus(this.userMarker.getEntity(), map, {
+    GlobalMap.mapUtils.setFocus(this.userMarker.getEntity(), map, {
       force: true,
       zoom: 15,
       center: true,

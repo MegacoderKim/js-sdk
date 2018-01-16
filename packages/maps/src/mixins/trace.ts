@@ -1,4 +1,4 @@
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
@@ -26,8 +26,8 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
     // setMap: (item, map) => void;
 
     trace(data: any[] | null, map?) {
-      this.map = MapService.map;
-      let mapUtils = MapService.mapUtils;
+      this.map = GlobalMap.map;
+      let mapUtils = GlobalMap.mapUtils;
       if (!this.map) {
         console.warn("Map is not initialized");
         return false;
@@ -81,7 +81,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
       });
     }
     extendBounds(bounds) {
-      let mapUtils = MapService.mapUtils;
+      let mapUtils = GlobalMap.mapUtils;
       bounds = bounds || mapUtils.extendBounds();
       let newBounds = _.reduce(
         this.entities,
@@ -119,8 +119,8 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
 //   toSetMap: boolean;
 //   cluster;
 //   trace(data: any[] | null, map?) {
-//     this.map = MapService.map;
-//     let mapUtils = MapService.mapUtils;
+//     this.map = GlobalMap.map;
+//     let mapUtils = GlobalMap.mapUtils;
 //     if(!this.map) {
 //       console.warn("Map is not initialized");
 //       return false
@@ -174,7 +174,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
 //     })
 //   };
 //   extendBounds(bounds) {
-//     let mapUtils = MapService.mapUtils;
+//     let mapUtils = GlobalMap.mapUtils;
 //     bounds = bounds || mapUtils.extendBounds();
 //     let newBounds = _.reduce(this.entities, (bounds, entity) => {
 //       return this.getBounds(entity.item, bounds);

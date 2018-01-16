@@ -4,7 +4,7 @@ import { GoogleMapUtils } from "../map-utils/google-map-utils";
 import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
 import * as _ from "underscore";
 
-export const MapService = {
+export const GlobalMap = {
   mapUtils: null,
   map: null,
   map$: new ReplaySubject(),
@@ -28,8 +28,8 @@ export const MapService = {
   addCluster(cluster) {
     if (!this.clusters.includes(cluster)) {
       this.clusters.push(cluster);
-      MapService.map$.subscribe(map => {
-        cluster.cluster = MapService.mapUtils.getMarkerCluster(map);
+      GlobalMap.map$.subscribe(map => {
+        cluster.cluster = GlobalMap.mapUtils.getMarkerCluster(map);
       });
     }
   },
@@ -37,7 +37,7 @@ export const MapService = {
     return item.extendBounds(bounds);
   },
   getItemsSetBounds(items) {
-    let bounds = MapService.mapUtils.extendBounds();
+    let bounds = GlobalMap.mapUtils.extendBounds();
     return _.reduce(
       items,
       (bounds, item) => {
@@ -64,14 +64,14 @@ export const MapService = {
       options || this.mapType == "leaflet"
         ? this.leafletSetBoundsOptions
         : this.googleSetBoundsOptions;
-    MapService.mapUtils.setBounds(this.map, bounds, options);
+    GlobalMap.mapUtils.setBounds(this.map, bounds, options);
   }
 };
 
-MapService.map$.subscribe(map => {
-  MapService.map = map;
-  // MapService.clusters.forEach(clusterEntity => {
+GlobalMap.map$.subscribe(map => {
+  GlobalMap.map = map;
+  // GlobalMap.clusters.forEach(clusterEntity => {
   //   console.log("clust", clusterEntity);
-  //   clusterEntity.cluster = MapService.mapUtils.getMarkerCluster(map);
+  //   clusterEntity.cluster = GlobalMap.mapUtils.getMarkerCluster(map);
   // });
 });

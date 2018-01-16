@@ -4,7 +4,7 @@ import { IUserData } from "ht-models";
 import { usersClustersTrace } from "../entities/users-cluster";
 import { LightColorMapStyle } from "../styles/light-color-map";
 import * as _ from "underscore";
-import { MapService } from "./map-service";
+import { GlobalMap } from "./map-service";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
@@ -37,11 +37,11 @@ export class HtMapClass {
     public mapType: HtMapType = "leaflet",
     options: HtMapClassOptions = {}
   ) {
-    MapService.setMapType(mapType);
+    GlobalMap.setMapType(mapType);
     this.usersCluster = usersClustersTrace();
     this.placeline = new PlacelineTrace();
-    MapService.addToItemsSet(this.placeline);
-    MapService.addToItemsSet(this.usersCluster);
+    GlobalMap.addToItemsSet(this.placeline);
+    GlobalMap.addToItemsSet(this.usersCluster);
     // this.mapItemsSet.push(this.placeline, this.usersCluster);
   }
 
@@ -50,11 +50,11 @@ export class HtMapClass {
   }
 
   get map$(): ReplaySubject<HtMap> {
-    return MapService.map$ as ReplaySubject<HtMap>;
+    return GlobalMap.map$ as ReplaySubject<HtMap>;
   }
 
   get map() {
-    return MapService.map;
+    return GlobalMap.map;
   }
 
   initMap(elem: Element, options = {}): HtMap {
@@ -62,11 +62,11 @@ export class HtMapClass {
       this.mapType == "leaflet"
         ? this.leafletMapOptions
         : this.googleMapOptions;
-    let map = MapService.mapUtils.renderMap(elem, {
+    let map = GlobalMap.mapUtils.renderMap(elem, {
       ...mapOptions,
       ...options
     });
-    MapService.setMap(map);
+    GlobalMap.setMap(map);
     return map;
   }
 
@@ -99,11 +99,11 @@ export class HtMapClass {
   }
 
   resetBounds(bounds?: HtBounds, options?) {
-    MapService.resetBounds(bounds, options);
+    GlobalMap.resetBounds(bounds, options);
   }
 
   getBoundsItem(items) {
-    let bounds = MapService.mapUtils.extendBounds();
+    let bounds = GlobalMap.mapUtils.extendBounds();
     return _.reduce(
       items,
       (bounds, item) => {
@@ -122,15 +122,15 @@ export class HtMapClass {
       options || this.mapType == "leaflet"
         ? this.leafletSetBoundsOptions
         : this.googleSetBoundsOptions;
-    MapService.mapUtils.setBounds(this.map, bounds, options);
+    GlobalMap.mapUtils.setBounds(this.map, bounds, options);
   }
 
   inValidateSize() {
-    MapService.mapUtils.invalidateSize(this.map);
+    GlobalMap.mapUtils.invalidateSize(this.map);
   }
 
   addEntities(entities) {
-    MapService.addToItemsSet(entities);
+    GlobalMap.addToItemsSet(entities);
   }
 }
 
