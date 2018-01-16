@@ -1,17 +1,15 @@
-import * as moment from "moment-mini";
+import {differenceInDays, endOfToday, startOfToday} from "date-fns";
 
 export function DayAgoISO() {
   return new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString();
 }
 
 export function TodayISO() {
-  return new Date(new Date().toDateString()).toISOString();
+  return startOfToday().toISOString();
 }
 
 export function TodayEndISO() {
-  return moment()
-    .endOf("day")
-    .toISOString();
+  return endOfToday().toISOString();
 }
 
 export function OffsetIsoTime(time: string, offset: number = 10) {
@@ -41,10 +39,9 @@ export function GetDateRangeQuery(query, param = "created_at") {
 }
 
 export function IsRangeADay(range) {
-  // console.log("range", range);
   if (range.start && range.end) {
-    // console.log(moment(range.end).diff(moment(range.start), 'days'), "test");
-    return moment(range.end).diff(moment(range.start), "days") == 0;
+    return differenceInDays(range.end, range.start) == 0
+    // return moment(range.end).diff(moment(range.start), "days") == 0;
   } else if (!range.start && !range.end) {
     return true;
   } else {
