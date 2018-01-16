@@ -4,7 +4,7 @@ import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
 import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
-import { DateRangeLabelMap, DateRangeMap, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
+import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
 import { AccountsClient, ApiType, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
 import { HtMapClass } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -3000,7 +3000,7 @@ class PlacelineComponent {
      */
     hoverActivity(activityId) {
         this.selectedActivity = activityId;
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     }
     /**
      * @param {?} activityId
@@ -3018,7 +3018,7 @@ class PlacelineComponent {
     selectAction(actionId) {
         this.selectedAction = actionId;
         this.hoveredAction.next(actionId);
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     }
     /**
      * @return {?}
@@ -3195,7 +3195,7 @@ class PlacelineComponent {
         // let last = {time: lastSeg['last_heartbeat_at']};
         let /** @type {?} */ pipeClass = "";
         let /** @type {?} */ time;
-        let /** @type {?} */ isLive = this.isSegmentLive(placeline);
+        let /** @type {?} */ isLive = new HtPlaceline().isLive(placeline);
         if (!this.isSegmentLive(placeline)) {
             time = lastSeg.ended_at;
         }

@@ -34,7 +34,7 @@ import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
 import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
-import { DateRangeLabelMap, DateRangeMap, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
+import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
 import { AccountsClient, ApiType, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
 import { HtMapClass } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -1393,7 +1393,7 @@ var PlacelineComponent = (function () {
      */
     PlacelineComponent.prototype.hoverActivity = function (activityId) {
         this.selectedActivity = activityId;
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     };
     /**
      * @param {?} activityId
@@ -1411,7 +1411,7 @@ var PlacelineComponent = (function () {
     PlacelineComponent.prototype.selectAction = function (actionId) {
         this.selectedAction = actionId;
         this.hoveredAction.next(actionId);
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     };
     Object.defineProperty(PlacelineComponent.prototype, "placelineMod", {
         /**
@@ -1596,7 +1596,7 @@ var PlacelineComponent = (function () {
         // let last = {time: lastSeg['last_heartbeat_at']};
         var /** @type {?} */ pipeClass = "";
         var /** @type {?} */ time;
-        var /** @type {?} */ isLive = this.isSegmentLive(placeline);
+        var /** @type {?} */ isLive = new HtPlaceline().isLive(placeline);
         if (!this.isSegmentLive(placeline)) {
             time = lastSeg.ended_at;
         }
