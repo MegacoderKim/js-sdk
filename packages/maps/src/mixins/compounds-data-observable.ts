@@ -7,7 +7,8 @@ import { filter } from "rxjs/operators/filter";
 import { map } from "rxjs/operators/map";
 import { scan } from "rxjs/operators/scan";
 import * as _ from "underscore";
-import { HtPosition, dataWithSelectedId$ } from "ht-data";
+import { dataWithSelectedId$ } from "ht-data";
+import { HtPosition} from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { orCombine } from "ht-data";
 

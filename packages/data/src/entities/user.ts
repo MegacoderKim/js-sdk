@@ -5,9 +5,10 @@ import {
   IUserData,
   HtLocation,
   IAction,
-  ITimelineEvent
+  ITimelineEvent,
+  HtPosition
 } from "ht-models";
-import { ISegmentType, HtPosition } from "../interfaces";
+import { ISegmentType } from "../interfaces";
 import _ from "underscore";
 
 export class HtUser {

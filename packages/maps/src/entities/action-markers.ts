@@ -1,6 +1,6 @@
 import { Color } from "ht-utility";
 import { htAction } from "ht-data";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import {
   ItemClassFactoryConfig,
   itemsFactory,

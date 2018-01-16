@@ -1,38 +1,16 @@
-import * as moment from "moment-mini";
+import {isToday, isTomorrow, isValid, isYesterday, format} from "date-fns";
 
 export function DateHumanize(value: string, arg: boolean = false): string {
-  if (typeof value == "string" && value.length > 4 && moment(value).isValid()) {
-    if (
-      moment(value).isBetween(
-        moment()
-          .subtract(1, "days")
-          .endOf("day"),
-        moment().endOf("day")
-      )
-    ) {
+  if (typeof value == "string" && value.length > 4 && isValid(new Date(value))) {
+    const date = new Date(value);
+    if ( isToday(date)) {
       return "Today";
-    } else if (
-      moment(value).isBetween(
-        moment()
-          .subtract(2, "days")
-          .endOf("day"),
-        moment()
-          .subtract(1, "days")
-          .endOf("day")
-      )
-    ) {
+    } else if (isYesterday(date)) {
       return "Yesterday";
-    } else if (
-      moment(value).isBetween(
-        moment()
-          .add(1, "days")
-          .endOf("day"),
-        moment().endOf("day")
-      )
-    ) {
+    } else if (isTomorrow(date)) {
       return "Tomorrow";
     } else {
-      return moment(value).format("D MMM");
+      return format(date, "D MMM")
     }
   } else {
     return value;

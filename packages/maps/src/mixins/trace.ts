@@ -26,7 +26,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
     // setMap: (item, map) => void;
 
     trace(data: any[] | null, map?) {
-      this.map = GlobalMap.map;
+      this.map = map || GlobalMap.map;
       let mapUtils = GlobalMap.mapUtils;
       if (!this.map) {
         console.warn("Map is not initialized");

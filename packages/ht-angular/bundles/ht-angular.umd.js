@@ -1382,7 +1382,7 @@ var PlacelineComponent = (function () {
      */
     PlacelineComponent.prototype.hoverActivity = function (activityId) {
         this.selectedActivity = activityId;
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     };
     /**
      * @param {?} activityId
@@ -1400,7 +1400,7 @@ var PlacelineComponent = (function () {
     PlacelineComponent.prototype.selectAction = function (actionId) {
         this.selectedAction = actionId;
         this.hoveredAction.next(actionId);
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     };
     Object.defineProperty(PlacelineComponent.prototype, "placelineMod", {
         /**
@@ -1585,7 +1585,7 @@ var PlacelineComponent = (function () {
         // let last = {time: lastSeg['last_heartbeat_at']};
         var /** @type {?} */ pipeClass = "";
         var /** @type {?} */ time;
-        var /** @type {?} */ isLive = this.isSegmentLive(placeline);
+        var /** @type {?} */ isLive = new htData.HtPlaceline().isLive(placeline);
         if (!this.isSegmentLive(placeline)) {
             time = lastSeg.ended_at;
         }

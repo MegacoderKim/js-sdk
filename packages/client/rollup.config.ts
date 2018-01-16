@@ -276,7 +276,8 @@ const globals = {
   'moment-mini': 'moment',
   'ht-models': 'htModels',
   'leaflet': 'L',
-  'leaflet.markercluster': 'L'
+  'leaflet.markercluster': 'L',
+  "date-fns": 'dateFns'
 }
 
 export default {

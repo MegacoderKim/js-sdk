@@ -28,13 +28,15 @@ export class UsersAnalytics extends EntityListClient {
   id$: Observable<string | null>;
   loading$: Observable<boolean | string>;
   store;
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  dateParam;
+  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<
       object | null
     >;
+    this.dateParam = dateParam;
     this.active$ = this.store.select(
       fromRoot.getUsersAnalyticsIsActive
     ) as Observable<boolean>;

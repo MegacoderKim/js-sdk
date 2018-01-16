@@ -1,4 +1,3 @@
-// import { HtActionsGetClient } from "./actions-get-client";
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "../../interfaces";
 import {dateRangeService} from "../../global/date-range";
@@ -10,6 +9,8 @@ import {ApiStoreService} from "../../global/store-provider";
 import {ActionsListClient} from "./actions-list-client"
 import {ActionsSummaryClient} from "./actions-summary-client"
 import {ActionsFilter} from "../../filters/actions-filter";
+import {ActionsHeatmapClient} from "./actions-heatmap-client";
+
 export class HtActionsClient {
   // item: HtActionsGetClient;
   api;
@@ -17,6 +18,7 @@ export class HtActionsClient {
   store;
   list;
   summary;
+  heatmap;
   filters = new ActionsFilter();
   constructor(config: IActionsClientConfig) {
     let api = entityApi.actions;
@@ -25,13 +27,12 @@ export class HtActionsClient {
     store.addReducer("actions", fromActions.actionsReducer);
     this.store = store;
     let dateRange$ = config.dateRange$;
-    const dateRangeQuery$ = dateRange$
-      ? dateRange$.pipe(DateRangeToQuery$("created_at"))
-      : null;
-
-    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$});
-    this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store});
-    this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store})
+    const dateRangeQuery$ = dateRange$;
+    let dateParam = 'created_at';
+    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$, dateParam});
+    this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
+    this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
+    this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'recorded_at'});
   }
 }
 

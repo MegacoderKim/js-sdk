@@ -1,5 +1,5 @@
 import { GlobalMap } from "../global/map-service";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { Constructor, Entities, Entity } from "../interfaces";
 
 export interface PopupBase {

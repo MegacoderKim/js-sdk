@@ -1,8 +1,8 @@
-import { IAction, IActionMap } from "ht-models";
+import { IAction, IActionMap, IActionHeat, HtPosition } from "ht-models";
 import _ from "underscore";
-import { HtPosition, IActionPositions } from "../interfaces";
-import moment from "moment-mini";
+import { IActionPositions } from "../interfaces";
 import { GetDateRangeQuery } from "ht-utility";
+import {addSeconds} from "date-fns";
 
 export class HtAction {
   types = ["delivery", "pickup", "task", "visit", "stopover", "trip"];
@@ -168,11 +168,24 @@ export class HtAction {
   getETATimestamp() {
     let action = this.data;
     if (action.display.duration_remaining) {
-      return moment(Date.now())
-        .add(action.display.duration_remaining, "seconds")
-        .toISOString();
+      return addSeconds(new Date(), action.display.duration_remaining).toISOString()
     }
     return null;
+  }
+
+  getHeatmapLatlng(item: IActionHeat): HtPosition {
+    return {
+      lat: item.completed_place__location[1],
+      lng: item.completed_place__location[0],
+    }
+  }
+
+  getHeatLatlngs(items: IActionHeat[]) {
+    return _.reduce(items, (acc: any[], place: IActionHeat) => {
+      let placeLatlng = [place.completed_place__location[1], place.completed_place__location[0]];
+      let placeArray = Array(place.num_actions).fill(placeLatlng);
+      return [...acc, ...placeArray]
+    }, []);
   }
 }
 

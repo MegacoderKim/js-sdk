@@ -1,7 +1,7 @@
 import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
 declare var RichMarkerPosition: any;
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { StyleFunct } from "../interfaces";
 import {
   ItemClassFactoryConfig,

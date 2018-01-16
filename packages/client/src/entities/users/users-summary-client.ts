@@ -29,6 +29,7 @@ export class UsersSummary extends EntityListClient {
     }
   ];
   dataSub: Subscription;
+  dateParam: string;
   api$ = query => entityApi.users.summary(query);
 
   setActive(isActive: boolean | string = true) {
@@ -47,10 +48,11 @@ export class UsersSummary extends EntityListClient {
     this.setData(null);
   }
 
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
+    this.dateParam = dateParam;
     this.query$ = this.store.select(fromRoot.getUsersListQuery);
     this.active$ = this.store.select(fromRoot.getUsersSummaryActive);
     this.data$ = this.store.select(fromRoot.getUsersSummary);

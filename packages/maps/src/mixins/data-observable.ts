@@ -8,7 +8,7 @@ import { map } from "rxjs/operators/map";
 import { pluck } from "rxjs/operators/pluck";
 import { scan } from "rxjs/operators/scan";
 import * as _ from "underscore";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { AllData, Page } from "ht-models";
 
@@ -30,6 +30,10 @@ export function DataObservableMixin<
     dataPageSource$: Observable<Page<any>>;
     dataArraySource$: Observable<any[]>;
     data$: Observable<IMarkersArray>;
+
+    constructor(...args: any[]) {
+      super(...args)
+    }
 
     _procData$() {
       return (source$: Observable<Page<any>>) => {
@@ -129,6 +133,10 @@ export function DataObservableMixin<
         if (isNew) GlobalMap.resetBounds();
       });
       this.dataSub = sub;
+    }
+
+    clear() {
+      this.dataSub.unsubscribe();
     }
   };
 }

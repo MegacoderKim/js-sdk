@@ -1,6 +1,6 @@
 import { Observable } from "rxjs/Observable";
 // import {MergeQuery} from "ht-data";
-import { CombineQueries, AllowedQueryMap, IAllowedQueryMap } from "ht-data";
+import {CombineQueries, AllowedQueryMap, IAllowedQueryMap, DateRangeToQuery$} from "ht-data";
 import {filter, map, mergeMap, switchMap, takeUntil} from "rxjs/operators";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { empty } from "rxjs/observable/empty";
@@ -14,6 +14,7 @@ export interface IListQueryBase {
   allowedQueryMap?: IAllowedQueryMap[];
   getDefaultQuery(): object;
   dateRangeQuery$?: Observable<object> | null;
+  dateParam?: string;
   active$?: Observable<boolean>;
 }
 
@@ -33,7 +34,7 @@ export function listQueryMixin<TBase extends Constructor<IListQueryBase>>(
       let baseQuery$ = this.query$.pipe(
         AllowedQueryMap(this.allowedQueryMap),
         MergeQuery(this.getDefaultQuery()),
-        CombineQueries([this.dateRangeQuery$ || of({})])
+        CombineQueries([this.dateRangeQuery$.pipe(DateRangeToQuery$(this.dateParam)) || of({})])
       );
 
       return baseQuery$;

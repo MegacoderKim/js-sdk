@@ -7,6 +7,11 @@ const pkg = require('./package.json')
 
 const libraryName = 'ht-utility'
 
+var globals = {
+  "date-fns": 'dateFns',
+  "underscore": "_"
+};
+
 export default {
   input: `dist/es/${libraryName}.js`,
   output: [
@@ -15,10 +20,8 @@ export default {
   ],
   sourcemap: true,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: [
-    "underscore",
-    "moment-mini"
-  ],
+  external: Object.keys(globals),
+  globals,
   watch: {
     include: 'dist/es/**',
   },

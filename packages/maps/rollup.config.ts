@@ -278,7 +278,8 @@ const globals = {
   'leaflet': 'L',
   'leaflet.markercluster': 'L',
   'leaflet.heat': 'L',
-  'time-aware-polyline': 'timeAwarePolyline'
+  'time-aware-polyline': 'timeAwarePolyline',
+  "date-fns": 'dateFns'
 };
 
 export default {

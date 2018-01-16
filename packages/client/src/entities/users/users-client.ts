@@ -30,6 +30,7 @@ import { entityApi } from "../../global/entity-api";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
+import { UsersHeatmapClient } from "./users-heatmap-client";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -39,6 +40,7 @@ export class HtUsersClient extends EntityClient {
   list;
   summary;
   listAll;
+  heatmap;
   _statusQueryArray: QueryLabel[];
   store;
   api;
@@ -56,20 +58,19 @@ export class HtUsersClient extends EntityClient {
     store.addReducer("segments", fromSegments.segmentsReducer);
     this.store = store;
     let dateRange$ = this.options.dateRange$;
-    const dateRangeQuery$ = dateRange$
-      ? dateRange$.pipe(DateRangeToQuery$("recorded_at"))
-      : null;
-
-    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store });
+    const dateRangeQuery$ = dateRange$;
+    let dateParam = 'recorded_at';
+    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store, dateParam });
     this.placeline = new UsersPlacelineClient({ store });
     this.analyticsAll = new UsersAnalyticsListAllClient({
       dateRangeQuery$,
-      store
+      store,
+      dateParam
     });
-    this.summary = new UsersSummaryClient({ dateRangeQuery$, store });
+    this.summary = new UsersSummaryClient({ dateRangeQuery$, store, dateParam });
     this.list = this.analytics;
     this.listAll = this.analyticsAll;
-
+    this.heatmap = new UsersHeatmapClient({ dateRangeQuery$, dateParam });
     this.initEffects();
   }
 

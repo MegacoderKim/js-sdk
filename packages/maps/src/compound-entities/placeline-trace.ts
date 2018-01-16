@@ -14,7 +14,7 @@ import {
   CompoundDataObservableMixin,
   CompoundSetDataConfig
 } from "../mixins/compounds-data-observable";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 
 export class Placeline {
   segmentsPolylines = segmentsPolylinesTrace();

@@ -1,7 +1,6 @@
 import { HtMarker, MapUtils } from "./interfaces";
 import * as _ from "underscore";
-import { HtPosition } from "ht-data";
-import { ITimeAwarePoint } from "ht-models";
+import { ITimeAwarePoint, HtPosition } from "ht-models";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 export function ExtendBounds(
@@ -314,6 +313,16 @@ function setDivMarkerStyle(item, options) {
   if (anchor) item.setAnchor(anchor);
 }
 
+function getHeatmap(options = {}) {
+  let heatmap = new google.maps.visualization.HeatmapLayer({data: [], ...options});
+  return heatmap;
+}
+
+function updateHeatMapLatlng(latlngs, heatmap) {
+  let latlngsPos = latlngs.map((pos: HtPosition) => GetLatlng(pos));
+  heatmap.setData(latlngsPos)
+}
+
 export const GoogleMapUtils: MapUtils = {
   type: "google",
   setMap: SetMap,
@@ -350,5 +359,7 @@ export const GoogleMapUtils: MapUtils = {
   setDivContent,
   getDivMarker,
   setDivMarkerStyle,
-  setPathPositionTimeArray
+  setPathPositionTimeArray,
+  getHeatmap,
+  updateHeatMapLatlng
 };

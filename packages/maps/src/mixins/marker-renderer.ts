@@ -1,6 +1,6 @@
 import { Constructor, Entities } from "../interfaces";
 import { HtMap } from "../map-utils/interfaces";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 
