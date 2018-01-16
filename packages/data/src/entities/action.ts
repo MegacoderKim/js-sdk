@@ -1,4 +1,4 @@
-import { IAction, IActionMap } from "ht-models";
+import { IAction, IActionMap, IActionHeat } from "ht-models";
 import _ from "underscore";
 import { HtPosition, IActionPositions } from "../interfaces";
 import moment from "moment-mini";
@@ -173,6 +173,21 @@ export class HtAction {
         .toISOString();
     }
     return null;
+  }
+
+  getHeatmapLatlng(item: IActionHeat): HtPosition {
+    return {
+      lat: item.completed_place__location[1],
+      lng: item.completed_place__location[0],
+    }
+  }
+
+  getHeatLatlngs(items: IActionHeat[]) {
+    return _.reduce(items, (acc: any[], place: IActionHeat) => {
+      let placeLatlng = [place.completed_place__location[1], place.completed_place__location[0]];
+      let placeArray = Array(place.num_actions).fill(placeLatlng);
+      return [...acc, ...placeArray]
+    }, []);
   }
 }
 
