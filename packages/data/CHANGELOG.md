@@ -1,3 +1,7 @@
+# 0.1.1
+- Add segment type in placeline
+- Add segment is live in placeline
+
 # 0.1.0-beta
 - Fix `rxjs` operator bundling for umd bundle
 
