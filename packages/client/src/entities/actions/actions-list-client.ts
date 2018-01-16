@@ -21,13 +21,15 @@ export class ActionsList extends EntityListClient {
   api$ = (query): Observable<Page<IAction>> =>
     entityApi.actions.index(query);
   dataSub: Subscription;
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  dateParam: string
+  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getActionsListQuery) as Observable<
       object | null
       >;
+    this.dateParam = dateParam;
     this.active$ = this.store.select(
       fromRoot.getActionsListActive
     ) as Observable<boolean>;

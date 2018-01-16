@@ -1,13 +1,14 @@
 import { Constructor } from "../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
 import { filter } from "rxjs/operators/filter";
 import { map } from "rxjs/operators/map";
 import { scan } from "rxjs/operators/scan";
 import * as _ from "underscore";
-import { HtPosition, dataWithSelectedId$ } from "ht-data";
+import { dataWithSelectedId$ } from "ht-data";
+import { HtPosition} from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { orCombine } from "ht-data";
 
@@ -78,7 +79,7 @@ export function CompoundDataObservableMixin<
 
     _initData$() {
       let userData$ = this.data$.pipe(
-        filter(data => !!MapService.map),
+        filter(data => !!GlobalMap.map),
         scan(
           (acc: { user: any; oldUser: any }, data: object) => {
             const oldUser = acc.user;
@@ -104,7 +105,7 @@ export function CompoundDataObservableMixin<
           this.trace(userData);
           const isNew = isNewItem(acc.user, acc.oldUser);
           return isNew;
-          // if(isNew) MapService.resetBounds()
+          // if(isNew) GlobalMap.resetBounds()
         })
       );
 
@@ -112,7 +113,7 @@ export function CompoundDataObservableMixin<
         newPlaceline$,
         this.compoundSetDataConfig.resetMap$
       ).subscribe(toReset => {
-        if (toReset) MapService.resetBounds();
+        if (toReset) GlobalMap.resetBounds();
       });
       this.dataSub = sub;
     }

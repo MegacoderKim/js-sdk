@@ -88,4 +88,10 @@ export interface AllData<T> {
   previous?: string;
 }
 
+export interface HtPosition {
+  lat: number;
+  lng: number;
+  weight?: number
+}
+
 export type Constructor<T = object> = new (...args: any[]) => T;

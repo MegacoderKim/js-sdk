@@ -32,10 +32,12 @@ export class ActionsSummary extends EntityListClient {
   // updateStrategy = 'once';
   filter = new ActionsFilter();
   summaryChart$;
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  dateParam: string;
+  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
+    this.dateParam = dateParam;
     this.query$ = this.store.select(fromRoot.getActionsSummaryQuery);
     this.active$ = this.store.select(fromRoot.getActionsSummaryActive);
     this.data$ = this.store.select(fromRoot.getActionsSummary);

@@ -1,3 +1,6 @@
+# 0.2.14
+- Add placeline close button, fix change detection
+
 # 0.2.13
 - Add loading and no data to analytics
 - Fix analytics table styling

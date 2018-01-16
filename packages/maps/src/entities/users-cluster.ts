@@ -1,6 +1,6 @@
 import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { StyleFunct } from "../interfaces";
 import {
   ItemClassFactoryConfig,

@@ -1,5 +1,5 @@
 import { Constructor } from "../interfaces";
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 
 export interface IDivMarkersBase {
   getDivContent: (data) => string;
@@ -12,7 +12,7 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
 ) {
   return class extends Base {
     getItem(data) {
-      return MapService.mapUtils.getDivMarker();
+      return GlobalMap.mapUtils.getDivMarker();
     }
     update({ item, data }) {
       let content = this.getDivContent(data);
@@ -21,11 +21,11 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
     }
 
     setContent({ item, content }) {
-      MapService.mapUtils.setDivContent(item, content, this.getStyle());
+      GlobalMap.mapUtils.setDivContent(item, content, this.getStyle());
     }
     setStyle(item) {
       // let style = this.getStyle();
-      // MapService.mapUtils.setDivMarkerStyle(item, style)
+      // GlobalMap.mapUtils.setDivMarkerStyle(item, style)
     }
   };
 }

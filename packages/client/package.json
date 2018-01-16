@@ -31,5 +31,8 @@
     "moment-mini": "^2.18.1",
     "rxjs": "^5.4.2",
     "underscore": "^1.8.3"
+  },
+  "dependencies": {
+    "date-fns": "^1.29.0"
   }
 }

@@ -4,15 +4,16 @@ import {
   IActivitySegment,
   IEventMark,
   IPlacelineSegment,
-  IProcSegment
+  IProcSegment, ISegmentType
 } from "../interfaces";
 import { htEvent } from "./event";
 import { NameCase, GetMinute } from "ht-utility";
 import _ from "underscore";
 import { CommonFunctions } from "../common";
+import {isToday} from "date-fns";
 
 export class HtPlaceline {
-  constructor(public userData: IUserData) {}
+  constructor(public userData?: IUserData) {}
 
   getPlacelineSegments() {
     let userData = this.userData;
@@ -134,6 +135,29 @@ export class HtPlaceline {
       segmentId: lastSeg.id,
       ...this.getActivityStyleClass(lastSeg)
     };
+  }
+
+  isLive(placeline: IUserData) {
+    let old = placeline.display.seconds_elapsed_since_last_heartbeat;
+    let date = placeline.timeline_date;
+    let status = placeline.display.status_text;
+    return status !== 'Logged off' && old < 15 * 60 && isToday(new Date(date));
+  }
+
+  getSegmentTypes(userSegments: ISegment[]) {
+    return _.reduce(
+      userSegments,
+      (segmentType: ISegmentType, segment: ISegment) => {
+        if (segment.type == "stop") {
+          if (segment.location && segment.location.geojson)
+            segmentType.stopSegment.push(segment);
+        } else {
+          if (segment.encoded_polyline) segmentType.tripSegment.push(segment);
+        }
+        return segmentType;
+      },
+      { tripSegment: [], stopSegment: [] }
+    );
   }
 
   //helpers
@@ -277,4 +301,4 @@ export class HtPlaceline {
   }
 }
 
-export const htPlaceline = (userData: IUserData) => new HtPlaceline(userData);
+export const htPlaceline = (userData?: IUserData) => new HtPlaceline(userData);

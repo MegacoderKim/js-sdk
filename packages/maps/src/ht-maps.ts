@@ -1,4 +1,6 @@
 export * from "./map-utils/interfaces";
+export * from "./map-utils/leaflet.heatmap";
+export * from "./map-utils/leaflet.markercluster";
 export * from "./compound-entities/placeline-trace";
 // export * from "./time-aware-polyline";
 // export * from "./timeline-replay";
@@ -16,6 +18,9 @@ export * from "./entities/action-markers";
 export * from "./entities/segment-polylines";
 export * from "./entities/stop-markers";
 export * from "./entities/current-user";
+export * from "./entities/actions-heatmap";
+export * from "./entities/stops-heatmap";
+export * from "./entities/actions-cluster";
 
 //mixins
 export * from "./mixins/compounds-data-observable";

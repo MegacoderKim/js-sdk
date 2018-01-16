@@ -1,7 +1,7 @@
 import { Constructor, Entities } from "../interfaces";
 import { HtMap } from "../map-utils/interfaces";
-import { HtPosition } from "ht-data";
-import { MapService } from "../global/map-service";
+import { HtPosition } from "ht-models";
+import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 
 export interface IMarkersBase {
@@ -21,22 +21,22 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
     }
 
     getItem(data) {
-      return MapService.mapUtils.getMarker();
+      return GlobalMap.mapUtils.getMarker();
     }
 
     getBounds(item, bounds?) {
-      return MapService.mapUtils.extendBounds(item, bounds, !!this.cluster);
+      return GlobalMap.mapUtils.extendBounds(item, bounds, !!this.cluster);
     }
 
     update({ item, data }) {
       let position = this.getPosition(data);
-      if (position) MapService.mapUtils.updatePosition(item, position);
+      if (position) GlobalMap.mapUtils.updatePosition(item, position);
     }
 
     removeItem(item) {
       this.cluster &&
-        MapService.mapUtils.removeClusterMarker(this.cluster, item);
-      MapService.mapUtils.clearItem(item);
+        GlobalMap.mapUtils.removeClusterMarker(this.cluster, item);
+      GlobalMap.mapUtils.clearItem(item);
     }
 
     removeAll(entities) {
@@ -48,7 +48,7 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
 
     setStyle(item) {
       let style = this.getStyle();
-      MapService.mapUtils.setStyle(item, style);
+      GlobalMap.mapUtils.setStyle(item, style);
     }
 
     removeData(data) {

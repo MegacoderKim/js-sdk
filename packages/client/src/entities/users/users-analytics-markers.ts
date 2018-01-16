@@ -39,13 +39,15 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
     }
   ];
   dataSub: Subscription;
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  dateParam: string;
+  constructor({ dateRangeQuery$, store,dateParam }: IPageClientConfig) {
     super();
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<
       object | null
     >;
+    this.dateParam = dateParam;
     this.active$ = this.store.select(fromRoot.getUsersAnalyticsMarkersIsActive);
     this.dataEntities$ = this.store.select(
       fromRoot.getUsersAnalyticsFilteredMarker

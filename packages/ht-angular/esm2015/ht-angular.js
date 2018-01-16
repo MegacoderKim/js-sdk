@@ -4,7 +4,7 @@ import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
 import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
-import { DateRangeLabelMap, DateRangeMap, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
+import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
 import { AccountsClient, ApiType, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
 import { HtMapClass } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -2954,12 +2954,13 @@ class PlacelineComponent {
         this.segmentId = new EventEmitter();
         this.hoveredAction = new EventEmitter();
         this.selectedSegment = new EventEmitter();
+        this.selectedPartialSegmentId = "__";
+        this.isMobile = false;
         this.selectedAction = null;
         this.selectedActivity = "";
         this.hardSelectedActivity = "";
         // icons = TaskCardIcon;
         this.actionMap = {};
-        this.isMobile = false;
     }
     /**
      * @param {?} segment
@@ -2999,7 +3000,7 @@ class PlacelineComponent {
      */
     hoverActivity(activityId) {
         this.selectedActivity = activityId;
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     }
     /**
      * @param {?} activityId
@@ -3017,7 +3018,7 @@ class PlacelineComponent {
     selectAction(actionId) {
         this.selectedAction = actionId;
         this.hoveredAction.next(actionId);
-        this.ref.markForCheck();
+        this.ref.detectChanges();
     }
     /**
      * @return {?}
@@ -3194,8 +3195,8 @@ class PlacelineComponent {
         // let last = {time: lastSeg['last_heartbeat_at']};
         let /** @type {?} */ pipeClass = "";
         let /** @type {?} */ time;
-        let /** @type {?} */ isLive = false;
-        if (lastSeg.ended_at) {
+        let /** @type {?} */ isLive = new HtPlaceline().isLive(placeline);
+        if (!this.isSegmentLive(placeline)) {
             time = lastSeg.ended_at;
         }
         else {
@@ -3204,6 +3205,15 @@ class PlacelineComponent {
         }
         const /** @type {?} */ activityClass = this.getActivityClass(lastSeg);
         return { time, pipeClass, lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg` };
+    }
+    /**
+     * @param {?} placeline
+     * @return {?}
+     */
+    isSegmentLive(placeline) {
+        let /** @type {?} */ old = placeline.display.seconds_elapsed_since_last_heartbeat;
+        let /** @type {?} */ status = placeline.display.status_text;
+        return status !== 'Logged off' && old < 15 * 60;
     }
     /**
      * @param {?} segment
@@ -3455,9 +3465,9 @@ PlacelineComponent.decorators = [
             </tr>
             </tbody>
           </table>
-          <!--<div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">-->
-            <!--<i class="fa fa-times-circle fa-2x"></i>-->
-          <!--</div>-->
+          <div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
+            <i class="fa fa-times-circle fa-2x"></i>
+          </div>
         </div>
         <div *ngIf="segment.isLive" class="text-muted heatbeat">
           Last heartbeat
@@ -4262,7 +4272,8 @@ a:focus {
   padding-left: 12px;
   font-size: 13px;
 }
-`]
+`],
+                changeDetection: ChangeDetectionStrategy.OnPush
             },] },
 ];
 /** @nocollapse */
@@ -4275,6 +4286,7 @@ PlacelineComponent.propDecorators = {
     "selectedSegment": [{ type: Output },],
     "userData": [{ type: Input },],
     "selectedPartialSegmentId": [{ type: Input },],
+    "isMobile": [{ type: Input },],
 };
 
 /**
@@ -12779,7 +12791,7 @@ HtModule.ctorParameters = () => [];
 // import { GroupLookupKeyResolver } from "./app/guard/group-lookup-key-resolver";
 // import {HtClientService} from "./app/ht/ht-client.service";
 // import {HtUsersService} from "./app/ht/ht-users.service";
-// import {HtMapService} from "./app/ht/ht-map.service";
+// import {GlobalMap} from "./app/ht/ht-map.service";
 // import {HtGroupsService} from "./app/ht/ht-groups.service";
 //
 // export {
@@ -12810,7 +12822,7 @@ HtModule.ctorParameters = () => [];
 //   GroupKeyResolver,
 //   GroupLookupKeyResolver,
 //   HtUsersService,
-//   HtMapService,
+//   GlobalMap,
 //   HtClientService,
 //   HtGroupsService
 // }

@@ -7,11 +7,11 @@ export declare class PlacelineComponent implements OnInit {
     selectedSegment: EventEmitter<{}>;
     userData: IUserData;
     selectedPartialSegmentId: string;
+    isMobile: boolean;
     selectedAction: string | null;
     selectedActivity: string | null;
     hardSelectedActivity: string | null;
     actionMap: {};
-    isMobile: boolean;
     constructor(ref: ChangeDetectorRef);
     selectInUserData(segment: any, event?: any): void;
     selectSegment(segment: any, toShow?: boolean): void;
@@ -25,6 +25,7 @@ export declare class PlacelineComponent implements OnInit {
     private getMinute(time);
     private currentExpActions(actions);
     private lastSeg(placeline);
+    private isSegmentLive(placeline);
     private getActivityClass(segment);
     getPipeClass(status: string): "stop solid" | "trip solid";
     private getActivityText(segment);

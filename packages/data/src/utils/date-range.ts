@@ -1,4 +1,4 @@
-import * as moment from "moment-mini";
+import {addDays, endOfToday, endOfYesterday, startOfDay, startOfMonth, startOfToday, startOfYesterday} from "date-fns";
 
 export const DateMapService = (() => {
   let instance;
@@ -6,13 +6,13 @@ export const DateMapService = (() => {
     getInstance() {
       if(!instance) {
         instance = {
-          today_end:   moment().endOf('day').toISOString(),
-          today_start: moment().startOf('day').toISOString(),
-          yesterday_start: moment().subtract(1, 'days').toISOString(),
-          yesterday_end: moment().subtract(1, 'days').endOf('day').toISOString(),
-          day_7_start: moment().subtract(6, 'days').toISOString(),
-          month_start: moment().startOf('month').toISOString(),
-          day_30_start: moment().subtract(29, 'days').toISOString(),
+          today_end:   endOfToday().toISOString(),
+          today_start: startOfToday().toISOString(),
+          yesterday_start: startOfYesterday().toISOString(),
+          yesterday_end: endOfYesterday().toISOString(),
+          day_7_start: startOfDay(addDays(new Date(), -6)).toISOString(),
+          month_start: startOfMonth(new Date()).toISOString(),
+          day_30_start: startOfDay(addDays(new Date(), -29)).toISOString(),
         };
       }
       return instance;

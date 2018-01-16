@@ -82,7 +82,11 @@ export class HtBaseApi {
     return api$.pipe(
       expand((data: IPageData) => {
         return data["next"]
-          ? this.request.getObservable(data["next"], options)
+          ? this.request.getObservable(data["next"], options).pipe(
+            map((newData: IPageData) => {
+              return {...newData, results: [...data.results, ...newData.results]}
+            })
+          )
           : empty();
       })
     );

@@ -277,7 +277,9 @@ const globals = {
   'ht-models': 'htModels',
   'leaflet': 'L',
   'leaflet.markercluster': 'L',
-  'time-aware-polyline': 'timeAwarePolyline'
+  'leaflet.heat': 'L',
+  'time-aware-polyline': 'timeAwarePolyline',
+  "date-fns": 'dateFns'
 };
 
 export default {

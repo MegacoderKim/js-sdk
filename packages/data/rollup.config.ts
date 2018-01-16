@@ -273,7 +273,8 @@ const globals = {
   'underscore': '-',
   'ht-utility': 'htUtility',
   'moment-mini': 'moment',
-  'ht-models': 'htModels'
+  'ht-models': 'htModels',
+  "date-fns": 'dateFns'
 }
 
 export default {

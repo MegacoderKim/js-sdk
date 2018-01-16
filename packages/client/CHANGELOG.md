@@ -1,3 +1,9 @@
+# 0.1.1
+- Add `actionsHeatmapClient`
+- Use `dataParam` per entity
+- Add `usersHeatmapClient`
+- Results to `pageAll` api call adds up.
+
 # 0.1.0-beta
 - Fix `rxjs` operator bundling for umd bundle
 

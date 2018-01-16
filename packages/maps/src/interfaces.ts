@@ -1,5 +1,5 @@
 import { ISegment, ITimeAwarePoint, Partial } from "ht-models";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import {HtMapType} from "./map-utils/interfaces";
 
 export interface IReplayHead {

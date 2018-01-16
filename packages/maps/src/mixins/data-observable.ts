@@ -1,14 +1,14 @@
 import { Constructor } from "../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
-import { MapService } from "../global/map-service";
+import { GlobalMap } from "../global/map-service";
 import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
 import { filter } from "rxjs/operators/filter";
 import { map } from "rxjs/operators/map";
 import { pluck } from "rxjs/operators/pluck";
 import { scan } from "rxjs/operators/scan";
 import * as _ from "underscore";
-import { HtPosition } from "ht-data";
+import { HtPosition } from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { AllData, Page } from "ht-models";
 
@@ -30,6 +30,10 @@ export function DataObservableMixin<
     dataPageSource$: Observable<Page<any>>;
     dataArraySource$: Observable<any[]>;
     data$: Observable<IMarkersArray>;
+
+    constructor(...args: any[]) {
+      super(...args)
+    }
 
     _procData$() {
       return (source$: Observable<Page<any>>) => {
@@ -103,7 +107,7 @@ export function DataObservableMixin<
 
     // _initData$() {
     //   let userData$ = this.dataPageSource$.pipe(
-    //     filter(data => !!MapService.map),
+    //     filter(data => !!GlobalMap.map),
     //     pluck('valid'),
     //     scan((acc: {user: any, oldUser: any}, data: object) => {
     //       const oldUser = acc.user;
@@ -114,7 +118,7 @@ export function DataObservableMixin<
     // };
 
     _initDataObserver() {
-      let userData$ = this.data$.pipe(filter(data => !!MapService.map));
+      let userData$ = this.data$.pipe(filter(data => !!GlobalMap.map));
 
       // function isNewId (newItem, old) {
       //   if(!old && newItem) return true;
@@ -126,9 +130,13 @@ export function DataObservableMixin<
       // }
       let sub = userData$.subscribe(({ valid, invalid, isNew }) => {
         this.trace(valid);
-        if (isNew) MapService.resetBounds();
+        if (isNew) GlobalMap.resetBounds();
       });
       this.dataSub = sub;
+    }
+
+    clear() {
+      this.dataSub.unsubscribe();
     }
   };
 }

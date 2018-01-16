@@ -1,3 +1,9 @@
+# 0.1.1
+- Refactor `MapService` to `GlobalMap`
+- Add `leaflet.heat` and `heatmapMixin`
+- Add `actionsHeatmapTrace` and `StopsHeatmapTrace`
+- Add `actionsClusterTrace`
+
 # 0.1.0-beta
 - Fix `rxjs` operator bundling for umd bundle
 - Remove replay feature
