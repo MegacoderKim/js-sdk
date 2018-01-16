@@ -43,4 +43,5 @@ export interface IClientConfig {
 
 export interface IPageClientConfig extends IClientConfig {
   dateRangeQuery$?: Observable<object> | null;
+  dateParam?: string
 }

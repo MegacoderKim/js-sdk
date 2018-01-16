@@ -56,17 +56,16 @@ export class HtUsersClient extends EntityClient {
     store.addReducer("segments", fromSegments.segmentsReducer);
     this.store = store;
     let dateRange$ = this.options.dateRange$;
-    const dateRangeQuery$ = dateRange$
-      ? dateRange$.pipe(DateRangeToQuery$("recorded_at"))
-      : null;
-
-    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store });
+    const dateRangeQuery$ = dateRange$;
+    let dateParam = 'recorded_at';
+    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store, dateParam });
     this.placeline = new UsersPlacelineClient({ store });
     this.analyticsAll = new UsersAnalyticsListAllClient({
       dateRangeQuery$,
-      store
+      store,
+      dateParam
     });
-    this.summary = new UsersSummaryClient({ dateRangeQuery$, store });
+    this.summary = new UsersSummaryClient({ dateRangeQuery$, store, dateParam });
     this.list = this.analytics;
     this.listAll = this.analyticsAll;
 

@@ -23,8 +23,10 @@ export class ActionsGraph {
   pollDuration = 10000;
   dateRangeQuery$;
   dataSub: Subscription;
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  dateParam: string;
+  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
     this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateParam = dateParam;
   }
 
   getDefaultQuery() {
