@@ -5,6 +5,7 @@ import {
 import {IAction, ISegment, IUserData} from "ht-models";
 import {NameCase} from "ht-utility";
 import * as _ from "underscore";
+import {HtPlaceline} from "ht-data";
 
 @Component({
   selector: 'ht-placeline',
@@ -52,7 +53,7 @@ export class PlacelineComponent implements OnInit {
 
   hoverActivity(activityId) {
     this.selectedActivity = activityId;
-    this.ref.markForCheck()
+    this.ref.detectChanges()
   }
 
   selectActivity(activityId) {
@@ -64,7 +65,7 @@ export class PlacelineComponent implements OnInit {
   selectAction(actionId) {
     this.selectedAction = actionId;
     this.hoveredAction.next(actionId);
-    this.ref.markForCheck()
+    this.ref.detectChanges()
   }
 
   get placelineMod() {
@@ -261,7 +262,7 @@ export class PlacelineComponent implements OnInit {
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
     let time;
-    let isLive = this.isSegmentLive(placeline);
+    let isLive = new HtPlaceline().isLive(placeline);
     if(!this.isSegmentLive(placeline)) {
       time = lastSeg.ended_at
     } else {
