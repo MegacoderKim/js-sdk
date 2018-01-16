@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Color} from "ht-utility";
 import {HtUsersService} from "../ht/ht-users.service";
-import {Observable} from "rxjs/Observable";
-import {filter} from "rxjs/operators";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {of} from "rxjs/observable/of";
-import {empty} from "rxjs/observable/empty";
+import {actionsClientFactory, dateRangeFactory} from "ht-client";
+import {DateRangeMap} from "ht-data";
+import { actionClustersTrace } from "ht-maps"
+
 @Component({
   selector: 'ht-test',
   templateUrl: './test.component.html',
@@ -20,6 +18,14 @@ export class TestComponent implements OnInit {
 
   ngOnInit() {
     if (this.showAll) this.userService.setShowAll();
+    // let actionCluster = actionClustersTrace();
+    // let dateRangeService$ = dateRangeFactory(DateRangeMap.last_30_days);
+    // const client  = actionsClientFactory({dateRange$: dateRangeService$.data$.asObservable()});
+    // const list = client.list;
+    // list.updateStrategy = 'once';
+    // list.setActive(true);
+    // actionCluster.setData$(list.dataArray$)
+
   }
 
 

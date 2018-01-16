@@ -1,6 +1,5 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import Chart from "frappe-charts/dist/frappe-charts.min.esm"
-import moment from "moment-mini";
 import {untilDestroy} from "../until-destroy";
 // import {filter} from "rxjs/operators";
 
