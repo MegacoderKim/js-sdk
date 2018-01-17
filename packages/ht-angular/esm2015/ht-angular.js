@@ -11989,7 +11989,7 @@ AnalyticsContainerComponent.decorators = [
 
 .toolbar {
   width: 100%;
-  padding: 4px 10px;
+  padding: 16px 40px;
   margin-bottom: 20px;
   background: white;
   border-bottom: 1px solid #d6d6d6; }
@@ -12695,6 +12695,7 @@ function mapServiceFactory(mapType) {
     if (mapType === void 0) {
         mapType = 'google';
     }
+    console.log("init map");
     return new HtMapService(mapType);
 }
 /**
