@@ -263,7 +263,7 @@ export class PlacelineComponent implements OnInit {
     let pipeClass = "";
     let time;
     let isLive = new HtPlaceline().isLive(placeline);
-    if(!this.isSegmentLive(placeline)) {
+    if(!isLive) {
       time = lastSeg.ended_at
     } else {
       isLive = true;

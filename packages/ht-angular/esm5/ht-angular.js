@@ -1597,7 +1597,7 @@ var PlacelineComponent = (function () {
         var /** @type {?} */ pipeClass = "";
         var /** @type {?} */ time;
         var /** @type {?} */ isLive = new HtPlaceline().isLive(placeline);
-        if (!this.isSegmentLive(placeline)) {
+        if (!isLive) {
             time = lastSeg.ended_at;
         }
         else {
