@@ -46,7 +46,7 @@ export class AnalyticsItemsService {
       actionsConfigPreset.status(),
       actionsConfigPreset.recently_assigned(),
       actionsConfigPreset.recently_completed(),
-      actionsConfigPreset.users_on_action(),
+      // actionsConfigPreset.users_on_action(),
       usersAnalyticsListPresets.last_recorded(),
       usersAnalyticsListPresets.users_actions(),
       usersAnalyticsListPresets.max_location_disabled_duration(),

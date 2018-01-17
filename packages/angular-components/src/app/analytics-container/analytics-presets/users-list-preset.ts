@@ -82,7 +82,7 @@ export const usersAnalyticsListPresets: IAnalyticsPresets = {
             label: "% of total duration",
             selector(user: IUserAnalytics) {
               return user.total_duration && user.stop_duration ?
-                (100 * (user.stop_duration / user.total_duration)).toFixed(1) :
+                (100 * (user.stop_duration / user.total_duration)).toFixed(1) + '%' :
                 "NA"
             }
           }
@@ -110,7 +110,7 @@ export const usersAnalyticsListPresets: IAnalyticsPresets = {
             label: "% of total duration",
             selector(user: IUserAnalytics) {
               return user.total_duration && user.network_offline_duration ?
-                (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) :
+                (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) + '%' :
                 "NA"
             }
           }
@@ -123,7 +123,7 @@ export const usersAnalyticsListPresets: IAnalyticsPresets = {
     return {
       service: UsersAnalyticsListService,
       initialConfig: {
-        title: "Users with max distance",
+        title: "Users with max distance travelled",
         query: {ordering: "-total_distance"},
         tags: ['distance'],
         tableFormat: [
