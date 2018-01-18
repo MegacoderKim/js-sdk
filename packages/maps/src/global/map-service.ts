@@ -20,7 +20,6 @@ export class GlobalMapService {
 
   constructor() {
     this.map$.subscribe(map => {
-      console.log("map", map);
       this.map = map;
     })
   }
@@ -55,7 +54,7 @@ export class GlobalMapService {
     return item.extendBounds(bounds);
   }
   getItemsSetBounds(items: any[]) {
-    let bounds = this.mapUtils.extendBounds();
+    let bounds = this.mapUtils.extendItemBounds();
     return _.reduce(
       items,
       (bounds, item) => {

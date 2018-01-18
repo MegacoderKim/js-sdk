@@ -5,7 +5,9 @@ import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {StyleMixin} from "../mixins/styles";
-import {StyleFunct} from "../interfaces";
+import {Entity, StyleFunct} from "../interfaces";
+import {ExtendBoundsMixin} from "../mixins/extend-bounds";
+import {HtBounds} from "../map-utils/interfaces";
 
 export class ActionsHeatmap {
   styleFunct: StyleFunct = {
@@ -35,8 +37,8 @@ export class ActionsHeatmap {
       lat: item.completed_place__location[1],
       lng: item.completed_place__location[0],
     }
-  }
+  };
 
 };
 
-export const ActionsHeatmapTrace = DataObservableMixin(HeatmapMixin(StyleMixin(ActionsHeatmap)));
+export const ActionsHeatmapTrace = DataObservableMixin(ExtendBoundsMixin(HeatmapMixin(StyleMixin(ActionsHeatmap))));

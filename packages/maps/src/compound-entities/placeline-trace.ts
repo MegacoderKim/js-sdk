@@ -15,6 +15,7 @@ import {
   CompoundSetDataConfig
 } from "../mixins/compounds-data-observable";
 import { HtPosition } from "ht-models";
+import {HtMap} from "../../";
 
 export class Placeline {
   segmentsPolylines = segmentsPolylinesTrace();
@@ -33,7 +34,7 @@ export class Placeline {
     // this.initBaseItems();
   }
 
-  get map() {
+  get map(): HtMap {
     return GlobalMap.map;
   }
 
@@ -88,7 +89,7 @@ export class Placeline {
     bounds = this.stopMarkers.extendBounds(bounds);
     bounds = this.segmentsPolylines.extendBounds(bounds);
     bounds = this.actionMarkers.extendBounds(bounds);
-    // bounds = this.userMarker.extendBounds(bounds);
+    // bounds = this.userMarker.extendItemBounds(bounds);
     // console.log(bounds, "final");
     return bounds;
   }

@@ -13,6 +13,7 @@ import {DataConfig, StyleFunct, StyleObj} from "../interfaces";
 import { MarkersBase } from "./markers.factory";
 import { PolylinesBase } from "./polylines.factory";
 import { DivMarkersBase } from "./div-markers.factory";
+import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 
 export const mapItemsFactory = (
   baseClass,
@@ -37,6 +38,7 @@ export const mapItemsFactory = (
   itemClass = MarkersMixin(itemClass);
   itemClass = StyleMixin(itemClass);
   itemClass = TraceMixin(itemClass);
+  itemClass = ExtendBoundsMixin(itemClass);
   if (finalConfig.isSingleItem) itemClass = SingleItemMixin(itemClass);
   if (finalConfig.hasPopup) itemClass = PopupMixin(itemClass);
   if (finalConfig.isCluster) itemClass = ClusterMixin(itemClass);

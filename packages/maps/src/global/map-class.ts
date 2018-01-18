@@ -10,6 +10,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { StopsHeatmapTrace } from "../entities/stops-heatmap"
 import { actionClustersTrace } from "../entities/actions-cluster"
+import {ActionsHeatmapTrace} from "../entities/actions-heatmap";
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
@@ -18,6 +19,7 @@ export class HtMapClass {
   placeline;
   usersCluster;
   usersHeatmap;
+  actionsHeatmap;
   actionsCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
@@ -44,9 +46,11 @@ export class HtMapClass {
     this.usersCluster = usersClustersTrace();
     this.actionsCluster = actionClustersTrace();
     this.usersHeatmap = new StopsHeatmapTrace();
+    this.actionsHeatmap = new ActionsHeatmapTrace();
     this.placeline = new PlacelineTrace();
     GlobalMap.addToItemsSet(this.placeline);
     GlobalMap.addToItemsSet(this.usersCluster);
+    GlobalMap.addToItemsSet(this.actionsHeatmap);
     // this.mapItemsSet.push(this.placeline, this.usersCluster);
   }
 
@@ -108,7 +112,7 @@ export class HtMapClass {
   }
 
   getBoundsItem(items) {
-    let bounds = GlobalMap.mapUtils.extendBounds();
+    let bounds = GlobalMap.mapUtils.extendItemBounds();
     return _.reduce(
       items,
       (bounds, item) => {
