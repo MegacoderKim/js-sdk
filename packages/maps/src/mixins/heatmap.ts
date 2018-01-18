@@ -14,7 +14,8 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
   return class extends Base {
     map;
     heatmap;
-
+    forceExtendBounds = true;
+    data: any[];
     constructor(...args: any[]) {
       super(...args);
       let style = this.getStyle(GlobalMap.mapUtils.mapType);
@@ -22,6 +23,7 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
     }
 
     trace(items: any[], map?) {
+      this.data = items;
       this.map = map || GlobalMap.map;
       if (this.map) {
         if(items) {

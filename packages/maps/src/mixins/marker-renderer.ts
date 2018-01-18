@@ -24,10 +24,6 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       return GlobalMap.mapUtils.getMarker();
     }
 
-    getBounds(item, bounds?) {
-      return GlobalMap.mapUtils.extendBounds(item, bounds, !!this.cluster);
-    }
-
     update({ item, data }) {
       let position = this.getPosition(data);
       if (position) GlobalMap.mapUtils.updatePosition(item, position);
@@ -44,11 +40,6 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
         this.removeItem(entity.item);
       });
       this.entities = {};
-    }
-
-    setStyle(item) {
-      let style = this.getStyle();
-      GlobalMap.mapUtils.setStyle(item, style);
     }
 
     removeData(data) {

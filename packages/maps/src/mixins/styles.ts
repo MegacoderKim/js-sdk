@@ -31,6 +31,12 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
         );
       return style;
     }
+
+
+    setStyle(item) {
+      let style = this.getStyle();
+      GlobalMap.mapUtils.setStyle(item, style);
+    }
   };
 }
 

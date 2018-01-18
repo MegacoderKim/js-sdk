@@ -17,6 +17,7 @@ export interface ITraceBase {
   removeData: (data) => void;
   toSetMap: boolean;
   cluster?: any;
+  clearAllClusters: (data: any[]) => void
 }
 export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
@@ -26,14 +27,14 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
     // setMap: (item, map) => void;
 
     trace(data: any[] | null, map?) {
-      this.map = map || GlobalMap.map;
+      this.map = map || GlobalMap.map || this.map;
       let mapUtils = GlobalMap.mapUtils;
       if (!this.map) {
         console.warn("Map is not initialized");
         return false;
       }
       if (data && data.length) {
-        this.clearAllClusters(data);
+        if(this.cluster) this.clearAllClusters(data);
         _.each(data, datum => {
           let id = datum["id"];
           let entity = this.entities[id];
@@ -79,24 +80,6 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           entity.isOld = true;
         }
       });
-    }
-    extendBounds(bounds) {
-      let mapUtils = GlobalMap.mapUtils;
-      bounds = bounds || mapUtils.extendBounds();
-      let newBounds = _.reduce(
-        this.entities,
-        (bounds, entity) => {
-          return this.getBounds(entity.item, bounds);
-        },
-        bounds
-      );
-      return newBounds;
-    }
-    clearAllClusters(data: any[]) {
-      const entitiesCount = Object.keys(this.entities).length;
-      if(this.cluster && entitiesCount > 400 && entitiesCount - data.length > 100) {
-        this.removeAll(this.entities)
-      }
     }
   };
 }

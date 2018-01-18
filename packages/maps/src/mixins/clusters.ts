@@ -14,6 +14,7 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
   Base: TBase
 ) {
   return class extends Base {
+    forceExtendBounds = true;
     constructor(...arg: any[]) {
       super(...arg);
       this.addCluster();
@@ -51,6 +52,13 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
       this.cluster && GlobalMap.mapUtils.removeClusterMarkers(this.cluster);
       this.entities = {}
       // super.removeAll(entities);
+    };
+
+    clearAllClusters(data: any[]) {
+      const entitiesCount = Object.keys(this.entities).length;
+      if(entitiesCount > 400 && entitiesCount - data.length > 100) {
+        this.removeAll(this.entities)
+      }
     }
   };
 }
