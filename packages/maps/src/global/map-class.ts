@@ -8,7 +8,8 @@ import { GlobalMap } from "./map-service";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
-
+import { StopsHeatmapTrace } from "../entities/stops-heatmap"
+import { actionClustersTrace } from "../entities/actions-cluster"
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
@@ -16,6 +17,8 @@ export class HtMapClass {
   userDataSub: Subscription;
   placeline;
   usersCluster;
+  usersHeatmap;
+  actionsCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
     duration: 0.3
@@ -39,6 +42,8 @@ export class HtMapClass {
   ) {
     GlobalMap.setMapType(mapType);
     this.usersCluster = usersClustersTrace();
+    this.actionsCluster = actionClustersTrace();
+    this.usersHeatmap = new StopsHeatmapTrace();
     this.placeline = new PlacelineTrace();
     GlobalMap.addToItemsSet(this.placeline);
     GlobalMap.addToItemsSet(this.usersCluster);
@@ -131,6 +136,10 @@ export class HtMapClass {
 
   addEntities(entities) {
     GlobalMap.addToItemsSet(entities);
+  }
+
+  clear() {
+    GlobalMap.setMap(null)
   }
 }
 
