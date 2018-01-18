@@ -1,12 +1,13 @@
 import { Constructor } from "../interfaces";
 import { positionTime } from "../helpers/position-time-helper";
-import { GlobalMap } from "../global/map-service";
 import {HtBounds} from "../map-utils/interfaces";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface IPolylinesBase {
   getEncodedPositionTime;
   getEncodedPath(data): any;
   getStyle: (string?) => object;
+  mapInstance: MapInstance
 }
 
 export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
@@ -16,28 +17,28 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
     positionTimeArray = [];
 
     getItem(data) {
-      return GlobalMap.mapUtils.getPolyline();
+      return this.mapInstance.mapUtils.getPolyline();
     }
 
     getBounds(item, bounds?): HtBounds {
-      return GlobalMap.mapUtils.extendBoundsWithPolyline(item, bounds);
+      return this.mapInstance.mapUtils.extendBoundsWithPolyline(item, bounds);
     }
 
     update({ item, data }) {
       if (this.getEncodedPositionTime) {
         this.positionTimeArray = positionTime.decode(data.time_aware_polyline);
-        GlobalMap.mapUtils.setPathPositionTimeArray(
+        this.mapInstance.mapUtils.setPathPositionTimeArray(
           item,
           this.positionTimeArray
         );
       } else {
-        GlobalMap.mapUtils.setEncodedPath(item, this.getEncodedPath(data));
+        this.mapInstance.mapUtils.setEncodedPath(item, this.getEncodedPath(data));
       }
     }
 
     setStyle(item) {
       let style = this.getStyle();
-      GlobalMap.mapUtils.setPolylineStyle(item, style);
+      this.mapInstance.mapUtils.setPolylineStyle(item, style);
     }
   };
 }

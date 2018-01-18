@@ -1,12 +1,13 @@
 import { Constructor, Entities } from "../interfaces";
 import { HtPosition } from "ht-models";
-import { GlobalMap } from "../global/map-service";
 import {leafletHeat} from "../map-utils/leaflet.heatmap";
 import {HtBounds} from "../map-utils/interfaces";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface IHeatmapBase {
   getStyle: (styleType?) => object;
   getPosition: (data) => HtPosition;
+  mapInstance: MapInstance
 }
 
 export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
@@ -20,20 +21,20 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
     constructor(...args: any[]) {
       super(...args);
       let style = this.getStyle();
-      this.heatmap = GlobalMap.mapUtils.getHeatmap(style);
+      this.heatmap = this.mapInstance.mapUtils.getHeatmap(style);
     }
 
     trace(items: any[], map?) {
       this.entities = items.map(item => ({item}));
-      this.map = map || GlobalMap.map;
+      this.map = map || this.mapInstance.map;
       if (this.map) {
         if(items) {
           let latLngs = items.reduce((acc, item) => {
             let position = this.getPosition(item);
             return position ? [...acc, position] : acc;
           }, []);
-          GlobalMap.mapUtils.updateHeatMapLatlng(latLngs, this.heatmap);
-          GlobalMap.mapUtils.setMap(this.heatmap, this.map)
+          this.mapInstance.mapUtils.updateHeatMapLatlng(latLngs, this.heatmap);
+          this.mapInstance.mapUtils.setMap(this.heatmap, this.map)
         } else {
           this.clear()
         }
@@ -46,7 +47,7 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
 
     getBounds(item, bounds?: HtBounds) {
       let position = this.getPosition(item);
-      return GlobalMap.mapUtils.extendBounds(position, bounds)
+      return this.mapInstance.mapUtils.extendBounds(position, bounds)
     }
 
     clear() {

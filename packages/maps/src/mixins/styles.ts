@@ -1,9 +1,10 @@
-import { GlobalMap } from "../global/map-service";
 import { Constructor, StyleFunct } from "../interfaces";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface IStyleBase {
   styleFunct: StyleFunct;
   name?: string;
+  mapInstance: MapInstance
 }
 export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
   return class extends Base {
@@ -17,7 +18,8 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
     styleType: string;
 
     getStyle(selectedStyleType: string = "default", fallbackStyle?) {
-      const mapType = GlobalMap.mapUtils.type;
+      console.log(this.name);
+      const mapType = this.mapInstance.mapUtils.type;
       const styleFunct = this.styleFunct || this.defaultstyleFunct;
       const mapTypetype = styleFunct.get(mapType);
       // console.log(this.name, "style", selectedStyleType, styleFunct, this.styleFunct);
@@ -35,7 +37,7 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
 
     setStyle(item) {
       let style = this.getStyle();
-      GlobalMap.mapUtils.setStyle(item, style);
+      this.mapInstance.mapUtils.setStyle(item, style);
     }
   };
 }

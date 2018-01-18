@@ -1,4 +1,3 @@
-import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
@@ -30,7 +29,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
 
     trace(data: any[] | null, map?) {
       map = map || this.mapInstance.map;
-      let mapUtils = GlobalMap.mapUtils;
+      let mapUtils = this.mapInstance.mapUtils;
       if (!map) {
         console.warn("Map is not initialized");
         return false;

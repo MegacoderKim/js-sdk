@@ -1,7 +1,7 @@
 import { Constructor } from "../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
-import { GlobalMap } from "../global/map-service";
+// import { GlobalMap } from "../global/map-service";
 import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
 import { filter } from "rxjs/operators/filter";
 import { map } from "rxjs/operators/map";
@@ -11,10 +11,12 @@ import { dataWithSelectedId$ } from "ht-data";
 import { HtPosition} from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { orCombine } from "ht-data";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface ICompoundsDataObservableBase {
   trace: (data, map?) => any;
   isValidMapItems?: (data) => boolean;
+  mapInstance: MapInstance
   // getPosition: (data) => HtPosition;
 }
 
@@ -26,6 +28,12 @@ export function CompoundDataObservableMixin<
     dataSource$: Observable<object | null>;
     data$: Observable<object>;
     compoundSetDataConfig: CompoundSetDataConfig;
+
+    constructor(...args: any[]) {
+      super(...args);
+      this.mapInstance.addToItemsSet(this)
+    }
+
     _procData$() {
       return (source$: Observable<any | null>) => {
         return source$.pipe(
@@ -79,7 +87,7 @@ export function CompoundDataObservableMixin<
 
     _initData$() {
       let userData$ = this.data$.pipe(
-        filter(data => !!GlobalMap.map),
+        filter(data => !!this.mapInstance.map),
         scan(
           (acc: { user: any; oldUser: any }, data: object) => {
             const oldUser = acc.user;
@@ -113,7 +121,7 @@ export function CompoundDataObservableMixin<
         newPlaceline$,
         this.compoundSetDataConfig.resetMap$
       ).subscribe(toReset => {
-        if (toReset) GlobalMap.resetBounds();
+        if (toReset) this.mapInstance.resetBounds();
       });
       this.dataSub = sub;
     }

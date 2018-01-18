@@ -1,10 +1,11 @@
 import { Constructor } from "../interfaces";
-import { GlobalMap } from "../global/map-service";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface IDivMarkersBase {
   getDivContent: (data) => string;
   getStyle: (type?) => object;
   update(entity): void;
+  mapInstance: MapInstance
 }
 
 export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
@@ -12,7 +13,7 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
 ) {
   return class extends Base {
     getItem(data) {
-      return GlobalMap.mapUtils.getDivMarker();
+      return this.mapInstance.mapUtils.getDivMarker();
     }
     update({ item, data }) {
       let content = this.getDivContent(data);
@@ -21,7 +22,7 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
     }
 
     setContent({ item, content }) {
-      GlobalMap.mapUtils.setDivContent(item, content, this.getStyle());
+      this.mapInstance.mapUtils.setDivContent(item, content, this.getStyle());
     }
     setStyle(item) {
       // let style = this.getStyle();

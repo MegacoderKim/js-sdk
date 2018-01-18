@@ -1,12 +1,13 @@
-import { GlobalMap } from "../global/map-service";
 import { HtPosition } from "ht-models";
 import { Constructor, Entities, Entity } from "../interfaces";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface PopupBase {
   getStyle: (styleType?, fallbackStyle?) => object;
   entities: Entities<any>;
   getPosition: (data) => HtPosition;
   getInfoContent: (data) => string;
+  mapInstance: MapInstance
 }
 
 export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
@@ -22,7 +23,7 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
     }
 
     addPopup() {
-      this.popup = GlobalMap.mapUtils.getPopup(
+      this.popup = this.mapInstance.mapUtils.getPopup(
         this.getStyle("popup", this.defaultPopupStyle)
       );
     }
@@ -31,15 +32,15 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
       if (id && this.entities[id]) {
         let { data } = this.entities[id];
         let popup = this.popup;
-        let map = GlobalMap.map;
-        GlobalMap.mapUtils.openPopupPosition(
+        let map = this.mapInstance.map;
+        this.mapInstance.mapUtils.openPopupPosition(
           this.getPosition(data),
           map,
           this.getInfoContent(data),
           popup
         );
       } else {
-        GlobalMap.mapUtils.clearItem(this.popup);
+        this.mapInstance.mapUtils.clearItem(this.popup);
       }
     }
 
@@ -49,7 +50,7 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
     }
 
     onMouseLeave(entity: Entity<any>) {
-      this.popup && GlobalMap.mapUtils.clearItem(this.popup);
+      this.popup && this.mapInstance.mapUtils.clearItem(this.popup);
     }
   };
 }
