@@ -9,9 +9,9 @@ export function ExtendBounds(
   force = false
 ) {
   bounds = bounds || new google.maps.LatLngBounds();
-  if ((item && item.getMap() && item.getPosition) || force) {
+  if (force || (item && item.getMap() && item.getPosition)) {
     let p = item.getPosition();
-    let l = { lat: p.lat(), lng: p.lng() };
+    let l = {lat: p.lat(), lng: p.lng()};
     bounds.extend(l);
   }
   if (item && item.getMap() && item.getCenter) {
@@ -55,7 +55,7 @@ export const setPolylineStyle = (polyline, style) => {
 export const SetMap = (item, map: google.maps.Map) => {
   if (!map) {
     item.setMap(null);
-  } else if ((item && !item.getMap()) || (item && !item.getMap)) {
+  } else if ((item && !item.getMap) || (item && !item.getMap())) {
     item.setMap(map);
   }
 };

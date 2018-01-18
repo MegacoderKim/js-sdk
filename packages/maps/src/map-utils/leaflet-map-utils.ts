@@ -24,7 +24,7 @@ export function ExtendBounds(
   bounds: LatLngBounds = latLngBounds([]),
   force: boolean = false
 ): LatLngBounds {
-  if ((item && item.getElement()) || force) bounds.extend(item.getLatLng());
+  if (force || (item && !item.getElement) || (item && item.getElement())) bounds.extend(item.getLatLng());
   return bounds;
 }
 
@@ -51,8 +51,8 @@ export const setPolylineStyle = (polyline, style) => {
 };
 
 export const SetMap = (item, map: Map) => {
-  if ((item && !item.getElement()) || (item && !item.getElement))
-    item.addTo(map);
+  if ((item && !item.getElement) || (item && !item.getElement()))
+  item.addTo(map);
 };
 
 export const ClearItem = item => {
@@ -202,7 +202,9 @@ function isValidBounds(bounds: L.LatLngBounds) {
 }
 
 function invalidateSize(map: L.Map) {
-  map.invalidateSize();
+  if(map && map.getContainer().offsetWidth) {
+    map.invalidateSize();
+  }
 }
 
 function getPopup(options) {
