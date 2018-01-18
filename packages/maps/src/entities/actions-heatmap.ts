@@ -8,6 +8,8 @@ import {StyleMixin} from "../mixins/styles";
 import {Entity, StyleFunct} from "../interfaces";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {HtBounds} from "../map-utils/interfaces";
+import {MapInstance} from "../map-utils/map-instance";
+import {GlobalMap} from "../global/map-service";
 
 export class ActionsHeatmap {
   styleFunct: StyleFunct = {
@@ -32,6 +34,8 @@ export class ActionsHeatmap {
     }
   };
 
+  constructor(public mapInstance: MapInstance = GlobalMap) {}
+
   getPosition(item): HtPosition {
     return {
       lat: item.completed_place__location[1],
@@ -41,4 +45,6 @@ export class ActionsHeatmap {
 
 };
 
-export const ActionsHeatmapTrace = DataObservableMixin(ExtendBoundsMixin(HeatmapMixin(StyleMixin(ActionsHeatmap))));
+export const ActionsHeatmapTrace = ExtendBoundsMixin(
+  DataObservableMixin(ExtendBoundsMixin(HeatmapMixin(StyleMixin(ActionsHeatmap))))
+);

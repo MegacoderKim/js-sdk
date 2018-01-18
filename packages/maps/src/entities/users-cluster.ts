@@ -25,6 +25,7 @@ import {Subscription} from "rxjs/Subscription";
 import {HtBounds} from "../map-utils/interfaces";
 
 export class UsersCluster {
+  name = "users cluster";
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {

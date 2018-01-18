@@ -1,7 +1,7 @@
 import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
 import { IUserData } from "ht-models";
-import {usersClustersTrace, UsersClusterTrace} from "../entities/users-cluster";
+import { UsersClusterTrace} from "../entities/users-cluster";
 import { LightColorMapStyle } from "../styles/light-color-map";
 import * as _ from "underscore";
 import { GlobalMap } from "./map-service";
@@ -47,10 +47,10 @@ export class HtMapClass {
     this.actionsCluster = new ActionsClusterTrace();
     this.usersHeatmap = new StopsHeatmapTrace();
     this.actionsHeatmap = new ActionsHeatmapTrace();
-    this.placeline = new PlacelineTrace();
-    GlobalMap.addToItemsSet(this.placeline);
-    GlobalMap.addToItemsSet(this.usersCluster);
-    GlobalMap.addToItemsSet(this.actionsHeatmap);
+    this.placeline = new PlacelineTrace({mapInstance: GlobalMap});
+    // GlobalMap.addToItemsSet(this.placeline);
+    // GlobalMap.addToItemsSet(this.usersCluster);
+    // GlobalMap.addToItemsSet(this.actionsHeatmap);
     // this.mapItemsSet.push(this.placeline, this.usersCluster);
   }
 
