@@ -1,6 +1,7 @@
 import { ISegment, ITimeAwarePoint, Partial } from "ht-models";
 import { HtPosition } from "ht-models";
 import {HtMapType} from "./map-utils/interfaces";
+import {MapInstance} from "./map-utils/map-instance";
 
 export interface IReplayHead {
   timePercent: number;
@@ -72,6 +73,7 @@ export type Constructor<T = object> = new (...args: any[]) => T;
 export interface MarkerDataConfig<T> {
   getPosition(data: T): HtPosition;
   getInfoContent?(data: T): string;
+  mapInstance?: MapInstance;
 }
 
 export interface DivMarkerDataConfig<T> extends MarkerDataConfig<T> {
@@ -83,7 +85,9 @@ export interface DivMarkerDataConfig<T> extends MarkerDataConfig<T> {
 export interface PolylineDataConfig<T> {
   getEncodedPath?(data: T): string;
   getEncodedPositionTime?(data: any): string;
+  mapInstance?: MapInstance;
 }
+
 
 export interface AllDataConfig<T>
   extends Partial<PolylineDataConfig<T>>,
