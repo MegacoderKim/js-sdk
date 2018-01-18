@@ -1,4 +1,4 @@
-import { HtMarker, MapUtils } from "./interfaces";
+import {HtBounds, HtMarker, MapUtils} from "./interfaces";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
 declare var MarkerClusterer: any;
@@ -18,6 +18,12 @@ export function ExtendBounds(
     bounds.extend(item.getCenter());
   }
   return bounds;
+}
+
+export function extendBounds(position: HtPosition, bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds()): HtBounds {
+  let latlng = GetLatlng(position);
+  bounds.extend(latlng);
+  return bounds
 }
 
 export const ExtendBoundsWithPolyline = (
@@ -330,7 +336,8 @@ export const GoogleMapUtils: MapUtils = {
   setCircleStyle,
   setPolylineStyle,
   clearItem: ClearItem,
-  extendBounds: ExtendBounds,
+  extendItemBounds: ExtendBounds,
+  extendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
   getLatlng: GetLatlng,
   updatePosition: HtUpdatePositionTooltip,

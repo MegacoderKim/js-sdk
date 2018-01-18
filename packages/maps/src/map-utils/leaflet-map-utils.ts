@@ -1,4 +1,4 @@
-import { HtMarker, MapUtils, SetFocusConfig } from "./interfaces";
+import {HtBounds, HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 import {PolylineUtil} from "./encoded-polyline";
 import { HtPosition } from "ht-models";
 import {
@@ -26,6 +26,12 @@ export function ExtendBounds(
 ): LatLngBounds {
   if (force || (item && !item.getElement) || (item && item.getElement())) bounds.extend(item.getLatLng());
   return bounds;
+}
+
+export function extendBounds(position: HtPosition, bounds: LatLngBounds = latLngBounds([])): HtBounds {
+  let latlng = GetLatlng(position);
+  bounds.extend(latlng);
+  return bounds
 }
 
 export const ExtendBoundsWithPolyline = (
@@ -93,11 +99,12 @@ export function HtUpdatePopup(marker, infoContent, defaultOption) {
 
 export function HtUpdatePositionTooltip(
   marker,
-  position,
+  position: HtPosition,
   infoContent: string = "",
   defaultOption: L.TooltipOptions = {}
 ) {
-  marker.setLatLng(position);
+  let latLng = GetLatlng(position);
+  marker.setLatLng(latLng);
   if (infoContent) HtUpdateTooltip(marker, infoContent, defaultOption);
 }
 
@@ -258,7 +265,8 @@ export const LeafletUtils: MapUtils = {
   setCircleStyle,
   setPolylineStyle,
   clearItem: ClearItem,
-  extendBounds: ExtendBounds,
+  extendItemBounds: ExtendBounds,
+  extendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
   getLatlng: GetLatlng,
   updatePosition: HtUpdatePositionTooltip,
