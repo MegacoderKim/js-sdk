@@ -14,6 +14,8 @@ export {MapModule} from "./app/map/map.module";
 export {MapContainerModule} from "./app/map-container/map-container.module";
 export {MapContainerComponent} from "./app/map-container/map-container.component";
 export {SharedModule} from "./app/shared/shared.module";
+export { PaginationModule } from "./app/pagination/pagination.module"
+export { PaginationComponent } from "./app/pagination/pagination.component"
 export {PlacelineContainerModule} from "./app/placeline-container/placeline-container.module";
 export {PlacelineContainerComponent} from "./app/placeline-container/placeline-container.component";
 export {PlacelineModule} from "./app/placeline/placeline.module";
