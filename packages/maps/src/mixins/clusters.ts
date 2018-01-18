@@ -2,11 +2,14 @@ import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
 import {HtBounds, HtMap} from "../map-utils/interfaces";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface IClusterBase {
   cluster: any;
   entities: Entities<any>;
-  map: HtMap;
+  mapInstance: MapInstance,
+  trace (items: any[], map?: HtMap): void
+  // map: HtMap;
   removeItem(item): void;
   removeAll(entities): void;
 }
@@ -15,9 +18,17 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
 ) {
   return class extends Base {
     forceExtendBounds = true;
+    toNotSetMap = true;
     constructor(...arg: any[]) {
       super(...arg);
       this.addCluster();
+    }
+
+    trace(items, map?) {
+      if (items && items.length) {
+        this.clearAllClusters(items)
+      }
+      super.trace(items, map);
     }
 
     addCluster() {
@@ -34,7 +45,7 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
         GlobalMap.mapUtils.addMarkersToCluster(
           this.cluster,
           userMarkerArray,
-          this.map
+          this.mapInstance.map
         );
       }
     }

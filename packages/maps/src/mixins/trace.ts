@@ -2,39 +2,41 @@ import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface ITraceBase {
   getItem: (data) => any;
-  onMouseLeave: (trace) => void;
-  onClick: (trace) => void;
-  onMouseEnter: (trace) => void;
+  onMouseLeave?: (trace) => void;
+  onClick?: (trace) => void;
+  onMouseEnter?: (trace) => void;
   setStyle: (item) => void;
   update: (entity) => void;
-  traceEffect: () => void;
+  traceEffect?: () => void;
   removeAll: (entities) => void;
   getBounds: (item, bounds?) => HtBounds;
   removeItem: (item) => void;
   removeData: (data) => void;
-  toSetMap: boolean;
-  cluster?: any;
-  clearAllClusters: (data: any[]) => void
+  toNotSetMap?: boolean;
+  // cluster?: any;
+  mapInstance: MapInstance,
+  // clearAllClusters: (data: any[]) => void
 }
 export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
-    map;
+    // map;
     entities: Entities<any> = {};
 
     // setMap: (item, map) => void;
 
     trace(data: any[] | null, map?) {
-      this.map = map || GlobalMap.map || this.map;
+      map = map || this.mapInstance.map;
       let mapUtils = GlobalMap.mapUtils;
-      if (!this.map) {
+      if (!map) {
         console.warn("Map is not initialized");
         return false;
       }
       if (data && data.length) {
-        if(this.cluster) this.clearAllClusters(data);
+        // if(this.cluster) this.clearAllClusters(data);
         _.each(data, datum => {
           let id = datum["id"];
           let entity = this.entities[id];
@@ -61,7 +63,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           }
           this.entities[id] = { data: datum, item, isOld: false };
           this.update(this.entities[id]);
-          if (!this.cluster) mapUtils.setMap(item, this.map);
+          if (!this.toNotSetMap) mapUtils.setMap(item, map);
         });
         if (this.traceEffect) this.traceEffect();
       } else {

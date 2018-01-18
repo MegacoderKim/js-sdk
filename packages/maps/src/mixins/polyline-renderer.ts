@@ -1,6 +1,7 @@
 import { Constructor } from "../interfaces";
 import { positionTime } from "../helpers/position-time-helper";
 import { GlobalMap } from "../global/map-service";
+import {HtBounds} from "../map-utils/interfaces";
 
 export interface IPolylinesBase {
   getEncodedPositionTime;
@@ -18,7 +19,7 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
       return GlobalMap.mapUtils.getPolyline();
     }
 
-    getBounds(item, bounds?) {
+    getBounds(item, bounds?): HtBounds {
       return GlobalMap.mapUtils.extendBoundsWithPolyline(item, bounds);
     }
 
