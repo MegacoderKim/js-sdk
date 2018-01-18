@@ -1,7 +1,7 @@
 import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
 import { HtPosition } from "ht-models";
-import { StyleFunct } from "../interfaces";
+import {Entity, StyleFunct} from "../interfaces";
 import {
   ItemClassFactoryConfig,
   itemsBaseFactory,
@@ -9,29 +9,26 @@ import {
   mapItemsFactory
 } from "../base/map-items-factory";
 import { point } from "leaflet";
+import {ExtendBoundsMixin} from "../mixins/extend-bounds";
+import {MarkersMixin} from "../mixins/marker-renderer";
+import {StyleMixin} from "../mixins/styles";
+import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-observable";
+import {PopupMixin} from "../mixins/popup-renderer";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
+import {TraceMixin} from "../mixins/trace";
+import {ClusterMixin} from "../mixins/clusters";
+import {MapInstance} from "../map-utils/map-instance";
+import {GlobalMap} from "../global/map-service";
 declare const RichMarkerPosition: any;
+import {Observable} from "rxjs/Observable";
+import {Subscription} from "rxjs/Subscription";
+import {HtBounds} from "../map-utils/interfaces";
 
-const usersClustersConfig: ItemClassFactoryConfig = {
-  renderConfig: {
-    getPosition(data): HtPosition {
-      return htUser(data).getPosition();
-    },
-    getDivContent(data) {
-      return userDivFactory(data);
-    },
-    getInfoContent(data) {
-      let string = `<div>
-<strong>${data.name}</strong>
-<div>${data.display.status_text}</div>
-<div>${data.display.sub_status_text}</div>
-</div>`;
-      return string;
-    }
-  },
-  styleFunct: {
+export class UsersCluster {
+  styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
-        case "google": {
+        case 'google': {
           return {
             default: {
               flat: true,
@@ -43,8 +40,8 @@ const usersClustersConfig: ItemClassFactoryConfig = {
               pixelOffset: new google.maps.Size(0, -35)
             }
           }
-        };
-        case "leaflet": {
+        }
+        case 'leaflet': {
           return {
             default: {
               // iconAnchor: point(15, 43)
@@ -59,18 +56,36 @@ const usersClustersConfig: ItemClassFactoryConfig = {
         }
       }
     }
-  },
-  typeConfig: {
-    isDiv: true,
-    isCluster: true,
-    hasPopup: true,
-    hasDataObservable: true
-  }
-};
+  };
 
-export const usersClustersTrace = () => {
-  return itemsFactory(usersClustersConfig);
-};
+  constructor(public mapInstance: MapInstance = GlobalMap) {}
+
+  getPosition(data): HtPosition {
+    return htUser(data).getPosition();
+  };
+
+  getDivContent(data) {
+    return userDivFactory(data);
+  };
+
+  getInfoContent(data) {
+    let string = `<div>
+<strong>${data.name}</strong>
+<div>${data.display.status_text}</div>
+<div>${data.display.sub_status_text}</div>
+</div>`;
+    return string;
+  }
+
+  traceEffect() {
+
+  }
+}
+
+export const UsersClusterTrace = DataObservableMixin(
+  PopupMixin(ClusterMixin(TraceMixin(ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(UsersCluster)))))))
+);
+
 
 // export class UsersClusters {
 //   name = "Cluster user";

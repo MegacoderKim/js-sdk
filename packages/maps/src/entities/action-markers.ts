@@ -7,18 +7,22 @@ import {
   mapItemsFactory
 } from "../base/map-items-factory";
 import { point } from "leaflet";
+import {MarkersMixin} from "../mixins/marker-renderer";
+import {MapInstance} from "../map-utils/map-instance";
+import {GlobalMap} from "../global/map-service";
+import {StyleMixin} from "../mixins/styles";
+import {CircleMixin} from "../mixins/circle-renderer";
+import {Entity, StyleFunct} from "../interfaces";
+import {HtBounds} from "../map-utils/interfaces";
+import {TraceMixin} from "../mixins/trace";
+import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 
-export const actionMarkersConfig: ItemClassFactoryConfig = {
-  renderConfig: {
-    getPosition(data): HtPosition {
-      let posObj = htAction(data).getPositionsObject();
-      return posObj ? posObj.position : null;
-    }
-  },
-  styleFunct: {
+export class ActionMarkers {
+  name = "Action";
+  styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
-        case 'google': {
+        case "google": {
           return {
             default: {
               icon: {
@@ -28,79 +32,36 @@ export const actionMarkersConfig: ItemClassFactoryConfig = {
                 strokeOpacity: 1,
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 7,
-                strokeWeight: 4
+                strokeWeight: 4,
               }
             }
           }
-        };
+        }
         case "leaflet": {
           return {
             default: {
               radius: 10,
-              fillColor: Color.blue,
+              fillColor: Color.stop,
               fillOpacity: 1,
-              weight: 4,
+              weight: 1,
               opacity: 1,
-              color: Color.grey5,
-              pane: "markerPane"
-            },
-            popup: {
-              offset: [0, -5],
-              // offset: point(0, -5),
-              closeButton: false
+              color: Color.stopDark,
+              pane: 'markerPane'
             }
           }
-        };
+        }
       }
-    }
-  },
-  name: "Action",
-  typeConfig: {
-    isCircle: true,
-    hasDataObservable: false
+    },
+  };
+
+  constructor(public mapInstance: MapInstance = GlobalMap) {}
+
+  getPosition(data): HtPosition {
+    let posObj = htAction(data).getPositionsObject();
+    return posObj ? posObj.position : null
+
   }
-};
+}
 
-export const actionsMarkersTrace = () => {
-  return itemsFactory(actionMarkersConfig);
-};
+export const ActionMarkersTrace = ExtendBoundsMixin(TraceMixin(CircleMixin(MarkersMixin(StyleMixin(ActionMarkers)))));
 
-// export class ActionMarkers {
-//   name = "Action";
-//   styleFunct = {
-//     google: {
-//       default: {
-//         icon: {
-//           fillColor: Color.blue,
-//           fillOpacity: 1,
-//           strokeColor: Color.grey5,
-//           strokeOpacity: 1,
-//           path: google.maps.SymbolPath.CIRCLE,
-//           scale: 7,
-//           strokeWeight: 4,
-//         }
-//       }
-//     },
-//     leaflet: {
-//       default: {
-//         radius: 10,
-//         fillColor: Color.stop,
-//         fillOpacity: 1,
-//         weight: 1,
-//         opacity: 1,
-//         color: Color.stopDark,
-//         pane: 'markerPane'
-//       }
-//     }
-//   };
-//
-//   getPosition(data): HtPosition {
-//     let posObj = htAction(data).getPositionsObject();
-//     return posObj ? posObj.position : null
-//
-//   }
-// }
-// export const ActionMarkersTrace = mapItemsFactory(ActionMarkers, {
-//   isCircle: true,
-//   hasDataObservable: false
-// });

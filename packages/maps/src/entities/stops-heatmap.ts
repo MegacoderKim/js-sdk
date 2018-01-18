@@ -5,6 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {StyleMixin} from "../mixins/styles";
 import {StyleFunct} from "../interfaces";
+import {HtBounds} from "../map-utils/interfaces";
 
 export class StopsHeatmap {
   styleFunct: StyleFunct = {
