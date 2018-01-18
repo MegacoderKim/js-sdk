@@ -32,7 +32,7 @@ export class HtActionsClient {
     this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$, dateParam});
     this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
     this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
-    this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'recorded_at'});
+    this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'completed_at'});
   }
 }
 

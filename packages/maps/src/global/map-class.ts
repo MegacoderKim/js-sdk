@@ -48,10 +48,6 @@ export class HtMapClass {
     this.usersHeatmap = new StopsHeatmapTrace();
     this.actionsHeatmap = new ActionsHeatmapTrace();
     this.placeline = new PlacelineTrace({mapInstance: GlobalMap});
-    // GlobalMap.addToItemsSet(this.placeline);
-    // GlobalMap.addToItemsSet(this.usersCluster);
-    // GlobalMap.addToItemsSet(this.actionsHeatmap);
-    // this.mapItemsSet.push(this.placeline, this.usersCluster);
   }
 
   get segmentTrace() {
