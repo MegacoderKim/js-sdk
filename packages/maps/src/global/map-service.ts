@@ -3,6 +3,7 @@ import { LeafletUtils } from "../map-utils/leaflet-map-utils";
 import { GoogleMapUtils } from "../map-utils/google-map-utils";
 import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
 import * as _ from "underscore";
+import {filter} from "rxjs/operators";
 
 export const GlobalMap = {
   mapUtils: null,
@@ -14,7 +15,7 @@ export const GlobalMap = {
     const i = this.itemsSet.indexOf(item);
     if (i == -1) this.itemsSet.push(item);
   },
-  setMap(map: HtMap) {
+  setMap(map: HtMap | null) {
     this.map$.next(map);
   },
   getMap() {
@@ -28,7 +29,10 @@ export const GlobalMap = {
   addCluster(cluster) {
     if (!this.clusters.includes(cluster)) {
       this.clusters.push(cluster);
-      GlobalMap.map$.subscribe(map => {
+      GlobalMap.map$.pipe(
+        filter(data => !!data)
+      )
+        .subscribe(map => {
         cluster.cluster = GlobalMap.mapUtils.getMarkerCluster(map);
       });
     }
@@ -36,7 +40,7 @@ export const GlobalMap = {
   getBounds(bounds, item) {
     return item.extendBounds(bounds);
   },
-  getItemsSetBounds(items) {
+  getItemsSetBounds(items: any[]) {
     let bounds = GlobalMap.mapUtils.extendBounds();
     return _.reduce(
       items,
@@ -46,25 +50,28 @@ export const GlobalMap = {
       bounds
     );
   },
-  resetBounds(bounds?: HtBounds, options?) {
+  resetBounds(bounds?: HtBounds, options?, map?) {
     setTimeout(() => {
       let items = this.itemsSet;
       bounds = this.getItemsSetBounds(items);
       if (bounds && this.mapUtils.isValidBounds(bounds))
-        this.setBounds(bounds, options);
+        this.setBounds(bounds, options, map);
     }, 10);
   },
+
   leafletSetBoundsOptions: {
     animate: true,
     duration: 0.3
   },
   googleSetBoundsOptions: {},
-  setBounds(bounds: HtBounds, options?) {
+  setBounds(bounds: HtBounds, options?, map?) {
+    map = map || this.map;
+    if (!map) return false;
     options =
       options || this.mapType == "leaflet"
         ? this.leafletSetBoundsOptions
         : this.googleSetBoundsOptions;
-    GlobalMap.mapUtils.setBounds(this.map, bounds, options);
+    GlobalMap.mapUtils.setBounds(map || this.map, bounds, options);
   }
 };
 
