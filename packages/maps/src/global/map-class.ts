@@ -1,7 +1,7 @@
 import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
 import { IUserData } from "ht-models";
-import { usersClustersTrace } from "../entities/users-cluster";
+import {usersClustersTrace, UsersClusterTrace} from "../entities/users-cluster";
 import { LightColorMapStyle } from "../styles/light-color-map";
 import * as _ from "underscore";
 import { GlobalMap } from "./map-service";
@@ -9,7 +9,7 @@ import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { StopsHeatmapTrace } from "../entities/stops-heatmap"
-import { actionClustersTrace } from "../entities/actions-cluster"
+import {ActionsClusterTrace} from "../entities/actions-cluster"
 import {ActionsHeatmapTrace} from "../entities/actions-heatmap";
 export class HtMapClass {
   // map: HtMap;
@@ -43,8 +43,8 @@ export class HtMapClass {
     options: HtMapClassOptions = {}
   ) {
     GlobalMap.setMapType(mapType);
-    this.usersCluster = usersClustersTrace();
-    this.actionsCluster = actionClustersTrace();
+    this.usersCluster = new UsersClusterTrace();
+    this.actionsCluster = new ActionsClusterTrace();
     this.usersHeatmap = new StopsHeatmapTrace();
     this.actionsHeatmap = new ActionsHeatmapTrace();
     this.placeline = new PlacelineTrace();
