@@ -1,3 +1,8 @@
+# 0.1.3
+- Extract `extendBounds` as new mixin from `TraceMixin`
+- Move `clearAllClusters` to `ClusterMixin` from `TraceMixin`
+- Fix `setMap` in leaflet for heatmap
+
 # 0.1.1
 - Refactor `MapService` to `GlobalMap`
 - Add `leaflet.heat` and `heatmapMixin`

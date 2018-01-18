@@ -1,11 +1,11 @@
 import * as _ from "underscore";
 import { IAction, ISegment, ITimelineEvent, IUserData } from "ht-models";
-import { segmentsPolylinesTrace } from "../entities/segment-polylines";
-import { stopMarkersTrace } from "../entities/stop-markers";
-import { actionsMarkersTrace } from "../entities/action-markers";
+import { SegmentPolylinesTrace } from "../entities/segment-polylines";
+import {StopMarkersTrace} from "../entities/stop-markers";
+import { ActionMarkersTrace } from "../entities/action-markers";
 import { htAction } from "ht-data";
 import { GlobalMap } from "../global/map-service";
-import { currentUserTrace } from "../entities/current-user";
+import { CurrentUserTrace } from "../entities/current-user";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 // import {filter} from "rxjs/operators/filter";
@@ -18,19 +18,23 @@ import { HtPosition } from "ht-models";
 import {HtMap} from "../../";
 
 export class Placeline {
-  segmentsPolylines = segmentsPolylinesTrace();
-  stopMarkers = stopMarkersTrace();
-  actionMarkers = actionsMarkersTrace();
+  segmentsPolylines;
+  stopMarkers;
+  actionMarkers;
   // actionsPolylines = new ActionMarkersTrace();
   // timelineSegment = new TimelineSegment();
-  userMarker = currentUserTrace();
-  replayMarker = stopMarkersTrace();
-  eventMarkers = stopMarkersTrace();
+  userMarker;
+  // replayMarker = stopMarkersTrace();
+  // eventMarkers = stopMarkersTrace();
   allowedEvents = {};
   // map;
   // dataSub: Subscription;
   // data$: Observable<null | IUserData>;
   constructor(public options: HtSegmentsTraceOptions = {}) {
+    this.stopMarkers = new StopMarkersTrace();
+    this.userMarker = new CurrentUserTrace();
+    this.segmentsPolylines = new SegmentPolylinesTrace();
+    this.actionMarkers = new ActionMarkersTrace()
     // this.initBaseItems();
   }
 
