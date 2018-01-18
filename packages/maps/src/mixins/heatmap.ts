@@ -2,6 +2,7 @@ import { Constructor, Entities } from "../interfaces";
 import { HtPosition } from "ht-models";
 import { GlobalMap } from "../global/map-service";
 import {leafletHeat} from "../map-utils/leaflet.heatmap";
+import {HtBounds} from "../map-utils/interfaces";
 
 export interface IHeatmapBase {
   getStyle: (styleType?) => object;
@@ -15,15 +16,15 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
     map;
     heatmap;
     forceExtendBounds = true;
-    data: any[];
+    entities: any[];
     constructor(...args: any[]) {
       super(...args);
-      let style = this.getStyle(GlobalMap.mapUtils.mapType);
+      let style = this.getStyle();
       this.heatmap = GlobalMap.mapUtils.getHeatmap(style);
     }
 
     trace(items: any[], map?) {
-      this.data = items;
+      this.entities = items.map(item => ({item}));
       this.map = map || GlobalMap.map;
       if (this.map) {
         if(items) {
@@ -40,6 +41,12 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
         console.warn("Map is not initialized");
         return false;
       }
+    }
+
+
+    getBounds(item, bounds?: HtBounds) {
+      let position = this.getPosition(item);
+      return GlobalMap.mapUtils.extendBounds(position, bounds)
     }
 
     clear() {

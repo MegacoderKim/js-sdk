@@ -1,5 +1,5 @@
 import { Constructor, Entities } from "../interfaces";
-import { HtMap } from "../map-utils/interfaces";
+import {HtBounds, HtMap} from "../map-utils/interfaces";
 import { HtPosition } from "ht-models";
 import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
@@ -7,6 +7,7 @@ import * as _ from "underscore";
 export interface IMarkersBase {
   getStyle: (styleType?) => object;
   getPosition: (data) => HtPosition;
+  forceExtendBounds?: boolean
 }
 
 export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
@@ -22,6 +23,10 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
 
     getItem(data) {
       return GlobalMap.mapUtils.getMarker();
+    }
+
+    getBounds(item, bounds?): HtBounds {
+      return GlobalMap.mapUtils.extendItemBounds(item, bounds, this.forceExtendBounds);
     }
 
     update({ item, data }) {

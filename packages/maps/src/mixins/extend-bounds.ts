@@ -4,14 +4,14 @@ import { Constructor, Entities } from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
 
 export interface IExtendBoundsBase {
-  forceExtendBounds?: boolean
+  getBounds: (item, bounds: HtBounds) => HtBounds
 }
 export function ExtendBoundsMixin<TBase extends Constructor<IExtendBoundsBase>>(Base: TBase) {
   return class extends Base {
     entities: Entities<any> = {};
     extendBounds(bounds: HtBounds) {
       let mapUtils = GlobalMap.mapUtils;
-      bounds = bounds || mapUtils.extendBounds();
+      bounds = bounds || mapUtils.extendItemBounds();
       let newBounds = _.reduce(
         this.entities,
         (bounds, entity) => {
@@ -20,9 +20,6 @@ export function ExtendBoundsMixin<TBase extends Constructor<IExtendBoundsBase>>(
         bounds
       );
       return newBounds;
-    }
-    getBounds(item, bounds?) {
-      return GlobalMap.mapUtils.extendBounds(item, bounds, this.forceExtendBounds);
     }
   };
 }

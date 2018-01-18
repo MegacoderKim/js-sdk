@@ -1,7 +1,7 @@
 import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
-import { HtMap } from "../map-utils/interfaces";
+import {HtBounds, HtMap} from "../map-utils/interfaces";
 
 export interface IClusterBase {
   cluster: any;
@@ -39,8 +39,8 @@ export function ClusterMixin<TBase extends Constructor<IClusterBase>>(
       }
     }
 
-    getBounds(item, bounds?) {
-      return GlobalMap.mapUtils.extendBounds(item, bounds, true);
+    getBounds(item, bounds?): HtBounds {
+      return GlobalMap.mapUtils.extendItemBounds(item, bounds, true);
     }
 
     removeItem(item) {
