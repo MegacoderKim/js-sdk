@@ -49,11 +49,6 @@ export class MapContainerComponent implements OnInit, AfterContentInit, OnDestro
 
   }
 
-
-  resetMap() {
-    this.mapService.resetBounds()
-  }
-
   ngAfterContentInit() {
 
   }
