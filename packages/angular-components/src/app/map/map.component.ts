@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Outpu
 import {IUserData} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
-import {HtMap} from "ht-maps";
+import {HtMap, MapInstance, GlobalMap} from "ht-maps";
 
 @Component({
   selector: 'ht-map',
@@ -12,14 +12,14 @@ import {HtMap} from "ht-maps";
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() options: any = {};
   @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
+  @Input() mapInstance: MapInstance = GlobalMap;
   constructor(
     private elRef: ElementRef,
-    private mapService: HtMapService
   ) { }
 
   @HostListener('resize', ['$event'])
   onMapResize() {
-    this.mapService.inValidateSize()
+    this.mapInstance.inValidateSize()
     // todo this.mapService.map.resize();
   }
 
@@ -50,9 +50,9 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const el = this.elRef.nativeElement;
-    this.mapService.initMap(el, this.options);
-    this.onReady.next(this.mapService.map);
-    window['ht-map'] = this.mapService.map;
+    this.mapInstance.renderMap(el, this.options);
+    this.onReady.next(this.mapInstance.map);
+    // window['ht-map'] = this.mapService.map;
     // this.mapService.resetBounds()
   }
 
