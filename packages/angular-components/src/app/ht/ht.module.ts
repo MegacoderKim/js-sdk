@@ -6,7 +6,7 @@ import {HtRequestService} from "./ht-request.service";
 import {HtUsersService} from "./ht-users.service";
 import {HtGroupsService} from "./ht-groups.service";
 import {HtClientService} from "./ht-client.service";
-import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient} from "ht-client";
+import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient, HtActionsClient} from "ht-client";
 import {HtAccountService} from "./ht-account-users.service";
 import {HtActionsService} from "./ht-actions.service";
 

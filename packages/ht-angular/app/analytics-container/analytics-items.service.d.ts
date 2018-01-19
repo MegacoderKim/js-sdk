@@ -1,11 +1,11 @@
-import { IAnalyticsItem } from "../interfaces/analytics-item";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
+import { IAnalyticsService } from "../interfaces/analytics";
 export declare class AnalyticsItemsService {
     presets: any;
     chosenItemCreater: any[];
-    items$: BehaviorSubject<IAnalyticsItem[]>;
-    filteredItems$: Observable<IAnalyticsItem[]>;
+    items$: BehaviorSubject<IAnalyticsService[]>;
+    filteredItems$: Observable<IAnalyticsService[]>;
     allTags$: Observable<string[]>;
     tags$: Observable<ISelectedTag[]>;
     selectedTags$: BehaviorSubject<string[]>;

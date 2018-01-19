@@ -1,13 +1,15 @@
-import { AfterViewInit, ElementRef, OnInit } from '@angular/core';
-import { HtMapService } from "../ht/ht-map.service";
-import { HtUsersService } from "../ht/ht-users.service";
+import { AfterViewInit, ElementRef, OnInit, EventEmitter } from '@angular/core';
+import { HtMap, MapInstance } from "ht-maps";
 export declare class MapComponent implements OnInit, AfterViewInit {
     private elRef;
-    private mapService;
-    private userService;
     options: any;
-    constructor(elRef: ElementRef, mapService: HtMapService, userService: HtUsersService);
+    onReady: EventEmitter<HtMap>;
+    mapInstance: MapInstance;
+    loading: boolean;
+    mapElem: any;
+    constructor(elRef: ElementRef);
     onMapResize(): void;
     ngOnInit(): void;
+    resetMap(): void;
     ngAfterViewInit(): void;
 }

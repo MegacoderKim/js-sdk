@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {IAnalyticsItem} from "../interfaces/analytics-item";
 import { UsersAnalyticsListService} from "../users-analytics-list/users-analytics-list.service";
 import {ActionsStatusGraphService} from "../actions-status-graph/actions-status-graph.service";
 import {usersAnalyticsListPresets} from "./analytics-presets/users-list-preset";
@@ -12,15 +11,16 @@ import {usersClientFactory, dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {HtUsersService} from "../ht/ht-users.service";
 import {actionsClientFactory} from "ht-client";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
 export class AnalyticsItemsService {
 
   presets;
   chosenItemCreater = [];
-  items$: BehaviorSubject<IAnalyticsItem[]>;
+  items$: BehaviorSubject<IAnalyticsService[]>;
   // items$: BehaviorSubject<IAnalyticsItem[]> = new BehaviorSubject([]);
-  filteredItems$: Observable<IAnalyticsItem[]>;
+  filteredItems$: Observable<IAnalyticsService[]>;
   allTags$: Observable<string[]>;
   tags$: Observable<ISelectedTag[]>;
   selectedTags$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
@@ -37,24 +37,25 @@ export class AnalyticsItemsService {
     this.presets = [
       // actionsConfigPreset.max_distance(),
       // actionsConfigPreset.max_duration(),
-      // actionsConfigPreset.summary(actionsClient, actionDateRangeService),
+      actionsConfigPreset.summary(actionsClient, actionDateRangeService),
       // usersAnalyticsListPresets.users_summary(usersClient),
-      // usersAnalyticsListPresets.users_summary(
-      //   usersClient, 'Users activity summary',
-      //   [...activityQueryLabel, ...showAllQueryLable]
-      // ),
-      // actionsConfigPreset.status(),
+      usersAnalyticsListPresets.users_summary(
+        usersClient, 'Users activity summary',
+        [...activityQueryLabel, ...showAllQueryLable]
+      ),
+      actionsConfigPreset.status(),
+      actionsConfigPreset.heatmap(),
       usersAnalyticsListPresets.stops_heatmap(),
-      // actionsConfigPreset.recently_assigned(),
-      // actionsConfigPreset.recently_completed(),
+      actionsConfigPreset.recently_assigned(),
+      actionsConfigPreset.recently_completed(),
       // actionsConfigPreset.users_on_action(),
-      // usersAnalyticsListPresets.last_recorded(),
-      // usersAnalyticsListPresets.users_actions(),
-      // usersAnalyticsListPresets.max_location_disabled_duration(),
-      // usersAnalyticsListPresets.current_location_disabled(),
-      // usersAnalyticsListPresets.max_stop_duration(),
+      usersAnalyticsListPresets.last_recorded(),
+      usersAnalyticsListPresets.users_actions(),
+      usersAnalyticsListPresets.max_location_disabled_duration(),
+      usersAnalyticsListPresets.current_location_disabled(),
+      usersAnalyticsListPresets.max_stop_duration(),
       // usersAnalyticsListPresets.max_network_offline(),
-      // usersAnalyticsListPresets.max_distance(),
+      usersAnalyticsListPresets.max_distance(),
     ];
     this.chosenItemCreater = this.presets;
     this.items$ = new BehaviorSubject(this.getItems(this.presets));

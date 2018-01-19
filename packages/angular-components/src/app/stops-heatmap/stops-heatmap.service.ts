@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-import {IAnalyticsItemService} from "../interfaces/analytics-item";
-import {StopsHeatmapComponent} from "./stops-heatmap.component";
 import { UsersHeatmap, usersClientFactory, dateRangeFactory } from "ht-client";
 import {IAnalyticsListConfig} from "../interfaces/analytics-list";
 import {DateRangeMap} from "ht-data";
 import {of} from "rxjs/observable/of";
 import {MapInstance, StopsHeatmapTrace, GlobalMap} from "ht-maps";
 import {tap} from "rxjs/operators";
+import {AnalyticsMapContainerComponent} from "../analytics-map-container/analytics-map-container.component";
+import {IAnalyticsMapService} from "../interfaces/analytics";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
-export class StopsHeatmapService implements IAnalyticsItemService {
-  component = StopsHeatmapComponent;
+export class StopsHeatmapService implements IAnalyticsMapService {
+  component = AnalyticsMapContainerComponent;
   className = "is-12";
   tags = ['users'];
   title;
   noData = false;
-  loading$ = of(false);
+  loading$: Observable<boolean> = of(false);
   mapLoading$;
   client: UsersHeatmap;
   dateRangeService$;
@@ -23,11 +24,15 @@ export class StopsHeatmapService implements IAnalyticsItemService {
   mapInstance: MapInstance;
   constructor(config: IAnalyticsListConfig) {
     this.mapInstance = new MapInstance();
-    this.mapInstance.setMapType(GlobalMap.mapType);
+    this.setMapType('leaflet');
     this.initClient(config);
   }
 
-  setData(instance: StopsHeatmapComponent) {
+  setMapType(mapType) {
+    this.mapInstance.setMapType(mapType);
+  }
+
+  setData(instance: AnalyticsMapContainerComponent) {
     instance.service = this
   };
 
