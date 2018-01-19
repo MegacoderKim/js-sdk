@@ -6,8 +6,19 @@ import {ActionsAnalyticsListService} from "../../actions-analytics-list/actions-
 import {DateString, DistanceLocale, HMString, NameCase, TimeString} from "ht-utility";
 import {IAction} from "ht-models";
 import {ActionsSummaryService} from "../../actions-summary-chart/actions-summary.service";
+import {ActionsHeatmapService} from "../../actions-heatmap/actions-heatmap.service";
 
 export const actionsConfigPreset: IAnalyticsPresets = {
+  heatmap() {
+    return {
+      service: ActionsHeatmapService,
+      initialConfig: {
+        title: "Heatmap of completed actions",
+        initialDateRange: DateRangeMap.last_7_days,
+        query: {page_size: 500}
+      }
+    }
+  },
   status() {
     return {
       service: ActionsStatusGraphService,

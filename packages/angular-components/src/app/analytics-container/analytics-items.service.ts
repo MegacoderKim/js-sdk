@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {IAnalyticsItem} from "../interfaces/analytics-item";
 import { UsersAnalyticsListService} from "../users-analytics-list/users-analytics-list.service";
 import {ActionsStatusGraphService} from "../actions-status-graph/actions-status-graph.service";
 import {usersAnalyticsListPresets} from "./analytics-presets/users-list-preset";
@@ -12,27 +11,28 @@ import {usersClientFactory, dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {HtUsersService} from "../ht/ht-users.service";
 import {actionsClientFactory} from "ht-client";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
 export class AnalyticsItemsService {
 
   presets;
   chosenItemCreater = [];
-  items$: BehaviorSubject<IAnalyticsItem[]>;
+  items$: BehaviorSubject<IAnalyticsService[]>;
   // items$: BehaviorSubject<IAnalyticsItem[]> = new BehaviorSubject([]);
-  filteredItems$: Observable<IAnalyticsItem[]>;
+  filteredItems$: Observable<IAnalyticsService[]>;
   allTags$: Observable<string[]>;
   tags$: Observable<ISelectedTag[]>;
   selectedTags$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   totalTags: number;
   // selectedTags$: BehaviorSubject<string[]>;
   constructor() {
-    const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
+    const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable()});
     const usersFilter = usersClient.filterClass;
     const activityQueryLabel = usersFilter.activityQueryArray;
     const showAllQueryLable = usersFilter.showAllQueryArray;
     const actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-    const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$});
+    const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$.asObservable()});
     const actionsStatusQueryLabel = [];
     this.presets = [
       // actionsConfigPreset.max_distance(),
@@ -44,6 +44,8 @@ export class AnalyticsItemsService {
         [...activityQueryLabel, ...showAllQueryLable]
       ),
       actionsConfigPreset.status(),
+      actionsConfigPreset.heatmap(),
+      usersAnalyticsListPresets.stops_heatmap(),
       actionsConfigPreset.recently_assigned(),
       actionsConfigPreset.recently_completed(),
       // actionsConfigPreset.users_on_action(),

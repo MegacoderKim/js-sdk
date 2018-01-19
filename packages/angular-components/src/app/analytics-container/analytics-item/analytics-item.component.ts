@@ -1,6 +1,6 @@
 import {Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
 import {AnalyticsSlotDirective} from "./analytics-slot.directive";
-import {IAnalyticsItem} from "../../interfaces/analytics-item";
+import {IAnalyticsService} from "../../interfaces/analytics";
 
 @Component({
   selector: 'ht-analytics-item',
@@ -9,7 +9,7 @@ import {IAnalyticsItem} from "../../interfaces/analytics-item";
 })
 export class AnalyticsItemComponent implements OnInit {
   @ViewChild(AnalyticsSlotDirective) slot: AnalyticsSlotDirective;
-  @Input() item: IAnalyticsItem;
+  @Input() item: IAnalyticsService;
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
   ) { }

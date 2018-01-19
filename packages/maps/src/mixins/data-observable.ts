@@ -1,7 +1,7 @@
 import { Constructor } from "../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
-import { GlobalMap } from "../global/map-service";
+// import { GlobalMap } from "../global/map-service";
 import { distinctUntilChanged } from "rxjs/operators/distinctUntilChanged";
 import { filter } from "rxjs/operators/filter";
 import { map } from "rxjs/operators/map";
@@ -11,6 +11,7 @@ import * as _ from "underscore";
 import { HtPosition } from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { AllData, Page } from "ht-models";
+import {MapInstance} from "../map-utils/map-instance";
 
 export interface IMarkersArray {
   valid: any[];
@@ -22,6 +23,7 @@ export interface IDataObservableBase {
   trace: (data, map?) => any;
   isValidMapItems?: (data) => boolean;
   getPosition: (data) => HtPosition;
+  mapInstance: MapInstance
 }
 export function DataObservableMixin<
   TBase extends Constructor<IDataObservableBase>>(Base: TBase) {
@@ -32,7 +34,8 @@ export function DataObservableMixin<
     data$: Observable<IMarkersArray>;
 
     constructor(...args: any[]) {
-      super(...args)
+      super(...args);
+      this.mapInstance.addToItemsSet(this)
     }
 
     _procData$() {
@@ -118,7 +121,7 @@ export function DataObservableMixin<
     // };
 
     _initDataObserver() {
-      let userData$ = this.data$.pipe(filter(data => !!GlobalMap.map));
+      let userData$ = this.data$.pipe(filter(data => !!this.mapInstance.map));
 
       // function isNewId (newItem, old) {
       //   if(!old && newItem) return true;
@@ -130,7 +133,7 @@ export function DataObservableMixin<
       // }
       let sub = userData$.subscribe(({ valid, invalid, isNew }) => {
         this.trace(valid);
-        if (isNew) GlobalMap.resetBounds();
+        if (isNew) this.mapInstance.resetBounds();
       });
       this.dataSub = sub;
     }

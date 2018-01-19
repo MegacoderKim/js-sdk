@@ -6,6 +6,7 @@ import {UsersSummaryService} from "../../users-summary-chart/users-summary.servi
 import {ISummaryConfig} from "../../interfaces/users-analytics";
 import {IActionsTrendlineConfig} from "../../interfaces/trendline";
 import {DateRangeMap, userTableFormat} from "ht-data";
+import {StopsHeatmapService} from "../../stops-heatmap/stops-heatmap.service";
 
 export interface IPreset {
   service: any,
@@ -15,6 +16,17 @@ export interface IAnalyticsPresets {
   [name: string]: (...args: any[]) => IPreset
 }
 export const usersAnalyticsListPresets: IAnalyticsPresets = {
+  stops_heatmap() {
+    return {
+      service: StopsHeatmapService,
+      initialConfig: {
+        title: "Heatmap of stops by users",
+        query: {page_size: 500},
+        tags: ['user behaviour'],
+        initialDateRange: DateRangeMap.last_7_days
+      }
+    }
+  },
   max_location_disabled_duration() {
     return {
       service: UsersAnalyticsListService,

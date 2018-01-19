@@ -4,9 +4,14 @@ import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {StyleMixin} from "../mixins/styles";
-import {StyleFunct} from "../interfaces";
+import {Entity, StyleFunct} from "../interfaces";
+import {HtBounds} from "../map-utils/interfaces";
+import {MapInstance} from "../map-utils/map-instance";
+import {GlobalMap} from "../global/map-service";
+import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 
 export class StopsHeatmap {
+  name = "stop heatmap";
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
@@ -28,6 +33,10 @@ export class StopsHeatmap {
       }
     }
   };
+  mapInstance: MapInstance
+  constructor(mapInstance: MapInstance = GlobalMap) {
+    this.mapInstance = mapInstance
+  }
 
   getPosition(item: IPlaceHeat): HtPosition {
     return {
@@ -39,4 +48,6 @@ export class StopsHeatmap {
 
 };
 
-export const StopsHeatmapTrace = DataObservableMixin(HeatmapMixin(StyleMixin(StopsHeatmap)));
+export const StopsHeatmapTrace = ExtendBoundsMixin(
+  DataObservableMixin(HeatmapMixin(StyleMixin(StopsHeatmap)))
+);

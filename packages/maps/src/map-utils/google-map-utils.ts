@@ -1,4 +1,4 @@
-import { HtMarker, MapUtils } from "./interfaces";
+import {HtBounds, HtMarker, MapUtils} from "./interfaces";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
 declare var MarkerClusterer: any;
@@ -9,15 +9,21 @@ export function ExtendBounds(
   force = false
 ) {
   bounds = bounds || new google.maps.LatLngBounds();
-  if ((item && item.getMap() && item.getPosition) || force) {
+  if (force || (item && item.getMap() && item.getPosition)) {
     let p = item.getPosition();
-    let l = { lat: p.lat(), lng: p.lng() };
+    let l = {lat: p.lat(), lng: p.lng()};
     bounds.extend(l);
   }
   if (item && item.getMap() && item.getCenter) {
     bounds.extend(item.getCenter());
   }
   return bounds;
+}
+
+export function extendBounds(position: HtPosition, bounds: google.maps.LatLngBounds = new google.maps.LatLngBounds()): HtBounds {
+  let latlng = GetLatlng(position);
+  bounds.extend(latlng);
+  return bounds
 }
 
 export const ExtendBoundsWithPolyline = (
@@ -55,7 +61,7 @@ export const setPolylineStyle = (polyline, style) => {
 export const SetMap = (item, map: google.maps.Map) => {
   if (!map) {
     item.setMap(null);
-  } else if ((item && !item.getMap()) || (item && !item.getMap)) {
+  } else if ((item && !item.getMap) || (item && !item.getMap())) {
     item.setMap(map);
   }
 };
@@ -330,7 +336,8 @@ export const GoogleMapUtils: MapUtils = {
   setCircleStyle,
   setPolylineStyle,
   clearItem: ClearItem,
-  extendBounds: ExtendBounds,
+  extendItemBounds: ExtendBounds,
+  extendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
   getLatlng: GetLatlng,
   updatePosition: HtUpdatePositionTooltip,

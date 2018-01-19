@@ -7,11 +7,11 @@ import {filter, map} from "rxjs/operators";
 import {format} from "date-fns";
 import {IActionsTrendlineConfig} from "../interfaces/trendline";
 import {ActionsGraph} from "ht-client";
-import {IAnalyticsItem, IAnalyticsItemService} from "../interfaces/analytics-item";
 import {ActionsStatusGraphComponent} from "./actions-status-graph.component";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
-export class ActionsStatusGraphService implements IAnalyticsItemService {
+export class ActionsStatusGraphService implements IAnalyticsService {
   component = ActionsStatusGraphComponent;
   client: ActionsGraph;
   dateRangeService$;

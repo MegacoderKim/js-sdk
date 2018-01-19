@@ -1,8 +1,8 @@
-import { IAnalyticsItemService } from "../interfaces/analytics-item";
 import { UsersSummaryChartComponent } from "./users-summary-chart.component";
 import { ISummaryConfig } from "../interfaces/users-analytics";
 import { HtUsersClient } from "ht-client";
-export declare class UsersSummaryService implements IAnalyticsItemService {
+import { IAnalyticsService } from "../interfaces/analytics";
+export declare class UsersSummaryService implements IAnalyticsService {
     component: typeof UsersSummaryChartComponent;
     className: string;
     tags: string[];

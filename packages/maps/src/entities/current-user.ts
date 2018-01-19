@@ -2,13 +2,21 @@ import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
 declare var RichMarkerPosition: any;
 import { HtPosition } from "ht-models";
-import { StyleFunct } from "../interfaces";
+import {Entity, StyleFunct} from "../interfaces";
 import {
   ItemClassFactoryConfig,
   itemsFactory,
   mapItemsFactory
 } from "../base/map-items-factory";
 import { point } from "leaflet";
+import {MapInstance} from "../map-utils/map-instance";
+import {GlobalMap} from "../global/map-service";
+import {SingleItemMixin} from "../mixins/single-item";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
+import {TraceMixin} from "../mixins/trace";
+import {MarkersMixin} from "../mixins/marker-renderer";
+import {StyleMixin} from "../mixins/styles";
+import {HtBounds} from "../map-utils/interfaces";
 
 export const currentUserConfig: ItemClassFactoryConfig = {
   renderConfig: {
@@ -53,6 +61,47 @@ export const currentUserConfig: ItemClassFactoryConfig = {
 export const currentUserTrace = () => {
   return itemsFactory(currentUserConfig);
 };
+
+export class CurrentUser {
+  name = "Current user";
+
+  styleFunct: StyleFunct = {
+    get(type) {
+      switch (type) {
+        case "google": {
+          return {
+            default: {
+              flat: true,
+              anchor: RichMarkerPosition.BOTTOM_CENTER
+            }
+          }
+        };
+        case "leaflet": {
+          return {
+            default: {
+              // iconAnchor: point(15, 43)
+              iconAnchor: [15, 43]
+            }
+          }
+        }
+      }
+    }
+  }
+
+  constructor(public mapInstance: MapInstance = GlobalMap) {}
+
+  getPosition(data): HtPosition {
+    return htUser(data).getPosition();
+  };
+
+  getDivContent(data) {
+    return userDivFactory(data);
+  }
+}
+
+export const CurrentUserTrace = SingleItemMixin(DivMarkersMixin(
+  TraceMixin(MarkersMixin(StyleMixin(CurrentUser)))
+))
 // export class CurrentUser {
 //   name = "Current user";
 //   styleFunct: StyleFunct = {

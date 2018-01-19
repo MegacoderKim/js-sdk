@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HtModule } from "./ht/ht.module";
 import {ModalModule} from "./modal/modal.module";
 import {InternalModule} from "./internal/internal.module";
+import {environment} from "../environments/environment";
 
 
 @NgModule({

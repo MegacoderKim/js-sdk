@@ -1,8 +1,8 @@
 import { IAnalyticsListConfig } from "../interfaces/analytics-list";
 import { UsersAnalytics } from "ht-client";
-import { IAnalyticsItemService } from "../interfaces/analytics-item";
 import { UsersAnalyticsListComponent } from "./users-analytics-list.component";
-export declare class UsersAnalyticsListService implements IAnalyticsItemService {
+import { IAnalyticsService } from "../interfaces/analytics";
+export declare class UsersAnalyticsListService implements IAnalyticsService {
     component: typeof UsersAnalyticsListComponent;
     dateRangeService$: any;
     title: any;

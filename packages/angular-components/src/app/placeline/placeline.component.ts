@@ -312,13 +312,22 @@ export class PlacelineComponent implements OnInit {
   }
 
   private getLocationVoidText(segment) {
-    switch (segment.reason) {
+    switch(segment.reason) {
       case 'disabled':
         return "Location disabled";
       case 'no_permission':
         return "Location permission unavailable";
       case 'unknown':
         return "Location unavailable";
+      case 'sdk_inactive': {
+        return "SDK inactive"
+      }
+      case "no_activity_permission": {
+        return "No activity permission"
+      }
+      case "device_off": {
+        return "Device off"
+      }
       default:
         return "Location unavailable"
     }

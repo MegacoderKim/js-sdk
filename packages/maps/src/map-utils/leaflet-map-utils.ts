@@ -1,4 +1,4 @@
-import { HtMarker, MapUtils, SetFocusConfig } from "./interfaces";
+import {HtBounds, HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
 import {PolylineUtil} from "./encoded-polyline";
 import { HtPosition } from "ht-models";
 import {
@@ -24,8 +24,14 @@ export function ExtendBounds(
   bounds: LatLngBounds = latLngBounds([]),
   force: boolean = false
 ): LatLngBounds {
-  if ((item && item.getElement()) || force) bounds.extend(item.getLatLng());
+  if (force || (item && !item.getElement) || (item && item.getElement())) bounds.extend(item.getLatLng());
   return bounds;
+}
+
+export function extendBounds(position: HtPosition, bounds: LatLngBounds = latLngBounds([])): HtBounds {
+  let latlng = GetLatlng(position);
+  bounds.extend(latlng);
+  return bounds
 }
 
 export const ExtendBoundsWithPolyline = (
@@ -51,8 +57,8 @@ export const setPolylineStyle = (polyline, style) => {
 };
 
 export const SetMap = (item, map: Map) => {
-  if ((item && !item.getElement()) || (item && !item.getElement))
-    item.addTo(map);
+  if ((item && !item.getElement) || (item && !item.getElement()))
+  item.addTo(map);
 };
 
 export const ClearItem = item => {
@@ -93,11 +99,12 @@ export function HtUpdatePopup(marker, infoContent, defaultOption) {
 
 export function HtUpdatePositionTooltip(
   marker,
-  position,
+  position: HtPosition,
   infoContent: string = "",
   defaultOption: L.TooltipOptions = {}
 ) {
-  marker.setLatLng(position);
+  let latLng = GetLatlng(position);
+  marker.setLatLng(latLng);
   if (infoContent) HtUpdateTooltip(marker, infoContent, defaultOption);
 }
 
@@ -202,7 +209,9 @@ function isValidBounds(bounds: L.LatLngBounds) {
 }
 
 function invalidateSize(map: L.Map) {
-  map.invalidateSize();
+  if(map && map.getContainer().offsetWidth) {
+    map.invalidateSize();
+  }
 }
 
 function getPopup(options) {
@@ -256,7 +265,8 @@ export const LeafletUtils: MapUtils = {
   setCircleStyle,
   setPolylineStyle,
   clearItem: ClearItem,
-  extendBounds: ExtendBounds,
+  extendItemBounds: ExtendBounds,
+  extendBounds,
   extendBoundsWithPolyline: ExtendBoundsWithPolyline,
   getLatlng: GetLatlng,
   updatePosition: HtUpdatePositionTooltip,

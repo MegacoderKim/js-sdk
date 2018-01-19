@@ -9,7 +9,6 @@ export declare class MapContainerComponent implements OnInit, AfterContentInit, 
     loading$: any;
     constructor(userClientService: HtUsersService, mapService: HtMapService);
     ngOnInit(): void;
-    resetMap(): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
 }

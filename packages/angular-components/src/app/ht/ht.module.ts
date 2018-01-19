@@ -1,13 +1,14 @@
 import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
 import {HtMapService, MAP_TYPE} from "./ht-map.service";
-import { usersClientFactory, groupsClientFactory, htRequestService, htClientService} from "ht-client";
+import { usersClientFactory, groupsClientFactory, htRequestService, htClientService, actionsClientFactory} from "ht-client";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {HtRequestService} from "./ht-request.service";
 import {HtUsersService} from "./ht-users.service";
 import {HtGroupsService} from "./ht-groups.service";
 import {HtClientService} from "./ht-client.service";
-import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient} from "ht-client";
+import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient, HtActionsClient} from "ht-client";
 import {HtAccountService} from "./ht-account-users.service";
+import {HtActionsService} from "./ht-actions.service";
 
 export var TOKEN = new InjectionToken('app.token');
 
@@ -25,6 +26,10 @@ export function mapServiceFactory(mapType) {
 
 export function userClientServiceFactory() {
   return usersClientFactory()
+}
+
+export function actionClientServiceFactory() {
+  return actionsClientFactory()
 }
 
 export function groupClientServiceFactory() {
@@ -54,6 +59,10 @@ export class HtModule {
         {
           provide: HtUsersService,
           useFactory: userClientServiceFactory
+        },
+        {
+          provide: HtActionsService,
+          useFactory: actionClientServiceFactory
         },
         {
           provide: HtGroupsService,

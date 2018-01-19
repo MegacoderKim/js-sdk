@@ -22,9 +22,9 @@
 //     return position ? this.mapUtils.getLatlng(position) : null
 //   }
 //
-//   extendBounds(bounds: HtBounds) {
-//     bounds = bounds || this.mapUtils.extendBounds();
-//     return this.mapUtils.extendBounds(this.item, bounds, true);
+//   extendItemBounds(bounds: HtBounds) {
+//     bounds = bounds || this.mapUtils.extendItemBounds();
+//     return this.mapUtils.extendItemBounds(this.item, bounds, true);
 //   }
 //
 //   highlight(map: HtMap, data, config: SetFocusConfig = {}) {

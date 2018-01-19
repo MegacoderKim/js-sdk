@@ -5,9 +5,9 @@ import { RouterModule } from '@angular/router';
 import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
-import { AccountsClient, ApiType, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
-import { HtMapClass } from 'ht-maps';
-import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
+import { ActionsHeatmapTrace, GlobalMap, HtMapClass, MapInstance, StopsHeatmapTrace } from 'ht-maps';
+import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject as BehaviorSubject$1 } from 'rxjs/BehaviorSubject';
 import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest';
 import { of as of$1 } from 'rxjs/observable/of';
@@ -3273,6 +3273,15 @@ class PlacelineComponent {
                 return "Location permission unavailable";
             case 'unknown':
                 return "Location unavailable";
+            case 'sdk_inactive': {
+                return "SDK inactive";
+            }
+            case "no_activity_permission": {
+                return "No activity permission";
+            }
+            case "device_off": {
+                return "Device off";
+            }
             default:
                 return "Location unavailable";
         }
@@ -6804,20 +6813,19 @@ GroupsChartContainerModule.ctorParameters = () => [];
 class MapComponent {
     /**
      * @param {?} elRef
-     * @param {?} mapService
-     * @param {?} userService
      */
-    constructor(elRef, mapService, userService) {
+    constructor(elRef) {
         this.elRef = elRef;
-        this.mapService = mapService;
-        this.userService = userService;
         this.options = {};
+        this.onReady = new EventEmitter();
+        this.mapInstance = GlobalMap;
+        this.loading = false;
     }
     /**
      * @return {?}
      */
     onMapResize() {
-        this.mapService.inValidateSize();
+        this.mapInstance.inValidateSize();
         // todo this.mapService.map.resize();
     }
     /**
@@ -6848,17 +6856,30 @@ class MapComponent {
     /**
      * @return {?}
      */
+    resetMap() {
+        this.mapInstance.resetBounds();
+    }
+    /**
+     * @return {?}
+     */
     ngAfterViewInit() {
-        const /** @type {?} */ el = this.elRef.nativeElement;
-        this.mapService.initMap(el, this.options);
-        window['ht-map'] = this.mapService.map;
+        const /** @type {?} */ el = this.mapElem.nativeElement;
+        this.mapInstance.renderMap(el, this.options);
+        this.onReady.next(this.mapInstance.map);
+        // window['ht-map'] = this.mapService.map;
         // this.mapService.resetBounds()
     }
 }
 MapComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-map',
-                template: `
+                template: `<div #map style="width: 100%; height: 100%;"></div>
+<div class="map-label map-label-bottom">
+  <ht-loading-dots *ngIf="loading" class="text-1"></ht-loading-dots>
+</div>
+<div class="map-label map-label-top">
+  <button class="button is-primary" (click)="resetMap()">Fit in view</button>
+</div>
 `,
                 styles: [`.text-center {
   text-align: center;
@@ -7206,6 +7227,22 @@ a:focus {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
+}
+.map-label {
+  position: absolute;
+  z-index: 400;
+  text-align: center;
+}
+.map-label-bottom {
+  bottom: 20px;
+  right: 0;
+  left: 0;
+  width: 100%;
+}
+.map-label-top {
+  top: 10px;
+  right: 20px;
 }
 `]
             },] },
@@ -7213,11 +7250,13 @@ a:focus {
 /** @nocollapse */
 MapComponent.ctorParameters = () => [
     { type: ElementRef, },
-    { type: HtMapService, },
-    { type: HtUsersService, },
 ];
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
+    "onReady": [{ type: Output },],
+    "mapInstance": [{ type: Input },],
+    "loading": [{ type: Input },],
+    "mapElem": [{ type: ViewChild, args: ['map',] },],
     "onMapResize": [{ type: HostListener, args: ['resize', ['$event'],] },],
 };
 
@@ -7230,7 +7269,8 @@ class MapModule {
 MapModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
-                    CommonModule
+                    CommonModule,
+                    SharedModule
                 ],
                 declarations: [MapComponent],
                 exports: [MapComponent]
@@ -7275,12 +7315,6 @@ class MapContainerComponent {
     /**
      * @return {?}
      */
-    resetMap() {
-        this.mapService.resetBounds();
-    }
-    /**
-     * @return {?}
-     */
     ngAfterContentInit() {
     }
     /**
@@ -7294,13 +7328,13 @@ class MapContainerComponent {
 MapContainerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-map-container',
-                template: `<ht-map></ht-map>
-<div class="map-label map-label-bottom">
-  <ht-loading-dots *ngIf="loading$ | async" class="text-1"></ht-loading-dots>
-</div>
-<div class="map-label map-label-top">
-  <button class="button is-primary" (click)="resetMap()">Fit in view</button>
-</div>
+                template: `<ht-map [loading]="loading$ | async"></ht-map>
+<!--<div class="map-label map-label-bottom">-->
+  <!--<ht-loading-dots *ngIf="loading$ | async" class="text-1"></ht-loading-dots>-->
+<!--</div>-->
+<!--<div class="map-label map-label-top">-->
+  <!--<button class="button is-primary" (click)="resetMap()">Fit in view</button>-->
+<!--</div>-->
 `,
                 styles: [`.text-center {
   text-align: center;
@@ -10784,6 +10818,108 @@ UsersSummaryService.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+class AnalyticsMapContainerComponent {
+    constructor() {
+        this.mapOptions = {
+            scrollWheelZoom: false
+        };
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+    }
+}
+AnalyticsMapContainerComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ht-analytics-map-container',
+                template: `<ht-map [options]="mapOptions" [loading]="service.mapLoading$ | async" [mapInstance]="service.mapInstance"></ht-map>
+`,
+                styles: [`:host {
+  height: 500px;
+  width: 100%; }
+
+ht-map {
+  height: 400px;
+  width: 100%; }
+`]
+            },] },
+];
+/** @nocollapse */
+AnalyticsMapContainerComponent.ctorParameters = () => [];
+AnalyticsMapContainerComponent.propDecorators = {
+    "service": [{ type: Input },],
+};
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+class StopsHeatmapService {
+    /**
+     * @param {?} config
+     */
+    constructor(config) {
+        this.component = AnalyticsMapContainerComponent;
+        this.className = "is-12";
+        this.tags = ['users'];
+        this.noData = false;
+        this.loading$ = of$1(false);
+        this.mapInstance = new MapInstance();
+        this.setMapType('leaflet');
+        this.initClient(config);
+    }
+    /**
+     * @param {?} mapType
+     * @return {?}
+     */
+    setMapType(mapType) {
+        this.mapInstance.setMapType(mapType);
+    }
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    setData(instance) {
+        instance.service = this;
+    }
+    ;
+    /**
+     * @param {?=} active
+     * @return {?}
+     */
+    setActive(active = true) {
+        this.client.setActive(active);
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    initClient(config) {
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title;
+        let /** @type {?} */ userClient = usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = userClient.heatmap;
+        this.mapLoading$ = this.client.loading$;
+        this.dataArray$ = this.client.dataArray$.pipe(tap((data) => {
+            this.noData = data && data.length == 0 ? true : false;
+        }));
+        let /** @type {?} */ heatMapTrace = new StopsHeatmapTrace(this.mapInstance);
+        heatMapTrace.setData$(this.dataArray$);
+    }
+}
+StopsHeatmapService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+StopsHeatmapService.ctorParameters = () => [
+    null,
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 /**
  * @record
  */
@@ -10793,6 +10929,20 @@ UsersSummaryService.ctorParameters = () => [
  */
 
 const usersAnalyticsListPresets = {
+    /**
+     * @return {?}
+     */
+    stops_heatmap() {
+        return {
+            service: StopsHeatmapService,
+            initialConfig: {
+                title: "Heatmap of stops by users",
+                query: { page_size: 500 },
+                tags: ['user behaviour'],
+                initialDateRange: DateRangeMap.last_7_days
+            }
+        };
+    },
     /**
      * @return {?}
      */
@@ -10889,7 +11039,7 @@ const usersAnalyticsListPresets = {
                          */
                         selector(user) {
                             return user.total_duration && user.stop_duration ?
-                                (100 * (user.stop_duration / user.total_duration)).toFixed(1) :
+                                (100 * (user.stop_duration / user.total_duration)).toFixed(1) + '%' :
                                 "NA";
                         }
                     }
@@ -10927,7 +11077,7 @@ const usersAnalyticsListPresets = {
                          */
                         selector(user) {
                             return user.total_duration && user.network_offline_duration ?
-                                (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) :
+                                (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) + '%' :
                                 "NA";
                         }
                     }
@@ -10942,7 +11092,7 @@ const usersAnalyticsListPresets = {
         return {
             service: UsersAnalyticsListService,
             initialConfig: {
-                title: "Users with max distance",
+                title: "Users with max distance travelled",
                 query: { ordering: "-total_distance" },
                 tags: ['distance'],
                 tableFormat: [
@@ -11357,7 +11507,85 @@ ActionsSummaryService.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+class ActionsHeatmapService {
+    /**
+     * @param {?} config
+     */
+    constructor(config) {
+        this.component = AnalyticsMapContainerComponent;
+        this.className = "is-12";
+        this.tags = ['action'];
+        this.noData = false;
+        this.loading$ = of$1(false);
+        this.mapInstance = new MapInstance();
+        this.setMapType('leaflet');
+        this.initClient(config);
+    }
+    /**
+     * @param {?} mapType
+     * @return {?}
+     */
+    setMapType(mapType) {
+        this.mapInstance.setMapType(mapType);
+    }
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    setData(instance) {
+        instance.service = this;
+    }
+    ;
+    /**
+     * @param {?=} active
+     * @return {?}
+     */
+    setActive(active = true) {
+        this.client.setActive(active);
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    initClient(config) {
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title;
+        let /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = actionsClient.heatmap;
+        this.mapLoading$ = this.client.loading$;
+        this.dataArray$ = this.client.dataArray$.pipe(tap((data) => {
+            this.noData = data && data.length == 0 ? true : false;
+        }));
+        let /** @type {?} */ heatMapTrace = new ActionsHeatmapTrace(this.mapInstance);
+        heatMapTrace.setData$(this.dataArray$);
+    }
+}
+ActionsHeatmapService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ActionsHeatmapService.ctorParameters = () => [
+    null,
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 const actionsConfigPreset = {
+    /**
+     * @return {?}
+     */
+    heatmap() {
+        return {
+            service: ActionsHeatmapService,
+            initialConfig: {
+                title: "Heatmap of completed actions",
+                initialDateRange: DateRangeMap.last_7_days,
+                query: { page_size: 500 }
+            }
+        };
+    },
     /**
      * @return {?}
      */
@@ -11668,12 +11896,12 @@ class AnalyticsItemsService {
     constructor() {
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject$1([]);
-        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$ });
+        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable() });
         const /** @type {?} */ usersFilter = usersClient.filterClass;
         const /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         const /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         const /** @type {?} */ actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
+        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$.asObservable() });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
@@ -11681,9 +11909,11 @@ class AnalyticsItemsService {
             // usersAnalyticsListPresets.users_summary(usersClient),
             usersAnalyticsListPresets["users_summary"](usersClient, 'Users activity summary', [...activityQueryLabel, ...showAllQueryLable]),
             actionsConfigPreset["status"](),
+            actionsConfigPreset["heatmap"](),
+            usersAnalyticsListPresets["stops_heatmap"](),
             actionsConfigPreset["recently_assigned"](),
             actionsConfigPreset["recently_completed"](),
-            actionsConfigPreset["users_on_action"](),
+            // actionsConfigPreset.users_on_action(),
             usersAnalyticsListPresets["last_recorded"](),
             usersAnalyticsListPresets["users_actions"](),
             usersAnalyticsListPresets["max_location_disabled_duration"](),
@@ -12588,6 +12818,25 @@ AnalyticsItemLoadModule.ctorParameters = () => [];
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+class AnalyticsMapContainerModule {
+}
+AnalyticsMapContainerModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [
+                    CommonModule,
+                    MapModule
+                ],
+                declarations: [AnalyticsMapContainerComponent],
+                exports: [AnalyticsMapContainerComponent]
+            },] },
+];
+/** @nocollapse */
+AnalyticsMapContainerModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 class AnalyticsContainerModule {
 }
 AnalyticsContainerModule.decorators = [
@@ -12601,7 +12850,8 @@ AnalyticsContainerModule.decorators = [
                     ActionsAnalyticsListModule,
                     ActionsSummaryChartModule,
                     AnalyticsItemLoadModule,
-                    DateRangeModule
+                    DateRangeModule,
+                    AnalyticsMapContainerModule
                 ],
                 declarations: [
                     AnalyticsContainerComponent,
@@ -12621,7 +12871,8 @@ AnalyticsContainerModule.decorators = [
                     ActionsStatusGraphComponent,
                     UsersSummaryChartComponent,
                     ActionsAnalyticsListComponent,
-                    ActionsSummaryChartComponent
+                    ActionsSummaryChartComponent,
+                    AnalyticsMapContainerComponent
                 ],
                 providers: [AnalyticsItemsService]
             },] },
@@ -12675,6 +12926,13 @@ class HtAccountService extends AccountsClient {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+class HtActionsService extends HtActionsClient {
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var TOKEN = new InjectionToken('app.token');
 /**
  * @param {?} token
@@ -12695,7 +12953,6 @@ function mapServiceFactory(mapType) {
     if (mapType === void 0) {
         mapType = 'google';
     }
-    console.log("init map");
     return new HtMapService(mapType);
 }
 /**
@@ -12703,6 +12960,12 @@ function mapServiceFactory(mapType) {
  */
 function userClientServiceFactory() {
     return usersClientFactory();
+}
+/**
+ * @return {?}
+ */
+function actionClientServiceFactory() {
+    return actionsClientFactory();
 }
 /**
  * @return {?}
@@ -12736,6 +12999,10 @@ class HtModule {
                 {
                     provide: HtUsersService,
                     useFactory: userClientServiceFactory
+                },
+                {
+                    provide: HtActionsService,
+                    useFactory: actionClientServiceFactory
                 },
                 {
                     provide: HtGroupsService,
@@ -12839,5 +13106,5 @@ HtModule.ctorParameters = () => [];
  * Generated bundle index. Do not edit.
  */
 
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbs, ActionTableModule as ɵbr, ActionsAnalyticsListComponent as ɵbt, ActionsAnalyticsListModule as ɵbq, ActionsSummaryChartComponent as ɵbv, ActionsSummaryChartModule as ɵbu, AnalyticsItemLoadComponent as ɵbx, AnalyticsItemLoadModule as ɵbw, AnalyticsItemComponent as ɵca, AnalyticsSlotDirective as ɵbz, AnalyticsItemsService as ɵby, AnalyticsSelectorComponent as ɵcb, AnalyticsTagsComponent as ɵbp, AnalyticsTagsModule as ɵbo, AnalyticsTitleComponent as ɵcc, DataTableComponent as ɵbn, DataTableModule as ɵbm, DateRangeComponent as ɵbk, DateRangeModule as ɵbj, EntitySearchComponent as ɵbi, EntitySearchModule as ɵbh, UsersFilterComponent as ɵbl, UsersFilterModule as ɵbg, GroupsChartService as ɵbe, HtAccountService as ɵcd, MAP_TYPE as ɵa, MapComponent as ɵbf, PaginationComponent as ɵbd, PaginationModule as ɵbc, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbq, ActionTableModule as ɵbp, ActionsAnalyticsListComponent as ɵbr, ActionsAnalyticsListModule as ɵbo, ActionsSummaryChartComponent as ɵbt, ActionsSummaryChartModule as ɵbs, AnalyticsItemLoadComponent as ɵbv, AnalyticsItemLoadModule as ɵbu, AnalyticsItemComponent as ɵca, AnalyticsSlotDirective as ɵbz, AnalyticsItemsService as ɵby, AnalyticsSelectorComponent as ɵcb, AnalyticsTagsComponent as ɵbn, AnalyticsTagsModule as ɵbm, AnalyticsTitleComponent as ɵcc, AnalyticsMapContainerComponent as ɵbx, AnalyticsMapContainerModule as ɵbw, DataTableComponent as ɵbl, DataTableModule as ɵbk, DateRangeComponent as ɵbi, DateRangeModule as ɵbh, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbj, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵce, HtActionsService as ɵcd, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
 //# sourceMappingURL=ht-angular.js.map
