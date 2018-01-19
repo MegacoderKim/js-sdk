@@ -1,4 +1,7 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {
+  AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter,
+  ViewChild
+} from '@angular/core';
 import {IUserData} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
@@ -13,6 +16,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Input() options: any = {};
   @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
   @Input() mapInstance: MapInstance = GlobalMap;
+  @Input() loading: boolean = false;
+  @ViewChild('map') mapElem;
   constructor(
     private elRef: ElementRef,
   ) { }
@@ -48,8 +53,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     // });
   }
 
+  resetMap() {
+    this.mapInstance.resetBounds()
+  }
+
   ngAfterViewInit() {
-    const el = this.elRef.nativeElement;
+    const el = this.mapElem.nativeElement;
     this.mapInstance.renderMap(el, this.options);
     this.onReady.next(this.mapInstance.map);
     // window['ht-map'] = this.mapService.map;

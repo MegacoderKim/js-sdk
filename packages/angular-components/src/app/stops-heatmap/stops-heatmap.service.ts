@@ -6,6 +6,7 @@ import {IAnalyticsListConfig} from "../interfaces/analytics-list";
 import {DateRangeMap} from "ht-data";
 import {of} from "rxjs/observable/of";
 import {MapInstance, StopsHeatmapTrace, GlobalMap} from "ht-maps";
+import {tap} from "rxjs/operators";
 
 @Injectable()
 export class StopsHeatmapService implements IAnalyticsItemService {
@@ -40,7 +41,11 @@ export class StopsHeatmapService implements IAnalyticsItemService {
     let userClient = usersClientFactory({dateRange$: this.dateRangeService$.data$});
     this.client = userClient.heatmap;
     this.mapLoading$ = this.client.loading$;
-    this.dataArray$ = this.client.dataArray$;
+    this.dataArray$ = this.client.dataArray$.pipe(
+      tap((data) => {
+        this.noData = data && data.length == 0 ? true : false;
+      })
+    );
     let heatMapTrace = new StopsHeatmapTrace(this.mapInstance);
     heatMapTrace.setData$(this.dataArray$)
   }
