@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import {IAnalyticsItemService} from "../interfaces/analytics-item";
 import {ActionsSummaryChartComponent} from "./actions-summary-chart.component";
 import {ISummaryConfig} from "../interfaces/users-analytics";
 import {dateRangeFactory, actionsClientFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {HtActionsClient} from "ht-client";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
-export class ActionsSummaryService implements IAnalyticsItemService {
+export class ActionsSummaryService implements IAnalyticsService {
   component = ActionsSummaryChartComponent;
   className = "is-6";
   tags = ['actions', 'live'];

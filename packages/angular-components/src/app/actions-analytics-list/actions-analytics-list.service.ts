@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {IAnalyticsItemService} from "../interfaces/analytics-item";
 import {ActionsAnalyticsListComponent} from "./actions-analytics-list.component";
 import {IAnalyticsListConfig} from "../interfaces/analytics-list";
 import {filter, map} from "rxjs/operators";
@@ -8,9 +7,10 @@ import { ActionsList } from "ht-client";
 import {dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {actionsClientFactory} from "ht-client";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
-export class ActionsAnalyticsListService implements IAnalyticsItemService {
+export class ActionsAnalyticsListService implements IAnalyticsService {
   component = ActionsAnalyticsListComponent;
   className = "is-6";
   tags = ['actions'];

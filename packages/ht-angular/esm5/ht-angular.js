@@ -35,9 +35,9 @@ import { RouterModule } from '@angular/router';
 import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
-import { AccountsClient, ApiType, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
-import { HtMapClass } from 'ht-maps';
-import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
+import { ActionsHeatmapTrace, GlobalMap, HtMapClass, MapInstance, StopsHeatmapTrace } from 'ht-maps';
+import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject as BehaviorSubject$1 } from 'rxjs/BehaviorSubject';
 import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest';
 import { of as of$1 } from 'rxjs/observable/of';
@@ -1674,6 +1674,15 @@ var PlacelineComponent = (function () {
                 return "Location permission unavailable";
             case 'unknown':
                 return "Location unavailable";
+            case 'sdk_inactive': {
+                return "SDK inactive";
+            }
+            case "no_activity_permission": {
+                return "No activity permission";
+            }
+            case "device_off": {
+                return "Device off";
+            }
             default:
                 return "Location unavailable";
         }
@@ -2609,20 +2618,19 @@ GroupsChartContainerModule.ctorParameters = function () { return []; };
 var MapComponent = (function () {
     /**
      * @param {?} elRef
-     * @param {?} mapService
-     * @param {?} userService
      */
-    function MapComponent(elRef, mapService, userService) {
+    function MapComponent(elRef) {
         this.elRef = elRef;
-        this.mapService = mapService;
-        this.userService = userService;
         this.options = {};
+        this.onReady = new EventEmitter();
+        this.mapInstance = GlobalMap;
+        this.loading = false;
     }
     /**
      * @return {?}
      */
     MapComponent.prototype.onMapResize = function () {
-        this.mapService.inValidateSize();
+        this.mapInstance.inValidateSize();
         // todo this.mapService.map.resize();
     };
     /**
@@ -2653,10 +2661,17 @@ var MapComponent = (function () {
     /**
      * @return {?}
      */
+    MapComponent.prototype.resetMap = function () {
+        this.mapInstance.resetBounds();
+    };
+    /**
+     * @return {?}
+     */
     MapComponent.prototype.ngAfterViewInit = function () {
-        var /** @type {?} */ el = this.elRef.nativeElement;
-        this.mapService.initMap(el, this.options);
-        window['ht-map'] = this.mapService.map;
+        var /** @type {?} */ el = this.mapElem.nativeElement;
+        this.mapInstance.renderMap(el, this.options);
+        this.onReady.next(this.mapInstance.map);
+        // window['ht-map'] = this.mapService.map;
         // this.mapService.resetBounds()
     };
     return MapComponent;
@@ -2664,18 +2679,20 @@ var MapComponent = (function () {
 MapComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-map',
-                template: "\n",
-                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n:host {\n  height: 100%;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n"]
+                template: "<div #map style=\"width: 100%; height: 100%;\"></div>\n<div class=\"map-label map-label-bottom\">\n  <ht-loading-dots *ngIf=\"loading\" class=\"text-1\"></ht-loading-dots>\n</div>\n<div class=\"map-label map-label-top\">\n  <button class=\"button is-primary\" (click)=\"resetMap()\">Fit in view</button>\n</div>\n",
+                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n:host {\n  height: 100%;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n}\n.map-label {\n  position: absolute;\n  z-index: 400;\n  text-align: center;\n}\n.map-label-bottom {\n  bottom: 20px;\n  right: 0;\n  left: 0;\n  width: 100%;\n}\n.map-label-top {\n  top: 10px;\n  right: 20px;\n}\n"]
             },] },
 ];
 /** @nocollapse */
 MapComponent.ctorParameters = function () { return [
     { type: ElementRef, },
-    { type: HtMapService, },
-    { type: HtUsersService, },
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
+    "onReady": [{ type: Output },],
+    "mapInstance": [{ type: Input },],
+    "loading": [{ type: Input },],
+    "mapElem": [{ type: ViewChild, args: ['map',] },],
     "onMapResize": [{ type: HostListener, args: ['resize', ['$event'],] },],
 };
 /**
@@ -2690,7 +2707,8 @@ var MapModule = (function () {
 MapModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
-                    CommonModule
+                    CommonModule,
+                    SharedModule
                 ],
                 declarations: [MapComponent],
                 exports: [MapComponent]
@@ -2735,12 +2753,6 @@ var MapContainerComponent = (function () {
     /**
      * @return {?}
      */
-    MapContainerComponent.prototype.resetMap = function () {
-        this.mapService.resetBounds();
-    };
-    /**
-     * @return {?}
-     */
     MapContainerComponent.prototype.ngAfterContentInit = function () {
     };
     /**
@@ -2755,7 +2767,7 @@ var MapContainerComponent = (function () {
 MapContainerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-map-container',
-                template: "<ht-map></ht-map>\n<div class=\"map-label map-label-bottom\">\n  <ht-loading-dots *ngIf=\"loading$ | async\" class=\"text-1\"></ht-loading-dots>\n</div>\n<div class=\"map-label map-label-top\">\n  <button class=\"button is-primary\" (click)=\"resetMap()\">Fit in view</button>\n</div>\n",
+                template: "<ht-map [loading]=\"loading$ | async\"></ht-map>\n<!--<div class=\"map-label map-label-bottom\">-->\n  <!--<ht-loading-dots *ngIf=\"loading$ | async\" class=\"text-1\"></ht-loading-dots>-->\n<!--</div>-->\n<!--<div class=\"map-label map-label-top\">-->\n  <!--<button class=\"button is-primary\" (click)=\"resetMap()\">Fit in view</button>-->\n<!--</div>-->\n",
                 styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n:host {\n  height: 100%;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n}\n.map-label {\n  position: absolute;\n  z-index: 400;\n  text-align: center;\n}\n.map-label-bottom {\n  bottom: 20px;\n  right: 0;\n  left: 0;\n  width: 100%;\n}\n.map-label-top {\n  top: 10px;\n  right: 20px;\n}\n"]
             },] },
 ];
@@ -3894,6 +3906,102 @@ UsersSummaryService.ctorParameters = function () { return [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var AnalyticsMapContainerComponent = (function () {
+    function AnalyticsMapContainerComponent() {
+        this.mapOptions = {
+            scrollWheelZoom: false
+        };
+    }
+    /**
+     * @return {?}
+     */
+    AnalyticsMapContainerComponent.prototype.ngOnInit = function () {
+    };
+    return AnalyticsMapContainerComponent;
+}());
+AnalyticsMapContainerComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ht-analytics-map-container',
+                template: "<ht-map [options]=\"mapOptions\" [loading]=\"service.mapLoading$ | async\" [mapInstance]=\"service.mapInstance\"></ht-map>\n",
+                styles: [":host {\n  height: 500px;\n  width: 100%; }\n\nht-map {\n  height: 400px;\n  width: 100%; }\n"]
+            },] },
+];
+/** @nocollapse */
+AnalyticsMapContainerComponent.ctorParameters = function () { return []; };
+AnalyticsMapContainerComponent.propDecorators = {
+    "service": [{ type: Input },],
+};
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var StopsHeatmapService = (function () {
+    /**
+     * @param {?} config
+     */
+    function StopsHeatmapService(config) {
+        this.component = AnalyticsMapContainerComponent;
+        this.className = "is-12";
+        this.tags = ['users'];
+        this.noData = false;
+        this.loading$ = of$1(false);
+        this.mapInstance = new MapInstance();
+        this.setMapType('leaflet');
+        this.initClient(config);
+    }
+    /**
+     * @param {?} mapType
+     * @return {?}
+     */
+    StopsHeatmapService.prototype.setMapType = function (mapType) {
+        this.mapInstance.setMapType(mapType);
+    };
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    StopsHeatmapService.prototype.setData = function (instance) {
+        instance.service = this;
+    };
+    ;
+    /**
+     * @param {?=} active
+     * @return {?}
+     */
+    StopsHeatmapService.prototype.setActive = function (active) {
+        if (active === void 0) { active = true; }
+        this.client.setActive(active);
+    };
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    StopsHeatmapService.prototype.initClient = function (config) {
+        var _this = this;
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title;
+        var /** @type {?} */ userClient = usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = userClient.heatmap;
+        this.mapLoading$ = this.client.loading$;
+        this.dataArray$ = this.client.dataArray$.pipe(tap(function (data) {
+            _this.noData = data && data.length == 0 ? true : false;
+        }));
+        var /** @type {?} */ heatMapTrace = new StopsHeatmapTrace(this.mapInstance);
+        heatMapTrace.setData$(this.dataArray$);
+    };
+    return StopsHeatmapService;
+}());
+StopsHeatmapService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+StopsHeatmapService.ctorParameters = function () { return [
+    null,
+]; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 /**
  * @record
  */
@@ -3901,6 +4009,20 @@ UsersSummaryService.ctorParameters = function () { return [
  * @record
  */
 var usersAnalyticsListPresets = {
+    /**
+     * @return {?}
+     */
+    stops_heatmap: function () {
+        return {
+            service: StopsHeatmapService,
+            initialConfig: {
+                title: "Heatmap of stops by users",
+                query: { page_size: 500 },
+                tags: ['user behaviour'],
+                initialDateRange: DateRangeMap.last_7_days
+            }
+        };
+    },
     /**
      * @return {?}
      */
@@ -3997,7 +4119,7 @@ var usersAnalyticsListPresets = {
                          */
                         selector: function (user) {
                             return user.total_duration && user.stop_duration ?
-                                (100 * (user.stop_duration / user.total_duration)).toFixed(1) :
+                                (100 * (user.stop_duration / user.total_duration)).toFixed(1) + '%' :
                                 "NA";
                         }
                     }
@@ -4035,7 +4157,7 @@ var usersAnalyticsListPresets = {
                          */
                         selector: function (user) {
                             return user.total_duration && user.network_offline_duration ?
-                                (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) :
+                                (100 * (user.network_offline_duration / user.total_duration)).toFixed(1) + '%' :
                                 "NA";
                         }
                     }
@@ -4050,7 +4172,7 @@ var usersAnalyticsListPresets = {
         return {
             service: UsersAnalyticsListService,
             initialConfig: {
-                title: "Users with max distance",
+                title: "Users with max distance travelled",
                 query: { ordering: "-total_distance" },
                 tags: ['distance'],
                 tableFormat: [
@@ -4430,7 +4552,87 @@ ActionsSummaryService.ctorParameters = function () { return [
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var ActionsHeatmapService = (function () {
+    /**
+     * @param {?} config
+     */
+    function ActionsHeatmapService(config) {
+        this.component = AnalyticsMapContainerComponent;
+        this.className = "is-12";
+        this.tags = ['action'];
+        this.noData = false;
+        this.loading$ = of$1(false);
+        this.mapInstance = new MapInstance();
+        this.setMapType('leaflet');
+        this.initClient(config);
+    }
+    /**
+     * @param {?} mapType
+     * @return {?}
+     */
+    ActionsHeatmapService.prototype.setMapType = function (mapType) {
+        this.mapInstance.setMapType(mapType);
+    };
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    ActionsHeatmapService.prototype.setData = function (instance) {
+        instance.service = this;
+    };
+    ;
+    /**
+     * @param {?=} active
+     * @return {?}
+     */
+    ActionsHeatmapService.prototype.setActive = function (active) {
+        if (active === void 0) { active = true; }
+        this.client.setActive(active);
+    };
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    ActionsHeatmapService.prototype.initClient = function (config) {
+        var _this = this;
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title;
+        var /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = actionsClient.heatmap;
+        this.mapLoading$ = this.client.loading$;
+        this.dataArray$ = this.client.dataArray$.pipe(tap(function (data) {
+            _this.noData = data && data.length == 0 ? true : false;
+        }));
+        var /** @type {?} */ heatMapTrace = new ActionsHeatmapTrace(this.mapInstance);
+        heatMapTrace.setData$(this.dataArray$);
+    };
+    return ActionsHeatmapService;
+}());
+ActionsHeatmapService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ActionsHeatmapService.ctorParameters = function () { return [
+    null,
+]; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var actionsConfigPreset = {
+    /**
+     * @return {?}
+     */
+    heatmap: function () {
+        return {
+            service: ActionsHeatmapService,
+            initialConfig: {
+                title: "Heatmap of completed actions",
+                initialDateRange: DateRangeMap.last_7_days,
+                query: { page_size: 500 }
+            }
+        };
+    },
     /**
      * @return {?}
      */
@@ -4741,12 +4943,12 @@ var AnalyticsItemsService = (function () {
         var _this = this;
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject$1([]);
-        var /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$ });
+        var /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable() });
         var /** @type {?} */ usersFilter = usersClient.filterClass;
         var /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         var /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         var /** @type {?} */ actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-        var /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
+        var /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$.asObservable() });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
@@ -4754,9 +4956,11 @@ var AnalyticsItemsService = (function () {
             // usersAnalyticsListPresets.users_summary(usersClient),
             usersAnalyticsListPresets["users_summary"](usersClient, 'Users activity summary', __spread(activityQueryLabel, showAllQueryLable)),
             actionsConfigPreset["status"](),
+            actionsConfigPreset["heatmap"](),
+            usersAnalyticsListPresets["stops_heatmap"](),
             actionsConfigPreset["recently_assigned"](),
             actionsConfigPreset["recently_completed"](),
-            actionsConfigPreset["users_on_action"](),
+            // actionsConfigPreset.users_on_action(),
             usersAnalyticsListPresets["last_recorded"](),
             usersAnalyticsListPresets["users_actions"](),
             usersAnalyticsListPresets["max_location_disabled_duration"](),
@@ -5405,6 +5609,27 @@ AnalyticsItemLoadModule.ctorParameters = function () { return []; };
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var AnalyticsMapContainerModule = (function () {
+    function AnalyticsMapContainerModule() {
+    }
+    return AnalyticsMapContainerModule;
+}());
+AnalyticsMapContainerModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [
+                    CommonModule,
+                    MapModule
+                ],
+                declarations: [AnalyticsMapContainerComponent],
+                exports: [AnalyticsMapContainerComponent]
+            },] },
+];
+/** @nocollapse */
+AnalyticsMapContainerModule.ctorParameters = function () { return []; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var AnalyticsContainerModule = (function () {
     function AnalyticsContainerModule() {
     }
@@ -5421,7 +5646,8 @@ AnalyticsContainerModule.decorators = [
                     ActionsAnalyticsListModule,
                     ActionsSummaryChartModule,
                     AnalyticsItemLoadModule,
-                    DateRangeModule
+                    DateRangeModule,
+                    AnalyticsMapContainerModule
                 ],
                 declarations: [
                     AnalyticsContainerComponent,
@@ -5441,7 +5667,8 @@ AnalyticsContainerModule.decorators = [
                     ActionsStatusGraphComponent,
                     UsersSummaryChartComponent,
                     ActionsAnalyticsListComponent,
-                    ActionsSummaryChartComponent
+                    ActionsSummaryChartComponent,
+                    AnalyticsMapContainerComponent
                 ],
                 providers: [AnalyticsItemsService]
             },] },
@@ -5502,6 +5729,17 @@ var HtAccountService = (function (_super) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var HtActionsService = (function (_super) {
+    __extends(HtActionsService, _super);
+    function HtActionsService() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return HtActionsService;
+}(HtActionsClient));
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var TOKEN = new InjectionToken('app.token');
 /**
  * @param {?} token
@@ -5522,7 +5760,6 @@ function mapServiceFactory(mapType) {
     if (mapType === void 0) {
         mapType = 'google';
     }
-    console.log("init map");
     return new HtMapService(mapType);
 }
 /**
@@ -5530,6 +5767,12 @@ function mapServiceFactory(mapType) {
  */
 function userClientServiceFactory() {
     return usersClientFactory();
+}
+/**
+ * @return {?}
+ */
+function actionClientServiceFactory() {
+    return actionsClientFactory();
 }
 /**
  * @return {?}
@@ -5565,6 +5808,10 @@ var HtModule = (function () {
                 {
                     provide: HtUsersService,
                     useFactory: userClientServiceFactory
+                },
+                {
+                    provide: HtActionsService,
+                    useFactory: actionClientServiceFactory
                 },
                 {
                     provide: HtGroupsService,
@@ -5665,5 +5912,5 @@ HtModule.ctorParameters = function () { return []; };
 /**
  * Generated bundle index. Do not edit.
  */
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbs, ActionTableModule as ɵbr, ActionsAnalyticsListComponent as ɵbt, ActionsAnalyticsListModule as ɵbq, ActionsSummaryChartComponent as ɵbv, ActionsSummaryChartModule as ɵbu, AnalyticsItemLoadComponent as ɵbx, AnalyticsItemLoadModule as ɵbw, AnalyticsItemComponent as ɵca, AnalyticsSlotDirective as ɵbz, AnalyticsItemsService as ɵby, AnalyticsSelectorComponent as ɵcb, AnalyticsTagsComponent as ɵbp, AnalyticsTagsModule as ɵbo, AnalyticsTitleComponent as ɵcc, DataTableComponent as ɵbn, DataTableModule as ɵbm, DateRangeComponent as ɵbk, DateRangeModule as ɵbj, EntitySearchComponent as ɵbi, EntitySearchModule as ɵbh, UsersFilterComponent as ɵbl, UsersFilterModule as ɵbg, GroupsChartService as ɵbe, HtAccountService as ɵcd, MAP_TYPE as ɵa, MapComponent as ɵbf, PaginationComponent as ɵbd, PaginationModule as ɵbc, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbq, ActionTableModule as ɵbp, ActionsAnalyticsListComponent as ɵbr, ActionsAnalyticsListModule as ɵbo, ActionsSummaryChartComponent as ɵbt, ActionsSummaryChartModule as ɵbs, AnalyticsItemLoadComponent as ɵbv, AnalyticsItemLoadModule as ɵbu, AnalyticsItemComponent as ɵca, AnalyticsSlotDirective as ɵbz, AnalyticsItemsService as ɵby, AnalyticsSelectorComponent as ɵcb, AnalyticsTagsComponent as ɵbn, AnalyticsTagsModule as ɵbm, AnalyticsTitleComponent as ɵcc, AnalyticsMapContainerComponent as ɵbx, AnalyticsMapContainerModule as ɵbw, DataTableComponent as ɵbl, DataTableModule as ɵbk, DateRangeComponent as ɵbi, DateRangeModule as ɵbh, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbj, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵce, HtActionsService as ɵcd, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
 //# sourceMappingURL=ht-angular.js.map

@@ -12,8 +12,8 @@ import {
   CompoundSetDataConfig
 } from "../mixins/compounds-data-observable";
 import { HtPosition } from "ht-models";
-import {HtMap} from "../../";
 import {MapInstance} from "../map-utils/map-instance";
+import {HtMap} from "../map-utils/interfaces";
 
 export class Placeline {
   segmentsPolylines;

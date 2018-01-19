@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import {IAnalyticsItemService} from "../interfaces/analytics-item";
 import {IDateRange} from "ht-models";
 import {dateRangeFactory, UsersSummaryClient, usersClientFactory, QueryLabel} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {UsersSummaryChartComponent} from "./users-summary-chart.component";
 import {ISummaryConfig} from "../interfaces/users-analytics";
 import {HtUsersClient} from "ht-client";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
-export class UsersSummaryService implements IAnalyticsItemService {
+export class UsersSummaryService implements IAnalyticsService {
   component = UsersSummaryChartComponent;
   className = 'is-6';
   tags = ['users', 'live'];

@@ -1,8 +1,8 @@
 import { IActionsTrendlineConfig } from "../interfaces/trendline";
 import { ActionsGraph } from "ht-client";
-import { IAnalyticsItemService } from "../interfaces/analytics-item";
 import { ActionsStatusGraphComponent } from "./actions-status-graph.component";
-export declare class ActionsStatusGraphService implements IAnalyticsItemService {
+import { IAnalyticsService } from "../interfaces/analytics";
+export declare class ActionsStatusGraphService implements IAnalyticsService {
     component: typeof ActionsStatusGraphComponent;
     client: ActionsGraph;
     dateRangeService$: any;

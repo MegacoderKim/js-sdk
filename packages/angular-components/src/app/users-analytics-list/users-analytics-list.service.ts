@@ -6,11 +6,11 @@ import {usersClientFactory} from "ht-client";
 import {IAnalyticsList, IAnalyticsListConfig} from "../interfaces/analytics-list";
 
 import {UsersAnalytics} from "ht-client";
-import {IAnalyticsItemService} from "../interfaces/analytics-item";
 import {UsersAnalyticsListComponent} from "./users-analytics-list.component";
+import {IAnalyticsService} from "../interfaces/analytics";
 
 @Injectable()
-export class UsersAnalyticsListService implements IAnalyticsItemService {
+export class UsersAnalyticsListService implements IAnalyticsService {
   component = UsersAnalyticsListComponent;
   dateRangeService$;
   title;
