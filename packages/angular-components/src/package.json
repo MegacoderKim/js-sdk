@@ -9,6 +9,7 @@
     "name": "Gaurav Mukherjee",
     "email": "gaurav.mukherjee3@gmail.com"
   },
+  "description": "HyperTrack UI wrapper for angular",
   "keywords": [
     "angular",
     "hypertrack",
