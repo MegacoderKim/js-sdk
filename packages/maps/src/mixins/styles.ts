@@ -18,7 +18,6 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
     styleType: string;
 
     getStyle(selectedStyleType: string = "default", fallbackStyle?) {
-      console.log(this.name);
       const mapType = this.mapInstance.mapUtils.type;
       const styleFunct = this.styleFunct || this.defaultstyleFunct;
       const mapTypetype = styleFunct.get(mapType);
