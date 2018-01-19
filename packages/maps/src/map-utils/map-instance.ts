@@ -3,6 +3,8 @@ import {filter} from "rxjs/operators";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {LeafletUtils} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {LightColorMapStyle} from "../styles/light-color-map";
+import {GlobalMap} from "../global/map-service";
 
 export class MapInstance {
   mapUtils: MapUtils = null;
@@ -16,7 +18,14 @@ export class MapInstance {
     duration: 0.3
   };
   googleSetBoundsOptions = {};
-
+  googleMapOptions = {
+    center: { lat: 0, lng: 0 },
+    zoom: 2,
+    fullscreenControl: false,
+    streetViewControl: false,
+    styles: LightColorMapStyle
+  };
+  leafletMapOptions = { center: [3.505, 0], zoom: 2 };
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
@@ -26,8 +35,25 @@ export class MapInstance {
     const i = this.itemsSet.indexOf(item);
     if (i == -1) this.itemsSet.push(item);
   }
+
+  renderMap(elem: Element, options = {}) {
+    let mapOptions =
+      this.mapType == "leaflet"
+        ? this.leafletMapOptions
+        : this.googleMapOptions;
+    let map = this.mapUtils.renderMap(elem, {
+      ...mapOptions,
+      ...options
+    });
+    this.setMap(map);
+    return map;
+  }
+
   setMap(map: HtMap | null) {
     this.map$.next(map);
+  }
+  inValidateSize() {
+    this.mapUtils.invalidateSize(this.map);
   }
   // getMap() {
   //   this.map$.take(1).subscribe(map => {

@@ -33,8 +33,10 @@ export class StopsHeatmap {
       }
     }
   };
-
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  mapInstance: MapInstance
+  constructor(mapInstance: MapInstance = GlobalMap) {
+    this.mapInstance = mapInstance
+  }
 
   getPosition(item: IPlaceHeat): HtPosition {
     return {
