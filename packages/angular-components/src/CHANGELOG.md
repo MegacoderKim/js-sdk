@@ -1,3 +1,9 @@
+#Issues
+- Clear map on map component destroy
+
+# 0.2.16
+- Add `onReady` to `MapComponent`
+- Add `HtActionsService`
 # 0.2.14
 - Add placeline close button, fix change detection
 

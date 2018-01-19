@@ -1,14 +1,16 @@
 import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
 import { IUserData } from "ht-models";
-import { usersClustersTrace } from "../entities/users-cluster";
+import { UsersClusterTrace} from "../entities/users-cluster";
 import { LightColorMapStyle } from "../styles/light-color-map";
 import * as _ from "underscore";
 import { GlobalMap } from "./map-service";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
-
+import { StopsHeatmapTrace } from "../entities/stops-heatmap"
+import {ActionsClusterTrace} from "../entities/actions-cluster"
+import {ActionsHeatmapTrace} from "../entities/actions-heatmap";
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
@@ -16,6 +18,9 @@ export class HtMapClass {
   userDataSub: Subscription;
   placeline;
   usersCluster;
+  usersHeatmap;
+  actionsHeatmap;
+  actionsCluster;
   leafletSetBoundsOptions: L.PanOptions = {
     animate: true,
     duration: 0.3
@@ -38,11 +43,11 @@ export class HtMapClass {
     options: HtMapClassOptions = {}
   ) {
     GlobalMap.setMapType(mapType);
-    this.usersCluster = usersClustersTrace();
-    this.placeline = new PlacelineTrace();
-    GlobalMap.addToItemsSet(this.placeline);
-    GlobalMap.addToItemsSet(this.usersCluster);
-    // this.mapItemsSet.push(this.placeline, this.usersCluster);
+    this.usersCluster = new UsersClusterTrace();
+    this.actionsCluster = new ActionsClusterTrace();
+    this.usersHeatmap = new StopsHeatmapTrace();
+    this.actionsHeatmap = new ActionsHeatmapTrace();
+    this.placeline = new PlacelineTrace({mapInstance: GlobalMap});
   }
 
   get segmentTrace() {
@@ -103,7 +108,7 @@ export class HtMapClass {
   }
 
   getBoundsItem(items) {
-    let bounds = GlobalMap.mapUtils.extendBounds();
+    let bounds = GlobalMap.mapUtils.extendItemBounds();
     return _.reduce(
       items,
       (bounds, item) => {
@@ -131,6 +136,10 @@ export class HtMapClass {
 
   addEntities(entities) {
     GlobalMap.addToItemsSet(entities);
+  }
+
+  clear() {
+    GlobalMap.setMap(null)
   }
 }
 

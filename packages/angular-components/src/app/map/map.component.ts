@@ -1,7 +1,8 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {IUserData} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
+import {HtMap} from "ht-maps";
 
 @Component({
   selector: 'ht-map',
@@ -10,10 +11,10 @@ import {HtUsersService} from "../ht/ht-users.service";
 })
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() options: any = {};
+  @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
   constructor(
     private elRef: ElementRef,
-    private mapService: HtMapService,
-    private userService: HtUsersService,
+    private mapService: HtMapService
   ) { }
 
   @HostListener('resize', ['$event'])
@@ -50,6 +51,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     const el = this.elRef.nativeElement;
     this.mapService.initMap(el, this.options);
+    this.onReady.next(this.mapService.map);
     window['ht-map'] = this.mapService.map;
     // this.mapService.resetBounds()
   }

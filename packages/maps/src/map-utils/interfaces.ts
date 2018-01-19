@@ -7,16 +7,17 @@ export interface MapUtils {
   setCircleStyle: (item: HtMapItem, style) => void;
   setPolylineStyle: (polyline, style) => void;
   clearItem: (item: HtMapItem) => void;
-  extendBounds: (
+  extendItemBounds: (
     item?: HtMapItem,
     bounds?: HtBounds,
     force?: boolean
   ) => HtBounds;
+  extendBounds: (latLng: HtPosition, bounds: HtBounds) => HtBounds;
   extendBoundsWithPolyline: (item?: HtPolyline, bounds?: HtBounds) => HtBounds;
   getLatlng: (position: HtPosition) => HtLatLng;
   updatePosition: (
     marker: HtMarker,
-    position: HtLatLng,
+    position: HtPosition,
     content?: string,
     options?
   ) => void;
@@ -43,7 +44,7 @@ export interface MapUtils {
   getPopup: (options?) => any;
   getPolyline: () => any;
   setEncodedPath: (item, path: string) => void;
-  setBounds: (map: HtMap, bounds: HtBounds) => void;
+  setBounds: (map: HtMap, bounds: HtBounds, options?) => void;
   isValidBounds: (bounds: HtBounds) => boolean;
   invalidateSize: (map) => void;
   onEvent: (item, event, cb) => void;

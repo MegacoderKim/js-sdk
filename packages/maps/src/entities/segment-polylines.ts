@@ -1,32 +1,42 @@
 import { segmentPolylineStyles } from "../styles/segment-polyline-styles";
-import { ISegment } from "ht-models";
+import { ISegment, HtPosition } from "ht-models";
 import {
   ItemClassFactoryConfig,
   itemsFactory,
   mapItemsFactory
 } from "../base/map-items-factory";
+import {MapInstance} from "../map-utils/map-instance";
+import {GlobalMap} from "../global/map-service";
+import {ExtendBoundsMixin} from "../mixins/extend-bounds";
+import {MarkersMixin} from "../mixins/marker-renderer";
+import {StyleMixin} from "../mixins/styles";
+import {CircleMixin} from "../mixins/circle-renderer";
+import {PopupMixin} from "../mixins/popup-renderer";
+import {TraceMixin} from "../mixins/trace";
+import {PolylinesMixin} from "../mixins/polyline-renderer";
+import {HtBounds} from "../map-utils/interfaces";
+import {Entity, StyleFunct} from "../interfaces";
 
-export const SegmentPolylinesConfig: ItemClassFactoryConfig = {
-  renderConfig: {
-    getEncodedPath(data) {
-      return data.encoded_polyline;
-    },
-    getEncodedPositionTime(data: ISegment) {
-      return data.time_aware_polyline;
-    }
-  },
-  styleFunct: segmentPolylineStyles,
-  typeConfig: {
-    isPolyline: true,
-    hasDataObservable: false
-  },
-  name: "segment polyline"
-};
+export class SegmentPolylines {
+  styleFunct: StyleFunct = segmentPolylineStyles;
+  name = "segment polyline";
 
-export const segmentsPolylinesTrace = () => {
-  return itemsFactory(SegmentPolylinesConfig);
-};
+  constructor(public mapInstance: MapInstance = GlobalMap) {}
 
+  getEncodedPath(data) {
+    return data.encoded_polyline;
+  };
+
+  getEncodedPositionTime(data: ISegment) {
+    return data.time_aware_polyline;
+  }
+
+  getPosition(): HtPosition {
+    return {lat: 0, lng: 0}
+  }
+}
+
+export const SegmentPolylinesTrace = TraceMixin(ExtendBoundsMixin(PolylinesMixin(MarkersMixin(StyleMixin(SegmentPolylines)))))
 // export class SegmentPolylines {
 //   styleFunct = segmentPolylineStyles;
 //

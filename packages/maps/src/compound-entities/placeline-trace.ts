@@ -1,69 +1,46 @@
 import * as _ from "underscore";
 import { IAction, ISegment, ITimelineEvent, IUserData } from "ht-models";
-import { segmentsPolylinesTrace } from "../entities/segment-polylines";
-import { stopMarkersTrace } from "../entities/stop-markers";
-import { actionsMarkersTrace } from "../entities/action-markers";
+import { SegmentPolylinesTrace } from "../entities/segment-polylines";
+import {StopMarkersTrace} from "../entities/stop-markers";
+import { ActionMarkersTrace } from "../entities/action-markers";
 import { htAction } from "ht-data";
-import { GlobalMap } from "../global/map-service";
-import { currentUserTrace } from "../entities/current-user";
+import { CurrentUserTrace } from "../entities/current-user";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
-// import {filter} from "rxjs/operators/filter";
-import { scan } from "rxjs/operators/scan";
 import {
   CompoundDataObservableMixin,
   CompoundSetDataConfig
 } from "../mixins/compounds-data-observable";
 import { HtPosition } from "ht-models";
+import {HtMap} from "../../";
+import {MapInstance} from "../map-utils/map-instance";
 
 export class Placeline {
-  segmentsPolylines = segmentsPolylinesTrace();
-  stopMarkers = stopMarkersTrace();
-  actionMarkers = actionsMarkersTrace();
+  segmentsPolylines;
+  stopMarkers;
+  actionMarkers;
   // actionsPolylines = new ActionMarkersTrace();
   // timelineSegment = new TimelineSegment();
-  userMarker = currentUserTrace();
-  replayMarker = stopMarkersTrace();
-  eventMarkers = stopMarkersTrace();
+  userMarker;
+  // replayMarker = stopMarkersTrace();
+  // eventMarkers = stopMarkersTrace();
   allowedEvents = {};
   // map;
   // dataSub: Subscription;
   // data$: Observable<null | IUserData>;
-  constructor(public options: HtSegmentsTraceOptions = {}) {
+  mapInstance: MapInstance;
+  constructor(public options: HtSegmentsTraceOptions) {
+    this.mapInstance = this.options.mapInstance;
+    this.stopMarkers = new StopMarkersTrace();
+    this.userMarker = new CurrentUserTrace();
+    this.segmentsPolylines = new SegmentPolylinesTrace();
+    this.actionMarkers = new ActionMarkersTrace()
     // this.initBaseItems();
   }
 
-  get map() {
-    return GlobalMap.map;
+  get map(): HtMap {
+    return this.mapInstance.map;
   }
-
-  // setData$(data$: Observable<IUserData | null>) {
-  //   if (this.dataSub) {
-  //     this.dataSub.unsubscribe();
-  //   }
-  //   this.data$ = data$;
-  //   this.initDataObserver()
-  // }
-
-  // initDataObserver() {
-  //   let userData$ = this.data$.pipe(
-  //     filter(data => !!GlobalMap.map),
-  //     scan((acc: any, data) => {
-  //       const oldId = acc.user ? acc.user.id : null;
-  //       const currentId = data ? data.id : null;
-  //       const isNew = currentId && oldId ? currentId !== oldId : true;
-  //       return {user: data, isNew, oldId }
-  //     }, {user: null, oldId: null, isNew: true})
-  //   );
-  //
-  //   let sub = userData$.subscribe((acc) => {
-  //     const userData = acc.user;
-  //     const isNew = acc.isNew;
-  //     this.trace(userData);
-  //     if(isNew) GlobalMap.resetBounds()
-  //   });
-  //   this.dataSub = sub;
-  // }
 
   trace(user, map?) {
     // this.map = map;
@@ -88,7 +65,7 @@ export class Placeline {
     bounds = this.stopMarkers.extendBounds(bounds);
     bounds = this.segmentsPolylines.extendBounds(bounds);
     bounds = this.actionMarkers.extendBounds(bounds);
-    // bounds = this.userMarker.extendBounds(bounds);
+    // bounds = this.userMarker.extendItemBounds(bounds);
     // console.log(bounds, "final");
     return bounds;
   }
@@ -214,34 +191,11 @@ export class Placeline {
     );
   }
 
-  // traceCurrentUser(segment) {
-  //   console.log("seg,emt", segment);
-  //   if (
-  //     segment &&
-  //     this.timelineSegment.timeAwareArray &&
-  //     this.timelineSegment.timeAwareArray.length
-  //   ) {
-  //     // let lastSegment = segment;
-  //     let positionBearing = this.timelineSegment.getLastPositionBearing();
-  //     console.log(positionBearing);
-  //     // this.userMarker.trace({segment, positionBearing})
-  //   } else {
-  //     // this.userMarker.removeAll();
-  //   }
-  // }
 
   //segments replay
   clearTimeline() {
     // this.timelineSegment.clearTimeline();
   }
-
-  // get stats() {
-  //   return this.timelineSegment.stats;
-  // }
-
-  // get segments() {
-  //   return this.timelineSegment.segments
-  // }
 
   updateTimeline(user: IUserData) {
     // this.timelineSegment.update(user);
@@ -256,7 +210,7 @@ export class Placeline {
   focusUserMarker(map, config) {
     console.log(this.userMarker);
     console.error("focus user not implimented");
-    GlobalMap.mapUtils.setFocus(this.userMarker.getEntity(), map, {
+    this.mapInstance.mapUtils.setFocus(this.userMarker.getEntity(), map, {
       force: true,
       zoom: 15,
       center: true,
@@ -277,38 +231,6 @@ export class Placeline {
     }
   }
 
-  private traceEvents(user: IUserData, map) {
-    // let events: ITimelineEvent[] = user && user.events ? user.events : [];
-    // let locations = this.timelineSegment.getLocationsAtTimesT(
-    //   events.map(event => event.recorded_at)
-    // );
-    // let eventsWithPosition = events.reduce((acc, event, i) => {
-    //   let info = this.allowedEvents[event.type];
-    //   if (info) {
-    //     var lastEvent = _.last(acc);
-    //     let sameAsLastEvent =
-    //       lastEvent && lastEvent.recorded_at == event.recorded_at;
-    //     if (sameAsLastEvent) {
-    //       let lastInfo = lastEvent.info + ", " + info;
-    //       let newLastEvent = { ...lastEvent, info: lastInfo };
-    //       acc.pop();
-    //       return [...acc, newLastEvent];
-    //     } else {
-    //       let position = locations[i];
-    //       // let position = this.timelinePolyline.getLocationAtTime(event.recorded_at);
-    //       if (position.length) {
-    //         let eventWithPosition = { ...event, position, info };
-    //         return [...acc, eventWithPosition];
-    //       } else {
-    //         return acc;
-    //       }
-    //     }
-    //   } else {
-    //     return acc;
-    //   }
-    // }, []);
-    // this.eventMarkers.trace(eventsWithPosition);
-  }
 }
 
 export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
@@ -318,4 +240,6 @@ export interface ISegmentType {
   stopSegment: ISegment[];
 }
 
-export interface HtSegmentsTraceOptions {}
+export interface HtSegmentsTraceOptions {
+  mapInstance: MapInstance
+}
