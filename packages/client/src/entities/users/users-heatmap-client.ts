@@ -5,7 +5,7 @@ import {getFirstDataMixin} from "../../mixins/get-first-data";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
-import {IActionHeat, Page} from "../../../../models";
+import {IActionHeat, Page} from "ht-models";
 import {of} from "rxjs/observable/of";
 import {entityApi} from "../../global/entity-api";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
