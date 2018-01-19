@@ -27,33 +27,34 @@ export class AnalyticsItemsService {
   totalTags: number;
   // selectedTags$: BehaviorSubject<string[]>;
   constructor() {
-    const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
+    const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable()});
     const usersFilter = usersClient.filterClass;
     const activityQueryLabel = usersFilter.activityQueryArray;
     const showAllQueryLable = usersFilter.showAllQueryArray;
     const actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-    const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$});
+    const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$.asObservable()});
     const actionsStatusQueryLabel = [];
     this.presets = [
       // actionsConfigPreset.max_distance(),
       // actionsConfigPreset.max_duration(),
-      actionsConfigPreset.summary(actionsClient, actionDateRangeService),
+      // actionsConfigPreset.summary(actionsClient, actionDateRangeService),
       // usersAnalyticsListPresets.users_summary(usersClient),
-      usersAnalyticsListPresets.users_summary(
-        usersClient, 'Users activity summary',
-        [...activityQueryLabel, ...showAllQueryLable]
-      ),
-      actionsConfigPreset.status(),
-      actionsConfigPreset.recently_assigned(),
-      actionsConfigPreset.recently_completed(),
+      // usersAnalyticsListPresets.users_summary(
+      //   usersClient, 'Users activity summary',
+      //   [...activityQueryLabel, ...showAllQueryLable]
+      // ),
+      // actionsConfigPreset.status(),
+      usersAnalyticsListPresets.stops_heatmap(),
+      // actionsConfigPreset.recently_assigned(),
+      // actionsConfigPreset.recently_completed(),
       // actionsConfigPreset.users_on_action(),
-      usersAnalyticsListPresets.last_recorded(),
-      usersAnalyticsListPresets.users_actions(),
-      usersAnalyticsListPresets.max_location_disabled_duration(),
-      usersAnalyticsListPresets.current_location_disabled(),
-      usersAnalyticsListPresets.max_stop_duration(),
+      // usersAnalyticsListPresets.last_recorded(),
+      // usersAnalyticsListPresets.users_actions(),
+      // usersAnalyticsListPresets.max_location_disabled_duration(),
+      // usersAnalyticsListPresets.current_location_disabled(),
+      // usersAnalyticsListPresets.max_stop_duration(),
       // usersAnalyticsListPresets.max_network_offline(),
-      usersAnalyticsListPresets.max_distance(),
+      // usersAnalyticsListPresets.max_distance(),
     ];
     this.chosenItemCreater = this.presets;
     this.items$ = new BehaviorSubject(this.getItems(this.presets));

@@ -19,6 +19,8 @@ import {ActionsSummaryChartComponent} from "../actions-summary-chart/actions-sum
 import { AnalyticsTitleComponent } from './analytics-title/analytics-title.component';
 import {DateRangeModule} from "../filters/date-range/date-range.module";
 import {AnalyticsItemLoadModule} from "./analytics-item-load/analytics-item-load.module";
+import {StopsHeatmapComponent} from "../stops-heatmap/stops-heatmap.component";
+import {StopsHeatmapModule} from "../stops-heatmap/stops-heatmap.module";
 
 @NgModule({
   imports: [
@@ -30,7 +32,8 @@ import {AnalyticsItemLoadModule} from "./analytics-item-load/analytics-item-load
     ActionsAnalyticsListModule,
     ActionsSummaryChartModule,
     AnalyticsItemLoadModule,
-    DateRangeModule
+    DateRangeModule,
+    StopsHeatmapModule
   ],
   declarations: [
     AnalyticsContainerComponent,
@@ -50,7 +53,8 @@ import {AnalyticsItemLoadModule} from "./analytics-item-load/analytics-item-load
     ActionsStatusGraphComponent,
     UsersSummaryChartComponent,
     ActionsAnalyticsListComponent,
-    ActionsSummaryChartComponent
+    ActionsSummaryChartComponent,
+    StopsHeatmapComponent
   ],
   providers: [AnalyticsItemsService]
 })
