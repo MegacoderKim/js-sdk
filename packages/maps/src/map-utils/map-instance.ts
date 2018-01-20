@@ -1,7 +1,7 @@
-import {GoogleMapUtils} from "./google-map-utils";
+import {GoogleMapUtilsClass} from "./google-map-utils";
 import {filter} from "rxjs/operators";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
-import {LeafletUtils} from "./leaflet-map-utils";
+import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {LightColorMapStyle} from "../styles/light-color-map";
 import {GlobalMap} from "../global/map-service";
@@ -70,7 +70,7 @@ export class MapInstance {
   // }
   setMapType(mapType: HtMapType) {
     this.mapType = mapType;
-    this.mapUtils = mapType == "leaflet" ? LeafletUtils : GoogleMapUtils;
+    this.mapUtils = mapType == "leaflet" ? new LeafletMapUtilsClass() : new GoogleMapUtilsClass();
   }
   addCluster(cluster) {
     if (!this.clusters.includes(cluster)) {
