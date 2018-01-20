@@ -13,7 +13,7 @@ import {Observable} from "rxjs/Observable";
 export class ActionsHeatmapService implements IAnalyticsMapService {
   component = AnalyticsMapContainerComponent;
   className = "is-12";
-  tags = ['action'];
+  tags = ['actions'];
   title;
   noData = false;
   loading$: Observable<boolean> = of(false);
