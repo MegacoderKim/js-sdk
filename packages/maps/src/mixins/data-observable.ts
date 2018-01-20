@@ -121,8 +121,14 @@ export function DataObservableMixin<
     // };
 
     _initDataObserver() {
-      let userData$ = this.data$.pipe(filter(data => !!this.mapInstance.map));
-
+      let mapData$ = this.data$.pipe(filter(data => !!this.mapInstance.map));
+      let render$ = combineLatest(
+        mapData$,
+        this.mapInstance.map$.pipe(
+          filter(data => !!data)
+        ),
+        (mapData, map) => mapData
+      );
       // function isNewId (newItem, old) {
       //   if(!old && newItem) return true;
       //   if(newItem && old) return  newItem.id !== old.id
@@ -131,7 +137,7 @@ export function DataObservableMixin<
       //   if(!old && newList) return true;
       //   if(newList && old) return !newList.next && newList.count
       // }
-      let sub = userData$.subscribe(({ valid, invalid, isNew }) => {
+      let sub = render$.subscribe(({ valid, invalid, isNew }) => {
         this.trace(valid);
         if (isNew) this.mapInstance.resetBounds();
       });
