@@ -17,6 +17,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
   @Input() mapInstance: MapInstance = GlobalMap;
   @Input() loading: boolean = false;
+  @Input() showReset: boolean = true;
   @ViewChild('map') mapElem;
   constructor(
     private elRef: ElementRef,
