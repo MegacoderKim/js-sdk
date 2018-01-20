@@ -25,7 +25,15 @@ export class MapInstance {
     streetViewControl: false,
     styles: LightColorMapStyle
   };
-  leafletMapOptions = { center: [3.505, 0], zoom: 2 };
+  leafletMapOptions = {
+    center: [3.505, 0],
+    zoom: 2 ,
+    tileLayerUrl: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+    tileLayerOptions: {
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }
+  };
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;

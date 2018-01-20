@@ -57,8 +57,9 @@ export const setPolylineStyle = (polyline, style) => {
 };
 
 export const SetMap = (item, map: Map) => {
-  if ((item && !item.getElement) || (item && !item.getElement()))
-  item.addTo(map);
+  if (((item && !item.getElement) || (item && !item.getElement())) && map.getContainer().offsetWidth) {
+    item.addTo(map);
+  }
 };
 
 export const ClearItem = item => {
@@ -152,10 +153,10 @@ function getItemLatlng(item) {
 
 function renderMap(elem, options) {
   let newmap = map(elem, options);
-  tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-    attribution:
-      '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(newmap);
+  if ( options.tileLayerUrl) {
+    tileLayer(options.tileLayerUrl, options.tileLayerOptions || {}).addTo(newmap);
+  }
+
   return newmap;
 }
 
