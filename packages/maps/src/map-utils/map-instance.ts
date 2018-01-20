@@ -4,7 +4,6 @@ import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {LightColorMapStyle} from "../styles/light-color-map";
-import {GlobalMap} from "../global/map-service";
 
 export class MapInstance {
   mapUtils: MapUtils = null;
