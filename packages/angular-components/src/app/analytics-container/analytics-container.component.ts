@@ -46,6 +46,9 @@ export class AnalyticsContainerComponent implements OnInit, OnDestroy {
     this.configure = true
   }
 
+  trackByFn(index, item) {
+    return item.title; // or item.id
+  }
   ngOnDestroy() {
     this.analyticsItemsService.destroy()
   }

@@ -6820,11 +6820,13 @@ class MapComponent {
         this.onReady = new EventEmitter();
         this.mapInstance = GlobalMap;
         this.loading = false;
+        this.showReset = true;
     }
     /**
      * @return {?}
      */
     onMapResize() {
+        console.log("see");
         this.mapInstance.inValidateSize();
         // todo this.mapService.map.resize();
     }
@@ -6864,8 +6866,12 @@ class MapComponent {
      */
     ngAfterViewInit() {
         const /** @type {?} */ el = this.mapElem.nativeElement;
+        console.log("init", el.offsetWidth);
         this.mapInstance.renderMap(el, this.options);
         this.onReady.next(this.mapInstance.map);
+        setTimeout(() => {
+            this.mapInstance.inValidateSize();
+        }, 1000);
         // window['ht-map'] = this.mapService.map;
         // this.mapService.resetBounds()
     }
@@ -6878,7 +6884,7 @@ MapComponent.decorators = [
   <ht-loading-dots *ngIf="loading" class="text-1"></ht-loading-dots>
 </div>
 <div class="map-label map-label-top">
-  <button class="button is-primary" (click)="resetMap()">Fit in view</button>
+  <button class="button is-primary" *ngIf="showReset" (click)="resetMap()">Fit in view</button>
 </div>
 `,
                 styles: [`.text-center {
@@ -7253,9 +7259,11 @@ MapComponent.ctorParameters = () => [
 ];
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
+    "url": [{ type: Input },],
     "onReady": [{ type: Output },],
     "mapInstance": [{ type: Input },],
     "loading": [{ type: Input },],
+    "showReset": [{ type: Input },],
     "mapElem": [{ type: ViewChild, args: ['map',] },],
     "onMapResize": [{ type: HostListener, args: ['resize', ['$event'],] },],
 };
@@ -10889,6 +10897,7 @@ class StopsHeatmapService {
      * @return {?}
      */
     setActive(active = true) {
+        console.log("stop init", active);
         this.client.setActive(active);
     }
     /**
@@ -11514,7 +11523,7 @@ class ActionsHeatmapService {
     constructor(config) {
         this.component = AnalyticsMapContainerComponent;
         this.className = "is-12";
-        this.tags = ['action'];
+        this.tags = ['actions'];
         this.noData = false;
         this.loading$ = of$1(false);
         this.mapInstance = new MapInstance();
@@ -11905,12 +11914,15 @@ class AnalyticsItemsService {
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
-            actionsConfigPreset["summary"](actionsClient, actionDateRangeService),
+            // actionsConfigPreset.summary(actionsClient, actionDateRangeService),
             // usersAnalyticsListPresets.users_summary(usersClient),
-            usersAnalyticsListPresets["users_summary"](usersClient, 'Users activity summary', [...activityQueryLabel, ...showAllQueryLable]),
-            actionsConfigPreset["status"](),
-            actionsConfigPreset["heatmap"](),
+            // usersAnalyticsListPresets.users_summary(
+            //   usersClient, 'Users activity summary',
+            //   [...activityQueryLabel, ...showAllQueryLable]
+            // ),
+            // actionsConfigPreset.status(),
             usersAnalyticsListPresets["stops_heatmap"](),
+            actionsConfigPreset["heatmap"](),
             actionsConfigPreset["recently_assigned"](),
             actionsConfigPreset["recently_completed"](),
             // actionsConfigPreset.users_on_action(),
@@ -12091,6 +12103,14 @@ class AnalyticsContainerComponent {
         this.configure = true;
     }
     /**
+     * @param {?} index
+     * @param {?} item
+     * @return {?}
+     */
+    trackByFn(index, item) {
+        return item.title; // or item.id
+    }
+    /**
      * @return {?}
      */
     ngOnDestroy() {
@@ -12180,7 +12200,7 @@ AnalyticsContainerComponent.decorators = [
 </div>
 <div class="container">
   <div class="columns is-multiline is-centered" *ngIf="analyticsItemsService.filteredItems$ | async as items">
-    <div class="column" [@card-appear] [ngClass]="item.className" *ngFor="let item of items">
+    <div class="column" [ngClass]="item.className" *ngFor="let item of items">
       <div class="card card-content">
         <ht-analytics-tags
           (selectTag)="analyticsItemsService.toggleTag($event)"

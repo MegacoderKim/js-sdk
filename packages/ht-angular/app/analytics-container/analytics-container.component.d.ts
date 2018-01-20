@@ -6,5 +6,6 @@ export declare class AnalyticsContainerComponent implements OnInit, OnDestroy {
     constructor(analyticsItemsService: AnalyticsItemsService);
     ngOnInit(): void;
     openConfig(): void;
+    trackByFn(index: any, item: any): any;
     ngOnDestroy(): void;
 }

@@ -2,6 +2,7 @@
   "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../ht-angular",
   "lib": {
+    "languageLevel": [ "dom", "es2017" ],
     "entryFile": "./index.ts",
     "externals": {
       "underscore": "_",

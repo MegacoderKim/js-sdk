@@ -2614,11 +2614,13 @@ var MapComponent = (function () {
         this.onReady = new core.EventEmitter();
         this.mapInstance = htMaps.GlobalMap;
         this.loading = false;
+        this.showReset = true;
     }
     /**
      * @return {?}
      */
     MapComponent.prototype.onMapResize = function () {
+        console.log("see");
         this.mapInstance.inValidateSize();
         // todo this.mapService.map.resize();
     };
@@ -2657,9 +2659,14 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
         var /** @type {?} */ el = this.mapElem.nativeElement;
+        console.log("init", el.offsetWidth);
         this.mapInstance.renderMap(el, this.options);
         this.onReady.next(this.mapInstance.map);
+        setTimeout(function () {
+            _this.mapInstance.inValidateSize();
+        }, 1000);
         // window['ht-map'] = this.mapService.map;
         // this.mapService.resetBounds()
     };
@@ -2668,7 +2675,7 @@ var MapComponent = (function () {
 MapComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'ht-map',
-                template: "<div #map style=\"width: 100%; height: 100%;\"></div>\n<div class=\"map-label map-label-bottom\">\n  <ht-loading-dots *ngIf=\"loading\" class=\"text-1\"></ht-loading-dots>\n</div>\n<div class=\"map-label map-label-top\">\n  <button class=\"button is-primary\" (click)=\"resetMap()\">Fit in view</button>\n</div>\n",
+                template: "<div #map style=\"width: 100%; height: 100%;\"></div>\n<div class=\"map-label map-label-bottom\">\n  <ht-loading-dots *ngIf=\"loading\" class=\"text-1\"></ht-loading-dots>\n</div>\n<div class=\"map-label map-label-top\">\n  <button class=\"button is-primary\" *ngIf=\"showReset\" (click)=\"resetMap()\">Fit in view</button>\n</div>\n",
                 styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n:host {\n  height: 100%;\n  width: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  position: relative;\n}\n.map-label {\n  position: absolute;\n  z-index: 400;\n  text-align: center;\n}\n.map-label-bottom {\n  bottom: 20px;\n  right: 0;\n  left: 0;\n  width: 100%;\n}\n.map-label-top {\n  top: 10px;\n  right: 20px;\n}\n"]
             },] },
 ];
@@ -2678,9 +2685,11 @@ MapComponent.ctorParameters = function () { return [
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: core.Input },],
+    "url": [{ type: core.Input },],
     "onReady": [{ type: core.Output },],
     "mapInstance": [{ type: core.Input },],
     "loading": [{ type: core.Input },],
+    "showReset": [{ type: core.Input },],
     "mapElem": [{ type: core.ViewChild, args: ['map',] },],
     "onMapResize": [{ type: core.HostListener, args: ['resize', ['$event'],] },],
 };
@@ -3959,6 +3968,7 @@ var StopsHeatmapService = (function () {
      */
     StopsHeatmapService.prototype.setActive = function (active) {
         if (active === void 0) { active = true; }
+        console.log("stop init", active);
         this.client.setActive(active);
     };
     /**
@@ -4548,7 +4558,7 @@ var ActionsHeatmapService = (function () {
     function ActionsHeatmapService(config) {
         this.component = AnalyticsMapContainerComponent;
         this.className = "is-12";
-        this.tags = ['action'];
+        this.tags = ['actions'];
         this.noData = false;
         this.loading$ = of.of(false);
         this.mapInstance = new htMaps.MapInstance();
@@ -4941,12 +4951,15 @@ var AnalyticsItemsService = (function () {
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
-            actionsConfigPreset["summary"](actionsClient, actionDateRangeService),
+            // actionsConfigPreset.summary(actionsClient, actionDateRangeService),
             // usersAnalyticsListPresets.users_summary(usersClient),
-            usersAnalyticsListPresets["users_summary"](usersClient, 'Users activity summary', __spread(activityQueryLabel, showAllQueryLable)),
-            actionsConfigPreset["status"](),
-            actionsConfigPreset["heatmap"](),
+            // usersAnalyticsListPresets.users_summary(
+            //   usersClient, 'Users activity summary',
+            //   [...activityQueryLabel, ...showAllQueryLable]
+            // ),
+            // actionsConfigPreset.status(),
             usersAnalyticsListPresets["stops_heatmap"](),
+            actionsConfigPreset["heatmap"](),
             actionsConfigPreset["recently_assigned"](),
             actionsConfigPreset["recently_completed"](),
             // actionsConfigPreset.users_on_action(),
@@ -5130,6 +5143,14 @@ var AnalyticsContainerComponent = (function () {
         this.configure = true;
     };
     /**
+     * @param {?} index
+     * @param {?} item
+     * @return {?}
+     */
+    AnalyticsContainerComponent.prototype.trackByFn = function (index, item) {
+        return item.title; // or item.id
+    };
+    /**
      * @return {?}
      */
     AnalyticsContainerComponent.prototype.ngOnDestroy = function () {
@@ -5140,7 +5161,7 @@ var AnalyticsContainerComponent = (function () {
 AnalyticsContainerComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'ht-analytics-container',
-                template: "<div class=\"toolbar\">\n  <div class=\"level\">\n    <div class=\"level-left\">\n      <!--<div class=\"level-item\">-->\n        <!--<div class=\"icon\">-->\n          <!--<i class=\"fa fa-tags has-text-grey\"></i>-->\n        <!--</div>-->\n        <!--Filter by Tags:-->\n      <!--</div>-->\n      <div class=\"level-item\">\n        <div class=\"dropdown is-hoverable\">\n          <div class=\"dropdown-trigger\">\n            <button class=\"button\" aria-haspopup=\"true\" aria-controls=\"dropdown-menu\">\n              <span class=\"icon\">\n                <i class=\"fa fa-tags has-text-grey\"></i>\n              </span>\n              <span>Filter by Tags:</span>\n              <span class=\"icon is-small\">\n        <i class=\"fa fa-angle-down\" aria-hidden=\"true\"></i>\n      </span>\n            </button>\n          </div>\n          <div class=\"dropdown-menu\" id=\"dropdown-menu\" role=\"menu\">\n            <div class=\"dropdown-content\">\n              <a (click)=\"analyticsItemsService.toggleTag(tag.key)\" class=\"dropdown-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n                <label class=\"checkbox\">\n                  <input type=\"checkbox\" [checked]=\"tag.isActive\">\n                  {{tag.key}}\n                </label>\n              </a>\n              <!--<a class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item is-active\">-->\n                <!--Active dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<hr class=\"dropdown-divider\">-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--With a divider-->\n              <!--</a>-->\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"level-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n        <button\n          class=\"button\"\n          [class.is-primary]=\"tag.isActive\"\n          (click)=\"analyticsItemsService.selectTag(tag.key)\">\n\n          <span>{{tag.key}}</span>\n          <span *ngIf=\"tag.isActive\" class=\"icon is-small\">\n              <i class=\"fa fa-times\"></i>\n            </span>\n        </button>\n        <!--<span class=\"tag clickable is-medium\"-->\n\n              <!--(click)=\"analyticsItemsService.selectTag(tag.key)\"-->\n              <!--[class.is-primary]=\"tag.isActive\">-->\n          <!--{{tag.key}} <span *ngIf=\"tag.isActive\" class=\"delete\"></span>-->\n        <!--</span>-->\n      </div>\n    </div>\n    <div class=\"level-right\">\n      <div class=\"level-item\">\n        <button class=\"button\" (click)=\"openConfig()\">\n        <span class=\"icon\">\n          <i class=\"fa fa-edit\"></i>\n        </span>\n          <span>Edit</span>\n        </button>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"container\">\n  <div class=\"columns is-multiline is-centered\" *ngIf=\"analyticsItemsService.filteredItems$ | async as items\">\n    <div class=\"column\" [@card-appear] [ngClass]=\"item.className\" *ngFor=\"let item of items\">\n      <div class=\"card card-content\">\n        <ht-analytics-tags\n          (selectTag)=\"analyticsItemsService.toggleTag($event)\"\n          [tags]=\"item.tags\"\n          [selectedTags]=\"analyticsItemsService.selectedTags$ | async\"></ht-analytics-tags>\n        <ht-analytics-title\n          [title]=\"item.title\"\n          [hideDatePicker]=\"item.hideDatePicker\"\n          [dateRangeService$]=\"item.dateRangeService$\"></ht-analytics-title>\n        <ht-analytics-item-load [minHeight]=\"item.minHeight\" [loading$]=\"item.loading$\" [noData]=\"item.noData\">\n          <ht-analytics-item [item]=\"item\"></ht-analytics-item>\n        </ht-analytics-item-load>\n\n      </div>\n    </div>\n    <div class=\"column is-6 auto setup\" *ngIf=\"items.length == 0\">\n      <div class=\"is-size-1 has-text-centered has-text-grey-light\">No view is selected</div>\n    </div>\n    <div class=\"modal is-active\" *ngIf=\"configure\">\n      <div class=\"modal-background\" (click)=\"configure = false\"></div>\n      <div class=\"modal-card\">\n        <header class=\"modal-card-head\">\n          <p class=\"modal-card-title\">Choose preset views</p>\n        </header>\n        <section class=\"modal-card-body\">\n          <ht-analytics-selector (selected)=\"configure = false\"></ht-analytics-selector>\n        </section>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
+                template: "<div class=\"toolbar\">\n  <div class=\"level\">\n    <div class=\"level-left\">\n      <!--<div class=\"level-item\">-->\n        <!--<div class=\"icon\">-->\n          <!--<i class=\"fa fa-tags has-text-grey\"></i>-->\n        <!--</div>-->\n        <!--Filter by Tags:-->\n      <!--</div>-->\n      <div class=\"level-item\">\n        <div class=\"dropdown is-hoverable\">\n          <div class=\"dropdown-trigger\">\n            <button class=\"button\" aria-haspopup=\"true\" aria-controls=\"dropdown-menu\">\n              <span class=\"icon\">\n                <i class=\"fa fa-tags has-text-grey\"></i>\n              </span>\n              <span>Filter by Tags:</span>\n              <span class=\"icon is-small\">\n        <i class=\"fa fa-angle-down\" aria-hidden=\"true\"></i>\n      </span>\n            </button>\n          </div>\n          <div class=\"dropdown-menu\" id=\"dropdown-menu\" role=\"menu\">\n            <div class=\"dropdown-content\">\n              <a (click)=\"analyticsItemsService.toggleTag(tag.key)\" class=\"dropdown-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n                <label class=\"checkbox\">\n                  <input type=\"checkbox\" [checked]=\"tag.isActive\">\n                  {{tag.key}}\n                </label>\n              </a>\n              <!--<a class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item is-active\">-->\n                <!--Active dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<hr class=\"dropdown-divider\">-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--With a divider-->\n              <!--</a>-->\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"level-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n        <button\n          class=\"button\"\n          [class.is-primary]=\"tag.isActive\"\n          (click)=\"analyticsItemsService.selectTag(tag.key)\">\n\n          <span>{{tag.key}}</span>\n          <span *ngIf=\"tag.isActive\" class=\"icon is-small\">\n              <i class=\"fa fa-times\"></i>\n            </span>\n        </button>\n        <!--<span class=\"tag clickable is-medium\"-->\n\n              <!--(click)=\"analyticsItemsService.selectTag(tag.key)\"-->\n              <!--[class.is-primary]=\"tag.isActive\">-->\n          <!--{{tag.key}} <span *ngIf=\"tag.isActive\" class=\"delete\"></span>-->\n        <!--</span>-->\n      </div>\n    </div>\n    <div class=\"level-right\">\n      <div class=\"level-item\">\n        <button class=\"button\" (click)=\"openConfig()\">\n        <span class=\"icon\">\n          <i class=\"fa fa-edit\"></i>\n        </span>\n          <span>Edit</span>\n        </button>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"container\">\n  <div class=\"columns is-multiline is-centered\" *ngIf=\"analyticsItemsService.filteredItems$ | async as items\">\n    <div class=\"column\" [ngClass]=\"item.className\" *ngFor=\"let item of items\">\n      <div class=\"card card-content\">\n        <ht-analytics-tags\n          (selectTag)=\"analyticsItemsService.toggleTag($event)\"\n          [tags]=\"item.tags\"\n          [selectedTags]=\"analyticsItemsService.selectedTags$ | async\"></ht-analytics-tags>\n        <ht-analytics-title\n          [title]=\"item.title\"\n          [hideDatePicker]=\"item.hideDatePicker\"\n          [dateRangeService$]=\"item.dateRangeService$\"></ht-analytics-title>\n        <ht-analytics-item-load [minHeight]=\"item.minHeight\" [loading$]=\"item.loading$\" [noData]=\"item.noData\">\n          <ht-analytics-item [item]=\"item\"></ht-analytics-item>\n        </ht-analytics-item-load>\n\n      </div>\n    </div>\n    <div class=\"column is-6 auto setup\" *ngIf=\"items.length == 0\">\n      <div class=\"is-size-1 has-text-centered has-text-grey-light\">No view is selected</div>\n    </div>\n    <div class=\"modal is-active\" *ngIf=\"configure\">\n      <div class=\"modal-background\" (click)=\"configure = false\"></div>\n      <div class=\"modal-card\">\n        <header class=\"modal-card-head\">\n          <p class=\"modal-card-title\">Choose preset views</p>\n        </header>\n        <section class=\"modal-card-body\">\n          <ht-analytics-selector (selected)=\"configure = false\"></ht-analytics-selector>\n        </section>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
                 styles: [".setup {\n  margin-top: 70px; }\n\n.toolbar {\n  width: 100%;\n  padding: 16px 40px;\n  margin-bottom: 20px;\n  background: white;\n  border-bottom: 1px solid #d6d6d6; }\n\n.grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr; }\n  .grid .is-6 {\n    width: 100%; }\n  .grid .is-12 {\n    grid-column: 1/3; }\n"],
                 // changeDetection: ChangeDetectionStrategy.OnPush,
                 animations: [

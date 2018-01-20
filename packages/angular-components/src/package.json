@@ -54,13 +54,17 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "ht-client": "^0.1.1-0",
+    "ht-data": "^0.1.1-0",
+    "ht-maps": "^0.1.1-0",
+    "ht-utility": "0.1.0"
   },
   "peerDependencies": {
     "ht-client": ">=0.0.17-beta",
     "ht-data": ">=0.0.4-beta",
     "ht-maps": ">=0.0.13-beta",
-    "ht-models": ">=0.0.12",
+    "ht-models": "^0.0.14",
     "ht-utility": ">=0.0.1-beta",
     "font-awesome": "^4.7.0",
     "leaflet": "^1.2.0",
