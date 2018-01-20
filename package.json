@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
     "pretty": "./node_modules/.bin/prettier --write \"packages/**/src/**/*.ts\"",
+    "release": "lerna publish && lerna run copyback --scope=angular-components",
     "lint": "tslint packages/client/src"
   },
   "private": true,
