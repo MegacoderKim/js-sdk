@@ -24,6 +24,15 @@ import {leafletHeat} from "./leaflet.heatmap";
 export class LeafletMapUtilsClass implements MapUtils {
   type: HtMapType = 'leaflet';
 
+  renderMap(elem: HTMLElement | string, options) {
+    let newmap = map(elem, options);
+    if ( options.tileLayerUrl) {
+      tileLayer(options.tileLayerUrl, options.tileLayerOptions || {}).addTo(newmap);
+    }
+
+    return newmap;
+  }
+
   setMap(item, map: Map) {
     if (((item && !item.getElement) || (item && !item.getElement())) && map.getContainer().offsetWidth) {
       item.addTo(map);
@@ -129,15 +138,6 @@ export class LeafletMapUtilsClass implements MapUtils {
     return item.getLatLng();
   }
 
-  renderMap(elem, options) {
-    let newmap = map(elem, options);
-    if ( options.tileLayerUrl) {
-      tileLayer(options.tileLayerUrl, options.tileLayerOptions || {}).addTo(newmap);
-    }
-
-    return newmap;
-  }
-
   updateCirclePosition(
     circle,
     position,
@@ -180,7 +180,9 @@ export class LeafletMapUtilsClass implements MapUtils {
   }
 
   setBounds(map: L.Map, bounds: L.LatLngBounds, options?) {
-    map.flyToBounds(bounds, options);
+    if(map && map.getContainer() && map.getContainer().offsetWidth) {
+      map.flyToBounds(bounds, options);
+    }
   }
 
   isValidBounds(bounds: L.LatLngBounds) {

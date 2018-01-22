@@ -4,14 +4,15 @@ import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {LightColorMapStyle} from "../styles/light-color-map";
+import {mapTypeService} from "../global/map-type";
 
 export class MapInstance {
-  mapUtils: MapUtils = null;
+  // mapUtils: MapUtils = null;
   map: HtMap | null = null;
   map$: ReplaySubject<HtMap | null> = new ReplaySubject();
   clusters = [];
   itemsSet = [];
-  mapType: HtMapType;
+  // mapType: HtMapType;
   leafletSetBoundsOptions = {
     animate: true,
     duration: 0.3
@@ -38,12 +39,20 @@ export class MapInstance {
       this.map = map;
     })
   }
+
+  get mapUtils(): MapUtils {
+    return mapTypeService.getInstance()
+  }
+
+  get mapType(): HtMapType {
+    return mapTypeService.getInstance().mapType
+  }
   addToItemsSet(item) {
     const i = this.itemsSet.indexOf(item);
     if (i == -1) this.itemsSet.push(item);
   }
 
-  renderMap(elem: Element, options = {}) {
+  renderMap(elem: HTMLElement | string, options = {}) {
     let mapOptions =
       this.mapType == "leaflet"
         ? this.leafletMapOptions
@@ -68,9 +77,10 @@ export class MapInstance {
   //   });
   // }
   setMapType(mapType: HtMapType) {
-    this.mapType = mapType;
-    this.mapUtils = mapType == "leaflet" ? new LeafletMapUtilsClass() : new GoogleMapUtilsClass();
-  }
+    mapTypeService.getInstance(mapType)
+  };
+
+
   addCluster(cluster) {
     if (!this.clusters.includes(cluster)) {
       this.clusters.push(cluster);

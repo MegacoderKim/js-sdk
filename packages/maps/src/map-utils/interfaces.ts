@@ -28,7 +28,7 @@ export interface MapUtils {
   closePopup: (item: HtMapItem) => void;
   bringToFront: (item: HtMapItem) => void;
   setFocus: (item: HtMapItem, map: HtMap, config?: SetFocusConfig) => void;
-  renderMap: (elem: Element, options: object) => HtMap;
+  renderMap: (elem: HTMLElement | string, options: object) => HtMap;
   updateCirclePosition?: (
     item,
     position,
