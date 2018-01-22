@@ -2607,14 +2607,15 @@ GroupsChartContainerModule.ctorParameters = function () { return []; };
 var MapComponent = (function () {
     /**
      * @param {?} elRef
+     * @param {?} htMapService
      */
-    function MapComponent(elRef) {
+    function MapComponent(elRef, htMapService) {
         this.elRef = elRef;
         this.options = {};
         this.onReady = new core.EventEmitter();
-        this.mapInstance = htMaps.GlobalMap;
         this.loading = false;
         this.showReset = true;
+        this.mapInstance = this.mapInstance || htMapService.mapInstance;
     }
     /**
      * @return {?}
@@ -2676,6 +2677,7 @@ MapComponent.decorators = [
 /** @nocollapse */
 MapComponent.ctorParameters = function () { return [
     { type: core.ElementRef, },
+    { type: HtMapService, decorators: [{ type: core.Optional },] },
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: core.Input },],
@@ -3577,91 +3579,6 @@ function addDestroyObservableToComponent(component) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var ActionsStatusGraphService = (function () {
-    /**
-     * @param {?} config
-     */
-    function ActionsStatusGraphService(config) {
-        this.component = ActionsStatusGraphComponent;
-        this.tags = ['actions'];
-        this.className = "is-12";
-        this.initState(config);
-        this.initClient();
-    }
-    /**
-     * @param {?} config
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.initState = function (config) {
-        // console.log(config.initialDateRange);
-        this.dateRangeService$ = htClient.dateRangeFactory(config.initialDateRange || htData.DateRangeMap.last_7_days);
-        this.title = config.title || "Actions graph";
-        this.chartFormat = config.chartFormat;
-        if (config.tags && config.tags.length)
-            this.tags = __spread(this.tags, config.tags);
-    };
-    /**
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.initClient = function () {
-        var _this = this;
-        var /** @type {?} */ graphClient = htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
-        this.client = graphClient.graph;
-        this.loading$ = this.client.loading$;
-        this.data$ = this.client.data$.pipe(operators.filter(function (data) { return !!data; }), operators.map(function (data) {
-            _this.noData = data.length ? false : true;
-            return _this.getCompletedActionChart(data);
-        }));
-    };
-    /**
-     * @param {?} data
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.getCompletedActionChart = function (data) {
-        // const format = data.length < 15 ? 'MMM D' : "MMM D";
-        var /** @type {?} */ labels = data.map(function (item) {
-            return dateFns.format(item.created_date, 'ddd, MMM Do');
-            // return moment(item.created_date).format('ddd, MMM Do')
-        });
-        var /** @type {?} */ datasets = this.chartFormat.map(function (item) {
-            return {
-                title: item.title,
-                values: data.map(item.selector)
-            };
-        });
-        return {
-            labels: labels,
-            datasets: datasets
-        };
-    };
-    /**
-     * @param {?} instance
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.setData = function (instance) {
-        instance.service = this;
-    };
-    /**
-     * @param {?=} isActive
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.setActive = function (isActive) {
-        if (isActive === void 0) { isActive = true; }
-        // this.client.setActive(isActive)
-    };
-    return ActionsStatusGraphService;
-}());
-ActionsStatusGraphService.decorators = [
-    { type: core.Injectable },
-];
-/** @nocollapse */
-ActionsStatusGraphService.ctorParameters = function () { return [
-    null,
-]; };
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 var ActionsStatusGraphComponent = (function () {
     function ActionsStatusGraphComponent() {
         this.noData = false;
@@ -4022,7 +3939,7 @@ var StopsHeatmapService = (function () {
         this.noData = false;
         this.loading$ = of.of(false);
         this.mapInstance = new htMaps.MapInstance();
-        this.setMapType('leaflet');
+        this.setMapType(htMaps.mapTypeService.getInstance().mapType);
         this.initClient(config);
     }
     /**
@@ -4059,11 +3976,11 @@ var StopsHeatmapService = (function () {
         var /** @type {?} */ userClient = htClient.usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.heatmap;
         this.mapLoading$ = this.client.loading$;
-        this.dataArray$ = this.client.dataArray$.pipe(operators.tap(function (data) {
-            _this.noData = data && data.length == 0 ? true : false;
+        this.data$ = this.client.data$.pipe(operators.tap(function (data) {
+            _this.noData = data && data.count == 0 ? true : false;
         }));
         var /** @type {?} */ heatMapTrace = new htMaps.StopsHeatmapTrace(this.mapInstance);
-        heatMapTrace.setData$(this.dataArray$);
+        heatMapTrace.setPageData$(this.data$);
     };
     return StopsHeatmapService;
 }());
@@ -4343,6 +4260,91 @@ var usersAnalyticsListPresets = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var ActionsStatusGraphService = (function () {
+    /**
+     * @param {?} config
+     */
+    function ActionsStatusGraphService(config) {
+        this.component = ActionsStatusGraphComponent;
+        this.tags = ['actions'];
+        this.className = "is-12";
+        this.initState(config);
+        this.initClient();
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.initState = function (config) {
+        // console.log(config.initialDateRange);
+        this.dateRangeService$ = htClient.dateRangeFactory(config.initialDateRange || htData.DateRangeMap.last_7_days);
+        this.title = config.title || "Actions graph";
+        this.chartFormat = config.chartFormat;
+        if (config.tags && config.tags.length)
+            this.tags = __spread(this.tags, config.tags);
+    };
+    /**
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.initClient = function () {
+        var _this = this;
+        var /** @type {?} */ graphClient = htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = graphClient.graph;
+        this.loading$ = this.client.loading$;
+        this.data$ = this.client.data$.pipe(operators.filter(function (data) { return !!data; }), operators.map(function (data) {
+            _this.noData = data.length ? false : true;
+            return _this.getCompletedActionChart(data);
+        }));
+    };
+    /**
+     * @param {?} data
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.getCompletedActionChart = function (data) {
+        // const format = data.length < 15 ? 'MMM D' : "MMM D";
+        var /** @type {?} */ labels = data.map(function (item) {
+            return dateFns.format(item.created_date, 'ddd, MMM Do');
+            // return moment(item.created_date).format('ddd, MMM Do')
+        });
+        var /** @type {?} */ datasets = this.chartFormat.map(function (item) {
+            return {
+                title: item.title,
+                values: data.map(item.selector)
+            };
+        });
+        return {
+            labels: labels,
+            datasets: datasets
+        };
+    };
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.setData = function (instance) {
+        instance.service = this;
+    };
+    /**
+     * @param {?=} isActive
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.setActive = function (isActive) {
+        if (isActive === void 0) { isActive = true; }
+        // this.client.setActive(isActive)
+    };
+    return ActionsStatusGraphService;
+}());
+ActionsStatusGraphService.decorators = [
+    { type: core.Injectable },
+];
+/** @nocollapse */
+ActionsStatusGraphService.ctorParameters = function () { return [
+    null,
+]; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var ActionsAnalyticsListComponent = (function () {
     function ActionsAnalyticsListComponent() {
         this.selectedAction = null;
@@ -4554,7 +4556,7 @@ var ActionsHeatmapService = (function () {
         this.noData = false;
         this.loading$ = of.of(false);
         this.mapInstance = new htMaps.MapInstance();
-        this.setMapType('leaflet');
+        this.setMapType(htMaps.mapTypeService.getInstance().mapType);
         this.initClient(config);
     }
     /**
@@ -4591,11 +4593,11 @@ var ActionsHeatmapService = (function () {
         var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = actionsClient.heatmap;
         this.mapLoading$ = this.client.loading$;
-        this.dataArray$ = this.client.dataArray$.pipe(operators.tap(function (data) {
-            _this.noData = data && data.length == 0 ? true : false;
+        this.data$ = this.client.data$.pipe(operators.tap(function (data) {
+            _this.noData = data && data.count == 0 ? true : false;
         }));
         var /** @type {?} */ heatMapTrace = new htMaps.ActionsHeatmapTrace(this.mapInstance);
-        heatMapTrace.setData$(this.dataArray$);
+        heatMapTrace.setPageData$(this.data$);
     };
     return ActionsHeatmapService;
 }());
@@ -4931,7 +4933,6 @@ var actionsConfigPreset = {
  */
 var AnalyticsItemsService = (function () {
     function AnalyticsItemsService() {
-        var _this = this;
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject.BehaviorSubject([]);
         var /** @type {?} */ usersClient = htClient.usersClientFactory({ dateRange$: htClient.dateRangeFactory(htData.DateRangeMap.today).data$.asObservable() });
@@ -4961,46 +4962,43 @@ var AnalyticsItemsService = (function () {
             usersAnalyticsListPresets["max_distance"](),
         ];
         this.chosenItemCreater = this.presets;
-        this.items$ = new BehaviorSubject.BehaviorSubject(this.getItems(this.presets));
-        this.allTags$ = this.items$.pipe(operators.map(function (items) {
-            _this.totalTags = items.length;
-            return items.reduce(function (tags, item) {
-                var /** @type {?} */ itemTags = item.tags;
-                return itemTags.reduce(function (currentTags, tag) {
-                    return currentTags.includes(tag) ? currentTags : __spread(currentTags, [tag]);
-                }, tags);
-                // return tags.includes()
-            }, ['users', 'actions']);
-        }));
-        this.tags$ = combineLatest.combineLatest(this.allTags$, this.selectedTags$, function (allTags, selectedTags) {
-            // console.log("eit tags", allTags, selectedTags);
-            // if (selectedTags.length === 0) {
-            //   return allTags.map(tag => {
-            //     return {key: tag, isActive: true}
-            //   })
-            // } else {
-            //   return allTags.map(tag => {
-            //     const isActive = selectedTags.includes(tag);
-            //     return {key: tag, isActive}
-            //   })
-            // }
-            return allTags.map(function (tag) {
-                var /** @type {?} */ isActive = selectedTags.includes(tag);
-                return { key: tag, isActive: isActive };
-            });
-        });
-        this.filteredItems$ = combineLatest.combineLatest(this.items$, this.selectedTags$, function (items, tags) {
-            return tags.length ? items.filter(function (item) {
-                return tags.reduce(function (pass, selectedTag) {
-                    return pass && item.tags.includes(selectedTag);
-                }, true);
-                // return tags.reduce((pass, existingTag) => {
-                //   return pass || item.tags.includes(existingTag)
-                // }, false)
-            }) : items;
-        });
     }
     
+    /**
+     * @return {?}
+     */
+    AnalyticsItemsService.prototype.initPresets = function () {
+        var _this = this;
+        if (!this.items$) {
+            this.items$ = new BehaviorSubject.BehaviorSubject(this.getItems(this.presets));
+            this.allTags$ = this.items$.pipe(operators.map(function (items) {
+                _this.totalTags = items.length;
+                return items.reduce(function (tags, item) {
+                    var /** @type {?} */ itemTags = item.tags;
+                    return itemTags.reduce(function (currentTags, tag) {
+                        return currentTags.includes(tag) ? currentTags : __spread(currentTags, [tag]);
+                    }, tags);
+                    // return tags.includes()
+                }, ['users', 'actions']);
+            }));
+            this.filteredItems$ = combineLatest.combineLatest(this.items$, this.selectedTags$, function (items, tags) {
+                return tags.length ? items.filter(function (item) {
+                    return tags.reduce(function (pass, selectedTag) {
+                        return pass && item.tags.includes(selectedTag);
+                    }, true);
+                    // return tags.reduce((pass, existingTag) => {
+                    //   return pass || item.tags.includes(existingTag)
+                    // }, false)
+                }) : items;
+            });
+            this.tags$ = combineLatest.combineLatest(this.allTags$, this.selectedTags$, function (allTags, selectedTags) {
+                return allTags.map(function (tag) {
+                    var /** @type {?} */ isActive = selectedTags.includes(tag);
+                    return { key: tag, isActive: isActive };
+                });
+            });
+        }
+    };
     /**
      * @param {?} itemCreator
      * @return {?}
@@ -5123,6 +5121,7 @@ var AnalyticsContainerComponent = (function () {
      * @return {?}
      */
     AnalyticsContainerComponent.prototype.ngOnInit = function () {
+        this.analyticsItemsService.initPresets();
         this.analyticsItemsService.initServices();
     };
     /**

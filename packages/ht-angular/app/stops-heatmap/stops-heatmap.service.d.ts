@@ -14,7 +14,7 @@ export declare class StopsHeatmapService implements IAnalyticsMapService {
     mapLoading$: any;
     client: UsersHeatmap;
     dateRangeService$: any;
-    dataArray$: any;
+    data$: any;
     mapInstance: MapInstance;
     constructor(config: IAnalyticsListConfig);
     setMapType(mapType: any): void;

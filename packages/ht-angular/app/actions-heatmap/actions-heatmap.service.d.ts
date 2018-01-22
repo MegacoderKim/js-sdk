@@ -14,7 +14,7 @@ export declare class ActionsHeatmapService implements IAnalyticsMapService {
     mapLoading$: any;
     client: ActionsHeatmap;
     dateRangeService$: any;
-    dataArray$: any;
+    data$: any;
     mapInstance: MapInstance;
     constructor(config: IAnalyticsListConfig);
     setMapType(mapType: any): void;

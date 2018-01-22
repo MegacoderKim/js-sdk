@@ -11,6 +11,7 @@ export declare class AnalyticsItemsService {
     selectedTags$: BehaviorSubject<string[]>;
     totalTags: number;
     constructor();
+    initPresets(): void;
     private isItemCreatorActive(itemCreator);
     toggleTag(tag: string): void;
     selectTag(tag: string): void;

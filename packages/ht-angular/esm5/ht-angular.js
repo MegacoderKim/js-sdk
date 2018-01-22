@@ -28,7 +28,7 @@ var __spread = (this && this.__spread) || function () {
     for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
     return ar;
 };
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, Directive, ElementRef, EventEmitter, HostBinding, HostListener, Injectable, InjectionToken, Input, NgModule, Output, Pipe, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, Directive, ElementRef, EventEmitter, HostBinding, HostListener, Injectable, InjectionToken, Input, NgModule, Optional, Output, Pipe, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
@@ -36,7 +36,7 @@ import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
 import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
-import { ActionsHeatmapTrace, GlobalMap, HtMapClass, MapInstance, StopsHeatmapTrace } from 'ht-maps';
+import { ActionsHeatmapTrace, HtMapClass, MapInstance, StopsHeatmapTrace, mapTypeService } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject as BehaviorSubject$1 } from 'rxjs/BehaviorSubject';
 import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest';
@@ -2618,14 +2618,15 @@ GroupsChartContainerModule.ctorParameters = function () { return []; };
 var MapComponent = (function () {
     /**
      * @param {?} elRef
+     * @param {?} htMapService
      */
-    function MapComponent(elRef) {
+    function MapComponent(elRef, htMapService) {
         this.elRef = elRef;
         this.options = {};
         this.onReady = new EventEmitter();
-        this.mapInstance = GlobalMap;
         this.loading = false;
         this.showReset = true;
+        this.mapInstance = this.mapInstance || htMapService.mapInstance;
     }
     /**
      * @return {?}
@@ -2687,6 +2688,7 @@ MapComponent.decorators = [
 /** @nocollapse */
 MapComponent.ctorParameters = function () { return [
     { type: ElementRef, },
+    { type: HtMapService, decorators: [{ type: Optional },] },
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
@@ -3588,91 +3590,6 @@ function addDestroyObservableToComponent(component) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var ActionsStatusGraphService = (function () {
-    /**
-     * @param {?} config
-     */
-    function ActionsStatusGraphService(config) {
-        this.component = ActionsStatusGraphComponent;
-        this.tags = ['actions'];
-        this.className = "is-12";
-        this.initState(config);
-        this.initClient();
-    }
-    /**
-     * @param {?} config
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.initState = function (config) {
-        // console.log(config.initialDateRange);
-        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
-        this.title = config.title || "Actions graph";
-        this.chartFormat = config.chartFormat;
-        if (config.tags && config.tags.length)
-            this.tags = __spread(this.tags, config.tags);
-    };
-    /**
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.initClient = function () {
-        var _this = this;
-        var /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
-        this.client = graphClient.graph;
-        this.loading$ = this.client.loading$;
-        this.data$ = this.client.data$.pipe(filter(function (data) { return !!data; }), map$1(function (data) {
-            _this.noData = data.length ? false : true;
-            return _this.getCompletedActionChart(data);
-        }));
-    };
-    /**
-     * @param {?} data
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.getCompletedActionChart = function (data) {
-        // const format = data.length < 15 ? 'MMM D' : "MMM D";
-        var /** @type {?} */ labels = data.map(function (item) {
-            return format(item.created_date, 'ddd, MMM Do');
-            // return moment(item.created_date).format('ddd, MMM Do')
-        });
-        var /** @type {?} */ datasets = this.chartFormat.map(function (item) {
-            return {
-                title: item.title,
-                values: data.map(item.selector)
-            };
-        });
-        return {
-            labels: labels,
-            datasets: datasets
-        };
-    };
-    /**
-     * @param {?} instance
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.setData = function (instance) {
-        instance.service = this;
-    };
-    /**
-     * @param {?=} isActive
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.setActive = function (isActive) {
-        if (isActive === void 0) { isActive = true; }
-        // this.client.setActive(isActive)
-    };
-    return ActionsStatusGraphService;
-}());
-ActionsStatusGraphService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-ActionsStatusGraphService.ctorParameters = function () { return [
-    null,
-]; };
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 var ActionsStatusGraphComponent = (function () {
     function ActionsStatusGraphComponent() {
         this.noData = false;
@@ -4033,7 +3950,7 @@ var StopsHeatmapService = (function () {
         this.noData = false;
         this.loading$ = of$1(false);
         this.mapInstance = new MapInstance();
-        this.setMapType('leaflet');
+        this.setMapType(mapTypeService.getInstance().mapType);
         this.initClient(config);
     }
     /**
@@ -4070,11 +3987,11 @@ var StopsHeatmapService = (function () {
         var /** @type {?} */ userClient = usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.heatmap;
         this.mapLoading$ = this.client.loading$;
-        this.dataArray$ = this.client.dataArray$.pipe(tap(function (data) {
-            _this.noData = data && data.length == 0 ? true : false;
+        this.data$ = this.client.data$.pipe(tap(function (data) {
+            _this.noData = data && data.count == 0 ? true : false;
         }));
         var /** @type {?} */ heatMapTrace = new StopsHeatmapTrace(this.mapInstance);
-        heatMapTrace.setData$(this.dataArray$);
+        heatMapTrace.setPageData$(this.data$);
     };
     return StopsHeatmapService;
 }());
@@ -4354,6 +4271,91 @@ var usersAnalyticsListPresets = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var ActionsStatusGraphService = (function () {
+    /**
+     * @param {?} config
+     */
+    function ActionsStatusGraphService(config) {
+        this.component = ActionsStatusGraphComponent;
+        this.tags = ['actions'];
+        this.className = "is-12";
+        this.initState(config);
+        this.initClient();
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.initState = function (config) {
+        // console.log(config.initialDateRange);
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title || "Actions graph";
+        this.chartFormat = config.chartFormat;
+        if (config.tags && config.tags.length)
+            this.tags = __spread(this.tags, config.tags);
+    };
+    /**
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.initClient = function () {
+        var _this = this;
+        var /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = graphClient.graph;
+        this.loading$ = this.client.loading$;
+        this.data$ = this.client.data$.pipe(filter(function (data) { return !!data; }), map$1(function (data) {
+            _this.noData = data.length ? false : true;
+            return _this.getCompletedActionChart(data);
+        }));
+    };
+    /**
+     * @param {?} data
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.getCompletedActionChart = function (data) {
+        // const format = data.length < 15 ? 'MMM D' : "MMM D";
+        var /** @type {?} */ labels = data.map(function (item) {
+            return format(item.created_date, 'ddd, MMM Do');
+            // return moment(item.created_date).format('ddd, MMM Do')
+        });
+        var /** @type {?} */ datasets = this.chartFormat.map(function (item) {
+            return {
+                title: item.title,
+                values: data.map(item.selector)
+            };
+        });
+        return {
+            labels: labels,
+            datasets: datasets
+        };
+    };
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.setData = function (instance) {
+        instance.service = this;
+    };
+    /**
+     * @param {?=} isActive
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.setActive = function (isActive) {
+        if (isActive === void 0) { isActive = true; }
+        // this.client.setActive(isActive)
+    };
+    return ActionsStatusGraphService;
+}());
+ActionsStatusGraphService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ActionsStatusGraphService.ctorParameters = function () { return [
+    null,
+]; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var ActionsAnalyticsListComponent = (function () {
     function ActionsAnalyticsListComponent() {
         this.selectedAction = null;
@@ -4565,7 +4567,7 @@ var ActionsHeatmapService = (function () {
         this.noData = false;
         this.loading$ = of$1(false);
         this.mapInstance = new MapInstance();
-        this.setMapType('leaflet');
+        this.setMapType(mapTypeService.getInstance().mapType);
         this.initClient(config);
     }
     /**
@@ -4602,11 +4604,11 @@ var ActionsHeatmapService = (function () {
         var /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = actionsClient.heatmap;
         this.mapLoading$ = this.client.loading$;
-        this.dataArray$ = this.client.dataArray$.pipe(tap(function (data) {
-            _this.noData = data && data.length == 0 ? true : false;
+        this.data$ = this.client.data$.pipe(tap(function (data) {
+            _this.noData = data && data.count == 0 ? true : false;
         }));
         var /** @type {?} */ heatMapTrace = new ActionsHeatmapTrace(this.mapInstance);
-        heatMapTrace.setData$(this.dataArray$);
+        heatMapTrace.setPageData$(this.data$);
     };
     return ActionsHeatmapService;
 }());
@@ -4942,7 +4944,6 @@ var actionsConfigPreset = {
  */
 var AnalyticsItemsService = (function () {
     function AnalyticsItemsService() {
-        var _this = this;
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject$1([]);
         var /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable() });
@@ -4972,46 +4973,43 @@ var AnalyticsItemsService = (function () {
             usersAnalyticsListPresets["max_distance"](),
         ];
         this.chosenItemCreater = this.presets;
-        this.items$ = new BehaviorSubject$1(this.getItems(this.presets));
-        this.allTags$ = this.items$.pipe(map$1(function (items) {
-            _this.totalTags = items.length;
-            return items.reduce(function (tags, item) {
-                var /** @type {?} */ itemTags = item.tags;
-                return itemTags.reduce(function (currentTags, tag) {
-                    return currentTags.includes(tag) ? currentTags : __spread(currentTags, [tag]);
-                }, tags);
-                // return tags.includes()
-            }, ['users', 'actions']);
-        }));
-        this.tags$ = combineLatest$1(this.allTags$, this.selectedTags$, function (allTags, selectedTags) {
-            // console.log("eit tags", allTags, selectedTags);
-            // if (selectedTags.length === 0) {
-            //   return allTags.map(tag => {
-            //     return {key: tag, isActive: true}
-            //   })
-            // } else {
-            //   return allTags.map(tag => {
-            //     const isActive = selectedTags.includes(tag);
-            //     return {key: tag, isActive}
-            //   })
-            // }
-            return allTags.map(function (tag) {
-                var /** @type {?} */ isActive = selectedTags.includes(tag);
-                return { key: tag, isActive: isActive };
-            });
-        });
-        this.filteredItems$ = combineLatest$1(this.items$, this.selectedTags$, function (items, tags) {
-            return tags.length ? items.filter(function (item) {
-                return tags.reduce(function (pass, selectedTag) {
-                    return pass && item.tags.includes(selectedTag);
-                }, true);
-                // return tags.reduce((pass, existingTag) => {
-                //   return pass || item.tags.includes(existingTag)
-                // }, false)
-            }) : items;
-        });
     }
     ;
+    /**
+     * @return {?}
+     */
+    AnalyticsItemsService.prototype.initPresets = function () {
+        var _this = this;
+        if (!this.items$) {
+            this.items$ = new BehaviorSubject$1(this.getItems(this.presets));
+            this.allTags$ = this.items$.pipe(map$1(function (items) {
+                _this.totalTags = items.length;
+                return items.reduce(function (tags, item) {
+                    var /** @type {?} */ itemTags = item.tags;
+                    return itemTags.reduce(function (currentTags, tag) {
+                        return currentTags.includes(tag) ? currentTags : __spread(currentTags, [tag]);
+                    }, tags);
+                    // return tags.includes()
+                }, ['users', 'actions']);
+            }));
+            this.filteredItems$ = combineLatest$1(this.items$, this.selectedTags$, function (items, tags) {
+                return tags.length ? items.filter(function (item) {
+                    return tags.reduce(function (pass, selectedTag) {
+                        return pass && item.tags.includes(selectedTag);
+                    }, true);
+                    // return tags.reduce((pass, existingTag) => {
+                    //   return pass || item.tags.includes(existingTag)
+                    // }, false)
+                }) : items;
+            });
+            this.tags$ = combineLatest$1(this.allTags$, this.selectedTags$, function (allTags, selectedTags) {
+                return allTags.map(function (tag) {
+                    var /** @type {?} */ isActive = selectedTags.includes(tag);
+                    return { key: tag, isActive: isActive };
+                });
+            });
+        }
+    };
     /**
      * @param {?} itemCreator
      * @return {?}
@@ -5134,6 +5132,7 @@ var AnalyticsContainerComponent = (function () {
      * @return {?}
      */
     AnalyticsContainerComponent.prototype.ngOnInit = function () {
+        this.analyticsItemsService.initPresets();
         this.analyticsItemsService.initServices();
     };
     /**

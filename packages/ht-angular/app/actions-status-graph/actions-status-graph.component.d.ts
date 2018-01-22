@@ -1,7 +1,6 @@
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
-import { ActionsStatusGraphService } from "./actions-status-graph.service";
 export declare class ActionsStatusGraphComponent implements OnInit, AfterViewInit, OnDestroy {
-    service: ActionsStatusGraphService;
+    service: any;
     data: any;
     chart: any;
     noData: boolean;

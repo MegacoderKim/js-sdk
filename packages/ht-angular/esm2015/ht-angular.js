@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, Directive, ElementRef, EventEmitter, HostBinding, HostListener, Injectable, InjectionToken, Input, NgModule, Output, Pipe, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactoryResolver, Directive, ElementRef, EventEmitter, HostBinding, HostListener, Injectable, InjectionToken, Input, NgModule, Optional, Output, Pipe, ViewChild, ViewContainerRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
@@ -6,7 +6,7 @@ import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
 import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
-import { ActionsHeatmapTrace, GlobalMap, HtMapClass, MapInstance, StopsHeatmapTrace } from 'ht-maps';
+import { ActionsHeatmapTrace, HtMapClass, MapInstance, StopsHeatmapTrace, mapTypeService } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject as BehaviorSubject$1 } from 'rxjs/BehaviorSubject';
 import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest';
@@ -6813,14 +6813,15 @@ GroupsChartContainerModule.ctorParameters = () => [];
 class MapComponent {
     /**
      * @param {?} elRef
+     * @param {?} htMapService
      */
-    constructor(elRef) {
+    constructor(elRef, htMapService) {
         this.elRef = elRef;
         this.options = {};
         this.onReady = new EventEmitter();
-        this.mapInstance = GlobalMap;
         this.loading = false;
         this.showReset = true;
+        this.mapInstance = this.mapInstance || htMapService.mapInstance;
     }
     /**
      * @return {?}
@@ -7251,6 +7252,7 @@ a:focus {
 /** @nocollapse */
 MapComponent.ctorParameters = () => [
     { type: ElementRef, },
+    { type: HtMapService, decorators: [{ type: Optional },] },
 ];
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
@@ -10458,89 +10460,6 @@ function addDestroyObservableToComponent(component) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-class ActionsStatusGraphService {
-    /**
-     * @param {?} config
-     */
-    constructor(config) {
-        this.component = ActionsStatusGraphComponent;
-        this.tags = ['actions'];
-        this.className = "is-12";
-        this.initState(config);
-        this.initClient();
-    }
-    /**
-     * @param {?} config
-     * @return {?}
-     */
-    initState(config) {
-        // console.log(config.initialDateRange);
-        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
-        this.title = config.title || "Actions graph";
-        this.chartFormat = config.chartFormat;
-        if (config.tags && config.tags.length)
-            this.tags = [...this.tags, ...config.tags];
-    }
-    /**
-     * @return {?}
-     */
-    initClient() {
-        const /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
-        this.client = graphClient.graph;
-        this.loading$ = this.client.loading$;
-        this.data$ = this.client.data$.pipe(filter(data => !!data), map$1((data) => {
-            this.noData = data.length ? false : true;
-            return this.getCompletedActionChart(data);
-        }));
-    }
-    /**
-     * @param {?} data
-     * @return {?}
-     */
-    getCompletedActionChart(data) {
-        // const format = data.length < 15 ? 'MMM D' : "MMM D";
-        const /** @type {?} */ labels = data.map((item) => {
-            return format(item.created_date, 'ddd, MMM Do');
-            // return moment(item.created_date).format('ddd, MMM Do')
-        });
-        const /** @type {?} */ datasets = this.chartFormat.map((item) => {
-            return {
-                title: item.title,
-                values: data.map(item.selector)
-            };
-        });
-        return {
-            labels,
-            datasets
-        };
-    }
-    /**
-     * @param {?} instance
-     * @return {?}
-     */
-    setData(instance) {
-        instance.service = this;
-    }
-    /**
-     * @param {?=} isActive
-     * @return {?}
-     */
-    setActive(isActive = true) {
-        // this.client.setActive(isActive)
-    }
-}
-ActionsStatusGraphService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-ActionsStatusGraphService.ctorParameters = () => [
-    null,
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 class ActionsStatusGraphComponent {
     constructor() {
         this.noData = false;
@@ -10951,7 +10870,7 @@ class StopsHeatmapService {
         this.noData = false;
         this.loading$ = of$1(false);
         this.mapInstance = new MapInstance();
-        this.setMapType('leaflet');
+        this.setMapType(mapTypeService.getInstance().mapType);
         this.initClient(config);
     }
     /**
@@ -10986,11 +10905,11 @@ class StopsHeatmapService {
         let /** @type {?} */ userClient = usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.heatmap;
         this.mapLoading$ = this.client.loading$;
-        this.dataArray$ = this.client.dataArray$.pipe(tap((data) => {
-            this.noData = data && data.length == 0 ? true : false;
+        this.data$ = this.client.data$.pipe(tap((data) => {
+            this.noData = data && data.count == 0 ? true : false;
         }));
         let /** @type {?} */ heatMapTrace = new StopsHeatmapTrace(this.mapInstance);
-        heatMapTrace.setData$(this.dataArray$);
+        heatMapTrace.setPageData$(this.data$);
     }
 }
 StopsHeatmapService.decorators = [
@@ -11273,6 +11192,89 @@ const usersAnalyticsListPresets = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+class ActionsStatusGraphService {
+    /**
+     * @param {?} config
+     */
+    constructor(config) {
+        this.component = ActionsStatusGraphComponent;
+        this.tags = ['actions'];
+        this.className = "is-12";
+        this.initState(config);
+        this.initClient();
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    initState(config) {
+        // console.log(config.initialDateRange);
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title || "Actions graph";
+        this.chartFormat = config.chartFormat;
+        if (config.tags && config.tags.length)
+            this.tags = [...this.tags, ...config.tags];
+    }
+    /**
+     * @return {?}
+     */
+    initClient() {
+        const /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = graphClient.graph;
+        this.loading$ = this.client.loading$;
+        this.data$ = this.client.data$.pipe(filter(data => !!data), map$1((data) => {
+            this.noData = data.length ? false : true;
+            return this.getCompletedActionChart(data);
+        }));
+    }
+    /**
+     * @param {?} data
+     * @return {?}
+     */
+    getCompletedActionChart(data) {
+        // const format = data.length < 15 ? 'MMM D' : "MMM D";
+        const /** @type {?} */ labels = data.map((item) => {
+            return format(item.created_date, 'ddd, MMM Do');
+            // return moment(item.created_date).format('ddd, MMM Do')
+        });
+        const /** @type {?} */ datasets = this.chartFormat.map((item) => {
+            return {
+                title: item.title,
+                values: data.map(item.selector)
+            };
+        });
+        return {
+            labels,
+            datasets
+        };
+    }
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    setData(instance) {
+        instance.service = this;
+    }
+    /**
+     * @param {?=} isActive
+     * @return {?}
+     */
+    setActive(isActive = true) {
+        // this.client.setActive(isActive)
+    }
+}
+ActionsStatusGraphService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ActionsStatusGraphService.ctorParameters = () => [
+    null,
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 class ActionsAnalyticsListComponent {
     constructor() {
         this.selectedAction = null;
@@ -11520,7 +11522,7 @@ class ActionsHeatmapService {
         this.noData = false;
         this.loading$ = of$1(false);
         this.mapInstance = new MapInstance();
-        this.setMapType('leaflet');
+        this.setMapType(mapTypeService.getInstance().mapType);
         this.initClient(config);
     }
     /**
@@ -11555,11 +11557,11 @@ class ActionsHeatmapService {
         let /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = actionsClient.heatmap;
         this.mapLoading$ = this.client.loading$;
-        this.dataArray$ = this.client.dataArray$.pipe(tap((data) => {
-            this.noData = data && data.length == 0 ? true : false;
+        this.data$ = this.client.data$.pipe(tap((data) => {
+            this.noData = data && data.count == 0 ? true : false;
         }));
         let /** @type {?} */ heatMapTrace = new ActionsHeatmapTrace(this.mapInstance);
-        heatMapTrace.setData$(this.dataArray$);
+        heatMapTrace.setPageData$(this.data$);
     }
 }
 ActionsHeatmapService.decorators = [
@@ -11925,46 +11927,42 @@ class AnalyticsItemsService {
             usersAnalyticsListPresets["max_distance"](),
         ];
         this.chosenItemCreater = this.presets;
-        this.items$ = new BehaviorSubject$1(this.getItems(this.presets));
-        this.allTags$ = this.items$.pipe(map$1(items => {
-            this.totalTags = items.length;
-            return items.reduce((tags, item) => {
-                const /** @type {?} */ itemTags = item.tags;
-                return itemTags.reduce((currentTags, tag) => {
-                    return currentTags.includes(tag) ? currentTags : [...currentTags, tag];
-                }, tags);
-                // return tags.includes()
-            }, ['users', 'actions']);
-        }));
-        this.tags$ = combineLatest$1(this.allTags$, this.selectedTags$, (allTags, selectedTags) => {
-            // console.log("eit tags", allTags, selectedTags);
-            // if (selectedTags.length === 0) {
-            //   return allTags.map(tag => {
-            //     return {key: tag, isActive: true}
-            //   })
-            // } else {
-            //   return allTags.map(tag => {
-            //     const isActive = selectedTags.includes(tag);
-            //     return {key: tag, isActive}
-            //   })
-            // }
-            return allTags.map(tag => {
-                const /** @type {?} */ isActive = selectedTags.includes(tag);
-                return { key: tag, isActive };
-            });
-        });
-        this.filteredItems$ = combineLatest$1(this.items$, this.selectedTags$, (items, tags) => {
-            return tags.length ? items.filter((item) => {
-                return tags.reduce((pass, selectedTag) => {
-                    return pass && item.tags.includes(selectedTag);
-                }, true);
-                // return tags.reduce((pass, existingTag) => {
-                //   return pass || item.tags.includes(existingTag)
-                // }, false)
-            }) : items;
-        });
     }
     ;
+    /**
+     * @return {?}
+     */
+    initPresets() {
+        if (!this.items$) {
+            this.items$ = new BehaviorSubject$1(this.getItems(this.presets));
+            this.allTags$ = this.items$.pipe(map$1(items => {
+                this.totalTags = items.length;
+                return items.reduce((tags, item) => {
+                    const /** @type {?} */ itemTags = item.tags;
+                    return itemTags.reduce((currentTags, tag) => {
+                        return currentTags.includes(tag) ? currentTags : [...currentTags, tag];
+                    }, tags);
+                    // return tags.includes()
+                }, ['users', 'actions']);
+            }));
+            this.filteredItems$ = combineLatest$1(this.items$, this.selectedTags$, (items, tags) => {
+                return tags.length ? items.filter((item) => {
+                    return tags.reduce((pass, selectedTag) => {
+                        return pass && item.tags.includes(selectedTag);
+                    }, true);
+                    // return tags.reduce((pass, existingTag) => {
+                    //   return pass || item.tags.includes(existingTag)
+                    // }, false)
+                }) : items;
+            });
+            this.tags$ = combineLatest$1(this.allTags$, this.selectedTags$, (allTags, selectedTags) => {
+                return allTags.map(tag => {
+                    const /** @type {?} */ isActive = selectedTags.includes(tag);
+                    return { key: tag, isActive };
+                });
+            });
+        }
+    }
     /**
      * @param {?} itemCreator
      * @return {?}
@@ -12084,6 +12082,7 @@ class AnalyticsContainerComponent {
      * @return {?}
      */
     ngOnInit() {
+        this.analyticsItemsService.initPresets();
         this.analyticsItemsService.initServices();
     }
     /**
