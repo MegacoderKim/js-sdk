@@ -39,6 +39,7 @@ export class AnalyticsContainerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.analyticsItemsService.initPresets();
     this.analyticsItemsService.initServices()
   }
 

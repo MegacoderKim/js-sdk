@@ -1,13 +1,12 @@
 import { MarkerDataConfig, StyleFunct } from "../interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 
 export class MarkersBase
   implements MarkerDataConfig<any>, MarkersFactoryConfig {
   // styleFunct: StyleFunct;
   mapInstance: MapInstance;
   constructor(public renderConfig, public styleFunct: StyleFunct, public name?) {
-    this.mapInstance = renderConfig.mapInstance || GlobalMap
+    this.mapInstance = renderConfig.mapInstance || new MapInstance();
   }
 
   getPosition(data) {

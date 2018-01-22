@@ -9,7 +9,6 @@ import {
 import { point } from "leaflet";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 import {StyleMixin} from "../mixins/styles";
 import {CircleMixin} from "../mixins/circle-renderer";
 import {Entity, StyleFunct} from "../interfaces";
@@ -54,7 +53,7 @@ export class ActionMarkers {
     },
   };
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
     let posObj = htAction(data).getPositionsObject();

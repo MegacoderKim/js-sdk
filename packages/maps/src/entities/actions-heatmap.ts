@@ -9,7 +9,6 @@ import {Entity, StyleFunct} from "../interfaces";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 
 export class ActionsHeatmap {
   styleFunct: StyleFunct = {
@@ -34,7 +33,7 @@ export class ActionsHeatmap {
     }
   };
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getPosition(item): HtPosition {
     return {

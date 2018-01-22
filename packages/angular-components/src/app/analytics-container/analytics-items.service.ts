@@ -58,57 +58,56 @@ export class AnalyticsItemsService {
       usersAnalyticsListPresets.max_distance(),
     ];
     this.chosenItemCreater = this.presets;
-    this.items$ = new BehaviorSubject(this.getItems(this.presets));
-    this.allTags$ = this.items$.pipe(
-      map(items => {
-        this.totalTags = items.length;
-        return items.reduce((tags, item) => {
-          const itemTags = item.tags;
-          return itemTags.reduce((currentTags: string[], tag) => {
-            return currentTags.includes(tag) ? currentTags : [...currentTags, tag]
-          }, tags)
-          // return tags.includes()
-        }, ['users', 'actions'])
-      })
-    );
 
-    this.tags$ = combineLatest(
-      this.allTags$,
-      this.selectedTags$,
-      (allTags, selectedTags) => {
-        // console.log("eit tags", allTags, selectedTags);
-        // if (selectedTags.length === 0) {
-        //   return allTags.map(tag => {
-        //     return {key: tag, isActive: true}
-        //   })
-        // } else {
-        //   return allTags.map(tag => {
-        //     const isActive = selectedTags.includes(tag);
-        //     return {key: tag, isActive}
-        //   })
-        // }
-        return allTags.map(tag => {
-          const isActive = selectedTags.includes(tag);
-          return {key: tag, isActive}
-        })
-      }
-    );
 
-    this.filteredItems$ = combineLatest(
-      this.items$,
-      this.selectedTags$,
-      (items, tags) => {
-        return tags.length ? items.filter((item) => {
-          return tags.reduce((pass, selectedTag) => {
-            return pass && item.tags.includes(selectedTag)
-          }, true);
-          // return tags.reduce((pass, existingTag) => {
-          //   return pass || item.tags.includes(existingTag)
-          // }, false)
-        }) : items;
-      }
-    )
+
   };
+
+  initPresets() {
+    if (!this.items$) {
+      this.items$ = new BehaviorSubject(this.getItems(this.presets));
+
+      this.allTags$ = this.items$.pipe(
+        map(items => {
+          this.totalTags = items.length;
+          return items.reduce((tags, item) => {
+            const itemTags = item.tags;
+            return itemTags.reduce((currentTags: string[], tag) => {
+              return currentTags.includes(tag) ? currentTags : [...currentTags, tag]
+            }, tags)
+            // return tags.includes()
+          }, ['users', 'actions'])
+        })
+      );
+
+      this.filteredItems$ = combineLatest(
+        this.items$,
+        this.selectedTags$,
+        (items, tags) => {
+          return tags.length ? items.filter((item) => {
+            return tags.reduce((pass, selectedTag) => {
+              return pass && item.tags.includes(selectedTag)
+            }, true);
+            // return tags.reduce((pass, existingTag) => {
+            //   return pass || item.tags.includes(existingTag)
+            // }, false)
+          }) : items;
+        }
+      )
+
+      this.tags$ = combineLatest(
+        this.allTags$,
+        this.selectedTags$,
+        (allTags, selectedTags) => {
+          return allTags.map(tag => {
+            const isActive = selectedTags.includes(tag);
+            return {key: tag, isActive}
+          })
+        }
+      );
+    }
+
+  }
 
   // toggleItemCreator(preset) {
   //   if (this.isItemCreatorActive(preset)) {

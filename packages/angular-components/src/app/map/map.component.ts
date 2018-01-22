@@ -1,11 +1,11 @@
 import {
   AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter,
-  ViewChild
+  ViewChild, Optional
 } from '@angular/core';
 import {IUserData} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
-import {HtMap, MapInstance, GlobalMap} from "ht-maps";
+import {HtMap, MapInstance} from "ht-maps";
 
 @Component({
   selector: 'ht-map',
@@ -15,13 +15,16 @@ import {HtMap, MapInstance, GlobalMap} from "ht-maps";
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() options: any = {};
   @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
-  @Input() mapInstance: MapInstance = GlobalMap;
+  @Input() mapInstance: MapInstance;
   @Input() loading: boolean = false;
   @Input() showReset: boolean = true;
   @ViewChild('map') mapElem;
   constructor(
     private elRef: ElementRef,
-  ) { }
+    @Optional() htMapService: HtMapService
+  ) {
+    this.mapInstance = this.mapInstance || htMapService.mapInstance;
+  }
 
   @HostListener('resize', ['$event'])
   onMapResize() {

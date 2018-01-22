@@ -9,7 +9,7 @@ import {ActionsSummaryService} from "./actions-summary.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionsSummaryChartComponent implements OnInit {
-  @Input() service: ActionsSummaryService;
+  @Input() service;
   constructor() { }
 
   ngOnInit() {

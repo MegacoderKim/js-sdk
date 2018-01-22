@@ -4,17 +4,19 @@ import { IUserData } from "ht-models";
 import { UsersClusterTrace} from "../entities/users-cluster";
 import { LightColorMapStyle } from "../styles/light-color-map";
 import * as _ from "underscore";
-import { GlobalMap } from "./map-service";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 import { StopsHeatmapTrace } from "../entities/stops-heatmap"
 import {ActionsClusterTrace} from "../entities/actions-cluster"
 import {ActionsHeatmapTrace} from "../entities/actions-heatmap";
+import {MapInstance} from "../map-utils/map-instance";
+import {mapTypeService} from "./map-type";
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
   // userData$: Observable<IUserData | null>;
+  mapInstance: MapInstance = new MapInstance();
   userDataSub: Subscription;
   placeline;
   usersCluster;
@@ -42,12 +44,12 @@ export class HtMapClass {
     public mapType: HtMapType = "leaflet",
     options: HtMapClassOptions = {}
   ) {
-    GlobalMap.setMapType(mapType);
-    this.usersCluster = new UsersClusterTrace();
-    this.actionsCluster = new ActionsClusterTrace();
-    this.usersHeatmap = new StopsHeatmapTrace();
-    this.actionsHeatmap = new ActionsHeatmapTrace();
-    this.placeline = new PlacelineTrace({mapInstance: GlobalMap});
+    // mapTypeService.getInstance(mapType);
+    this.usersCluster = new UsersClusterTrace(this.mapInstance);
+    this.actionsCluster = new ActionsClusterTrace(this.mapInstance);
+    this.usersHeatmap = new StopsHeatmapTrace(this.mapInstance);
+    this.actionsHeatmap = new ActionsHeatmapTrace(this.mapInstance);
+    this.placeline = new PlacelineTrace({mapInstance: this.mapInstance});
   }
 
   get segmentTrace() {
@@ -55,23 +57,23 @@ export class HtMapClass {
   }
 
   get map$(): ReplaySubject<HtMap> {
-    return GlobalMap.map$ as ReplaySubject<HtMap>;
+    return this.mapInstance.map$ as ReplaySubject<HtMap>;
   }
 
   get map() {
-    return GlobalMap.map;
+    return this.mapInstance.map;
   }
 
-  initMap(elem: Element, options = {}): HtMap {
+  initMap(elem: HTMLElement, options = {}): HtMap {
     let mapOptions =
       this.mapType == "leaflet"
         ? this.leafletMapOptions
         : this.googleMapOptions;
-    let map = GlobalMap.mapUtils.renderMap(elem, {
+    let map = this.mapInstance.mapUtils.renderMap(elem, {
       ...mapOptions,
       ...options
     });
-    GlobalMap.setMap(map);
+    this.mapInstance.setMap(map);
     return map;
   }
 
@@ -104,11 +106,11 @@ export class HtMapClass {
   }
 
   resetBounds(bounds?: HtBounds, options?) {
-    GlobalMap.resetBounds(bounds, options);
+    this.mapInstance.resetBounds(bounds, options);
   }
 
   getBoundsItem(items) {
-    let bounds = GlobalMap.mapUtils.extendItemBounds();
+    let bounds = this.mapInstance.mapUtils.extendItemBounds();
     return _.reduce(
       items,
       (bounds, item) => {
@@ -127,19 +129,19 @@ export class HtMapClass {
       options || this.mapType == "leaflet"
         ? this.leafletSetBoundsOptions
         : this.googleSetBoundsOptions;
-    GlobalMap.mapUtils.setBounds(this.map, bounds, options);
+    this.mapInstance.mapUtils.setBounds(this.map, bounds, options);
   }
 
   inValidateSize() {
-    GlobalMap.mapUtils.invalidateSize(this.map);
+    this.mapInstance.mapUtils.invalidateSize(this.map);
   }
 
   addEntities(entities) {
-    GlobalMap.addToItemsSet(entities);
+    this.mapInstance.addToItemsSet(entities);
   }
 
   clear() {
-    GlobalMap.setMap(null)
+    this.mapInstance.setMap(null)
   }
 }
 

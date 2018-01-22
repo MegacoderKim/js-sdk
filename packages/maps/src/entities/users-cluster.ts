@@ -18,7 +18,6 @@ import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {TraceMixin} from "../mixins/trace";
 import {ClusterMixin} from "../mixins/clusters";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 declare const RichMarkerPosition: any;
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
@@ -59,7 +58,7 @@ export class UsersCluster {
     }
   };
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
     return htUser(data).getPosition();

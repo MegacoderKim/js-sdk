@@ -34,7 +34,7 @@ export class ActionsHeatmap {
   }
 
   getDefaultQuery() {
-    return {}
+    return {page_size: 300}
   };
 
   firstDataEffect(data) {

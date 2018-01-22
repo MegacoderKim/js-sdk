@@ -10,7 +10,6 @@ import {StyleMixin} from "../mixins/styles";
 import {Entity, StyleFunct} from "../interfaces";
 import {HtPosition} from "ht-models";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 import {TraceMixin} from "../mixins/trace";
 import {HtBounds} from "../map-utils/interfaces";
 import {Observable} from "rxjs/Observable";
@@ -54,7 +53,7 @@ export class ActionsCluster {
     }
   };
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
     return htAction(data).getPosition();

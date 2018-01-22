@@ -10,7 +10,6 @@ import {
 } from "../base/map-items-factory";
 import { point } from "leaflet";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 import {SingleItemMixin} from "../mixins/single-item";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {TraceMixin} from "../mixins/trace";
@@ -88,7 +87,7 @@ export class CurrentUser {
     }
   }
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
     return htUser(data).getPosition();

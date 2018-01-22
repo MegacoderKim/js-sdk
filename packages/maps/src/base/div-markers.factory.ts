@@ -1,13 +1,12 @@
 import { DivMarkerDataConfig, StyleFunct } from "../interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 
 export class DivMarkersBase
   implements DivMarkerDataConfig<any>, DivMarkersFactoryConfig {
   // styleFunct: StyleFunct;
   mapInstance: MapInstance;
   constructor(public renderConfig, public styleFunct) {
-    this.mapInstance = renderConfig.mapInstance || GlobalMap
+    this.mapInstance = renderConfig.mapInstance || new MapInstance();
   }
 
   getPosition(data) {

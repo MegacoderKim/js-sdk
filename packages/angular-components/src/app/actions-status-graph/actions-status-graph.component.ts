@@ -12,7 +12,7 @@ import {ActionsStatusGraphService} from "./actions-status-graph.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionsStatusGraphComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input( ) service: ActionsStatusGraphService;
+  @Input( ) service;
   data;
   chart;
   noData: boolean = false;

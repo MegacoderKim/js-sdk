@@ -7,7 +7,6 @@ import {StyleMixin} from "../mixins/styles";
 import {Entity, StyleFunct} from "../interfaces";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 
 export class StopsHeatmap {
@@ -34,7 +33,7 @@ export class StopsHeatmap {
     }
   };
   mapInstance: MapInstance
-  constructor(mapInstance: MapInstance = GlobalMap) {
+  constructor(mapInstance: MapInstance) {
     this.mapInstance = mapInstance
   }
 

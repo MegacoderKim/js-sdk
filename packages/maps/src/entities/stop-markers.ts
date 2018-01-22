@@ -15,7 +15,6 @@ import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
 import {MapInstance} from "../map-utils/map-instance";
 import {Entity, StyleFunct} from "../interfaces";
-import {GlobalMap} from "../global/map-service";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {HtBounds} from "../map-utils/interfaces";
@@ -92,7 +91,7 @@ export const stopMarkersTrace = () => {
 export class StopMarkers {
   styleFunct: StyleFunct = stopStyles
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
     if (data.location && data.location.geojson) {

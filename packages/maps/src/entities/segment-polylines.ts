@@ -6,7 +6,6 @@ import {
   mapItemsFactory
 } from "../base/map-items-factory";
 import {MapInstance} from "../map-utils/map-instance";
-import {GlobalMap} from "../global/map-service";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
@@ -21,7 +20,7 @@ export class SegmentPolylines {
   styleFunct: StyleFunct = segmentPolylineStyles;
   name = "segment polyline";
 
-  constructor(public mapInstance: MapInstance = GlobalMap) {}
+  constructor(public mapInstance: MapInstance) {}
 
   getEncodedPath(data) {
     return data.encoded_polyline;

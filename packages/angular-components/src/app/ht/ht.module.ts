@@ -9,6 +9,7 @@ import {HtClientService} from "./ht-client.service";
 import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient, HtActionsClient} from "ht-client";
 import {HtAccountService} from "./ht-account-users.service";
 import {HtActionsService} from "./ht-actions.service";
+import {mapTypeService} from "ht-maps";
 
 export var TOKEN = new InjectionToken('app.token');
 
@@ -45,6 +46,7 @@ export function accountUsersClientServiceFactory() {
 })
 export class HtModule {
   static forRoot(config): ModuleWithProviders {
+    mapTypeService.getInstance(config.mapType || 'google');
     return {
       ngModule: HtModule,
       providers: [

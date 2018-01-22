@@ -7,7 +7,8 @@ export * from "./compound-entities/placeline-trace";
 // export * from "./timeline-replay";
 // export * from "./timeline-segment";
 export * from "./global/map-class";
-export * from "./global/map-service";
+// export * from "./global/map-service";
+export * from "./global/map-type";
 export * from "./interfaces";
 
 export * from "./base/map-items-factory";

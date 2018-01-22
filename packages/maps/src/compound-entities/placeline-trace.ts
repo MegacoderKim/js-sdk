@@ -31,10 +31,10 @@ export class Placeline {
   mapInstance: MapInstance;
   constructor(public options: HtSegmentsTraceOptions) {
     this.mapInstance = this.options.mapInstance;
-    this.stopMarkers = new StopMarkersTrace();
-    this.userMarker = new CurrentUserTrace();
-    this.segmentsPolylines = new SegmentPolylinesTrace();
-    this.actionMarkers = new ActionMarkersTrace()
+    this.stopMarkers = new StopMarkersTrace(this.mapInstance);
+    this.userMarker = new CurrentUserTrace(this.mapInstance);
+    this.segmentsPolylines = new SegmentPolylinesTrace(this.mapInstance);
+    this.actionMarkers = new ActionMarkersTrace(this.mapInstance)
     // this.initBaseItems();
   }
 

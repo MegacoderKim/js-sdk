@@ -4,10 +4,12 @@ import {DateRangeMap} from "ht-data";
 import {dateRangeFactory, actionsClientFactory, ActionsHeatmap} from "ht-client";
 import {tap} from "rxjs/operators";
 import {IAnalyticsListConfig} from "../interfaces/analytics-list";
-import {GlobalMap, MapInstance, ActionsHeatmapTrace} from "ht-maps";
+import {MapInstance, ActionsHeatmapTrace} from "ht-maps";
 import {AnalyticsMapContainerComponent} from "../analytics-map-container/analytics-map-container.component";
 import {IAnalyticsMapService} from "../interfaces/analytics";
 import {Observable} from "rxjs/Observable";
+import {Page} from "ht-models";
+import {mapTypeService} from "ht-maps";
 
 @Injectable()
 export class ActionsHeatmapService implements IAnalyticsMapService {
@@ -20,11 +22,11 @@ export class ActionsHeatmapService implements IAnalyticsMapService {
   mapLoading$;
   client: ActionsHeatmap;
   dateRangeService$;
-  dataArray$;
+  data$;
   mapInstance: MapInstance;
   constructor(config: IAnalyticsListConfig) {
     this.mapInstance = new MapInstance();
-    this.setMapType('leaflet');
+    this.setMapType(mapTypeService.getInstance().mapType);
     this.initClient(config);
   }
 
@@ -46,13 +48,13 @@ export class ActionsHeatmapService implements IAnalyticsMapService {
     let actionsClient = actionsClientFactory({dateRange$: this.dateRangeService$.data$});
     this.client = actionsClient.heatmap;
     this.mapLoading$ = this.client.loading$;
-    this.dataArray$ = this.client.dataArray$.pipe(
-      tap((data: any[] | null) => {
-        this.noData = data && data.length == 0 ? true : false;
+    this.data$ = this.client.data$.pipe(
+      tap((data: Page<any> | null) => {
+        this.noData = data && data.count == 0 ? true : false;
       })
     );
     let heatMapTrace = new ActionsHeatmapTrace(this.mapInstance);
-    heatMapTrace.setData$(this.dataArray$)
+    heatMapTrace.setPageData$(this.data$)
   }
 
 }
