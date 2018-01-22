@@ -1,11 +1,28 @@
 import {HtBounds, HtMapType, HtMarker, MapUtils} from "./interfaces";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
+import {LightColorMapStyle} from "../styles/light-color-map";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 
 export class GoogleMapUtilsClass implements MapUtils {
   type: HtMapType = 'google';
+  defaultMapOptions = {
+    center: { lat: 0, lng: 0 },
+    zoom: 2,
+    fullscreenControl: false,
+    streetViewControl: false,
+    styles: LightColorMapStyle
+  };
+
+  setDefaultMapOptions(options) {
+    this.defaultMapOptions = {...this.defaultMapOptions, ...options}
+  }
+
+  renderMap(elem, options) {
+    options = {...options, ...this.defaultMapOptions};
+    return new google.maps.Map(elem, options);
+  }
 
   updatePositionPopup(
     marker,
@@ -118,10 +135,6 @@ export class GoogleMapUtilsClass implements MapUtils {
 
   getItemLatlng(item) {
     return item.getPosition();
-  }
-
-  renderMap(elem, options) {
-    return new google.maps.Map(elem, options);
   }
 
   updateCirclePosition(circle, position) {

@@ -23,8 +23,21 @@ import {leafletHeat} from "./leaflet.heatmap";
 
 export class LeafletMapUtilsClass implements MapUtils {
   type: HtMapType = 'leaflet';
+  defaultMapOptions = {
+    center: [3.505, 0],
+    zoom: 2 ,
+    tileLayerUrl: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+    tileLayerOptions: {
+      attribution:
+        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }
+  };
 
+  setDefaultMapOptions(options) {
+    this.defaultMapOptions = {...this.defaultMapOptions, ...options}
+  }
   renderMap(elem: HTMLElement | string, options) {
+    options = {...options, ...this.defaultMapOptions};
     let newmap = map(elem, options);
     if ( options.tileLayerUrl) {
       tileLayer(options.tileLayerUrl, options.tileLayerOptions || {}).addTo(newmap);

@@ -3,6 +3,8 @@ import { HtPosition } from "ht-models";
 export interface MapUtils {
   type: HtMapType;
   setMap: (item: HtMapItem, map: HtMap) => void;
+  setDefaultMapOptions: (options: object) => void;
+  defaultMapOptions: object;
   setStyle: (item: HtMapItem, style) => void;
   setCircleStyle: (item: HtMapItem, style) => void;
   setPolylineStyle: (polyline, style) => void;

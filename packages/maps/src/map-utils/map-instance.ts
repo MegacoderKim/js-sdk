@@ -18,22 +18,7 @@ export class MapInstance {
     duration: 0.3
   };
   googleSetBoundsOptions = {};
-  googleMapOptions = {
-    center: { lat: 0, lng: 0 },
-    zoom: 2,
-    fullscreenControl: false,
-    streetViewControl: false,
-    styles: LightColorMapStyle
-  };
-  leafletMapOptions = {
-    center: [3.505, 0],
-    zoom: 2 ,
-    tileLayerUrl: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
-    tileLayerOptions: {
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }
-  };
+
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
@@ -53,14 +38,7 @@ export class MapInstance {
   }
 
   renderMap(elem: HTMLElement | string, options = {}) {
-    let mapOptions =
-      this.mapType == "leaflet"
-        ? this.leafletMapOptions
-        : this.googleMapOptions;
-    let map = this.mapUtils.renderMap(elem, {
-      ...mapOptions,
-      ...options
-    });
+    let map = this.mapUtils.renderMap(elem, options);
     this.setMap(map);
     return map;
   }
