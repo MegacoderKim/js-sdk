@@ -6826,7 +6826,6 @@ class MapComponent {
      * @return {?}
      */
     onMapResize() {
-        console.log("see");
         this.mapInstance.inValidateSize();
         // todo this.mapService.map.resize();
     }
@@ -6866,12 +6865,8 @@ class MapComponent {
      */
     ngAfterViewInit() {
         const /** @type {?} */ el = this.mapElem.nativeElement;
-        console.log("init", el.offsetWidth);
         this.mapInstance.renderMap(el, this.options);
         this.onReady.next(this.mapInstance.map);
-        setTimeout(() => {
-            this.mapInstance.inValidateSize();
-        }, 1000);
         // window['ht-map'] = this.mapService.map;
         // this.mapService.resetBounds()
     }
@@ -7259,7 +7254,6 @@ MapComponent.ctorParameters = () => [
 ];
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
-    "url": [{ type: Input },],
     "onReady": [{ type: Output },],
     "mapInstance": [{ type: Input },],
     "loading": [{ type: Input },],
@@ -10464,6 +10458,89 @@ function addDestroyObservableToComponent(component) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+class ActionsStatusGraphService {
+    /**
+     * @param {?} config
+     */
+    constructor(config) {
+        this.component = ActionsStatusGraphComponent;
+        this.tags = ['actions'];
+        this.className = "is-12";
+        this.initState(config);
+        this.initClient();
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    initState(config) {
+        // console.log(config.initialDateRange);
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title || "Actions graph";
+        this.chartFormat = config.chartFormat;
+        if (config.tags && config.tags.length)
+            this.tags = [...this.tags, ...config.tags];
+    }
+    /**
+     * @return {?}
+     */
+    initClient() {
+        const /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = graphClient.graph;
+        this.loading$ = this.client.loading$;
+        this.data$ = this.client.data$.pipe(filter(data => !!data), map$1((data) => {
+            this.noData = data.length ? false : true;
+            return this.getCompletedActionChart(data);
+        }));
+    }
+    /**
+     * @param {?} data
+     * @return {?}
+     */
+    getCompletedActionChart(data) {
+        // const format = data.length < 15 ? 'MMM D' : "MMM D";
+        const /** @type {?} */ labels = data.map((item) => {
+            return format(item.created_date, 'ddd, MMM Do');
+            // return moment(item.created_date).format('ddd, MMM Do')
+        });
+        const /** @type {?} */ datasets = this.chartFormat.map((item) => {
+            return {
+                title: item.title,
+                values: data.map(item.selector)
+            };
+        });
+        return {
+            labels,
+            datasets
+        };
+    }
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    setData(instance) {
+        instance.service = this;
+    }
+    /**
+     * @param {?=} isActive
+     * @return {?}
+     */
+    setActive(isActive = true) {
+        // this.client.setActive(isActive)
+    }
+}
+ActionsStatusGraphService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ActionsStatusGraphService.ctorParameters = () => [
+    null,
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 class ActionsStatusGraphComponent {
     constructor() {
         this.noData = false;
@@ -10897,7 +10974,6 @@ class StopsHeatmapService {
      * @return {?}
      */
     setActive(active = true) {
-        console.log("stop init", active);
         this.client.setActive(active);
     }
     /**
@@ -11192,89 +11268,6 @@ const usersAnalyticsListPresets = {
         };
     }
 };
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-class ActionsStatusGraphService {
-    /**
-     * @param {?} config
-     */
-    constructor(config) {
-        this.component = ActionsStatusGraphComponent;
-        this.tags = ['actions'];
-        this.className = "is-12";
-        this.initState(config);
-        this.initClient();
-    }
-    /**
-     * @param {?} config
-     * @return {?}
-     */
-    initState(config) {
-        // console.log(config.initialDateRange);
-        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
-        this.title = config.title || "Actions graph";
-        this.chartFormat = config.chartFormat;
-        if (config.tags && config.tags.length)
-            this.tags = [...this.tags, ...config.tags];
-    }
-    /**
-     * @return {?}
-     */
-    initClient() {
-        const /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
-        this.client = graphClient.graph;
-        this.loading$ = this.client.loading$;
-        this.data$ = this.client.data$.pipe(filter(data => !!data), map$1((data) => {
-            this.noData = data.length ? false : true;
-            return this.getCompletedActionChart(data);
-        }));
-    }
-    /**
-     * @param {?} data
-     * @return {?}
-     */
-    getCompletedActionChart(data) {
-        // const format = data.length < 15 ? 'MMM D' : "MMM D";
-        const /** @type {?} */ labels = data.map((item) => {
-            return format(item.created_date, 'ddd, MMM Do');
-            // return moment(item.created_date).format('ddd, MMM Do')
-        });
-        const /** @type {?} */ datasets = this.chartFormat.map((item) => {
-            return {
-                title: item.title,
-                values: data.map(item.selector)
-            };
-        });
-        return {
-            labels,
-            datasets
-        };
-    }
-    /**
-     * @param {?} instance
-     * @return {?}
-     */
-    setData(instance) {
-        instance.service = this;
-    }
-    /**
-     * @param {?=} isActive
-     * @return {?}
-     */
-    setActive(isActive = true) {
-        // this.client.setActive(isActive)
-    }
-}
-ActionsStatusGraphService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-ActionsStatusGraphService.ctorParameters = () => [
-    null,
-];
 
 /**
  * @fileoverview added by tsickle
@@ -11914,15 +11907,12 @@ class AnalyticsItemsService {
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
-            // actionsConfigPreset.summary(actionsClient, actionDateRangeService),
+            actionsConfigPreset["summary"](actionsClient, actionDateRangeService),
             // usersAnalyticsListPresets.users_summary(usersClient),
-            // usersAnalyticsListPresets.users_summary(
-            //   usersClient, 'Users activity summary',
-            //   [...activityQueryLabel, ...showAllQueryLable]
-            // ),
-            // actionsConfigPreset.status(),
-            usersAnalyticsListPresets["stops_heatmap"](),
+            usersAnalyticsListPresets["users_summary"](usersClient, 'Users activity summary', [...activityQueryLabel, ...showAllQueryLable]),
+            actionsConfigPreset["status"](),
             actionsConfigPreset["heatmap"](),
+            usersAnalyticsListPresets["stops_heatmap"](),
             actionsConfigPreset["recently_assigned"](),
             actionsConfigPreset["recently_completed"](),
             // actionsConfigPreset.users_on_action(),
@@ -12200,7 +12190,7 @@ AnalyticsContainerComponent.decorators = [
 </div>
 <div class="container">
   <div class="columns is-multiline is-centered" *ngIf="analyticsItemsService.filteredItems$ | async as items">
-    <div class="column" [ngClass]="item.className" *ngFor="let item of items">
+    <div class="column" [@card-appear] [ngClass]="item.className" *ngFor="let item of items">
       <div class="card card-content">
         <ht-analytics-tags
           (selectTag)="analyticsItemsService.toggleTag($event)"

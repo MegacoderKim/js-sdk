@@ -37,9 +37,13 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
       return style;
     }
 
+    setStyleType(styleType: string = 'default') {
+      this.styleType = styleType;
+    }
+
 
     setStyle(item) {
-      let style = this.getStyle();
+      let style = this.getStyle(this.styleType);
       this.mapInstance.mapUtils.setStyle(item, style);
     }
   };

@@ -3,7 +3,6 @@ import { HtMap, MapInstance } from "ht-maps";
 export declare class MapComponent implements OnInit, AfterViewInit {
     private elRef;
     options: any;
-    url: any;
     onReady: EventEmitter<HtMap>;
     mapInstance: MapInstance;
     loading: boolean;

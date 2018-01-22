@@ -2631,7 +2631,6 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.onMapResize = function () {
-        console.log("see");
         this.mapInstance.inValidateSize();
         // todo this.mapService.map.resize();
     };
@@ -2670,14 +2669,9 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.ngAfterViewInit = function () {
-        var _this = this;
         var /** @type {?} */ el = this.mapElem.nativeElement;
-        console.log("init", el.offsetWidth);
         this.mapInstance.renderMap(el, this.options);
         this.onReady.next(this.mapInstance.map);
-        setTimeout(function () {
-            _this.mapInstance.inValidateSize();
-        }, 1000);
         // window['ht-map'] = this.mapService.map;
         // this.mapService.resetBounds()
     };
@@ -2696,7 +2690,6 @@ MapComponent.ctorParameters = function () { return [
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
-    "url": [{ type: Input },],
     "onReady": [{ type: Output },],
     "mapInstance": [{ type: Input },],
     "loading": [{ type: Input },],
@@ -3595,6 +3588,91 @@ function addDestroyObservableToComponent(component) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+var ActionsStatusGraphService = (function () {
+    /**
+     * @param {?} config
+     */
+    function ActionsStatusGraphService(config) {
+        this.component = ActionsStatusGraphComponent;
+        this.tags = ['actions'];
+        this.className = "is-12";
+        this.initState(config);
+        this.initClient();
+    }
+    /**
+     * @param {?} config
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.initState = function (config) {
+        // console.log(config.initialDateRange);
+        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
+        this.title = config.title || "Actions graph";
+        this.chartFormat = config.chartFormat;
+        if (config.tags && config.tags.length)
+            this.tags = __spread(this.tags, config.tags);
+    };
+    /**
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.initClient = function () {
+        var _this = this;
+        var /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
+        this.client = graphClient.graph;
+        this.loading$ = this.client.loading$;
+        this.data$ = this.client.data$.pipe(filter(function (data) { return !!data; }), map$1(function (data) {
+            _this.noData = data.length ? false : true;
+            return _this.getCompletedActionChart(data);
+        }));
+    };
+    /**
+     * @param {?} data
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.getCompletedActionChart = function (data) {
+        // const format = data.length < 15 ? 'MMM D' : "MMM D";
+        var /** @type {?} */ labels = data.map(function (item) {
+            return format(item.created_date, 'ddd, MMM Do');
+            // return moment(item.created_date).format('ddd, MMM Do')
+        });
+        var /** @type {?} */ datasets = this.chartFormat.map(function (item) {
+            return {
+                title: item.title,
+                values: data.map(item.selector)
+            };
+        });
+        return {
+            labels: labels,
+            datasets: datasets
+        };
+    };
+    /**
+     * @param {?} instance
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.setData = function (instance) {
+        instance.service = this;
+    };
+    /**
+     * @param {?=} isActive
+     * @return {?}
+     */
+    ActionsStatusGraphService.prototype.setActive = function (isActive) {
+        if (isActive === void 0) { isActive = true; }
+        // this.client.setActive(isActive)
+    };
+    return ActionsStatusGraphService;
+}());
+ActionsStatusGraphService.decorators = [
+    { type: Injectable },
+];
+/** @nocollapse */
+ActionsStatusGraphService.ctorParameters = function () { return [
+    null,
+]; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var ActionsStatusGraphComponent = (function () {
     function ActionsStatusGraphComponent() {
         this.noData = false;
@@ -3979,7 +4057,6 @@ var StopsHeatmapService = (function () {
      */
     StopsHeatmapService.prototype.setActive = function (active) {
         if (active === void 0) { active = true; }
-        console.log("stop init", active);
         this.client.setActive(active);
     };
     /**
@@ -4273,91 +4350,6 @@ var usersAnalyticsListPresets = {
         };
     }
 };
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var ActionsStatusGraphService = (function () {
-    /**
-     * @param {?} config
-     */
-    function ActionsStatusGraphService(config) {
-        this.component = ActionsStatusGraphComponent;
-        this.tags = ['actions'];
-        this.className = "is-12";
-        this.initState(config);
-        this.initClient();
-    }
-    /**
-     * @param {?} config
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.initState = function (config) {
-        // console.log(config.initialDateRange);
-        this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
-        this.title = config.title || "Actions graph";
-        this.chartFormat = config.chartFormat;
-        if (config.tags && config.tags.length)
-            this.tags = __spread(this.tags, config.tags);
-    };
-    /**
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.initClient = function () {
-        var _this = this;
-        var /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
-        this.client = graphClient.graph;
-        this.loading$ = this.client.loading$;
-        this.data$ = this.client.data$.pipe(filter(function (data) { return !!data; }), map$1(function (data) {
-            _this.noData = data.length ? false : true;
-            return _this.getCompletedActionChart(data);
-        }));
-    };
-    /**
-     * @param {?} data
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.getCompletedActionChart = function (data) {
-        // const format = data.length < 15 ? 'MMM D' : "MMM D";
-        var /** @type {?} */ labels = data.map(function (item) {
-            return format(item.created_date, 'ddd, MMM Do');
-            // return moment(item.created_date).format('ddd, MMM Do')
-        });
-        var /** @type {?} */ datasets = this.chartFormat.map(function (item) {
-            return {
-                title: item.title,
-                values: data.map(item.selector)
-            };
-        });
-        return {
-            labels: labels,
-            datasets: datasets
-        };
-    };
-    /**
-     * @param {?} instance
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.setData = function (instance) {
-        instance.service = this;
-    };
-    /**
-     * @param {?=} isActive
-     * @return {?}
-     */
-    ActionsStatusGraphService.prototype.setActive = function (isActive) {
-        if (isActive === void 0) { isActive = true; }
-        // this.client.setActive(isActive)
-    };
-    return ActionsStatusGraphService;
-}());
-ActionsStatusGraphService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-ActionsStatusGraphService.ctorParameters = function () { return [
-    null,
-]; };
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
@@ -4962,15 +4954,12 @@ var AnalyticsItemsService = (function () {
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
-            // actionsConfigPreset.summary(actionsClient, actionDateRangeService),
+            actionsConfigPreset["summary"](actionsClient, actionDateRangeService),
             // usersAnalyticsListPresets.users_summary(usersClient),
-            // usersAnalyticsListPresets.users_summary(
-            //   usersClient, 'Users activity summary',
-            //   [...activityQueryLabel, ...showAllQueryLable]
-            // ),
-            // actionsConfigPreset.status(),
-            usersAnalyticsListPresets["stops_heatmap"](),
+            usersAnalyticsListPresets["users_summary"](usersClient, 'Users activity summary', __spread(activityQueryLabel, showAllQueryLable)),
+            actionsConfigPreset["status"](),
             actionsConfigPreset["heatmap"](),
+            usersAnalyticsListPresets["stops_heatmap"](),
             actionsConfigPreset["recently_assigned"](),
             actionsConfigPreset["recently_completed"](),
             // actionsConfigPreset.users_on_action(),
@@ -5172,7 +5161,7 @@ var AnalyticsContainerComponent = (function () {
 AnalyticsContainerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-analytics-container',
-                template: "<div class=\"toolbar\">\n  <div class=\"level\">\n    <div class=\"level-left\">\n      <!--<div class=\"level-item\">-->\n        <!--<div class=\"icon\">-->\n          <!--<i class=\"fa fa-tags has-text-grey\"></i>-->\n        <!--</div>-->\n        <!--Filter by Tags:-->\n      <!--</div>-->\n      <div class=\"level-item\">\n        <div class=\"dropdown is-hoverable\">\n          <div class=\"dropdown-trigger\">\n            <button class=\"button\" aria-haspopup=\"true\" aria-controls=\"dropdown-menu\">\n              <span class=\"icon\">\n                <i class=\"fa fa-tags has-text-grey\"></i>\n              </span>\n              <span>Filter by Tags:</span>\n              <span class=\"icon is-small\">\n        <i class=\"fa fa-angle-down\" aria-hidden=\"true\"></i>\n      </span>\n            </button>\n          </div>\n          <div class=\"dropdown-menu\" id=\"dropdown-menu\" role=\"menu\">\n            <div class=\"dropdown-content\">\n              <a (click)=\"analyticsItemsService.toggleTag(tag.key)\" class=\"dropdown-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n                <label class=\"checkbox\">\n                  <input type=\"checkbox\" [checked]=\"tag.isActive\">\n                  {{tag.key}}\n                </label>\n              </a>\n              <!--<a class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item is-active\">-->\n                <!--Active dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<hr class=\"dropdown-divider\">-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--With a divider-->\n              <!--</a>-->\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"level-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n        <button\n          class=\"button\"\n          [class.is-primary]=\"tag.isActive\"\n          (click)=\"analyticsItemsService.selectTag(tag.key)\">\n\n          <span>{{tag.key}}</span>\n          <span *ngIf=\"tag.isActive\" class=\"icon is-small\">\n              <i class=\"fa fa-times\"></i>\n            </span>\n        </button>\n        <!--<span class=\"tag clickable is-medium\"-->\n\n              <!--(click)=\"analyticsItemsService.selectTag(tag.key)\"-->\n              <!--[class.is-primary]=\"tag.isActive\">-->\n          <!--{{tag.key}} <span *ngIf=\"tag.isActive\" class=\"delete\"></span>-->\n        <!--</span>-->\n      </div>\n    </div>\n    <div class=\"level-right\">\n      <div class=\"level-item\">\n        <button class=\"button\" (click)=\"openConfig()\">\n        <span class=\"icon\">\n          <i class=\"fa fa-edit\"></i>\n        </span>\n          <span>Edit</span>\n        </button>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"container\">\n  <div class=\"columns is-multiline is-centered\" *ngIf=\"analyticsItemsService.filteredItems$ | async as items\">\n    <div class=\"column\" [ngClass]=\"item.className\" *ngFor=\"let item of items\">\n      <div class=\"card card-content\">\n        <ht-analytics-tags\n          (selectTag)=\"analyticsItemsService.toggleTag($event)\"\n          [tags]=\"item.tags\"\n          [selectedTags]=\"analyticsItemsService.selectedTags$ | async\"></ht-analytics-tags>\n        <ht-analytics-title\n          [title]=\"item.title\"\n          [hideDatePicker]=\"item.hideDatePicker\"\n          [dateRangeService$]=\"item.dateRangeService$\"></ht-analytics-title>\n        <ht-analytics-item-load [minHeight]=\"item.minHeight\" [loading$]=\"item.loading$\" [noData]=\"item.noData\">\n          <ht-analytics-item [item]=\"item\"></ht-analytics-item>\n        </ht-analytics-item-load>\n\n      </div>\n    </div>\n    <div class=\"column is-6 auto setup\" *ngIf=\"items.length == 0\">\n      <div class=\"is-size-1 has-text-centered has-text-grey-light\">No view is selected</div>\n    </div>\n    <div class=\"modal is-active\" *ngIf=\"configure\">\n      <div class=\"modal-background\" (click)=\"configure = false\"></div>\n      <div class=\"modal-card\">\n        <header class=\"modal-card-head\">\n          <p class=\"modal-card-title\">Choose preset views</p>\n        </header>\n        <section class=\"modal-card-body\">\n          <ht-analytics-selector (selected)=\"configure = false\"></ht-analytics-selector>\n        </section>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
+                template: "<div class=\"toolbar\">\n  <div class=\"level\">\n    <div class=\"level-left\">\n      <!--<div class=\"level-item\">-->\n        <!--<div class=\"icon\">-->\n          <!--<i class=\"fa fa-tags has-text-grey\"></i>-->\n        <!--</div>-->\n        <!--Filter by Tags:-->\n      <!--</div>-->\n      <div class=\"level-item\">\n        <div class=\"dropdown is-hoverable\">\n          <div class=\"dropdown-trigger\">\n            <button class=\"button\" aria-haspopup=\"true\" aria-controls=\"dropdown-menu\">\n              <span class=\"icon\">\n                <i class=\"fa fa-tags has-text-grey\"></i>\n              </span>\n              <span>Filter by Tags:</span>\n              <span class=\"icon is-small\">\n        <i class=\"fa fa-angle-down\" aria-hidden=\"true\"></i>\n      </span>\n            </button>\n          </div>\n          <div class=\"dropdown-menu\" id=\"dropdown-menu\" role=\"menu\">\n            <div class=\"dropdown-content\">\n              <a (click)=\"analyticsItemsService.toggleTag(tag.key)\" class=\"dropdown-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n                <label class=\"checkbox\">\n                  <input type=\"checkbox\" [checked]=\"tag.isActive\">\n                  {{tag.key}}\n                </label>\n              </a>\n              <!--<a class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item is-active\">-->\n                <!--Active dropdown item-->\n              <!--</a>-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--Other dropdown item-->\n              <!--</a>-->\n              <!--<hr class=\"dropdown-divider\">-->\n              <!--<a href=\"#\" class=\"dropdown-item\">-->\n                <!--With a divider-->\n              <!--</a>-->\n            </div>\n          </div>\n        </div>\n      </div>\n      <div class=\"level-item\" *ngFor=\"let tag of analyticsItemsService.tags$ | async\">\n        <button\n          class=\"button\"\n          [class.is-primary]=\"tag.isActive\"\n          (click)=\"analyticsItemsService.selectTag(tag.key)\">\n\n          <span>{{tag.key}}</span>\n          <span *ngIf=\"tag.isActive\" class=\"icon is-small\">\n              <i class=\"fa fa-times\"></i>\n            </span>\n        </button>\n        <!--<span class=\"tag clickable is-medium\"-->\n\n              <!--(click)=\"analyticsItemsService.selectTag(tag.key)\"-->\n              <!--[class.is-primary]=\"tag.isActive\">-->\n          <!--{{tag.key}} <span *ngIf=\"tag.isActive\" class=\"delete\"></span>-->\n        <!--</span>-->\n      </div>\n    </div>\n    <div class=\"level-right\">\n      <div class=\"level-item\">\n        <button class=\"button\" (click)=\"openConfig()\">\n        <span class=\"icon\">\n          <i class=\"fa fa-edit\"></i>\n        </span>\n          <span>Edit</span>\n        </button>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"container\">\n  <div class=\"columns is-multiline is-centered\" *ngIf=\"analyticsItemsService.filteredItems$ | async as items\">\n    <div class=\"column\" [@card-appear] [ngClass]=\"item.className\" *ngFor=\"let item of items\">\n      <div class=\"card card-content\">\n        <ht-analytics-tags\n          (selectTag)=\"analyticsItemsService.toggleTag($event)\"\n          [tags]=\"item.tags\"\n          [selectedTags]=\"analyticsItemsService.selectedTags$ | async\"></ht-analytics-tags>\n        <ht-analytics-title\n          [title]=\"item.title\"\n          [hideDatePicker]=\"item.hideDatePicker\"\n          [dateRangeService$]=\"item.dateRangeService$\"></ht-analytics-title>\n        <ht-analytics-item-load [minHeight]=\"item.minHeight\" [loading$]=\"item.loading$\" [noData]=\"item.noData\">\n          <ht-analytics-item [item]=\"item\"></ht-analytics-item>\n        </ht-analytics-item-load>\n\n      </div>\n    </div>\n    <div class=\"column is-6 auto setup\" *ngIf=\"items.length == 0\">\n      <div class=\"is-size-1 has-text-centered has-text-grey-light\">No view is selected</div>\n    </div>\n    <div class=\"modal is-active\" *ngIf=\"configure\">\n      <div class=\"modal-background\" (click)=\"configure = false\"></div>\n      <div class=\"modal-card\">\n        <header class=\"modal-card-head\">\n          <p class=\"modal-card-title\">Choose preset views</p>\n        </header>\n        <section class=\"modal-card-body\">\n          <ht-analytics-selector (selected)=\"configure = false\"></ht-analytics-selector>\n        </section>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
                 styles: [".setup {\n  margin-top: 70px; }\n\n.toolbar {\n  width: 100%;\n  padding: 16px 40px;\n  margin-bottom: 20px;\n  background: white;\n  border-bottom: 1px solid #d6d6d6; }\n\n.grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr; }\n  .grid .is-6 {\n    width: 100%; }\n  .grid .is-12 {\n    grid-column: 1/3; }\n"],
                 // changeDetection: ChangeDetectionStrategy.OnPush,
                 animations: [

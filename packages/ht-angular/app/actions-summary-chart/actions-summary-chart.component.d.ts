@@ -1,7 +1,7 @@
 import { OnInit } from '@angular/core';
-import { IAnalyticsService } from "../interfaces/analytics";
+import { ActionsSummaryService } from "./actions-summary.service";
 export declare class ActionsSummaryChartComponent implements OnInit {
-    service: IAnalyticsService;
+    service: ActionsSummaryService;
     constructor();
     ngOnInit(): void;
 }
