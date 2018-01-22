@@ -10,13 +10,14 @@ import {ActionsListClient} from "./actions-list-client"
 import {ActionsSummaryClient} from "./actions-summary-client"
 import {ActionsFilter} from "../../filters/actions-filter";
 import {ActionsHeatmapClient} from "./actions-heatmap-client";
-
+import {ActionsIndexAllClient} from "./actions-list-all-client"
 export class HtActionsClient {
   // item: HtActionsGetClient;
   api;
   graph;
   store;
   list;
+  listAll;
   summary;
   heatmap;
   filters = new ActionsFilter();
@@ -31,6 +32,7 @@ export class HtActionsClient {
     let dateParam = 'created_at';
     this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$, dateParam});
     this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
+    this.listAll = new ActionsIndexAllClient({dateRangeQuery$: dateRangeQuery$, dateParam})
     this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
     this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'completed_at'});
   }

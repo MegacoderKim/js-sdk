@@ -9,15 +9,37 @@ import {entityApi} from "../../global/entity-api";
 import {Subscription} from "rxjs/Subscription";
 import {AllowedQueryMap, IAllowedQueryMap} from "ht-data";
 import {IAction, AllData} from "ht-models";
+import {IPageClientConfig} from "../../interfaces";
 
 export class ActionsIndexAll extends EntityAllItemsClient {
   dataBehaviour$: BehaviorSubject<AllData<IAction> | null> = new BehaviorSubject(null);
-  data$ = this.dataBehaviour$.asObservable();
   loadingBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingBehaviour$.asObservable();
+  activeBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  query$: BehaviorSubject<object>;
   api$: (query) => Observable<IAction[]> = (query) => entityApi.actions.allPages(entityApi.actions.index(query));
   dataSub: Subscription;
   dataEntities$;
+  dateParam: string;
+  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+    super();
+    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateParam = dateParam;
+    this.query$ = new BehaviorSubject(this.getDefaultQuery());
+    this.active$ = this.activeBehaviour$.asObservable();
+  }
+
+  setActive(isActive: boolean = true) {
+    this.activeBehaviour$.next(isActive)
+  }
+
+  setQuery(query) {
+    this.query$.next(query)
+  }
+
+  get data$() {
+    return this.dataBehaviour$.asObservable()
+  }
   addData(data) {
     this.dataBehaviour$.next(data)
   };
