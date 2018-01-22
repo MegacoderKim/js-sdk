@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IAnalyticsService} from "../interfaces/analytics";
+import {ActionsSummaryService} from "./actions-summary.service";
 
 @Component({
   selector: 'ht-actions-summary-chart',
@@ -8,7 +9,7 @@ import {IAnalyticsService} from "../interfaces/analytics";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ActionsSummaryChartComponent implements OnInit {
-  @Input() service: IAnalyticsService;
+  @Input() service: ActionsSummaryService;
   constructor() { }
 
   ngOnInit() {
