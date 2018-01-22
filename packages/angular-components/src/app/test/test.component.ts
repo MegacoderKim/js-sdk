@@ -4,6 +4,7 @@ import {actionsClientFactory, usersClientFactory, dateRangeFactory} from "ht-cli
 import {DateRangeMap} from "ht-data";
 import {ActionsHeatmapTrace} from "ht-maps";
 import {HtMapService} from "../ht/ht-map.service";
+import {HtActionsService} from "../ht/ht-actions.service";
 
 @Component({
   selector: 'ht-test',
@@ -15,11 +16,18 @@ export class TestComponent implements OnInit {
   userId = "43fbf0db-530b-4f79-9093-6f565ea6d37e";
   constructor(
     private userService: HtUsersService,
-    private mapService: HtMapService
+    private mapService: HtMapService,
+    private actionsClient: HtActionsService
   ) { }
 
   ngOnInit() {
     if (this.showAll) this.userService.setShowAll();
+    // let client = this.actionsClient.listAll;
+    // client.setActive();
+    // client.data$.subscribe(data => {
+    //   console.log(data, "all");
+    // });
+    // this.mapService.actionsCluster.setPageData$(client.data$)
     // let actionCluster = new ActionsHeatmapTrace();
     // let dateRangeService$ = dateRangeFactory(DateRangeMap.today);
     // const client  = usersClientFactory({dateRange$: dateRangeService$.data$.asObservable()});

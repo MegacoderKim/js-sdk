@@ -46,7 +46,6 @@ export function accountUsersClientServiceFactory() {
 })
 export class HtModule {
   static forRoot(config): ModuleWithProviders {
-    mapTypeService.getInstance(config.mapType || 'google');
     return {
       ngModule: HtModule,
       providers: [
