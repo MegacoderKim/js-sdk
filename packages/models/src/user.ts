@@ -176,4 +176,20 @@ export interface IDecodedSegment extends Partial<ISegment> {
   pstart?: string;
   pend?: string;
 }
+
+export interface IUserDevice {
+  user_id: string,
+  recorded_at: string,
+  time_zone: string,
+  sdk_version: string,
+  device_model: string,
+  device_manufacturer: string,
+  os_name: string,
+  os_version: string,
+  device_id: string,
+  has_play_services: string,
+  play_services_version: string,
+  app_version: string,
+  app_package_name: string
+}
 // export type IUserData = IUserData
