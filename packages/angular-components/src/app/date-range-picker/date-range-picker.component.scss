@@ -1,0 +1,22 @@
+$width: 40px;
+$border-radius: 4px;
+.day {
+  width: $width;
+  text-align: center;
+}
+
+.is-hovered {
+  background: lightgray;
+}
+
+.is-start {
+  background: grey;
+  border-bottom-left-radius: $border-radius;
+  border-top-left-radius: $border-radius;
+}
+
+.is-end {
+  background: grey;
+  border-bottom-right-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+}

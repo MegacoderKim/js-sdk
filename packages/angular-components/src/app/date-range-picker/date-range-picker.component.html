@@ -1,0 +1,27 @@
+<button class="button is-primary">
+  {{dateRangeService.display$ | async}}
+</button>
+<div>
+  <div class="calender">
+    <div class="flex-column">
+      <div class="flex-row">
+        <div class="day has-text-weight-bold" *ngFor="let day of  days">{{day}}</div>
+      </div>
+      <div *ngFor="let weeks of dates$ | async; trackBy: indexByWeek" class="flex-row">
+        <div
+          (mousedown)="pickDate(day)"
+          (mouseenter)="hoverDate(day)"
+          (mouseleave)="hoverDate(null)"
+          [class.is-hovered]="day.isHovered"
+          [class.is-start]="day.isStart"
+          [class.is-end]="day.isEnd"
+          [class.has-text-grey-light]="!day.isInMonth"
+          *ngFor="let day of weeks; trackBy: indexBy"
+          class="day">{{day.day}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="side-control flex-column">
+
+  </div>
+</div>
