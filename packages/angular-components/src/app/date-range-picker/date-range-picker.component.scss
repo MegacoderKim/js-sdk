@@ -1,0 +1,61 @@
+@import "../../styles/placeholder";
+@import "../../styles/variables";
+$width: 40px;
+$border-radius: 4px;
+.day {
+  width: $width;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  &:hover {
+    font-weight: 700;
+  }
+}
+
+.is-hovered {
+  background: lightgray;
+}
+
+.is-start {
+  background: grey;
+  color: #fff;
+  border-bottom-left-radius: $border-radius;
+  border-top-left-radius: $border-radius;
+}
+
+.is-end {
+  background: grey;
+  color: #fff;
+  border-bottom-right-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+}
+.is-invalid {
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+.is-today {
+  //color: #00b0e8;
+}
+.month {
+  padding: 4px 0;
+  background: #ececec;
+  border-radius: 4px;
+  margin: 12px 0;
+}
+.date-style {
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.row-right {
+  flex-direction: row-reverse;
+  .options {
+    padding-left: 15px;
+  }
+}
+.row-left {
+  flex-direction: row;
+  .options {
+    padding-right: 15px;
+  }
+}

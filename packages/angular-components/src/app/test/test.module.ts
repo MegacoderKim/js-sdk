@@ -13,6 +13,7 @@ import {UsersMapContainerModule} from "../users-map-container/users-map-containe
 import {PlacelineContainerModule} from "../placeline-container/placeline-container.module";
 import {PlacelineMapContainerModule} from "../placeline-map-container/placeline-map-container.module";
 import {UsersSummaryContainerModule} from "../users-summary-container/users-summary-container.module";
+import {UsersListContainerModule} from "../users-list-container/users-list-container.module";
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import {UsersSummaryContainerModule} from "../users-summary-container/users-summ
     PlacelineModule,
     UsersMapContainerModule,
     PlacelineContainerModule,
-    PlacelineMapContainerModule
+    PlacelineMapContainerModule,
+    UsersListContainerModule
   ],
   declarations: [TestComponent]
 })
