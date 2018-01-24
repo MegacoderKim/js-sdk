@@ -1,4 +1,4 @@
-<div class="dropdown is-hoverable is-active" (mouseleave)="picker.reset()" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+<div class="dropdown is-hoverable" (mouseleave)="picker.reset()" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
   <button type="button dropdown-trigger" class="button flex-row row-gap-4">
     <span>{{dateRange}}</span>
     <span class="icon">

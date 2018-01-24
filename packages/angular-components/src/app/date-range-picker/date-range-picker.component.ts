@@ -239,8 +239,9 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   pickDate(date: IDay) {
+    if (date.isInvalid) return false;
     this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
-      if(dateStyle.hoveredDate) {
+      if(dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
         this.setDateFromDayRange(date, dateStyle)
       } else {
         this.selectedDate$.next(new Date(date.date).toISOString())

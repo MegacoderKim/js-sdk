@@ -25,4 +25,8 @@ export class UsersListContainerComponent implements OnInit {
     };
   }
 
+  rangeChange(range) {
+    this.dateRangeService.data$.next(range)
+  }
+
 }
