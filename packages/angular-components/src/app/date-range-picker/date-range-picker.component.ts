@@ -5,7 +5,8 @@ import {
 import {DateRange} from "ht-client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {
-  addDays, addMonths, addWeeks, format, isBefore, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth,
+  addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange,
+  startOfMonth,
   startOfWeek
 } from "date-fns";
 import {of} from "rxjs/observable/of";
@@ -121,16 +122,10 @@ export class DateRangePickerComponent implements OnInit {
 
     this.dates$ = combineLatest(
       this.currentMonthStart$,
-      this.dateRangeService.data$,
-      this.selectedDate$.pipe(
-        distinctUntilChanged()
-      ),
-      this.hoveredDate.pipe(
-        distinctUntilChanged()
-      ),
-      (monthStart, selectedRange, selectedDate: string, hoveredDate) => {
-        let selectedDates = selectedDate ? [selectedDate] : [selectedRange.start, selectedRange.end];
-        let dateStyle: IDateStyle = {selectedDates, hoveredDate};
+      this.currentDateStyle$,
+      (monthStart, dateStyle: IDateStyle) => {
+        // let selectedDates = selectedDate ? [selectedDate] : [selectedRange.start, selectedRange.end];
+        // let dateStyle: IDateStyle = {selectedDates, hoveredDate};
         return this.generateDates(monthStart, dateStyle)
       }
     );
@@ -180,19 +175,19 @@ export class DateRangePickerComponent implements OnInit {
     const selectedRange = this.getRangeFromStyle(dateStyle);
     let isEnd = false;
     let isStart = false;
-    let isHovered = false;
+    let isHovered = this.isHovered(date, dateStyle);
     if (selectedRange.end) {
       isEnd = isSameDay(selectedRange.end, date)
     }
     if (selectedRange.start) {
       isStart = isSameDay(selectedRange.start, date)
     }
-    if(dateStyle.hoveredDate && dateStyle.selectedDates.length == 1) {
-      isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.hoveredDate)
-    }
-    if(dateStyle.selectedDates.length == 2) {
-      isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.selectedDates[1])
-    }
+    // if(dateStyle.hoveredDate) {
+    //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.hoveredDate)
+    // }
+    // if(dateStyle.selectedDates.length == 2) {
+    //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.selectedDates[1])
+    // }
 
     return {
       date: date,
@@ -202,16 +197,21 @@ export class DateRangePickerComponent implements OnInit {
       today: isToday(date),
       isEnd,
       isStart,
-      isHovered
+      isHovered,
+      isInvalid: isFuture(date)
     }
   };
 
-  isHovered(date, hovered, selected): boolean {
-    if (isBefore(hovered, selected)) {
-      return isWithinRange(date, hovered, selected)
-    } else {
-      return isWithinRange(date, selected, hovered)
-    }
+  isHovered(date, dateStyle: IDateStyle): boolean {
+    let hovered = dateStyle.hoveredDate;
+    let start = dateStyle.selectedRange.start || hovered;
+    let end = dateStyle.selectedRange.end || hovered || start;
+    return isWithinRange(date, start, end);
+    // if (isBefore(hovered, selected)) {
+    //   return isWithinRange(date, hovered, selected)
+    // } else {
+    //   return isWithinRange(date, selected, hovered)
+    // }
 
   }
 
@@ -219,34 +219,35 @@ export class DateRangePickerComponent implements OnInit {
     this.dateRangeService.data$.next(range)
   }
 
-  getRangeFromStyle({selectedDates, hoveredDate}: IDateStyle): Partial<IDateRange> {
-    if (hoveredDate) {
-      return isBefore(hoveredDate, selectedDates[0]) ?
-        {end: new Date(selectedDates[0]).toISOString()} : {start: new Date(selectedDates[0]).toISOString()}
-    } else if(selectedDates.length == 2) {
-      return isBefore(selectedDates[1], selectedDates[0]) ?
-        {end: new Date(selectedDates[0]).toISOString(), start: new Date(selectedDates[1]).toISOString()} : {start: new Date(selectedDates[0]).toISOString(), end: new Date(selectedDates[1]).toISOString()}
-    } else {
-      return {start: selectedDates[0], end: selectedDates[1]}
-    }
+  getRangeFromStyle({selectedRange, hoveredDate}: IDateStyle): Partial<IDateRange> {
+    return selectedRange
+    // if (hoveredDate) {
+    //   return isBefore(hoveredDate, selectedDates[0]) ?
+    //     {end: new Date(selectedDates[0]).toISOString()} : {start: new Date(selectedDates[0]).toISOString()}
+    // } else if(selectedDates.length == 2) {
+    //   return isBefore(selectedDates[1], selectedDates[0]) ?
+    //     {end: new Date(selectedDates[0]).toISOString(), start: new Date(selectedDates[1]).toISOString()} : {start: new Date(selectedDates[0]).toISOString(), end: new Date(selectedDates[1]).toISOString()}
+    // } else {
+    //   return {start: selectedDates[0], end: selectedDates[1]}
+    // }
   }
 
   pickDate(date: IDay) {
-    this.selectedDate$.pipe(take(1)).subscribe(selected => {
-      if(selected) {
-        this.setDateFromDayRange(date, selected)
+    this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
+      if(dateStyle.hoveredDate) {
+        this.setDateFromDayRange(date, dateStyle)
       } else {
         this.selectedDate$.next(new Date(date.date).toISOString())
       }
     });
   };
 
-  setDateFromDayRange(date: IDay, selectedDate) {
-    let range =  this.getRangeFromStyle({selectedDates: [new Date(date.date).toISOString(), selectedDate], hoveredDate: null});
+  setDateFromDayRange(date: IDay, dateStyle: IDateStyle) {
+    let range = {end: dateStyle.selectedRange.end || date.timeStamp, start: dateStyle.selectedRange.start || date.timeStamp};
     // console.log(range, "range");
     this.selectedDate$.next(null);
     this.hoveredDate.next(null);
-    this.setDateRange(range as IDateRange);
+    this.setDateRange(range);
   }
 
   hoverDate(date: IDay | null) {
@@ -280,7 +281,7 @@ export class DateRangePickerComponent implements OnInit {
 }
 
 export interface IDateStyle {
-  selectedDates?: string[],
+  // selectedDates?: string[],
   selectedRange?: Partial<IDateRange>
   hoveredDate: string | null,
   display?: [string, string],

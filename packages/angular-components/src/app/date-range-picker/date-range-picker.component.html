@@ -1,6 +1,6 @@
-<button class="button is-primary">
-  {{dateRangeService.display$ | async}}
-</button>
+<!--<button class="button is-primary">-->
+  <!--{{dateRangeService.display$ | async}}-->
+<!--</button>-->
 <div>
   <div class="calender">
     <div class="flex-column">
@@ -25,6 +25,8 @@
           (mousedown)="pickDate(day)"
           (mouseenter)="hoverDate(day)"
           (mouseleave)="hoverDate(null)"
+          [class.is-today]="day.today"
+          [class.is-invalid]="day.isInvalid"
           [class.is-hovered]="day.isHovered"
           [class.is-start]="day.isStart"
           [class.is-end]="day.isEnd"
