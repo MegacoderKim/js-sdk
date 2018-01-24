@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Input,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy, OnChanges, Output, EventEmitter
 } from '@angular/core';
 import {DateRange} from "ht-client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
@@ -56,8 +56,9 @@ export interface IDay {
   styleUrls: ['./date-range-picker.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DateRangePickerComponent implements OnInit {
-  @Input() dateRangeService: DateRange;
+export class DateRangePickerComponent implements OnInit, OnChanges {
+  @Input() dateRange: IDateRange;
+  @Output() onRangeChange: EventEmitter<IDateRange> = new EventEmitter<IDateRange>();
   currentMonthStart$: BehaviorSubject<Date>;
   dates$: Observable<IDay[][]>;
   // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
@@ -74,7 +75,7 @@ export class DateRangePickerComponent implements OnInit {
   ];
   month$;
   currentDateStyle$: Observable<IDateStyle>;
-  display$
+  display$;
   hint$;
   constructor() {
     let monthStart = startOfMonth(new Date());
@@ -85,28 +86,32 @@ export class DateRangePickerComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  ngOnChanges() {
+
     this.currentDateStyle$ = combineLatest(
-      this.dateRangeService.data$,
       this.selectedDate$.pipe(
         distinctUntilChanged()
       ),
       this.hoveredDate.pipe(
         distinctUntilChanged()
       ),
-      (dateRange: IDateRange, selectedDate: string | null, hoveredDate: string | null) => {
+      (selectedDate: string | null, hoveredDate: string | null) => {
+        let dateRange = this.dateRange;
         let selectedRange;
-        let display
+        let display;
         if (selectedDate && hoveredDate) {
           if(isBefore(hoveredDate, selectedDate)) {
             selectedRange = {end: selectedDate};
-            display = ['Set start date', format(selectedDate, 'DD MMM')]
+            display = [null, format(selectedDate, 'DD MMM')]
           } else {
             selectedRange = {start: selectedDate};
-            display = [format(selectedDate, 'DD MMM'), 'Set end date']
+            display = [format(selectedDate, 'DD MMM'), null]
           }
         } else if(selectedDate) {
           selectedRange = {start: selectedDate};
-          display = [format(selectedDate, 'DD MMM'), 'Set end date']
+          display = [format(selectedDate, 'DD MMM'), null]
         } else {
           selectedRange = dateRange;
           display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')]
@@ -216,7 +221,8 @@ export class DateRangePickerComponent implements OnInit {
   }
 
   setDateRange(range: IDateRange) {
-    this.dateRangeService.data$.next(range)
+    this.onRangeChange.next(range)
+    // this.dateRangeService.data$.next(range)
   }
 
   getRangeFromStyle({selectedRange, hoveredDate}: IDateStyle): Partial<IDateRange> {
@@ -284,5 +290,5 @@ export interface IDateStyle {
   // selectedDates?: string[],
   selectedRange?: Partial<IDateRange>
   hoveredDate: string | null,
-  display?: [string, string],
+  display?: [string | null, string | null],
 }
