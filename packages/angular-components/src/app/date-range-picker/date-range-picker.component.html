@@ -4,6 +4,15 @@
 <div>
   <div class="calender">
     <div class="flex-column">
+      <div class="flex-row is-size-5" *ngIf="month$ | async as month">
+        <div class="icon" (click)="changeMonth(-1)">
+          <i class="fa fa-chevron-left"></i>
+        </div>
+        <div class="flex has-text-centered">{{month.display}}</div>
+        <div class="icon" (click)="changeMonth(1)">
+          <i class="fa fa-chevron-right"></i>
+        </div>
+      </div>
       <div class="flex-row">
         <div class="day has-text-weight-bold" *ngFor="let day of  days">{{day}}</div>
       </div>
@@ -19,6 +28,7 @@
           *ngFor="let day of weeks; trackBy: indexBy"
           class="day">{{day.day}}</div>
       </div>
+      <div>{{hint$ | async}}</div>
     </div>
   </div>
   <div class="side-control flex-column">

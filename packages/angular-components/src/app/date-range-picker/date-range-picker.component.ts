@@ -1,12 +1,11 @@
 import {
-  Component, OnInit, HostListener, ElementRef, forwardRef, Input, OnChanges, SimpleChange,
+  Component, OnInit, Input,
   ChangeDetectionStrategy
 } from '@angular/core';
-import * as dateFns from 'date-fns';
 import {DateRange} from "ht-client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {
-  addDays, addWeeks, format, isBefore, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth,
+  addDays, addMonths, addWeeks, format, isBefore, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth,
   startOfWeek
 } from "date-fns";
 import {of} from "rxjs/observable/of";
@@ -34,7 +33,8 @@ export interface IDay {
   today: boolean;
   isStart?: boolean,
   isEnd?: boolean,
-  isHovered?: boolean
+  isHovered?: boolean,
+  isInvalid?: boolean,
   // firstMonthDay: boolean;
   // lastMonthDay: boolean;
   // visible: boolean;
@@ -71,6 +71,8 @@ export class DateRangePickerComponent implements OnInit {
     'Fri',
     'Sat'
   ];
+  month$;
+  hint$;
   constructor() {
     let monthStart = startOfMonth(new Date());
     this.currentMonthStart$ = new BehaviorSubject<Date>(monthStart);
@@ -93,7 +95,30 @@ export class DateRangePickerComponent implements OnInit {
         let dateStyle: IDateStyle = {selectedDates, hoveredDate};
         return this.generateDates(monthStart, dateStyle)
       }
+    );
+
+    this.month$ = this.currentMonthStart$.pipe(
+      map(date => {
+        return {
+          display: format(date, 'MMM YY')
+        }
+      })
     )
+
+    this.hint$ = this.selectedDate$.pipe(
+      map((date) => {
+        return date ? 'Select end date' : ""
+      })
+    )
+  }
+
+  changeMonth(inc: number) {
+    this.currentMonthStart$.pipe(
+      take(1)
+    ).subscribe((month) => {
+      month = addMonths(new Date(month), inc);
+      this.currentMonthStart$.next(month)
+    })
   }
 
   generateDates(monthStart: Date, dateStyle: IDateStyle) {
@@ -153,7 +178,6 @@ export class DateRangePickerComponent implements OnInit {
   }
 
   setDateRange(range: IDateRange) {
-    console.log("final", range);
     this.dateRangeService.data$.next(range)
   }
 
@@ -200,11 +224,18 @@ export class DateRangePickerComponent implements OnInit {
   };
 
   indexBy(a, v: IDay) {
-    return new Date(v.date).toISOString()
+    return v.timeStamp;
   }
 
   indexByWeek(a, v: IDay[]) {
-    return new Date(v[0].date).toISOString()
+    return v[0].timeStamp;
+  }
+
+  reset() {
+    this.selectedDate$.next(null);
+    this.hoveredDate.next(null);
+    let monthStart = startOfMonth(new Date());
+    this.currentMonthStart$.next(monthStart)
   }
 
 
