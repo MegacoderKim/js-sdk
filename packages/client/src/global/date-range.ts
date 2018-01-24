@@ -2,9 +2,10 @@ import { IDateRange } from "../interfaces";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
-import { IsRangeADay, IsRangeToday, DateString } from "ht-utility";
+import { IsRangeADay, IsRangeToday, DateString, isSameRange } from "ht-utility";
 import {DateRangeMap, isSameDateRange} from "ht-data";
 import {DateRangeLabelMap} from "ht-data";
+import {distanceInWordsToNow} from "date-fns";
 
 export const defaultDateRange = {...DateRangeMap.today};
 
@@ -26,10 +27,16 @@ export class DateRange {
         //   return isSameDateRange(DateRangeMap[key], range)
         // });
         // return "";
+        let customDate = DateRangeLabelMap.find((data) => {
+          let customRange = data.range;
+          return isSameRange(range, customRange)
+        });
+
+        if (customDate) return customDate.label;
         let isSingleDay = IsRangeADay(range);
         if (isSingleDay) {
           let isToday = IsRangeToday(range);
-          let suffix = isToday ? "Today " : "";
+          let suffix = isToday ? "Today " : distanceInWordsToNow(range.start);
           let string = suffix + DateString(range.start);
           return string;
         } else {

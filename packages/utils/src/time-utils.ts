@@ -1,4 +1,4 @@
-import {differenceInDays, endOfToday, startOfToday} from "date-fns";
+import {differenceInDays, endOfToday, isSameDay, startOfToday} from "date-fns";
 
 export function DayAgoISO() {
   return new Date(new Date().getTime() - 24 * 60 * 60 * 1000).toISOString();
@@ -14,6 +14,12 @@ export function TodayEndISO() {
 
 export function OffsetIsoTime(time: string, offset: number = 10) {
   return new Date(new Date(time).getTime() + offset).toISOString();
+}
+
+export function isSameRange(range1, range2) {
+  const start1 = range1.start;
+  const start2 = range2.start;
+  return isSameDay(start1, start2) && isSameDay(range1.end, range2.end)
 }
 
 export function IsRangeToday(range) {
@@ -40,7 +46,7 @@ export function GetDateRangeQuery(query, param = "created_at") {
 
 export function IsRangeADay(range) {
   if (range.start && range.end) {
-    return differenceInDays(range.end, range.start) == 0
+    return isSameDay(range.end, range.start)
     // return moment(range.end).diff(moment(range.start), "days") == 0;
   } else if (!range.start && !range.end) {
     return true;

@@ -43,9 +43,9 @@ import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest'
 import { of as of$1 } from 'rxjs/observable/of';
 import { merge as merge$1 } from 'rxjs/observable/merge';
 import { Subject as Subject$1 } from 'rxjs/Subject';
+import { addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm';
 import { Observable as Observable$1 } from 'rxjs/Observable';
-import { format } from 'date-fns';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 /**
  * @fileoverview added by tsickle
@@ -3128,8 +3128,8 @@ var DateRangeComponent = (function () {
 DateRangeComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-date-range',
-                template: "<div class=\"dropdown is-hoverable\" [class.is-right]=\"isRight\" *ngIf=\"dateRange$ | async as dateRange\">\n  <button type=\"button dropdown-trigger\" class=\"button flex-row row-gap-4\">\n    {{dateRange}}\n    <!--<span *ngIf=\"ordering$ | async as ordering\"></span>-->\n    <!--<i class=\"fa fa-filter\"></i>-->\n  </button>\n  <div class=\"dropdown-menu dropdown-menu-right is-boxed\">\n    <div class=\"dropdown-content\" role=\"menu\" aria-labelledby=\"dropdown-keyboard-access\">\n      <a class=\"dropdown-item\" [class.is-active]=\"date.isActive\" (click)=\"setDateRange(date.range)\" *ngFor=\"let date of dateRangeOptions$ | async\">{{date.label}}</a>\n    </div>\n  </div>\n\n</div>\n",
-                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n.dropdown-menu {\n  z-index: 500;\n}\n"]
+                template: "<div class=\"dropdown is-hoverable\" (mouseleave)=\"picker.reset()\" [class.is-right]=\"isRight\" *ngIf=\"dateRange$ | async as dateRange\">\n  <button type=\"button dropdown-trigger\" class=\"button flex-row row-gap-4\">\n    <span>{{dateRange}}</span>\n    <span class=\"icon\">\n      <i class=\"fa fa-calendar\"></i>\n    </span>\n    <!--<span *ngIf=\"ordering$ | async as ordering\"></span>-->\n    <!--<i class=\"fa fa-filter\"></i>-->\n  </button>\n  <div class=\"dropdown-menu dropdown-menu-right is-boxed\">\n    <div class=\"dropdown-content\" role=\"menu\" aria-labelledby=\"dropdown-keyboard-access\">\n      <div class=\"dropdown-item\">\n        <ht-date-range-picker #picker [options]=\"{showSingleDay: showSingleDay, isRight: isRight}\" (onRangeChange)=\"setDateRange($event)\" [dateRange]=\"dateRangeService$.data$ | async\"></ht-date-range-picker>\n      </div>\n    </div>\n  </div>\n\n</div>\n",
+                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n.dropdown-menu {\n  z-index: 601;\n}\n.row-right {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: reverse;\n      -ms-flex-direction: row-reverse;\n          flex-direction: row-reverse;\n}\n.row-right .options {\n  padding-left: 15px;\n}\n.row-left {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.row-left .options {\n  padding-right: 15px;\n}\n"]
             },] },
 ];
 /** @nocollapse */
@@ -3143,6 +3143,316 @@ DateRangeComponent.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @record
+ */
+/**
+ * @record
+ */
+var DateRangePickerComponent = (function () {
+    function DateRangePickerComponent() {
+        this.onRangeChange = new EventEmitter();
+        // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
+        this.selectedDate$ = new BehaviorSubject$1(null);
+        this.hoveredDate = new BehaviorSubject$1(null);
+        this.days = [
+            'Sun',
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat'
+        ];
+        this.customDates = DateRangeLabelMap;
+        var /** @type {?} */ monthStart = startOfMonth(new Date());
+        this.currentMonthStart$ = new BehaviorSubject$1(monthStart);
+    }
+    ;
+    /**
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.ngOnInit = function () {
+    };
+    /**
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.ngOnChanges = function () {
+        var _this = this;
+        this.customDates$ = this.customDates.filter(function (customRange) {
+            return !_this.options.hideSingleDay ? true : !customRange.isSingleDay;
+        }).map(function (customRange) {
+            return isSameDateRange(customRange.range, _this.dateRange) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
+        });
+        this.currentDateStyle$ = combineLatest$1(this.selectedDate$.pipe(distinctUntilChanged()), this.hoveredDate.pipe(distinctUntilChanged()), function (selectedDate, hoveredDate) {
+            var /** @type {?} */ dateRange = _this.dateRange;
+            var /** @type {?} */ selectedRange;
+            var /** @type {?} */ display;
+            if (selectedDate && hoveredDate) {
+                if (isBefore(hoveredDate, selectedDate)) {
+                    selectedRange = { end: selectedDate };
+                    display = [null, format(selectedDate, 'DD MMM')];
+                }
+                else {
+                    selectedRange = { start: selectedDate };
+                    display = [format(selectedDate, 'DD MMM'), null];
+                }
+            }
+            else if (selectedDate) {
+                selectedRange = { start: selectedDate };
+                display = [format(selectedDate, 'DD MMM'), null];
+            }
+            else {
+                selectedRange = dateRange;
+                display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')];
+            }
+            return {
+                selectedRange: selectedRange,
+                hoveredDate: hoveredDate,
+                display: display
+            };
+        });
+        this.dates$ = combineLatest$1(this.currentMonthStart$, this.currentDateStyle$, function (monthStart, dateStyle) {
+            // let selectedDates = selectedDate ? [selectedDate] : [selectedRange.start, selectedRange.end];
+            // let dateStyle: IDateStyle = {selectedDates, hoveredDate};
+            return _this.generateDates(monthStart, dateStyle);
+        });
+        this.month$ = this.currentMonthStart$.pipe(map$1(function (date) {
+            return {
+                display: format(date, 'MMM YY')
+            };
+        }));
+        this.hint$ = this.selectedDate$.pipe(map$1(function (date) {
+            return date ? 'Select end date' : "";
+        }));
+    };
+    /**
+     * @param {?} inc
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.changeMonth = function (inc) {
+        var _this = this;
+        this.currentMonthStart$.pipe(take(1)).subscribe(function (month) {
+            month = addMonths(new Date(month), inc);
+            _this.currentMonthStart$.next(month);
+        });
+    };
+    /**
+     * @param {?} monthStart
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.generateDates = function (monthStart, dateStyle) {
+        var _this = this;
+        var /** @type {?} */ start = startOfWeek(monthStart);
+        var /** @type {?} */ weekStarts = [0, 1, 2, 3, 4, 5].map(function (v, i) {
+            return addWeeks(start, i);
+        });
+        var /** @type {?} */ days = weekStarts.map(function (weekStart) {
+            return [0, 1, 2, 3, 4, 5, 6].map(function (i) {
+                var /** @type {?} */ date = addDays(weekStart, i);
+                return _this.getDay(date, monthStart, dateStyle);
+            });
+        });
+        // console.log(days);
+        return days;
+    };
+    /**
+     * @param {?} date
+     * @param {?} monthStart
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.getDay = function (date, monthStart, dateStyle) {
+        // console.log(dateStyle);
+        var /** @type {?} */ selectedRange = this.getRangeFromStyle(dateStyle);
+        var /** @type {?} */ isEnd = false;
+        var /** @type {?} */ isStart = false;
+        var /** @type {?} */ isHovered = this.isHovered(date, dateStyle);
+        if (selectedRange.end) {
+            isEnd = isSameDay(selectedRange.end, date);
+        }
+        if (selectedRange.start) {
+            isStart = isSameDay(selectedRange.start, date);
+        }
+        // if(dateStyle.hoveredDate) {
+        //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.hoveredDate)
+        // }
+        // if(dateStyle.selectedDates.length == 2) {
+        //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.selectedDates[1])
+        // }
+        return {
+            date: date,
+            timeStamp: date.toISOString(),
+            day: format(date, 'D'),
+            isInMonth: isSameMonth(date, monthStart),
+            today: isToday(date),
+            isEnd: isEnd,
+            isStart: isStart,
+            isHovered: isHovered,
+            isInvalid: isFuture(date)
+        };
+    };
+    ;
+    /**
+     * @param {?} date
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.isHovered = function (date, dateStyle) {
+        var /** @type {?} */ hovered = dateStyle.hoveredDate;
+        var /** @type {?} */ start = dateStyle.selectedRange.start || hovered;
+        var /** @type {?} */ end = dateStyle.selectedRange.end || hovered || start;
+        return isWithinRange(date, start, end);
+        // if (isBefore(hovered, selected)) {
+        //   return isWithinRange(date, hovered, selected)
+        // } else {
+        //   return isWithinRange(date, selected, hovered)
+        // }
+    };
+    /**
+     * @param {?} range
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.setDateRange = function (range) {
+        this.onRangeChange.next(range);
+        // this.dateRangeService.data$.next(range)
+    };
+    /**
+     * @param {?} __0
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.getRangeFromStyle = function (_a) {
+        var selectedRange = _a.selectedRange, hoveredDate = _a.hoveredDate;
+        return selectedRange;
+        // if (hoveredDate) {
+        //   return isBefore(hoveredDate, selectedDates[0]) ?
+        //     {end: new Date(selectedDates[0]).toISOString()} : {start: new Date(selectedDates[0]).toISOString()}
+        // } else if(selectedDates.length == 2) {
+        //   return isBefore(selectedDates[1], selectedDates[0]) ?
+        //     {end: new Date(selectedDates[0]).toISOString(), start: new Date(selectedDates[1]).toISOString()} : {start: new Date(selectedDates[0]).toISOString(), end: new Date(selectedDates[1]).toISOString()}
+        // } else {
+        //   return {start: selectedDates[0], end: selectedDates[1]}
+        // }
+    };
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.pickDate = function (date) {
+        var _this = this;
+        if (date.isInvalid)
+            return false;
+        this.currentDateStyle$.pipe(take(1)).subscribe(function (dateStyle) {
+            if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
+                _this.setDateFromDayRange(date, dateStyle);
+            }
+            else {
+                _this.selectedDate$.next(new Date(date.date).toISOString());
+            }
+        });
+    };
+    ;
+    /**
+     * @param {?} date
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.setDateFromDayRange = function (date, dateStyle) {
+        var /** @type {?} */ range = { end: dateStyle.selectedRange.end || date.timeStamp, start: dateStyle.selectedRange.start || date.timeStamp };
+        // console.log(range, "range");
+        this.selectedDate$.next(null);
+        this.hoveredDate.next(null);
+        this.setDateRange(range);
+    };
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.hoverDate = function (date) {
+        var _this = this;
+        var /** @type {?} */ timeStamp = date ? new Date(date.date).toISOString() : null;
+        if (timeStamp) {
+            this.selectedDate$.pipe(take(1)).subscribe(function (selected) {
+                if (selected)
+                    _this.hoveredDate.next(timeStamp);
+            });
+        }
+        else {
+            this.hoveredDate.next(timeStamp);
+        }
+    };
+    ;
+    /**
+     * @param {?} a
+     * @param {?} v
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.indexBy = function (a, v) {
+        return v.timeStamp;
+    };
+    /**
+     * @param {?} a
+     * @param {?} v
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.indexByWeek = function (a, v) {
+        return v[0].timeStamp;
+    };
+    /**
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.reset = function () {
+        this.selectedDate$.next(null);
+        this.hoveredDate.next(null);
+        var /** @type {?} */ monthStart = startOfMonth(new Date());
+        this.currentMonthStart$.next(monthStart);
+    };
+    return DateRangePickerComponent;
+}());
+DateRangePickerComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ht-date-range-picker',
+                template: "<div class=\"flex-row\" [ngClass]=\"options.isRight ? 'row-right' : 'row-left'\">\n  <div class=\"flex-column column-gap-10 options\">\n    <button class=\"button is-light is-small\" [class.is-primary]=\"date.isActive\" (click)=\"setDateRange(date.range)\" *ngFor=\"let date of customDates$\">{{date.label}}</button>\n  </div>\n  <div class=\"calender\">\n    <div class=\"flex-column\">\n      <div class=\"flex-row date-style\" *ngIf=\"currentDateStyle$ | async as dateStyle\">\n        <div class=\"has-text-centered\" [class.has-text-danger]=\"!dateStyle.display[0]\">{{dateStyle.display[0] | dot: 'Set start date'}}</div>\n        <div>&nbsp; &hArr; &nbsp;</div>\n        <div class=\"has-text-centered\" [class.has-text-danger]=\"!dateStyle.display[1]\">{{dateStyle.display[1] | dot: 'Set end date'}}</div>\n      </div>\n      <div class=\"flex-row month flex-center\" *ngIf=\"month$ | async as month\">\n        <div class=\"icon clickable\" (click)=\"changeMonth(-1)\">\n          <i class=\"fa fa-chevron-left\"></i>\n        </div>\n        <div class=\"flex has-text-centered\">{{month.display}}</div>\n        <div class=\"icon clickable\" (click)=\"changeMonth(1)\">\n          <i class=\"fa fa-chevron-right\"></i>\n        </div>\n      </div>\n      <div class=\"flex-row\">\n        <div class=\"day has-text-weight-bold\" *ngFor=\"let day of  days\">{{day}}</div>\n      </div>\n      <div *ngFor=\"let weeks of dates$ | async; trackBy: indexByWeek\" class=\"flex-row\">\n        <div\n          (mousedown)=\"pickDate(day)\"\n          (mouseenter)=\"hoverDate(day)\"\n          (mouseleave)=\"hoverDate(null)\"\n          [class.is-today]=\"day.today\"\n          [class.is-invalid]=\"day.isInvalid\"\n          [class.is-hovered]=\"day.isHovered\"\n          [class.is-start]=\"day.isStart\"\n          [class.is-end]=\"day.isEnd\"\n          [class.has-text-grey-light]=\"!day.isInMonth\"\n          *ngFor=\"let day of weeks; trackBy: indexBy\"\n          class=\"day\">{{day.day}}</div>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
+                styles: [".text-center {\n  text-align: center; }\n\n.text-muted {\n  color: #798E9B; }\n\n.text-right {\n  text-align: right; }\n\n.text-left {\n  text-align: left; }\n\n.text-1 {\n  font-size: 2em; }\n\n.text-4 {\n  font-size: 0.8em; }\n\n.text-capitalize {\n  text-transform: capitalize; }\n\n.text-uppercase {\n  text-transform: uppercase; }\n\n.text-ontime {\n  color: #58ae5b; }\n\n.text-late {\n  color: #E6413E; }\n\n.text-warning {\n  color: #E6413E !important; }\n\n.text-red {\n  color: #E6413E; }\n\n.text-blue {\n  color: #5496F8; }\n\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis; }\n\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row; }\n\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px; }\n\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px; }\n\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px; }\n\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px; }\n\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px; }\n\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px; }\n\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px; }\n\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px; }\n\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap; }\n\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1; }\n\n.auto {\n  margin: auto; }\n\n.relative {\n  position: relative; }\n\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around; }\n\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center; }\n\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.clickable {\n  cursor: pointer; }\n\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%; }\n\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%; }\n\n.link-unstyled {\n  color: inherit; }\n  .link-unstyled:hover {\n    text-decoration: none; }\n\n.half {\n  width: 50%; }\n\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */ }\n\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16); }\n\n.marker-transparent {\n  opacity: 0.4; }\n\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px); }\n\n.tooltip-warning {\n  background: #e04745;\n  color: #fff; }\n  .tooltip-warning-arrow {\n    border-right-color: #e04745 !important; }\n\n.tooltip-info {\n  background: #5496F8;\n  color: #fff; }\n  .tooltip-info-arrow {\n    border-right-color: #5496F8 !important; }\n\na {\n  color: inherit;\n  text-decoration: none; }\n  a:hover {\n    color: inherit;\n    text-decoration: none; }\n  a:active {\n    color: inherit;\n    text-decoration: none; }\n  a:focus {\n    outline: none;\n    color: inherit;\n    text-decoration: none; }\n\n.ht-card.clickable:hover {\n  background: #edeff1; }\n\n.ht-card-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  position: relative; }\n  .ht-card-container .card {\n    margin-bottom: -1px; }\n  .ht-card-container .sub-status {\n    font-size: 9px;\n    margin-top: -16px;\n    margin-bottom: 20px;\n    text-align: center;\n    color: #798E9B;\n    text-transform: uppercase;\n    padding-top: 3px; }\n  .ht-card-container .card-action {\n    height: 30px;\n    background: #5496F8;\n    color: #fff;\n    border: 1px solid #C9D6DE;\n    position: relative;\n    top: -3px;\n    margin: 0 10px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding: 0 20px;\n    border-bottom-left-radius: 5px;\n    border-bottom-right-radius: 5px;\n    text-transform: uppercase; }\n    .ht-card-container .card-action:hover {\n      background: #3c87f7;\n      font-weight: 500; }\n\n[hidden] {\n  display: none !important; }\n\n.card-clickable {\n  cursor: pointer; }\n  .card-clickable:hover {\n    background-color: #f2f2f2; }\n\n.adjust-huener-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center; }\n\n.adjust-huener-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out; }\n\n.adjust-huener-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s; }\n\n.adjust-huener-wave div:nth-child(3) {\n  -webkit-animation-delay: -1.0s;\n  animation-delay: -1.0s; }\n\n.adjust-huener-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s; }\n\n.adjust-huener-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s; }\n\n@-webkit-keyframes wave {\n  0%, 40%, 100% {\n    -webkit-transform: scaleY(0.4); }\n  20% {\n    -webkit-transform: scaleY(1); } }\n\n@keyframes wave {\n  0%, 40%, 100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4); }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1); } }\n\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important; } }\n\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important; } }\n\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: white;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n  .ht-btn:focus {\n    background: #fcfcfc;\n    outline: 0; }\n  .ht-btn-card:hover {\n    background: #5496F8;\n    color: rgba(255, 255, 255, 0.96);\n    -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n\n.stopped-color {\n  color: #FFBB44; }\n\n.drive-color {\n  color: #5496F8; }\n\n.walk-color {\n  color: #5496F8; }\n\n.moving-color {\n  color: #5496F8; }\n\n.logged_off-color {\n  color: #A9BAC4; }\n\n.network_offline-color {\n  color: #d19191; }\n\n.location_disabled-color {\n  color: #d19191; }\n\n.location_low_accuracy-color {\n  color: #d19191; }\n\n.stopped-bg {\n  background: #FFBB44; }\n\n.drive-bg {\n  background: #5496F8; }\n\n.walk-bg {\n  background: #5496F8; }\n\n.moving-bg {\n  background: #5496F8; }\n\n.logged_off-bg {\n  background: #A9BAC4; }\n\n.network_offline-bg {\n  background: #d19191; }\n\n.location_disabled-bg {\n  background-color: #d19191; }\n\n.location_low_accuracy-bg {\n  background-color: #d19191; }\n\n.card-content.is-small {\n  padding: 10px 20px; }\n\n.modal {\n  z-index: 402; }\n\n.day {\n  width: 40px;\n  text-align: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer; }\n  .day:hover {\n    font-weight: 700; }\n\n.is-hovered {\n  background: lightgray; }\n\n.is-start {\n  background: grey;\n  color: #fff;\n  border-bottom-left-radius: 4px;\n  border-top-left-radius: 4px; }\n\n.is-end {\n  background: grey;\n  color: #fff;\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px; }\n\n.is-invalid {\n  text-decoration: line-through;\n  cursor: not-allowed; }\n\n.month {\n  padding: 4px 0;\n  background: #ececec;\n  border-radius: 4px;\n  margin: 12px 0; }\n\n.date-style {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  font-size: 1.1rem; }\n\n.row-right {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: reverse;\n      -ms-flex-direction: row-reverse;\n          flex-direction: row-reverse; }\n  .row-right .options {\n    padding-left: 15px; }\n\n.row-left {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row; }\n  .row-left .options {\n    padding-right: 15px; }\n"],
+                changeDetection: ChangeDetectionStrategy.OnPush
+            },] },
+];
+/** @nocollapse */
+DateRangePickerComponent.ctorParameters = function () { return []; };
+DateRangePickerComponent.propDecorators = {
+    "dateRange": [{ type: Input },],
+    "options": [{ type: Input },],
+    "onRangeChange": [{ type: Output },],
+};
+/**
+ * @record
+ */
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+var DateRangePickerModule = (function () {
+    function DateRangePickerModule() {
+    }
+    return DateRangePickerModule;
+}());
+DateRangePickerModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [
+                    CommonModule,
+                    SharedModule
+                ],
+                declarations: [DateRangePickerComponent],
+                exports: [DateRangePickerComponent]
+            },] },
+];
+/** @nocollapse */
+DateRangePickerModule.ctorParameters = function () { return []; };
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 var DateRangeModule = (function () {
     function DateRangeModule() {
     }
@@ -3152,7 +3462,8 @@ DateRangeModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
                     CommonModule,
-                    SharedModule
+                    SharedModule,
+                    DateRangePickerModule
                 ],
                 declarations: [DateRangeComponent],
                 exports: [DateRangeComponent]
@@ -3945,7 +4256,7 @@ var StopsHeatmapService = (function () {
      */
     function StopsHeatmapService(config) {
         this.component = AnalyticsMapContainerComponent;
-        this.className = "is-12";
+        this.className = "is-6";
         this.tags = ['users'];
         this.noData = false;
         this.loading$ = of$1(false);
@@ -4562,7 +4873,7 @@ var ActionsHeatmapService = (function () {
      */
     function ActionsHeatmapService(config) {
         this.component = AnalyticsMapContainerComponent;
-        this.className = "is-12";
+        this.className = "is-6";
         this.tags = ['actions'];
         this.noData = false;
         this.loading$ = of$1(false);
@@ -5583,7 +5894,7 @@ AnalyticsItemLoadComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-analytics-item-load',
                 template: "<div class=\"loading-container\" [style.min-height.px]=\"_minHeight\">\n  <ng-content></ng-content>\n  <div class=\"loading-page\" *ngIf=\"loading$ | async\">\n    <div class=\"icon auto has-text-grey-light\">\n      <i class=\"fa fa-circle-o-notch fa-spin fa-3x fa-fw\"></i>\n    </div>\n  </div>\n  <div class=\"loading-page\" *ngIf=\"noData\">\n    <div class=\"auto has-text-grey-light is-size-1\">\n      No Data\n    </div>\n  </div>\n</div>\n",
-                styles: [".loading-page {\n  background: #ffffff96;\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  top: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.loading-container {\n  position: relative; }\n"],
+                styles: [".loading-page {\n  background: #ffffff96;\n  position: absolute;\n  height: 100%;\n  width: 100%;\n  top: 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  z-index: 600; }\n\n.loading-container {\n  position: relative; }\n"],
                 changeDetection: ChangeDetectionStrategy.OnPush,
             },] },
 ];
@@ -5921,5 +6232,5 @@ HtModule.ctorParameters = function () { return []; };
 /**
  * Generated bundle index. Do not edit.
  */
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbq, ActionTableModule as ɵbp, ActionsAnalyticsListComponent as ɵbr, ActionsAnalyticsListModule as ɵbo, ActionsSummaryChartComponent as ɵbt, ActionsSummaryChartModule as ɵbs, AnalyticsItemLoadComponent as ɵbv, AnalyticsItemLoadModule as ɵbu, AnalyticsItemComponent as ɵca, AnalyticsSlotDirective as ɵbz, AnalyticsItemsService as ɵby, AnalyticsSelectorComponent as ɵcb, AnalyticsTagsComponent as ɵbn, AnalyticsTagsModule as ɵbm, AnalyticsTitleComponent as ɵcc, AnalyticsMapContainerComponent as ɵbx, AnalyticsMapContainerModule as ɵbw, DataTableComponent as ɵbl, DataTableModule as ɵbk, DateRangeComponent as ɵbi, DateRangeModule as ɵbh, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbj, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵce, HtActionsService as ɵcd, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbo, ActionTableModule as ɵbn, ActionsAnalyticsListComponent as ɵbp, ActionsAnalyticsListModule as ɵbm, ActionsSummaryChartComponent as ɵbr, ActionsSummaryChartModule as ɵbq, AnalyticsItemLoadComponent as ɵbt, AnalyticsItemLoadModule as ɵbs, AnalyticsItemComponent as ɵby, AnalyticsSlotDirective as ɵbx, AnalyticsItemsService as ɵbw, AnalyticsSelectorComponent as ɵbz, AnalyticsTagsComponent as ɵbl, AnalyticsTagsModule as ɵbk, AnalyticsTitleComponent as ɵca, AnalyticsMapContainerComponent as ɵbv, AnalyticsMapContainerModule as ɵbu, DataTableComponent as ɵbj, DataTableModule as ɵbi, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbh, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵcc, HtActionsService as ɵcb, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
 //# sourceMappingURL=ht-angular.js.map

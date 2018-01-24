@@ -13,9 +13,9 @@ import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest'
 import { of as of$1 } from 'rxjs/observable/of';
 import { merge as merge$1 } from 'rxjs/observable/merge';
 import { Subject as Subject$1 } from 'rxjs/Subject';
+import { addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm';
 import { Observable as Observable$1 } from 'rxjs/Observable';
-import { format } from 'date-fns';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 /**
@@ -9598,15 +9598,20 @@ class DateRangeComponent {
 DateRangeComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-date-range',
-                template: `<div class="dropdown is-hoverable" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+                template: `<div class="dropdown is-hoverable" (mouseleave)="picker.reset()" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
   <button type="button dropdown-trigger" class="button flex-row row-gap-4">
-    {{dateRange}}
+    <span>{{dateRange}}</span>
+    <span class="icon">
+      <i class="fa fa-calendar"></i>
+    </span>
     <!--<span *ngIf="ordering$ | async as ordering"></span>-->
     <!--<i class="fa fa-filter"></i>-->
   </button>
   <div class="dropdown-menu dropdown-menu-right is-boxed">
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
-      <a class="dropdown-item" [class.is-active]="date.isActive" (click)="setDateRange(date.range)" *ngFor="let date of dateRangeOptions$ | async">{{date.label}}</a>
+      <div class="dropdown-item">
+        <ht-date-range-picker #picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
+      </div>
     </div>
   </div>
 
@@ -9953,7 +9958,25 @@ a:focus {
   background-color: #d19191;
 }
 .dropdown-menu {
-  z-index: 500;
+  z-index: 601;
+}
+.row-right {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+.row-right .options {
+  padding-left: 15px;
+}
+.row-left {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+.row-left .options {
+  padding-right: 15px;
 }
 `]
             },] },
@@ -9970,13 +9993,799 @@ DateRangeComponent.propDecorators = {
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
+/**
+ * @record
+ */
+
+/**
+ * @record
+ */
+
+class DateRangePickerComponent {
+    constructor() {
+        this.onRangeChange = new EventEmitter();
+        // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
+        this.selectedDate$ = new BehaviorSubject$1(null);
+        this.hoveredDate = new BehaviorSubject$1(null);
+        this.days = [
+            'Sun',
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat'
+        ];
+        this.customDates = DateRangeLabelMap;
+        let /** @type {?} */ monthStart = startOfMonth(new Date());
+        this.currentMonthStart$ = new BehaviorSubject$1(monthStart);
+    }
+    ;
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+    }
+    /**
+     * @return {?}
+     */
+    ngOnChanges() {
+        this.customDates$ = this.customDates.filter(customRange => {
+            return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
+        }).map((customRange) => {
+            return isSameDateRange(customRange.range, this.dateRange) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
+        });
+        this.currentDateStyle$ = combineLatest$1(this.selectedDate$.pipe(distinctUntilChanged()), this.hoveredDate.pipe(distinctUntilChanged()), (selectedDate, hoveredDate) => {
+            let /** @type {?} */ dateRange = this.dateRange;
+            let /** @type {?} */ selectedRange;
+            let /** @type {?} */ display;
+            if (selectedDate && hoveredDate) {
+                if (isBefore(hoveredDate, selectedDate)) {
+                    selectedRange = { end: selectedDate };
+                    display = [null, format(selectedDate, 'DD MMM')];
+                }
+                else {
+                    selectedRange = { start: selectedDate };
+                    display = [format(selectedDate, 'DD MMM'), null];
+                }
+            }
+            else if (selectedDate) {
+                selectedRange = { start: selectedDate };
+                display = [format(selectedDate, 'DD MMM'), null];
+            }
+            else {
+                selectedRange = dateRange;
+                display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')];
+            }
+            return {
+                selectedRange,
+                hoveredDate,
+                display
+            };
+        });
+        this.dates$ = combineLatest$1(this.currentMonthStart$, this.currentDateStyle$, (monthStart, dateStyle) => {
+            // let selectedDates = selectedDate ? [selectedDate] : [selectedRange.start, selectedRange.end];
+            // let dateStyle: IDateStyle = {selectedDates, hoveredDate};
+            return this.generateDates(monthStart, dateStyle);
+        });
+        this.month$ = this.currentMonthStart$.pipe(map$1(date => {
+            return {
+                display: format(date, 'MMM YY')
+            };
+        }));
+        this.hint$ = this.selectedDate$.pipe(map$1((date) => {
+            return date ? 'Select end date' : "";
+        }));
+    }
+    /**
+     * @param {?} inc
+     * @return {?}
+     */
+    changeMonth(inc) {
+        this.currentMonthStart$.pipe(take(1)).subscribe((month) => {
+            month = addMonths(new Date(month), inc);
+            this.currentMonthStart$.next(month);
+        });
+    }
+    /**
+     * @param {?} monthStart
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    generateDates(monthStart, dateStyle) {
+        let /** @type {?} */ start = startOfWeek(monthStart);
+        let /** @type {?} */ weekStarts = [0, 1, 2, 3, 4, 5].map((v, i) => {
+            return addWeeks(start, i);
+        });
+        let /** @type {?} */ days = weekStarts.map((weekStart) => {
+            return [0, 1, 2, 3, 4, 5, 6].map((i) => {
+                let /** @type {?} */ date = addDays(weekStart, i);
+                return this.getDay(date, monthStart, dateStyle);
+            });
+        });
+        // console.log(days);
+        return days;
+    }
+    /**
+     * @param {?} date
+     * @param {?} monthStart
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    getDay(date, monthStart, dateStyle) {
+        // console.log(dateStyle);
+        const /** @type {?} */ selectedRange = this.getRangeFromStyle(dateStyle);
+        let /** @type {?} */ isEnd = false;
+        let /** @type {?} */ isStart = false;
+        let /** @type {?} */ isHovered = this.isHovered(date, dateStyle);
+        if (selectedRange.end) {
+            isEnd = isSameDay(selectedRange.end, date);
+        }
+        if (selectedRange.start) {
+            isStart = isSameDay(selectedRange.start, date);
+        }
+        // if(dateStyle.hoveredDate) {
+        //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.hoveredDate)
+        // }
+        // if(dateStyle.selectedDates.length == 2) {
+        //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.selectedDates[1])
+        // }
+        return {
+            date: date,
+            timeStamp: date.toISOString(),
+            day: format(date, 'D'),
+            isInMonth: isSameMonth(date, monthStart),
+            today: isToday(date),
+            isEnd,
+            isStart,
+            isHovered,
+            isInvalid: isFuture(date)
+        };
+    }
+    ;
+    /**
+     * @param {?} date
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    isHovered(date, dateStyle) {
+        let /** @type {?} */ hovered = dateStyle.hoveredDate;
+        let /** @type {?} */ start = dateStyle.selectedRange.start || hovered;
+        let /** @type {?} */ end = dateStyle.selectedRange.end || hovered || start;
+        return isWithinRange(date, start, end);
+        // if (isBefore(hovered, selected)) {
+        //   return isWithinRange(date, hovered, selected)
+        // } else {
+        //   return isWithinRange(date, selected, hovered)
+        // }
+    }
+    /**
+     * @param {?} range
+     * @return {?}
+     */
+    setDateRange(range) {
+        this.onRangeChange.next(range);
+        // this.dateRangeService.data$.next(range)
+    }
+    /**
+     * @param {?} __0
+     * @return {?}
+     */
+    getRangeFromStyle({ selectedRange, hoveredDate }) {
+        return selectedRange;
+        // if (hoveredDate) {
+        //   return isBefore(hoveredDate, selectedDates[0]) ?
+        //     {end: new Date(selectedDates[0]).toISOString()} : {start: new Date(selectedDates[0]).toISOString()}
+        // } else if(selectedDates.length == 2) {
+        //   return isBefore(selectedDates[1], selectedDates[0]) ?
+        //     {end: new Date(selectedDates[0]).toISOString(), start: new Date(selectedDates[1]).toISOString()} : {start: new Date(selectedDates[0]).toISOString(), end: new Date(selectedDates[1]).toISOString()}
+        // } else {
+        //   return {start: selectedDates[0], end: selectedDates[1]}
+        // }
+    }
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    pickDate(date) {
+        if (date.isInvalid)
+            return false;
+        this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
+            if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
+                this.setDateFromDayRange(date, dateStyle);
+            }
+            else {
+                this.selectedDate$.next(new Date(date.date).toISOString());
+            }
+        });
+    }
+    ;
+    /**
+     * @param {?} date
+     * @param {?} dateStyle
+     * @return {?}
+     */
+    setDateFromDayRange(date, dateStyle) {
+        let /** @type {?} */ range = { end: dateStyle.selectedRange.end || date.timeStamp, start: dateStyle.selectedRange.start || date.timeStamp };
+        // console.log(range, "range");
+        this.selectedDate$.next(null);
+        this.hoveredDate.next(null);
+        this.setDateRange(range);
+    }
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    hoverDate(date) {
+        let /** @type {?} */ timeStamp = date ? new Date(date.date).toISOString() : null;
+        if (timeStamp) {
+            this.selectedDate$.pipe(take(1)).subscribe(selected => {
+                if (selected)
+                    this.hoveredDate.next(timeStamp);
+            });
+        }
+        else {
+            this.hoveredDate.next(timeStamp);
+        }
+    }
+    ;
+    /**
+     * @param {?} a
+     * @param {?} v
+     * @return {?}
+     */
+    indexBy(a, v) {
+        return v.timeStamp;
+    }
+    /**
+     * @param {?} a
+     * @param {?} v
+     * @return {?}
+     */
+    indexByWeek(a, v) {
+        return v[0].timeStamp;
+    }
+    /**
+     * @return {?}
+     */
+    reset() {
+        this.selectedDate$.next(null);
+        this.hoveredDate.next(null);
+        let /** @type {?} */ monthStart = startOfMonth(new Date());
+        this.currentMonthStart$.next(monthStart);
+    }
+}
+DateRangePickerComponent.decorators = [
+    { type: Component, args: [{
+                selector: 'ht-date-range-picker',
+                template: `<div class="flex-row" [ngClass]="options.isRight ? 'row-right' : 'row-left'">
+  <div class="flex-column column-gap-10 options">
+    <button class="button is-light is-small" [class.is-primary]="date.isActive" (click)="setDateRange(date.range)" *ngFor="let date of customDates$">{{date.label}}</button>
+  </div>
+  <div class="calender">
+    <div class="flex-column">
+      <div class="flex-row date-style" *ngIf="currentDateStyle$ | async as dateStyle">
+        <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[0]">{{dateStyle.display[0] | dot: 'Set start date'}}</div>
+        <div>&nbsp; &hArr; &nbsp;</div>
+        <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
+      </div>
+      <div class="flex-row month flex-center" *ngIf="month$ | async as month">
+        <div class="icon clickable" (click)="changeMonth(-1)">
+          <i class="fa fa-chevron-left"></i>
+        </div>
+        <div class="flex has-text-centered">{{month.display}}</div>
+        <div class="icon clickable" (click)="changeMonth(1)">
+          <i class="fa fa-chevron-right"></i>
+        </div>
+      </div>
+      <div class="flex-row">
+        <div class="day has-text-weight-bold" *ngFor="let day of  days">{{day}}</div>
+      </div>
+      <div *ngFor="let weeks of dates$ | async; trackBy: indexByWeek" class="flex-row">
+        <div
+          (mousedown)="pickDate(day)"
+          (mouseenter)="hoverDate(day)"
+          (mouseleave)="hoverDate(null)"
+          [class.is-today]="day.today"
+          [class.is-invalid]="day.isInvalid"
+          [class.is-hovered]="day.isHovered"
+          [class.is-start]="day.isStart"
+          [class.is-end]="day.isEnd"
+          [class.has-text-grey-light]="!day.isInMonth"
+          *ngFor="let day of weeks; trackBy: indexBy"
+          class="day">{{day.day}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+`,
+                styles: [`.text-center {
+  text-align: center; }
+
+.text-muted {
+  color: #798E9B; }
+
+.text-right {
+  text-align: right; }
+
+.text-left {
+  text-align: left; }
+
+.text-1 {
+  font-size: 2em; }
+
+.text-4 {
+  font-size: 0.8em; }
+
+.text-capitalize {
+  text-transform: capitalize; }
+
+.text-uppercase {
+  text-transform: uppercase; }
+
+.text-ontime {
+  color: #58ae5b; }
+
+.text-late {
+  color: #E6413E; }
+
+.text-warning {
+  color: #E6413E !important; }
+
+.text-red {
+  color: #E6413E; }
+
+.text-blue {
+  color: #5496F8; }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.flex-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row; }
+
+.flex-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.column-gap-4 > :not(:last-child) {
+  margin-bottom: 4px; }
+
+.row-gap-4 > :not(:last-child) {
+  margin-right: 4px; }
+
+.column-gap-7 > :not(:last-child) {
+  margin-bottom: 7px; }
+
+.row-gap-7 > :not(:last-child) {
+  margin-right: 7px; }
+
+.column-gap-10 > :not(:last-child) {
+  margin-bottom: 10px; }
+
+.row-gap-10 > :not(:last-child) {
+  margin-right: 10px; }
+
+.column-gap-20 > :not(:last-child) {
+  margin-bottom: 20px; }
+
+.row-gap-20 > :not(:last-child) {
+  margin-right: 20px; }
+
+.wrap {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap; }
+
+.flex {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+
+.auto {
+  margin: auto; }
+
+.relative {
+  position: relative; }
+
+.space-between {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.space-around {
+  -ms-flex-pack: distribute;
+      justify-content: space-around; }
+
+.justify-center {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.flex-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.align-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.clickable {
+  cursor: pointer; }
+
+.round-icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 23px;
+  height: 23px;
+  background: #315790;
+  border-radius: 50%; }
+
+.flex-half {
+  -ms-flex-preferred-size: 50%;
+      flex-basis: 50%; }
+
+.link-unstyled {
+  color: inherit; }
+  .link-unstyled:hover {
+    text-decoration: none; }
+
+.half {
+  width: 50%; }
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  not supported by any browser */ }
+
+.hover-shadow:hover {
+  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);
+          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16); }
+
+.marker-transparent {
+  opacity: 0.4; }
+
+.marker-fade {
+  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);
+          filter: contrast(16%) brightness(160%) blur(0.6px); }
+
+.tooltip-warning {
+  background: #e04745;
+  color: #fff; }
+  .tooltip-warning-arrow {
+    border-right-color: #e04745 !important; }
+
+.tooltip-info {
+  background: #5496F8;
+  color: #fff; }
+  .tooltip-info-arrow {
+    border-right-color: #5496F8 !important; }
+
+a {
+  color: inherit;
+  text-decoration: none; }
+  a:hover {
+    color: inherit;
+    text-decoration: none; }
+  a:active {
+    color: inherit;
+    text-decoration: none; }
+  a:focus {
+    outline: none;
+    color: inherit;
+    text-decoration: none; }
+
+.ht-card.clickable:hover {
+  background: #edeff1; }
+
+.ht-card-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative; }
+  .ht-card-container .card {
+    margin-bottom: -1px; }
+  .ht-card-container .sub-status {
+    font-size: 9px;
+    margin-top: -16px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #798E9B;
+    text-transform: uppercase;
+    padding-top: 3px; }
+  .ht-card-container .card-action {
+    height: 30px;
+    background: #5496F8;
+    color: #fff;
+    border: 1px solid #C9D6DE;
+    position: relative;
+    top: -3px;
+    margin: 0 10px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 0 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-transform: uppercase; }
+    .ht-card-container .card-action:hover {
+      background: #3c87f7;
+      font-weight: 500; }
+
+[hidden] {
+  display: none !important; }
+
+.card-clickable {
+  cursor: pointer; }
+  .card-clickable:hover {
+    background-color: #f2f2f2; }
+
+.adjust-huener-wave {
+  margin: 0 auto;
+  width: 100px;
+  height: 20px;
+  text-align: center; }
+
+.adjust-huener-wave > div {
+  background-color: #5496F8;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  -webkit-animation: wave 1.2s infinite ease-in-out;
+  animation: wave 1.2s infinite ease-in-out; }
+
+.adjust-huener-wave div:nth-child(2) {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s; }
+
+.adjust-huener-wave div:nth-child(3) {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s; }
+
+.adjust-huener-wave div:nth-child(4) {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s; }
+
+.adjust-huener-wave div:nth-child(5) {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s; }
+
+@-webkit-keyframes wave {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1); } }
+
+@keyframes wave {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4);
+            transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1); } }
+
+@media screen and (max-width: 480px) {
+  .hide-xs {
+    display: none !important; } }
+
+@media screen and (min-width: 480px) {
+  .show-xs {
+    display: none !important; } }
+
+.ht-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 5px 13px;
+  border: 0;
+  background: white;
+  color: #52616A;
+  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }
+  .ht-btn:focus {
+    background: #fcfcfc;
+    outline: 0; }
+  .ht-btn-card:hover {
+    background: #5496F8;
+    color: rgba(255, 255, 255, 0.96);
+    -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }
+
+.stopped-color {
+  color: #FFBB44; }
+
+.drive-color {
+  color: #5496F8; }
+
+.walk-color {
+  color: #5496F8; }
+
+.moving-color {
+  color: #5496F8; }
+
+.logged_off-color {
+  color: #A9BAC4; }
+
+.network_offline-color {
+  color: #d19191; }
+
+.location_disabled-color {
+  color: #d19191; }
+
+.location_low_accuracy-color {
+  color: #d19191; }
+
+.stopped-bg {
+  background: #FFBB44; }
+
+.drive-bg {
+  background: #5496F8; }
+
+.walk-bg {
+  background: #5496F8; }
+
+.moving-bg {
+  background: #5496F8; }
+
+.logged_off-bg {
+  background: #A9BAC4; }
+
+.network_offline-bg {
+  background: #d19191; }
+
+.location_disabled-bg {
+  background-color: #d19191; }
+
+.location_low_accuracy-bg {
+  background-color: #d19191; }
+
+.card-content.is-small {
+  padding: 10px 20px; }
+
+.modal {
+  z-index: 402; }
+
+.day {
+  width: 40px;
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer; }
+  .day:hover {
+    font-weight: 700; }
+
+.is-hovered {
+  background: lightgray; }
+
+.is-start {
+  background: grey;
+  color: #fff;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px; }
+
+.is-end {
+  background: grey;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px; }
+
+.is-invalid {
+  text-decoration: line-through;
+  cursor: not-allowed; }
+
+.month {
+  padding: 4px 0;
+  background: #ececec;
+  border-radius: 4px;
+  margin: 12px 0; }
+
+.date-style {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 1.1rem; }
+
+.row-right {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse; }
+  .row-right .options {
+    padding-left: 15px; }
+
+.row-left {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row; }
+  .row-left .options {
+    padding-right: 15px; }
+`],
+                changeDetection: ChangeDetectionStrategy.OnPush
+            },] },
+];
+/** @nocollapse */
+DateRangePickerComponent.ctorParameters = () => [];
+DateRangePickerComponent.propDecorators = {
+    "dateRange": [{ type: Input },],
+    "options": [{ type: Input },],
+    "onRangeChange": [{ type: Output },],
+};
+/**
+ * @record
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
+class DateRangePickerModule {
+}
+DateRangePickerModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [
+                    CommonModule,
+                    SharedModule
+                ],
+                declarations: [DateRangePickerComponent],
+                exports: [DateRangePickerComponent]
+            },] },
+];
+/** @nocollapse */
+DateRangePickerModule.ctorParameters = () => [];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes} checked by tsc
+ */
 class DateRangeModule {
 }
 DateRangeModule.decorators = [
     { type: NgModule, args: [{
                 imports: [
                     CommonModule,
-                    SharedModule
+                    SharedModule,
+                    DateRangePickerModule
                 ],
                 declarations: [DateRangeComponent],
                 exports: [DateRangeComponent]
@@ -10865,7 +11674,7 @@ class StopsHeatmapService {
      */
     constructor(config) {
         this.component = AnalyticsMapContainerComponent;
-        this.className = "is-12";
+        this.className = "is-6";
         this.tags = ['users'];
         this.noData = false;
         this.loading$ = of$1(false);
@@ -11517,7 +12326,7 @@ class ActionsHeatmapService {
      */
     constructor(config) {
         this.component = AnalyticsMapContainerComponent;
-        this.className = "is-12";
+        this.className = "is-6";
         this.tags = ['actions'];
         this.noData = false;
         this.loading$ = of$1(false);
@@ -12789,7 +13598,8 @@ AnalyticsItemLoadComponent.decorators = [
   top: 0;
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  z-index: 600; }
 
 .loading-container {
   position: relative; }
@@ -13115,5 +13925,5 @@ HtModule.ctorParameters = () => [];
  * Generated bundle index. Do not edit.
  */
 
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbq, ActionTableModule as ɵbp, ActionsAnalyticsListComponent as ɵbr, ActionsAnalyticsListModule as ɵbo, ActionsSummaryChartComponent as ɵbt, ActionsSummaryChartModule as ɵbs, AnalyticsItemLoadComponent as ɵbv, AnalyticsItemLoadModule as ɵbu, AnalyticsItemComponent as ɵca, AnalyticsSlotDirective as ɵbz, AnalyticsItemsService as ɵby, AnalyticsSelectorComponent as ɵcb, AnalyticsTagsComponent as ɵbn, AnalyticsTagsModule as ɵbm, AnalyticsTitleComponent as ɵcc, AnalyticsMapContainerComponent as ɵbx, AnalyticsMapContainerModule as ɵbw, DataTableComponent as ɵbl, DataTableModule as ɵbk, DateRangeComponent as ɵbi, DateRangeModule as ɵbh, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbj, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵce, HtActionsService as ɵcd, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbo, ActionTableModule as ɵbn, ActionsAnalyticsListComponent as ɵbp, ActionsAnalyticsListModule as ɵbm, ActionsSummaryChartComponent as ɵbr, ActionsSummaryChartModule as ɵbq, AnalyticsItemLoadComponent as ɵbt, AnalyticsItemLoadModule as ɵbs, AnalyticsItemComponent as ɵby, AnalyticsSlotDirective as ɵbx, AnalyticsItemsService as ɵbw, AnalyticsSelectorComponent as ɵbz, AnalyticsTagsComponent as ɵbl, AnalyticsTagsModule as ɵbk, AnalyticsTitleComponent as ɵca, AnalyticsMapContainerComponent as ɵbv, AnalyticsMapContainerModule as ɵbu, DataTableComponent as ɵbj, DataTableModule as ɵbi, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbh, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵcc, HtActionsService as ɵcb, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
 //# sourceMappingURL=ht-angular.js.map

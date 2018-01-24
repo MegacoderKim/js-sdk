@@ -13,7 +13,7 @@ import {Page} from "ht-models";
 @Injectable()
 export class StopsHeatmapService implements IAnalyticsMapService {
   component = AnalyticsMapContainerComponent;
-  className = "is-12";
+  className = "is-6";
   tags = ['users'];
   title;
   noData = false;

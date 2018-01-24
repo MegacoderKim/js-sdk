@@ -14,7 +14,7 @@ import {mapTypeService} from "ht-maps";
 @Injectable()
 export class ActionsHeatmapService implements IAnalyticsMapService {
   component = AnalyticsMapContainerComponent;
-  className = "is-12";
+  className = "is-6";
   tags = ['actions'];
   title;
   noData = false;

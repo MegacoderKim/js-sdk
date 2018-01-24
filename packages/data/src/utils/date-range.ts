@@ -1,4 +1,7 @@
-import {addDays, endOfToday, endOfYesterday, startOfDay, startOfMonth, startOfToday, startOfYesterday} from "date-fns";
+import {
+  addDays, endOfToday, endOfYesterday, isSameDay, startOfDay, startOfMonth, startOfToday,
+  startOfYesterday
+} from "date-fns";
 
 export const DateMapService = (() => {
   let instance;
@@ -78,7 +81,8 @@ export const DateRangeLabelMap = [
 
 export const isSameDateRange = (range1, range2) => {
   function nearTime(t1, t2) {
-    return Math.abs(new Date(t1).getTime() - new Date(t2).getTime()) < 1000;
+    return isSameDay(t1, t2);
   }
+
   return (nearTime(range1.start, range2.start) && nearTime(range1.end, range2.end))
 };
