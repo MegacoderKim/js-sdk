@@ -4,6 +4,10 @@
 <div>
   <div class="calender">
     <div class="flex-column">
+      <div class="flex-row" *ngIf="currentDateStyle$ | async as dateStyle">
+        <div class="flex has-text-centered">{{dateStyle.display[0]}}</div>
+        <div class="flex has-text-centered">{{dateStyle.display[1]}}</div>
+      </div>
       <div class="flex-row is-size-5" *ngIf="month$ | async as month">
         <div class="icon" (click)="changeMonth(-1)">
           <i class="fa fa-chevron-left"></i>

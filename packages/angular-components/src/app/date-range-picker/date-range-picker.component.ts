@@ -72,6 +72,8 @@ export class DateRangePickerComponent implements OnInit {
     'Sat'
   ];
   month$;
+  currentDateStyle$: Observable<IDateStyle>;
+  display$
   hint$;
   constructor() {
     let monthStart = startOfMonth(new Date());
@@ -81,6 +83,42 @@ export class DateRangePickerComponent implements OnInit {
   };
 
   ngOnInit() {
+
+    this.currentDateStyle$ = combineLatest(
+      this.dateRangeService.data$,
+      this.selectedDate$.pipe(
+        distinctUntilChanged()
+      ),
+      this.hoveredDate.pipe(
+        distinctUntilChanged()
+      ),
+      (dateRange: IDateRange, selectedDate: string | null, hoveredDate: string | null) => {
+        let selectedRange;
+        let display
+        if (selectedDate && hoveredDate) {
+          if(isBefore(hoveredDate, selectedDate)) {
+            selectedRange = {end: selectedDate};
+            display = ['Set start date', format(selectedDate, 'DD MMM')]
+          } else {
+            selectedRange = {start: selectedDate};
+            display = [format(selectedDate, 'DD MMM'), 'Set end date']
+          }
+        } else if(selectedDate) {
+          selectedRange = {start: selectedDate};
+          display = [format(selectedDate, 'DD MMM'), 'Set end date']
+        } else {
+          selectedRange = dateRange;
+          display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')]
+        }
+
+        return {
+          selectedRange,
+          hoveredDate,
+          display
+        }
+      }
+    );
+
     this.dates$ = combineLatest(
       this.currentMonthStart$,
       this.dateRangeService.data$,
@@ -242,6 +280,8 @@ export class DateRangePickerComponent implements OnInit {
 }
 
 export interface IDateStyle {
-  selectedDates: string[],
-  hoveredDate: string | null
+  selectedDates?: string[],
+  selectedRange?: Partial<IDateRange>
+  hoveredDate: string | null,
+  display?: [string, string],
 }
