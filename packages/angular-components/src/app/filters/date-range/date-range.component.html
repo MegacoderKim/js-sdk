@@ -10,12 +10,7 @@
   <div class="dropdown-menu dropdown-menu-right is-boxed">
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
-        <div class="flex-row" [ngClass]="isRight ? 'row-right' : 'row-left'">
-          <div class="flex-column column-gap-10 options">
-            <button class="button is-light is-small" [class.is-primary]="date.isActive" (click)="setDateRange(date.range)" *ngFor="let date of dateRangeOptions$ | async">{{date.label}}</button>
-          </div>
-          <ht-date-range-picker #picker (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
-        </div>
+        <ht-date-range-picker #picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
       </div>
     </div>
   </div>

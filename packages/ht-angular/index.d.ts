@@ -40,4 +40,8 @@ export { AnalyticsContainerModule } from "./app/analytics-container/analytics-co
 export { AnalyticsContainerComponent } from "./app/analytics-container/analytics-container.component";
 export { UsersSummaryChartComponent } from "./app/users-summary-chart/users-summary-chart.component";
 export { UsersSummaryChartModule } from "./app/users-summary-chart/users-summary-chart.module";
+export { DateRangeModule } from "./app/filters/date-range/date-range.module";
+export { DateRangePickerModule } from "./app/date-range-picker/date-range-picker.module";
+export { DateRangePickerComponent } from "./app/date-range-picker/date-range-picker.component";
+export { DateRangeComponent } from "./app/filters/date-range/date-range.component";
 export * from "./app/ht/ht.module";

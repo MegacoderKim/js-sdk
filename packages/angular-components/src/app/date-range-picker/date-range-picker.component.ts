@@ -14,6 +14,7 @@ import {distinctUntilChanged, map, take, tap} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import {DateRangeLabelMap, isSameDateRange} from "ht-data";
 
 export interface NgDateRangePickerOptions {
   theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray';
@@ -58,6 +59,10 @@ export interface IDay {
 })
 export class DateRangePickerComponent implements OnInit, OnChanges {
   @Input() dateRange: IDateRange;
+  @Input() options: {
+    hideSingleDay: boolean,
+    isRight: boolean
+  };
   @Output() onRangeChange: EventEmitter<IDateRange> = new EventEmitter<IDateRange>();
   currentMonthStart$: BehaviorSubject<Date>;
   dates$: Observable<IDay[][]>;
@@ -77,6 +82,8 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   currentDateStyle$: Observable<IDateStyle>;
   display$;
   hint$;
+  customDates = DateRangeLabelMap;
+  customDates$;
   constructor() {
     let monthStart = startOfMonth(new Date());
     this.currentMonthStart$ = new BehaviorSubject<Date>(monthStart);
@@ -89,6 +96,12 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+
+    this.customDates$ = this.customDates.filter(customRange => {
+      return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
+    }).map((customRange) => {
+      return isSameDateRange(customRange.range, this.dateRange) ? {...customRange, isActive: true} : {...customRange}
+    });
 
     this.currentDateStyle$ = combineLatest(
       this.selectedDate$.pipe(
