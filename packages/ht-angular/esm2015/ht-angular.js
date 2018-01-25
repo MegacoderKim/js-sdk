@@ -13,7 +13,7 @@ import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest'
 import { of as of$1 } from 'rxjs/observable/of';
 import { merge as merge$1 } from 'rxjs/observable/merge';
 import { Subject as Subject$1 } from 'rxjs/Subject';
-import { addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
+import { addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm';
 import { Observable as Observable$1 } from 'rxjs/Observable';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -9566,11 +9566,30 @@ EntitySearchModule.ctorParameters = () => [];
  * @suppress {checkTypes} checked by tsc
  */
 class DateRangeComponent {
-    constructor() {
+    /**
+     * @param {?} elRef
+     * @param {?} cd
+     */
+    constructor(elRef, cd) {
+        this.elRef = elRef;
+        this.cd = cd;
         this.dateRangeService$ = dateRangeService.getInstance();
         this.isRight = false;
         this.showSingleDay = true;
         this.customDates = DateRangeLabelMap;
+        this.isActive = false;
+    }
+    /**
+     * @return {?}
+     */
+    open() {
+        this.isActive = true;
+    }
+    /**
+     * @return {?}
+     */
+    close() {
+        this.isActive = false;
     }
     /**
      * @return {?}
@@ -9592,13 +9611,17 @@ class DateRangeComponent {
      * @return {?}
      */
     setDateRange(range) {
-        this.dateRangeService$.data$.next(range);
+        this.dateRangeService$.setDateRange(range);
+        setTimeout(() => {
+            this.isActive = false;
+            this.cd.detectChanges();
+        }, 200);
     }
 }
 DateRangeComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-date-range',
-                template: `<div class="dropdown is-hoverable" (mouseleave)="picker.reset()" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+                template: `<div class="dropdown is-active" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
   <button type="button dropdown-trigger" class="button flex-row row-gap-4">
     <span>{{dateRange}}</span>
     <span class="icon">
@@ -9607,7 +9630,7 @@ DateRangeComponent.decorators = [
     <!--<span *ngIf="ordering$ | async as ordering"></span>-->
     <!--<i class="fa fa-filter"></i>-->
   </button>
-  <div class="dropdown-menu dropdown-menu-right is-boxed">
+  <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
         <ht-date-range-picker #picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
@@ -9978,15 +10001,33 @@ a:focus {
 .row-left .options {
   padding-right: 15px;
 }
-`]
+`],
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                animations: [
+                    trigger('calender-appear', [
+                        transition(":leave", [
+                            style({ opacity: 1, height: '*' }),
+                            animate('200ms ease-in', style({ opacity: 0, height: 0 }))
+                        ]),
+                        transition(":enter", [
+                            style({ opacity: 0, height: 0 }),
+                            animate('200ms ease-out', style({ opacity: 1, height: '*' }))
+                        ]),
+                    ])
+                ]
             },] },
 ];
 /** @nocollapse */
-DateRangeComponent.ctorParameters = () => [];
+DateRangeComponent.ctorParameters = () => [
+    { type: ElementRef, },
+    { type: ChangeDetectorRef, },
+];
 DateRangeComponent.propDecorators = {
     "dateRangeService$": [{ type: Input },],
     "isRight": [{ type: Input },],
     "showSingleDay": [{ type: Input },],
+    "open": [{ type: HostListener, args: ['mouseenter',] },],
+    "close": [{ type: HostListener, args: ['mouseleave',] },],
 };
 
 /**
@@ -10050,7 +10091,7 @@ class DateRangePickerComponent {
                 }
             }
             else if (selectedDate) {
-                selectedRange = { start: selectedDate };
+                selectedRange = { end: selectedDate };
                 display = [format(selectedDate, 'DD MMM'), null];
             }
             else {
@@ -10082,10 +10123,8 @@ class DateRangePickerComponent {
      * @return {?}
      */
     changeMonth(inc) {
-        this.currentMonthStart$.pipe(take(1)).subscribe((month) => {
-            month = addMonths(new Date(month), inc);
-            this.currentMonthStart$.next(month);
-        });
+        let /** @type {?} */ month = addMonths(new Date(this.currentMonthStart$.getValue()), inc);
+        this.currentMonthStart$.next(month);
     }
     /**
      * @param {?} monthStart
@@ -10164,6 +10203,7 @@ class DateRangePickerComponent {
      * @return {?}
      */
     setDateRange(range) {
+        range = { start: range.start, end: endOfDay(range.end).toISOString() };
         this.onRangeChange.next(range);
         // this.dateRangeService.data$.next(range)
     }
@@ -10219,10 +10259,9 @@ class DateRangePickerComponent {
     hoverDate(date) {
         let /** @type {?} */ timeStamp = date ? new Date(date.date).toISOString() : null;
         if (timeStamp) {
-            this.selectedDate$.pipe(take(1)).subscribe(selected => {
-                if (selected)
-                    this.hoveredDate.next(timeStamp);
-            });
+            let /** @type {?} */ selected = this.selectedDate$.getValue();
+            if (selected)
+                this.hoveredDate.next(timeStamp);
         }
         else {
             this.hoveredDate.next(timeStamp);
@@ -12709,12 +12748,12 @@ class AnalyticsItemsService {
     constructor() {
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject$1([]);
-        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable() });
+        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$ });
         const /** @type {?} */ usersFilter = usersClient.filterClass;
         const /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         const /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         const /** @type {?} */ actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$.asObservable() });
+        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),

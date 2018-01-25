@@ -5,7 +5,7 @@ import {
 import {DateRange} from "ht-client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {
-  addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange,
+  addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange,
   startOfMonth,
   startOfWeek
 } from "date-fns";
@@ -123,7 +123,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
             display = [format(selectedDate, 'DD MMM'), null]
           }
         } else if(selectedDate) {
-          selectedRange = {start: selectedDate};
+          selectedRange = {end: selectedDate};
           display = [format(selectedDate, 'DD MMM'), null]
         } else {
           selectedRange = dateRange;
@@ -164,12 +164,8 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   changeMonth(inc: number) {
-    this.currentMonthStart$.pipe(
-      take(1)
-    ).subscribe((month) => {
-      month = addMonths(new Date(month), inc);
-      this.currentMonthStart$.next(month)
-    })
+    let month = addMonths(new Date(this.currentMonthStart$.getValue()), inc);
+    this.currentMonthStart$.next(month)
   }
 
   generateDates(monthStart: Date, dateStyle: IDateStyle) {
@@ -234,6 +230,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   setDateRange(range: IDateRange) {
+    range = {start: range.start, end: endOfDay(range.end).toISOString()};
     this.onRangeChange.next(range)
     // this.dateRangeService.data$.next(range)
   }
@@ -273,9 +270,8 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   hoverDate(date: IDay | null) {
     let timeStamp = date ? new Date(date.date).toISOString() : null;
     if (timeStamp) {
-      this.selectedDate$.pipe(take(1)).subscribe(selected => {
-        if (selected) this.hoveredDate.next(timeStamp)
-      })
+      let selected = this.selectedDate$.getValue();
+      if (selected) this.hoveredDate.next(timeStamp)
     } else {
       this.hoveredDate.next(timeStamp)
     }

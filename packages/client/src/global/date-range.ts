@@ -2,47 +2,32 @@ import { IDateRange } from "../interfaces";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
-import { IsRangeADay, IsRangeToday, DateString, isSameRange } from "ht-utility";
-import {DateRangeMap, isSameDateRange} from "ht-data";
-import {DateRangeLabelMap} from "ht-data";
-import {distanceInWordsToNow} from "date-fns";
+import {DateRangeMap} from "ht-data";
+import { dateRangeDisplay } from "ht-utility"
 
 export const defaultDateRange = {...DateRangeMap.today};
 
 
 export class DateRange {
-  data$: BehaviorSubject<IDateRange>;
+  dataBehaviour$: BehaviorSubject<IDateRange>;
+  data$: Observable<IDateRange>;
   constructor(initialDate: Partial<IDateRange> = {}) {
-    this.data$ = new BehaviorSubject({ ...defaultDateRange, ...initialDate });
-  }
-  get display$(): Observable<string> {
-    return this.data$.asObservable().pipe(
-      map((range: IDateRange) => {
-        // console.log("range", range, DateRangeMap);
-        let rangeItem = DateRangeLabelMap.find(item => {
-          return isSameDateRange(item.range, range)
-        });
-        if(rangeItem) return  rangeItem.label;
-        // const matchKey = Object.keys(DateRangeMap).find((key) => {
-        //   return isSameDateRange(DateRangeMap[key], range)
-        // });
-        // return "";
-        let customDate = DateRangeLabelMap.find((data) => {
-          let customRange = data.range;
-          return isSameRange(range, customRange)
-        });
+    this.dataBehaviour$ = new BehaviorSubject({ ...defaultDateRange, ...initialDate });
+    this.data$
+  };
 
-        if (customDate) return customDate.label;
-        let isSingleDay = IsRangeADay(range);
-        if (isSingleDay) {
-          let isToday = IsRangeToday(range);
-          let suffix = isToday ? "Today " : distanceInWordsToNow(range.start);
-          let string = suffix + DateString(range.start);
-          return string;
-        } else {
-          // console.log(DateString(range.start), range.start);
-          return DateString(range.start) + " - " + DateString(range.end);
-        }
+  setDateRange(dateRange: IDateRange) {
+    this.dataBehaviour$.next(dateRange);
+  }
+
+  getDateRange(): IDateRange {
+    return this.dataBehaviour$.getValue()
+  }
+
+  get display$(): Observable<string> {
+    return this.data$.pipe(
+      map((range: IDateRange) => {
+        return dateRangeDisplay(range)
       })
     );
   }

@@ -1,6 +1,8 @@
-import { OnInit } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, OnInit } from '@angular/core';
 import { IDateRange } from "ht-client";
 export declare class DateRangeComponent implements OnInit {
+    private elRef;
+    private cd;
     dateRangeService$: any;
     isRight: boolean;
     showSingleDay: boolean;
@@ -16,7 +18,10 @@ export declare class DateRangeComponent implements OnInit {
         isSingleDay: boolean;
         hasToday: boolean;
     }[];
-    constructor();
+    isActive: boolean;
+    open(): void;
+    close(): void;
+    constructor(elRef: ElementRef, cd: ChangeDetectorRef);
     ngOnInit(): void;
     setDateRange(range: IDateRange): void;
 }
