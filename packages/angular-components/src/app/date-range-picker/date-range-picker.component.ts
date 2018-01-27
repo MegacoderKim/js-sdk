@@ -67,12 +67,11 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
     'Fri',
     'Sat'
   ];
-  month$;
+  month$: Observable<{display: string}>;
   currentDateStyle$: Observable<IDateStyle>;
-  display;
-  hint$;
+  display: string;
   customDates = DateRangeLabelMap;
-  customDates$;
+  customDates$: any[];
   constructor() {
     let monthStart = startOfMonth(new Date());
     this.currentMonthStart$ = new BehaviorSubject<Date>(monthStart);
@@ -211,7 +210,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
     }
   };
 
-  isHovered(date, dateStyle: IDateStyle): boolean {
+  isHovered(date: Date, dateStyle: IDateStyle): boolean {
     let hovered = dateStyle.hoveredDate;
     let start = dateStyle.selectedRange.start || hovered;
     let end = dateStyle.selectedRange.end || hovered || start;
@@ -281,11 +280,11 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
 
   };
 
-  indexBy(a, v: IDay) {
+  indexBy(a: any, v: IDay) {
     return v.timeStamp;
   }
 
-  indexByWeek(a, v: IDay[]) {
+  indexByWeek(a: any, v: IDay[]) {
     return v[0].timeStamp;
   }
 
