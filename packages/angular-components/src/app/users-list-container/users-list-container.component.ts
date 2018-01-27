@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgDateRangePickerOptions} from "../date-range-picker/date-range-picker.component";
+import {IDateRangePickerOptions} from "../date-range-picker/date-range-picker.component";
 import {DateRange} from "ht-client";
 import {DateRangeMap} from "ht-data";
 
@@ -9,24 +9,22 @@ import {DateRangeMap} from "ht-data";
   styleUrls: ['./users-list-container.component.scss']
 })
 export class UsersListContainerComponent implements OnInit {
-  options: NgDateRangePickerOptions;
+  options: IDateRangePickerOptions;
   dateRangeService = new DateRange(DateRangeMap.today);
+  date = DateRangeMap.today.start;
   constructor() { }
 
   ngOnInit() {
     this.options = {
-      theme: 'default',
-      range: 'tm',
-      dayNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-      presetNames: ['This Month', 'Last Month', 'This Week', 'Last Week', 'This Year', 'Last Year', 'Start', 'End'],
-      dateFormat: 'yMd',
-      outputFormat: 'DD/MM/YYYY',
-      startOfWeek: 1
+      datePicker: true
     };
   }
 
+  dateChange(date) {
+    this.date = date
+  }
   rangeChange(range) {
-    this.dateRangeService.data$.next(range)
+    this.dateRangeService.setDateRange(range)
   }
 
 }

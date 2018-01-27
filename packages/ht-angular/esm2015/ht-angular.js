@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactory
 import { CommonModule } from '@angular/common';
 import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
-import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
+import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString, dateRangeDisplay } from 'ht-utility';
 import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
 import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
@@ -9633,7 +9633,7 @@ DateRangeComponent.decorators = [
   <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
-        <ht-date-range-picker #picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
+        <ht-date-range-picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
       </div>
     </div>
   </div>
@@ -10044,7 +10044,9 @@ DateRangeComponent.propDecorators = {
 
 class DateRangePickerComponent {
     constructor() {
+        this.options = {};
         this.onRangeChange = new EventEmitter();
+        this.onDateChange = new EventEmitter();
         // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
         this.selectedDate$ = new BehaviorSubject$1(null);
         this.hoveredDate = new BehaviorSubject$1(null);
@@ -10071,13 +10073,24 @@ class DateRangePickerComponent {
      * @return {?}
      */
     ngOnChanges() {
+        if (this.options.datePicker) {
+            this.dateRange = { end: this.date, start: this.date };
+        }
+        this.initDateRange(this.dateRange);
+        this.display = dateRangeDisplay(this.dateRange);
+    }
+    /**
+     * @param {?} range
+     * @return {?}
+     */
+    initDateRange(range) {
         this.customDates$ = this.customDates.filter(customRange => {
             return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
         }).map((customRange) => {
-            return isSameDateRange(customRange.range, this.dateRange) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
+            return isSameDateRange(customRange.range, range) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
         });
         this.currentDateStyle$ = combineLatest$1(this.selectedDate$.pipe(distinctUntilChanged()), this.hoveredDate.pipe(distinctUntilChanged()), (selectedDate, hoveredDate) => {
-            let /** @type {?} */ dateRange = this.dateRange;
+            let /** @type {?} */ dateRange = range;
             let /** @type {?} */ selectedRange;
             let /** @type {?} */ display;
             if (selectedDate && hoveredDate) {
@@ -10098,6 +10111,9 @@ class DateRangePickerComponent {
                 selectedRange = dateRange;
                 display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')];
             }
+            if (this.options.datePicker) {
+                display = [format(dateRange.start, 'DD MMM')];
+            }
             return {
                 selectedRange,
                 hoveredDate,
@@ -10113,9 +10129,6 @@ class DateRangePickerComponent {
             return {
                 display: format(date, 'MMM YY')
             };
-        }));
-        this.hint$ = this.selectedDate$.pipe(map$1((date) => {
-            return date ? 'Select end date' : "";
         }));
     }
     /**
@@ -10205,7 +10218,13 @@ class DateRangePickerComponent {
     setDateRange(range) {
         range = { start: range.start, end: endOfDay(range.end).toISOString() };
         this.onRangeChange.next(range);
-        // this.dateRangeService.data$.next(range)
+    }
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    setDate(date) {
+        this.onDateChange.next(date.timeStamp);
     }
     /**
      * @param {?} __0
@@ -10230,14 +10249,19 @@ class DateRangePickerComponent {
     pickDate(date) {
         if (date.isInvalid)
             return false;
-        this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
-            if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
-                this.setDateFromDayRange(date, dateStyle);
-            }
-            else {
-                this.selectedDate$.next(new Date(date.date).toISOString());
-            }
-        });
+        if (this.options.datePicker) {
+            this.setDate(date);
+        }
+        else {
+            this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
+                if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
+                    this.setDateFromDayRange(date, dateStyle);
+                }
+                else {
+                    this.selectedDate$.next(new Date(date.date).toISOString());
+                }
+            });
+        }
     }
     ;
     /**
@@ -10298,15 +10322,15 @@ DateRangePickerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-date-range-picker',
                 template: `<div class="flex-row" [ngClass]="options.isRight ? 'row-right' : 'row-left'">
-  <div class="flex-column column-gap-10 options">
+  <div class="flex-column column-gap-10 options" *ngIf="!options.datePicker">
     <button class="button is-light is-small" [class.is-primary]="date.isActive" (click)="setDateRange(date.range)" *ngFor="let date of customDates$">{{date.label}}</button>
   </div>
-  <div class="calender">
+  <div class="calender" *ngIf="!options.hideCalender">
     <div class="flex-column">
       <div class="flex-row date-style" *ngIf="currentDateStyle$ | async as dateStyle">
         <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[0]">{{dateStyle.display[0] | dot: 'Set start date'}}</div>
-        <div>&nbsp; &hArr; &nbsp;</div>
-        <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
+        <div *ngIf="dateStyle.display.length == 2">&nbsp; &hArr; &nbsp;</div>
+        <div *ngIf="dateStyle.display.length == 2" class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
       </div>
       <div class="flex-row month flex-center" *ngIf="month$ | async as month">
         <div class="icon clickable" (click)="changeMonth(-1)">
@@ -10787,8 +10811,10 @@ a {
 DateRangePickerComponent.ctorParameters = () => [];
 DateRangePickerComponent.propDecorators = {
     "dateRange": [{ type: Input },],
+    "date": [{ type: Input },],
     "options": [{ type: Input },],
     "onRangeChange": [{ type: Output },],
+    "onDateChange": [{ type: Output },],
 };
 /**
  * @record

@@ -2,14 +2,11 @@ import { OnInit, OnChanges, EventEmitter } from '@angular/core';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { IDateRange } from "ht-models";
-export interface NgDateRangePickerOptions {
-    theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray';
-    range: 'tm' | 'lm' | 'lw' | 'tw' | 'ty' | 'ly';
-    dayNames: string[];
-    presetNames: string[];
-    dateFormat: string;
-    outputFormat: string;
-    startOfWeek: number;
+export interface IDateRangePickerOptions {
+    hideSingleDay?: boolean;
+    isRight?: boolean;
+    datePicker?: boolean;
+    hideCalender?: boolean;
 }
 export interface IDay {
     date: Date;
@@ -25,11 +22,10 @@ export interface IDay {
 }
 export declare class DateRangePickerComponent implements OnInit, OnChanges {
     dateRange: IDateRange;
-    options: {
-        hideSingleDay: boolean;
-        isRight: boolean;
-    };
+    date: string;
+    options: IDateRangePickerOptions;
     onRangeChange: EventEmitter<IDateRange>;
+    onDateChange: EventEmitter<string>;
     currentMonthStart$: BehaviorSubject<Date>;
     dates$: Observable<IDay[][]>;
     selectedDate$: BehaviorSubject<string | null>;
@@ -37,7 +33,7 @@ export declare class DateRangePickerComponent implements OnInit, OnChanges {
     days: string[];
     month$: any;
     currentDateStyle$: Observable<IDateStyle>;
-    display$: any;
+    display: any;
     hint$: any;
     customDates: {
         label: string;
@@ -52,11 +48,13 @@ export declare class DateRangePickerComponent implements OnInit, OnChanges {
     constructor();
     ngOnInit(): void;
     ngOnChanges(): void;
+    initDateRange(range: IDateRange): void;
     changeMonth(inc: number): void;
     generateDates(monthStart: Date, dateStyle: IDateStyle): IDay[][];
     getDay(date: Date, monthStart: Date, dateStyle: IDateStyle): IDay;
     isHovered(date: any, dateStyle: IDateStyle): boolean;
     setDateRange(range: IDateRange): void;
+    setDate(date: IDay): void;
     getRangeFromStyle({selectedRange, hoveredDate}: IDateStyle): Partial<IDateRange>;
     pickDate(date: IDay): boolean;
     setDateFromDayRange(date: IDay, dateStyle: IDateStyle): void;
@@ -68,5 +66,5 @@ export declare class DateRangePickerComponent implements OnInit, OnChanges {
 export interface IDateStyle {
     selectedRange?: Partial<IDateRange>;
     hoveredDate: string | null;
-    display?: [string | null, string | null];
+    display?: Array<string | null>;
 }
