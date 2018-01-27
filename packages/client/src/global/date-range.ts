@@ -13,7 +13,7 @@ export class DateRange {
   data$: Observable<IDateRange>;
   constructor(initialDate: Partial<IDateRange> = {}) {
     this.dataBehaviour$ = new BehaviorSubject({ ...defaultDateRange, ...initialDate });
-    this.data$
+    this.data$ = this.dataBehaviour$.asObservable();
   };
 
   setDateRange(dateRange: IDateRange) {
