@@ -1,13 +1,13 @@
 <div class="flex-row" [ngClass]="options.isRight ? 'row-right' : 'row-left'">
-  <div class="flex-column column-gap-10 options">
+  <div class="flex-column column-gap-10 options" *ngIf="!options.datePicker">
     <button class="button is-light is-small" [class.is-primary]="date.isActive" (click)="setDateRange(date.range)" *ngFor="let date of customDates$">{{date.label}}</button>
   </div>
-  <div class="calender">
+  <div class="calender" *ngIf="!options.hideCalender">
     <div class="flex-column">
       <div class="flex-row date-style" *ngIf="currentDateStyle$ | async as dateStyle">
         <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[0]">{{dateStyle.display[0] | dot: 'Set start date'}}</div>
-        <div>&nbsp; &hArr; &nbsp;</div>
-        <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
+        <div *ngIf="dateStyle.display.length == 2">&nbsp; &hArr; &nbsp;</div>
+        <div *ngIf="dateStyle.display.length == 2" class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
       </div>
       <div class="flex-row month flex-center" *ngIf="month$ | async as month">
         <div class="icon clickable" (click)="changeMonth(-1)">

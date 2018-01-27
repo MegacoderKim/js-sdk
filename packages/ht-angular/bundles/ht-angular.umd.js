@@ -3083,12 +3083,31 @@ EntitySearchModule.ctorParameters = function () { return []; };
  * @suppress {checkTypes} checked by tsc
  */
 var DateRangeComponent = (function () {
-    function DateRangeComponent() {
+    /**
+     * @param {?} elRef
+     * @param {?} cd
+     */
+    function DateRangeComponent(elRef, cd) {
+        this.elRef = elRef;
+        this.cd = cd;
         this.dateRangeService$ = htClient.dateRangeService.getInstance();
         this.isRight = false;
         this.showSingleDay = true;
         this.customDates = htData.DateRangeLabelMap;
+        this.isActive = false;
     }
+    /**
+     * @return {?}
+     */
+    DateRangeComponent.prototype.open = function () {
+        this.isActive = true;
+    };
+    /**
+     * @return {?}
+     */
+    DateRangeComponent.prototype.close = function () {
+        this.isActive = false;
+    };
     /**
      * @return {?}
      */
@@ -3110,23 +3129,46 @@ var DateRangeComponent = (function () {
      * @return {?}
      */
     DateRangeComponent.prototype.setDateRange = function (range) {
-        this.dateRangeService$.data$.next(range);
+        var _this = this;
+        this.dateRangeService$.setDateRange(range);
+        setTimeout(function () {
+            _this.isActive = false;
+            _this.cd.detectChanges();
+        }, 200);
     };
     return DateRangeComponent;
 }());
 DateRangeComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'ht-date-range',
-                template: "<div class=\"dropdown is-hoverable\" (mouseleave)=\"picker.reset()\" [class.is-right]=\"isRight\" *ngIf=\"dateRange$ | async as dateRange\">\n  <button type=\"button dropdown-trigger\" class=\"button flex-row row-gap-4\">\n    <span>{{dateRange}}</span>\n    <span class=\"icon\">\n      <i class=\"fa fa-calendar\"></i>\n    </span>\n    <!--<span *ngIf=\"ordering$ | async as ordering\"></span>-->\n    <!--<i class=\"fa fa-filter\"></i>-->\n  </button>\n  <div class=\"dropdown-menu dropdown-menu-right is-boxed\">\n    <div class=\"dropdown-content\" role=\"menu\" aria-labelledby=\"dropdown-keyboard-access\">\n      <div class=\"dropdown-item\">\n        <ht-date-range-picker #picker [options]=\"{showSingleDay: showSingleDay, isRight: isRight}\" (onRangeChange)=\"setDateRange($event)\" [dateRange]=\"dateRangeService$.data$ | async\"></ht-date-range-picker>\n      </div>\n    </div>\n  </div>\n\n</div>\n",
-                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n.dropdown-menu {\n  z-index: 601;\n}\n.row-right {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: reverse;\n      -ms-flex-direction: row-reverse;\n          flex-direction: row-reverse;\n}\n.row-right .options {\n  padding-left: 15px;\n}\n.row-left {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.row-left .options {\n  padding-right: 15px;\n}\n"]
+                template: "<div class=\"dropdown is-active\" [class.is-right]=\"isRight\" *ngIf=\"dateRange$ | async as dateRange\">\n  <button type=\"button dropdown-trigger\" class=\"button flex-row row-gap-4\">\n    <span>{{dateRange}}</span>\n    <span class=\"icon\">\n      <i class=\"fa fa-calendar\"></i>\n    </span>\n    <!--<span *ngIf=\"ordering$ | async as ordering\"></span>-->\n    <!--<i class=\"fa fa-filter\"></i>-->\n  </button>\n  <div class=\"dropdown-menu dropdown-menu-right is-boxed\" *ngIf=\"isActive\" [@calender-appear]>\n    <div class=\"dropdown-content\" role=\"menu\" aria-labelledby=\"dropdown-keyboard-access\">\n      <div class=\"dropdown-item\">\n        <ht-date-range-picker [options]=\"{showSingleDay: showSingleDay, isRight: isRight}\" (onRangeChange)=\"setDateRange($event)\" [dateRange]=\"dateRangeService$.data$ | async\"></ht-date-range-picker>\n      </div>\n    </div>\n  </div>\n\n</div>\n",
+                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n.dropdown-menu {\n  z-index: 601;\n}\n.row-right {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: reverse;\n      -ms-flex-direction: row-reverse;\n          flex-direction: row-reverse;\n}\n.row-right .options {\n  padding-left: 15px;\n}\n.row-left {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.row-left .options {\n  padding-right: 15px;\n}\n"],
+                changeDetection: core.ChangeDetectionStrategy.OnPush,
+                animations: [
+                    animations.trigger('calender-appear', [
+                        animations.transition(":leave", [
+                            animations.style({ opacity: 1, height: '*' }),
+                            animations.animate('200ms ease-in', animations.style({ opacity: 0, height: 0 }))
+                        ]),
+                        animations.transition(":enter", [
+                            animations.style({ opacity: 0, height: 0 }),
+                            animations.animate('200ms ease-out', animations.style({ opacity: 1, height: '*' }))
+                        ]),
+                    ])
+                ]
             },] },
 ];
 /** @nocollapse */
-DateRangeComponent.ctorParameters = function () { return []; };
+DateRangeComponent.ctorParameters = function () { return [
+    { type: core.ElementRef, },
+    { type: core.ChangeDetectorRef, },
+]; };
 DateRangeComponent.propDecorators = {
     "dateRangeService$": [{ type: core.Input },],
     "isRight": [{ type: core.Input },],
     "showSingleDay": [{ type: core.Input },],
+    "open": [{ type: core.HostListener, args: ['mouseenter',] },],
+    "close": [{ type: core.HostListener, args: ['mouseleave',] },],
 };
 /**
  * @fileoverview added by tsickle
@@ -3140,7 +3182,9 @@ DateRangeComponent.propDecorators = {
  */
 var DateRangePickerComponent = (function () {
     function DateRangePickerComponent() {
+        this.options = {};
         this.onRangeChange = new core.EventEmitter();
+        this.onDateChange = new core.EventEmitter();
         // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
         this.selectedDate$ = new BehaviorSubject.BehaviorSubject(null);
         this.hoveredDate = new BehaviorSubject.BehaviorSubject(null);
@@ -3167,14 +3211,25 @@ var DateRangePickerComponent = (function () {
      * @return {?}
      */
     DateRangePickerComponent.prototype.ngOnChanges = function () {
+        if (this.options.datePicker) {
+            this.dateRange = { end: this.date, start: this.date };
+        }
+        this.initDateRange(this.dateRange);
+        this.display = htUtility.dateRangeDisplay(this.dateRange);
+    };
+    /**
+     * @param {?} range
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.initDateRange = function (range) {
         var _this = this;
         this.customDates$ = this.customDates.filter(function (customRange) {
             return !_this.options.hideSingleDay ? true : !customRange.isSingleDay;
         }).map(function (customRange) {
-            return htData.isSameDateRange(customRange.range, _this.dateRange) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
+            return htData.isSameDateRange(customRange.range, range) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
         });
         this.currentDateStyle$ = combineLatest.combineLatest(this.selectedDate$.pipe(operators.distinctUntilChanged()), this.hoveredDate.pipe(operators.distinctUntilChanged()), function (selectedDate, hoveredDate) {
-            var /** @type {?} */ dateRange = _this.dateRange;
+            var /** @type {?} */ dateRange = range;
             var /** @type {?} */ selectedRange;
             var /** @type {?} */ display;
             if (selectedDate && hoveredDate) {
@@ -3188,12 +3243,15 @@ var DateRangePickerComponent = (function () {
                 }
             }
             else if (selectedDate) {
-                selectedRange = { start: selectedDate };
+                selectedRange = { end: selectedDate };
                 display = [dateFns.format(selectedDate, 'DD MMM'), null];
             }
             else {
                 selectedRange = dateRange;
                 display = [dateFns.format(dateRange.start, 'DD MMM'), dateFns.format(dateRange.end, 'DD MMM')];
+            }
+            if (_this.options.datePicker) {
+                display = [dateFns.format(dateRange.start, 'DD MMM')];
             }
             return {
                 selectedRange: selectedRange,
@@ -3211,20 +3269,14 @@ var DateRangePickerComponent = (function () {
                 display: dateFns.format(date, 'MMM YY')
             };
         }));
-        this.hint$ = this.selectedDate$.pipe(operators.map(function (date) {
-            return date ? 'Select end date' : "";
-        }));
     };
     /**
      * @param {?} inc
      * @return {?}
      */
     DateRangePickerComponent.prototype.changeMonth = function (inc) {
-        var _this = this;
-        this.currentMonthStart$.pipe(operators.take(1)).subscribe(function (month) {
-            month = dateFns.addMonths(new Date(month), inc);
-            _this.currentMonthStart$.next(month);
-        });
+        var /** @type {?} */ month = dateFns.addMonths(new Date(this.currentMonthStart$.getValue()), inc);
+        this.currentMonthStart$.next(month);
     };
     /**
      * @param {?} monthStart
@@ -3304,8 +3356,15 @@ var DateRangePickerComponent = (function () {
      * @return {?}
      */
     DateRangePickerComponent.prototype.setDateRange = function (range) {
+        range = { start: range.start, end: dateFns.endOfDay(range.end).toISOString() };
         this.onRangeChange.next(range);
-        // this.dateRangeService.data$.next(range)
+    };
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    DateRangePickerComponent.prototype.setDate = function (date) {
+        this.onDateChange.next(date.timeStamp);
     };
     /**
      * @param {?} __0
@@ -3332,14 +3391,19 @@ var DateRangePickerComponent = (function () {
         var _this = this;
         if (date.isInvalid)
             return false;
-        this.currentDateStyle$.pipe(operators.take(1)).subscribe(function (dateStyle) {
-            if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
-                _this.setDateFromDayRange(date, dateStyle);
-            }
-            else {
-                _this.selectedDate$.next(new Date(date.date).toISOString());
-            }
-        });
+        if (this.options.datePicker) {
+            this.setDate(date);
+        }
+        else {
+            this.currentDateStyle$.pipe(operators.take(1)).subscribe(function (dateStyle) {
+                if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
+                    _this.setDateFromDayRange(date, dateStyle);
+                }
+                else {
+                    _this.selectedDate$.next(new Date(date.date).toISOString());
+                }
+            });
+        }
     };
     
     /**
@@ -3359,13 +3423,11 @@ var DateRangePickerComponent = (function () {
      * @return {?}
      */
     DateRangePickerComponent.prototype.hoverDate = function (date) {
-        var _this = this;
         var /** @type {?} */ timeStamp = date ? new Date(date.date).toISOString() : null;
         if (timeStamp) {
-            this.selectedDate$.pipe(operators.take(1)).subscribe(function (selected) {
-                if (selected)
-                    _this.hoveredDate.next(timeStamp);
-            });
+            var /** @type {?} */ selected = this.selectedDate$.getValue();
+            if (selected)
+                this.hoveredDate.next(timeStamp);
         }
         else {
             this.hoveredDate.next(timeStamp);
@@ -3402,7 +3464,7 @@ var DateRangePickerComponent = (function () {
 DateRangePickerComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'ht-date-range-picker',
-                template: "<div class=\"flex-row\" [ngClass]=\"options.isRight ? 'row-right' : 'row-left'\">\n  <div class=\"flex-column column-gap-10 options\">\n    <button class=\"button is-light is-small\" [class.is-primary]=\"date.isActive\" (click)=\"setDateRange(date.range)\" *ngFor=\"let date of customDates$\">{{date.label}}</button>\n  </div>\n  <div class=\"calender\">\n    <div class=\"flex-column\">\n      <div class=\"flex-row date-style\" *ngIf=\"currentDateStyle$ | async as dateStyle\">\n        <div class=\"has-text-centered\" [class.has-text-danger]=\"!dateStyle.display[0]\">{{dateStyle.display[0] | dot: 'Set start date'}}</div>\n        <div>&nbsp; &hArr; &nbsp;</div>\n        <div class=\"has-text-centered\" [class.has-text-danger]=\"!dateStyle.display[1]\">{{dateStyle.display[1] | dot: 'Set end date'}}</div>\n      </div>\n      <div class=\"flex-row month flex-center\" *ngIf=\"month$ | async as month\">\n        <div class=\"icon clickable\" (click)=\"changeMonth(-1)\">\n          <i class=\"fa fa-chevron-left\"></i>\n        </div>\n        <div class=\"flex has-text-centered\">{{month.display}}</div>\n        <div class=\"icon clickable\" (click)=\"changeMonth(1)\">\n          <i class=\"fa fa-chevron-right\"></i>\n        </div>\n      </div>\n      <div class=\"flex-row\">\n        <div class=\"day has-text-weight-bold\" *ngFor=\"let day of  days\">{{day}}</div>\n      </div>\n      <div *ngFor=\"let weeks of dates$ | async; trackBy: indexByWeek\" class=\"flex-row\">\n        <div\n          (mousedown)=\"pickDate(day)\"\n          (mouseenter)=\"hoverDate(day)\"\n          (mouseleave)=\"hoverDate(null)\"\n          [class.is-today]=\"day.today\"\n          [class.is-invalid]=\"day.isInvalid\"\n          [class.is-hovered]=\"day.isHovered\"\n          [class.is-start]=\"day.isStart\"\n          [class.is-end]=\"day.isEnd\"\n          [class.has-text-grey-light]=\"!day.isInMonth\"\n          *ngFor=\"let day of weeks; trackBy: indexBy\"\n          class=\"day\">{{day.day}}</div>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
+                template: "<div class=\"flex-row\" [ngClass]=\"options.isRight ? 'row-right' : 'row-left'\">\n  <div class=\"flex-column column-gap-10 options\" *ngIf=\"!options.datePicker\">\n    <button class=\"button is-light is-small\" [class.is-primary]=\"date.isActive\" (click)=\"setDateRange(date.range)\" *ngFor=\"let date of customDates$\">{{date.label}}</button>\n  </div>\n  <div class=\"calender\" *ngIf=\"!options.hideCalender\">\n    <div class=\"flex-column\">\n      <div class=\"flex-row date-style\" *ngIf=\"currentDateStyle$ | async as dateStyle\">\n        <div class=\"has-text-centered\" [class.has-text-danger]=\"!dateStyle.display[0]\">{{dateStyle.display[0] | dot: 'Set start date'}}</div>\n        <div *ngIf=\"dateStyle.display.length == 2\">&nbsp; &hArr; &nbsp;</div>\n        <div *ngIf=\"dateStyle.display.length == 2\" class=\"has-text-centered\" [class.has-text-danger]=\"!dateStyle.display[1]\">{{dateStyle.display[1] | dot: 'Set end date'}}</div>\n      </div>\n      <div class=\"flex-row month flex-center\" *ngIf=\"month$ | async as month\">\n        <div class=\"icon clickable\" (click)=\"changeMonth(-1)\">\n          <i class=\"fa fa-chevron-left\"></i>\n        </div>\n        <div class=\"flex has-text-centered\">{{month.display}}</div>\n        <div class=\"icon clickable\" (click)=\"changeMonth(1)\">\n          <i class=\"fa fa-chevron-right\"></i>\n        </div>\n      </div>\n      <div class=\"flex-row\">\n        <div class=\"day has-text-weight-bold\" *ngFor=\"let day of  days\">{{day}}</div>\n      </div>\n      <div *ngFor=\"let weeks of dates$ | async; trackBy: indexByWeek\" class=\"flex-row\">\n        <div\n          (mousedown)=\"pickDate(day)\"\n          (mouseenter)=\"hoverDate(day)\"\n          (mouseleave)=\"hoverDate(null)\"\n          [class.is-today]=\"day.today\"\n          [class.is-invalid]=\"day.isInvalid\"\n          [class.is-hovered]=\"day.isHovered\"\n          [class.is-start]=\"day.isStart\"\n          [class.is-end]=\"day.isEnd\"\n          [class.has-text-grey-light]=\"!day.isInMonth\"\n          *ngFor=\"let day of weeks; trackBy: indexBy\"\n          class=\"day\">{{day.day}}</div>\n      </div>\n    </div>\n  </div>\n</div>\n\n",
                 styles: [".text-center {\n  text-align: center; }\n\n.text-muted {\n  color: #798E9B; }\n\n.text-right {\n  text-align: right; }\n\n.text-left {\n  text-align: left; }\n\n.text-1 {\n  font-size: 2em; }\n\n.text-4 {\n  font-size: 0.8em; }\n\n.text-capitalize {\n  text-transform: capitalize; }\n\n.text-uppercase {\n  text-transform: uppercase; }\n\n.text-ontime {\n  color: #58ae5b; }\n\n.text-late {\n  color: #E6413E; }\n\n.text-warning {\n  color: #E6413E !important; }\n\n.text-red {\n  color: #E6413E; }\n\n.text-blue {\n  color: #5496F8; }\n\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis; }\n\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row; }\n\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column; }\n\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px; }\n\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px; }\n\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px; }\n\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px; }\n\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px; }\n\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px; }\n\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px; }\n\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px; }\n\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap; }\n\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1; }\n\n.auto {\n  margin: auto; }\n\n.relative {\n  position: relative; }\n\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around; }\n\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center; }\n\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center; }\n\n.clickable {\n  cursor: pointer; }\n\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%; }\n\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%; }\n\n.link-unstyled {\n  color: inherit; }\n  .link-unstyled:hover {\n    text-decoration: none; }\n\n.half {\n  width: 50%; }\n\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */ }\n\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16); }\n\n.marker-transparent {\n  opacity: 0.4; }\n\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px); }\n\n.tooltip-warning {\n  background: #e04745;\n  color: #fff; }\n  .tooltip-warning-arrow {\n    border-right-color: #e04745 !important; }\n\n.tooltip-info {\n  background: #5496F8;\n  color: #fff; }\n  .tooltip-info-arrow {\n    border-right-color: #5496F8 !important; }\n\na {\n  color: inherit;\n  text-decoration: none; }\n  a:hover {\n    color: inherit;\n    text-decoration: none; }\n  a:active {\n    color: inherit;\n    text-decoration: none; }\n  a:focus {\n    outline: none;\n    color: inherit;\n    text-decoration: none; }\n\n.ht-card.clickable:hover {\n  background: #edeff1; }\n\n.ht-card-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  position: relative; }\n  .ht-card-container .card {\n    margin-bottom: -1px; }\n  .ht-card-container .sub-status {\n    font-size: 9px;\n    margin-top: -16px;\n    margin-bottom: 20px;\n    text-align: center;\n    color: #798E9B;\n    text-transform: uppercase;\n    padding-top: 3px; }\n  .ht-card-container .card-action {\n    height: 30px;\n    background: #5496F8;\n    color: #fff;\n    border: 1px solid #C9D6DE;\n    position: relative;\n    top: -3px;\n    margin: 0 10px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    padding: 0 20px;\n    border-bottom-left-radius: 5px;\n    border-bottom-right-radius: 5px;\n    text-transform: uppercase; }\n    .ht-card-container .card-action:hover {\n      background: #3c87f7;\n      font-weight: 500; }\n\n[hidden] {\n  display: none !important; }\n\n.card-clickable {\n  cursor: pointer; }\n  .card-clickable:hover {\n    background-color: #f2f2f2; }\n\n.adjust-huener-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center; }\n\n.adjust-huener-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out; }\n\n.adjust-huener-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s; }\n\n.adjust-huener-wave div:nth-child(3) {\n  -webkit-animation-delay: -1.0s;\n  animation-delay: -1.0s; }\n\n.adjust-huener-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s; }\n\n.adjust-huener-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s; }\n\n@-webkit-keyframes wave {\n  0%, 40%, 100% {\n    -webkit-transform: scaleY(0.4); }\n  20% {\n    -webkit-transform: scaleY(1); } }\n\n@keyframes wave {\n  0%, 40%, 100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4); }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1); } }\n\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important; } }\n\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important; } }\n\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: white;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n  .ht-btn:focus {\n    background: #fcfcfc;\n    outline: 0; }\n  .ht-btn-card:hover {\n    background: #5496F8;\n    color: rgba(255, 255, 255, 0.96);\n    -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }\n\n.stopped-color {\n  color: #FFBB44; }\n\n.drive-color {\n  color: #5496F8; }\n\n.walk-color {\n  color: #5496F8; }\n\n.moving-color {\n  color: #5496F8; }\n\n.logged_off-color {\n  color: #A9BAC4; }\n\n.network_offline-color {\n  color: #d19191; }\n\n.location_disabled-color {\n  color: #d19191; }\n\n.location_low_accuracy-color {\n  color: #d19191; }\n\n.stopped-bg {\n  background: #FFBB44; }\n\n.drive-bg {\n  background: #5496F8; }\n\n.walk-bg {\n  background: #5496F8; }\n\n.moving-bg {\n  background: #5496F8; }\n\n.logged_off-bg {\n  background: #A9BAC4; }\n\n.network_offline-bg {\n  background: #d19191; }\n\n.location_disabled-bg {\n  background-color: #d19191; }\n\n.location_low_accuracy-bg {\n  background-color: #d19191; }\n\n.card-content.is-small {\n  padding: 10px 20px; }\n\n.modal {\n  z-index: 402; }\n\n.day {\n  width: 40px;\n  text-align: center;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n  cursor: pointer; }\n  .day:hover {\n    font-weight: 700; }\n\n.is-hovered {\n  background: lightgray; }\n\n.is-start {\n  background: grey;\n  color: #fff;\n  border-bottom-left-radius: 4px;\n  border-top-left-radius: 4px; }\n\n.is-end {\n  background: grey;\n  color: #fff;\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px; }\n\n.is-invalid {\n  text-decoration: line-through;\n  cursor: not-allowed; }\n\n.month {\n  padding: 4px 0;\n  background: #ececec;\n  border-radius: 4px;\n  margin: 12px 0; }\n\n.date-style {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  font-size: 1.1rem; }\n\n.row-right {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: reverse;\n      -ms-flex-direction: row-reverse;\n          flex-direction: row-reverse; }\n  .row-right .options {\n    padding-left: 15px; }\n\n.row-left {\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row; }\n  .row-left .options {\n    padding-right: 15px; }\n"],
                 changeDetection: core.ChangeDetectionStrategy.OnPush
             },] },
@@ -3411,8 +3473,10 @@ DateRangePickerComponent.decorators = [
 DateRangePickerComponent.ctorParameters = function () { return []; };
 DateRangePickerComponent.propDecorators = {
     "dateRange": [{ type: core.Input },],
+    "date": [{ type: core.Input },],
     "options": [{ type: core.Input },],
     "onRangeChange": [{ type: core.Output },],
+    "onDateChange": [{ type: core.Output },],
 };
 /**
  * @record
@@ -5246,12 +5310,12 @@ var AnalyticsItemsService = (function () {
     function AnalyticsItemsService() {
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject.BehaviorSubject([]);
-        var /** @type {?} */ usersClient = htClient.usersClientFactory({ dateRange$: htClient.dateRangeFactory(htData.DateRangeMap.today).data$.asObservable() });
+        var /** @type {?} */ usersClient = htClient.usersClientFactory({ dateRange$: htClient.dateRangeFactory(htData.DateRangeMap.today).data$ });
         var /** @type {?} */ usersFilter = usersClient.filterClass;
         var /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         var /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         var /** @type {?} */ actionDateRangeService = htClient.dateRangeFactory(htData.DateRangeMap.today);
-        var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange$: actionDateRangeService.data$.asObservable() });
+        var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),

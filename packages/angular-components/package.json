@@ -39,11 +39,11 @@
     "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
     "copy:styles": "copyfiles -u 2 src/styles/**/* ../ht-angular/src/styles",
     "doc": "typedoc -f --out doc src/app",
-    "copyback": "copyfiles -u 2 ../ht-angular/package.json src/"
+    "copyback": "copyfiles -u 2 ../ht-angular/package.json src/",
+    "prepublish": "npm run copyback"
   },
   "dependencies": {
     "@angular/animations": "^5.2.0",
-    "@angular/cdk": "^5.0.4",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
@@ -51,6 +51,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@angular/cdk": "^5.1.0",
     "bulma": "^0.6.0",
     "core-js": "^2.4.1",
     "date-fns": "^1.29.0",
