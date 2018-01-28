@@ -16,6 +16,7 @@ export interface ITraceBase {
   removeItem: (item) => void;
   removeData: (data) => void;
   toNotSetMap?: boolean;
+  toNotTraceItem?: boolean
   // cluster?: any;
   mapInstance: MapInstance,
   // clearAllClusters: (data: any[]) => void
@@ -40,28 +41,13 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           let id = datum["id"];
           let entity = this.entities[id];
           let hasEntity = !!entity;
-          let item;
-          if (!hasEntity) {
-            item = this.getItem(datum);
-            mapUtils.onEvent(item, "click", () => {
-              let entity = this.entities[id];
-              if (this.onMouseLeave) this.onMouseLeave(entity);
-              if (this.onClick) this.onClick(entity);
-            });
-            mapUtils.onEvent(item, "mouseover", () => {
-              let entity = this.entities[id];
-              if (this.onMouseEnter) this.onMouseEnter(entity);
-            });
-            mapUtils.onEvent(item, "mouseout", () => {
-              let entity = this.entities[id];
-              if (this.onMouseLeave) this.onMouseLeave(entity);
-            });
-            this.setStyle(item);
-          } else {
-            item = entity.item;
-          }
+          let item = !hasEntity ? this.getItem(datum) : entity.item;
           this.entities[id] = { data: datum, item, isOld: false };
-          this.update(this.entities[id]);
+          if (!hasEntity) {
+            this.addEvents(item, id)
+          }
+          if (item) this.setStyle(item);
+          if (!this.toNotTraceItem) this.traceItem(datum);
           if (!this.toNotSetMap) mapUtils.setMap(item, map);
         });
         if (this.traceEffect) this.traceEffect();
@@ -70,7 +56,34 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
         this.removeAll(this.entities);
       }
       this.bustOldItem();
+    };
+
+    traceItem(datum) {
+      let id = datum["id"];
+      let entity = this.entities[id];
+      if(entity) {
+        this.update(entity);
+      }
+
+    };
+
+    addEvents(item, id) {
+      let mapUtils = this.mapInstance.mapUtils;
+      mapUtils.onEvent(item, "click", () => {
+        let entity = this.entities[id];
+        if (this.onMouseLeave) this.onMouseLeave(entity);
+        if (this.onClick) this.onClick(entity);
+      });
+      mapUtils.onEvent(item, "mouseover", () => {
+        let entity = this.entities[id];
+        if (this.onMouseEnter) this.onMouseEnter(entity);
+      });
+      mapUtils.onEvent(item, "mouseout", () => {
+        let entity = this.entities[id];
+        if (this.onMouseLeave) this.onMouseLeave(entity);
+      });
     }
+
     bustOldItem() {
       let entities: Entities<any> = this.entities;
       _.each(entities, entity => {

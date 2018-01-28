@@ -14,6 +14,12 @@ import {
 import { HtPosition } from "ht-models";
 import {MapInstance} from "../map-utils/map-instance";
 import {HtMap} from "../map-utils/interfaces";
+import {TimeAwareAnimation} from "time-aware-polyline";
+import {SingleItemMixin} from "../mixins/single-item";
+import {ClusterMixin} from "../mixins/clusters";
+import {debounceTime} from "rxjs/operators";
+
+
 
 export class Placeline {
   segmentsPolylines;
@@ -22,6 +28,7 @@ export class Placeline {
   // actionsPolylines = new ActionMarkersTrace();
   // timelineSegment = new TimelineSegment();
   userMarker;
+  animPolyline;
   // replayMarker = stopMarkersTrace();
   // eventMarkers = stopMarkersTrace();
   allowedEvents = {};
@@ -29,13 +36,36 @@ export class Placeline {
   // dataSub: Subscription;
   // data$: Observable<null | IUserData>;
   mapInstance: MapInstance;
+  anim = new TimeAwareAnimation();
   constructor(public options: HtSegmentsTraceOptions) {
     this.mapInstance = this.options.mapInstance;
     this.stopMarkers = new StopMarkersTrace(this.mapInstance);
     this.userMarker = new CurrentUserTrace(this.mapInstance);
     this.segmentsPolylines = new SegmentPolylinesTrace(this.mapInstance);
-    this.actionMarkers = new ActionMarkersTrace(this.mapInstance)
+    this.actionMarkers = new ActionMarkersTrace(this.mapInstance);
+    let animPolyline = SingleItemMixin(SegmentPolylinesTrace);
+    this.animPolyline = new animPolyline(this.mapInstance);
+    this.anim.updateEvent.subscribe('update', ({path, bearing}) => {
+      this.updatePathBearing(path, bearing)
+    })
     // this.initBaseItems();
+  }
+
+  updatePathBearing(path, bearing) {
+    let lastPolyline;
+    let lastPolylineItem;
+    let currentUserMarkerItem;
+    let contentString;
+    // console.log("path", path);
+    // this.mapInstance.mapUtils.setPathPositionTimeArray(lastPolylineItem, path);
+    let entity = this.userMarker.getEntity();
+    let polylineEntity = this.animPolyline.getEntity();
+    let position = path[path.length - 1];
+    // console.log(entity.item.getMap());
+    let content = this.userMarker.getDivContent(entity.data);
+    this.mapInstance.mapUtils.setPath(polylineEntity.item, path)
+    this.userMarker.setContent({ item: entity.item, content });
+    this.mapInstance.mapUtils.updatePosition(entity.item, position)
   }
 
   get map(): HtMap {
@@ -46,14 +76,46 @@ export class Placeline {
     // this.map = map;
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
-    if (this.segmentsPolylines)
-      this.segmentsPolylines.trace(segType.tripSegment);
-    if (this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
-    this.traceAction(user);
+    let lastSegment = segType.lastSegment;
+    // if (this.segmentsPolylines)
+      // this.segmentsPolylines.trace(segType.tripSegment);
+
     this.userMarker.trace(user);
+    if (this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
+    if (lastSegment) {
+      let restTrips = segType.tripSegment.pop();
+      var string = this.getTimeAwarePolyline(lastSegment);
+      if(string) {
+        this.userMarker.toNotTraceItem = true;
+        this.animPolyline.toNotTraceItem = true;
+        // console.log(restTrips, "er", segType.tripSegment);
+        this.animPolyline.trace(restTrips)
+        this.segmentsPolylines.trace(segType.tripSegment)
+        this.anim.updatePolylineString(string);
+        //todo render all but last polyline;
+      } else {
+        //reset anim
+        this.animPolyline.toNotTraceItem = false;
+        this.userMarker.toNotTraceItem = false;
+        this.anim.clear();
+        this.animPolyline.trace(restTrips)
+        this.segmentsPolylines.trace(segType.tripSegment);
+      }
+      // super.update({ item, data })
+    } else {
+      this.anim.clear();
+      this.userMarker.clear();
+      this.segmentsPolylines.clear();
+    }
+    this.traceAction(user);
+
     // this.traceCurrentUser(_.last(userSegments));
     // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     // this.traceEvents(user, ht-map)
+  }
+
+  getTimeAwarePolyline(segment: ISegment) {
+    return segment ? segment.time_aware_polyline : null
   }
 
   highlightAll(toHighlight) {
@@ -179,6 +241,7 @@ export class Placeline {
     return _.reduce(
       userSegments,
       (segmentType: ISegmentType, segment: ISegment) => {
+        segmentType.lastSegment = segment;
         if (segment.type == "stop") {
           if (segment.location && segment.location.geojson)
             segmentType.stopSegment.push(segment);
@@ -238,6 +301,7 @@ export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
 export interface ISegmentType {
   tripSegment: ISegment[];
   stopSegment: ISegment[];
+  lastSegment?: ISegment
 }
 
 export interface HtSegmentsTraceOptions {

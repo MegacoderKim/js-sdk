@@ -2,8 +2,10 @@ import { Constructor } from "../interfaces";
 import { positionTime } from "../helpers/position-time-helper";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
+import {ITimeAwarePoint} from "ht-models";
 
 export interface IPolylinesBase {
+  getPath?(path: ITimeAwarePoint[]): void;
   getEncodedPositionTime;
   getEncodedPath(data): any;
   getStyle: (string?) => object;
@@ -25,8 +27,15 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
     }
 
     update({ item, data }) {
-      if (this.getEncodedPositionTime) {
-        this.positionTimeArray = positionTime.decode(data.time_aware_polyline);
+      if (this.getPath) {
+        let path = this.getPath(data);
+        this.mapInstance.mapUtils.setPathPositionTimeArray(
+          item,
+          path
+        )
+      }
+      else if (this.getEncodedPositionTime) {
+        this.positionTimeArray = positionTime.decode(this.getEncodedPositionTime(data));
         this.mapInstance.mapUtils.setPathPositionTimeArray(
           item,
           this.positionTimeArray
