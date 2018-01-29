@@ -59,17 +59,14 @@ export class Placeline {
         //todo infer toNotTraceItem from animMixin trace
         this.userMarker.toNotTraceItem = true;
         this.animPolyline.toNotTraceItem = true;
-        // console.log(restTrips, "er", segType.tripSegment);
         this.animPolyline.trace(restTrips);
         this.anim.updatePolylineString(string);
       } else {
-        //reset anim
         this.animPolyline.toNotTraceItem = false;
         this.userMarker.toNotTraceItem = false;
         this.anim.clear();
-        this.animPolyline.trace(restTrips);
+        if (!selectedSegment) this.animPolyline.trace(restTrips);
       }
-      this.animPolyline.trace(restTrips);
     } else {
       this.anim.clear();
       this.userMarker.removeAll();
@@ -103,8 +100,8 @@ export class Placeline {
     if (this.actionMarkers) this.actionMarkers.trace(filteredActions);
   }
 
-  setHighlightId(user) {
-    const data = user ? user.highlightedSegment : null;
+  setHighlightId(user: IPlacelineMod) {
+    const data = user && !user.selectedSegment ? user.highlightedSegment : null;
     const id = data ? data.id : null;
     this.stopMarkers.highlightedId = id;
     this.segmentsPolylines.highlightedId = id;
