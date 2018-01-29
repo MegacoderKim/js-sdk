@@ -1,5 +1,5 @@
 import * as _ from "underscore";
-import { IAction, ISegment, ITimelineEvent, IUserData } from "ht-models";
+import { IAction, ISegment, ITimelineEvent, IUserData, IPlacelineMod } from "ht-models";
 import { SegmentPolylinesTrace } from "../entities/segment-polylines";
 import {StopMarkersTrace} from "../entities/stop-markers";
 import { ActionMarkersTrace } from "../entities/action-markers";
@@ -71,14 +71,12 @@ export class Placeline {
     return this.mapInstance.map;
   }
 
-  trace(user, map?) {
-    // this.map = map;
+  trace(user: IPlacelineMod, map?) {
+
+    this.setHighlightId(user.highlightedSegment);
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
     let lastSegment = segType.lastSegment;
-    // if (this.segmentsPolylines)
-      // this.segmentsPolylines.trace(segType.tripSegment);
-
     if (this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
     if (lastSegment) {
       let restTrips = segType.tripSegment.pop();
@@ -100,9 +98,6 @@ export class Placeline {
         this.segmentsPolylines.trace(segType.tripSegment);
       }
       this.animPolyline.trace(restTrips);
-      // this.userMarker.trace(user);
-      // this.animPolyline.trace(restTrips);
-      // super.update({ item, data })
     } else {
       this.anim.clear();
       this.userMarker.removeAll();
@@ -114,6 +109,13 @@ export class Placeline {
     // this.traceCurrentUser(_.last(userSegments));
     // this.traceActionPolyline(user, map, this.getCurrentUserPosition());
     // this.traceEvents(user, ht-map)
+  };
+
+  setHighlightId(data) {
+    const id = data ? data.id : null;
+    this.stopMarkers.highlightedId = id;
+    this.segmentsPolylines.highlightedId = id;
+    this.animPolyline.highlightedId = id;
   }
 
   getTimeAwarePolyline(segment: ISegment) {
