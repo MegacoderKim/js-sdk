@@ -21,6 +21,10 @@ export interface ITraceBase {
   mapInstance: MapInstance,
   // clearAllClusters: (data: any[]) => void
 }
+
+export interface ITraceConfig {
+  toNotTraceItem?: boolean
+}
 export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
     // map;
@@ -48,7 +52,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           }
           if (item) this.setStyle(item);
           if (!this.toNotTraceItem) this.traceItem(datum);
-          if (!this.toNotSetMap) mapUtils.setMap(item, map);
+          // if (!this.toNotSetMap) mapUtils.setMap(item, map);
         });
         if (this.traceEffect) this.traceEffect();
       } else {
