@@ -3,9 +3,9 @@ import { combineLatest } from "rxjs/observable/combineLatest";
 import { distinctUntilChanged } from "rxjs/operators";
 
 export const orCombine = (...source$: Observable<any>[]) => {
-  return combineLatest(...source$.filter(data => !!data), (...args: any[]) => {
+  return combineLatest(...source$, (...args: any[]) => {
     return args.reduce((acc, arg) => {
       return acc || !!arg;
     }, false);
-  }).pipe(distinctUntilChanged());
+  });
 };

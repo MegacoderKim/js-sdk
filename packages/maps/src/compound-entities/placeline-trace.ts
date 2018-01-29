@@ -53,9 +53,9 @@ export class Placeline {
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
     let lastSegment = segType.lastSegment;
-    this.traceStops(segType, selectedSegment, lastSegment);
+    let restTrips = segType.tripSegment.pop();
+    this.traceStops(segType.stopSegment, selectedSegment, lastSegment);
     if (lastSegment) {
-      let restTrips = segType.tripSegment.pop();
       var string = this.getTimeAwarePolyline(lastSegment);
       if(string) {
         //todo infer toNotTraceItem from animMixin trace
@@ -63,7 +63,6 @@ export class Placeline {
         this.animPolyline.toNotTraceItem = true;
         // console.log(restTrips, "er", segType.tripSegment);
         this.animPolyline.trace(restTrips);
-        this.segmentsPolylines.trace(segType.tripSegment);
         this.anim.updatePolylineString(string);
       } else {
         //reset anim
@@ -71,29 +70,43 @@ export class Placeline {
         this.userMarker.toNotTraceItem = false;
         this.anim.clear();
         this.animPolyline.trace(restTrips);
-        this.segmentsPolylines.trace(segType.tripSegment);
       }
       this.animPolyline.trace(restTrips);
     } else {
       this.anim.clear();
       this.userMarker.removeAll();
-      this.segmentsPolylines.trace(segType.tripSegment);
+
     }
+    this.traceSegments(segType.tripSegment, selectedSegment);
     this.userMarker.trace(user);
-    this.traceAction(user);
+    this.traceAction(user, selectedSegment);
   };
 
-  traceStops(segmentType, selectedSegment, lastSegment) {
-    let stops = segmentType.stopSegment;
+  traceStops(stops: ISegment[], selectedSegment, lastSegment) {
     if (selectedSegment) {
       stops = selectedSegment.type == 'stop' ? [selectedSegment] : [];
     }
     this.stopMarkers.trace(stops);
+  }
 
+  traceSegments(trips: ISegment[] = [], selectedSegment) {
+    if (selectedSegment) {
+      trips = selectedSegment.type === 'trip' ? [selectedSegment] : [];
+    }
+    this.segmentsPolylines.trace(trips);
+  }
+
+
+  traceAction(user: IUserData, selectedSegment) {
+    let actions = user && user.actions && !selectedSegment ? user.actions : [];
+    let filteredActions = _.filter(actions, (action: IAction) => {
+      return htAction(action).isValidMarker();
+    });
+    if (this.actionMarkers) this.actionMarkers.trace(filteredActions);
   }
 
   setHighlightId(user) {
-    const data = user.highlightedSegment;
+    const data = user ? user.highlightedSegment : null;
     const id = data ? data.id : null;
     this.stopMarkers.highlightedId = id;
     this.segmentsPolylines.highlightedId = id;
@@ -105,21 +118,14 @@ export class Placeline {
   }
 
   extendBounds(bounds) {
-    // bounds = this.stopMarkers.extendBounds(bounds);
-    // bounds = this.segmentsPolylines.extendBounds(bounds);
-    // bounds = this.actionMarkers.extendBounds(bounds);
-    bounds = this.userMarker.extendItemBounds(bounds);
+    bounds = this.stopMarkers.extendBounds(bounds);
+    bounds = this.segmentsPolylines.extendBounds(bounds);
+    bounds = this.actionMarkers.extendBounds(bounds);
+    // bounds = this.userMarker.extendBounds(bounds);
     // console.log(bounds, "final");
     return bounds;
   }
 
-  traceAction(user: IUserData) {
-    let actions = user && user.actions ? user.actions : [];
-    let filteredActions = _.filter(actions, (action: IAction) => {
-      return htAction(action).isValidMarker();
-    });
-    if (this.actionMarkers) this.actionMarkers.trace(filteredActions);
-  }
 
   protected getSegmentTypes(userSegments: ISegment[]) {
     return _.reduce(
