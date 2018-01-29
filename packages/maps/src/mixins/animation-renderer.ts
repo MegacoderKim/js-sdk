@@ -1,54 +1,32 @@
-import { Constructor } from "../interfaces";
+import {Constructor, Entity} from "../interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {TimeAwareAnimation} from "time-aware-polyline";
+import {TimeAwareAnimation, IPathBearing} from "time-aware-polyline";
 import {HtPosition} from "ht-models";
 
 export interface IAnimationBase {
+  animation?: TimeAwareAnimation;
+  getEntity(): Entity<any>
   // mapInstance: MapInstance
-  getTimeAwarePolyline: (data) => string,
-  update(entity): void;
-  getDivContent(bearing): string;
-  updatePathBearing(path, bearing): string;
+  // getTimeAwarePolyline: (data) => string,
+  // update(entity): void;
+  // getDivContent(bearing): string;
+  update(entity, pathBearing: IPathBearing): void;
 // getStyle: (styleType?) => object;
 }
 
 export function AnimationMixin<TBase extends Constructor<IAnimationBase>>(Base: TBase) {
   return class extends Base {
-    anim = new TimeAwareAnimation();
     // bearing: number = 0;
     // item;
 
-    constructor(...args) {
-      super(...args);
-      this.anim.updatePathBearing = (path, bearing) => {
-        // this.bearing = bearing;
-        // let obj = {
-        //   bearing,
-        //   path
-        // };
-        this.updatePathBearing(path, bearing)
-      }
-    };
-
-
-    update({ item, data }) {
-      // this.item = item;
-      if (data) {
-        this.anim.updatePolylineString(this.getTimeAwarePolyline(data));
-        // super.update({ item, data })
-      } else {
-        this.anim.clear();
-      }
-      // let position = this.getPosition(data);
-      // if (position) this.mapInstance.mapUtils.updatePosition(item, position);
-    };
-
-    render({posiiton, bearing}) {
-
+    setTimeAwareAnimation (animation: TimeAwareAnimation) {
+      this.animation = animation || this.animation;
+      this.animation.updateEvent.subscribe('update', ({path, bearing}) => {
+        let entity = this.getEntity();
+        if(entity) this.update(entity, {path, bearing})
+      });
     }
 
-    reset() {
-      this.anim.clear();
-    }
+
   };
 }
