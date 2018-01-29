@@ -27,7 +27,7 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
     setContent({ item, content }) {
       this.mapInstance.mapUtils.setDivContent(item, content, this.getStyle());
     }
-    setStyle(item) {
+    setStyle(entity) {
       // let style = this.getStyle();
       // GlobalMap.mapUtils.setDivMarkerStyle(item, style)
     }

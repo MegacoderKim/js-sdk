@@ -1,5 +1,5 @@
 import * as _ from "underscore";
-import { Constructor, Entities } from "../interfaces";
+import {Constructor, Entities, Entity} from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
 
@@ -8,7 +8,7 @@ export interface ITraceBase {
   onMouseLeave?: (trace) => void;
   onClick?: (trace) => void;
   onMouseEnter?: (trace) => void;
-  setStyle: (item) => void;
+  setStyle: (entity: Entity) => void;
   update: (entity) => void;
   traceEffect?: () => void;
   removeAll: (entities) => void;
@@ -46,11 +46,12 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           let entity = this.entities[id];
           let hasEntity = !!entity;
           let item = !hasEntity ? this.getItem(datum) : entity.item;
-          this.entities[id] = { data: datum, item, isOld: false };
+          entity = { data: datum, item, isOld: false };
+          this.entities[id] = entity;
           if (!hasEntity) {
             this.addEvents(item, id)
           }
-          if (item) this.setStyle(item);
+          if (item) this.setStyle(entity);
           if (!this.toNotTraceItem) this.traceItem(datum);
           // if (!this.toNotSetMap) mapUtils.setMap(item, map);
         });
@@ -98,6 +99,15 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           entity.isOld = true;
         }
       });
+    }
+
+    getEntity(id?: string): Entity<any> {
+      if (!this.entities) return null;
+      if (id) return this.entities[id];
+      let keys = Object.keys(this.entities);
+      if (keys.length == 0) return null;
+      let key = keys[0];
+      return this.entities[key];
     }
   };
 }

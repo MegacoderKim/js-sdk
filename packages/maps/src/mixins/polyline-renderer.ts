@@ -49,8 +49,7 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
       if (!this.toNotSetMap) this.mapInstance.mapUtils.setMap(item, this.mapInstance.map);
     }
 
-    setStyle(item) {
-      let style = this.getStyle();
+    setItemStyle(item, style) {
       this.mapInstance.mapUtils.setPolylineStyle(item, style);
     }
   };

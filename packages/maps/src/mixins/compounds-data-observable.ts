@@ -74,9 +74,11 @@ export function CompoundDataObservableMixin<
             (data, hide) => (!!hide ? null : data)
           )
         : data$;
-
+      if (config.roots && config.highlighted$) {
+        dataSource$ = dataWithSelectedId$(dataSource$, config.highlighted$, config.roots, 'highlightedSegment');
+      }
       if (config.roots && filter$)
-        dataSource$ = dataWithSelectedId$(dataSource$, filter$, config.roots);
+        dataSource$ = dataWithSelectedId$(dataSource$, filter$, config.roots, 'selectedSegment');
 
       this.dataSource$ = dataSource$;
 
@@ -133,4 +135,5 @@ export interface CompoundSetDataConfig {
   filter$?: Observable<string | null>;
   roots?: string[];
   resetMap$?: Observable<any>;
+  highlighted$?: Observable<string | null>
 }

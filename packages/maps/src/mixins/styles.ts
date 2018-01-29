@@ -16,7 +16,7 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
       }
     };
     styleType: string;
-
+    highlightedId: string | null = null;
     styleObj: object;
 
     constructor(...args: any[]) {
@@ -44,8 +44,21 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
     }
 
 
-    setStyle(item) {
-      let style = this.getStyle(this.styleType);
+    setStyle({item, data}) {
+      const styleType = this.getStyleType(data);
+      const style = this.getStyle(styleType);
+      this.setItemStyle(item, style);
+    }
+
+    getStyleType(data) {
+      if (this.highlightedId && data) {
+        return this.highlightedId == data.id ? 'highlight' : 'fade'
+      } else {
+        return this.styleType;
+      }
+    }
+
+    setItemStyle(item, style) {
       this.mapInstance.mapUtils.setStyle(item, style);
     }
   };
