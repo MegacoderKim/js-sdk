@@ -21,8 +21,6 @@ import {debounceTime} from "rxjs/operators";
 import {AnimationMixin} from "../mixins/animation-renderer";
 import {AnimPolylineTrace} from "../entities/animation-polyline";
 
-
-
 export class Placeline {
   segmentsPolylines;
   stopMarkers;
