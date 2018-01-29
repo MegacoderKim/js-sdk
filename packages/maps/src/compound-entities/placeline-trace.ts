@@ -73,7 +73,7 @@ export class Placeline {
 
   trace(user: IPlacelineMod, map?) {
 
-    this.setHighlightId(user.highlightedSegment);
+    this.setHighlightId(user);
     let userSegments = user && user.segments ? user.segments : [];
     let segType = this.getSegmentTypes(userSegments);
     let lastSegment = segType.lastSegment;
@@ -111,7 +111,8 @@ export class Placeline {
     // this.traceEvents(user, ht-map)
   };
 
-  setHighlightId(data) {
+  setHighlightId(user) {
+    const data = user.highlightedSegment;
     const id = data ? data.id : null;
     this.stopMarkers.highlightedId = id;
     this.segmentsPolylines.highlightedId = id;
