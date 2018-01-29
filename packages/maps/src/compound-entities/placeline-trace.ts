@@ -18,6 +18,8 @@ import {TimeAwareAnimation} from "time-aware-polyline";
 import {SingleItemMixin} from "../mixins/single-item";
 import {ClusterMixin} from "../mixins/clusters";
 import {debounceTime} from "rxjs/operators";
+import {AnimationMixin} from "../mixins/animation-renderer";
+import {AnimPolylineTrace} from "../entities/animation-polyline";
 
 
 
@@ -41,14 +43,11 @@ export class Placeline {
     this.mapInstance = this.options.mapInstance;
     this.stopMarkers = new StopMarkersTrace(this.mapInstance);
     this.userMarker = new CurrentUserTrace(this.mapInstance);
+    this.userMarker.setTimeAwareAnimation(this.anim);
     this.segmentsPolylines = new SegmentPolylinesTrace(this.mapInstance);
     this.actionMarkers = new ActionMarkersTrace(this.mapInstance);
-    let animPolyline = SingleItemMixin(SegmentPolylinesTrace);
-    this.animPolyline = new animPolyline(this.mapInstance);
-    this.anim.updateEvent.subscribe('update', ({path, bearing}) => {
-      this.updatePathBearing(path, bearing)
-    })
-    // this.initBaseItems();
+    this.animPolyline = new AnimPolylineTrace(this.mapInstance);
+    this.animPolyline.setTimeAwareAnimation(this.anim)
   }
 
   updatePathBearing(path, bearing) {
@@ -80,33 +79,36 @@ export class Placeline {
     // if (this.segmentsPolylines)
       // this.segmentsPolylines.trace(segType.tripSegment);
 
-    this.userMarker.trace(user);
     if (this.stopMarkers) this.stopMarkers.trace(segType.stopSegment);
     if (lastSegment) {
       let restTrips = segType.tripSegment.pop();
       var string = this.getTimeAwarePolyline(lastSegment);
       if(string) {
+        //todo infer toNotTraceItem from animMixin trace
         this.userMarker.toNotTraceItem = true;
         this.animPolyline.toNotTraceItem = true;
         // console.log(restTrips, "er", segType.tripSegment);
-        this.animPolyline.trace(restTrips)
-        this.segmentsPolylines.trace(segType.tripSegment)
+        this.animPolyline.trace(restTrips);
+        this.segmentsPolylines.trace(segType.tripSegment);
         this.anim.updatePolylineString(string);
-        //todo render all but last polyline;
       } else {
         //reset anim
         this.animPolyline.toNotTraceItem = false;
         this.userMarker.toNotTraceItem = false;
         this.anim.clear();
-        this.animPolyline.trace(restTrips)
+        this.animPolyline.trace(restTrips);
         this.segmentsPolylines.trace(segType.tripSegment);
       }
+      this.animPolyline.trace(restTrips);
+      // this.userMarker.trace(user);
+      // this.animPolyline.trace(restTrips);
       // super.update({ item, data })
     } else {
       this.anim.clear();
-      this.userMarker.clear();
-      this.segmentsPolylines.clear();
+      this.userMarker.removeAll();
+      this.segmentsPolylines.trace(segType.tripSegment);
     }
+    this.userMarker.trace(user);
     this.traceAction(user);
 
     // this.traceCurrentUser(_.last(userSegments));
