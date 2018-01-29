@@ -23,11 +23,17 @@ export class PlacelineContainerComponent implements OnInit, OnDestroy {
   @Input() userId: string | null;
   @Input() showUserCard: boolean = true;
   userData$;
+  selectedSegmentId$;
   constructor(
     private userClientService: HtUsersService,
   ) { }
 
   ngOnInit() {
+    this.selectedSegmentId$ = this.userClientService.placeline.segmentResetId$;
+
+    this.selectedSegmentId$.subscribe((id) => {
+      console.log("iddd", id);
+    });
       this.userData$ = this.userClientService.placeline.data$;
 
     if (this.userId) {
@@ -35,15 +41,16 @@ export class PlacelineContainerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSegmentId(segmentId: string) {
+  onHighlightSegment(segmentId: string) {
     this.userClientService.placeline.setSegmentSelectedId(segmentId);
   }
 
-  onSelectSegmentId(segmentId: string) {
+  onSelectSegmentId(segmentId: string | null) {
+    console.log("selected id", segmentId);
     this.userClientService.placeline.setSegmentResetMapId(segmentId);
-    setTimeout(() => {
-      this.userClientService.placeline.setSegmentResetMapId(null);
-    })
+    // setTimeout(() => {
+    //   this.userClientService.placeline.setSegmentResetMapId(null);
+    // })
   }
 
   ngOnDestroy() {

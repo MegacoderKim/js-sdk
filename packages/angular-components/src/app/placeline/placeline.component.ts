@@ -15,11 +15,11 @@ import {HtPlaceline} from "ht-data";
 })
 export class PlacelineComponent implements OnInit {
 
-  @Output() segmentId = new EventEmitter();
+  @Output() highlightedSegmentId = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
-  @Output() selectedSegment = new EventEmitter();
+  @Output() selectedSegment: EventEmitter<string | null> = new EventEmitter();
   @Input() userData: IUserData;
-  @Input() selectedPartialSegmentId: string = "__";
+  @Input() selectedSegmentId: string = "__";
   @Input() isMobile: boolean = false;
   selectedAction: string | null = null;
   selectedActivity: string | null = "";
@@ -33,7 +33,7 @@ export class PlacelineComponent implements OnInit {
   selectInUserData(segment, event?) {
     if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
       this.hardSelectedActivity = segment.id;
-      this.selectedSegment.next({segments: [segment]})
+      this.selectedSegment.next(segment.id)
     } else {
       this.hardSelectedActivity = "";
       this.selectedSegment.next(null);
@@ -47,7 +47,7 @@ export class PlacelineComponent implements OnInit {
       this.selectAction(actionId)
     } else {
       const userId = toShow ? segment.id : null;
-      this.selectActivity(userId)
+      this.highlightActivity(userId)
     }
   }
 
@@ -56,8 +56,8 @@ export class PlacelineComponent implements OnInit {
     this.ref.detectChanges()
   }
 
-  selectActivity(activityId) {
-    this.segmentId.next(activityId);
+  highlightActivity(activityId) {
+    this.highlightedSegmentId.next(activityId);
     this.hoverActivity(activityId);
     // console.log(this.selectedActivity, "sele");
   }
