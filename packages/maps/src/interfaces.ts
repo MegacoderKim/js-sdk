@@ -44,7 +44,7 @@ export type Entities<T> = {
   [id: string]: Entity<T>;
 };
 
-export interface Entity<T> {
+export interface Entity<T = any> {
   item: any;
   isOld: boolean;
   data: T;

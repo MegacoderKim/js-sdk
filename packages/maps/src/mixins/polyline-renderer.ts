@@ -2,12 +2,17 @@ import { Constructor } from "../interfaces";
 import { positionTime } from "../helpers/position-time-helper";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
+import {ITimeAwarePoint} from "ht-models";
+import {IPathBearing} from "time-aware-polyline";
+import {HtPosition} from "ht-models";
 
 export interface IPolylinesBase {
+  getPath?(path: ITimeAwarePoint[]): HtPosition[];
   getEncodedPositionTime;
   getEncodedPath(data): any;
   getStyle: (string?) => object;
-  mapInstance: MapInstance
+  mapInstance: MapInstance;
+  toNotSetMap?: boolean;
 }
 
 export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
@@ -24,9 +29,16 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
       return this.mapInstance.mapUtils.extendBoundsWithPolyline(item, bounds);
     }
 
-    update({ item, data }) {
-      if (this.getEncodedPositionTime) {
-        this.positionTimeArray = positionTime.decode(data.time_aware_polyline);
+    update({ item, data }, pathBearing: IPathBearing) {
+      if (this.getPath || pathBearing) {
+        let path = pathBearing ? pathBearing.path : this.getPath(data);
+        this.mapInstance.mapUtils.setPath(
+          item,
+          path
+        )
+      }
+      else if (this.getEncodedPositionTime) {
+        this.positionTimeArray = positionTime.decode(this.getEncodedPositionTime(data));
         this.mapInstance.mapUtils.setPathPositionTimeArray(
           item,
           this.positionTimeArray
@@ -34,10 +46,10 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
       } else {
         this.mapInstance.mapUtils.setEncodedPath(item, this.getEncodedPath(data));
       }
+      if (!this.toNotSetMap) this.mapInstance.mapUtils.setMap(item, this.mapInstance.map);
     }
 
-    setStyle(item) {
-      let style = this.getStyle();
+    setItemStyle(item, style) {
       this.mapInstance.mapUtils.setPolylineStyle(item, style);
     }
   };

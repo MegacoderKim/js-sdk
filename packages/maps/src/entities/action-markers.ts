@@ -15,6 +15,7 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtBounds} from "../map-utils/interfaces";
 import {TraceMixin} from "../mixins/trace";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
+import {IPathBearing} from "time-aware-polyline";
 
 export class ActionMarkers {
   name = "Action";

@@ -16,6 +16,8 @@ import {TraceMixin} from "../mixins/trace";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
 import {HtBounds} from "../map-utils/interfaces";
+import {AnimationMixin} from "../mixins/animation-renderer";
+import {TimeAwareAnimation, IPathBearing} from "time-aware-polyline";
 
 export const currentUserConfig: ItemClassFactoryConfig = {
   renderConfig: {
@@ -63,6 +65,7 @@ export const currentUserTrace = () => {
 
 export class CurrentUser {
   name = "Current user";
+  animation?: TimeAwareAnimation;
 
   styleFunct: StyleFunct = {
     get(type) {
@@ -98,9 +101,9 @@ export class CurrentUser {
   }
 }
 
-export const CurrentUserTrace = SingleItemMixin(DivMarkersMixin(
+export const CurrentUserTrace = AnimationMixin(SingleItemMixin(DivMarkersMixin(
   TraceMixin(MarkersMixin(StyleMixin(CurrentUser)))
-))
+)));
 // export class CurrentUser {
 //   name = "Current user";
 //   styleFunct: StyleFunct = {

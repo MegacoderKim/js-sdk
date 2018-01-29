@@ -18,6 +18,7 @@ import {Entity, StyleFunct} from "../interfaces";
 import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {HtBounds} from "../map-utils/interfaces";
+import {IPathBearing} from "time-aware-polyline";
 
 export const stopMarkersConfig: ItemClassFactoryConfig = {
   renderConfig: {

@@ -26,7 +26,12 @@ export class MapInstance {
   }
 
   get mapUtils(): MapUtils {
-    return mapTypeService.getInstance()
+    if (this.mapType) {
+      return mapTypeService.getInstance()
+    } else {
+      return mapTypeService.getInstance()
+    }
+
   }
 
   get mapType(): HtMapType {
