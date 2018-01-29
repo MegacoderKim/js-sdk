@@ -21,7 +21,29 @@ export const stopStyles: StyleFunct = {
           popup: {
             disableAutoPan: true,
             pixelOffset: new google.maps.Size(0, -10)
-          }
+          },
+          highlight: {
+            icon: {
+              fillColor: Color.stop,
+              fillOpacity: 1,
+              strokeColor: Color.stopDark,
+              strokeOpacity: 1,
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              strokeWeight: 2
+            }
+          },
+          fade: {
+            icon: {
+              fillColor: Color.stop,
+              fillOpacity: 0.1,
+              strokeColor: Color.stopDark,
+              strokeOpacity: 0.2,
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 8,
+              strokeWeight: 2
+            }
+          },
         }
       };
       case "leaflet": {
