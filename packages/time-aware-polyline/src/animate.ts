@@ -159,5 +159,10 @@ export class CustomEvent {
       }
     };
   }
+};
+
+export interface IPathBearing {
+  path: HtPosition[],
+  bearing: number,
 }
 
