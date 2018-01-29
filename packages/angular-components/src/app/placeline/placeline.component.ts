@@ -32,8 +32,10 @@ export class PlacelineComponent implements OnInit {
 
   selectInUserData(segment, event?) {
     if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
-      this.hardSelectedActivity = segment.id;
-      this.selectedSegment.next(segment.id)
+      const id = segment.id;
+
+      let hardSelectedActivity = this.selectedSegmentId === id ? null : segment.id;
+      this.selectedSegment.next(hardSelectedActivity)
     } else {
       this.hardSelectedActivity = "";
       this.selectedSegment.next(null);
@@ -57,6 +59,7 @@ export class PlacelineComponent implements OnInit {
   }
 
   highlightActivity(activityId) {
+    if (this.selectedSegmentId) return false;
     this.highlightedSegmentId.next(activityId);
     this.hoverActivity(activityId);
     // console.log(this.selectedActivity, "sele");

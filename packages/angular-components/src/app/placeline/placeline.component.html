@@ -46,7 +46,7 @@
         <!--<pre>-->
         <!--{{segment | json}}-->
         <!--</pre>-->
-        <div class="activity-card flex-column" [class.activity-card-selected]="selectedSegmentId == segment.id" *ngIf="segment.activityText">
+        <div class="activity-card flex-column" *ngIf="segment.activityText">
           <div [ngClass]="segment.activityColor">
             {{segment.activityText | nameCase}}
           </div>
