@@ -87,7 +87,8 @@ export class Placeline {
 
   traceSegments(trips: ISegment[] = [], selectedSegment) {
     if (selectedSegment) {
-      trips = selectedSegment.type === 'trip' ? [selectedSegment] : [];
+      let matchedTrip = trips.find(trip => trip.id === selectedSegment.id);
+      trips = matchedTrip ? [matchedTrip] : [];
     }
     this.segmentsPolylines.trace(trips);
   }
