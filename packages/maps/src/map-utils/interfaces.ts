@@ -55,7 +55,8 @@ export interface MapUtils {
   setDivMarkerStyle: (marker, options: object) => any;
   setPathPositionTimeArray: (polyline, positionTimeArray) => any;
   getHeatmap: (options?) => any,
-  setPath(polyline, path: HtPosition[]) : any
+  setPath(polyline, path: HtPosition[]) : any;
+  getItemPosition(item): HtPosition | null;
   updateHeatMapLatlng: (latlngs: HtPosition[], heatmap) => void;
 }
 
