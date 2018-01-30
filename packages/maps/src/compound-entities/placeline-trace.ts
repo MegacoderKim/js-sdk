@@ -59,21 +59,22 @@ export class Placeline {
         //todo infer toNotTraceItem from animMixin trace
         this.userMarker.toNotTraceItem = true;
         this.animPolyline.toNotTraceItem = true;
-        this.animPolyline.trace(restTrips);
+        // this.animPolyline.trace(restTrips);
         this.anim.updatePolylineString(string);
       } else {
         this.animPolyline.toNotTraceItem = false;
         this.userMarker.toNotTraceItem = false;
         this.anim.clear();
-        if (!selectedSegment) this.animPolyline.trace(restTrips);
       }
+      if (!selectedSegment || string) this.animPolyline.trace(restTrips);
+      this.userMarker.trace(user);
     } else {
       this.anim.clear();
-      this.userMarker.removeAll();
+      this.userMarker.clear();
+      this.animPolyline.clear();
 
     }
     this.traceSegments(segType.tripSegment, selectedSegment);
-    this.userMarker.trace(user);
     this.traceAction(user, selectedSegment);
   };
 
@@ -115,6 +116,7 @@ export class Placeline {
   extendBounds(bounds) {
     bounds = this.stopMarkers.extendBounds(bounds);
     bounds = this.segmentsPolylines.extendBounds(bounds);
+    bounds = this.animPolyline.extendBounds(bounds);
     bounds = this.actionMarkers.extendBounds(bounds);
     // bounds = this.userMarker.extendBounds(bounds);
     // console.log(bounds, "final");

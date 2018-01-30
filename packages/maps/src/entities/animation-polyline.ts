@@ -15,6 +15,7 @@ import {LatLngBounds} from "leaflet";
 export class AnimPolyline extends SegmentPolylines {
   mapInstance: MapInstance;
   animation: TimeAwareAnimation;
+  name = "anim polyline";
 }
 
 export const AnimPolylineTrace = AnimationMixin(SingleItemMixin(
