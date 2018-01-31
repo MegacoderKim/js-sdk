@@ -20,7 +20,7 @@ import {ClusterMixin} from "../mixins/clusters";
 import {debounceTime} from "rxjs/operators";
 import {AnimationMixin} from "../mixins/animation-renderer";
 import {AnimPolylineTrace} from "../entities/animation-polyline";
-
+import { ActionsPolylineTrace } from "../entities/actions-polyline";
 export class Placeline {
   segmentsPolylines;
   stopMarkers;
@@ -29,6 +29,7 @@ export class Placeline {
   animPolyline;
   allowedEvents = {};
   mapInstance: MapInstance;
+  actionsPolyline;
   anim = new TimeAwareAnimation();
   constructor(public options: HtSegmentsTraceOptions) {
     this.mapInstance = this.options.mapInstance;
@@ -38,7 +39,9 @@ export class Placeline {
     this.segmentsPolylines = new SegmentPolylinesTrace(this.mapInstance);
     this.actionMarkers = new ActionMarkersTrace(this.mapInstance);
     this.animPolyline = new AnimPolylineTrace(this.mapInstance);
-    this.animPolyline.setTimeAwareAnimation(this.anim)
+    this.animPolyline.setTimeAwareAnimation(this.anim);
+    this.actionsPolyline = new ActionsPolylineTrace(this.mapInstance);
+    this.actionsPolyline.setTimeAwareAnimation(this.anim);
   }
 
   get map(): HtMap {
@@ -59,24 +62,40 @@ export class Placeline {
         //todo infer toNotTraceItem from animMixin trace
         this.userMarker.toNotTraceItem = true;
         this.animPolyline.toNotTraceItem = true;
+        this.actionsPolyline.toNotTraceItem = true;
         // this.animPolyline.trace(restTrips);
         this.anim.updatePolylineString(string);
       } else {
         this.animPolyline.toNotTraceItem = false;
         this.userMarker.toNotTraceItem = false;
+        this.actionsPolyline.toNotTraceItem = false;
+        // if (!selectedSegment) this.animPolyline.trace(restTrips);
         this.anim.clear();
       }
-      if (!selectedSegment || string) this.animPolyline.trace(restTrips);
       this.userMarker.trace(user);
+      this.traceAnimPolyline(restTrips, selectedSegment);
+      this.actionsPolyline.setConnector(this.userMarker.getEntity());
+      this.actionsPolyline.trace(user)
     } else {
       this.anim.clear();
       this.userMarker.clear();
       this.animPolyline.clear();
+      this.actionsPolyline.clear();
 
     }
     this.traceSegments(segType.tripSegment, selectedSegment);
     this.traceAction(user, selectedSegment);
+    // this.actionsPolyline.setConnector(this.userMarker.getEntity());
+    // this.actionsPolyline.trace(user)
   };
+
+  traceAnimPolyline(restTrip, selectedSegment) {
+    if (!selectedSegment || selectedSegment.id === restTrip.id) {
+      this.animPolyline.trace(restTrip);
+    } else {
+      this.animPolyline.clear();
+    }
+  }
 
   traceStops(stops: ISegment[], selectedSegment, lastSegment) {
     if (selectedSegment) {

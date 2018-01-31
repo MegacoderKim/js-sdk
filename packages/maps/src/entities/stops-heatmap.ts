@@ -8,7 +8,7 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
-import {IPathBearing} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 
 export class StopsHeatmap {
   name = "stop heatmap";

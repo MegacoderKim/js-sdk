@@ -66,7 +66,9 @@ export class TimeAwareAnimation {
       this.currentTime = this.addISOTime(this.currentTime, timeToAdd);
     } else {
       let last = this.polylineUtils.getLatestTime();
-      this.currentTime = this.addISOTime(last, -20000);
+      const delay = new Date().getTime() - new Date(last).getTime();
+      const timeToAdd =  delay > 15*60*1000 ? 0 : -20000;
+      this.currentTime = this.addISOTime(last, timeToAdd);
     }
     this.capTime(() => {
       this.clearAnimationPoll()
@@ -76,7 +78,7 @@ export class TimeAwareAnimation {
   private setPathBearing() {
     let {path, bearing} = this.currentTimePolylineData();
     this.updatePathBearing(path, bearing);
-    this.updateEvent.publish('update', {path, bearing})
+    this.updateEvent.publish('update', {path, bearing, time: this.currentTime})
   };
 
   updatePathBearing(path, bearing) {
@@ -161,8 +163,8 @@ export class CustomEvent {
   }
 };
 
-export interface IPathBearing {
-  path: HtPosition[],
-  bearing: number,
-}
+// export interface IPathBearing {
+//   path: HtPosition[],
+//   bearing: number,
+// }
 

@@ -356,4 +356,9 @@ export class GoogleMapUtilsClass implements MapUtils {
     return new google.maps.LatLng(lat, lng);
   };
 
+  getItemPosition(item) {
+    let position = item.getPosition();
+    return position ? {lat: position.lat(), lng: position.lng()} : null
+  }
+
 }

@@ -268,4 +268,10 @@ export class LeafletMapUtilsClass implements MapUtils {
     return polyline.setLatLngs(positionTimeArray);
   };
 
+
+  getItemPosition(item: L.Marker) {
+    let position = item.getLatLng();
+    return position ? {lat: position.lat, lng: position.lng} : null;
+  }
+
 }
