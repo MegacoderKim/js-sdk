@@ -19,7 +19,7 @@ export class PolylineUtils {
     return this.encoder.getLocationsElapsedByTimestamp(this.timeAwarePolyline, timestamp)
   }
 
-  getLatestTime() {
+  getLatestTime(): string | null {
     if(this.timeAwarePolyline) {
       let lastI = this.timeAwarePolyline.length - 1;
       return lastI > -1 ? this.timeAwarePolyline[lastI][2] : null
@@ -28,7 +28,7 @@ export class PolylineUtils {
     }
   }
 
-  isNewPolyline(encodedPolyline) {
+  isNewPolyline(encodedPolyline): boolean {
     return encodedPolyline != this.encodedPolyline;
   }
 }
