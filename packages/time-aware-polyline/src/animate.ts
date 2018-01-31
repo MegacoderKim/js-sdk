@@ -76,7 +76,7 @@ export class TimeAwareAnimation {
   private setPathBearing() {
     let {path, bearing} = this.currentTimePolylineData();
     this.updatePathBearing(path, bearing);
-    this.updateEvent.publish('update', {path, bearing})
+    this.updateEvent.publish('update', {path, bearing, time: this.currentTime})
   };
 
   updatePathBearing(path, bearing) {
@@ -161,8 +161,8 @@ export class CustomEvent {
   }
 };
 
-export interface IPathBearing {
-  path: HtPosition[],
-  bearing: number,
-}
+// export interface IPathBearing {
+//   path: HtPosition[],
+//   bearing: number,
+// }
 
