@@ -1,10 +1,10 @@
 # Live tracking visuals for the Web
 
-This open source repo helps you visualize live location and activity data of your users on a web app. The data is generated using the HyperTrack SDKs. See sample of these web visuals
+This open source repo helps you visualize live location and activity data of your users on a web app. The data is generated using the HyperTrack SDKs. See sample of these web visuals [here](https://dashboard.hypertrack.com/demo).
 
 ## Usage
 
-1. Set up SDK in your app by signing up [here](https://www.hypertrack.com/signup?utm_source=github&utm_campaign=js_sdk), and then integrating the SDK into your app
+1. Set up SDK in your user's app by signing up [here](https://www.hypertrack.com/signup?utm_source=github&utm_campaign=js_sdk), and then integrating the SDK into your app
 
 2. Clone this repository
 ```bash
