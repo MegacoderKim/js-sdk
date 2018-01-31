@@ -6,6 +6,7 @@ import {IAction, ISegment, IUserData} from "ht-models";
 import {NameCase} from "ht-utility";
 import * as _ from "underscore";
 import {HtPlaceline} from "ht-data";
+import {IPlacelineMod} from "../../../../models/src/user";
 
 @Component({
   selector: 'ht-placeline',
@@ -15,10 +16,10 @@ import {HtPlaceline} from "ht-data";
 })
 export class PlacelineComponent implements OnInit {
 
-  @Output() highlightedSegmentId = new EventEmitter();
+  @Output() highlightedSegmentId: EventEmitter<string> = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
   @Output() selectedSegment: EventEmitter<string | null> = new EventEmitter();
-  @Input() userData: IUserData;
+  @Input() userData: IUserData | IPlacelineMod;
   @Input() selectedSegmentId: string = "__";
   @Input() isMobile: boolean = false;
   selectedAction: string | null = null;
