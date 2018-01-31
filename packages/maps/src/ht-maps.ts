@@ -26,6 +26,19 @@ export * from "./entities/actions-cluster";
 
 //mixins
 export * from "./mixins/compounds-data-observable";
+export * from "./mixins/animation-renderer";
+export * from "./mixins/circle-renderer";
+export * from "./mixins/clusters";
+export * from "./mixins/data-observable";
+export * from "./mixins/div-markers-renderes";
+export * from "./mixins/extend-bounds";
+export * from "./mixins/heatmap";
+export * from "./mixins/marker-renderer";
+export * from "./mixins/polyline-renderer";
+export * from "./mixins/popup-renderer";
+export * from "./mixins/single-item";
+export * from "./mixins/styles";
+export * from "./mixins/trace";
 
 //compounds entities
 export * from "./compound-entities/placeline-trace";
