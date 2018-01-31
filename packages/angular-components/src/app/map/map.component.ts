@@ -14,10 +14,11 @@ import {HtMap, MapInstance} from "ht-maps";
 })
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() options: any = {};
-  @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
   @Input() mapInstance: MapInstance;
   @Input() loading: boolean = false;
   @Input() showReset: boolean = true;
+  @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
+  @Output() onMapReset: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('map') mapElem;
   constructor(
     private elRef: ElementRef,
@@ -58,7 +59,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   resetMap() {
-    this.mapInstance.resetBounds()
+    this.mapInstance.resetBounds();
+    this.onMapReset.next(true)
   }
 
   ngAfterViewInit() {
