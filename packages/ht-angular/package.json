@@ -1,6 +1,6 @@
 {
   "name": "ht-angular",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "repository": {
     "type": "git",
     "url": "https://github.com/hypertrack/ht-angular"
@@ -37,9 +37,9 @@
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-rollup": "^2.15.0",
-    "ht-client": "^0.1.4",
-    "ht-data": "^0.1.4",
-    "ht-maps": "^0.1.4",
+    "ht-client": "^0.1.5",
+    "ht-data": "^0.1.5",
+    "ht-maps": "^0.1.5",
     "ht-utility": "0.1.0",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
