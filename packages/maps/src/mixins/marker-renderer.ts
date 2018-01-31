@@ -3,7 +3,7 @@ import {HtBounds, HtMap} from "../map-utils/interfaces";
 import { HtPosition } from "ht-models";
 import * as _ from "underscore";
 import {MapInstance} from "../map-utils/map-instance";
-import {IPathBearing} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 
 export interface IMarkersBase {
   getStyle: (styleType?) => object;
@@ -30,7 +30,7 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       return this.mapInstance.mapUtils.extendItemBounds(item, bounds, this.forceExtendBounds);
     }
 
-    update({ item, data }, positionBearing?: IPathBearing) {
+    update({ item, data }, positionBearing?: IPathBearingTime) {
       let pathPosition = positionBearing && positionBearing.path.length ?
         positionBearing.path[positionBearing.path.length - 1] : null;
       let position = pathPosition || this.getPosition(data);

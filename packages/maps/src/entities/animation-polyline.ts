@@ -9,7 +9,8 @@ import {SingleItemMixin} from "../mixins/single-item";
 import {MapInstance} from "../map-utils/map-instance";
 import {Entity, StyleFunct} from "../interfaces";
 import {HtPosition} from "ht-models";
-import {TimeAwareAnimation, IPathBearing} from "time-aware-polyline";
+import {TimeAwareAnimation} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 import {LatLngBounds} from "leaflet";
 
 export class AnimPolyline extends SegmentPolylines {

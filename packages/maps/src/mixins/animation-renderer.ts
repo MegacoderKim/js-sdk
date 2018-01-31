@@ -1,6 +1,7 @@
 import {Constructor, Entity} from "../interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {TimeAwareAnimation, IPathBearing} from "time-aware-polyline";
+import {TimeAwareAnimation} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 import {HtPosition} from "ht-models";
 
 export interface IAnimationBase {
@@ -10,7 +11,7 @@ export interface IAnimationBase {
   // getTimeAwarePolyline: (data) => string,
   // update(entity): void;
   // getDivContent(bearing): string;
-  update(entity, pathBearing: IPathBearing): void;
+  update(entity, pathBearing: IPathBearingTime): void;
 // getStyle: (styleType?) => object;
 }
 

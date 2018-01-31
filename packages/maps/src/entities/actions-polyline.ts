@@ -9,7 +9,8 @@ import {SingleItemMixin} from "../mixins/single-item";
 import {StyleMixin} from "../mixins/styles";
 import {Entity, StyleFunct} from "../interfaces";
 import {HtPosition, ITimeAwarePoint, IPlacelineMod} from "ht-models";
-import {TimeAwareAnimation, IPathBearing} from "time-aware-polyline";
+import {TimeAwareAnimation} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 import {LatLngBounds} from "leaflet";
 import { positionTime } from "../helpers/position-time-helper";
 import { Constructor } from "../interfaces";
@@ -121,7 +122,7 @@ export function ConnectorMixin<TBase extends Constructor<IConnectorBase>>(
       return this.connector ? this.mapInstance.mapUtils.getItemPosition(this.connector) : null
     }
 
-    update({ item, data }, pathBearing: IPathBearing) {
+    update({ item, data }, pathBearing: IPathBearingTime) {
       let startPosition;
       if (pathBearing) {
         const path = pathBearing.path;

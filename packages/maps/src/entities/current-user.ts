@@ -17,7 +17,8 @@ import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
 import {HtBounds} from "../map-utils/interfaces";
 import {AnimationMixin} from "../mixins/animation-renderer";
-import {TimeAwareAnimation, IPathBearing} from "time-aware-polyline";
+import {TimeAwareAnimation} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 
 export const currentUserConfig: ItemClassFactoryConfig = {
   renderConfig: {

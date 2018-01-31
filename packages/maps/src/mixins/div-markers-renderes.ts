@@ -1,7 +1,7 @@
 import { Constructor } from "../interfaces";
 import {MapInstance} from "../map-utils/map-instance";
 import {HtPosition} from "ht-models";
-import {IPathBearing} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 
 export interface IDivMarkersBase {
   getDivContent: (data, bearing?: number) => string;
@@ -17,7 +17,7 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
     getItem(data) {
       return this.mapInstance.mapUtils.getDivMarker();
     }
-    update({ item, data }, pathBearing?: IPathBearing) {
+    update({ item, data }, pathBearing?: IPathBearingTime) {
       const bearing = pathBearing ? pathBearing.bearing : null;
       let content = this.getDivContent(data, bearing);
       this.setContent({ item, content });

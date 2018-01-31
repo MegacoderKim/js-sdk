@@ -15,7 +15,7 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtBounds} from "../map-utils/interfaces";
 import {TraceMixin} from "../mixins/trace";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
-import {IPathBearing} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {NameCase} from "ht-utility";
 declare const RichMarkerPosition: any;

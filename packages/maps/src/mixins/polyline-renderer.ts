@@ -3,7 +3,7 @@ import { positionTime } from "../helpers/position-time-helper";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
 import {ITimeAwarePoint} from "ht-models";
-import {IPathBearing} from "time-aware-polyline";
+import {IPathBearingTime} from "ht-models";
 import {HtPosition} from "ht-models";
 
 export interface IPolylinesBase {
@@ -29,7 +29,7 @@ export function PolylinesMixin<TBase extends Constructor<IPolylinesBase>>(
       return this.mapInstance.mapUtils.extendBoundsWithPolyline(item, bounds);
     }
 
-    update({ item, data }, pathBearing: IPathBearing) {
+    update({ item, data }, pathBearing: IPathBearingTime) {
       if (this.getPath || pathBearing) {
         let path = pathBearing ? pathBearing.path : this.getPath(data);
         this.mapInstance.mapUtils.setPath(
