@@ -257,11 +257,11 @@ export class LeafletMapUtilsClass implements MapUtils {
     return polyline.setLatLngs(path);
   };
 
-  setPath(polyline, path: HtPosition[]) {
+  setPath(polyline: L.Polyline, path: HtPosition[]) {
     path = path.map(pos => {
       return this.getLatlng(pos)
     })  ;
-    polyline.setLatLng(path)
+    polyline.setLatLngs(path)
   };
 
   setPathPositionTimeArray (polyline, positionTimeArray) {
