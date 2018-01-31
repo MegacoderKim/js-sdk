@@ -5,5 +5,4 @@ export declare class LoadingDataComponent implements OnInit {
     customMessage: string;
     constructor();
     ngOnInit(): void;
-    readonly displayMessage: string;
 }

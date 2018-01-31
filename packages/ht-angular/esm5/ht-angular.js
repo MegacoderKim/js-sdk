@@ -33,8 +33,8 @@ import { CommonModule } from '@angular/common';
 import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
 import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString, dateRangeDisplay } from 'ht-utility';
-import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
+import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
 import { ActionsHeatmapTrace, HtMapClass, MapInstance, StopsHeatmapTrace, mapTypeService } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
@@ -365,22 +365,12 @@ var LoadingDataComponent = (function () {
      */
     LoadingDataComponent.prototype.ngOnInit = function () {
     };
-    Object.defineProperty(LoadingDataComponent.prototype, "displayMessage", {
-        /**
-         * @return {?}
-         */
-        get: function () {
-            return !this.customMessage ? "" + this.message : this.customMessage;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return LoadingDataComponent;
 }());
 LoadingDataComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-loading-data',
-                template: "<div [style.fontSize.px]=\"size || 'inherit'\" loading-dots><span>{{displayMessage}}</span></div>\n",
+                template: "<div [style.fontSize.px]=\"size || 'inherit'\" loading-dots><span>{{customMessage || message}}</span></div>\n",
                 styles: [":host {\n  color: #798E9B;\n  text-align: center;\n}\n"],
                 changeDetection: ChangeDetectionStrategy.OnPush
             },] },
@@ -469,126 +459,6 @@ HmStringPipe.ctorParameters = function () { return []; };
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-var SnackbarService = (function () {
-    function SnackbarService() {
-        this.showErrorToast = false;
-        this.showSuccessToast = false;
-        this.showLoadingToast = false;
-    }
-    /**
-     * @param {?} errorMessage
-     * @return {?}
-     */
-    SnackbarService.prototype.displayErrorToast = function (errorMessage) {
-        var _this = this;
-        this.errorMessage = errorMessage;
-        this.showErrorToast = true;
-        this.hideSuccessToast();
-        if (this.hideErrorToastTimer)
-            clearTimeout(this.hideErrorToastTimer);
-        this.hideErrorToastTimer = setTimeout(function () {
-            _this.hideErrorToast();
-        }, 4000);
-    };
-    /**
-     * @return {?}
-     */
-    SnackbarService.prototype.hideErrorToast = function () {
-        this.showErrorToast = false;
-    };
-    /**
-     * @param {?} successMessage
-     * @return {?}
-     */
-    SnackbarService.prototype.displaySuccessToast = function (successMessage) {
-        var _this = this;
-        this.successMessage = successMessage;
-        this.showSuccessToast = true;
-        this.hideErrorToast();
-        if (this.hideSuccessToastTimer)
-            clearTimeout(this.hideSuccessToastTimer);
-        this.hideSuccessToastTimer = setTimeout(function () {
-            _this.hideSuccessToast();
-        }, 4000);
-    };
-    /**
-     * @param {?=} string
-     * @return {?}
-     */
-    SnackbarService.prototype.displayLoadingToast = function (string) {
-        if (string === void 0) { string = ''; }
-        this.loadingMessage = string;
-        this.showLoadingToast = true;
-    };
-    /**
-     * @return {?}
-     */
-    SnackbarService.prototype.hideLoadingToast = function () {
-        this.showLoadingToast = false;
-    };
-    /**
-     * @return {?}
-     */
-    SnackbarService.prototype.hideSuccessToast = function () {
-        this.showSuccessToast = false;
-    };
-    return SnackbarService;
-}());
-SnackbarService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-SnackbarService.ctorParameters = function () { return []; };
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var SnackbarComponent = (function () {
-    /**
-     * @param {?} snackbarService
-     */
-    function SnackbarComponent(snackbarService) {
-        this.snackbarService = snackbarService;
-    }
-    /**
-     * @return {?}
-     */
-    SnackbarComponent.prototype.ngOnInit = function () {
-    };
-    return SnackbarComponent;
-}());
-SnackbarComponent.decorators = [
-    { type: Component, args: [{
-                selector: 'ht-snackbar',
-                template: "<div class=\"toast\" [@toast]=\"snackbarService.showErrorToast ? 'on' : 'off'\" id=\"error-toast\">{{snackbarService.errorMessage}}<span class=\"dismiss-button\" (click)=\"snackbarService.showErrorToast=false\">Dismiss</span></div>\n<div class=\"toast\" [@toast]=\"snackbarService.showSuccessToast ? 'on' : 'off'\" id=\"show-toast\">{{snackbarService.successMessage}}<span class=\"dismiss-button\" (click)=\"snackbarService.showSuccessToast=false\">Dismiss</span></div>\n<div class=\"loading\" [@toast]=\"snackbarService.showLoadingToast ? 'on' : 'off'\" id=\"show-loading\">\n  <div class=\"spinner-wave\">\n    <div></div>\n    <div></div>\n    <div></div>\n    <div></div>\n    <div></div>\n  </div>\n</div>\n\n",
-                styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n.toast {\n  height: auto;\n  position: fixed;\n  z-index: 100000;\n  /* width: 400px; */\n  left: 0px;\n  right: 0px;\n  /* right: 0; */\n  bottom: 10%;\n  /* margin: 0 auto; */\n  opacity: 0.9;\n  filter: alpha(opacity=90);\n  background: #353f45;\n  color: #ffffff;\n  font-family: Roboto, helvetica, sans-serif;\n  font-size: 14px;\n  padding: 15px;\n  text-align: center;\n  border-radius: 2px;\n  -webkit-box-shadow: 0px 0px 24px -1px #383838;\n          box-shadow: 0px 0px 24px -1px #383838;\n  width: 460px;\n  margin: auto;\n}\n.loading {\n  height: auto;\n  position: fixed;\n  z-index: 100000;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  /* width: 400px; */\n  right: 25px;\n  /* right: 0; */\n  bottom: 50px;\n  /* margin: 0 auto; */\n  opacity: 0.9;\n  filter: alpha(opacity=90);\n  background: #353f45;\n  color: #5496F8;\n  font-family: Roboto, helvetica, sans-serif;\n  font-size: 16px;\n  padding: 12px;\n  text-align: center;\n  border-radius: 2px;\n  -webkit-box-shadow: 0px 0px 24px -1px #383838;\n          box-shadow: 0px 0px 24px -1px #383838;\n  width: 200px;\n  margin: auto;\n}\n.dismiss-button {\n  color: #5496F8;\n  padding: 5px;\n  font-size: 12px;\n  font-weight: 600;\n  text-transform: uppercase;\n  cursor: pointer;\n}\n"],
-                animations: [
-                    trigger('toast', [
-                        state('on', style({
-                            opacity: 1, bottom: '10%'
-                        })),
-                        state('off', style({
-                            opacity: 0, display: 'none'
-                        })),
-                        transition('on => off', [
-                            animate('100ms ease-out', style({ bottom: '-3%' }))
-                        ]),
-                        transition('off => on', [
-                            style({ bottom: '-3%' }),
-                            animate('100ms ease-out')
-                        ])
-                    ])
-                ]
-            },] },
-];
-/** @nocollapse */
-SnackbarComponent.ctorParameters = function () { return [
-    { type: SnackbarService, },
-]; };
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 var UsersStatusStringPipe = (function () {
     function UsersStatusStringPipe() {
     }
@@ -635,27 +505,6 @@ ActionStatusStringPipe.decorators = [
 ];
 /** @nocollapse */
 ActionStatusStringPipe.ctorParameters = function () { return []; };
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-var SafeHtmlPipe = (function () {
-    function SafeHtmlPipe() {
-    }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    SafeHtmlPipe.prototype.transform = function (value) {
-        // return this.sanitized.bypassSecurityTrustHtml(value);
-    };
-    return SafeHtmlPipe;
-}());
-SafeHtmlPipe.decorators = [
-    { type: Pipe, args: [{ name: 'safeHtml' },] },
-];
-/** @nocollapse */
-SafeHtmlPipe.ctorParameters = function () { return []; };
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
@@ -889,10 +738,8 @@ SharedModule.decorators = [
                     DateHumanizePipe,
                     DistanceLocalePipe,
                     HmStringPipe,
-                    SnackbarComponent,
                     UsersStatusStringPipe,
                     ActionStatusStringPipe,
-                    SafeHtmlPipe,
                     SafeUrlPipe,
                     UserSortingStringPipe,
                     ActionSortingStringPipe,
@@ -913,10 +760,8 @@ SharedModule.decorators = [
                     DateHumanizePipe,
                     DistanceLocalePipe,
                     HmStringPipe,
-                    SnackbarComponent,
                     UsersStatusStringPipe,
                     ActionStatusStringPipe,
-                    SafeHtmlPipe,
                     SafeUrlPipe,
                     UserSortingStringPipe,
                     ActionSortingStringPipe,
@@ -1343,10 +1188,10 @@ var PlacelineComponent = (function () {
      */
     function PlacelineComponent(ref) {
         this.ref = ref;
-        this.segmentId = new EventEmitter();
+        this.highlightedSegmentId = new EventEmitter();
         this.hoveredAction = new EventEmitter();
         this.selectedSegment = new EventEmitter();
-        this.selectedPartialSegmentId = "__";
+        this.selectedSegmentId = "__";
         this.isMobile = false;
         this.selectedAction = null;
         this.selectedActivity = "";
@@ -1361,8 +1206,9 @@ var PlacelineComponent = (function () {
      */
     PlacelineComponent.prototype.selectInUserData = function (segment, event) {
         if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
-            this.hardSelectedActivity = segment.id;
-            this.selectedSegment.next({ segments: [segment] });
+            var /** @type {?} */ id = segment.id;
+            var /** @type {?} */ hardSelectedActivity = this.selectedSegmentId === id ? null : segment.id;
+            this.selectedSegment.next(hardSelectedActivity);
         }
         else {
             this.hardSelectedActivity = "";
@@ -1384,7 +1230,7 @@ var PlacelineComponent = (function () {
         }
         else {
             var /** @type {?} */ userId = toShow ? segment.id : null;
-            this.selectActivity(userId);
+            this.highlightActivity(userId);
         }
     };
     /**
@@ -1399,8 +1245,10 @@ var PlacelineComponent = (function () {
      * @param {?} activityId
      * @return {?}
      */
-    PlacelineComponent.prototype.selectActivity = function (activityId) {
-        this.segmentId.next(activityId);
+    PlacelineComponent.prototype.highlightActivity = function (activityId) {
+        if (this.selectedSegmentId)
+            return false;
+        this.highlightedSegmentId.next(activityId);
         this.hoverActivity(activityId);
         // console.log(this.selectedActivity, "sele");
     };
@@ -1605,7 +1453,7 @@ var PlacelineComponent = (function () {
             time = placeline.last_heartbeat_at;
         }
         var /** @type {?} */ activityClass = this.getActivityClass(lastSeg);
-        return { time: time, pipeClass: pipeClass, lastSeg: true, isLive: isLive, ended: true, activityClass: activityClass, activityBg: this.getActivityClass(lastSeg) + "-bg" };
+        return { time: time, pipeClass: pipeClass, id: '..', lastSeg: true, isLive: isLive, ended: true, activityClass: activityClass, activityBg: this.getActivityClass(lastSeg) + "-bg" };
     };
     /**
      * @param {?} placeline
@@ -1744,7 +1592,7 @@ var PlacelineComponent = (function () {
             var /** @type {?} */ startMin = this.getMinute(lastSeg.ended_at);
             var /** @type {?} */ duration = (new Date(segment.started_at).getTime() - new Date(lastSeg.ended_at).getTime()) / 1000;
             if (endMin !== startMin && startMin < endMin) {
-                var /** @type {?} */ gap = Object.assign({}, this.getSegmentStyle('no-info'), { time: lastSeg.ended_at, activityText: 'No information', events: [], duration: duration, id: "asd" });
+                var /** @type {?} */ gap = Object.assign({}, this.getSegmentStyle('no-info'), { time: lastSeg.ended_at, activityText: 'No information', events: [], id: '...', duration: duration });
                 gaps.push(gap);
             }
         }
@@ -1806,7 +1654,7 @@ var PlacelineComponent = (function () {
 PlacelineComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-placeline',
-                template: "<div class=\"flex-column\">\n  <div\n    class=\"flex-row segment\"\n    (click)=\"selectInUserData(segment)\"\n    [class.active-segment]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id\"\n    (mouseenter)=\"selectActivity(segment.id)\"\n    (mouseleave)=\"selectActivity(null)\"\n    *ngFor=\"let segment of placelineMod; trackBy:indexPlaceline; let last = last\">\n    <div class=\"time-container action-time\">\n      <div class=\"target-status text-muted\">\n      </div>\n      <div class=\"timestamp\">\n        {{segment.time | timeString | dot: 'Unknown ETA'}}\n      </div>\n      <div class=\"text-muted\">\n        {{segment.time | dateString: 'short'}}\n      </div>\n      <!--<div class=\"time-container-mid text-muted\" *ngIf=\"!segment.actionD\">-->\n        <!--<span>{{segment.duration / 60 | hmString}}</span>-->\n      <!--</div>-->\n    </div>\n    <div class=\"pipe\">\n      <div class=\"bar\" *ngIf=\"!last\" [class.big]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id\" [class.solid]=\"segment.activityBorder\" [ngClass]=\"segment.activityBorder\"></div>\n    </div>\n    <div class=\"flex-column flex timeline-detail\">\n      <div class=\"activity-dot segment-dot\" [class.activity-dot-ended]=\"segment.actionEnded\" *ngIf=\"segment.actionD\"><div class=\"auto\">{{segment.actionD}} </div></div>\n      <div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"segment-dot\"><div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"pulse\"></div></div>\n      <div *ngIf=\"!segment.isLive && !segment.actionD\" class=\"a-dot\" [ngClass]=\"segment.activityBorder\"></div>\n      <div class=\"flex-column column-gap-10\">\n        <div (mouseenter)=\"selectAction(segment.action_id)\" (mouseleave)=\"selectAction(null)\" class=\"action-card\" *ngIf=\"segment.actionText\">\n          <div class=\"flex-column column-gap-4\">\n            <div class=\"title\">\n              {{segment.actionText}}\n            </div>\n            <div class=\"lookup\" *ngIf=\"segment.actionLookupId\">{{segment.actionLookupId}}</div>\n            <div *ngIf=\"segment.expected_at && segment.actionEnd\">Scheduled at {{segment.expected_at | timeString}}</div>\n            <div *ngIf=\"segment.action_duration\" class=\"flex-row row-gap-4\">\n              <span>{{segment.action_duration / 60 | hmString}}</span>\n              <ng-template [ngIf]=\"(segment.action_distance || segment.action_distance == 0)\">\n                <span>&bull;</span>\n                <span>{{segment.action_distance | distanceLocale}}</span>\n              </ng-template>\n            </div>\n          </div>\n        </div>\n        <!--<pre>-->\n        <!--{{segment | json}}-->\n        <!--</pre>-->\n        <div class=\"activity-card flex-column\" [class.activity-card-selected]=\"selectedPartialSegmentId == segment.id\" *ngIf=\"segment.activityText\">\n          <div [ngClass]=\"segment.activityColor\">\n            {{segment.activityText | nameCase}}\n          </div>\n          <div class=\"flex-row row-gap-4 activity-stats align-center\" *ngIf=\"segment.duration\">\n            <span>{{segment.duration / 60 | hmString}}</span>\n            <ng-template [ngIf]=\"(segment.distance || segment.distance == 0) && segment.type == 'trip'\">\n              <span>&bull;</span>\n              <span>{{segment.distance | distanceLocale}}</span>\n            </ng-template>\n          </div>\n          <div>\n            {{segment.placeAddress}}\n          </div>\n          <table class=\"table table-bordered table-condensed\" *ngIf=\"segment.events && segment.events.length\">\n            <tbody>\n            <tr *ngFor=\"let event of segment.events; trackBy:indexId\">\n              <td>{{event.recorded_at | timeString}}</td>\n              <td>{{event.text}}</td>\n            </tr>\n            </tbody>\n          </table>\n          <div class=\"close-card\" *ngIf=\"selectedPartialSegmentId == segment.id && !isMobile\" (click)=\"selectInUserData(null, $event)\">\n            <i class=\"fa fa-times-circle fa-2x\"></i>\n          </div>\n        </div>\n        <div *ngIf=\"segment.isLive\" class=\"text-muted heatbeat\">\n          Last heartbeat\n        </div>\n      </div>\n\n\n    </div>\n  </div>\n</div>\n<div class=\"card\" *ngIf=\"placelineMod && placelineMod.length == 0\">\n  <div class=\"card-content-mid text-center\"><strong>No Placeline</strong></div>\n</div>\n",
+                template: "<div class=\"flex-column\">\n  <div\n    class=\"flex-row segment\"\n    (click)=\"selectInUserData(segment)\"\n    [class.active-segment]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id\"\n    (mouseenter)=\"highlightActivity(segment.id)\"\n    (mouseleave)=\"highlightActivity(null)\"\n    *ngFor=\"let segment of placelineMod; trackBy:indexPlaceline; let last = last\">\n    <div class=\"time-container action-time\">\n      <div class=\"target-status text-muted\">\n      </div>\n      <div class=\"timestamp\">\n        {{segment.time | timeString | dot: 'Unknown ETA'}}\n      </div>\n      <div class=\"text-muted\">\n        {{segment.time | dateString: 'short'}}\n      </div>\n      <!--<div class=\"time-container-mid text-muted\" *ngIf=\"!segment.actionD\">-->\n        <!--<span>{{segment.duration / 60 | hmString}}</span>-->\n      <!--</div>-->\n    </div>\n    <div class=\"pipe\">\n      <div class=\"bar\" *ngIf=\"!last\" [class.big]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id\" [class.solid]=\"segment.activityBorder\" [ngClass]=\"segment.activityBorder\"></div>\n    </div>\n    <div class=\"flex-column flex timeline-detail\">\n      <div class=\"activity-dot segment-dot\" [class.activity-dot-ended]=\"segment.actionEnded\" *ngIf=\"segment.actionD\"><div class=\"auto\">{{segment.actionD}} </div></div>\n      <div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"segment-dot\"><div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"pulse\"></div></div>\n      <div *ngIf=\"!segment.isLive && !segment.actionD\" class=\"a-dot\" [ngClass]=\"segment.activityBorder\"></div>\n      <div class=\"flex-column column-gap-10\">\n        <div (mouseenter)=\"selectAction(segment.action_id)\" (mouseleave)=\"selectAction(null)\" class=\"action-card\" *ngIf=\"segment.actionText\">\n          <div class=\"flex-column column-gap-4\">\n            <div class=\"title\">\n              {{segment.actionText}}\n            </div>\n            <div class=\"lookup\" *ngIf=\"segment.actionLookupId\">{{segment.actionLookupId}}</div>\n            <div *ngIf=\"segment.expected_at && segment.actionEnd\">Scheduled at {{segment.expected_at | timeString}}</div>\n            <div *ngIf=\"segment.action_duration\" class=\"flex-row row-gap-4\">\n              <span>{{segment.action_duration / 60 | hmString}}</span>\n              <ng-template [ngIf]=\"(segment.action_distance || segment.action_distance == 0)\">\n                <span>&bull;</span>\n                <span>{{segment.action_distance | distanceLocale}}</span>\n              </ng-template>\n            </div>\n          </div>\n        </div>\n        <!--<pre>-->\n        <!--{{segment | json}}-->\n        <!--</pre>-->\n        <div class=\"activity-card flex-column\" *ngIf=\"segment.activityText\">\n          <div [ngClass]=\"segment.activityColor\">\n            {{segment.activityText | nameCase}}\n          </div>\n          <div class=\"flex-row row-gap-4 activity-stats align-center\" *ngIf=\"segment.duration\">\n            <span>{{segment.duration / 60 | hmString}}</span>\n            <ng-template [ngIf]=\"(segment.distance || segment.distance == 0) && segment.type == 'trip'\">\n              <span>&bull;</span>\n              <span>{{segment.distance | distanceLocale}}</span>\n            </ng-template>\n          </div>\n          <div>\n            {{segment.placeAddress}}\n          </div>\n          <table class=\"table table-bordered table-condensed\" *ngIf=\"segment.events && segment.events.length\">\n            <tbody>\n            <tr *ngFor=\"let event of segment.events; trackBy:indexId\">\n              <td>{{event.recorded_at | timeString}}</td>\n              <td>{{event.text}}</td>\n            </tr>\n            </tbody>\n          </table>\n          <div class=\"close-card\" *ngIf=\"selectedSegmentId == segment.id && !isMobile\" (click)=\"selectInUserData(null, $event)\">\n            <i class=\"fa fa-times-circle fa-2x\"></i>\n          </div>\n        </div>\n        <div *ngIf=\"segment.isLive\" class=\"text-muted heatbeat\">\n          Last heartbeat\n        </div>\n      </div>\n\n\n    </div>\n  </div>\n</div>\n<div class=\"card\" *ngIf=\"placelineMod && placelineMod.length == 0\">\n  <div class=\"card-content-mid text-center\"><strong>No Placeline</strong></div>\n</div>\n",
                 styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n:host {\n  margin: 30px 0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.segment {\n  border-radius: 4px;\n  padding-right: 18px;\n}\n.active-segment {\n  background: rgba(255, 255, 255, 0.75);\n}\n.trip-status {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  text-align: center;\n  color: #52616A;\n  margin-bottom: 20px;\n  position: relative;\n}\n.trip-status .status-main {\n  font-size: 31px;\n  font-weight: 600;\n}\n.trip-status .status-sub {\n  color: #798E9B;\n  font-size: 12px;\n}\n.ht-breadcrumb {\n  padding-bottom: 19px;\n}\n.card {\n  margin-bottom: 9px;\n}\n.card .action-img {\n  margin: 0 auto;\n}\n.card .content-right {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  position: relative;\n  text-align: center;\n}\n.driver-container {\n  margin-bottom: 20px;\n  border-bottom: 1px solid #C9D6DE;\n  padding-bottom: 16px;\n}\n.driver-container .text-muted {\n  color: #A9BAC4;\n}\n.task-status {\n  padding-bottom: 20px;\n  text-align: center;\n  color: #52616A;\n}\n.time-container {\n  width: 84px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  text-align: right;\n  padding-right: 20px;\n  padding-bottom: 16px;\n  z-index: 5;\n  color: #52616A;\n}\n.time-container .target-status {\n  font-size: 10px;\n}\n.time-container .timestamp {\n  font-size: 14px;\n  color: #52616A;\n}\n.time-container .text-muted {\n  color: #A9BAC4;\n  font-size: 12px;\n}\n.time-container .timestamp-text {\n  font-size: 12px;\n  color: #52616A;\n  font-weight: 700;\n}\n.time-container-mid {\n  height: 100%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: end;\n      -ms-flex-pack: end;\n          justify-content: flex-end;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.pipe {\n  width: 20px;\n  min-width: 20px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  z-index: 1;\n}\n.pipe .bar {\n  height: 100%;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.pipe .big {\n  outline: 2px solid;\n}\n.pipe .solid {\n  border-right: 3px solid #798E9B;\n}\n.pipe .line {\n  border-right: 3px dotted #798E9B;\n}\n.pipe .line-border {\n  border-right: 3px dotted #798E9B;\n  outline: 0;\n}\n.pipe .light {\n  border-right: 3px dashed rgba(121, 142, 155, 0.4);\n}\n.pipe .fade {\n  border-right: 3px solid rgba(121, 142, 155, 0.14);\n}\n.timeline-detail {\n  padding-bottom: 22px;\n  position: relative;\n  padding-left: 16px;\n  min-height: 66px;\n}\n.timeline-detail .task-action {\n  font-size: 16px;\n  color: #52616A;\n  text-transform: capitalize;\n  margin-bottom: 4px;\n  -webkit-transition: font-size 0.4s;\n  transition: font-size 0.4s;\n}\n.timeline-detail .action-title {\n  font-size: 16px;\n  color: #52616A;\n  text-transform: capitalize;\n  -webkit-transition: font-size 0.4s;\n  transition: font-size 0.4s;\n  font-weight: 700;\n}\n.timeline-detail .task-detail {\n  background: #fff;\n  padding: 6px 10px;\n  color: #52616A;\n  -webkit-transition: font-size 0.4s;\n  transition: font-size 0.4s;\n}\n.timeline-detail .task-icon {\n  position: absolute;\n  left: -23px;\n  top: -2px;\n}\n.timeline-detail .task-ontime-status {\n  color: #55ad58;\n  padding-bottom: 4px;\n  font-size: 11px;\n  -webkit-transition: font-size 0.4s;\n  transition: font-size 0.4s;\n}\n.timeline-detail .text-late {\n  color: #E6413E;\n}\n.selected-task .task-action {\n  font-size: 18px;\n}\n.selected-task .task-detail {\n  font-size: 13px;\n}\n.selected-task .task-ontime-status {\n  font-size: 13px;\n}\n.trip-event .pipe {\n  padding-top: 7px;\n}\n.trip-event .time-container {\n  padding-bottom: 24px;\n}\n.segment-dot {\n  width: 25px;\n  height: 25px;\n  border-radius: 50%;\n  background: #fff;\n  position: absolute;\n  top: -1px;\n  left: -23px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  z-index: 2;\n}\n.a-dot {\n  width: 9px;\n  height: 9px;\n  border-radius: 50%;\n  background: #fff;\n  border: 2px solid #798E9B;\n  position: absolute;\n  top: -4px;\n  left: -14px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  background-color: white;\n  z-index: 2;\n}\n.activity-dot {\n  border: 1px solid #798E9B;\n  font-size: 10px;\n}\n.activity-dot-ended {\n  background: #798E9B;\n  color: #fff;\n}\n.trip-dot {\n  border: 0px solid #5496F8;\n  background: #5496F8;\n}\n.trip-dot .pulse {\n  background: #5496F8;\n}\n.stop-dot {\n  border: 0px solid #5496F8;\n  background: #5496F8;\n}\n.stop-dot .pulse {\n  background: #5496F8;\n}\n@-webkit-keyframes pulse {\n  0% {\n    -webkit-transform: scale(0.3, 0.3);\n            transform: scale(0.3, 0.3);\n    opacity: 0.9;\n  }\n  100% {\n    -webkit-transform: scale(3, 3);\n            transform: scale(3, 3);\n    opacity: 0;\n  }\n}\n@keyframes pulse {\n  0% {\n    -webkit-transform: scale(0.3, 0.3);\n            transform: scale(0.3, 0.3);\n    opacity: 0.9;\n  }\n  100% {\n    -webkit-transform: scale(3, 3);\n            transform: scale(3, 3);\n    opacity: 0;\n  }\n}\n.ranges li.active {\n  background: #52616A;\n  border-color: #52616A;\n}\n.ranges li {\n  color: #52616A;\n}\n.ranges li:hover {\n  background: #52616A;\n  border-color: #52616A;\n}\n.pulse {\n  border-radius: 50%;\n  height: 25px;\n  width: 25px;\n  -webkit-animation: pulse 3s ease-out;\n          animation: pulse 3s ease-out;\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n  position: absolute;\n  z-index: 10;\n  opacity: 1;\n  margin: auto;\n}\n.trip {\n  color: #5496F8;\n  border-color: #5496F8 !important;\n}\n.stop {\n  color: #FFBB44;\n  border-color: #FFBB44 !important;\n}\n.no-info {\n  color: #FFBB44;\n  border-color: #A9BAC4 !important;\n}\n.ht-faded {\n  opacity: 0.4;\n}\n.action {\n  position: absolute;\n  top: 6px;\n  padding: 3px;\n  font-size: 19px;\n  color: #798E9B;\n}\n.action-left {\n  left: 11px;\n  font-size: 35px;\n  color: #A9BAC4;\n}\n.action-left:hover {\n  color: #798E9B;\n}\n.text-sm {\n  font-size: 11px;\n  color: #52616A;\n  padding-bottom: 7px;\n}\n.title {\n  font-size: 13px;\n  font-weight: bold;\n}\n.activity-card {\n  padding: 6px 10px;\n  color: #52616A;\n  -webkit-transition: font-size 0.4s;\n  transition: font-size 0.4s;\n  font-size: 13px;\n  position: relative;\n  cursor: pointer;\n}\n.activity-card-selected {\n  background: #fff;\n}\n.activity-card-selected:hover {\n  background: #fff;\n}\n.activity-card .close-card {\n  position: absolute;\n  top: -3px;\n  right: -3px;\n  color: #52616A;\n  height: 14px;\n  width: 14px;\n  border-radius: 50%;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.activity-card .close-card .fa {\n  margin: auto;\n}\n.action-card {\n  background: #fff;\n  padding: 3px 11px;\n  border: 1px solid #C9D6DE;\n  font-size: 11px;\n  cursor: pointer;\n  color: #52616A;\n  margin-left: -127px;\n  padding-left: 134px;\n  margin-top: -9px;\n  min-height: 50px;\n  -webkit-box-shadow: 1px 2px 2px 0px rgba(0, 0, 0, 0.07);\n          box-shadow: 1px 2px 2px 0px rgba(0, 0, 0, 0.07);\n}\n.action-card:hover {\n  border: 1px solid #798E9B;\n}\n.action-card-active {\n  border: 1px solid #798E9B;\n}\n.trip-border {\n  border-color: #5496F8 !important;\n  outline-color: #5496F8 !important;\n}\n.stop-border {\n  border-color: #FFBB44 !important;\n  outline-color: #FFBB44 !important;\n}\n.no-info-border {\n  border-color: #A9BAC4 !important;\n  outline-color: #A9BAC4 !important;\n}\n.warning-border {\n  border-color: #d19191 !important;\n  outline-color: #d19191 !important;\n}\n.trip-bg {\n  background: #5496F8;\n}\n.stop-bg {\n  background: #FFBB44;\n}\n.no-info-bg {\n  background: #A9BAC4;\n}\n.warning-bg {\n  background: #d19191;\n}\n.trip-color {\n  color: #5496F8;\n}\n.stop-color {\n  color: #ffb025;\n}\n.no-info-color {\n  color: #A9BAC4;\n}\n.warning-color {\n  color: #d19191;\n}\n.table {\n  margin: 7px 0;\n  font-size: 11px;\n}\n.activity-stats {\n  font-size: 12px;\n  font-weight: bold;\n}\n.heatbeat {\n  padding-left: 12px;\n  font-size: 13px;\n}\n"],
                 changeDetection: ChangeDetectionStrategy.OnPush
             },] },
@@ -1816,11 +1664,11 @@ PlacelineComponent.ctorParameters = function () { return [
     { type: ChangeDetectorRef, },
 ]; };
 PlacelineComponent.propDecorators = {
-    "segmentId": [{ type: Output },],
+    "highlightedSegmentId": [{ type: Output },],
     "hoveredAction": [{ type: Output },],
     "selectedSegment": [{ type: Output },],
     "userData": [{ type: Input },],
-    "selectedPartialSegmentId": [{ type: Input },],
+    "selectedSegmentId": [{ type: Input },],
     "isMobile": [{ type: Input },],
 };
 /**
@@ -1860,6 +1708,7 @@ var PlacelineContainerComponent = (function () {
      * @return {?}
      */
     PlacelineContainerComponent.prototype.ngOnInit = function () {
+        this.selectedSegmentId$ = this.userClientService.placeline.segmentResetId$;
         this.userData$ = this.userClientService.placeline.data$;
         if (this.userId) {
             this.userClientService.placeline.setId(this.userId);
@@ -1869,7 +1718,7 @@ var PlacelineContainerComponent = (function () {
      * @param {?} segmentId
      * @return {?}
      */
-    PlacelineContainerComponent.prototype.onSegmentId = function (segmentId) {
+    PlacelineContainerComponent.prototype.onHighlightSegment = function (segmentId) {
         this.userClientService.placeline.setSegmentSelectedId(segmentId);
     };
     /**
@@ -1877,11 +1726,7 @@ var PlacelineContainerComponent = (function () {
      * @return {?}
      */
     PlacelineContainerComponent.prototype.onSelectSegmentId = function (segmentId) {
-        var _this = this;
         this.userClientService.placeline.setSegmentResetMapId(segmentId);
-        setTimeout(function () {
-            _this.userClientService.placeline.setSegmentResetMapId(null);
-        });
     };
     /**
      * @return {?}
@@ -1895,7 +1740,7 @@ var PlacelineContainerComponent = (function () {
 PlacelineContainerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-placeline-container',
-                template: "<div class=\"flex-column column-gap-10\" *ngIf=\"userData$ | async as userData; else loading\">\n  <ht-user-card *ngIf=\"showUserCard\" [user]=\"userData\"></ht-user-card>\n  <ht-placeline (selectedSegment)=\"onSelectSegmentId($event)\" (segmentId)=\"onSegmentId($event)\" [userData]=\"userData\"></ht-placeline>\n</div>\n<ng-template #loading>\n  <ht-loading-dots class=\"text-1 text-center flex-row\"></ht-loading-dots>\n</ng-template>\n",
+                template: "<div class=\"flex-column column-gap-10\" *ngIf=\"userData$ | async as userData; else loading\">\n  <ht-user-card *ngIf=\"showUserCard\" [user]=\"userData\"></ht-user-card>\n  <ht-placeline [selectedSegmentId]=\"selectedSegmentId$ | async\" (selectedSegment)=\"onSelectSegmentId($event)\" (highlightedSegmentId)=\"onHighlightSegment($event)\" [userData]=\"userData\"></ht-placeline>\n</div>\n<ng-template #loading>\n  <ht-loading-dots class=\"text-1 text-center flex-row\"></ht-loading-dots>\n</ng-template>\n",
                 styles: [".text-center {\n  text-align: center;\n}\n.text-muted {\n  color: #798E9B;\n}\n.text-right {\n  text-align: right;\n}\n.text-left {\n  text-align: left;\n}\n.text-1 {\n  font-size: 2em;\n}\n.text-4 {\n  font-size: 0.8em;\n}\n.text-capitalize {\n  text-transform: capitalize;\n}\n.text-uppercase {\n  text-transform: uppercase;\n}\n.text-ontime {\n  color: #58ae5b;\n}\n.text-late {\n  color: #E6413E;\n}\n.text-warning {\n  color: #E6413E !important;\n}\n.text-red {\n  color: #E6413E;\n}\n.text-blue {\n  color: #5496F8;\n}\n.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.flex-row {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n}\n.flex-column {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.column-gap-4 > :not(:last-child) {\n  margin-bottom: 4px;\n}\n.row-gap-4 > :not(:last-child) {\n  margin-right: 4px;\n}\n.column-gap-7 > :not(:last-child) {\n  margin-bottom: 7px;\n}\n.row-gap-7 > :not(:last-child) {\n  margin-right: 7px;\n}\n.column-gap-10 > :not(:last-child) {\n  margin-bottom: 10px;\n}\n.row-gap-10 > :not(:last-child) {\n  margin-right: 10px;\n}\n.column-gap-20 > :not(:last-child) {\n  margin-bottom: 20px;\n}\n.row-gap-20 > :not(:last-child) {\n  margin-right: 20px;\n}\n.wrap {\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.flex {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.auto {\n  margin: auto;\n}\n.relative {\n  position: relative;\n}\n.space-between {\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n}\n.space-around {\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n}\n.justify-center {\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.flex-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.align-center {\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.clickable {\n  cursor: pointer;\n}\n.round-icon {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  width: 23px;\n  height: 23px;\n  background: #315790;\n  border-radius: 50%;\n}\n.flex-half {\n  -ms-flex-preferred-size: 50%;\n      flex-basis: 50%;\n}\n.link-unstyled {\n  color: inherit;\n}\n.link-unstyled:hover {\n  text-decoration: none;\n}\n.half {\n  width: 50%;\n}\n.noselect {\n  -webkit-touch-callout: none;\n  /* iOS Safari */\n  -webkit-user-select: none;\n  /* Chrome/Safari/Opera */\n  /* Konqueror */\n  -moz-user-select: none;\n  /* Firefox */\n  -ms-user-select: none;\n  /* Internet Explorer/Edge */\n  user-select: none;\n  /* Non-prefixed version, currently\n                                  not supported by any browser */\n}\n.hover-shadow:hover {\n  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent {\n  opacity: 0.4;\n}\n.marker-fade {\n  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);\n          filter: contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning {\n  background: #e04745;\n  color: #fff;\n}\n.tooltip-warning-arrow {\n  border-right-color: #e04745 !important;\n}\n.tooltip-info {\n  background: #5496F8;\n  color: #fff;\n}\n.tooltip-info-arrow {\n  border-right-color: #5496F8 !important;\n}\na {\n  color: inherit;\n  text-decoration: none;\n}\na:hover {\n  color: inherit;\n  text-decoration: none;\n}\na:active {\n  color: inherit;\n  text-decoration: none;\n}\na:focus {\n  outline: none;\n  color: inherit;\n  text-decoration: none;\n}\n.spinner-wave {\n  margin: 0 auto;\n  width: 100px;\n  height: 20px;\n  text-align: center;\n}\n.spinner-wave > div {\n  background-color: #5496F8;\n  height: 100%;\n  width: 6px;\n  display: inline-block;\n  -webkit-animation: wave 1.2s infinite ease-in-out;\n  animation: wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2) {\n  -webkit-animation-delay: -1.1s;\n  animation-delay: -1.1s;\n}\n.spinner-wave div:nth-child(3) {\n  -webkit-animation-delay: -1s;\n  animation-delay: -1s;\n}\n.spinner-wave div:nth-child(4) {\n  -webkit-animation-delay: -0.9s;\n  animation-delay: -0.9s;\n}\n.spinner-wave div:nth-child(5) {\n  -webkit-animation-delay: -0.8s;\n  animation-delay: -0.8s;\n}\n@-webkit-keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n  }\n}\n@keyframes wave {\n  0%,\n  40%,\n  100% {\n    -webkit-transform: scaleY(0.4);\n            transform: scaleY(0.4);\n  }\n  20% {\n    -webkit-transform: scaleY(1);\n            transform: scaleY(1);\n  }\n}\n@media screen and (max-width: 480px) {\n  .hide-xs {\n    display: none !important;\n  }\n}\n@media screen and (min-width: 480px) {\n  .show-xs {\n    display: none !important;\n  }\n}\n.ht-btn {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  padding: 5px 13px;\n  border: 0;\n  background: #ffffff;\n  color: #52616A;\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus {\n  background: #fcfcfc;\n  outline: 0;\n}\n.ht-btn-card:hover {\n  background: #5496F8;\n  color: rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color {\n  color: #FFBB44;\n}\n.drive-color {\n  color: #5496F8;\n}\n.walk-color {\n  color: #5496F8;\n}\n.moving-color {\n  color: #5496F8;\n}\n.logged_off-color {\n  color: #A9BAC4;\n}\n.network_offline-color {\n  color: #d19191;\n}\n.location_disabled-color {\n  color: #d19191;\n}\n.location_low_accuracy-color {\n  color: #d19191;\n}\n.stopped-bg {\n  background: #FFBB44;\n}\n.drive-bg {\n  background: #5496F8;\n}\n.walk-bg {\n  background: #5496F8;\n}\n.moving-bg {\n  background: #5496F8;\n}\n.logged_off-bg {\n  background: #A9BAC4;\n}\n.network_offline-bg {\n  background: #d19191;\n}\n.location_disabled-bg {\n  background-color: #d19191;\n}\n.location_low_accuracy-bg {\n  background-color: #d19191;\n}\n:host {\n  max-width: 500px;\n}\nht-loading-dots {\n  width: 100%;\n  margin-top: 20%;\n}\n"],
             },] },
 ];
@@ -2745,7 +2590,8 @@ var MapContainerComponent = (function () {
         });
         this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
             roots: ['segments', 'actions'],
-            filter$: this.userClientService.placeline.segmentSelectedId$,
+            highlighted$: this.userClientService.placeline.segmentSelectedId$,
+            filter$: this.userClientService.placeline.segmentResetId$,
             resetMap$: this.userClientService.placeline.segmentResetId$
         });
         var /** @type {?} */ loading$1 = this.userClientService.placeline.loading$
@@ -3158,12 +3004,12 @@ DateRangeComponent.decorators = [
                 animations: [
                     trigger('calender-appear', [
                         transition(":leave", [
-                            style({ opacity: 1, height: '*' }),
-                            animate('200ms ease-in', style({ opacity: 0, height: 0 }))
+                            style({ pointerEvents: 'none' }),
+                            animate('150ms ease-in', style({ opacity: 0, top: "-10px" }))
                         ]),
                         transition(":enter", [
-                            style({ opacity: 0, height: 0 }),
-                            animate('200ms ease-out', style({ opacity: 1, height: '*' }))
+                            style({ opacity: 0, height: 0, top: "-10px" }),
+                            animate('150ms ease-out')
                         ]),
                     ])
                 ]
@@ -6296,5 +6142,5 @@ HtModule.ctorParameters = function () { return []; };
 /**
  * Generated bundle index. Do not edit.
  */
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbo, ActionTableModule as ɵbn, ActionsAnalyticsListComponent as ɵbp, ActionsAnalyticsListModule as ɵbm, ActionsSummaryChartComponent as ɵbr, ActionsSummaryChartModule as ɵbq, AnalyticsItemLoadComponent as ɵbt, AnalyticsItemLoadModule as ɵbs, AnalyticsItemComponent as ɵby, AnalyticsSlotDirective as ɵbx, AnalyticsItemsService as ɵbw, AnalyticsSelectorComponent as ɵbz, AnalyticsTagsComponent as ɵbl, AnalyticsTagsModule as ɵbk, AnalyticsTitleComponent as ɵca, AnalyticsMapContainerComponent as ɵbv, AnalyticsMapContainerModule as ɵbu, DataTableComponent as ɵbj, DataTableModule as ɵbi, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbh, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵcc, HtActionsService as ɵcb, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbl, ActionTableModule as ɵbk, ActionsAnalyticsListComponent as ɵbm, ActionsAnalyticsListModule as ɵbj, ActionsSummaryChartComponent as ɵbo, ActionsSummaryChartModule as ɵbn, AnalyticsItemLoadComponent as ɵbq, AnalyticsItemLoadModule as ɵbp, AnalyticsItemComponent as ɵbv, AnalyticsSlotDirective as ɵbu, AnalyticsItemsService as ɵbt, AnalyticsSelectorComponent as ɵbw, AnalyticsTagsComponent as ɵbi, AnalyticsTagsModule as ɵbh, AnalyticsTitleComponent as ɵbx, AnalyticsMapContainerComponent as ɵbs, AnalyticsMapContainerModule as ɵbr, DataTableComponent as ɵbg, DataTableModule as ɵbf, EntitySearchComponent as ɵbd, EntitySearchModule as ɵbc, UsersFilterComponent as ɵbe, UsersFilterModule as ɵbb, GroupsChartService as ɵz, HtAccountService as ɵbz, HtActionsService as ɵby, MAP_TYPE as ɵa, MapComponent as ɵba, ActionSortingStringPipe as ɵq, ActionStatusStringPipe as ɵn, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵr, SafeUrlPipe as ɵo, TimeStringPipe as ɵe, UserSortingStringPipe as ɵp, UsersStatusStringPipe as ɵm, BatteryIconComponent as ɵc, ButtonComponent as ɵs, DropdownDirective as ɵu, LoadingBarComponent as ɵt, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, UsersSummaryContainerComponent as ɵy, UsersSummaryContainerModule as ɵv, UsersSummaryComponent as ɵx, UsersSummaryModule as ɵw };
 //# sourceMappingURL=ht-angular.js.map

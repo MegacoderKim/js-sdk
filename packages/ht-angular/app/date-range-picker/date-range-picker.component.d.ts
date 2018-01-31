@@ -31,10 +31,11 @@ export declare class DateRangePickerComponent implements OnInit, OnChanges {
     selectedDate$: BehaviorSubject<string | null>;
     hoveredDate: BehaviorSubject<string | null>;
     days: string[];
-    month$: any;
+    month$: Observable<{
+        display: string;
+    }>;
     currentDateStyle$: Observable<IDateStyle>;
-    display: any;
-    hint$: any;
+    display: string;
     customDates: {
         label: string;
         range: {
@@ -44,7 +45,7 @@ export declare class DateRangePickerComponent implements OnInit, OnChanges {
         isSingleDay: boolean;
         hasToday: boolean;
     }[];
-    customDates$: any;
+    customDates$: any[];
     constructor();
     ngOnInit(): void;
     ngOnChanges(): void;
@@ -52,7 +53,7 @@ export declare class DateRangePickerComponent implements OnInit, OnChanges {
     changeMonth(inc: number): void;
     generateDates(monthStart: Date, dateStyle: IDateStyle): IDay[][];
     getDay(date: Date, monthStart: Date, dateStyle: IDateStyle): IDay;
-    isHovered(date: any, dateStyle: IDateStyle): boolean;
+    isHovered(date: Date, dateStyle: IDateStyle): boolean;
     setDateRange(range: IDateRange): void;
     setDate(date: IDay): void;
     getRangeFromStyle({selectedRange, hoveredDate}: IDateStyle): Partial<IDateRange>;

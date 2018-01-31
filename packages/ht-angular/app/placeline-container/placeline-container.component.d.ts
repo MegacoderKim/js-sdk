@@ -5,9 +5,10 @@ export declare class PlacelineContainerComponent implements OnInit, OnDestroy {
     userId: string | null;
     showUserCard: boolean;
     userData$: any;
+    selectedSegmentId$: any;
     constructor(userClientService: HtUsersService);
     ngOnInit(): void;
-    onSegmentId(segmentId: string): void;
-    onSelectSegmentId(segmentId: string): void;
+    onHighlightSegment(segmentId: string): void;
+    onSelectSegmentId(segmentId: string | null): void;
     ngOnDestroy(): void;
 }

@@ -4,7 +4,7 @@
   "lib": {
     "languageLevel": [ "dom", "es2017" ],
     "entryFile": "./index.ts",
-    "externals": {
+    "umdModuleIds": {
       "underscore": "_",
       "moment-mini": "moment",
       "ht-models": "htModels",
