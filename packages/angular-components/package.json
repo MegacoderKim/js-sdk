@@ -40,7 +40,7 @@
     "copy:styles": "copyfiles -u 2 src/styles/**/* ../ht-angular/src/styles",
     "doc": "typedoc -f --out doc src/app",
     "copyback": "copyfiles -u 2 ../ht-angular/package.json src/",
-    "prepublish": "npm run copyback",
+    "postversion": "npm run copyback",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
