@@ -12,10 +12,8 @@ import {LoadingDataComponent} from './loading-data/loading-data.component';
 import {DateHumanizePipe} from "../pipes/date-humanize.pipe";
 import {DistanceLocalePipe} from './../pipes/distance-locale.pipe';
 import {HmStringPipe} from './../pipes/hm-string.pipe';
-import {SnackbarComponent} from './snackbar/snackbar.component';
 import {UsersStatusStringPipe} from './../pipes/users-status-string.pipe';
 import {ActionStatusStringPipe} from './../pipes/action-status-string.pipe';
-import {SafeHtmlPipe} from "../pipes/safe-html.pipe";
 import {UserSortingStringPipe} from '../pipes/user-sorting-string.pipe';
 import {ActionSortingStringPipe} from '../pipes/action-sorting-string.pipe';
 import {SafeUrlPipe} from "../pipes/safe-url.pipe";
@@ -41,10 +39,8 @@ import { DropdownDirective } from './dropdown/dropdown.directive';
     DateHumanizePipe,
       DistanceLocalePipe,
       HmStringPipe,
-    SnackbarComponent,
     UsersStatusStringPipe,
     ActionStatusStringPipe,
-    SafeHtmlPipe,
     SafeUrlPipe,
     UserSortingStringPipe,
     ActionSortingStringPipe,
@@ -65,10 +61,8 @@ import { DropdownDirective } from './dropdown/dropdown.directive';
     DateHumanizePipe,
     DistanceLocalePipe,
     HmStringPipe,
-    SnackbarComponent,
     UsersStatusStringPipe,
     ActionStatusStringPipe,
-    SafeHtmlPipe,
     SafeUrlPipe,
     UserSortingStringPipe,
     ActionSortingStringPipe,

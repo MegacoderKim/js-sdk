@@ -2,9 +2,9 @@
   <div
     class="flex-row segment"
     (click)="selectInUserData(segment)"
-    [class.active-segment]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id"
-    (mouseenter)="selectActivity(segment.id)"
-    (mouseleave)="selectActivity(null)"
+    [class.active-segment]="(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id"
+    (mouseenter)="highlightActivity(segment.id)"
+    (mouseleave)="highlightActivity(null)"
     *ngFor="let segment of placelineMod; trackBy:indexPlaceline; let last = last">
     <div class="time-container action-time">
       <div class="target-status text-muted">
@@ -20,7 +20,7 @@
       <!--</div>-->
     </div>
     <div class="pipe">
-      <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>
+      <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>
     </div>
     <div class="flex-column flex timeline-detail">
       <div class="activity-dot segment-dot" [class.activity-dot-ended]="segment.actionEnded" *ngIf="segment.actionD"><div class="auto">{{segment.actionD}} </div></div>
@@ -46,7 +46,7 @@
         <!--<pre>-->
         <!--{{segment | json}}-->
         <!--</pre>-->
-        <div class="activity-card flex-column" [class.activity-card-selected]="selectedPartialSegmentId == segment.id" *ngIf="segment.activityText">
+        <div class="activity-card flex-column" *ngIf="segment.activityText">
           <div [ngClass]="segment.activityColor">
             {{segment.activityText | nameCase}}
           </div>
@@ -68,10 +68,10 @@
             </tr>
             </tbody>
           </table>
-          <div class="text-muted" *ngIf="selectedPartialSegmentId == segment.id && segment.place">
+          <div class="text-muted" *ngIf="selectedSegmentId == segment.id && segment.place">
             {{segment.place.address}}
           </div>
-          <div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
+          <div class="close-card" *ngIf="selectedSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
             <i class="fa fa-times-circle fa-2x"></i>
           </div>
         </div>

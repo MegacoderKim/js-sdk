@@ -2,28 +2,24 @@ import {
   Component, OnInit, Input,
   ChangeDetectionStrategy, OnChanges, Output, EventEmitter
 } from '@angular/core';
-import {DateRange} from "ht-client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {
-  addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange,
+  addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange,
   startOfMonth,
   startOfWeek
 } from "date-fns";
-import {of} from "rxjs/observable/of";
-import {distinctUntilChanged, map, take, tap} from "rxjs/operators";
+import {distinctUntilChanged, map, take} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {DateRangeLabelMap, isSameDateRange} from "ht-data";
+import {dateRangeDisplay} from "ht-utility";
 
-export interface NgDateRangePickerOptions {
-  theme: 'default' | 'green' | 'teal' | 'cyan' | 'grape' | 'red' | 'gray';
-  range: 'tm' | 'lm' | 'lw' | 'tw' | 'ty' | 'ly';
-  dayNames: string[];
-  presetNames: string[];
-  dateFormat: string;
-  outputFormat: string;
-  startOfWeek: number;
+export interface IDateRangePickerOptions {
+  hideSingleDay?: boolean,
+  isRight?: boolean,
+  datePicker?: boolean
+  hideCalender?: boolean
 }
 
 export interface IDay {
@@ -45,12 +41,6 @@ export interface IDay {
   isWithinRange?: boolean;
 }
 
-// export let DATERANGEPICKER_VALUE_ACCESSOR: any = {
-//   provide: NG_VALUE_ACCESSOR,
-//   useExisting: forwardRef(() => NgDateRangePickerComponent),
-//   multi: true
-// };
-
 @Component({
   selector: 'ht-date-range-picker',
   templateUrl: './date-range-picker.component.html',
@@ -59,11 +49,10 @@ export interface IDay {
 })
 export class DateRangePickerComponent implements OnInit, OnChanges {
   @Input() dateRange: IDateRange;
-  @Input() options: {
-    hideSingleDay: boolean,
-    isRight: boolean
-  };
+  @Input() date: string;
+  @Input() options: IDateRangePickerOptions = {};
   @Output() onRangeChange: EventEmitter<IDateRange> = new EventEmitter<IDateRange>();
+  @Output() onDateChange: EventEmitter<string> = new EventEmitter<string>();
   currentMonthStart$: BehaviorSubject<Date>;
   dates$: Observable<IDay[][]>;
   // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
@@ -78,12 +67,11 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
     'Fri',
     'Sat'
   ];
-  month$;
+  month$: Observable<{display: string}>;
   currentDateStyle$: Observable<IDateStyle>;
-  display$;
-  hint$;
+  display: string;
   customDates = DateRangeLabelMap;
-  customDates$;
+  customDates$: any[];
   constructor() {
     let monthStart = startOfMonth(new Date());
     this.currentMonthStart$ = new BehaviorSubject<Date>(monthStart);
@@ -96,11 +84,18 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    if(this.options.datePicker) {
+      this.dateRange = {end: this.date, start: this.date};
+    }
+    this.initDateRange(this.dateRange);
+    this.display = dateRangeDisplay(this.dateRange)
+  }
 
+  initDateRange(range: IDateRange) {
     this.customDates$ = this.customDates.filter(customRange => {
       return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
     }).map((customRange) => {
-      return isSameDateRange(customRange.range, this.dateRange) ? {...customRange, isActive: true} : {...customRange}
+      return isSameDateRange(customRange.range, range) ? {...customRange, isActive: true} : {...customRange}
     });
 
     this.currentDateStyle$ = combineLatest(
@@ -111,7 +106,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
         distinctUntilChanged()
       ),
       (selectedDate: string | null, hoveredDate: string | null) => {
-        let dateRange = this.dateRange;
+        let dateRange = range;
         let selectedRange;
         let display;
         if (selectedDate && hoveredDate) {
@@ -123,11 +118,15 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
             display = [format(selectedDate, 'DD MMM'), null]
           }
         } else if(selectedDate) {
-          selectedRange = {start: selectedDate};
+          selectedRange = {end: selectedDate};
           display = [format(selectedDate, 'DD MMM'), null]
         } else {
           selectedRange = dateRange;
           display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')]
+        }
+
+        if (this.options.datePicker) {
+          display = [format(dateRange.start, 'DD MMM')]
         }
 
         return {
@@ -154,22 +153,13 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
           display: format(date, 'MMM YY')
         }
       })
-    )
+    );
 
-    this.hint$ = this.selectedDate$.pipe(
-      map((date) => {
-        return date ? 'Select end date' : ""
-      })
-    )
   }
 
   changeMonth(inc: number) {
-    this.currentMonthStart$.pipe(
-      take(1)
-    ).subscribe((month) => {
-      month = addMonths(new Date(month), inc);
-      this.currentMonthStart$.next(month)
-    })
+    let month = addMonths(new Date(this.currentMonthStart$.getValue()), inc);
+    this.currentMonthStart$.next(month)
   }
 
   generateDates(monthStart: Date, dateStyle: IDateStyle) {
@@ -220,7 +210,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
     }
   };
 
-  isHovered(date, dateStyle: IDateStyle): boolean {
+  isHovered(date: Date, dateStyle: IDateStyle): boolean {
     let hovered = dateStyle.hoveredDate;
     let start = dateStyle.selectedRange.start || hovered;
     let end = dateStyle.selectedRange.end || hovered || start;
@@ -234,8 +224,12 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   setDateRange(range: IDateRange) {
-    this.onRangeChange.next(range)
-    // this.dateRangeService.data$.next(range)
+    range = {start: range.start, end: endOfDay(range.end).toISOString()};
+    this.onRangeChange.next(range);
+  }
+
+  setDate(date: IDay) {
+    this.onDateChange.next(date.timeStamp);
   }
 
   getRangeFromStyle({selectedRange, hoveredDate}: IDateStyle): Partial<IDateRange> {
@@ -253,13 +247,18 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
 
   pickDate(date: IDay) {
     if (date.isInvalid) return false;
-    this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
-      if(dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
-        this.setDateFromDayRange(date, dateStyle)
-      } else {
-        this.selectedDate$.next(new Date(date.date).toISOString())
-      }
-    });
+    if(this.options.datePicker) {
+      this.setDate(date)
+    } else {
+      this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
+        if(dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
+          this.setDateFromDayRange(date, dateStyle)
+        } else {
+          this.selectedDate$.next(new Date(date.date).toISOString())
+        }
+      });
+    }
+
   };
 
   setDateFromDayRange(date: IDay, dateStyle: IDateStyle) {
@@ -273,20 +272,19 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   hoverDate(date: IDay | null) {
     let timeStamp = date ? new Date(date.date).toISOString() : null;
     if (timeStamp) {
-      this.selectedDate$.pipe(take(1)).subscribe(selected => {
-        if (selected) this.hoveredDate.next(timeStamp)
-      })
+      let selected = this.selectedDate$.getValue();
+      if (selected) this.hoveredDate.next(timeStamp)
     } else {
       this.hoveredDate.next(timeStamp)
     }
 
   };
 
-  indexBy(a, v: IDay) {
+  indexBy(a: any, v: IDay) {
     return v.timeStamp;
   }
 
-  indexByWeek(a, v: IDay[]) {
+  indexByWeek(a: any, v: IDay[]) {
     return v[0].timeStamp;
   }
 
@@ -304,5 +302,5 @@ export interface IDateStyle {
   // selectedDates?: string[],
   selectedRange?: Partial<IDateRange>
   hoveredDate: string | null,
-  display?: [string | null, string | null],
+  display?: Array<string | null>,
 }

@@ -3,12 +3,14 @@ import {HtBounds, HtMap} from "../map-utils/interfaces";
 import { HtPosition } from "ht-models";
 import * as _ from "underscore";
 import {MapInstance} from "../map-utils/map-instance";
+import {IPathBearingTime} from "ht-models";
 
 export interface IMarkersBase {
   getStyle: (styleType?) => object;
   getPosition: (data) => HtPosition;
   forceExtendBounds?: boolean;
-  mapInstance: MapInstance
+  mapInstance: MapInstance;
+  toNotSetMap?: boolean;
 }
 
 export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
@@ -28,9 +30,12 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       return this.mapInstance.mapUtils.extendItemBounds(item, bounds, this.forceExtendBounds);
     }
 
-    update({ item, data }) {
-      let position = this.getPosition(data);
+    update({ item, data }, positionBearing?: IPathBearingTime) {
+      let pathPosition = positionBearing && positionBearing.path.length ?
+        positionBearing.path[positionBearing.path.length - 1] : null;
+      let position = pathPosition || this.getPosition(data);
       if (position) this.mapInstance.mapUtils.updatePosition(item, position);
+      if (!this.toNotSetMap) this.mapInstance.mapUtils.setMap(item, this.mapInstance.map);
     }
 
     removeItem(item) {
@@ -42,6 +47,11 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
         this.removeItem(entity.item);
       });
       this.entities = {};
+    }
+
+    clear() {
+      const entities = this.entities;
+      this.removeAll(entities)
     }
 
     removeData(data) {

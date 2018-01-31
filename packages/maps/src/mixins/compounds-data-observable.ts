@@ -12,6 +12,8 @@ import { HtPosition} from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { orCombine } from "ht-data";
 import {MapInstance} from "../map-utils/map-instance";
+import {take} from "rxjs/operator/take";
+import {skip, skipUntil} from "rxjs/operators";
 
 export interface ICompoundsDataObservableBase {
   trace: (data, map?) => any;
@@ -74,9 +76,11 @@ export function CompoundDataObservableMixin<
             (data, hide) => (!!hide ? null : data)
           )
         : data$;
-
+      if (config.roots && config.highlighted$) {
+        dataSource$ = dataWithSelectedId$(dataSource$, config.highlighted$, config.roots, 'highlightedSegment');
+      }
       if (config.roots && filter$)
-        dataSource$ = dataWithSelectedId$(dataSource$, filter$, config.roots);
+        dataSource$ = dataWithSelectedId$(dataSource$, filter$, config.roots, 'selectedSegment');
 
       this.dataSource$ = dataSource$;
 
@@ -118,8 +122,10 @@ export function CompoundDataObservableMixin<
       );
 
       let sub = orCombine(
-        newPlaceline$,
-        this.compoundSetDataConfig.resetMap$
+        newPlaceline$.pipe(filter(data => !!data)),
+        this.compoundSetDataConfig.resetMap$.pipe(
+          map(data => true)
+        )
       ).subscribe(toReset => {
         if (toReset) this.mapInstance.resetBounds();
       });
@@ -133,4 +139,5 @@ export interface CompoundSetDataConfig {
   filter$?: Observable<string | null>;
   roots?: string[];
   resetMap$?: Observable<any>;
+  highlighted$?: Observable<string | null>
 }

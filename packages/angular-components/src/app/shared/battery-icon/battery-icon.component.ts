@@ -15,7 +15,7 @@ export class BatteryIconComponent implements OnInit {
   ngOnInit() {
   }
 
-  batteryClass(level) {
+  batteryClass(level: number) {
     let className = '';
     if (level > 90) {
       className = 'fa-battery-4';

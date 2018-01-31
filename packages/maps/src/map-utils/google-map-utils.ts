@@ -344,8 +344,21 @@ export class GoogleMapUtilsClass implements MapUtils {
     return polyline.setPath(path);
   };
 
+
+  setPath(polyline: google.maps.Polyline, path: HtPosition[]) {
+    let newPath = path.map(pos => {
+      return this.getLatlng(pos)
+    })  ;
+    polyline.setPath(newPath)
+  };
+
   getLatlng ({ lat, lng }: HtPosition = { lat: 0, lng: 0 }) {
     return new google.maps.LatLng(lat, lng);
   };
+
+  getItemPosition(item) {
+    let position = item.getPosition();
+    return position ? {lat: position.lat(), lng: position.lng()} : null
+  }
 
 }

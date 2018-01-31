@@ -2,11 +2,11 @@ import { ChangeDetectorRef, EventEmitter, OnInit } from '@angular/core';
 import { IUserData } from "ht-models";
 export declare class PlacelineComponent implements OnInit {
     private ref;
-    segmentId: EventEmitter<{}>;
+    highlightedSegmentId: EventEmitter<{}>;
     hoveredAction: EventEmitter<{}>;
-    selectedSegment: EventEmitter<{}>;
+    selectedSegment: EventEmitter<string | null>;
     userData: IUserData;
-    selectedPartialSegmentId: string;
+    selectedSegmentId: string;
     isMobile: boolean;
     selectedAction: string | null;
     selectedActivity: string | null;
@@ -16,7 +16,7 @@ export declare class PlacelineComponent implements OnInit {
     selectInUserData(segment: any, event?: any): void;
     selectSegment(segment: any, toShow?: boolean): void;
     hoverActivity(activityId: any): void;
-    selectActivity(activityId: any): void;
+    highlightActivity(activityId: any): boolean;
     selectAction(actionId: any): void;
     readonly placelineMod: any[];
     private createActionSegment(actionEvent, activityClass?, seg?);

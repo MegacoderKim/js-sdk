@@ -15,42 +15,46 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtBounds} from "../map-utils/interfaces";
 import {TraceMixin} from "../mixins/trace";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
+import {IPathBearingTime} from "ht-models";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
+import {NameCase} from "ht-utility";
+declare const RichMarkerPosition: any;
 
 export class ActionMarkers {
   name = "Action";
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
-        case "google": {
+        case 'google': {
           return {
             default: {
-              icon: {
-                fillColor: Color.blue,
-                fillOpacity: 1,
-                strokeColor: Color.grey5,
-                strokeOpacity: 1,
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 7,
-                strokeWeight: 4,
-              }
+              flat: true,
+              anchor: RichMarkerPosition.MIDDLE,
+              zIndex: 1
+            },
+            popup: {
+              pixelOffset: new google.maps.Size(0, -5),
             }
           }
         }
-        case "leaflet": {
+        case 'leaflet': {
           return {
             default: {
-              radius: 10,
-              fillColor: Color.stop,
-              fillOpacity: 1,
-              weight: 1,
-              opacity: 1,
-              color: Color.stopDark,
-              pane: 'markerPane'
+              iconAnchor: [12, 12]
+              // iconSize: [35, 35],
+              // className: 'current-action-marker',
+              // iconAnchor: point(15, 43)
+              // iconAnchor: [15, 43]
+            },
+            popup: {
+              // offset: point(0, -35),
+              offset: [0, -5],
+              closeButton: false
             }
           }
         }
       }
-    },
+    }
   };
 
   constructor(public mapInstance: MapInstance) {}
@@ -60,7 +64,14 @@ export class ActionMarkers {
     return posObj ? posObj.position : null
 
   }
+
+  getDivContent(action) {
+    let icon = `<div class="action-marker flex-row">
+<span style="margin: auto">${NameCase(action.type[0])}</span>
+</div>`;
+    return icon
+  }
 }
 
-export const ActionMarkersTrace = ExtendBoundsMixin(TraceMixin(CircleMixin(MarkersMixin(StyleMixin(ActionMarkers)))));
+export const ActionMarkersTrace = ExtendBoundsMixin(TraceMixin(DivMarkersMixin(MarkersMixin(StyleMixin(ActionMarkers)))));
 

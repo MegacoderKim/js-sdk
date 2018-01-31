@@ -8,26 +8,21 @@ import { itemAsPage$ } from "./item-as-page";
 export const dataWithSelectedId$ = (
   data$,
   id$,
-  keys: string[]
+  keys: string[],
+  prop: string
 ): Observable<any> => {
   return combineLatest(data$, id$, (data, id) => {
     if (!data && keys.length) return data;
-    return id
-      ? _.reduce(
-          keys,
-          (acc, key) => {
-            return acc[key]
-              ? {
-                  ...acc,
-                  [key]: acc[key].filter(item => {
-                    return item.id === id;
-                  })
-                }
-              : acc;
-          },
-          data
-        )
-      : data;
+    const allItems = keys.reduce((items, key) => {
+      return [...items, ...data[key]]
+    }, []);
+    let selected = allItems.find((item) => {
+      return item.id === id;
+    });
+    return {
+      ...data,
+      [prop]: selected
+    }
   });
 };
 

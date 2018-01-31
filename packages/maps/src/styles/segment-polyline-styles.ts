@@ -9,6 +9,16 @@ export const segmentPolylineStyles = {
             strokeColor: Color.blue,
             strokeOpacity: 1,
             strokeWeight: 5
+          },
+          highlight: {
+            strokeColor: Color.blue,
+            strokeOpacity: 1,
+            strokeWeight: 5
+          },
+          fade: {
+            strokeColor: Color.grey5,
+            strokeOpacity: 0.2,
+            strokeWeight: 2
           }
         }
       };
@@ -16,7 +26,18 @@ export const segmentPolylineStyles = {
         return {
           default: {
             weight: 5,
-            color: Color.blue
+            color: Color.blue,
+            opacity: 1
+          },
+          highlight: {
+            weight: 5,
+            color: Color.blue,
+            opacity: 1
+          },
+          fade: {
+            weight: 2,
+            color: Color.grey2,
+            opacity: 0.2
           }
         }
       }

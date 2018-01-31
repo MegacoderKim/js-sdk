@@ -23,27 +23,27 @@ export class PlacelineContainerComponent implements OnInit, OnDestroy {
   @Input() userId: string | null;
   @Input() showUserCard: boolean = true;
   userData$;
+  selectedSegmentId$;
   constructor(
     private userClientService: HtUsersService,
   ) { }
 
   ngOnInit() {
-      this.userData$ = this.userClientService.placeline.data$;
+    this.selectedSegmentId$ = this.userClientService.placeline.segmentResetId$;
+
+    this.userData$ = this.userClientService.placeline.data$;
 
     if (this.userId) {
       this.userClientService.placeline.setId(this.userId)
     }
   }
 
-  onSegmentId(segmentId: string) {
+  onHighlightSegment(segmentId: string) {
     this.userClientService.placeline.setSegmentSelectedId(segmentId);
   }
 
-  onSelectSegmentId(segmentId: string) {
+  onSelectSegmentId(segmentId: string | null) {
     this.userClientService.placeline.setSegmentResetMapId(segmentId);
-    setTimeout(() => {
-      this.userClientService.placeline.setSegmentResetMapId(null);
-    })
   }
 
   ngOnDestroy() {

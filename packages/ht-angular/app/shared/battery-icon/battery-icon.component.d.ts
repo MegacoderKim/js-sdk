@@ -4,5 +4,5 @@ export declare class BatteryIconComponent implements OnInit {
     layout: 'column' | 'row';
     constructor();
     ngOnInit(): void;
-    batteryClass(level: any): string;
+    batteryClass(level: number): string;
 }

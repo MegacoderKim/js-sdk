@@ -15,6 +15,7 @@ import {TraceMixin} from "../mixins/trace";
 import {PolylinesMixin} from "../mixins/polyline-renderer";
 import {HtBounds} from "../map-utils/interfaces";
 import {Entity, StyleFunct} from "../interfaces";
+import {IPathBearingTime} from "ht-models";
 
 export class SegmentPolylines {
   styleFunct: StyleFunct = segmentPolylineStyles;

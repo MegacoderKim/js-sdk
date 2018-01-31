@@ -15,6 +15,7 @@ import {HtBounds} from "../map-utils/interfaces";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
+import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
 
 export class ActionsCluster {

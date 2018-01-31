@@ -15,8 +15,4 @@ export class LoadingDataComponent implements OnInit {
   ngOnInit() {
   }
 
-  get displayMessage() {
-    return !this.customMessage ? `${this.message}` : this.customMessage;
-  }
-
 }

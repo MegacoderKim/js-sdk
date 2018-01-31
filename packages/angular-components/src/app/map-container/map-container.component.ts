@@ -29,7 +29,8 @@ export class MapContainerComponent implements OnInit, AfterContentInit, OnDestro
 
     this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
       roots: ['segments', 'actions'],
-      filter$: this.userClientService.placeline.segmentSelectedId$,
+      highlighted$: this.userClientService.placeline.segmentSelectedId$,
+      filter$: this.userClientService.placeline.segmentResetId$,
       resetMap$: this.userClientService.placeline.segmentResetId$
     });
 

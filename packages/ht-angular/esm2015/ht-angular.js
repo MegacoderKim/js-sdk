@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentFactory
 import { CommonModule } from '@angular/common';
 import { last, map, reduce, reject, sortBy } from 'underscore';
 import { RouterModule } from '@angular/router';
-import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString } from 'ht-utility';
-import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
+import { Color, DateHumanize, DateString, DistanceLocale, DotString, GetUrlParam, HMString, NameCase, TimeString, dateRangeDisplay } from 'ht-utility';
 import { DateRangeLabelMap, DateRangeMap, HtPlaceline, actionTableFormat, htAction, isSameDateRange, listWithItem$, listwithSelectedId$, tableFormat, userTableFormat } from 'ht-data';
+import { animate, keyframes, query, state, style, transition, trigger } from '@angular/animations';
 import { AccountsClient, ApiType, HtActionsClient, HtClient, HtGroupsClient, HtRequest, HtUsersClient, actionsClientFactory, dateRangeFactory, dateRangeService, groupsClientFactory, htClientService, htRequestService, usersClientFactory } from 'ht-client';
 import { ActionsHeatmapTrace, HtMapClass, MapInstance, StopsHeatmapTrace, mapTypeService } from 'ht-maps';
 import { distinctUntilChanged, filter, map as map$1, skip, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { combineLatest as combineLatest$1 } from 'rxjs/observable/combineLatest'
 import { of as of$1 } from 'rxjs/observable/of';
 import { merge as merge$1 } from 'rxjs/observable/merge';
 import { Subject as Subject$1 } from 'rxjs/Subject';
-import { addDays, addMonths, addWeeks, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
+import { addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm';
 import { Observable as Observable$1 } from 'rxjs/Observable';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -777,17 +777,11 @@ class LoadingDataComponent {
      */
     ngOnInit() {
     }
-    /**
-     * @return {?}
-     */
-    get displayMessage() {
-        return !this.customMessage ? `${this.message}` : this.customMessage;
-    }
 }
 LoadingDataComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-loading-data',
-                template: `<div [style.fontSize.px]="size || 'inherit'" loading-dots><span>{{displayMessage}}</span></div>
+                template: `<div [style.fontSize.px]="size || 'inherit'" loading-dots><span>{{customMessage || message}}</span></div>
 `,
                 styles: [`:host {
   color: #798E9B;
@@ -876,537 +870,6 @@ HmStringPipe.ctorParameters = () => [];
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
  */
-class SnackbarService {
-    constructor() {
-        this.showErrorToast = false;
-        this.showSuccessToast = false;
-        this.showLoadingToast = false;
-    }
-    /**
-     * @param {?} errorMessage
-     * @return {?}
-     */
-    displayErrorToast(errorMessage) {
-        this.errorMessage = errorMessage;
-        this.showErrorToast = true;
-        this.hideSuccessToast();
-        if (this.hideErrorToastTimer)
-            clearTimeout(this.hideErrorToastTimer);
-        this.hideErrorToastTimer = setTimeout(() => {
-            this.hideErrorToast();
-        }, 4000);
-    }
-    /**
-     * @return {?}
-     */
-    hideErrorToast() {
-        this.showErrorToast = false;
-    }
-    /**
-     * @param {?} successMessage
-     * @return {?}
-     */
-    displaySuccessToast(successMessage) {
-        this.successMessage = successMessage;
-        this.showSuccessToast = true;
-        this.hideErrorToast();
-        if (this.hideSuccessToastTimer)
-            clearTimeout(this.hideSuccessToastTimer);
-        this.hideSuccessToastTimer = setTimeout(() => {
-            this.hideSuccessToast();
-        }, 4000);
-    }
-    /**
-     * @param {?=} string
-     * @return {?}
-     */
-    displayLoadingToast(string = '') {
-        this.loadingMessage = string;
-        this.showLoadingToast = true;
-    }
-    /**
-     * @return {?}
-     */
-    hideLoadingToast() {
-        this.showLoadingToast = false;
-    }
-    /**
-     * @return {?}
-     */
-    hideSuccessToast() {
-        this.showSuccessToast = false;
-    }
-}
-SnackbarService.decorators = [
-    { type: Injectable },
-];
-/** @nocollapse */
-SnackbarService.ctorParameters = () => [];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-class SnackbarComponent {
-    /**
-     * @param {?} snackbarService
-     */
-    constructor(snackbarService) {
-        this.snackbarService = snackbarService;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-    }
-}
-SnackbarComponent.decorators = [
-    { type: Component, args: [{
-                selector: 'ht-snackbar',
-                template: `<div class="toast" [@toast]="snackbarService.showErrorToast ? 'on' : 'off'" id="error-toast">{{snackbarService.errorMessage}}<span class="dismiss-button" (click)="snackbarService.showErrorToast=false">Dismiss</span></div>
-<div class="toast" [@toast]="snackbarService.showSuccessToast ? 'on' : 'off'" id="show-toast">{{snackbarService.successMessage}}<span class="dismiss-button" (click)="snackbarService.showSuccessToast=false">Dismiss</span></div>
-<div class="loading" [@toast]="snackbarService.showLoadingToast ? 'on' : 'off'" id="show-loading">
-  <div class="spinner-wave">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-</div>
-
-`,
-                styles: [`.text-center {
-  text-align: center;
-}
-.text-muted {
-  color: #798E9B;
-}
-.text-right {
-  text-align: right;
-}
-.text-left {
-  text-align: left;
-}
-.text-1 {
-  font-size: 2em;
-}
-.text-4 {
-  font-size: 0.8em;
-}
-.text-capitalize {
-  text-transform: capitalize;
-}
-.text-uppercase {
-  text-transform: uppercase;
-}
-.text-ontime {
-  color: #58ae5b;
-}
-.text-late {
-  color: #E6413E;
-}
-.text-warning {
-  color: #E6413E !important;
-}
-.text-red {
-  color: #E6413E;
-}
-.text-blue {
-  color: #5496F8;
-}
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.flex-row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-.flex-column {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-}
-.column-gap-4 > :not(:last-child) {
-  margin-bottom: 4px;
-}
-.row-gap-4 > :not(:last-child) {
-  margin-right: 4px;
-}
-.column-gap-7 > :not(:last-child) {
-  margin-bottom: 7px;
-}
-.row-gap-7 > :not(:last-child) {
-  margin-right: 7px;
-}
-.column-gap-10 > :not(:last-child) {
-  margin-bottom: 10px;
-}
-.row-gap-10 > :not(:last-child) {
-  margin-right: 10px;
-}
-.column-gap-20 > :not(:last-child) {
-  margin-bottom: 20px;
-}
-.row-gap-20 > :not(:last-child) {
-  margin-right: 20px;
-}
-.wrap {
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
-.flex {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-}
-.auto {
-  margin: auto;
-}
-.relative {
-  position: relative;
-}
-.space-between {
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-.space-around {
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-}
-.justify-center {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-.flex-center {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-.align-center {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-.clickable {
-  cursor: pointer;
-}
-.round-icon {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  width: 23px;
-  height: 23px;
-  background: #315790;
-  border-radius: 50%;
-}
-.flex-half {
-  -ms-flex-preferred-size: 50%;
-      flex-basis: 50%;
-}
-.link-unstyled {
-  color: inherit;
-}
-.link-unstyled:hover {
-  text-decoration: none;
-}
-.half {
-  width: 50%;
-}
-.noselect {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Chrome/Safari/Opera */
-  /* Konqueror */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none;
-  /* Non-prefixed version, currently
-                                  not supported by any browser */
-}
-.hover-shadow:hover {
-  -webkit-box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);
-          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);
-}
-.marker-transparent {
-  opacity: 0.4;
-}
-.marker-fade {
-  -webkit-filter: contrast(16%) brightness(160%) blur(0.6px);
-          filter: contrast(16%) brightness(160%) blur(0.6px);
-}
-.tooltip-warning {
-  background: #e04745;
-  color: #fff;
-}
-.tooltip-warning-arrow {
-  border-right-color: #e04745 !important;
-}
-.tooltip-info {
-  background: #5496F8;
-  color: #fff;
-}
-.tooltip-info-arrow {
-  border-right-color: #5496F8 !important;
-}
-a {
-  color: inherit;
-  text-decoration: none;
-}
-a:hover {
-  color: inherit;
-  text-decoration: none;
-}
-a:active {
-  color: inherit;
-  text-decoration: none;
-}
-a:focus {
-  outline: none;
-  color: inherit;
-  text-decoration: none;
-}
-.spinner-wave {
-  margin: 0 auto;
-  width: 100px;
-  height: 20px;
-  text-align: center;
-}
-.spinner-wave > div {
-  background-color: #5496F8;
-  height: 100%;
-  width: 6px;
-  display: inline-block;
-  -webkit-animation: wave 1.2s infinite ease-in-out;
-  animation: wave 1.2s infinite ease-in-out;
-}
-.spinner-wave div:nth-child(2) {
-  -webkit-animation-delay: -1.1s;
-  animation-delay: -1.1s;
-}
-.spinner-wave div:nth-child(3) {
-  -webkit-animation-delay: -1s;
-  animation-delay: -1s;
-}
-.spinner-wave div:nth-child(4) {
-  -webkit-animation-delay: -0.9s;
-  animation-delay: -0.9s;
-}
-.spinner-wave div:nth-child(5) {
-  -webkit-animation-delay: -0.8s;
-  animation-delay: -0.8s;
-}
-@-webkit-keyframes wave {
-  0%,
-  40%,
-  100% {
-    -webkit-transform: scaleY(0.4);
-  }
-  20% {
-    -webkit-transform: scaleY(1);
-  }
-}
-@keyframes wave {
-  0%,
-  40%,
-  100% {
-    -webkit-transform: scaleY(0.4);
-            transform: scaleY(0.4);
-  }
-  20% {
-    -webkit-transform: scaleY(1);
-            transform: scaleY(1);
-  }
-}
-@media screen and (max-width: 480px) {
-  .hide-xs {
-    display: none !important;
-  }
-}
-@media screen and (min-width: 480px) {
-  .show-xs {
-    display: none !important;
-  }
-}
-.ht-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 5px 13px;
-  border: 0;
-  background: #ffffff;
-  color: #52616A;
-  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-}
-.ht-btn:focus {
-  background: #fcfcfc;
-  outline: 0;
-}
-.ht-btn-card:hover {
-  background: #5496F8;
-  color: rgba(255, 255, 255, 0.96);
-  -webkit-box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-}
-.stopped-color {
-  color: #FFBB44;
-}
-.drive-color {
-  color: #5496F8;
-}
-.walk-color {
-  color: #5496F8;
-}
-.moving-color {
-  color: #5496F8;
-}
-.logged_off-color {
-  color: #A9BAC4;
-}
-.network_offline-color {
-  color: #d19191;
-}
-.location_disabled-color {
-  color: #d19191;
-}
-.location_low_accuracy-color {
-  color: #d19191;
-}
-.stopped-bg {
-  background: #FFBB44;
-}
-.drive-bg {
-  background: #5496F8;
-}
-.walk-bg {
-  background: #5496F8;
-}
-.moving-bg {
-  background: #5496F8;
-}
-.logged_off-bg {
-  background: #A9BAC4;
-}
-.network_offline-bg {
-  background: #d19191;
-}
-.location_disabled-bg {
-  background-color: #d19191;
-}
-.location_low_accuracy-bg {
-  background-color: #d19191;
-}
-.toast {
-  height: auto;
-  position: fixed;
-  z-index: 100000;
-  /* width: 400px; */
-  left: 0px;
-  right: 0px;
-  /* right: 0; */
-  bottom: 10%;
-  /* margin: 0 auto; */
-  opacity: 0.9;
-  filter: alpha(opacity=90);
-  background: #353f45;
-  color: #ffffff;
-  font-family: Roboto, helvetica, sans-serif;
-  font-size: 14px;
-  padding: 15px;
-  text-align: center;
-  border-radius: 2px;
-  -webkit-box-shadow: 0px 0px 24px -1px #383838;
-          box-shadow: 0px 0px 24px -1px #383838;
-  width: 460px;
-  margin: auto;
-}
-.loading {
-  height: auto;
-  position: fixed;
-  z-index: 100000;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  /* width: 400px; */
-  right: 25px;
-  /* right: 0; */
-  bottom: 50px;
-  /* margin: 0 auto; */
-  opacity: 0.9;
-  filter: alpha(opacity=90);
-  background: #353f45;
-  color: #5496F8;
-  font-family: Roboto, helvetica, sans-serif;
-  font-size: 16px;
-  padding: 12px;
-  text-align: center;
-  border-radius: 2px;
-  -webkit-box-shadow: 0px 0px 24px -1px #383838;
-          box-shadow: 0px 0px 24px -1px #383838;
-  width: 200px;
-  margin: auto;
-}
-.dismiss-button {
-  color: #5496F8;
-  padding: 5px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-`],
-                animations: [
-                    trigger('toast', [
-                        state('on', style({
-                            opacity: 1, bottom: '10%'
-                        })),
-                        state('off', style({
-                            opacity: 0, display: 'none'
-                        })),
-                        transition('on => off', [
-                            animate('100ms ease-out', style({ bottom: '-3%' }))
-                        ]),
-                        transition('off => on', [
-                            style({ bottom: '-3%' }),
-                            animate('100ms ease-out')
-                        ])
-                    ])
-                ]
-            },] },
-];
-/** @nocollapse */
-SnackbarComponent.ctorParameters = () => [
-    { type: SnackbarService, },
-];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
 class UsersStatusStringPipe {
     /**
      * @param {?} value
@@ -1448,26 +911,6 @@ ActionStatusStringPipe.decorators = [
 ];
 /** @nocollapse */
 ActionStatusStringPipe.ctorParameters = () => [];
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes} checked by tsc
- */
-class SafeHtmlPipe {
-    constructor() { }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    transform(value) {
-        // return this.sanitized.bypassSecurityTrustHtml(value);
-    }
-}
-SafeHtmlPipe.decorators = [
-    { type: Pipe, args: [{ name: 'safeHtml' },] },
-];
-/** @nocollapse */
-SafeHtmlPipe.ctorParameters = () => [];
 
 /**
  * @fileoverview added by tsickle
@@ -2104,10 +1547,8 @@ SharedModule.decorators = [
                     DateHumanizePipe,
                     DistanceLocalePipe,
                     HmStringPipe,
-                    SnackbarComponent,
                     UsersStatusStringPipe,
                     ActionStatusStringPipe,
-                    SafeHtmlPipe,
                     SafeUrlPipe,
                     UserSortingStringPipe,
                     ActionSortingStringPipe,
@@ -2128,10 +1569,8 @@ SharedModule.decorators = [
                     DateHumanizePipe,
                     DistanceLocalePipe,
                     HmStringPipe,
-                    SnackbarComponent,
                     UsersStatusStringPipe,
                     ActionStatusStringPipe,
-                    SafeHtmlPipe,
                     SafeUrlPipe,
                     UserSortingStringPipe,
                     ActionSortingStringPipe,
@@ -2951,10 +2390,10 @@ class PlacelineComponent {
      */
     constructor(ref) {
         this.ref = ref;
-        this.segmentId = new EventEmitter();
+        this.highlightedSegmentId = new EventEmitter();
         this.hoveredAction = new EventEmitter();
         this.selectedSegment = new EventEmitter();
-        this.selectedPartialSegmentId = "__";
+        this.selectedSegmentId = "__";
         this.isMobile = false;
         this.selectedAction = null;
         this.selectedActivity = "";
@@ -2969,8 +2408,9 @@ class PlacelineComponent {
      */
     selectInUserData(segment, event) {
         if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
-            this.hardSelectedActivity = segment.id;
-            this.selectedSegment.next({ segments: [segment] });
+            const /** @type {?} */ id = segment.id;
+            let /** @type {?} */ hardSelectedActivity = this.selectedSegmentId === id ? null : segment.id;
+            this.selectedSegment.next(hardSelectedActivity);
         }
         else {
             this.hardSelectedActivity = "";
@@ -2991,7 +2431,7 @@ class PlacelineComponent {
         }
         else {
             const /** @type {?} */ userId = toShow ? segment.id : null;
-            this.selectActivity(userId);
+            this.highlightActivity(userId);
         }
     }
     /**
@@ -3006,8 +2446,10 @@ class PlacelineComponent {
      * @param {?} activityId
      * @return {?}
      */
-    selectActivity(activityId) {
-        this.segmentId.next(activityId);
+    highlightActivity(activityId) {
+        if (this.selectedSegmentId)
+            return false;
+        this.highlightedSegmentId.next(activityId);
         this.hoverActivity(activityId);
         // console.log(this.selectedActivity, "sele");
     }
@@ -3204,7 +2646,7 @@ class PlacelineComponent {
             time = placeline.last_heartbeat_at;
         }
         const /** @type {?} */ activityClass = this.getActivityClass(lastSeg);
-        return { time, pipeClass, lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg` };
+        return { time, pipeClass, id: '..', lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg` };
     }
     /**
      * @param {?} placeline
@@ -3343,7 +2785,7 @@ class PlacelineComponent {
             const /** @type {?} */ startMin = this.getMinute(lastSeg.ended_at);
             const /** @type {?} */ duration = (new Date(segment.started_at).getTime() - new Date(lastSeg.ended_at).getTime()) / 1000;
             if (endMin !== startMin && startMin < endMin) {
-                const /** @type {?} */ gap = Object.assign({}, this.getSegmentStyle('no-info'), { time: lastSeg.ended_at, activityText: 'No information', events: [], duration, id: "asd" });
+                const /** @type {?} */ gap = Object.assign({}, this.getSegmentStyle('no-info'), { time: lastSeg.ended_at, activityText: 'No information', events: [], id: '...', duration });
                 gaps.push(gap);
             }
         }
@@ -3408,9 +2850,9 @@ PlacelineComponent.decorators = [
   <div
     class="flex-row segment"
     (click)="selectInUserData(segment)"
-    [class.active-segment]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id"
-    (mouseenter)="selectActivity(segment.id)"
-    (mouseleave)="selectActivity(null)"
+    [class.active-segment]="(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id"
+    (mouseenter)="highlightActivity(segment.id)"
+    (mouseleave)="highlightActivity(null)"
     *ngFor="let segment of placelineMod; trackBy:indexPlaceline; let last = last">
     <div class="time-container action-time">
       <div class="target-status text-muted">
@@ -3426,7 +2868,7 @@ PlacelineComponent.decorators = [
       <!--</div>-->
     </div>
     <div class="pipe">
-      <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedPartialSegmentId) || selectedPartialSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>
+      <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>
     </div>
     <div class="flex-column flex timeline-detail">
       <div class="activity-dot segment-dot" [class.activity-dot-ended]="segment.actionEnded" *ngIf="segment.actionD"><div class="auto">{{segment.actionD}} </div></div>
@@ -3452,7 +2894,7 @@ PlacelineComponent.decorators = [
         <!--<pre>-->
         <!--{{segment | json}}-->
         <!--</pre>-->
-        <div class="activity-card flex-column" [class.activity-card-selected]="selectedPartialSegmentId == segment.id" *ngIf="segment.activityText">
+        <div class="activity-card flex-column" *ngIf="segment.activityText">
           <div [ngClass]="segment.activityColor">
             {{segment.activityText | nameCase}}
           </div>
@@ -3474,7 +2916,7 @@ PlacelineComponent.decorators = [
             </tr>
             </tbody>
           </table>
-          <div class="close-card" *ngIf="selectedPartialSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
+          <div class="close-card" *ngIf="selectedSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
             <i class="fa fa-times-circle fa-2x"></i>
           </div>
         </div>
@@ -4290,11 +3732,11 @@ PlacelineComponent.ctorParameters = () => [
     { type: ChangeDetectorRef, },
 ];
 PlacelineComponent.propDecorators = {
-    "segmentId": [{ type: Output },],
+    "highlightedSegmentId": [{ type: Output },],
     "hoveredAction": [{ type: Output },],
     "selectedSegment": [{ type: Output },],
     "userData": [{ type: Input },],
-    "selectedPartialSegmentId": [{ type: Input },],
+    "selectedSegmentId": [{ type: Input },],
     "isMobile": [{ type: Input },],
 };
 
@@ -4333,6 +3775,7 @@ class PlacelineContainerComponent {
      * @return {?}
      */
     ngOnInit() {
+        this.selectedSegmentId$ = this.userClientService.placeline.segmentResetId$;
         this.userData$ = this.userClientService.placeline.data$;
         if (this.userId) {
             this.userClientService.placeline.setId(this.userId);
@@ -4342,7 +3785,7 @@ class PlacelineContainerComponent {
      * @param {?} segmentId
      * @return {?}
      */
-    onSegmentId(segmentId) {
+    onHighlightSegment(segmentId) {
         this.userClientService.placeline.setSegmentSelectedId(segmentId);
     }
     /**
@@ -4351,9 +3794,6 @@ class PlacelineContainerComponent {
      */
     onSelectSegmentId(segmentId) {
         this.userClientService.placeline.setSegmentResetMapId(segmentId);
-        setTimeout(() => {
-            this.userClientService.placeline.setSegmentResetMapId(null);
-        });
     }
     /**
      * @return {?}
@@ -4368,7 +3808,7 @@ PlacelineContainerComponent.decorators = [
                 selector: 'ht-placeline-container',
                 template: `<div class="flex-column column-gap-10" *ngIf="userData$ | async as userData; else loading">
   <ht-user-card *ngIf="showUserCard" [user]="userData"></ht-user-card>
-  <ht-placeline (selectedSegment)="onSelectSegmentId($event)" (segmentId)="onSegmentId($event)" [userData]="userData"></ht-placeline>
+  <ht-placeline [selectedSegmentId]="selectedSegmentId$ | async" (selectedSegment)="onSelectSegmentId($event)" (highlightedSegmentId)="onHighlightSegment($event)" [userData]="userData"></ht-placeline>
 </div>
 <ng-template #loading>
   <ht-loading-dots class="text-1 text-center flex-row"></ht-loading-dots>
@@ -7307,7 +6747,8 @@ class MapContainerComponent {
         });
         this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
             roots: ['segments', 'actions'],
-            filter$: this.userClientService.placeline.segmentSelectedId$,
+            highlighted$: this.userClientService.placeline.segmentSelectedId$,
+            filter$: this.userClientService.placeline.segmentResetId$,
             resetMap$: this.userClientService.placeline.segmentResetId$
         });
         const /** @type {?} */ loading$1 = this.userClientService.placeline.loading$
@@ -9566,11 +9007,30 @@ EntitySearchModule.ctorParameters = () => [];
  * @suppress {checkTypes} checked by tsc
  */
 class DateRangeComponent {
-    constructor() {
+    /**
+     * @param {?} elRef
+     * @param {?} cd
+     */
+    constructor(elRef, cd) {
+        this.elRef = elRef;
+        this.cd = cd;
         this.dateRangeService$ = dateRangeService.getInstance();
         this.isRight = false;
         this.showSingleDay = true;
         this.customDates = DateRangeLabelMap;
+        this.isActive = false;
+    }
+    /**
+     * @return {?}
+     */
+    open() {
+        this.isActive = true;
+    }
+    /**
+     * @return {?}
+     */
+    close() {
+        this.isActive = false;
     }
     /**
      * @return {?}
@@ -9592,13 +9052,17 @@ class DateRangeComponent {
      * @return {?}
      */
     setDateRange(range) {
-        this.dateRangeService$.data$.next(range);
+        this.dateRangeService$.setDateRange(range);
+        setTimeout(() => {
+            this.isActive = false;
+            this.cd.detectChanges();
+        }, 200);
     }
 }
 DateRangeComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-date-range',
-                template: `<div class="dropdown is-hoverable" (mouseleave)="picker.reset()" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+                template: `<div class="dropdown is-active" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
   <button type="button dropdown-trigger" class="button flex-row row-gap-4">
     <span>{{dateRange}}</span>
     <span class="icon">
@@ -9607,10 +9071,10 @@ DateRangeComponent.decorators = [
     <!--<span *ngIf="ordering$ | async as ordering"></span>-->
     <!--<i class="fa fa-filter"></i>-->
   </button>
-  <div class="dropdown-menu dropdown-menu-right is-boxed">
+  <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
-        <ht-date-range-picker #picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
+        <ht-date-range-picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
       </div>
     </div>
   </div>
@@ -9978,15 +9442,33 @@ a:focus {
 .row-left .options {
   padding-right: 15px;
 }
-`]
+`],
+                changeDetection: ChangeDetectionStrategy.OnPush,
+                animations: [
+                    trigger('calender-appear', [
+                        transition(":leave", [
+                            style({ pointerEvents: 'none' }),
+                            animate('150ms ease-in', style({ opacity: 0, top: "-10px" }))
+                        ]),
+                        transition(":enter", [
+                            style({ opacity: 0, height: 0, top: "-10px" }),
+                            animate('150ms ease-out')
+                        ]),
+                    ])
+                ]
             },] },
 ];
 /** @nocollapse */
-DateRangeComponent.ctorParameters = () => [];
+DateRangeComponent.ctorParameters = () => [
+    { type: ElementRef, },
+    { type: ChangeDetectorRef, },
+];
 DateRangeComponent.propDecorators = {
     "dateRangeService$": [{ type: Input },],
     "isRight": [{ type: Input },],
     "showSingleDay": [{ type: Input },],
+    "open": [{ type: HostListener, args: ['mouseenter',] },],
+    "close": [{ type: HostListener, args: ['mouseleave',] },],
 };
 
 /**
@@ -10003,7 +9485,9 @@ DateRangeComponent.propDecorators = {
 
 class DateRangePickerComponent {
     constructor() {
+        this.options = {};
         this.onRangeChange = new EventEmitter();
+        this.onDateChange = new EventEmitter();
         // selectedDates$: BehaviorSubject<Partial<IDateRange>> = new BehaviorSubject<Partial<IDateRange>>({end: new Date().toISOString()});
         this.selectedDate$ = new BehaviorSubject$1(null);
         this.hoveredDate = new BehaviorSubject$1(null);
@@ -10030,13 +9514,24 @@ class DateRangePickerComponent {
      * @return {?}
      */
     ngOnChanges() {
+        if (this.options.datePicker) {
+            this.dateRange = { end: this.date, start: this.date };
+        }
+        this.initDateRange(this.dateRange);
+        this.display = dateRangeDisplay(this.dateRange);
+    }
+    /**
+     * @param {?} range
+     * @return {?}
+     */
+    initDateRange(range) {
         this.customDates$ = this.customDates.filter(customRange => {
             return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
         }).map((customRange) => {
-            return isSameDateRange(customRange.range, this.dateRange) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
+            return isSameDateRange(customRange.range, range) ? Object.assign({}, customRange, { isActive: true }) : Object.assign({}, customRange);
         });
         this.currentDateStyle$ = combineLatest$1(this.selectedDate$.pipe(distinctUntilChanged()), this.hoveredDate.pipe(distinctUntilChanged()), (selectedDate, hoveredDate) => {
-            let /** @type {?} */ dateRange = this.dateRange;
+            let /** @type {?} */ dateRange = range;
             let /** @type {?} */ selectedRange;
             let /** @type {?} */ display;
             if (selectedDate && hoveredDate) {
@@ -10050,12 +9545,15 @@ class DateRangePickerComponent {
                 }
             }
             else if (selectedDate) {
-                selectedRange = { start: selectedDate };
+                selectedRange = { end: selectedDate };
                 display = [format(selectedDate, 'DD MMM'), null];
             }
             else {
                 selectedRange = dateRange;
                 display = [format(dateRange.start, 'DD MMM'), format(dateRange.end, 'DD MMM')];
+            }
+            if (this.options.datePicker) {
+                display = [format(dateRange.start, 'DD MMM')];
             }
             return {
                 selectedRange,
@@ -10073,19 +9571,14 @@ class DateRangePickerComponent {
                 display: format(date, 'MMM YY')
             };
         }));
-        this.hint$ = this.selectedDate$.pipe(map$1((date) => {
-            return date ? 'Select end date' : "";
-        }));
     }
     /**
      * @param {?} inc
      * @return {?}
      */
     changeMonth(inc) {
-        this.currentMonthStart$.pipe(take(1)).subscribe((month) => {
-            month = addMonths(new Date(month), inc);
-            this.currentMonthStart$.next(month);
-        });
+        let /** @type {?} */ month = addMonths(new Date(this.currentMonthStart$.getValue()), inc);
+        this.currentMonthStart$.next(month);
     }
     /**
      * @param {?} monthStart
@@ -10164,8 +9657,15 @@ class DateRangePickerComponent {
      * @return {?}
      */
     setDateRange(range) {
+        range = { start: range.start, end: endOfDay(range.end).toISOString() };
         this.onRangeChange.next(range);
-        // this.dateRangeService.data$.next(range)
+    }
+    /**
+     * @param {?} date
+     * @return {?}
+     */
+    setDate(date) {
+        this.onDateChange.next(date.timeStamp);
     }
     /**
      * @param {?} __0
@@ -10190,14 +9690,19 @@ class DateRangePickerComponent {
     pickDate(date) {
         if (date.isInvalid)
             return false;
-        this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
-            if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
-                this.setDateFromDayRange(date, dateStyle);
-            }
-            else {
-                this.selectedDate$.next(new Date(date.date).toISOString());
-            }
-        });
+        if (this.options.datePicker) {
+            this.setDate(date);
+        }
+        else {
+            this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
+                if (dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
+                    this.setDateFromDayRange(date, dateStyle);
+                }
+                else {
+                    this.selectedDate$.next(new Date(date.date).toISOString());
+                }
+            });
+        }
     }
     ;
     /**
@@ -10219,10 +9724,9 @@ class DateRangePickerComponent {
     hoverDate(date) {
         let /** @type {?} */ timeStamp = date ? new Date(date.date).toISOString() : null;
         if (timeStamp) {
-            this.selectedDate$.pipe(take(1)).subscribe(selected => {
-                if (selected)
-                    this.hoveredDate.next(timeStamp);
-            });
+            let /** @type {?} */ selected = this.selectedDate$.getValue();
+            if (selected)
+                this.hoveredDate.next(timeStamp);
         }
         else {
             this.hoveredDate.next(timeStamp);
@@ -10259,15 +9763,15 @@ DateRangePickerComponent.decorators = [
     { type: Component, args: [{
                 selector: 'ht-date-range-picker',
                 template: `<div class="flex-row" [ngClass]="options.isRight ? 'row-right' : 'row-left'">
-  <div class="flex-column column-gap-10 options">
+  <div class="flex-column column-gap-10 options" *ngIf="!options.datePicker">
     <button class="button is-light is-small" [class.is-primary]="date.isActive" (click)="setDateRange(date.range)" *ngFor="let date of customDates$">{{date.label}}</button>
   </div>
-  <div class="calender">
+  <div class="calender" *ngIf="!options.hideCalender">
     <div class="flex-column">
       <div class="flex-row date-style" *ngIf="currentDateStyle$ | async as dateStyle">
         <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[0]">{{dateStyle.display[0] | dot: 'Set start date'}}</div>
-        <div>&nbsp; &hArr; &nbsp;</div>
-        <div class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
+        <div *ngIf="dateStyle.display.length == 2">&nbsp; &hArr; &nbsp;</div>
+        <div *ngIf="dateStyle.display.length == 2" class="has-text-centered" [class.has-text-danger]="!dateStyle.display[1]">{{dateStyle.display[1] | dot: 'Set end date'}}</div>
       </div>
       <div class="flex-row month flex-center" *ngIf="month$ | async as month">
         <div class="icon clickable" (click)="changeMonth(-1)">
@@ -10748,8 +10252,10 @@ a {
 DateRangePickerComponent.ctorParameters = () => [];
 DateRangePickerComponent.propDecorators = {
     "dateRange": [{ type: Input },],
+    "date": [{ type: Input },],
     "options": [{ type: Input },],
     "onRangeChange": [{ type: Output },],
+    "onDateChange": [{ type: Output },],
 };
 /**
  * @record
@@ -12709,12 +12215,12 @@ class AnalyticsItemsService {
     constructor() {
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject$1([]);
-        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$.asObservable() });
+        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$ });
         const /** @type {?} */ usersFilter = usersClient.filterClass;
         const /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         const /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         const /** @type {?} */ actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$.asObservable() });
+        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
@@ -13925,5 +13431,5 @@ HtModule.ctorParameters = () => [];
  * Generated bundle index. Do not edit.
  */
 
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbo, ActionTableModule as ɵbn, ActionsAnalyticsListComponent as ɵbp, ActionsAnalyticsListModule as ɵbm, ActionsSummaryChartComponent as ɵbr, ActionsSummaryChartModule as ɵbq, AnalyticsItemLoadComponent as ɵbt, AnalyticsItemLoadModule as ɵbs, AnalyticsItemComponent as ɵby, AnalyticsSlotDirective as ɵbx, AnalyticsItemsService as ɵbw, AnalyticsSelectorComponent as ɵbz, AnalyticsTagsComponent as ɵbl, AnalyticsTagsModule as ɵbk, AnalyticsTitleComponent as ɵca, AnalyticsMapContainerComponent as ɵbv, AnalyticsMapContainerModule as ɵbu, DataTableComponent as ɵbj, DataTableModule as ɵbi, EntitySearchComponent as ɵbg, EntitySearchModule as ɵbf, UsersFilterComponent as ɵbh, UsersFilterModule as ɵbe, GroupsChartService as ɵbc, HtAccountService as ɵcc, HtActionsService as ɵcb, MAP_TYPE as ɵa, MapComponent as ɵbd, ActionSortingStringPipe as ɵt, ActionStatusStringPipe as ɵp, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵu, SafeHtmlPipe as ɵq, SafeUrlPipe as ɵr, TimeStringPipe as ɵe, UserSortingStringPipe as ɵs, UsersStatusStringPipe as ɵo, BatteryIconComponent as ɵc, ButtonComponent as ɵv, DropdownDirective as ɵx, LoadingBarComponent as ɵw, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, SnackbarComponent as ɵm, SnackbarService as ɵn, UsersSummaryContainerComponent as ɵbb, UsersSummaryContainerModule as ɵy, UsersSummaryComponent as ɵba, UsersSummaryModule as ɵz };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbl, ActionTableModule as ɵbk, ActionsAnalyticsListComponent as ɵbm, ActionsAnalyticsListModule as ɵbj, ActionsSummaryChartComponent as ɵbo, ActionsSummaryChartModule as ɵbn, AnalyticsItemLoadComponent as ɵbq, AnalyticsItemLoadModule as ɵbp, AnalyticsItemComponent as ɵbv, AnalyticsSlotDirective as ɵbu, AnalyticsItemsService as ɵbt, AnalyticsSelectorComponent as ɵbw, AnalyticsTagsComponent as ɵbi, AnalyticsTagsModule as ɵbh, AnalyticsTitleComponent as ɵbx, AnalyticsMapContainerComponent as ɵbs, AnalyticsMapContainerModule as ɵbr, DataTableComponent as ɵbg, DataTableModule as ɵbf, EntitySearchComponent as ɵbd, EntitySearchModule as ɵbc, UsersFilterComponent as ɵbe, UsersFilterModule as ɵbb, GroupsChartService as ɵz, HtAccountService as ɵbz, HtActionsService as ɵby, MAP_TYPE as ɵa, MapComponent as ɵba, ActionSortingStringPipe as ɵq, ActionStatusStringPipe as ɵn, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵr, SafeUrlPipe as ɵo, TimeStringPipe as ɵe, UserSortingStringPipe as ɵp, UsersStatusStringPipe as ɵm, BatteryIconComponent as ɵc, ButtonComponent as ɵs, DropdownDirective as ɵu, LoadingBarComponent as ɵt, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, UsersSummaryContainerComponent as ɵy, UsersSummaryContainerModule as ɵv, UsersSummaryComponent as ɵx, UsersSummaryModule as ɵw };
 //# sourceMappingURL=ht-angular.js.map

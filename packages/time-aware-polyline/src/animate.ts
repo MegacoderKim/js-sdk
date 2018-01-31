@@ -1,5 +1,5 @@
 import {PolylineUtils} from "./polyline";
-import {ITimeAwarePoint} from "ht-models";
+import {ITimeAwarePoint, HtPosition} from "ht-models";
 
 export class TimeAwareAnimation {
   polylineUtils: PolylineUtils = new PolylineUtils();
@@ -7,6 +7,7 @@ export class TimeAwareAnimation {
   animationPoll;
   animationSpeed: number = 20;
   animationProps = {speedScale: 1, interval: 20};
+  updateEvent =  new CustomEvent();
   constructor() {
 
   }
@@ -40,7 +41,11 @@ export class TimeAwareAnimation {
   Update animation from encoded time aware array [lat, lng, time]
    */
   update(timeAwarePolyline: ITimeAwarePoint[]) {
-    if (!timeAwarePolyline) return;
+    if (!timeAwarePolyline) {
+      this.clear();
+      return true;
+
+    };
     this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
     if(!this.animationPoll) this.handleAnimation(timeAwarePolyline);
   }
@@ -61,7 +66,9 @@ export class TimeAwareAnimation {
       this.currentTime = this.addISOTime(this.currentTime, timeToAdd);
     } else {
       let last = this.polylineUtils.getLatestTime();
-      this.currentTime = this.addISOTime(last, -20000);
+      const delay = new Date().getTime() - new Date(last).getTime();
+      const timeToAdd =  delay > 15*60*1000 ? 0 : -20000;
+      this.currentTime = this.addISOTime(last, timeToAdd);
     }
     this.capTime(() => {
       this.clearAnimationPoll()
@@ -71,6 +78,7 @@ export class TimeAwareAnimation {
   private setPathBearing() {
     let {path, bearing} = this.currentTimePolylineData();
     this.updatePathBearing(path, bearing);
+    this.updateEvent.publish('update', {path, bearing, time: this.currentTime})
   };
 
   updatePathBearing(path, bearing) {
@@ -107,7 +115,7 @@ export class TimeAwareAnimation {
     return factor * this.animationProps.interval;
   }
 
-  private currentTimePolylineData() {
+  private currentTimePolylineData(): {path: HtPosition[], bearing: number} {
     let polylineData = this.polylineUtils.getPolylineToTime(this.currentTime);
     let path = polylineData.path.map((array) => {
       return {lat: array[0], lng: array[1]};
@@ -124,4 +132,39 @@ export class TimeAwareAnimation {
     return new Date(new Date(time).getTime() + timeToAdd).toISOString()
   };
 }
+
+export class CustomEvent {
+  topics = {};
+  hOP = this.topics.hasOwnProperty;
+
+  publish(topic, info) {
+    // If the topic doesn't exist, or there's no listeners in queue, just leave
+    if(!this.hOP.call(this.topics, topic)) return;
+
+    // Cycle through topics queue, fire!
+    this.topics[topic].forEach(function(item) {
+      item(info != undefined ? info : {});
+    });
+  }
+
+  subscribe(topic, listener) {
+    // Create the topic's object if not yet created
+    if(!this.hOP.call(this.topics, topic)) this.topics[topic] = [];
+
+    // Add the listener to queue
+    var index = this.topics[topic].push(listener) -1;
+
+    // Provide handle back for removal of topic
+    return {
+      remove: function() {
+        delete this.topics[topic][index];
+      }
+    };
+  }
+};
+
+// export interface IPathBearing {
+//   path: HtPosition[],
+//   bearing: number,
+// }
 

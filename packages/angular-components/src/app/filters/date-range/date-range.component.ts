@@ -1,14 +1,43 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, Input,
+  OnInit
+} from '@angular/core';
 // import * as moment from 'moment-mini'
 import {IDateRange, dateRangeService} from "ht-client";
 import {DateRangeMap, isSameDateRange, DateRangeLabelMap} from "ht-data";
 import {of} from "rxjs/observable/of";
 import {map} from "rxjs/operators";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'ht-date-range',
   templateUrl: './date-range.component.html',
-  styleUrls: ['./date-range.component.less']
+  styleUrls: ['./date-range.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('calender-appear', [
+      transition(":leave", [
+        style({pointerEvents: 'none'}),
+        animate('150ms ease-in', style({opacity: 0, top: "-10px"}))
+      ]),
+      transition(":enter", [
+        style({opacity: 0, height: 0, top: "-10px"}),
+        animate('150ms ease-out')
+      ]),
+      // transition(":enter", [
+      //   style({transform: "translateX(-400px)"}),
+      //   animate('200ms ease-in-out', style({transform: "translateX(0px)", opacity: 1}))
+      //   ]),
+      // transition(":leave", [
+      //   style({transform: "translateX(0px)", opacity: 0}),
+      //   animate('200ms ease-in-out', style({transform: "translateX(-400px)", opacity: 0}))
+      //   ]),
+      // transition("* <=> *", [
+      //   // style({height: 0, opacity: 0}),
+      //   query("ht-analytics-item:enter")
+      //   ])
+    ])
+  ]
 })
 export class DateRangeComponent implements OnInit {
   @Input() dateRangeService$ = dateRangeService.getInstance();
@@ -19,9 +48,18 @@ export class DateRangeComponent implements OnInit {
   dateRangeOptions$;
   customDates$;
   customDates = DateRangeLabelMap;
-
+  isActive: boolean = false;
+  @HostListener('mouseenter')
+  open() {
+    this.isActive = true;
+  }
+  @HostListener('mouseleave')
+  close() {
+    this.isActive = false;
+  }
   constructor(
-
+    private elRef:ElementRef,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -41,7 +79,12 @@ export class DateRangeComponent implements OnInit {
   }
 
   setDateRange(range: IDateRange) {
-    this.dateRangeService$.data$.next(range)
+    this.dateRangeService$.setDateRange(range);
+    setTimeout(() => {
+      this.isActive = false;
+      this.cd.detectChanges()
+    }, 200)
+
   }
 
 }

@@ -18,6 +18,7 @@ import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {TraceMixin} from "../mixins/trace";
 import {ClusterMixin} from "../mixins/clusters";
 import {MapInstance} from "../map-utils/map-instance";
+import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";

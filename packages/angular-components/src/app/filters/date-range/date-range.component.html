@@ -1,4 +1,4 @@
-<div class="dropdown is-hoverable" (mouseleave)="picker.reset()" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+<div class="dropdown is-active" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
   <button type="button dropdown-trigger" class="button flex-row row-gap-4">
     <span>{{dateRange}}</span>
     <span class="icon">
@@ -7,10 +7,10 @@
     <!--<span *ngIf="ordering$ | async as ordering"></span>-->
     <!--<i class="fa fa-filter"></i>-->
   </button>
-  <div class="dropdown-menu dropdown-menu-right is-boxed">
+  <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
-        <ht-date-range-picker #picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
+        <ht-date-range-picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
       </div>
     </div>
   </div>

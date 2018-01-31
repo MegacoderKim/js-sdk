@@ -94,4 +94,10 @@ export interface HtPosition {
   weight?: number
 }
 
+export interface IPathBearingTime {
+  path: HtPosition[],
+  bearing: number,
+  time?: string
+}
+
 export type Constructor<T = object> = new (...args: any[]) => T;

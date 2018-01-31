@@ -192,4 +192,10 @@ export interface IUserDevice {
   app_version: string,
   app_package_name: string
 }
+
+export interface IPlacelineMod extends IUserData {
+  selectedSegment?: ISegment,
+  highlightedSegment?: ISegment,
+  segmentsStats?: any
+}
 // export type IUserData = IUserData
