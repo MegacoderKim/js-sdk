@@ -1,0 +1,40 @@
+{
+  "name": "ht-webtracking",
+  "version": "0.0.0",
+  "description": "hyperTrack webtracking",
+  "main": "dist/ht-webtracking_browser.js",
+  "module": "dist/ht-webtracking.es5.js",
+  "typings": "dist/types/ht-webtracking.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js",
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "dev": "webpack --config webpack.config.js -w"
+  },
+  "keywords": [
+    "HyperTrack",
+    "webtracking"
+  ],
+  "author": "Gaurav Mukherjee",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^7.0.22",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.3.3"
+  },
+  "dependencies": {
+    "@types/googlemaps": "^3.26.8",
+    "@types/moment": "^2.13.0",
+    "@types/underscore": "^1.8.0",
+    "google-maps": "^3.2.1",
+    "googlemaps-js-rich-marker": "^1.0.2",
+    "jquery": "^3.2.1",
+    "moment": "^2.18.1",
+    "time-aware-polyline": "^0.1.18",
+    "underscore": "^1.8.3",
+    "rollup": "^0.53.3"
+  }
+}
