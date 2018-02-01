@@ -59,9 +59,9 @@ export class ActionsPolyline extends SegmentPolylines {
           return {
             default: {
               weight: 5,
-              color: Color.grey2,
+              color: Color.grey4,
               opacity: 1,
-              dashArray: "2, 2"
+              dashArray: "7 10"
             },
             highlight: {
               weight: 5,

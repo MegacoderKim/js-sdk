@@ -60,6 +60,22 @@ export const stopStyles: StyleFunct = {
             offset: [0, -5],
             // offset: point(0, -5),
             closeButton: false
+          },
+          highlight: {
+            radius: 10,
+            fillColor: Color.stop,
+            fillOpacity: 1,
+            weight: 4,
+            color: Color.stopDark,
+            pane: "markerPane"
+          },
+          fade: {
+            radius: 10,
+            fillColor: Color.stop,
+            fillOpacity: 0.1,
+            weight: 2,
+            color: Color.stopDark,
+            pane: "markerPane"
           }
         }
       }
