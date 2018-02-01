@@ -1,3 +1,7 @@
+# Todo
+- Export mixins (done)
+- Check bounds is valid, else set user position in placeline
+
 # 0.1.3
 - Extract `extendBounds` as new mixin from `TraceMixin`
 - Move `clearAllClusters` to `ClusterMixin` from `TraceMixin`

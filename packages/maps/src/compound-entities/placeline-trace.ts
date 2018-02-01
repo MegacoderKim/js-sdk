@@ -90,7 +90,9 @@ export class Placeline {
   };
 
   traceAnimPolyline(restTrip, selectedSegment) {
-    if (!selectedSegment || selectedSegment.id === restTrip.id) {
+    if (!restTrip) {
+      this.animPolyline.clear();
+    } else if (!selectedSegment || selectedSegment.id === restTrip.id) {
       this.animPolyline.trace(restTrip);
     } else {
       this.animPolyline.clear();
