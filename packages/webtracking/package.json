@@ -1,6 +1,6 @@
 {
-  "name": "ht-webtracking-sdk",
-  "version": "0.3.0",
+  "name": "ht-webtracking",
+  "version": "0.0.0",
   "description": "hyperTrack webtracking",
   "main": "dist/track.js",
   "typings": "dist/src/index.d.ts",
@@ -31,6 +31,7 @@
     "jquery": "^3.2.1",
     "moment": "^2.18.1",
     "time-aware-polyline": "^0.1.18",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "rollup": "^0.53.3"
   }
 }
