@@ -2,11 +2,14 @@
   "name": "ht-webtracking",
   "version": "0.0.0",
   "description": "hyperTrack webtracking",
-  "main": "dist/track.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "dist/ht-webtracking_browser.js",
+  "module": "dist/ht-webtracking.es5.js",
+  "typings": "dist/types/ht-webtracking.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js",
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
     "dev": "webpack --config webpack.config.js -w"
   },
   "keywords": [
