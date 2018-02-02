@@ -1,15 +1,13 @@
-import * as $ from "jquery";
 import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
 import {
-  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackedData,
+  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedData,
   ITrackingOptions
 } from "./model";
-import {TrackedAction} from "./track-action";
 import {actionToTrackingData} from "./actions.helper";
 import {TrackData} from "./track-data";
 
 export class HTTrackActions {
-  trackActions: ITrackedActions = {};
+  // trackActions: ITrackedActions = {};
   trackMultipleData: ITrackedData = {};
   map: google.maps.Map;
   pollActionsTimeoutId;
@@ -95,11 +93,6 @@ export class HTTrackActions {
 
   trackActionsOnMap(actions: IAction[]) {
     actions.forEach((action: IAction) => {
-      // if (this.trackActions[action.id]) {
-      //   this.trackActions[action.id].update(action);
-      // } else {
-      //   this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
-      // }
       let trackingData = actionToTrackingData(action);
       if (this.trackMultipleData[trackingData.id]) {
         this.trackMultipleData[trackingData.id].track(trackingData);

@@ -1,5 +1,5 @@
 import MapTypeStyle = google.maps.MapTypeStyle;
-import {TrackedAction} from "./track-action";
+// import {TrackedAction} from "./track-action";
 import {TrackData} from "./track-data";
 export interface IDecoded {
     action: IAction,
@@ -8,10 +8,6 @@ export interface IDecoded {
 
 export interface ISubAccountData {
     sub_account: ISubAccount
-}
-
-export interface ITrackedActions {
-    [key: string]: TrackedAction
 }
 
 export interface ITrackedData {
