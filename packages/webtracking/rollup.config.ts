@@ -9,6 +9,7 @@ const libraryName = 'ht-webtracking'
 
 var globals = {
   "date-fns": 'dateFns',
+  "ht-maps": "htMaps",
   "underscore": "_"
 };
 

@@ -226,7 +226,10 @@ export class LeafletMapUtilsClass implements MapUtils {
   }
 
   setDivContent(marker, content, options = {}) {
-    this.setDivMarkerStyle(marker, { html: content, ...options });
+    let currentContent = marker.options.icon ? marker.options.icon.options.html : "";
+    if (content != currentContent) {
+      this.setDivMarkerStyle(marker, { html: content, ...options });
+    }
     // console.error('set div content not implemented')
   }
 

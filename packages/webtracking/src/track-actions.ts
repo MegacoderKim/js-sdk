@@ -5,16 +5,24 @@ import {
 } from "./model";
 import {actionToTrackingData} from "./actions.helper";
 import {TrackData} from "./track-data";
+import {MapInstance} from "ht-maps";
+import {DefaultGoogleMapOptions} from "./defaults";
 
 export class HTTrackActions {
   // trackActions: ITrackedActions = {};
   trackMultipleData: ITrackedData = {};
-  map: google.maps.Map;
+  mapInstance: MapInstance;
   pollActionsTimeoutId;
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
+    this.mapInstance = new MapInstance();
+    this.mapInstance.setMapType('google');
     this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
       this.initTracking(data, identifier, identifierType);
     });
+  }
+
+  get map(): google.maps.Map {
+    return this.mapInstance.map as google.maps.Map;
   }
 
   initTracking(data: ITrackActionResults, identifier: string, identifierType: string) {
@@ -49,7 +57,19 @@ export class HTTrackActions {
   renderMap(actions) {
     let initialBounds = GetActionsBounds(actions);
     let initialCenter = (initialBounds && !initialBounds.isEmpty()) ? initialBounds.getCenter() : null;
-    this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions, initialCenter);
+    this.mapInstance.mapUtils.defaultMapOptions['center'] = {lat: initialCenter.lat(), lng: initialCenter.lng()};
+    let googleMapOptions: any = {};
+    let mapOptions = this.options.mapOptions;
+    if (mapOptions.gMapsStyle) {
+      googleMapOptions.styles = mapOptions.gMapsStyle;
+    }
+    // if (origin) {
+    //   googleMapOptions.center = origin;
+    // }
+    console.log(googleMapOptions, this.options.mapId);
+    let ele = document ? document.getElementById(this.options.mapId) : null
+    this.mapInstance.renderMap(ele, googleMapOptions);
+    // this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions, initialCenter);
   }
 
   fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
