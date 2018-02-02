@@ -309,8 +309,11 @@ export class GoogleMapUtilsClass implements MapUtils {
   }
 
   setDivContent(marker, content, options) {
-    marker.setContent(content);
-    this.setDivMarkerStyle(marker, options);
+    let currentContent = marker.getContent ? marker.getContent() : null;
+    if (currentContent != content) {
+      marker.setContent(content);
+      this.setDivMarkerStyle(marker, options);
+    }
   }
 
   getDivMarker() {

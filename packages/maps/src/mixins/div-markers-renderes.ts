@@ -14,6 +14,7 @@ export function DivMarkersMixin<TBase extends Constructor<IDivMarkersBase>>(
   Base: TBase
 ) {
   return class extends Base {
+
     getItem(data) {
       return this.mapInstance.mapUtils.getDivMarker();
     }

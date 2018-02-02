@@ -1,7 +1,5 @@
 /* Snazzy Maps - https://snazzymaps.com/style/151/ultra-light-with-labels*/
-import MapTypeStyle = google.maps.MapTypeStyle;
-
-export const ultraLightWithLabel: MapTypeStyle[] = [
+export const ultraLightWithLabel = [
   {
     'featureType': 'water',
     'elementType': 'geometry',
