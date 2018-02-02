@@ -1,0 +1,41 @@
+.summary-detail-container {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    height: 0;
+    transition: 300ms ease all;
+    overflow: hidden;
+}
+
+.summary-detail-container.expanded {
+    border-bottom: 1px solid #eeeeee;
+    height: 66px;
+}
+
+.summary-detail-elapsed-container {
+    margin-left: 24px;
+}
+
+.summary-detail-battery-container {
+    margin-right: 24px;
+}
+
+.summary-detail-action-date-container-gocars {
+    margin-right: 24px;
+}
+
+.summary-detail-elapsed-container, .summary-detail-travelled-container, .summary-detail-speed-container, .summary-detail-battery-container{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.summary-detail-elapsed-time-value, .summary-detail-travelled-time-value, .summary-detail-speed-value, .summary-detail-battery-value {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.summary-detail-elapsed-time-label, .summary-detail-travelled-time-label, .summary-detail-speed-label, .summary-detail-battery-label {
+    color: gray;
+    font-size: 14px;
+    padding-top: 3px;
+}

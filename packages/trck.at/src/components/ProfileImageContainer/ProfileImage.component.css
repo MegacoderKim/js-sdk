@@ -1,0 +1,14 @@
+.profile-image-picture-container {
+    margin-right: 15px;
+}
+
+.profile-image-picture {
+    background-repeat: no-repeat;
+    height: 48px;
+    width: 48px;
+    background-size: cover;
+    border-radius: 50%;
+    left: 2%;
+    border: 1px solid rgb(238, 238, 238);
+    z-index: 2;
+}

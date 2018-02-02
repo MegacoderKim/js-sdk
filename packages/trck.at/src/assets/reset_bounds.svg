@@ -1,0 +1,29 @@
+<svg width="82" height="82" viewBox="0 0 82 82" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>noun_418_cc</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-173 -421)">
+<g id="noun_418_cc">
+<g id="Shape Copy" filter="url(#filter0_d)">
+<use xlink:href="#path0_fill" transform="translate(189 437)" fill="#FFFFFF"/>
+<use xlink:href="#path1_stroke" transform="translate(189 437)" fill="#F3F3F3"/>
+</g>
+<g id="Shape">
+<use xlink:href="#path2_fill" transform="translate(199 447)" fill="#C3C8CF"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d" filterUnits="userSpaceOnUse" x="173" y="421" width="82" height="82" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+<feOffset dx="0" dy="0"/>
+<feGaussianBlur stdDeviation="7.5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.123443 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<path id="path0_fill" d="M 25 0C 38.8071 2.53633e-15 50 11.1929 50 25C 50 38.8071 38.8071 50 25 50C 11.1929 50 0 38.8071 0 25C 7.10543e-15 11.1929 11.1929 -2.53633e-15 25 0Z"/>
+<path id="path1_stroke" d="M 0 25L -1 25L 0 25ZM 25 1C 38.2548 1 49 11.7452 49 25L 51 25C 51 10.6406 39.3594 -1 25 -1L 25 1ZM 49 25C 49 38.2548 38.2548 49 25 49L 25 51C 39.3594 51 51 39.3594 51 25L 49 25ZM 25 49C 11.7452 49 1 38.2548 1 25L -1 25C -1 39.3594 10.6406 51 25 51L 25 49ZM 1 25C 1 11.7452 11.7452 1 25 1L 25 -1C 10.6406 -1 -1 10.6406 -1 25L 1 25Z"/>
+<path id="path2_fill" fill-rule="evenodd" d="M 0 15C 0 6.729 6.729 0 15 0C 23.271 0 30 6.729 30 15C 30 23.2707 23.271 30 15 30C 6.729 30 0 23.2707 0 15ZM 16.2096 23.4678L 16.2096 27.5211C 22.1829 26.9487 26.9487 22.1829 27.5214 16.2096L 23.4678 16.2096L 23.4678 13.7904L 27.5211 13.7904C 26.9487 7.8168 22.1829 3.0513 16.2096 2.47891L 16.2096 6.53223L 13.7904 6.53223L 13.7904 2.47891C 7.81709 3.05161 3.05159 7.81711 2.4789 13.7904L 6.5325 13.7904L 6.5325 16.2096L 2.4789 16.2096C 3.0513 22.1829 7.81709 26.9487 13.7904 27.5214L 13.7904 23.4678L 16.2096 23.4678Z"/>
+</defs>
+</svg>
