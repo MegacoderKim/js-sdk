@@ -56,10 +56,7 @@ export class HTTrackActions {
 
   fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getTrackActionsURL(identifier, identifierType);
-    $.ajax({
-      url: url,
-      ...GetReqOpt(this.pk)
-    }).then((data: ITrackActionResults) => {
+    fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
       cb(data)
     }, err => {
       this.options.onError && this.options.onError(err)
@@ -68,14 +65,19 @@ export class HTTrackActions {
 
   fetchSubaccountFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getSubaccountFromIdentifierURL(identifier, identifierType);
-    $.ajax({
-      url: url,
-      ...GetReqOpt(this.pk)
-    }).then((data: ISubAccountData) => {
+    fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
       cb(data)
     }, err => {
       this.options.onError && this.options.onError(err)
     });
+    // $.ajax({
+    //   url: url,
+    //   ...GetReqOpt(this.pk)
+    // }).then((data: ISubAccountData) => {
+    //   cb(data)
+    // }, err => {
+    //   this.options.onError && this.options.onError(err)
+    // });
   }
 
   pollActionsFromIdentifier(identifier: string, identifierType: string) {
