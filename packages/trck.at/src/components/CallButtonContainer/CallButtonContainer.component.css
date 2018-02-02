@@ -1,0 +1,55 @@
+.call-button-component-time-elapsed-container {
+    margin-right: 15px;
+}
+
+.call-button-component-call-button-container {
+    position: relative;
+    top: 4px;
+    left: 5px;
+
+    width: 33px;
+    height: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 12px;
+    text-decoration: none;
+    color: black;
+}
+
+.call-button-component-call-button-container.disabled {
+    color: slategray;
+}
+
+.call-button-component-call-button {
+    width: 50px;
+    height: 50px;
+}
+
+.call-button-component-circle-active-border {
+    transform: rotate(0deg);
+    position: relative;
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color:#DF5CC1;
+    background-image: linear-gradient(91deg, transparent 50%, #DF5CC1 50%), linear-gradient(90deg, #D7D7D7 50%, transparent 50%);
+}
+
+.call-button-component-call-button-circle {
+    position: relative;
+    top: 4px;
+    left: 4px;
+    text-align: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 100%;
+    background-color: white;
+    transform: rotate(0deg);
+}
+
+.call-button-component-phone-icon {
+    width: 24px;
+    height: 24px;
+}

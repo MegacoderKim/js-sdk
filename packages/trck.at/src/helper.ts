@@ -1,3 +1,5 @@
+import {Logger} from './helpers/logger.util';
+
 export const checkUserAgent = {
   Windows: function(userAgent: string) {
     return /IEMobile/i.test(userAgent);
@@ -40,6 +42,6 @@ export const getUserAgent = () => {
 };
 
 export const isRedirectedUrl = () => {
-  console.log('Redirected url', getQueryStringValue('redirect'));
+  Logger.log('Redirected url', getQueryStringValue('redirect'));
   return (getQueryStringValue('redirect') === 'true');
 };
