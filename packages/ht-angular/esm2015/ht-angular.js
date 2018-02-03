@@ -2916,6 +2916,9 @@ PlacelineComponent.decorators = [
             </tr>
             </tbody>
           </table>
+          <div class="text-muted" *ngIf="selectedSegmentId == segment.id && segment.place">
+            {{segment.place.address}}
+          </div>
           <div class="close-card" *ngIf="selectedSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
             <i class="fa fa-times-circle fa-2x"></i>
           </div>
@@ -6258,10 +6261,12 @@ class MapComponent {
     constructor(elRef, htMapService) {
         this.elRef = elRef;
         this.options = {};
-        this.onReady = new EventEmitter();
         this.loading = false;
         this.showReset = true;
-        this.mapInstance = this.mapInstance || htMapService.mapInstance;
+        this.onReady = new EventEmitter();
+        this.onMapReset = new EventEmitter();
+        if (htMapService)
+            this.mapInstance = htMapService.mapInstance;
     }
     /**
      * @return {?}
@@ -6274,6 +6279,7 @@ class MapComponent {
      * @return {?}
      */
     ngOnInit() {
+        this.mapInstance = this.mapInstance;
         // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
         // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
         // user$.subscribe((userData) => {
@@ -6300,6 +6306,7 @@ class MapComponent {
      */
     resetMap() {
         this.mapInstance.resetBounds();
+        this.onMapReset.next(true);
     }
     /**
      * @return {?}
@@ -6696,10 +6703,11 @@ MapComponent.ctorParameters = () => [
 ];
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
-    "onReady": [{ type: Output },],
     "mapInstance": [{ type: Input },],
     "loading": [{ type: Input },],
     "showReset": [{ type: Input },],
+    "onReady": [{ type: Output },],
+    "onMapReset": [{ type: Output },],
     "mapElem": [{ type: ViewChild, args: ['map',] },],
     "onMapResize": [{ type: HostListener, args: ['resize', ['$event'],] },],
 };
@@ -6745,6 +6753,8 @@ class MapContainerComponent {
         this.mapService.usersCluster.setPageData$(this.userClientService.listAll.data$, {
             hide$: this.userClientService.placeline.id$
         });
+        // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
+        // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
         this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
             roots: ['segments', 'actions'],
             highlighted$: this.userClientService.placeline.segmentSelectedId$,
