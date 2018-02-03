@@ -44,7 +44,7 @@ export class HtMapClass {
     public mapType: HtMapType = "leaflet",
     options: HtMapClassOptions = {}
   ) {
-    // mapTypeService.getInstance(mapType);
+    mapTypeService.getInstance(mapType);
     this.usersCluster = new UsersClusterTrace(this.mapInstance);
     this.actionsCluster = new ActionsClusterTrace(this.mapInstance);
     this.usersHeatmap = new StopsHeatmapTrace(this.mapInstance);

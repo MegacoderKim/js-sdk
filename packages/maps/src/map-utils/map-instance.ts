@@ -27,11 +27,7 @@ export class MapInstance {
   }
 
   get mapUtils(): MapUtils {
-    if (this.mapType) {
-      return mapTypeService.getInstance()
-    } else {
-      return mapTypeService.getInstance()
-    }
+    return mapTypeService.getInstance()
 
   }
 
