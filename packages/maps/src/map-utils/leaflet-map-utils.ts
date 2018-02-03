@@ -237,8 +237,8 @@ export class LeafletMapUtilsClass implements MapUtils {
     return this.getMarker();
   }
 
-  setDivMarkerStyle(item, options) {
-    let icon = divIcon({ ...options, className: "", bgPos: point(15, -41) });
+  setDivMarkerStyle(item, options: any = {}) {
+    let icon = divIcon(options);
     this.setIcons(item, icon);
   }
 

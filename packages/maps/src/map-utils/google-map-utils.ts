@@ -297,6 +297,7 @@ export class GoogleMapUtilsClass implements MapUtils {
   }
 
   onEvent(item, event, cb) {
+    if (event == 'move') event = 'bounds_changed'
     item.addListener(event, e => {
       cb(e);
     });
@@ -320,7 +321,7 @@ export class GoogleMapUtilsClass implements MapUtils {
     return new RichMarker({});
   }
 
-  setDivMarkerStyle(item, options) {
+  setDivMarkerStyle(item, options: any = {}) {
     let { zIndex, flat, anchor } = options;
     if (zIndex) item.setZIndex(zIndex);
     if (flat) item.setFlat(flat);

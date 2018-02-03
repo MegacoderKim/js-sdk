@@ -1,5 +1,5 @@
 import {GoogleMapUtilsClass} from "./google-map-utils";
-import {filter} from "rxjs/operators";
+import {filter, take} from "rxjs/operators";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
@@ -11,6 +11,7 @@ export class MapInstance {
   map: HtMap | null = null;
   map$: ReplaySubject<HtMap | null> = new ReplaySubject();
   clusters = [];
+  poppers = [];
   itemsSet = [];
   // mapType: HtMapType;
   leafletSetBoundsOptions = {
@@ -18,7 +19,7 @@ export class MapInstance {
     duration: 0.3
   };
   googleSetBoundsOptions = {};
-
+  moveEvent
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
@@ -75,6 +76,34 @@ export class MapInstance {
         });
     }
   }
+
+  addPopper(popper) {
+    if (!this.poppers.includes(popper)) {
+      this.poppers.push(popper);
+    };
+    if (!this.moveEvent) {
+      this.listenMove()
+    }
+  };
+
+  removePopper(popper) {
+    const i = this.poppers.indexOf(popper);
+    if(i > -1) {
+      this.poppers.splice(i, 1);
+    }
+  }
+
+  listenMove() {
+    this.map$.pipe(filter(data => !!data),take(1)).subscribe(map => {
+      this.moveEvent = this.mapUtils.onEvent(map, 'move', (e) => {
+        this.poppers.forEach(p => {
+          p.scheduleUpdate()
+        })
+      })
+    
+    })
+  }
+
   getBounds(bounds, item) {
     return item.extendBounds(bounds);
   }
