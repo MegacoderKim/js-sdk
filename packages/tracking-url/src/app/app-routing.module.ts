@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {environment} from "../environments/environment";
 
 const routes: Routes = [
-  
+  { path: "", loadChildren: "./tracking/tracking.module#TrackingModule"}
 ];
 
 @NgModule({
