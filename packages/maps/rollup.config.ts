@@ -2,13 +2,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import camelCase from 'lodash.camelcase'
-import image from 'rollup-plugin-image';
-import url from "rollup-plugin-url"
-const plugin = url({
-  limit: 10 * 1024, // inline files < 10k, copy files > 10k
-  include: ["**/*.svg"], // defaults to .svg, .png, .jpg and .gif files
-  emitFiles: true // defaults to true
-})
+
 const pkg = require('./package.json');
 
 const libraryName = 'ht-maps';
@@ -313,8 +307,6 @@ export default {
     },
     // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
     commonjs(),
-    image(),
-    plugin,
     // Allow node_modules resolution, so you can use 'external' to control
     // which external modules to include in the bundle
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
