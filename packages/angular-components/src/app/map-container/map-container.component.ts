@@ -8,7 +8,7 @@ import {range} from "rxjs/observable/range";
 import {startWith, map, distinctUntilChanged} from "rxjs/operators";
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { merge } from 'rxjs/observable/merge';
-import {User} from "./popermixin";
+// import {User} from "./popermixin";
 
 @Component({
   selector: 'ht-map-container',
