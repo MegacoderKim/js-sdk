@@ -20,6 +20,7 @@ export const mapTypeService = (() => {
   }
   return {
     getInstance(mapType?: HtMapType) {
+      console.log(mapType, instance, "map")
       if (!instance || !currentmapType) {
         currentmapType = mapType;
         instance = getMapType(mapType);
