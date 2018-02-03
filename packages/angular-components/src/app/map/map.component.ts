@@ -24,7 +24,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     private elRef: ElementRef,
     @Optional() htMapService: HtMapService
   ) {
-    this.mapInstance = this.mapInstance || htMapService.mapInstance;
+    if(htMapService) this.mapInstance = htMapService.mapInstance
   }
 
   @HostListener('resize', ['$event'])
@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
+    this.mapInstance = this.mapInstance;
     // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
     // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
     // user$.subscribe((userData) => {
