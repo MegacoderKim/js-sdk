@@ -1,4 +1,6 @@
-
 <ng-container *ngIf="mapInstance">
   <ht-map [mapInstance]="mapInstance"></ht-map>
 </ng-container>
+<div class="card-bottom" #card >
+  <ng-content></ng-content>
+</div>

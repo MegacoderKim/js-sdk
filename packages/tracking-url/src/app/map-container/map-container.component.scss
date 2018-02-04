@@ -1,0 +1,10 @@
+.card-bottom {
+  position: absolute;
+  //top: -20;
+  bottom: 0;
+  z-index: 1001;
+  width: 100vw;
+}
+:host {
+  position: relative;
+}

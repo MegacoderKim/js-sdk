@@ -5,6 +5,7 @@ import { TrackingRoutingModule } from './tracking-routing.module';
 import { TrackingComponent } from './tracking.component';
 import { MapModule } from 'ht-angular';
 import { MapContainerModule } from '../map-container/map-container.module';
+import { TrackingService } from './tracking.service';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { MapContainerModule } from '../map-container/map-container.module';
     MapContainerModule
   ],
   declarations: [TrackingComponent],
-  exports: [TrackingComponent]
+  exports: [TrackingComponent],
+  providers: [TrackingService]
 })
 export class TrackingModule { }

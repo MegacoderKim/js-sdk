@@ -1,1 +1,8 @@
-<app-map-container></app-map-container>
+<app-map-container>
+  <div class="card" [@appear] *ngIf="actionsData$ | async as actionsData">
+    <div class="card-content">
+      {{actionsData[0].user.name}}
+
+    </div>
+  </div>
+</app-map-container>
