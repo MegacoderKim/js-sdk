@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { MapService } from '../core/map-service';
 import { mapTypeService } from 'ht-maps';
 
@@ -9,6 +9,7 @@ import { mapTypeService } from 'ht-maps';
 })
 export class MapContainerComponent implements OnInit {
   mapInstance;
+  @ViewChild('card') card;
   constructor(
     private mapService: MapService
   ) {
