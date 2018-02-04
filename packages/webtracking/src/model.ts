@@ -1,6 +1,5 @@
 import MapTypeStyle = google.maps.MapTypeStyle;
 // import {TrackedAction} from "./track-action";
-import {TrackData} from "./track-data";
 export interface IDecoded {
     action: IAction,
     sub_account: ISubAccount
@@ -8,10 +7,6 @@ export interface IDecoded {
 
 export interface ISubAccountData {
     sub_account: ISubAccount
-}
-
-export interface ITrackedData {
-  [key: string]: TrackData
 }
 
 export interface ITrackActionResult {
@@ -123,16 +118,11 @@ export interface ITrackingOptions {
     mapId: string; //id of DOM where map is to be rendered
     mapOptions?: IMapOptions;
     onError?: (error: any) => void;
-    onReady?: (trackedData: ITrackedData, actions: IAction[], map: google.maps.Map) => void;
-    onUpdate?: (trackedData: ITrackedData, actions: IAction[]) => void;
     onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
 
 export interface ITrackingDataOptions {
-  mapId: string; //id of DOM where map is to be rendered
   mapOptions?: IMapOptions;
-  onError?: (error: any) => void;
-  onReady?: (trackedData: ITrackedData, dataArray: ITrackingData[], map: google.maps.Map) => void;
 }
 
 export interface IMapOptions {

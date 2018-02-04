@@ -1,18 +1,22 @@
-import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
+import {GetBaseUrl, GetReqOpt} from "./helpers";
 import {
-  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedData,
+  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults,
   ITrackingOptions
 } from "./model";
-import {actionToTrackingData} from "./actions.helper";
-import {TrackData} from "./track-data";
 import {MapInstance} from "ht-maps";
-import {DefaultGoogleMapOptions} from "./defaults";
+import { BehaviorSubject} from "rxjs/BehaviorSubject";
+import {ReplaySubject} from "rxjs/ReplaySubject";
+import {Observable} from "rxjs/Observable";
 
 export class HTTrackActions {
   // trackActions: ITrackedActions = {};
-  trackMultipleData: ITrackedData = {};
   mapInstance: MapInstance;
   pollActionsTimeoutId;
+  actionsSubject$: ReplaySubject<IAction[]> = new ReplaySubject();
+  actions$: Observable<IAction[]> = this.actionsSubject$.asObservable();
+
+  subAccountSubject$: ReplaySubject<ISubAccountData>  = new ReplaySubject<ISubAccountData>();
+  subAccountData$ = this.subAccountSubject$.asObservable();
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
     this.mapInstance = new MapInstance();
     this.mapInstance.setMapType('google');
@@ -27,16 +31,7 @@ export class HTTrackActions {
 
   initTracking(data: ITrackActionResults, identifier: string, identifierType: string) {
     let actions: IAction[] = this.extractActionsFromResult(data);
-    this.renderMap(actions);
-    this.trackActionsOnMap(actions);
-    if (this.options.onReady) {
-      this.options.onReady(this.trackMultipleData, actions, this.map);
-    }
-    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccountData) => {
-      if (this.options.onAccountReady) {
-        this.options.onAccountReady(subAccount, actions);
-      }
-    });
+    this.actionsSubject$.next(actions);
     this.pollActionsFromIdentifier(identifier, identifierType);
   }
 
@@ -54,24 +49,6 @@ export class HTTrackActions {
     return actions;
   }
 
-  renderMap(actions) {
-    let initialBounds = GetActionsBounds(actions);
-    let initialCenter = (initialBounds && !initialBounds.isEmpty()) ? initialBounds.getCenter() : null;
-    this.mapInstance.mapUtils.defaultMapOptions['center'] = {lat: initialCenter.lat(), lng: initialCenter.lng()};
-    let googleMapOptions: any = {};
-    let mapOptions = this.options.mapOptions;
-    if (mapOptions.gMapsStyle) {
-      googleMapOptions.styles = mapOptions.gMapsStyle;
-    }
-    // if (origin) {
-    //   googleMapOptions.center = origin;
-    // }
-    console.log(googleMapOptions, this.options.mapId);
-    let ele = document ? document.getElementById(this.options.mapId) : null
-    this.mapInstance.renderMap(ele, googleMapOptions);
-    // this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions, initialCenter);
-  }
-
   fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getTrackActionsURL(identifier, identifierType);
     fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
@@ -84,42 +61,21 @@ export class HTTrackActions {
   fetchSubaccountFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getSubaccountFromIdentifierURL(identifier, identifierType);
     fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
+      this.subAccountSubject$.next(data);
       cb(data)
     }, err => {
       this.options.onError && this.options.onError(err)
     });
-    // $.ajax({
-    //   url: url,
-    //   ...GetReqOpt(this.pk)
-    // }).then((data: ISubAccountData) => {
-    //   cb(data)
-    // }, err => {
-    //   this.options.onError && this.options.onError(err)
-    // });
   }
 
   pollActionsFromIdentifier(identifier: string, identifierType: string) {
     this.pollActionsTimeoutId = setTimeout(() => {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
-        this.trackActionsOnMap(actions);
-        if (this.options.onUpdate ) {
-          this.options.onUpdate(this.trackMultipleData, actions);
-        }
+        this.actionsSubject$.next(actions);
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
     }, 2000);
-  }
-
-  trackActionsOnMap(actions: IAction[]) {
-    actions.forEach((action: IAction) => {
-      let trackingData = actionToTrackingData(action);
-      if (this.trackMultipleData[trackingData.id]) {
-        this.trackMultipleData[trackingData.id].track(trackingData);
-      } else {
-        this.trackMultipleData[trackingData.id] = new TrackData(trackingData, this.map, this.options.mapOptions);
-      }
-    });
   }
 
   getTrackActionsURL(identifier: string, identifierType: string) {
