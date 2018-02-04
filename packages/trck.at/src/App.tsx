@@ -282,14 +282,14 @@ class App extends React.Component<{}, AppState> {
     }
 
     getCurrentAction(actions: IAction[] = this.state.actions, actionId: string | null = this.state.currentActionId) {
-    if (actionId) {
-      let currentAction = actions.find((action: IAction) => {
-        return (action.id === actionId);
-      });
-      return currentAction || null;
+        if (actionId) {
+        let currentAction = actions.find((action: IAction) => {
+            return (action.id === actionId);
+        });
+        return currentAction || null;
+        }
+        return null;
     }
-    return null;
-  }
 
     handleUserMapEvents(map: google.maps.Map) {
         if (map) {
