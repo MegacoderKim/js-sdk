@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterContentInit, Component, OnInit} from '@angular/core';
 import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {MapService} from '../core/map-service';
+import { ActionTrace, DestinationMarker, ActionTrace } from "ht-maps";
+import {filter, take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-tracking',
@@ -15,20 +18,39 @@ import {animate, style, transition, trigger} from '@angular/animations';
     ])
   ]
 })
-export class TrackingComponent implements OnInit {
+export class TrackingComponent implements OnInit, AfterContentInit {
   url = "ofE2gTfo";
   init: boolean = false;
   actionsData$;
+  actionsTrace;
+  destination;
+  polyline;
   constructor(
-    private trackinService: TrackingService
+    private trackinService: TrackingService,
+    private mapService: MapService
   ) {
   }
 
   ngOnInit() {
     this.trackinService.initShortCode(this.url);
     this.actionsData$ = this.trackinService.trackActions.actions$;
-    console.log(this.trackinService.trackActions);
     this.init = true;
+    const mapInstance = this.mapService.mapInstance;
+    this.actionsTrace = new ActionTrace(mapInstance);
+
+    // this.destination = new DestinationMarker(mapInstance);
+    this.actionsTrace.setData$(this.actionsData$);
+    // this.actionsData$.subscribe((actions) => {
+    //   this.destination.trace(actions)
+    // })
+  }
+
+  ngAfterContentInit() {
+
+    // this.trackinService.trackActions.actions$.pipe(filter(data => !!data), take(1)).subscribe((data) => {
+    //
+    // });
+
   }
 
 }

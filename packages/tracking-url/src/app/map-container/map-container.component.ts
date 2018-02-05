@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import { MapService } from '../core/map-service';
 import { mapTypeService } from 'ht-maps';
 
@@ -14,7 +14,6 @@ export class MapContainerComponent implements OnInit {
     private mapService: MapService
   ) {
     this.mapInstance = this.mapService.mapInstance;
-    console.log(this.mapInstance)
    }
 
   ngOnInit() {
