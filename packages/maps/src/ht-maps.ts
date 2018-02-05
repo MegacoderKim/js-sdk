@@ -23,6 +23,7 @@ export * from "./entities/current-user";
 export * from "./entities/actions-heatmap";
 export * from "./entities/stops-heatmap";
 export * from "./entities/actions-cluster";
+export * from "./entities/destination-marker"
 
 //mixins
 export * from "./mixins/compounds-data-observable";
@@ -42,3 +43,4 @@ export * from "./mixins/trace";
 
 //compounds entities
 export * from "./compound-entities/placeline-trace";
+export * from "./compound-entities/action-trace";
