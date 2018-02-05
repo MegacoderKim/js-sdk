@@ -54,6 +54,11 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       this.removeAll(entities)
     }
 
+    clearItem({item, data}) {
+      this.removeData(data)
+      this.removeItem(item);
+    }
+
     removeData(data) {
       let id = data.id;
       if (this.entities[id]) delete this.entities[id];

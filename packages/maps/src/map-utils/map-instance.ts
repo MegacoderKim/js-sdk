@@ -101,13 +101,13 @@ export class MapInstance {
   }
 
   getBounds(bounds, item) {
-    return item.extendBounds(bounds);
+    return item.extendBounds ? item.extendBounds(bounds) : null;
   }
   getItemsSetBounds(items: any[]) {
     let bounds = this.mapUtils.extendItemBounds();
     return items.reduce(
       (bounds, item) => {
-        return this.getBounds(bounds, item);
+        return this.getBounds(bounds, item) || bounds;
       },
       bounds
     );
