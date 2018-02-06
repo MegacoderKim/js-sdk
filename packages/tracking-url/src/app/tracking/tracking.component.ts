@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import {AfterContentInit, Component, Input, OnInit} from '@angular/core';
 import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MapService} from '../core/map-service';
@@ -19,7 +19,7 @@ import {filter, take} from 'rxjs/operators';
   ]
 })
 export class TrackingComponent implements OnInit, AfterContentInit {
-  url = "ofE2gTfo";
+  @Input() shortCode = "ofE2gTfo";
   init: boolean = false;
   actionsData$;
   actionsTrace;
@@ -32,7 +32,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit() {
-    this.trackinService.initShortCode(this.url);
+    this.trackinService.initShortCode(this.shortCode);
     this.actionsData$ = this.trackinService.trackActions.actions$;
     this.init = true;
     const mapInstance = this.mapService.mapInstance;
