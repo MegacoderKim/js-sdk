@@ -2,7 +2,7 @@ import {AfterContentInit, Component, OnInit} from '@angular/core';
 import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MapService} from '../core/map-service';
-import { ActionTrace, DestinationMarker, ActionTrace } from "ht-maps";
+import { ActionTrace, DestinationMarker } from "ht-maps";
 import {filter, take} from 'rxjs/operators';
 
 @Component({
