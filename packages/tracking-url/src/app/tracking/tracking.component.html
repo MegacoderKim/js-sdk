@@ -1,8 +1,6 @@
 <app-map-container>
-  <div class="card" [@appear] *ngIf="actionsData$ | async as actionsData">
-    <div class="card-content">
-      {{actionsData[0].user.name}}
+  <ng-container *ngFor="let action of actionsData$ | async; trackBy: trackId">
+    <app-action-summary [action]="action"></app-action-summary>
+  </ng-container>
 
-    </div>
-  </div>
 </app-map-container>
