@@ -40,11 +40,11 @@ export class StartMarker implements IFollower{
         case 'leaflet': {
           return {
             default: {
+              stroke: false,
               fillColor: '#9155f4',
               fill: true,
               fillOpacity: 1,
-              fillRule: 'nonzero',
-              weight: 7
+              weight: 3
               // iconAnchor: [12, 12]
               // iconSize: [35, 35],
               // className: 'current-action-marker',
@@ -66,11 +66,13 @@ export class StartMarker implements IFollower{
 
   }
 
-  getPosition(data: IActionMod): HtPosition {
-    const timeAwarePath = data.timeAwarePath;
-    const t = timeAwarePath ? {lat: +timeAwarePath[0], lng: +timeAwarePath[1]} : null;
-    console.log(t);
-    return t
+  getPosition(data: IAction): HtPosition {
+    let place: IPlace = data.started_place;
+    if (place) {
+      return {lat: place.location.coordinates[1], lng: place.location.coordinates[0]}
+    } else {
+      return null
+    }
   }
 
 };
