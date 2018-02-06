@@ -48,8 +48,11 @@ export class TrackingService {
     //   mapOptions['gMapsStyle'] = this.getGMapsStyle();
     // }
     return {
-      mapId: 'map',
-      mapOptions: mapOptions,
+      onError(err) {
+        console.warn(err);
+      }
+      // mapOptions: mapOptions,
+      // clientType: 'hypertrack/trct.at'
       // onAccountReady: (subAccountData: ISubAccountData, actions: IAction[]) => {
       //   if (actions.length === 1) {
       //     const action = actions[0];
