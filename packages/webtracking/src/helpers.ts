@@ -1,5 +1,5 @@
 import {config} from "./config";
-import {IAction, IMapOptions, IPlace} from "./model";
+import {IAction, IMapOptions, IPlace, ITrackingOptions} from "./model";
 import * as moment from "moment";
 import LatLng = google.maps.LatLng;
 
@@ -7,12 +7,12 @@ export const GetBaseUrl = (env: string = 'production'): string => {
     return config[env] ? config[env].baseUrl : ""
 };
 
-export function GetReqOpt(pk: string) {
+export function GetReqOpt(pk: string, options: Partial<ITrackingOptions> = {}) {
     return {
         headers: {
             "authorization": "token " + pk,
             "content-type": "application/json",
-            "X-Hypertrack-Client": "hypertrack/javascript-SDK"
+            "X-Hypertrack-Client": options.clientType || "hypertrack/javascript-SDK"
         }
     }
 }

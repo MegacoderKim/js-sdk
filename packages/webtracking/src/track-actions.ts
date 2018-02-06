@@ -51,7 +51,7 @@ export class HTTrackActions {
 
   fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getTrackActionsURL(identifier, identifierType);
-    fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
+    fetch(url, GetReqOpt(this.pk, this.options)).then(res => res.json()).then((data: ISubAccountData) => {
       cb(data)
     }, err => {
       this.options.onError && this.options.onError(err)
@@ -60,7 +60,7 @@ export class HTTrackActions {
 
   fetchSubaccountFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getSubaccountFromIdentifierURL(identifier, identifierType);
-    fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
+    fetch(url, GetReqOpt(this.pk, this.options)).then(res => res.json()).then((data: ISubAccountData) => {
       this.subAccountSubject$.next(data);
       cb(data)
     }, err => {
