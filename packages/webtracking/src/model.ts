@@ -115,8 +115,8 @@ export interface IPlace {
 }
 
 export interface ITrackingOptions {
-    mapId: string; //id of DOM where map is to be rendered
-    mapOptions?: IMapOptions;
+    // mapId: string; //id of DOM where map is to be rendered
+    // mapOptions?: IMapOptions;
     onError?: (error: any) => void;
     onAccountReady?: (subAccount: ISubAccountData, actions: IAction[]) => void;
 }
