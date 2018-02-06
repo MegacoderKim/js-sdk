@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { TrackingRoutingModule } from './tracking-routing.module';
 import { TrackingComponent } from './tracking.component';
-import { MapModule } from 'ht-angular';
 import { MapContainerModule } from '../map-container/map-container.module';
 import { TrackingService } from './tracking.service';
+import {ActionSummaryComponent} from "../action-summary/action-summary.component";
+import {ActionSummaryModule} from "../action-summary/action-summary.module";
 
 @NgModule({
   imports: [
     CommonModule,
-    MapContainerModule
+    MapContainerModule,
+    ActionSummaryModule,
   ],
   declarations: [TrackingComponent],
   exports: [TrackingComponent],
-  providers: [TrackingService]
+  providers: [TrackingService],
 })
 export class TrackingModule { }

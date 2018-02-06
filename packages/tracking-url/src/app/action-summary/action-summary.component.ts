@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
-import {IActionCard} from "../core/interfaces";
 import {IAction} from "ht-models";
 
 @Component({
@@ -16,7 +15,7 @@ import {IAction} from "ht-models";
     ])
   ]
 })
-export class ActionSummaryComponent implements OnInit, IActionCard {
+export class ActionSummaryComponent implements OnInit {
   @Input() action: IAction;
   @Input() test: string = "str";
   constructor() { }
