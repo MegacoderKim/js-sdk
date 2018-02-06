@@ -17,7 +17,7 @@ export class HTTrackActions {
 
   subAccountSubject$: ReplaySubject<ISubAccountData>  = new ReplaySubject<ISubAccountData>();
   subAccountData$ = this.subAccountSubject$.asObservable();
-  constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
+  constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions = {}) {
     this.mapInstance = new MapInstance();
     this.mapInstance.setMapType('google');
     this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
