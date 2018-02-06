@@ -1,0 +1,37 @@
+<!--<div class="card" [@appear] *ngIf="action">-->
+  <!--<div class="card-content">-->
+    <!--{{action.user.name}}-->
+
+  <!--</div>-->
+<!--</div>-->
+<div class="card" [@appear]>
+  <div class="card-content">
+    <div class="has-text-centered">
+      {{action.type | nameCase}} completed
+    </div>
+    <div class="columns is-mobile">
+      <div class="column is-half has-text-right">
+        <div>
+          <span class="has-text-grey-light">Total distance</span>
+          <div>{{action.distance | distanceLocale}}</div>
+        </div>
+        <div>
+          <span class="has-text-grey-light">id</span>
+          <div>23.7</div>
+        </div>
+
+      </div>
+      <div class="column is-half has-text-left">
+        <div>
+          <span class="has-text-grey-light">Trip time</span>
+          <div>{{action.duration | hmString: 60}}</div>
+        </div>
+        <div>
+          <span class="has-text-grey-light">Name</span>
+          <div>{{action.user.name | nameCase}}</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
