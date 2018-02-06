@@ -2,7 +2,6 @@ import * as _ from "underscore";
 import {Constructor, Entities, Entity} from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export interface ITraceBase {
   getItem: (data) => any;
@@ -30,17 +29,9 @@ export interface ITraceConfig {
 
 export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
-    // map;
-    followers: any[];
-    state = new BehaviorSubject({
-      showMap: false,
-    });
+    
     entities: Entities<any> = {};
 
-    setState(selector: string, value) {
-      const state = {...this.state.getValue(), [selector]: value};
-      this.state.next(state)
-    }
     // setMap: (item, map) => void;
 
     trace(data: any[] | null, map?) {
@@ -63,7 +54,6 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
             this.addEvents(item, id)
           }
           if (item) this.setStyle(entity);
-          if (!this.toNotTraceItem) this.setState('setMap', true);
           if (!this.toNotTraceItem) this.traceItem(datum);
           // if (!this.toNotSetMap) mapUtils.setMap(item, map);
         });
