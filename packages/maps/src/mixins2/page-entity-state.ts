@@ -9,12 +9,14 @@ import {PageResults$} from "ht-data";
 export class PageEntityState<S = any> implements EntityState<S> {
   stateSubject$: BehaviorSubject<object>;
   state$: Observable<object>;
-  pageSubject$: ReplaySubject<Page<S>> = new ReplaySubject<Page<S>>();
+  pageSubject$: Observable<Page<S>> ;
+  stateTrasfrom;
+  addState
   dataSubject$: ReplaySubject<S[]>;
   data$;
 
   setPageData$(pageData$) {
-    pageData$.subscribe(this.pageSubject$);
+    this.pageSubject$ = pageData$;
     pageData$.pipe(PageResults$).subscribe(this.dataSubject$)
   }
 
