@@ -37,19 +37,12 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     this.init = true;
     const mapInstance = this.mapService.mapInstance;
     this.actionsTrace = new ActionTrace(mapInstance);
-
-    // this.destination = new DestinationMarker(mapInstance);
     this.actionsTrace.setData$(this.actionsData$);
-    // this.actionsData$.subscribe((actions) => {
-    //   this.destination.trace(actions)
-    // })
+
   }
 
   ngAfterContentInit() {
 
-    // this.trackinService.trackActions.actions$.pipe(filter(data => !!data), take(1)).subscribe((data) => {
-    //
-    // });
 
   }
 
