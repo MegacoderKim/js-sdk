@@ -10,7 +10,6 @@ import { TrackingService } from './tracking.service';
 @NgModule({
   imports: [
     CommonModule,
-    TrackingRoutingModule,
     MapContainerModule
   ],
   declarations: [TrackingComponent],
