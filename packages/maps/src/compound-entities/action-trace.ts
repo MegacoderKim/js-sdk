@@ -34,7 +34,7 @@ export class ActionMap {
     this.start.setData$(data$);
     this.user.setData$(data$.pipe(map((actions: IAction[]) => {
       return actions.reduce((acc, action) =>{
-        return action.display.show_summary ? acc : [...acc, action];
+        return action.display.show_summary ? acc : [...acc, action.user];
       }, [])
     })))
   }
