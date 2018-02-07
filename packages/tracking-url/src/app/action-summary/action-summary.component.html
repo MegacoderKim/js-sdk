@@ -5,29 +5,29 @@
   <!--</div>-->
 <!--</div>-->
 <div class="card" [@appear]>
-  <div class="card-content">
+  <div class="card-content is-small">
     <div class="has-text-centered">
       {{action.type | nameCase}} completed
     </div>
     <div class="columns is-mobile">
-      <div class="column is-half has-text-right">
+      <div class="column is-half has-text-right column-gap-4">
         <div>
-          <span class="has-text-grey-light">Total distance</span>
+          <span class="has-text-grey-light is-size-7">Total distance</span>
           <div>{{action.distance | distanceLocale}}</div>
         </div>
         <div>
-          <span class="has-text-grey-light">id</span>
-          <div>23.7</div>
+          <span class="has-text-grey-light is-size-7">id</span>
+          <div>#</div>
         </div>
 
       </div>
-      <div class="column is-half has-text-left">
+      <div class="column is-half has-text-left column-gap-4">
         <div>
-          <span class="has-text-grey-light">Trip time</span>
+          <span class="has-text-grey-light is-size-7">Trip time</span>
           <div>{{action.duration | hmString: 60}}</div>
         </div>
         <div>
-          <span class="has-text-grey-light">Name</span>
+          <span class="has-text-grey-light is-size-7">Name</span>
           <div>{{action.user.name | nameCase}}</div>
         </div>
 
