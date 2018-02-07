@@ -66,7 +66,7 @@ export class StartMarker implements IFollower{
   }
 
   getDivContent() {
-    return `<div style="width: 20px; height: 20px; background: #1d1d1d; border-radius: 50%"></div>`
+    return `<div style="width: 20px; height: 20px; background: #9013FE; border-radius: 50%"></div>`
   }
 
 };
