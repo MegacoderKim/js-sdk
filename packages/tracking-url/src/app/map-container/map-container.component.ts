@@ -9,6 +9,10 @@ import { mapTypeService } from 'ht-maps';
 })
 export class MapContainerComponent implements OnInit {
   mapInstance;
+  @Input() setBoundsOptions = {
+    paddingTopLeft: [10, 10],
+    paddingBottomRight: [50, 10]
+  };
   @ViewChild('card') card;
   constructor(
     private mapService: MapService
