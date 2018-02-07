@@ -6,7 +6,7 @@ import { MapContainerModule } from '../map-container/map-container.module';
 import { TrackingService } from './tracking.service';
 import {ActionSummaryComponent} from "../action-summary/action-summary.component";
 import {ActionSummaryModule} from "../action-summary/action-summary.module";
-import {NgxPopperModule} from "../popper/popper.module";
+import {PopperModule} from "../popper/popper.module";
 import {DestinationPopupModule} from "../destination-popup/destination-popup.module";
 import {UserPopupModule} from "../user-popup/user-popup.module";
 import {ActionStatusModule} from "../action-status/action-status.module";
