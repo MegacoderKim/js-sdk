@@ -21,6 +21,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
   destination;
   polyline;
   popups$;
+  userPopup$;
   // actionSummaryComponent;
   constructor(
     private trackinService: TrackingService,
@@ -48,8 +49,20 @@ export class TrackingComponent implements OnInit, AfterContentInit {
           const elem = mapUtils.getElement(entity.item);
           return elem ? [...acc, {data: entity.data, elem, id: key}] : acc
         }, [])
-      }),
-      // debounceTime(10)
+      })
+    );
+
+    this.userPopup$ = this.actionsData$.pipe(
+      map((data) => {
+        const entities = this.actionsTrace.user.entities;
+        const keys = Object.keys(entities);
+        const mapUtils = this.actionsTrace.mapInstance.mapUtils;
+        return keys.reduce((acc, key) => {
+          const entity = entities[key];
+          const elem = mapUtils.getElement(entity.item);
+          return elem ? [...acc, {data: entity.data, elem, id: key}] : acc
+        }, [])
+      })
     )
 
     // this.actionsData$.pipe(filter(data => !!data), take(1)).subscribe((data) => {
