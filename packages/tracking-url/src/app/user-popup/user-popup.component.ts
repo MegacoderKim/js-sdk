@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { IUser } from "ht-models";
 import {PopperContent} from "../popper/popper-content";
 import {MapService} from "../core/map-service";
@@ -6,7 +6,8 @@ import {MapService} from "../core/map-service";
 @Component({
   selector: 'app-user-popup',
   templateUrl: './user-popup.component.html',
-  styleUrls: ['./user-popup.component.scss']
+  styleUrls: ['./user-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPopupComponent implements OnInit {
   @Input() item: {
