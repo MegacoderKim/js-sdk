@@ -16,6 +16,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {DestinationMap} from "./destination-marker";
 import {FollowerMixin, IFollower} from "../mixins/follower";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 
 export class StartMarker implements IFollower{
   mapInstance: MapInstance;
@@ -41,21 +42,9 @@ export class StartMarker implements IFollower{
         case 'leaflet': {
           return {
             default: {
-              stroke: false,
-              fillColor: '#9155f4',
-              fill: true,
-              fillOpacity: 1,
-              weight: 3
-              // iconAnchor: [12, 12]
-              // iconSize: [35, 35],
-              // className: 'current-action-marker',
-              // iconAnchor: point(15, 43)
-              // iconAnchor: [15, 43]
-            },
-            popup: {
-              // offset: point(0, -35),
-              offset: [0, -5],
-              closeButton: false
+              zIndexOffset: 10,
+              iconSize: [20, 20],
+              className: "destination-marker"
             }
           }
         }
@@ -76,11 +65,15 @@ export class StartMarker implements IFollower{
     }
   }
 
+  getDivContent() {
+    return `<div style="width: 20px; height: 20px; background: #1d1d1d; border-radius: 50%"></div>`
+  }
+
 };
 
 export const StartMarkerTrace =  ExtendBoundsMixin(
   DataObservableMixin(
-    TraceMixin(CircleMixin(MarkersMixin(
+    TraceMixin(DivMarkersMixin(MarkersMixin(
       StyleMixin(StartMarker))
     ))
   )

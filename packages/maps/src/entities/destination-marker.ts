@@ -13,6 +13,7 @@ import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-
 declare const RichMarkerPosition: any;
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
+import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 
 export class DestinationMap {
   mapInstance: MapInstance;
@@ -38,23 +39,9 @@ export class DestinationMap {
         case 'leaflet': {
           return {
             default: {
-              opacity: 0.4,
-              fillColor: '#9155f4',
-              color: '#9155f4',
-              fill: true,
-              fillOpacity: 1,
-              fillRule: 'nonzero',
-              weight: 7
-              // iconAnchor: [12, 12]
-              // iconSize: [35, 35],
-              // className: 'current-action-marker',
-              // iconAnchor: point(15, 43)
-              // iconAnchor: [15, 43]
-            },
-            popup: {
-              // offset: point(0, -35),
-              offset: [0, -5],
-              closeButton: false
+              zIndexOffset: 10,
+              iconSize: [30, 30],
+              className: "destination-marker"
             }
           }
         }
@@ -70,8 +57,12 @@ export class DestinationMap {
       return null
     }
   }
+
+  getDivContent() {
+    return `<div style="width: 30px; height: 30px; background: #00C94B; border-radius: 50%"></div>`
+  }
 };
 
 export const DestinationMarker  = DataObservableMixin(ExtendBoundsMixin(
-  TraceMixin(CircleMixin(MarkersMixin(StyleMixin(DestinationMap))))
+  TraceMixin(DivMarkersMixin(MarkersMixin(StyleMixin(DestinationMap))))
 ));
