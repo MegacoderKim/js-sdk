@@ -104,28 +104,28 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     const start = this.actionsTrace.start;
     const user = this.actionsTrace.user;
 
-    destination.styleObj = {
-      default: {
-        opacity: 1,
-        fillColor: '#00C94B',
-        color: '#00C94B',
-        fill: true,
-        fillOpacity: 1,
-        fillRule: 'nonzero',
-        weight: 5,
-        pane: 'markerPane'
-        // iconAnchor: [12, 12]
-        // iconSize: [35, 35],
-        // className: 'current-action-marker',
-        // iconAnchor: point(15, 43)
-        // iconAnchor: [15, 43]
-      },
-      popup: {
-        // offset: point(0, -35),
-        offset: [0, -5],
-        closeButton: false
-      }
-    }
+    // destination.styleObj = {
+    //   default: {
+    //     opacity: 1,
+    //     fillColor: '#00C94B',
+    //     color: '#00C94B',
+    //     fill: true,
+    //     fillOpacity: 1,
+    //     fillRule: 'nonzero',
+    //     weight: 5,
+    //     pane: 'markerPane'
+    //     // iconAnchor: [12, 12]
+    //     // iconSize: [35, 35],
+    //     // className: 'current-action-marker',
+    //     // iconAnchor: point(15, 43)
+    //     // iconAnchor: [15, 43]
+    //   },
+    //   popup: {
+    //     // offset: point(0, -35),
+    //     offset: [0, -5],
+    //     closeButton: false
+    //   }
+    // }
 
     polyline.styleObj = {
       default: {
@@ -145,21 +145,21 @@ export class TrackingComponent implements OnInit, AfterContentInit {
       }
     }
 
-    start.styleObj = {
-      default: {
-        stroke: false,
-        fillColor: '#9013FE',
-        fill: true,
-        fillOpacity: 1,
-        weight: 3,
-        radius: 7
-      },
-      popup: {
-        // offset: point(0, -35),
-        offset: [0, -5],
-        closeButton: false
-      }
-    }
+    // start.styleObj = {
+    //   default: {
+    //     stroke: false,
+    //     fillColor: '#9013FE',
+    //     fill: true,
+    //     fillOpacity: 1,
+    //     weight: 3,
+    //     radius: 7
+    //   },
+    //   popup: {
+    //     // offset: point(0, -35),
+    //     offset: [0, -5],
+    //     closeButton: false
+    //   }
+    // }
 
     user.getDivContent = (data) => {
       const content = `
