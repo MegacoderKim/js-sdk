@@ -229,6 +229,7 @@ export class LeafletMapUtilsClass implements MapUtils {
     let currentContent = marker.options.icon ? marker.options.icon.options.html : "";
     if (content != currentContent) {
       this.setDivMarkerStyle(marker, { html: content, ...options });
+      options['zIndexOffset'] && marker.setZIndexOffset(options['zIndexOffset']);
     }
     // console.error('set div content not implemented')
   }
@@ -275,6 +276,10 @@ export class LeafletMapUtilsClass implements MapUtils {
   getItemPosition(item: L.Marker) {
     let position = item.getLatLng();
     return position ? {lat: position.lat, lng: position.lng} : null;
+  }
+
+  getElement(item) {
+    return item ? item.getElement() : null
   }
 
 }
