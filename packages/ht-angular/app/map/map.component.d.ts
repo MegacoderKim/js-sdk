@@ -4,6 +4,7 @@ import { HtMap, MapInstance } from "ht-maps";
 export declare class MapComponent implements OnInit, AfterViewInit {
     private elRef;
     options: any;
+    setBoundsOptions: any;
     mapInstance: MapInstance;
     loading: boolean;
     showReset: boolean;
