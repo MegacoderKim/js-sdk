@@ -4,3 +4,6 @@
   </ng-container>
 
 </app-map-container>
+
+<app-destination-popup [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId"></app-destination-popup>
+
