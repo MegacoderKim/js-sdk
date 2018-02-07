@@ -365,4 +365,8 @@ export class GoogleMapUtilsClass implements MapUtils {
     return position ? {lat: position.lat(), lng: position.lng()} : null
   }
 
+  getElement(item) {
+    return item ? item.markerWrapper_ : null
+  }
+
 }

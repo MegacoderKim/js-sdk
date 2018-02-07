@@ -58,6 +58,7 @@ export interface MapUtils {
   setPath(polyline, path: HtPosition[]) : any;
   getItemPosition(item): HtPosition | null;
   updateHeatMapLatlng: (latlngs: HtPosition[], heatmap) => void;
+  getElement(item): HTMLElement | null;
 }
 
 export interface SetFocusConfig {

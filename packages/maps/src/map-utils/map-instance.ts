@@ -19,7 +19,7 @@ export class MapInstance {
     duration: 0.3
   };
   googleSetBoundsOptions = {};
-  moveEvent
+  moveEvent;
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
