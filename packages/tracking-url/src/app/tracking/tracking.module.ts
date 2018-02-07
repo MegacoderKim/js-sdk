@@ -8,14 +8,15 @@ import {ActionSummaryComponent} from "../action-summary/action-summary.component
 import {ActionSummaryModule} from "../action-summary/action-summary.module";
 import {NgxPopperModule} from "../popper/popper.module";
 import {DestinationPopupModule} from "../destination-popup/destination-popup.module";
+import {UserPopupModule} from "../user-popup/user-popup.module";
 
 @NgModule({
   imports: [
     CommonModule,
     MapContainerModule,
     ActionSummaryModule,
-    NgxPopperModule,
-    DestinationPopupModule
+    DestinationPopupModule,
+    UserPopupModule
   ],
   declarations: [TrackingComponent],
   exports: [TrackingComponent],
