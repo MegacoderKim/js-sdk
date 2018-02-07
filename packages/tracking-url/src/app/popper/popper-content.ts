@@ -147,7 +147,10 @@ export class PopperContent implements OnDestroy {
       placement: this.popperOptions.placement,
       positionFixed: this.popperOptions.positionFixed,
       modifiers: {
-
+        preventOverflow: {
+          escapeWithReference: true,
+          // boundariesElement: 'viewport'
+        }
       }
     };
 

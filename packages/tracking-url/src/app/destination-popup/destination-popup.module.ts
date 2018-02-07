@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DestinationPopupComponent } from './destination-popup.component';
-import {NgxPopperModule} from "../popper/popper.module";
+import {PopperModule} from "../popper/popper.module";
 import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
-    NgxPopperModule,
+    PopperModule,
     SharedModule
   ],
   declarations: [DestinationPopupComponent],

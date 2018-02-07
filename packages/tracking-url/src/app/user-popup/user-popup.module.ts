@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserPopupComponent } from './user-popup.component';
-import {NgxPopperModule} from "../popper/popper.module";
+import {PopperModule} from "../popper/popper.module";
 
 @NgModule({
   imports: [
     CommonModule,
-    NgxPopperModule
+    PopperModule
   ],
   declarations: [UserPopupComponent],
   exports: [UserPopupComponent]
