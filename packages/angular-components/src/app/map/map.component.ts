@@ -14,6 +14,7 @@ import {HtMap, MapInstance} from "ht-maps";
 })
 export class MapComponent implements OnInit, AfterViewInit {
   @Input() options: any = {};
+  @Input() setBoundsOptions: any = {};
   @Input() mapInstance: MapInstance;
   @Input() loading: boolean = false;
   @Input() showReset: boolean = true;
@@ -59,7 +60,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   resetMap() {
-    this.mapInstance.resetBounds();
+    this.mapInstance.resetBounds(this.setBoundsOptions);
     this.onMapReset.next(true)
   }
 
