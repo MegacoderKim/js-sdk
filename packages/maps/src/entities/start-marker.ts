@@ -19,6 +19,7 @@ import {FollowerMixin, IFollower} from "../mixins/follower";
 
 export class StartMarker implements IFollower{
   mapInstance: MapInstance;
+  name =  "Start marker";
   constructor(mapInstance) {
     this.mapInstance = mapInstance
   }
@@ -77,8 +78,10 @@ export class StartMarker implements IFollower{
 
 };
 
-export const StartMarkerTrace =  DataObservableMixin(
-  TraceMixin(CircleMixin(MarkersMixin(
-    StyleMixin(StartMarker))
-  ))
+export const StartMarkerTrace =  ExtendBoundsMixin(
+  DataObservableMixin(
+    TraceMixin(CircleMixin(MarkersMixin(
+      StyleMixin(StartMarker))
+    ))
+  )
 )

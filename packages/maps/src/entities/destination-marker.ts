@@ -16,6 +16,7 @@ import { Observable } from "rxjs/Observable";
 
 export class DestinationMap {
   mapInstance: MapInstance;
+  name =  "Destination";
   constructor(mapInstance) {
     this.mapInstance = mapInstance
   }

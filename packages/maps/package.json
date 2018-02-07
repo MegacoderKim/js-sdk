@@ -35,7 +35,8 @@
   "dependencies": {
     "date-fns": "^1.29.0",
     "ht-data": "^0.1.5",
-    "leaflet.heat": "^0.2.0"
+    "leaflet.heat": "^0.2.0",
+    "popper.js": "^1.12.9"
   },
   "peerDependencies": {
     "ht-data": "^0.1.4",
