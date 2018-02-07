@@ -32,7 +32,11 @@ export class ActionMap {
     this.destination.setData$(data$);
     this.polyline.setData$(data$);
     this.start.setData$(data$);
-    this.user.setData$(data$.pipe(map((actions: IAction[]) => actions.map(action => action.user))))
+    this.user.setData$(data$.pipe(map((actions: IAction[]) => {
+      return actions.reduce((acc, action) =>{
+        return action.display.show_summary ? acc : [...acc, action];
+      }, [])
+    })))
   }
 
 
