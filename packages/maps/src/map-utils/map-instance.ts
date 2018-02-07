@@ -112,17 +112,17 @@ export class MapInstance {
       bounds
     );
   }
-  resetBounds(bounds?: HtBounds, options?, map?) {
+  resetBounds(options?) {
     setTimeout(() => {
       let items = this.itemsSet;
-      bounds = this.getItemsSetBounds(items);
+      let bounds = this.getItemsSetBounds(items);
       if (bounds && this.mapUtils.isValidBounds(bounds))
-        this.setBounds(bounds, options, map);
+        this.setBounds(bounds, options);
     }, 10);
   }
 
-  setBounds(bounds: HtBounds, options?, map?) {
-    map = map || this.map;
+  setBounds(bounds: HtBounds, options?) {
+    let map = this.map;
     if (!map) return false;
     options =
       options || this.mapType == "leaflet"
