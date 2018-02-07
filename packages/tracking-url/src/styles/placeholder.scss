@@ -442,3 +442,13 @@ $card-selected-2: #edeff1;
 .modal {
   z-index: 402;
 }
+
+$radius: 5px;
+
+.card.card-bottom {
+  background-color: #fff;
+  width: 93%;
+  margin: auto;
+  border-top-left-radius: $radius;
+  border-top-right-radius: $radius;
+}
