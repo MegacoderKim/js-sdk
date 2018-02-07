@@ -2468,6 +2468,7 @@ var MapComponent = (function () {
     function MapComponent(elRef, htMapService) {
         this.elRef = elRef;
         this.options = {};
+        this.setBoundsOptions = {};
         this.loading = false;
         this.showReset = true;
         this.onReady = new EventEmitter();
@@ -2512,7 +2513,7 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.resetMap = function () {
-        this.mapInstance.resetBounds();
+        this.mapInstance.resetBounds(this.setBoundsOptions);
         this.onMapReset.next(true);
     };
     /**
@@ -2541,6 +2542,7 @@ MapComponent.ctorParameters = function () { return [
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
+    "setBoundsOptions": [{ type: Input },],
     "mapInstance": [{ type: Input },],
     "loading": [{ type: Input },],
     "showReset": [{ type: Input },],

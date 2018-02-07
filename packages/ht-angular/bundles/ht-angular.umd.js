@@ -2457,6 +2457,7 @@ var MapComponent = (function () {
     function MapComponent(elRef, htMapService) {
         this.elRef = elRef;
         this.options = {};
+        this.setBoundsOptions = {};
         this.loading = false;
         this.showReset = true;
         this.onReady = new core.EventEmitter();
@@ -2501,7 +2502,7 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.resetMap = function () {
-        this.mapInstance.resetBounds();
+        this.mapInstance.resetBounds(this.setBoundsOptions);
         this.onMapReset.next(true);
     };
     /**
@@ -2530,6 +2531,7 @@ MapComponent.ctorParameters = function () { return [
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: core.Input },],
+    "setBoundsOptions": [{ type: core.Input },],
     "mapInstance": [{ type: core.Input },],
     "loading": [{ type: core.Input },],
     "showReset": [{ type: core.Input },],
