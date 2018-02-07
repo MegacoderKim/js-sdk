@@ -9,6 +9,7 @@ import {ActionSummaryModule} from "../action-summary/action-summary.module";
 import {NgxPopperModule} from "../popper/popper.module";
 import {DestinationPopupModule} from "../destination-popup/destination-popup.module";
 import {UserPopupModule} from "../user-popup/user-popup.module";
+import {ActionStatusModule} from "../action-status/action-status.module";
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import {UserPopupModule} from "../user-popup/user-popup.module";
     MapContainerModule,
     ActionSummaryModule,
     DestinationPopupModule,
-    UserPopupModule
+    UserPopupModule,
+    ActionStatusModule
   ],
   declarations: [TrackingComponent],
   exports: [TrackingComponent],

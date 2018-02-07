@@ -1,6 +1,9 @@
 <app-map-container>
   <ng-container *ngFor="let action of actionsData$ | async; trackBy: trackId">
-    <app-action-summary [action]="action"></app-action-summary>
+    <app-action-summary *ngIf="action.display.show_summary; else status" [action]="action"></app-action-summary>
+    <ng-template #status>
+      <app-action-status [action]="action"></app-action-status>
+    </ng-template>
   </ng-container>
 
 </app-map-container>
