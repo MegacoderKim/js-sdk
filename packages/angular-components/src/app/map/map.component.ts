@@ -13,8 +13,8 @@ import {HtMap, MapInstance} from "ht-maps";
   styleUrls: ['./map.component.less']
 })
 export class MapComponent implements OnInit, AfterViewInit {
-  @Input() options: any = {};
-  @Input() setBoundsOptions: any = {};
+  @Input() options: any;
+  @Input() setBoundsOptions: any;
   @Input() mapInstance: MapInstance;
   @Input() loading: boolean = false;
   @Input() showReset: boolean = true;
