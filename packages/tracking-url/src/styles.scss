@@ -12,6 +12,10 @@ html, body {
 @import "~bulma/sass/utilities/initial-variables.sass";
 @import "~bulma/sass/utilities/functions.sass";
 
+
+@import "./styles/variables";
+$primary: $live-purple;
+
 @import "~bulma/sass/utilities/derived-variables";
 //@import "~bulma/sass/utilities/initial-variables.sass";
 //@import "~bulma/sass/utilities/functions.sass";
