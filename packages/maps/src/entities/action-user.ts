@@ -23,6 +23,7 @@ import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
+import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
 
 export class ActionUser {
   name = "action user";
@@ -53,17 +54,20 @@ export class ActionUser {
       }
     }
   }
+  setTimeAwareAnimationEntity: (animationEntity?: AnimationsEntities) => void;
+
+  setData$: (data$: Observable<any[]>) => void;
 
   constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
-    return htUser(data).getPosition();
+    return htUser(data.user).getPosition();
   };
 
   getDivContent(data) {
     const content = `
     <div style="border-radius: 50%; height: 60px; width: 60px; background: rgba(95,143,213,0.67) ">
-  <div style="height: 30px; width: 30px; background-image: url('${data.photo}'); background-repeat: no-repeat;
+  <div style="height: 30px; width: 30px; background-image: url('${data.user.photo}'); background-repeat: no-repeat;
   background-size: cover;     top: 15px;
     position: relative;
     left: 15px;
@@ -76,9 +80,9 @@ export class ActionUser {
 
 export const ActionUserTrace = DataObservableMixin(
   ExtendBoundsMixin(
-    DivMarkersMixin(
+    AnimationsEntitiesMixin(DivMarkersMixin(
       TraceMixin(MarkersMixin(StyleMixin(ActionUser)))
-    )
+    ))
   )
 );
 // export class CurrentUser {

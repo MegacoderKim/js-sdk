@@ -13,8 +13,10 @@ import {LatLngBounds} from "leaflet";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {TimeAwareAnimation} from "time-aware-polyline";
+import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
 
 export class ActionsDataPolyline {
+  name = "Actions data polyline"
   mapInstance;
   styleFunct: StyleFunct = {
     get(type) {
@@ -53,6 +55,10 @@ export class ActionsDataPolyline {
       }
     }
   };
+  setTimeAwareAnimationEntity: (animationEntity?: AnimationsEntities) => void;
+
+  setData$: (data$: Observable<any[]>) => void;
+
   constructor(mapInstance: MapInstance) {
     this.mapInstance = mapInstance;
   }
@@ -60,7 +66,7 @@ export class ActionsDataPolyline {
   getEncodedPositionTime(data: IAction) {
     return data.time_aware_polyline;
   }
-
+  //todo remove this, use getTimeAwarePolyline
   getEncodedPath(data: IAction) {
     return data.encoded_polyline
   }
@@ -71,6 +77,10 @@ export class ActionsDataPolyline {
 
     return position ? {lat: position[1], lng: position[0]} : null;
 
+  }
+
+  getTimeAwarePolyline(data: IAction) {
+    return data.time_aware_polyline
   }
 }
 
@@ -93,7 +103,7 @@ export class ActionsDataPolyline {
 
 
 export const ActionsPolylineTrace = DataObservableMixin(
-  AnimationMixin(
+  AnimationsEntitiesMixin(
     TraceMixin(ExtendBoundsMixin(PolylinesMixin(MarkersMixin(StyleMixin(ActionsDataPolyline)))))
   )
 )
