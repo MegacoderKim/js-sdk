@@ -11,8 +11,8 @@ import {environment} from "../../environments/environment";
 export class MapContainerComponent implements OnInit {
   mapInstance;
   @Input() setBoundsOptions = {
-    paddingTopLeft: [10, 10],
-    paddingBottomRight: [50, 10]
+    paddingTopLeft: [7, 7],
+    paddingBottomRight: [30, 7]
   };
   @ViewChild('card') card;
   constructor(
@@ -28,6 +28,7 @@ export class MapContainerComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.mapInstance.setBoundsOptions = this.setBoundsOptions;
   }
 
 }
