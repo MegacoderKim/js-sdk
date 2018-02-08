@@ -124,7 +124,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     destination.styleObj = {
       default: {
         zIndexOffset: 10,
-        iconSize: [40, 40],
+        iconSize: [32, 32],
         className: "destination-marker"
       }
     }
@@ -164,7 +164,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     // }
 
     pulse.getDivContent = (data) => {
-      const pulse = data.availability_status == 'online' ? 'pulse' : '';
+      const pulse = data.user.availability_status == 'online' ? 'pulse' : '';
       const content = `
     <div class="box-24" style="background: rgba(144,19,254, 1)">
   <div class="box-24 ${pulse}" style="background: rgba(144,19,254, 1); margin: auto">
@@ -176,7 +176,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
     user.getDivContent = (data, bearing) => {
       return `<div class="box-24" style="position: absolute">
-    <i class="ion-android-navigate" style="margin: auto; color: white; font-size: 17px;"></i>
+    <i class="ion-android-navigate" style="margin: auto; color: white; font-size: 17px; transform: rotate(${bearing}deg)"></i>
 </div>`
     }
 
