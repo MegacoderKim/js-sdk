@@ -10,10 +10,12 @@ export interface IExtendBoundsBase {
 export function ExtendBoundsMixin<TBase extends Constructor<IExtendBoundsBase>>(Base: TBase) {
   return class extends Base {
     entities: Entities<any> = {};
+    toIncludeInBounds: boolean = true;
     constructor(...args: any[]) {
       super(...args);
     }
     extendBounds(bounds: HtBounds) {
+      if (!this.toIncludeInBounds) return bounds;
       let mapUtils = this.mapInstance.mapUtils;
       bounds = bounds || mapUtils.extendItemBounds();
       let newBounds = _.reduce(
