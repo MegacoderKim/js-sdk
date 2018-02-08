@@ -18,13 +18,19 @@ export class ActionMap {
   user;
   pulse;
   anim = new TimeAwareAnimation();
-  constructor(mapInstance) {
+  constructor(mapInstance, options: IActionTraceOptions = {}) {
     this.mapInstance = mapInstance;
     this.destination = new DestinationMarker(mapInstance);
     this.polyline = new ActionsPolylineTrace(mapInstance);
     this.polyline.setTimeAwareAnimation(this.anim);
     this.user = new ActionUserTrace(mapInstance);
+    if (options.hasPulse) {
+      this.pulse = new ActionUserTrace(mapInstance);
+      // this.pulse.setTimeAwareAnimation(this.anim);
+      // this.pulse.toNotTraceItem = true;
+    }
     // this.user.setTimeAwareAnimation(this.anim);
+    // this.user.toNotTraceItem = true;
     this.start = new StartMarkerTrace(mapInstance);
   }
 
@@ -32,14 +38,24 @@ export class ActionMap {
     this.destination.setData$(data$);
     this.polyline.setData$(data$);
     this.start.setData$(data$);
+    if (this.pulse) this.pulse.setData$(data$.pipe(map((actions: IAction[]) => {
+      return actions.reduce((acc, action) =>{
+        return action.display.show_summary ? acc : [...acc, action.user];
+      }, [])
+    })));
     this.user.setData$(data$.pipe(map((actions: IAction[]) => {
       return actions.reduce((acc, action) =>{
         return action.display.show_summary ? acc : [...acc, action.user];
       }, [])
-    })))
-  }
+    })));
+
+  };
 
 
+}
+
+export interface IActionTraceOptions {
+  hasPulse?: boolean
 }
 
 export const ActionTrace = ActionMap;
