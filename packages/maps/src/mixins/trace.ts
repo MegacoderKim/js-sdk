@@ -1,4 +1,4 @@
-import * as _ from "underscore";
+// import * as _ from "underscore";
 import {Constructor, Entities, Entity} from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
@@ -43,7 +43,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
       }
       if (data && data.length) {
         // if(this.cluster) this.clearAllClusters(data);
-        _.each(data, datum => {
+        data.forEach( datum => {
           let id = datum["id"];
           let entity = this.entities[id];
           let hasEntity = !!entity;
@@ -92,14 +92,14 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
     }
 
     bustOldItem() {
-      let entities: Entities<any> = this.entities;
-      _.each(entities, entity => {
+      const keys = Object.keys(this.entities);
+      keys.forEach((key) => {
+        const entity = this.entities[key];
         if (entity.isOld) {
           this.clearItem(entity);
-          // this.removeItem(entity.item);
-          // this.removeData(entity.data);
+          delete this.entities[key]
         } else {
-          entity.isOld = true;
+          this.entities[key].isOld = true;
         }
       });
     }
