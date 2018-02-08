@@ -2478,7 +2478,6 @@ var MapComponent = (function () {
      */
     function MapComponent(elRef, htMapService) {
         this.elRef = elRef;
-        this.setBoundsOptions = {};
         this.loading = false;
         this.showReset = true;
         this.onReady = new core.EventEmitter();
@@ -2523,7 +2522,6 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.resetMap = function () {
-        console.log("reset map", this.setBoundsOptions);
         this.mapInstance.resetBounds(this.setBoundsOptions);
         this.onMapReset.next(true);
     };
