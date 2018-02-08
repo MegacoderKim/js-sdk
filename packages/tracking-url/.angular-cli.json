@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "styles.scss",
+        "assets/css/ionicons/ionicons.less",
         "../node_modules/leaflet/dist/leaflet.css"
       ],
       "scripts": [],
