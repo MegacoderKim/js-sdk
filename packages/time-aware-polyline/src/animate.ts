@@ -156,7 +156,7 @@ export class CustomEvent {
 
     // Provide handle back for removal of topic
     return {
-      remove: function() {
+      unsubscribe: function() {
         delete this.topics[topic][index];
       }
     };
