@@ -4,30 +4,31 @@ import {IAction} from "ht-models";
 import {DestinationMarker} from "../entities/destination-marker";
 import { Observable } from "rxjs/Observable"
 import { Subscription} from "rxjs/Subscription"
-import { ActionsPolylineTrace} from "../entities/actions-data-polyline";
+import {ActionsDataPolyline, ActionsPolylineTrace} from "../entities/actions-data-polyline";
 import { StartMarkerTrace } from "../entities/start-marker";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {map} from "rxjs/operators";
-import {ActionUserTrace} from "../entities/action-user";
+import {ActionUser, ActionUserTrace} from "../entities/action-user";
+import {AnimationsEntities} from "../mixins/animations-entities";
 
 export class ActionMap {
   mapInstance: MapInstance;
   destination;
-  polyline;
+  polyline: ActionsDataPolyline;
   start;
-  user;
-  pulse;
-  anim = new TimeAwareAnimation();
+  user: ActionUser;
+  pulse: ActionUser;
+  anim = new AnimationsEntities();
   constructor(mapInstance, options: IActionTraceOptions = {}) {
     this.mapInstance = mapInstance;
     this.destination = new DestinationMarker(mapInstance);
     this.polyline = new ActionsPolylineTrace(mapInstance);
-    this.polyline.setTimeAwareAnimation(this.anim);
+    this.polyline.setTimeAwareAnimationEntity(this.anim);
     this.user = new ActionUserTrace(mapInstance);
+    this.user.setTimeAwareAnimationEntity(this.anim);
     if (options.hasPulse) {
       this.pulse = new ActionUserTrace(mapInstance);
-      // this.pulse.setTimeAwareAnimation(this.anim);
-      // this.pulse.toNotTraceItem = true;
+      this.pulse.setTimeAwareAnimationEntity(this.anim);
     }
     // this.user.setTimeAwareAnimation(this.anim);
     // this.user.toNotTraceItem = true;
@@ -40,12 +41,12 @@ export class ActionMap {
     this.start.setData$(data$);
     if (this.pulse) this.pulse.setData$(data$.pipe(map((actions: IAction[]) => {
       return actions.reduce((acc, action) =>{
-        return action.display.show_summary ? acc : [...acc, action.user];
+        return action.display.show_summary ? acc : [...acc, action];
       }, [])
     })));
     this.user.setData$(data$.pipe(map((actions: IAction[]) => {
       return actions.reduce((acc, action) =>{
-        return action.display.show_summary ? acc : [...acc, action.user];
+        return action.display.show_summary ? acc : [...acc, action];
       }, [])
     })));
 
