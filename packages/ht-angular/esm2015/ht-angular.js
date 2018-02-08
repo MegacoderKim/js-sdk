@@ -6201,7 +6201,6 @@ class MapComponent {
      */
     constructor(elRef, htMapService) {
         this.elRef = elRef;
-        this.options = {};
         this.setBoundsOptions = {};
         this.loading = false;
         this.showReset = true;
@@ -6247,6 +6246,7 @@ class MapComponent {
      * @return {?}
      */
     resetMap() {
+        console.log("reset map", this.setBoundsOptions);
         this.mapInstance.resetBounds(this.setBoundsOptions);
         this.onMapReset.next(true);
     }
