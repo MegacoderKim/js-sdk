@@ -150,6 +150,9 @@ export class PopperContent implements OnDestroy {
         preventOverflow: {
           escapeWithReference: true,
           // boundariesElement: 'viewport'
+        },
+        offset: {
+          offset: '0px, 8px'
         }
       }
     };
