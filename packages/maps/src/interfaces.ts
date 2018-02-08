@@ -40,7 +40,7 @@ export interface IReplayPlayer {
   speed: number;
 }
 
-export type Entities<T> = {
+export type Entities<T = any> = {
   [id: string]: Entity<T>;
 };
 
