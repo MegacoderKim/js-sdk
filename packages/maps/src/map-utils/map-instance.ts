@@ -19,6 +19,7 @@ export class MapInstance {
     duration: 0.3
   };
   googleSetBoundsOptions = {};
+  setBoundsOptions;
   moveEvent;
   constructor() {
     this.map$.subscribe(map => {
@@ -125,9 +126,9 @@ export class MapInstance {
     let map = this.map;
     if (!map) return false;
     options =
-      options || this.mapType == "leaflet"
+      options || this.setBoundsOptions || (this.mapType == "leaflet"
         ? this.leafletSetBoundsOptions
-        : this.googleSetBoundsOptions;
+        : this.googleSetBoundsOptions);
     this.mapUtils.setBounds(map || this.map, bounds, options);
   }
 }
