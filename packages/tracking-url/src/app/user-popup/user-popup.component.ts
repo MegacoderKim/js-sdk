@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
-import { IUser } from "ht-models";
+import { IAction } from "ht-models";
 import {PopperContent} from "../popper/popper-content";
 import {MapService} from "../core/map-service";
 
@@ -11,7 +11,7 @@ import {MapService} from "../core/map-service";
 })
 export class UserPopupComponent implements OnInit {
   @Input() item: {
-    data: IUser,
+    data: IAction,
     elem: HTMLElement,
     id: string
   };
