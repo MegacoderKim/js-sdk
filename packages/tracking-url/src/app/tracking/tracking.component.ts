@@ -8,6 +8,7 @@ import {ComponentPortal} from "@angular/cdk/portal";
 import {PopperContent} from "../popper/popper-content";
 import Popper from 'popper.js';
 import {Color} from "ht-utility";
+import {IAction} from "ht-models";
 
 @Component({
   selector: 'app-tracking',
@@ -37,7 +38,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     this.actionsData$ = this.trackinService.trackActions.actions$;
     this.init = true;
     const mapInstance = this.mapService.mapInstance;
-    this.actionsTrace = new ActionTrace(mapInstance);
+    this.actionsTrace = new ActionTrace(mapInstance, {hasPulse: true});
     this.actionsTrace.setData$(this.actionsData$);
     this.setStyle()
     this.popups$ = this.actionsData$.pipe(
@@ -103,30 +104,31 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     const polyline = this.actionsTrace.polyline;
     const start = this.actionsTrace.start;
     const user = this.actionsTrace.user;
+    const pulse = this.actionsTrace.pulse;
 
-    // destination.styleObj = {
-    //   default: {
-    //     opacity: 1,
-    //     fillColor: '#00C94B',
-    //     color: '#00C94B',
-    //     fill: true,
-    //     fillOpacity: 1,
-    //     fillRule: 'nonzero',
-    //     weight: 5,
-    //     pane: 'markerPane'
-    //     // iconAnchor: [12, 12]
-    //     // iconSize: [35, 35],
-    //     // className: 'current-action-marker',
-    //     // iconAnchor: point(15, 43)
-    //     // iconAnchor: [15, 43]
-    //   },
-    //   popup: {
-    //     // offset: point(0, -35),
-    //     offset: [0, -5],
-    //     closeButton: false
-    //   }
-    // }
+    user.styleObj = {
+      default: {
+        zIndexOffset: 12,
+        iconSize: [24, 24],
+        className: "user-marker"
+      }
+    };
+    pulse.styleObj = {
+      default: {
+        zIndexOffset: 10,
+        iconSize: [24, 24],
+        className: "user-marker"
+      }
+    };
 
+    destination.styleObj = {
+      default: {
+        zIndexOffset: 10,
+        iconSize: [40, 40],
+        className: "destination-marker"
+      }
+    }
+    polyline.toIncludeInBounds = false;
     polyline.styleObj = {
       default: {
         fillColor: '#9013FE',
@@ -161,17 +163,32 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     //   }
     // }
 
-    user.getDivContent = (data) => {
+    pulse.getDivContent = (data) => {
+      const pulse = data.availability_status == 'online' ? 'pulse' : '';
       const content = `
-    <div style="border-radius: 50%; height: 60px; width: 60px; background: rgba(144,19,254,0.42) ">
-  <div style="height: 30px; width: 30px; background-image: url('${data.photo}'); background-repeat: no-repeat;
-  background-size: cover;     top: 15px;
-    position: relative;
-    left: 15px;
-    border-radius: 50%;"></div>
+    <div class="box-24" style="background: rgba(144,19,254, 1)">
+  <div class="box-24 ${pulse}" style="background: rgba(144,19,254, 1); margin: auto">
+</div>
 </div> 
     `;
       return content
+    };
+
+    user.getDivContent = (data, bearing) => {
+      return `<div class="box-24" style="position: absolute">
+    <i class="ion-android-navigate" style="margin: auto; color: white; font-size: 17px;"></i>
+</div>`
+    }
+
+    destination.getDivContent = (action: IAction) => {
+      if (action.display.show_summary) {
+        return `<div class="box-32" style="background: #00C94B"></div>`
+      } else {
+        return `<div class="box-32 is-bordered" style="display: flex; border-color: #250D47">
+    <div class="box-16" style="background: #250D47; margin: auto"></div>
+</div>`
+      }
+
     }
 
   }
