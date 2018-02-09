@@ -16,6 +16,7 @@ import { positionTime } from "../helpers/position-time-helper";
 import { Constructor } from "../interfaces";
 import {htAction} from "ht-data";
 import {Color} from "ht-utility";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class ActionsPolyline extends SegmentPolylines {
   lineSymbol = {

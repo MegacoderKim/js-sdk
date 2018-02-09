@@ -10,6 +10,7 @@ import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class ActionsHeatmap {
   styleFunct: StyleFunct = {

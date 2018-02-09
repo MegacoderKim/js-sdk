@@ -19,6 +19,7 @@ import {HtBounds} from "../map-utils/interfaces";
 import {AnimationMixin} from "../mixins/animation-renderer";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export const currentUserConfig: ItemClassFactoryConfig = {
   renderConfig: {

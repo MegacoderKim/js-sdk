@@ -14,6 +14,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class ActionsDataPolyline {
   name = "Actions data polyline"
