@@ -2,6 +2,8 @@ import {HtBounds, HtMapType, HtMarker, MapUtils} from "./interfaces";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
 import {LightColorMapStyle} from "../styles/light-color-map";
+import {fromEventPattern} from "rxjs/observable/fromEventPattern";
+import {Observable} from "rxjs/Observable";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 
@@ -296,11 +298,30 @@ export class GoogleMapUtilsClass implements MapUtils {
     google.maps.event.trigger(map, "resize");
   }
 
+  onEvent$(item, type: string): Observable<any> {
+    return fromEventPattern(this.mapEventHandler(item, type), this.removeHandler(item, type))
+  }
+
+  private mapEventHandler(item, type) {
+    return (handler) => this.onEvent(item, type, handler)
+  }
+
+  private removeHandler(item, type) {
+    return (handler) => this.removeEvent(item, type, handler)
+  }
+
   onEvent(item, event, cb) {
-    if (event == 'move') event = 'bounds_changed'
+    if (event == 'move') event = 'bounds_changed';
     item.addListener(event, e => {
       cb(e);
     });
+  }
+
+  removeEvent(item, event, cb?) {
+    if (event == 'move') event = 'bounds_changed';
+    item.removeListener(event, e => {
+      cb(e)
+    })
   }
 
   openPopupPosition(position: HtPosition, map, content, popup) {
