@@ -13,7 +13,8 @@ export class UserPopupComponent implements OnInit {
   @Input() item: {
     data: IAction,
     elem: HTMLElement,
-    id: string
+    id: string,
+    onUpdate?: any;
   };
   @ViewChild(PopperContent) popper: PopperContent;
   constructor(
@@ -27,6 +28,10 @@ export class UserPopupComponent implements OnInit {
     const mapUtils = this.mapService.mapInstance.mapUtils;
     const map = this.mapService.mapInstance.map;
     mapUtils.onEvent(map, 'move', () => {
+      this.popper.scheduleUpdate();
+    });
+
+    if (this.item.onUpdate) this.item.onUpdate.subscribe((entity) => {
       this.popper.scheduleUpdate();
     })
   }
