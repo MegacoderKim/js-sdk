@@ -26,11 +26,11 @@ export class DestinationPopupComponent implements OnInit, AfterViewInit {
     const map = this.mapService.mapInstance.map;
     mapUtils.onEvent(map, 'move', () => {
       this.popper.scheduleUpdate();
-    })
+    });
   };
 
   getDestinationName(action: IAction): string {
-    const place: IPlace = action.completed_place || action.expected_place
+    const place: IPlace = action.completed_place || action.expected_place;
     if(place) {
       return place.name;
     } else {

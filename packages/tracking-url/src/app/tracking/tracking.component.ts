@@ -3,12 +3,13 @@ import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MapService} from '../core/map-service';
 import { ActionTrace, DestinationMarker } from "ht-maps";
-import {debounceTime, filter, map, take} from 'rxjs/operators';
+import {debounceTime, filter, map, take, takeUntil} from 'rxjs/operators';
 import {ComponentPortal} from "@angular/cdk/portal";
 import {PopperContent} from "../popper/popper-content";
 import Popper from 'popper.js';
 import {Color} from "ht-utility";
 import {IAction} from "ht-models";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-tracking',
@@ -18,12 +19,13 @@ import {IAction} from "ht-models";
 export class TrackingComponent implements OnInit, AfterContentInit {
   @Input() shortCode = "ofE2gTfo";
   init: boolean = false;
-  actionsData$;
+  actionsData$: Observable<IAction[]>;
   actionsTrace;
   destination;
   polyline;
   popups$;
   userPopup$;
+  loading: boolean = true;
   // actionSummaryComponent;
   constructor(
     private trackinService: TrackingService,
@@ -66,27 +68,29 @@ export class TrackingComponent implements OnInit, AfterContentInit {
           return elem ? [...acc, {data: entity.data, elem, id: key, onUpdate}] : acc
         }, [])
       })
+    );
+
+    const completedAction$ = this.actionsData$.pipe(
+      filter((data: IAction[]) => {
+        return !!data && data.length && data[0].display.show_summary;
+      }),
+      take(1)
     )
 
-    // this.actionsData$.pipe(filter(data => !!data), take(1)).subscribe((data) => {
-    //   setTimeout(() => {
-    //     const entities = this.actionsTrace.destination.entities;
-    //     const keys = Object.keys(entities);
-    //     const item = entities[keys[0]].item;
-    //     this.elem = item.getElement();
-    //     // var h = document.getElementById('tttt');
-    //     // console.log(h);
-    //     // var p = new Popper(this.elem, h);
-    //     let map = this.mapService.mapInstance.map as L.Map
-    //     map.on('move', () => {
-    //       // p.scheduleUpdate()
-    //     })
-    //     // console.log(this.elem);
-    //     // console.log(this.poper, "popper");
-    //   }, 5000)
-    //
-    // })
+    this.actionsData$.pipe(
+      filter((data: IAction[]) => !!data && data.length && !data[0].display.show_summary),
+      takeUntil(completedAction$)
+    ).subscribe((action) => {
+      this.loading = false;
+      this.mapService.resetCleanMap(action)
+    });
 
+    completedAction$.subscribe((action) => {
+      this.loading = false;
+      this.actionsTrace.polyline.toIncludeInBounds = true;
+      this.actionsTrace.start.toIncludeInBounds = true;
+      this.mapService.onComplete(action);
+    });
 
 
   }
