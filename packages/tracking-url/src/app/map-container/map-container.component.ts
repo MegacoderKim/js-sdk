@@ -25,7 +25,11 @@ export class MapContainerComponent implements OnInit {
         attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }});
-   }
+  }
+
+  resetMap() {
+
+  }
 
   ngOnInit() {
     this.mapInstance.setBoundsOptions = this.setBoundsOptions;
