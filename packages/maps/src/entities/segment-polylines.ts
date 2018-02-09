@@ -16,6 +16,7 @@ import {PolylinesMixin} from "../mixins/polyline-renderer";
 import {HtBounds} from "../map-utils/interfaces";
 import {Entity, StyleFunct} from "../interfaces";
 import {IPathBearingTime} from "ht-models";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class SegmentPolylines {
   styleFunct: StyleFunct = segmentPolylineStyles;

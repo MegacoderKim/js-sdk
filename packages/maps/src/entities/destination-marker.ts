@@ -14,6 +14,7 @@ declare const RichMarkerPosition: any;
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class DestinationMap {
   mapInstance: MapInstance;

@@ -19,6 +19,7 @@ import {Subscription} from "rxjs/Subscription";
 import {Observable} from "rxjs/Observable";
 import {HtBounds} from "../map-utils/interfaces";
 import {IPathBearingTime} from "ht-models";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export const stopMarkersConfig: ItemClassFactoryConfig = {
   renderConfig: {

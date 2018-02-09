@@ -23,6 +23,7 @@ declare const RichMarkerPosition: any;
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {HtBounds} from "../map-utils/interfaces";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class UsersCluster {
   name = "users cluster";

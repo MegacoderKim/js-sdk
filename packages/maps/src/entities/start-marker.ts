@@ -17,6 +17,7 @@ import { Observable } from "rxjs/Observable";
 import {DestinationMap} from "./destination-marker";
 import {FollowerMixin, IFollower} from "../mixins/follower";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class StartMarker implements IFollower{
   mapInstance: MapInstance;

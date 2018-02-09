@@ -24,6 +24,7 @@ import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class ActionUser {
   name = "action user";

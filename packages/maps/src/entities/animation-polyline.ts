@@ -12,6 +12,7 @@ import {HtPosition} from "ht-models";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";
 import {LatLngBounds} from "leaflet";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class AnimPolyline extends SegmentPolylines {
   mapInstance: MapInstance;
