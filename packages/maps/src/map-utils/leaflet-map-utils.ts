@@ -20,6 +20,8 @@ import { markerCluster } from "./leaflet.markercluster";
 import {LineString, MultiLineString} from "geojson";
 import * as L from "leaflet";
 import {leafletHeat} from "./leaflet.heatmap";
+import {fromEventPattern} from "rxjs/observable/fromEventPattern";
+import {Observable} from "rxjs/Observable";
 
 export class LeafletMapUtilsClass implements MapUtils {
   type: HtMapType = 'leaflet';
@@ -212,10 +214,28 @@ export class LeafletMapUtilsClass implements MapUtils {
     return popup(options);
   }
 
+  onEvent$(item, type: string): Observable<any> {
+    return fromEventPattern(this.mapEventHandler(item, type), this.removeHandler(item, type))
+  }
+
+  private mapEventHandler(item, type) {
+    return (handler) => this.onEvent(item, type, handler)
+  }
+
+  private removeHandler(item, type) {
+    return (handler) => this.removeEvent(item, type, handler)
+  }
+
   onEvent(item, event, cb) {
     item.on(event, e => {
       cb(e);
     });
+  }
+
+  removeEvent(item, event, cb?) {
+    item.off(event, e => {
+      cb(e)
+    })
   }
 
   openPopupPosition(position, map, content, popup) {
