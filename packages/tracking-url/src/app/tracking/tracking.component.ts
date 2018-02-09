@@ -62,7 +62,8 @@ export class TrackingComponent implements OnInit, AfterContentInit {
         return keys.reduce((acc, key) => {
           const entity = entities[key];
           const elem = mapUtils.getElement(entity.item);
-          return elem ? [...acc, {data: entity.data, elem, id: key}] : acc
+          const onUpdate = this.actionsTrace.user.onEntityUpdate(key);
+          return elem ? [...acc, {data: entity.data, elem, id: key, onUpdate}] : acc
         }, [])
       })
     )
@@ -105,7 +106,8 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     const start = this.actionsTrace.start;
     const user = this.actionsTrace.user;
     const pulse = this.actionsTrace.pulse;
-
+    polyline.toIncludeInBounds = false;
+    start.toIncludeInBounds = false;
     user.styleObj = {
       default: {
         zIndexOffset: 12,
