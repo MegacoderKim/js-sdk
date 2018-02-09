@@ -21,6 +21,7 @@ export class MapInstance {
   googleSetBoundsOptions = {};
   setBoundsOptions;
   moveEvent;
+  resetBoundsTimeout;
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
@@ -114,12 +115,13 @@ export class MapInstance {
     );
   }
   resetBounds(options?) {
-    setTimeout(() => {
+    if(this.resetBoundsTimeout) clearTimeout(this.resetBoundsTimeout)
+    this.resetBoundsTimeout = setTimeout(() => {
       let items = this.itemsSet;
       let bounds = this.getItemsSetBounds(items);
       if (bounds && this.mapUtils.isValidBounds(bounds))
         this.setBounds(bounds, options);
-    }, 10);
+    }, 40);
   }
 
   setBounds(bounds: HtBounds, options?) {
