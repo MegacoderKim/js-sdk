@@ -59,7 +59,7 @@ export class StartMarker implements IFollower{
 
   getPosition(data: IAction): HtPosition {
     let place: IPlace = data.started_place;
-    if (place) {
+    if (place && place.location) {
       return {lat: place.location.coordinates[1], lng: place.location.coordinates[0]}
     } else {
       return null
