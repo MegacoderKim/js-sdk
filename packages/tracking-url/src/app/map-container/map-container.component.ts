@@ -11,8 +11,8 @@ import {environment} from "../../environments/environment";
 export class MapContainerComponent implements OnInit {
   mapInstance;
   @Input() setBoundsOptions = {
-    paddingTopLeft: [7, 7],
-    paddingBottomRight: [30, 7]
+    paddingTopLeft: [10, 10],
+    paddingBottomRight: [10, 50]
   };
   @ViewChild('card') card;
   constructor(
