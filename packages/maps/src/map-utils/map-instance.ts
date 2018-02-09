@@ -5,6 +5,8 @@ import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {LightColorMapStyle} from "../styles/light-color-map";
 import {mapTypeService} from "../global/map-type";
+import {fromEventPattern} from "rxjs/observable/fromEventPattern";
+import {Observable} from "rxjs/Observable";
 
 export class MapInstance {
   // mapUtils: MapUtils = null;
@@ -132,5 +134,18 @@ export class MapInstance {
         ? this.leafletSetBoundsOptions
         : this.googleSetBoundsOptions);
     this.mapUtils.setBounds(map || this.map, bounds, options);
+  }
+
+
+  onEvent$(type: string): Observable<any> {
+    return this.mapUtils.onEvent$(this.map, type)
+  }
+
+  private mapEventHandler(type) {
+    return (handler) => this.mapUtils.onEvent(this.map, type, handler)
+  }
+
+  private removeHandler(type) {
+    return (handler) => this.mapUtils.removeEvent(this.map, type, handler)
   }
 }
