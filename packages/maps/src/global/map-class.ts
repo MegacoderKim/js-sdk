@@ -105,8 +105,8 @@ export class HtMapClass {
     this.placeline.trace(user);
   }
 
-  resetBounds(bounds?: HtBounds, options?) {
-    this.mapInstance.resetBounds(bounds, options);
+  resetBounds(options?) {
+    this.mapInstance.resetBounds(options);
   }
 
   getBoundsItem(items) {
