@@ -53,7 +53,7 @@ export interface IRange {
 export interface IPlace {
   id: string;
   address: string;
-  location: GeoJson;
+  location: GeoJson | null;
   name: string;
   locality: string;
   landmark: string;
