@@ -19,6 +19,7 @@ import {IPathBearingTime} from "ht-models";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {NameCase} from "ht-utility";
 declare const RichMarkerPosition: any;
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class ActionMarkers {
   name = "Action";

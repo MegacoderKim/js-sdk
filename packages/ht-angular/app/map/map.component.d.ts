@@ -4,10 +4,12 @@ import { HtMap, MapInstance } from "ht-maps";
 export declare class MapComponent implements OnInit, AfterViewInit {
     private elRef;
     options: any;
-    onReady: EventEmitter<HtMap>;
+    setBoundsOptions: any;
     mapInstance: MapInstance;
     loading: boolean;
     showReset: boolean;
+    onReady: EventEmitter<HtMap>;
+    onMapReset: EventEmitter<boolean>;
     mapElem: any;
     constructor(elRef: ElementRef, htMapService: HtMapService);
     onMapResize(): void;

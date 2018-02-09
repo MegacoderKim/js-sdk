@@ -20,7 +20,7 @@ export const DefaultGoogleMapOptions = {
   scaleControl: false,
   clickableIcons: false,
   gestureHandling: gestureHandling,
-  center: new google.maps.LatLng(37.370641488030245, -122.07498079040533),
+  // center: new google.maps.LatLng(37.370641488030245, -122.07498079040533),
   styles: DefaultGMapsStyle
 };
 

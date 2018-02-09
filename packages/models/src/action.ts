@@ -1,5 +1,6 @@
 import { IPageData, HtLocation, GeoJson, IPlace } from "./common";
 import { IUser } from "./user";
+import { ITimeAwarePoint } from "./ht-models";
 
 export interface IAction {
   id: string;
@@ -20,6 +21,7 @@ export interface IAction {
   distance: number | null;
   duration: number | null;
   created_at: string;
+  started_place: IPlace,
   completed_place: IPlace;
   completed_at: string | null;
   suspended_at: string | null;
@@ -32,11 +34,16 @@ export interface IAction {
   type: string;
   tracking_url: string;
   short_code: string;
+  time_aware_polyline: string,
   encoded_polyline: string;
   event_flags: string[];
   metadata: object;
+  account?: any
 }
 
+export interface IActionMod extends IAction {
+  timeAwarePath: ITimeAwarePoint[]
+}
 export interface IActionMap {
   id: string;
   lookup_id: string;

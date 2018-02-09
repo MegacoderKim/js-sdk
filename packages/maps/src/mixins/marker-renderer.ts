@@ -4,6 +4,7 @@ import { HtPosition } from "ht-models";
 import * as _ from "underscore";
 import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export interface IMarkersBase {
   getStyle: (styleType?) => object;
@@ -18,6 +19,7 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
 ) {
   return class extends Base {
     entities: Entities<any> = {};
+    event = new HtCustomEvent();
     htShow(item) {
       return `display: ${item ? "flex" : "none"}`;
     }
@@ -36,6 +38,16 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       let position = pathPosition || this.getPosition(data);
       if (position) this.mapInstance.mapUtils.updatePosition(item, position);
       if (!this.toNotSetMap) this.mapInstance.mapUtils.setMap(item, this.mapInstance.map);
+      this.event.next('update-'+ data.id, {item, data})
+    }
+
+    onEntityUpdate(id): {subscribe: (cb) => IEventSub} {
+      const eventName = `update-${id}`;
+      return {
+        subscribe: (cb) => {
+          return this.event.subscribe(eventName, cb)
+        }
+      }
     }
 
     removeItem(item) {
@@ -52,6 +64,11 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
     clear() {
       const entities = this.entities;
       this.removeAll(entities)
+    }
+
+    clearItem({item, data}) {
+      this.removeData(data)
+      this.removeItem(item);
     }
 
     removeData(data) {

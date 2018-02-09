@@ -94,6 +94,10 @@ export function DataObservableMixin<
       if (this.dataSub) {
         this.dataSub.unsubscribe();
       }
+      interface ScanData {
+        new: any[],
+        old: any[]
+      };
       const hide$ = config.hide$;
       this.dataArraySource$ = hide$
         ? combineLatest(
@@ -103,8 +107,11 @@ export function DataObservableMixin<
           )
         : data$;
       this.data$ = this.dataArraySource$.pipe(
-        map((dataArray: any[]) => {
-          return this.getMarkersArray(dataArray, !!dataArray);
+        scan((acc: ScanData, data: any[]) => {
+          return {new: data, old: acc.new}
+        }, {old: null, new: null}),
+        map((dataArray: ScanData) => {
+          return this.getMarkersArray(dataArray.new, !dataArray.old);
         })
       );
       this._initDataObserver();

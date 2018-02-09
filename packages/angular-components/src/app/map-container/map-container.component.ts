@@ -8,6 +8,8 @@ import {range} from "rxjs/observable/range";
 import {startWith, map, distinctUntilChanged} from "rxjs/operators";
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { merge } from 'rxjs/observable/merge';
+// import {User} from "./popermixin";
+
 @Component({
   selector: 'ht-map-container',
   templateUrl: './map-container.component.html',
@@ -27,6 +29,8 @@ export class MapContainerComponent implements OnInit, AfterContentInit, OnDestro
       hide$: this.userClientService.placeline.id$
     });
 
+    // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
+    // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
     this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
       roots: ['segments', 'actions'],
       highlighted$: this.userClientService.placeline.segmentSelectedId$,

@@ -1,0 +1,6 @@
+<ng-container *ngIf="mapInstance">
+  <ht-map (onMapReset)="resetMap()" [setBoundsOptions]="setBoundsOptions" [showReset]="mapService.mapDirty" [mapInstance]="mapInstance"></ht-map>
+</ng-container>
+<div class="card-bottom" #card >
+  <ng-content></ng-content>
+</div>

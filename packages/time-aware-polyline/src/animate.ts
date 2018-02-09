@@ -54,6 +54,8 @@ export class TimeAwareAnimation {
   private handleAnimation(timeAwarePolyline: ITimeAwarePoint[]) {
     if (!timeAwarePolyline) return;
     if(this.animationPoll) this.clearAnimationPoll();
+    this.updateCurrentTime();
+    this.setPathBearing();
     this.animationPoll = setInterval(() => {
       this.updateCurrentTime();
       this.setPathBearing();
@@ -156,7 +158,7 @@ export class CustomEvent {
 
     // Provide handle back for removal of topic
     return {
-      remove: function() {
+      unsubscribe: function() {
         delete this.topics[topic][index];
       }
     };

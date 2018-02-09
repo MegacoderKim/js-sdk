@@ -193,16 +193,16 @@ class App extends React.Component<{}, AppState> {
     getGMapsStyle() {
         let mapStyleCode = Utils.getParameterByName('mapStyle');
         let gMapsStyle = null;
-        switch (mapStyleCode) {
-            case 'pastel':
-                gMapsStyle = CustomGMapsStyles.pastelTones;
-                break;
-            case 'ultralight':
-                gMapsStyle = CustomGMapsStyles.ultraLightWithLabel;
-                break;
-            default:
-                break;
-        }
+        // switch (mapStyleCode) {
+        //     case 'pastel':
+        //         gMapsStyle = CustomGMapsStyles.pastelTones;
+        //         break;
+        //     case 'ultralight':
+        //         gMapsStyle = CustomGMapsStyles.ultraLightWithLabel;
+        //         break;
+        //     default:
+        //         break;
+        // }
         return gMapsStyle;
     }
 
@@ -282,14 +282,14 @@ class App extends React.Component<{}, AppState> {
     }
 
     getCurrentAction(actions: IAction[] = this.state.actions, actionId: string | null = this.state.currentActionId) {
-    if (actionId) {
-      let currentAction = actions.find((action: IAction) => {
-        return (action.id === actionId);
-      });
-      return currentAction || null;
+        if (actionId) {
+        let currentAction = actions.find((action: IAction) => {
+            return (action.id === actionId);
+        });
+        return currentAction || null;
+        }
+        return null;
     }
-    return null;
-  }
 
     handleUserMapEvents(map: google.maps.Map) {
         if (map) {

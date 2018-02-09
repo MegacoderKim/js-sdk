@@ -13,7 +13,8 @@ import {HtMap, MapInstance} from "ht-maps";
   styleUrls: ['./map.component.less']
 })
 export class MapComponent implements OnInit, AfterViewInit {
-  @Input() options: any = {};
+  @Input() options: any;
+  @Input() setBoundsOptions: any;
   @Input() mapInstance: MapInstance;
   @Input() loading: boolean = false;
   @Input() showReset: boolean = true;
@@ -24,7 +25,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     private elRef: ElementRef,
     @Optional() htMapService: HtMapService
   ) {
-    this.mapInstance = this.mapInstance || htMapService.mapInstance;
+    if(htMapService) this.mapInstance = htMapService.mapInstance
   }
 
   @HostListener('resize', ['$event'])
@@ -34,7 +35,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
+    this.mapInstance = this.mapInstance;
     // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
     // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
     // user$.subscribe((userData) => {
@@ -59,7 +60,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   resetMap() {
-    this.mapInstance.resetBounds();
+    this.mapInstance.resetBounds(this.setBoundsOptions);
     this.onMapReset.next(true)
   }
 

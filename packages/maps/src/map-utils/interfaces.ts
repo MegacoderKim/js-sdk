@@ -1,4 +1,5 @@
 import { HtPosition } from "ht-models";
+import {Observable} from "rxjs/Observable";
 
 export interface MapUtils {
   type: HtMapType;
@@ -49,7 +50,9 @@ export interface MapUtils {
   setBounds: (map: HtMap, bounds: HtBounds, options?) => void;
   isValidBounds: (bounds: HtBounds) => boolean;
   invalidateSize: (map) => void;
+  onEvent$: (item, event) => Observable<any>;
   onEvent: (item, event, cb) => void;
+  removeEvent: (item, event, cb) => void;
   setDivContent: (item, content: string, options?: object) => void;
   getDivMarker: () => any;
   setDivMarkerStyle: (marker, options: object) => any;
@@ -58,6 +61,7 @@ export interface MapUtils {
   setPath(polyline, path: HtPosition[]) : any;
   getItemPosition(item): HtPosition | null;
   updateHeatMapLatlng: (latlngs: HtPosition[], heatmap) => void;
+  getElement(item): HTMLElement | null;
 }
 
 export interface SetFocusConfig {

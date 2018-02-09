@@ -2,7 +2,7 @@ import { ChangeDetectorRef, EventEmitter, OnInit } from '@angular/core';
 import { IUserData } from "ht-models";
 export declare class PlacelineComponent implements OnInit {
     private ref;
-    highlightedSegmentId: EventEmitter<{}>;
+    highlightedSegmentId: EventEmitter<string>;
     hoveredAction: EventEmitter<{}>;
     selectedSegment: EventEmitter<string | null>;
     userData: IUserData;

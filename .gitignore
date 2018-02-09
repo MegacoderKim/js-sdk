@@ -15,6 +15,7 @@
 .settings/
 
 .env
+*.env
 
 
 
@@ -51,3 +52,5 @@ node_modules
 /packages/**/node_modules/
 /examples/node_modules/
 /packages/**/dist/
+
+/packages/**/src/environments/environment.release.ts

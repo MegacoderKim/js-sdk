@@ -17,6 +17,7 @@ import {Subscription} from "rxjs/Subscription";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
+import {HtCustomEvent, IEventSub} from "ht-utility";
 
 export class ActionsCluster {
   styleFunct: StyleFunct = {

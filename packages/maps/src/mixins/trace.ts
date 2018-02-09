@@ -1,4 +1,4 @@
-import * as _ from "underscore";
+// import * as _ from "underscore";
 import {Constructor, Entities, Entity} from "../interfaces";
 import { HtBounds } from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
@@ -15,6 +15,7 @@ export interface ITraceBase {
   getBounds: (item, bounds?) => HtBounds;
   removeItem: (item) => void;
   removeData: (data) => void;
+  clearItem: (entity: Entity) => void;
   toNotSetMap?: boolean;
   toNotTraceItem?: boolean
   // cluster?: any;
@@ -24,10 +25,11 @@ export interface ITraceBase {
 
 export interface ITraceConfig {
   toNotTraceItem?: boolean
-}
+};
+
 export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
-    // map;
+    
     entities: Entities<any> = {};
 
     // setMap: (item, map) => void;
@@ -41,7 +43,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
       }
       if (data && data.length) {
         // if(this.cluster) this.clearAllClusters(data);
-        _.each(data, datum => {
+        data.forEach( datum => {
           let id = datum["id"];
           let entity = this.entities[id];
           let hasEntity = !!entity;
@@ -90,13 +92,14 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
     }
 
     bustOldItem() {
-      let entities: Entities<any> = this.entities;
-      _.each(entities, entity => {
+      const keys = Object.keys(this.entities);
+      keys.forEach((key) => {
+        const entity = this.entities[key];
         if (entity.isOld) {
-          this.removeItem(entity.item);
-          this.removeData(entity.data);
+          this.clearItem(entity);
+          delete this.entities[key]
         } else {
-          entity.isOld = true;
+          this.entities[key].isOld = true;
         }
       });
     }

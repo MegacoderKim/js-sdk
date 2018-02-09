@@ -1,36 +1,37 @@
-import * as $ from "jquery";
-import {GetActionsBounds, GetBaseUrl, GetReqOpt, RenderGoogleMap} from "./helpers";
+import {GetBaseUrl, GetReqOpt} from "./helpers";
 import {
-  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults, ITrackedActions, ITrackedData,
+  IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults,
   ITrackingOptions
 } from "./model";
-import {TrackedAction} from "./track-action";
-import {actionToTrackingData} from "./actions.helper";
-import {TrackData} from "./track-data";
+import {MapInstance} from "ht-maps";
+import { BehaviorSubject} from "rxjs/BehaviorSubject";
+import {ReplaySubject} from "rxjs/ReplaySubject";
+import {Observable} from "rxjs/Observable";
 
 export class HTTrackActions {
-  trackActions: ITrackedActions = {};
-  trackMultipleData: ITrackedData = {};
-  map: google.maps.Map;
+  // trackActions: ITrackedActions = {};
+  mapInstance: MapInstance;
   pollActionsTimeoutId;
-  constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions) {
+  actionsSubject$: ReplaySubject<IAction[]> = new ReplaySubject();
+  actions$: Observable<IAction[]> = this.actionsSubject$.asObservable();
+
+  subAccountSubject$: ReplaySubject<ISubAccountData>  = new ReplaySubject<ISubAccountData>();
+  subAccountData$ = this.subAccountSubject$.asObservable();
+  constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions = {}) {
+    this.mapInstance = new MapInstance();
+    this.mapInstance.setMapType('google');
     this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
       this.initTracking(data, identifier, identifierType);
     });
   }
 
+  get map(): google.maps.Map {
+    return this.mapInstance.map as google.maps.Map;
+  }
+
   initTracking(data: ITrackActionResults, identifier: string, identifierType: string) {
     let actions: IAction[] = this.extractActionsFromResult(data);
-    this.renderMap(actions);
-    this.trackActionsOnMap(actions);
-    if (this.options.onReady) {
-      this.options.onReady(this.trackMultipleData, actions, this.map);
-    }
-    this.fetchSubaccountFromIdentifier(identifier, identifierType, (subAccount: ISubAccountData) => {
-      if (this.options.onAccountReady) {
-        this.options.onAccountReady(subAccount, actions);
-      }
-    });
+    this.actionsSubject$.next(actions);
     this.pollActionsFromIdentifier(identifier, identifierType);
   }
 
@@ -48,15 +49,9 @@ export class HTTrackActions {
     return actions;
   }
 
-  renderMap(actions) {
-    let initialBounds = GetActionsBounds(actions);
-    let initialCenter = (initialBounds && !initialBounds.isEmpty()) ? initialBounds.getCenter() : null;
-    this.map = RenderGoogleMap(this.options.mapId, this.options.mapOptions, initialCenter);
-  }
-
   fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getTrackActionsURL(identifier, identifierType);
-    fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
+    fetch(url, GetReqOpt(this.pk, this.options)).then(res => res.json()).then((data: ISubAccountData) => {
       cb(data)
     }, err => {
       this.options.onError && this.options.onError(err)
@@ -65,48 +60,22 @@ export class HTTrackActions {
 
   fetchSubaccountFromIdentifier(identifier: string, identifierType: string, cb) {
     let url = this.getSubaccountFromIdentifierURL(identifier, identifierType);
-    fetch(url, GetReqOpt(this.pk)).then(res => res.json()).then((data: ISubAccountData) => {
+    fetch(url, GetReqOpt(this.pk, this.options)).then(res => res.json()).then((data: ISubAccountData) => {
+      this.subAccountSubject$.next(data);
       cb(data)
     }, err => {
       this.options.onError && this.options.onError(err)
     });
-    // $.ajax({
-    //   url: url,
-    //   ...GetReqOpt(this.pk)
-    // }).then((data: ISubAccountData) => {
-    //   cb(data)
-    // }, err => {
-    //   this.options.onError && this.options.onError(err)
-    // });
   }
 
   pollActionsFromIdentifier(identifier: string, identifierType: string) {
     this.pollActionsTimeoutId = setTimeout(() => {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
-        this.trackActionsOnMap(actions);
-        if (this.options.onUpdate ) {
-          this.options.onUpdate(this.trackMultipleData, actions);
-        }
+        this.actionsSubject$.next(actions);
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
     }, 2000);
-  }
-
-  trackActionsOnMap(actions: IAction[]) {
-    actions.forEach((action: IAction) => {
-      // if (this.trackActions[action.id]) {
-      //   this.trackActions[action.id].update(action);
-      // } else {
-      //   this.trackActions[action.id] = new TrackedAction(action, this.map, this.options.mapOptions);
-      // }
-      let trackingData = actionToTrackingData(action);
-      if (this.trackMultipleData[trackingData.id]) {
-        this.trackMultipleData[trackingData.id].track(trackingData);
-      } else {
-        this.trackMultipleData[trackingData.id] = new TrackData(trackingData, this.map, this.options.mapOptions);
-      }
-    });
   }
 
   getTrackActionsURL(identifier: string, identifierType: string) {

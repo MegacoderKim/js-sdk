@@ -1,16 +1,19 @@
 import {GoogleMapUtilsClass} from "./google-map-utils";
-import {filter} from "rxjs/operators";
+import {filter, take} from "rxjs/operators";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
 import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {LightColorMapStyle} from "../styles/light-color-map";
 import {mapTypeService} from "../global/map-type";
+import {fromEventPattern} from "rxjs/observable/fromEventPattern";
+import {Observable} from "rxjs/Observable";
 
 export class MapInstance {
   // mapUtils: MapUtils = null;
   map: HtMap | null = null;
   map$: ReplaySubject<HtMap | null> = new ReplaySubject();
   clusters = [];
+  poppers = [];
   itemsSet = [];
   // mapType: HtMapType;
   leafletSetBoundsOptions = {
@@ -18,7 +21,9 @@ export class MapInstance {
     duration: 0.3
   };
   googleSetBoundsOptions = {};
-
+  setBoundsOptions;
+  moveEvent;
+  resetBoundsTimeout;
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
@@ -26,11 +31,7 @@ export class MapInstance {
   }
 
   get mapUtils(): MapUtils {
-    if (this.mapType) {
-      return mapTypeService.getInstance()
-    } else {
-      return mapTypeService.getInstance()
-    }
+    return mapTypeService.getInstance()
 
   }
 
@@ -75,34 +76,76 @@ export class MapInstance {
         });
     }
   }
+
+  addPopper(popper) {
+    if (!this.poppers.includes(popper)) {
+      this.poppers.push(popper);
+    };
+    if (!this.moveEvent) {
+      this.listenMove()
+    }
+  };
+
+  removePopper(popper) {
+    const i = this.poppers.indexOf(popper);
+    if(i > -1) {
+      this.poppers.splice(i, 1);
+    }
+  }
+
+  listenMove() {
+    this.map$.pipe(filter(data => !!data),take(1)).subscribe(map => {
+      this.moveEvent = this.mapUtils.onEvent(map, 'move', (e) => {
+        this.poppers.forEach(p => {
+          p.scheduleUpdate()
+        })
+      })
+    
+    })
+  }
+
   getBounds(bounds, item) {
-    return item.extendBounds(bounds);
+    return item.extendBounds ? item.extendBounds(bounds) : null;
   }
   getItemsSetBounds(items: any[]) {
     let bounds = this.mapUtils.extendItemBounds();
     return items.reduce(
       (bounds, item) => {
-        return this.getBounds(bounds, item);
+        return this.getBounds(bounds, item) || bounds;
       },
       bounds
     );
   }
-  resetBounds(bounds?: HtBounds, options?, map?) {
-    setTimeout(() => {
+  resetBounds(options?) {
+    if(this.resetBoundsTimeout) clearTimeout(this.resetBoundsTimeout)
+    this.resetBoundsTimeout = setTimeout(() => {
       let items = this.itemsSet;
-      bounds = this.getItemsSetBounds(items);
+      let bounds = this.getItemsSetBounds(items);
       if (bounds && this.mapUtils.isValidBounds(bounds))
-        this.setBounds(bounds, options, map);
-    }, 10);
+        this.setBounds(bounds, options);
+    }, 40);
   }
 
-  setBounds(bounds: HtBounds, options?, map?) {
-    map = map || this.map;
+  setBounds(bounds: HtBounds, options?) {
+    let map = this.map;
     if (!map) return false;
     options =
-      options || this.mapType == "leaflet"
+      options || this.setBoundsOptions || (this.mapType == "leaflet"
         ? this.leafletSetBoundsOptions
-        : this.googleSetBoundsOptions;
+        : this.googleSetBoundsOptions);
     this.mapUtils.setBounds(map || this.map, bounds, options);
+  }
+
+
+  onEvent$(type: string): Observable<any> {
+    return this.mapUtils.onEvent$(this.map, type)
+  }
+
+  private mapEventHandler(type) {
+    return (handler) => this.mapUtils.onEvent(this.map, type, handler)
+  }
+
+  private removeHandler(type) {
+    return (handler) => this.mapUtils.removeEvent(this.map, type, handler)
   }
 }

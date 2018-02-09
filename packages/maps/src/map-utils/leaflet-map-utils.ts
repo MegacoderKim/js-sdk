@@ -20,6 +20,8 @@ import { markerCluster } from "./leaflet.markercluster";
 import {LineString, MultiLineString} from "geojson";
 import * as L from "leaflet";
 import {leafletHeat} from "./leaflet.heatmap";
+import {fromEventPattern} from "rxjs/observable/fromEventPattern";
+import {Observable} from "rxjs/Observable";
 
 export class LeafletMapUtilsClass implements MapUtils {
   type: HtMapType = 'leaflet';
@@ -212,10 +214,28 @@ export class LeafletMapUtilsClass implements MapUtils {
     return popup(options);
   }
 
+  onEvent$(item, type: string): Observable<any> {
+    return fromEventPattern(this.mapEventHandler(item, type), this.removeHandler(item, type))
+  }
+
+  private mapEventHandler(item, type) {
+    return (handler) => this.onEvent(item, type, handler)
+  }
+
+  private removeHandler(item, type) {
+    return (handler) => this.removeEvent(item, type, handler)
+  }
+
   onEvent(item, event, cb) {
     item.on(event, e => {
       cb(e);
     });
+  }
+
+  removeEvent(item, event, cb?) {
+    item.off(event, e => {
+      cb(e)
+    })
   }
 
   openPopupPosition(position, map, content, popup) {
@@ -226,7 +246,11 @@ export class LeafletMapUtilsClass implements MapUtils {
   }
 
   setDivContent(marker, content, options = {}) {
-    this.setDivMarkerStyle(marker, { html: content, ...options });
+    let currentContent = marker.options.icon ? marker.options.icon.options.html : "";
+    if (content != currentContent) {
+      this.setDivMarkerStyle(marker, { html: content, ...options });
+      options['zIndexOffset'] && marker.setZIndexOffset(options['zIndexOffset']);
+    }
     // console.error('set div content not implemented')
   }
 
@@ -234,8 +258,8 @@ export class LeafletMapUtilsClass implements MapUtils {
     return this.getMarker();
   }
 
-  setDivMarkerStyle(item, options) {
-    let icon = divIcon({ ...options, className: "", bgPos: point(15, -41) });
+  setDivMarkerStyle(item, options: any = {}) {
+    let icon = divIcon(options);
     this.setIcons(item, icon);
   }
 
@@ -272,6 +296,10 @@ export class LeafletMapUtilsClass implements MapUtils {
   getItemPosition(item: L.Marker) {
     let position = item.getLatLng();
     return position ? {lat: position.lat, lng: position.lng} : null;
+  }
+
+  getElement(item) {
+    return item ? item.getElement() : null
   }
 
 }

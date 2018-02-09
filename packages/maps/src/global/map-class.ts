@@ -44,7 +44,7 @@ export class HtMapClass {
     public mapType: HtMapType = "leaflet",
     options: HtMapClassOptions = {}
   ) {
-    // mapTypeService.getInstance(mapType);
+    mapTypeService.getInstance(mapType);
     this.usersCluster = new UsersClusterTrace(this.mapInstance);
     this.actionsCluster = new ActionsClusterTrace(this.mapInstance);
     this.usersHeatmap = new StopsHeatmapTrace(this.mapInstance);
@@ -105,8 +105,8 @@ export class HtMapClass {
     this.placeline.trace(user);
   }
 
-  resetBounds(bounds?: HtBounds, options?) {
-    this.mapInstance.resetBounds(bounds, options);
+  resetBounds(options?) {
+    this.mapInstance.resetBounds(options);
   }
 
   getBoundsItem(items) {
