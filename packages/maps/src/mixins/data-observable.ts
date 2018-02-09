@@ -95,8 +95,8 @@ export function DataObservableMixin<
         this.dataSub.unsubscribe();
       }
       interface ScanData {
-        new: any,
-        old: any
+        new: any[],
+        old: any[]
       };
       const hide$ = config.hide$;
       this.dataArraySource$ = hide$
@@ -107,7 +107,7 @@ export function DataObservableMixin<
           )
         : data$;
       this.data$ = this.dataArraySource$.pipe(
-        scan((acc: ScanData, data) => {
+        scan((acc: ScanData, data: any[]) => {
           return {new: data, old: acc.new}
         }, {old: null, new: null}),
         map((dataArray: ScanData) => {
