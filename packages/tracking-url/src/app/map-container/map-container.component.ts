@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import { MapService } from '../core/map-service';
 import { mapTypeService } from 'ht-maps';
 import {environment} from "../../environments/environment";
@@ -34,7 +34,9 @@ export class MapContainerComponent implements OnInit {
   }
 
   get setBoundsOptions() {
-    return this.showSummary ? {...this.defaultSetBoundsOptions, paddingBottomRight: [15, 100]} : this.defaultSetBoundsOptions;
+    //todo fix this, not passing defaultSetOptions now
+    const options = this.showSummary ? {...this.defaultSetBoundsOptions, paddingBottomRight: [15, 120]} : {...this.defaultSetBoundsOptions};
+    return options
   }
 
   ngOnInit() {
