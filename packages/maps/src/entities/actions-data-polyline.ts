@@ -15,6 +15,7 @@ import { Observable } from "rxjs/Observable";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class ActionsDataPolyline {
   name = "Actions data polyline"
@@ -105,7 +106,9 @@ export class ActionsDataPolyline {
 
 export const ActionsPolylineTrace = DataObservableMixin(
   AnimationsEntitiesMixin(
-    TraceMixin(ExtendBoundsMixin(PolylinesMixin(MarkersMixin(StyleMixin(ActionsDataPolyline)))))
+    TraceMixin(ExtendBoundsMixin(PolylinesMixin(MarkersMixin(StyleMixin(
+      MapItemsMixin(ActionsDataPolyline)
+    )))))
   )
 )
 

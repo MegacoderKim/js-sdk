@@ -20,6 +20,7 @@ import {AnimationMixin} from "../mixins/animation-renderer";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export const currentUserConfig: ItemClassFactoryConfig = {
   renderConfig: {
@@ -104,7 +105,9 @@ export class CurrentUser {
 }
 
 export const CurrentUserTrace = AnimationMixin(SingleItemMixin(DivMarkersMixin(
-  TraceMixin(MarkersMixin(StyleMixin(CurrentUser)))
+  TraceMixin(MarkersMixin(StyleMixin(
+    MapItemsMixin(CurrentUser)
+  )))
 )));
 // export class CurrentUser {
 //   name = "Current user";

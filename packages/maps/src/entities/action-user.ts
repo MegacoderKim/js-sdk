@@ -1,8 +1,8 @@
 import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
 declare var RichMarkerPosition: any;
-import { HtPosition } from "ht-models";
-import {Entity, StyleFunct} from "../interfaces";
+import { HtPosition, IAction } from "ht-models";
+import {Entities, Entity, StyleFunct} from "../interfaces";
 import {
   ItemClassFactoryConfig,
   itemsFactory,
@@ -25,11 +25,12 @@ import {Subscription} from "rxjs/Subscription";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class ActionUser {
   name = "action user";
   animation?: TimeAwareAnimation;
-
+  entities: Entities<IAction>;
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
@@ -54,7 +55,7 @@ export class ActionUser {
         }
       }
     }
-  }
+  };
   setTimeAwareAnimationEntity: (animationEntity?: AnimationsEntities) => void;
 
   setData$: (data$: Observable<any[]>) => void;
@@ -64,6 +65,14 @@ export class ActionUser {
   getPosition(data): HtPosition {
     return htUser(data.user).getPosition();
   };
+
+  trackBy(action: IAction) {
+    return action.user.id
+  }
+
+  trackAnimationBy(action: IAction) {
+    return action.id
+  }
 
   getDivContent(data) {
     const content = `
@@ -76,44 +85,15 @@ export class ActionUser {
 </div> 
     `;
     return content
-  }
+  };
 }
 
 export const ActionUserTrace = DataObservableMixin(
   ExtendBoundsMixin(
     AnimationsEntitiesMixin(DivMarkersMixin(
-      TraceMixin(MarkersMixin(StyleMixin(ActionUser)))
+      TraceMixin(MarkersMixin(StyleMixin(
+        MapItemsMixin(ActionUser)
+      )))
     ))
   )
 );
-// export class CurrentUser {
-//   name = "Current user";
-//   styleFunct: StyleFunct = {
-//     google: {
-//       default: {
-//         flat: true,
-//         anchor: RichMarkerPosition.BOTTOM_CENTER,
-//       }
-//     },
-//     leaflet: {
-//       default: {
-//
-//       }
-//     }
-//   };
-//
-//   getPosition(data): HtPosition {
-//     return htUser(data).getPosition()
-//   };
-//
-//   getDivContent(data) {
-//     return userDivFactory(data)
-//
-//   }
-// };
-//
-// export const CurrentUserTrace = mapItemsFactory(CurrentUser, {
-//   isSingleItem: true,
-//   isDiv: true,
-//   hasDataObservable: false
-// });

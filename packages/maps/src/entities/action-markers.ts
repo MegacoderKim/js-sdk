@@ -20,6 +20,7 @@ import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {NameCase} from "ht-utility";
 declare const RichMarkerPosition: any;
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class ActionMarkers {
   name = "Action";
@@ -74,5 +75,11 @@ export class ActionMarkers {
   }
 }
 
-export const ActionMarkersTrace = ExtendBoundsMixin(TraceMixin(DivMarkersMixin(MarkersMixin(StyleMixin(ActionMarkers)))));
+export const ActionMarkersTrace = ExtendBoundsMixin(
+  TraceMixin(
+    DivMarkersMixin(MarkersMixin(StyleMixin(
+      MapItemsMixin(ActionMarkers)
+    )))
+  )
+);
 

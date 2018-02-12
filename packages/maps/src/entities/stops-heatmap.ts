@@ -10,6 +10,7 @@ import {MapInstance} from "../map-utils/map-instance";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class StopsHeatmap {
   name = "stop heatmap";
@@ -50,5 +51,7 @@ export class StopsHeatmap {
 };
 
 export const StopsHeatmapTrace = ExtendBoundsMixin(
-  DataObservableMixin(HeatmapMixin(StyleMixin(StopsHeatmap)))
+  DataObservableMixin(HeatmapMixin(StyleMixin(
+    MapItemsMixin(StopsHeatmap)
+  )))
 );
