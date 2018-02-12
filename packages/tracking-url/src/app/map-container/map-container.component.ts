@@ -11,7 +11,7 @@ import {environment} from "../../environments/environment";
 })
 export class MapContainerComponent implements OnInit {
   mapInstance;
-  @Input() setBoundsOptions = {
+  defaultSetBoundsOptions = {
     paddingTopLeft: [15, 15],
     paddingBottomRight: [15, 70],
     duration: 2,
@@ -19,6 +19,7 @@ export class MapContainerComponent implements OnInit {
     easeLinearity: 0.2,
     // easeLinearity: 0.58,
   };
+  @Input() showSummary: boolean = false;
   @ViewChild('card') card;
   constructor(
     private mapService: MapService
@@ -32,8 +33,8 @@ export class MapContainerComponent implements OnInit {
       }});
   }
 
-  resetMap() {
-
+  get setBoundsOptions() {
+    return this.showSummary ? {...this.defaultSetBoundsOptions, paddingBottomRight: [15, 100]} : this.defaultSetBoundsOptions;
   }
 
   ngOnInit() {
