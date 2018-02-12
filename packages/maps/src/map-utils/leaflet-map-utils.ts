@@ -196,7 +196,11 @@ export class LeafletMapUtilsClass implements MapUtils {
 
   setBounds(map: L.Map, bounds: L.LatLngBounds, options?) {
     if(map && map.getContainer() && map.getContainer().offsetWidth) {
-      map.flyToBounds(bounds, options);
+      if(options.toFly) {
+        map.flyToBounds(bounds, options);
+      } else {
+        map.fitBounds(bounds, options)
+      }
     }
   }
 
