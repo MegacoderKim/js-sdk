@@ -17,6 +17,7 @@ export class UserPopupComponent implements OnInit {
     onUpdate?: any;
   };
   @ViewChild(PopperContent) popper: PopperContent;
+  opened: boolean = false;
   constructor(
     private mapService: MapService
   ) { }
@@ -34,6 +35,11 @@ export class UserPopupComponent implements OnInit {
     if (this.item.onUpdate) this.item.onUpdate.subscribe((entity) => {
       this.popper.scheduleUpdate();
     })
+  }
+
+  openCard() {
+    this.opened = !this.opened;
+    this.popper.scheduleUpdate();
   }
 
 }
