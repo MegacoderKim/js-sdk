@@ -32,6 +32,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
   polyline;
   popups$;
   userPopup$;
+  startPopup$;
   loading: boolean = true;
   // actionSummaryComponent;
   constructor(
@@ -49,7 +50,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     const mapInstance = this.mapService.mapInstance;
     this.actionsTrace = new ActionTrace(mapInstance, {hasPulse: true});
     this.actionsTrace.setData$(this.actionsData$);
-    this.setStyle()
+    this.setStyle();
     this.popups$ = this.actionsData$.pipe(
       map((data) => {
         const entities = this.actionsTrace.destination.entities;
@@ -82,7 +83,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
         return !!data && data.length && data[0].display.show_summary;
       }),
       take(1)
-    )
+    );
 
     this.actionsData$.pipe(
       filter((data: IAction[]) => !!data && data.length && !data[0].display.show_summary),
@@ -99,6 +100,18 @@ export class TrackingComponent implements OnInit, AfterContentInit {
       this.mapService.onComplete(action);
     });
 
+    this.startPopup$ = completedAction$.pipe(
+      map((data: IAction[]) => {
+        const entities = this.actionsTrace.start.entities;
+        const keys = Object.keys(entities);
+        const mapUtils = this.actionsTrace.mapInstance.mapUtils;
+        return keys.reduce((acc, key) => {
+          const entity = entities[key];
+          const elem = mapUtils.getElement(entity.item);
+          return elem ? [...acc, {data: entity.data, elem, id: key}] : acc
+        }, [])
+      })
+    )
 
   }
 
@@ -199,7 +212,11 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
     destination.getDivContent = (action: IAction) => {
       if (action.display.show_summary) {
-        return `<div class="box-32" style="background: #00C94B"></div>`
+        return `<div class="box-32" style="background: #00C94B">
+<!--<div class="icon" style="font-size: 1.5rem; color: white; margin: auto">-->
+        <!--<i class="ion-checkmark"></i>-->
+      <!--</div>-->
+</div>`
       } else {
         return `<div class="box-32 is-bordered" style="display: flex; border-color: #250D47">
     <div class="box-16" style="background: #250D47; margin: auto"></div>
