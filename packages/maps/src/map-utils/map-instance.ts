@@ -129,11 +129,12 @@ export class MapInstance {
   setBounds(bounds: HtBounds, options?) {
     let map = this.map;
     if (!map) return false;
+    let mapOptions = (this.mapType == "leaflet"
+      ? this.leafletSetBoundsOptions
+      : this.googleSetBoundsOptions)
     options =
-      options || this.setBoundsOptions || (this.mapType == "leaflet"
-        ? this.leafletSetBoundsOptions
-        : this.googleSetBoundsOptions);
-    this.mapUtils.setBounds(map || this.map, bounds, options);
+      options || this.setBoundsOptions || mapOptions;
+    this.mapUtils.setBounds(map || this.map, bounds, {...mapOptions, ...options});
   }
 
 
