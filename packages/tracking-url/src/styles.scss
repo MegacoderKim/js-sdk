@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans');
+
 html, body {
     height: 100%;
-    //font-family: 'Source Sans Pro', sans-serif;
-    font-size: 0.9rem;
+    //font-family: 'Work Sans', sans-serif;
+    //font-size: 0.9rem;
     background: whitesmoke;
   }
   body {
@@ -15,6 +17,7 @@ html, body {
 
 @import "./styles/variables";
 $primary: $live-purple;
+$family-sans-serif: 'Work Sans';
 
 @import "~bulma/sass/utilities/derived-variables";
 //@import "~bulma/sass/utilities/initial-variables.sass";
