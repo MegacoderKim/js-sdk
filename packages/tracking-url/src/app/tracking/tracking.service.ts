@@ -3,7 +3,6 @@ const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
 import {trackShortCode, IAction, ISubAccountData, ITrackingOptions, ISubAccount} from "ht-webtracking"
 import {Logger} from "../logger";
 import {checkUserAgent, getUserAgent, isRedirectedUrl} from '../helpers';
-import {withLatestFrom} from 'rxjs/operators';
 
 @Injectable()
 export class TrackingService {
@@ -20,16 +19,9 @@ export class TrackingService {
     });
 
     this.trackActions.subAccountData$.subscribe((subAccountData) => {
-      // const action = actions[0];
-      // let isDebug = Utils.getParameterByName('d');
-      const isDebug = false;
-      if (isDebug) {
-        // window.location.href = `https://dashboard.hypertrack.com/debug/events;action_id=${action.id}`;
-      } else {
-        if (subAccountData && subAccountData.sub_account) {
-          Logger.log('subAccount', subAccountData.sub_account);
-          // this.handleDeepLinkRedirect(subAccountData.sub_account, action);
-        }
+      if (subAccountData && subAccountData.sub_account) {
+        Logger.log('subAccount', subAccountData.sub_account);
+        // this.handleDeepLinkRedirect(subAccountData.sub_account, action);
       }
     })
   }
@@ -41,55 +33,19 @@ export class TrackingService {
   }
 
   getTrackingOptions(): ITrackingOptions {
-    let mapOptions = {
-      bottomPadding: 90
-    };
-    // if (this.getGMapsStyle()) {
-    //   mapOptions['gMapsStyle'] = this.getGMapsStyle();
-    // }
     return {
       onError(err) {
         console.warn(err);
-      }
-      // mapOptions: mapOptions,
-      // clientType: 'hypertrack/trct.at'
-      // onAccountReady: (subAccountData: ISubAccountData, actions: IAction[]) => {
-      //   if (actions.length === 1) {
-      //     const action = actions[0];
-      //     // let isDebug = Utils.getParameterByName('d');
-      //     const isDebug = false;
-      //     if (isDebug) {
-      //       window.location.href = `https://dashboard.hypertrack.com/debug/events;action_id=${action.id}`;
-      //     } else {
-      //       if (subAccountData && subAccountData.sub_account) {
-      //         Logger.log('subAccount', subAccountData.sub_account);
-      //         this.handleDeepLinkRedirect(subAccountData.sub_account, action);
-      //       }
-      //     }
-      //   }
-      // }
+      },
+      clientType: 'hypertrack/trct.at'
     };
   }
 
-  handleOnReady(actions: IAction[], map: google.maps.Map) {
-    // this.map = map;
-    // this.addZoomControl(map);
-    // this.handleUserMapEvents(map);
-    // this.handleOnActionsReady(actions);
-    // actions.forEach((action: IAction) => {
-    //   trackActions[action.id].mapPolyline.setOptions({
-    //     strokeColor: '#df5cc1'
-    //   });
-    // });
-    // this.resetBounds();
+  handleOnReady(actions: IAction[]) {
     Logger.log('On Actions ready', actions);
   };
 
   handleOnUpdate(actions: IAction[]) {
-    // this.handleOnActionsUpdate(actions);
-    // if (!this.isMapDirty) {
-    //   this.resetBounds();
-    // }
     Logger.log('On Actions update', actions);
   }
 
