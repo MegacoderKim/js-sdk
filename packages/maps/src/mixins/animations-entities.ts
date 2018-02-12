@@ -8,6 +8,8 @@ export interface IAnimationsEntitiesBase {
   getTimeAwarePolyline?(data): string;
   clearItem(entity): void;
   update(entity, pathBearing: IPathBearingTime): void;
+  trackBy(datum): string;
+  trackAnimationBy(datum): string;
 }
 
 export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEntitiesBase>>(Base: TBase) {
@@ -22,24 +24,20 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
 
     setTimeAwareAnimationEntity (animationEntity?: AnimationsEntities) {
       this.animationEntities = animationEntity || new AnimationsEntities();
-      // this.animationEntities.onUpdate = (id, {path, bearing}) => {
-      //   const entity = this.getEntity(id);
-      //   if (entity) {
-      //     console.log(super.update, this['name']);
-      //     super.update(entity, {path, bearing})
-      //   }
-      // }
     };
 
     clearItem(entity) {
-      this.animationEntities.clearItem(entity.data.id);
-      this.clearSub(entity.data.id);
+      const id = this.trackBy(entity.data);
+      const animId = entity.data.id;
+      this.animationEntities.clearItem(animId);
+      this.clearSub(id);
       super.clearItem(entity)
     }
 
     update(entity, pathBearing) {
-      const id = entity.data.id;
-      this.initSub(id);
+      const id = this.trackBy(entity.data);
+      const animId = entity.data.id;
+      this.initSub(id, animId);
       const encodedString = this.getTimeAwarePolyline ? this.getTimeAwarePolyline(entity.data) : null;
       if (encodedString) {
         this.animationEntities.update(id, encodedString)
@@ -48,16 +46,19 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
       }
     };
 
-    initSub(id) {
+    initSub(id, animId?: string) {
+      animId = animId || id;
       const sub = this.subs[id];
       if (sub) {
 
       } else {
+        if (this['name'] == "action user") console.log("id sub craete sub");
         const newsub = this.animationEntities
-          .getEntity(id)
+          .getEntity(animId)
           .updateEvent
           .subscribe('update', ({path, bearing}) => {
             const entity = this.getEntity(id);
+            if (this['name'] == "action user") console.log("id sub", entity);
             if (entity) {
               super.update(entity, {path, bearing})
             }
@@ -74,8 +75,6 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
       delete this.subs[id];
     }
 
-
-
   };
 }
 
@@ -90,10 +89,6 @@ export class AnimationsEntities {
     entity.clear();
     delete this.enitites[id]
   }
-
-  // onUpdate(id, {path, bearing}) {
-  //
-  // }
 
   update(id, polyline: string) {
     const entity = this.getEntity(id);
@@ -110,25 +105,5 @@ export class AnimationsEntities {
       return newEntity;
     }
   }
-
-  // clearSubs() {
-  //   // this.subs.forEach(sub => {
-  //   //   sub.unsubscribe();
-  //   // });
-  //   // this.subs = []
-  // }
-
-  // initSubs(cb: (id: string, pathBearing) => void) {
-  //   const keys = Object.keys(this.enitites);
-  //   keys.map(key => {
-  //     return this.enitites[key].updateEvent.subscribe('update', ({path, bearing}) => {
-  //       cb(key, {path, bearing})
-  //       // let entity = this.getEntity();
-  //       // if(entity) this.update(entity, {path, bearing})
-  //     });
-  //   })
-  // }
-
-
 
 }
