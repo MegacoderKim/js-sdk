@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { MapService } from '../core/map-service';
 import { mapTypeService } from 'ht-maps';
 import {environment} from "../../environments/environment";
@@ -6,13 +6,18 @@ import {environment} from "../../environments/environment";
 @Component({
   selector: 'app-map-container',
   templateUrl: './map-container.component.html',
-  styleUrls: ['./map-container.component.scss']
+  styleUrls: ['./map-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapContainerComponent implements OnInit {
   mapInstance;
   @Input() setBoundsOptions = {
-    paddingTopLeft: [10, 10],
-    paddingBottomRight: [10, 50]
+    paddingTopLeft: [15, 15],
+    paddingBottomRight: [15, 70],
+    duration: 2,
+    animate: true,
+    easeLinearity: 0.2,
+    // easeLinearity: 0.58,
   };
   @ViewChild('card') card;
   constructor(

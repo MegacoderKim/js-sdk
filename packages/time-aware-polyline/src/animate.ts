@@ -11,26 +11,9 @@ export class TimeAwareAnimation {
   constructor() {
 
   }
-  
-  /*
-  Initialize animation from encoded polyline string 
-   */
-  initPolylineString(timeAwarePolylineString: string) {
-    let timeAwarePolyline = this.polylineUtils.encoder.decodeTimeAwarePolyline(timeAwarePolylineString);
-    this.init(timeAwarePolyline)
-  }
 
   /*
-  Initialize animation from encoded time aware array [lat, lng, time] 
-   */
-  init(timeAwarePolyline: ITimeAwarePoint[]) {
-    if (!timeAwarePolyline) return false;
-    this.polylineUtils.timeAwarePolyline = timeAwarePolyline;
-    this.handleAnimation(timeAwarePolyline);
-  }
-
-  /*
- Update animation from encoded polyline string
+  Update animation from encoded polyline string
   */
   updatePolylineString(timeAwarePolylineString: string) {
     let timeAwarePolyline = this.polylineUtils.encoder.decodeTimeAwarePolyline(timeAwarePolylineString);
