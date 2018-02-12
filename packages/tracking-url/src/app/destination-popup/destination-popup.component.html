@@ -8,7 +8,7 @@
       <ng-template #comp>
         <div class="is-size-7 has-text-weight-bold" *ngIf="item.data.completed_at">{{item.data.type | nameCase}} | {{item.data.completed_at | timeString}}</div>
       </ng-template>
-      <div class="is-size-7">{{getDestinationName(item.data)}}</div>
+      <div class="has-text-weight-bold truncate">{{getDestinationName(item.data)}}</div>
     </div>
   </div>
 </popper-content>
