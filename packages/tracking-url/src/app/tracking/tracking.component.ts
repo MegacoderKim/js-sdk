@@ -14,7 +14,14 @@ import {Observable} from "rxjs/Observable";
 @Component({
   selector: 'app-tracking',
   templateUrl: './tracking.component.html',
-  styleUrls: ['./tracking.component.scss']
+  styleUrls: ['./tracking.component.scss'],
+  animations: [
+    trigger('fade', [
+      transition(":leave", [
+        animate('300ms ease-in', style({transform: `translateY(100%)`}))
+      ])
+    ])
+  ]
 })
 export class TrackingComponent implements OnInit, AfterContentInit {
   @Input() shortCode = "ofE2gTfo";
@@ -182,7 +189,11 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
     user.getDivContent = (data, bearing) => {
       return `<div class="box-24" style="position: absolute">
-    <i class="ion-android-navigate" style="margin: auto; color: white; font-size: 17px; transform: rotate(${bearing}deg)"></i>
+    <i class="ion-android-navigate" style="margin: auto; 
+    color: white; 
+    font-size: 17px; 
+    transition: all 2s;
+    transform: rotate(${bearing}deg)"></i>
 </div>`
     }
 
