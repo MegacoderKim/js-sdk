@@ -18,6 +18,7 @@ import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class ActionsCluster {
   styleFunct: StyleFunct = {
@@ -92,5 +93,7 @@ export class ActionsCluster {
 };
 
 export const ActionsClusterTrace = DataObservableMixin(
-  PopupMixin(ClusterMixin(TraceMixin(ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(ActionsCluster)))))))
+  PopupMixin(ClusterMixin(TraceMixin(ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(
+    MapItemsMixin(ActionsCluster)
+  )))))))
 );

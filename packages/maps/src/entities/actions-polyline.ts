@@ -17,6 +17,7 @@ import { Constructor } from "../interfaces";
 import {htAction} from "ht-data";
 import {Color} from "ht-utility";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class ActionsPolyline extends SegmentPolylines {
   lineSymbol = {
@@ -93,7 +94,9 @@ export class ActionsPolyline extends SegmentPolylines {
 export const ActionsPolylineTrace = ConnectorMixin(
   AnimationMixin(SingleItemMixin(
     TraceMixin(ExtendBoundsMixin(
-      PolylinesMixin(MarkersMixin(StyleMixin(ActionsPolyline)))))
+      PolylinesMixin(MarkersMixin(StyleMixin(
+        MapItemsMixin(ActionsPolyline)
+      )))))
   ))
 );
 

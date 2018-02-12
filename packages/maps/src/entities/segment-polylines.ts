@@ -17,6 +17,7 @@ import {HtBounds} from "../map-utils/interfaces";
 import {Entity, StyleFunct} from "../interfaces";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class SegmentPolylines {
   styleFunct: StyleFunct = segmentPolylineStyles;
@@ -37,7 +38,9 @@ export class SegmentPolylines {
   }
 }
 
-export const SegmentPolylinesTrace = TraceMixin(ExtendBoundsMixin(PolylinesMixin(MarkersMixin(StyleMixin(SegmentPolylines)))))
+export const SegmentPolylinesTrace = TraceMixin(ExtendBoundsMixin(PolylinesMixin(MarkersMixin(StyleMixin(
+  MapItemsMixin(SegmentPolylines)
+)))))
 // export class SegmentPolylines {
 //   styleFunct = segmentPolylineStyles;
 //

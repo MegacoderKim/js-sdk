@@ -20,6 +20,7 @@ import {Observable} from "rxjs/Observable";
 import {HtBounds} from "../map-utils/interfaces";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export const stopMarkersConfig: ItemClassFactoryConfig = {
   renderConfig: {
@@ -152,7 +153,9 @@ export class StopMarkers {
 }
 
 export const StopMarkersTrace = PopupMixin(
-  TraceMixin(ExtendBoundsMixin(CircleMixin(MarkersMixin(StyleMixin(StopMarkers)))))
+  TraceMixin(ExtendBoundsMixin(CircleMixin(MarkersMixin(StyleMixin(
+    MapItemsMixin(StopMarkers)
+  )))))
 )
 
 // export abstract class StopMarkers {

@@ -18,6 +18,7 @@ import {DestinationMap} from "./destination-marker";
 import {FollowerMixin, IFollower} from "../mixins/follower";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class StartMarker implements IFollower{
   mapInstance: MapInstance;
@@ -75,7 +76,9 @@ export class StartMarker implements IFollower{
 export const StartMarkerTrace =  ExtendBoundsMixin(
   DataObservableMixin(
     TraceMixin(DivMarkersMixin(MarkersMixin(
-      StyleMixin(StartMarker))
+      StyleMixin(
+        MapItemsMixin(StartMarker)
+      ))
     ))
   )
 )
