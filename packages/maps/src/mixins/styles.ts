@@ -4,7 +4,8 @@ import {MapInstance} from "../map-utils/map-instance";
 export interface IStyleBase {
   styleFunct: StyleFunct;
   name?: string;
-  mapInstance: MapInstance
+  mapInstance: MapInstance;
+  trackBy(datum): string;
 }
 export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
   return class extends Base {
@@ -50,9 +51,9 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
       this.setItemStyle(item, style);
     }
 
-    getStyleType(data) {
-      if (this.highlightedId && data) {
-        return this.highlightedId == data.id ? 'highlight' : 'fade'
+    getStyleType(datum) {
+      if (this.highlightedId && datum) {
+        return this.highlightedId == this.trackBy(datum) ? 'highlight' : 'fade'
       } else {
         return this.styleType;
       }

@@ -12,6 +12,7 @@ export interface IMarkersBase {
   forceExtendBounds?: boolean;
   mapInstance: MapInstance;
   toNotSetMap?: boolean;
+  trackBy(datum): string;
 }
 
 export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
@@ -38,9 +39,15 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       let position = pathPosition || this.getPosition(data);
       if (position) this.mapInstance.mapUtils.updatePosition(item, position);
       if (!this.toNotSetMap) this.mapInstance.mapUtils.setMap(item, this.mapInstance.map);
-      this.event.next('update-'+ data.id, {item, data})
+      const id = this.trackBy(data);
+      this.event.next('update-'+ id, {item, data})
     }
 
+    /**
+     *
+     * @param id string return trackBy
+     * @returns {{subscribe: (cb) => IEventSub}}
+     */
     onEntityUpdate(id): {subscribe: (cb) => IEventSub} {
       const eventName = `update-${id}`;
       return {
@@ -67,12 +74,12 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
     }
 
     clearItem({item, data}) {
-      this.removeData(data)
+      this.removeData(data);
       this.removeItem(item);
     }
 
     removeData(data) {
-      let id = data.id;
+      let id = this.trackBy(data);
       if (this.entities[id]) delete this.entities[id];
     }
   };

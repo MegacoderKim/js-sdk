@@ -8,6 +8,7 @@ export interface PopupBase {
   getPosition: (data) => HtPosition;
   getInfoContent: (data) => string;
   mapInstance: MapInstance
+  trackBy(datum): string;
 }
 
 export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
@@ -45,7 +46,7 @@ export function PopupMixin<TBase extends Constructor<PopupBase>>(Base: TBase) {
     }
 
     onMouseEnter(entity: Entity<any>) {
-      let id = entity.data.id;
+      let id = this.trackBy(entity.data);
       this.setPopup(id);
     }
 

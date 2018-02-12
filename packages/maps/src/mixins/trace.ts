@@ -17,8 +17,10 @@ export interface ITraceBase {
   removeData: (data) => void;
   clearItem: (entity: Entity) => void;
   toNotSetMap?: boolean;
-  toNotTraceItem?: boolean
+  toNotTraceItem?: boolean,
+  trackBy(datum: any): string;
   // cluster?: any;
+  entities: Entities<any>;
   mapInstance: MapInstance,
   // clearAllClusters: (data: any[]) => void
 }
@@ -30,7 +32,6 @@ export interface ITraceConfig {
 export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
   return class extends Base {
     
-    entities: Entities<any> = {};
 
     // setMap: (item, map) => void;
 
@@ -44,7 +45,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
       if (data && data.length) {
         // if(this.cluster) this.clearAllClusters(data);
         data.forEach( datum => {
-          let id = datum["id"];
+          let id = this.trackBy(datum);
           let entity = this.entities[id];
           let hasEntity = !!entity;
           let item = !hasEntity ? this.getItem(datum) : entity.item;
@@ -66,7 +67,7 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
     };
 
     traceItem(datum) {
-      let id = datum["id"];
+      let id = this.trackBy(datum);
       let entity = this.entities[id];
       if(entity) {
         this.update(entity);
@@ -104,14 +105,6 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
       });
     }
 
-    getEntity(id?: string): Entity<any> {
-      if (!this.entities) return null;
-      if (id) return this.entities[id];
-      let keys = Object.keys(this.entities);
-      if (keys.length == 0) return null;
-      let key = keys[0];
-      return this.entities[key];
-    }
   };
 }
 
