@@ -12,7 +12,11 @@ export class MapContainerComponent implements OnInit {
   mapInstance;
   @Input() setBoundsOptions = {
     paddingTopLeft: [10, 10],
-    paddingBottomRight: [10, 50]
+    paddingBottomRight: [10, 60],
+    duration: 2,
+    animate: true,
+    easeLinearity: 0.2,
+    // easeLinearity: 0.58,
   };
   @ViewChild('card') card;
   constructor(
