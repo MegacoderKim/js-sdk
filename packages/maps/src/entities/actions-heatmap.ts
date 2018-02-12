@@ -11,6 +11,7 @@ import {HtBounds} from "../map-utils/interfaces";
 import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class ActionsHeatmap {
   styleFunct: StyleFunct = {
@@ -47,5 +48,7 @@ export class ActionsHeatmap {
 };
 
 export const ActionsHeatmapTrace = ExtendBoundsMixin(
-  DataObservableMixin(ExtendBoundsMixin(HeatmapMixin(StyleMixin(ActionsHeatmap))))
+  DataObservableMixin(ExtendBoundsMixin(HeatmapMixin(StyleMixin(
+    MapItemsMixin(ActionsHeatmap)
+  ))))
 );

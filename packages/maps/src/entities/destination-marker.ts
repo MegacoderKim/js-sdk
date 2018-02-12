@@ -15,6 +15,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class DestinationMap {
   mapInstance: MapInstance;
@@ -65,5 +66,7 @@ export class DestinationMap {
 };
 
 export const DestinationMarker  = DataObservableMixin(ExtendBoundsMixin(
-  TraceMixin(DivMarkersMixin(MarkersMixin(StyleMixin(DestinationMap))))
+  TraceMixin(DivMarkersMixin(MarkersMixin(StyleMixin(
+    MapItemsMixin(DestinationMap)
+  ))))
 ));

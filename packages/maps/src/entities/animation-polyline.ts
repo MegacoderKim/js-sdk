@@ -13,6 +13,7 @@ import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";
 import {LatLngBounds} from "leaflet";
 import {HtCustomEvent, IEventSub} from "ht-utility";
+import {MapItemsMixin} from "../mixins/map-items";
 
 export class AnimPolyline extends SegmentPolylines {
   mapInstance: MapInstance;
@@ -22,5 +23,7 @@ export class AnimPolyline extends SegmentPolylines {
 
 export const AnimPolylineTrace = AnimationMixin(SingleItemMixin(
   TraceMixin(ExtendBoundsMixin(
-    PolylinesMixin(MarkersMixin(StyleMixin(AnimPolyline)))))
+    PolylinesMixin(MarkersMixin(StyleMixin(
+      MapItemsMixin(AnimPolyline)
+    )))))
 ))
