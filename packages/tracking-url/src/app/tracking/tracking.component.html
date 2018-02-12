@@ -10,7 +10,7 @@
 
 <app-destination-popup [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId"></app-destination-popup>
 <app-user-popup [item]="item" *ngFor="let item of userPopup$ | async; trackBy: trackId"></app-user-popup>
-<div class="is-overlay" *ngIf="loading">
+<div class="is-overlay" *ngIf="loading" [@fade]>
   <div id="root">
     <div class="loading-container">
       <div class="loading-section">
