@@ -1,0 +1,15 @@
+{
+  "name": "ht-api",
+  "version": "0.0.0",
+  "description": "HyperTrack apis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ht-models": "^0.0.16",
+    "ht-utility": "^0.1.3"
+  }
+}
