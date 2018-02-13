@@ -36,7 +36,7 @@ export class PopperController implements OnInit, OnChanges {
   }
 
   public static baseOptions: PopperContentOptions = <PopperContentOptions>{
-    placement: Placements.Auto,
+    placement: Placements.AutoTop,
     hideOnClickOutside: true,
     hideOnScroll: false,
     showTrigger: Triggers.HOVER
