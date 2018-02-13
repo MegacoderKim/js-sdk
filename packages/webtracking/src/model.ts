@@ -1,4 +1,3 @@
-import MapTypeStyle = google.maps.MapTypeStyle;
 // import {TrackedAction} from "./track-action";
 export interface IDecoded {
     action: IAction,
@@ -127,7 +126,6 @@ export interface ITrackingDataOptions {
 }
 
 export interface IMapOptions {
-    gMapsStyle?: MapTypeStyle[] | null;
     bottomPadding?: number;
     topPadding?: number;
     vehicleIcon?: CustomVehicleIcon;

@@ -3,14 +3,11 @@ import {
   IAction, ISubAccount, ISubAccountData, ITrackActionResult, ITrackActionResults,
   ITrackingOptions
 } from "./model";
-import {MapInstance} from "ht-maps";
-import { BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {Observable} from "rxjs/Observable";
 
 export class HTTrackActions {
   // trackActions: ITrackedActions = {};
-  mapInstance: MapInstance;
   pollActionsTimeoutId;
   actionsSubject$: ReplaySubject<IAction[]> = new ReplaySubject();
   actions$: Observable<IAction[]> = this.actionsSubject$.asObservable();
@@ -18,17 +15,11 @@ export class HTTrackActions {
   subAccountSubject$: ReplaySubject<ISubAccountData>  = new ReplaySubject<ISubAccountData>();
   subAccountData$ = this.subAccountSubject$.asObservable();
   constructor(private identifier: string, private identifierType: string, private pk: string, private options: ITrackingOptions = {}) {
-    this.mapInstance = new MapInstance();
-    this.mapInstance.setMapType('google');
     this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
       this.initTracking(data, identifier, identifierType);
     }, () => {
 
     });
-  }
-
-  get map(): google.maps.Map {
-    return this.mapInstance.map as google.maps.Map;
   }
 
   initTracking(data: ITrackActionResults, identifier: string, identifierType: string) {
