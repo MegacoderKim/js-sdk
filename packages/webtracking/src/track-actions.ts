@@ -22,6 +22,8 @@ export class HTTrackActions {
     this.mapInstance.setMapType('google');
     this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
       this.initTracking(data, identifier, identifierType);
+    }, () => {
+
     });
   }
 
@@ -49,12 +51,13 @@ export class HTTrackActions {
     return actions;
   }
 
-  fetchActionsFromIdentifier(identifier: string, identifierType: string, cb) {
+  fetchActionsFromIdentifier(identifier: string, identifierType: string, cb, errorCb) {
     let url = this.getTrackActionsURL(identifier, identifierType);
     fetch(url, GetReqOpt(this.pk, this.options)).then(res => res.json()).then((data: ISubAccountData) => {
       cb(data)
     }, err => {
-      this.options.onError && this.options.onError(err)
+      this.options.onError && this.options.onError(err);
+      errorCb();
     });
   }
 
@@ -73,6 +76,8 @@ export class HTTrackActions {
       this.fetchActionsFromIdentifier(identifier, identifierType, (data) => {
         let actions: IAction[] = this.extractActionsFromResult(data);
         this.actionsSubject$.next(actions);
+        this.pollActionsFromIdentifier(identifier, identifierType);
+      }, () => {
         this.pollActionsFromIdentifier(identifier, identifierType);
       });
     }, 2000);
