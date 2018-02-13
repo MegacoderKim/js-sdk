@@ -24,7 +24,7 @@ import {Observable} from "rxjs/Observable";
   ]
 })
 export class TrackingComponent implements OnInit, AfterContentInit {
-  @Input() shortCode = "ofE2gTfo";
+  @Input() shortCode;
   init: boolean = false;
   actionsData$: Observable<IAction[]>;
   actionsTrace;
