@@ -3,6 +3,7 @@ import {HtUsersApi} from "../entities/users";
 import {HtActionsApi} from "../entities/actions";
 import {HtGroupsApi} from "../entities/groups";
 import {HtAccountUserApi} from "../entities/account-user";
+import {htRequestService} from "../global/request-service";
 
 export class HtApi {
     request: HtRequest;
@@ -10,11 +11,11 @@ export class HtApi {
     actions: HtActionsApi;
     groups: HtGroupsApi;
     accountUser: HtAccountUserApi;
-    constructor(request) {
-        this.request = request;
-        this.users = new HtUsersApi(request);
-        this.actions = new HtActionsApi(request);
-        this.groups = new HtGroupsApi(request);
-        this.accountUser = new HtAccountUserApi(request)
+    constructor() {
+        this.request = htRequestService.getInstance();
+        this.users = new HtUsersApi(this.request);
+        this.actions = new HtActionsApi(this.request);
+        this.groups = new HtGroupsApi(this.request);
+        this.accountUser = new HtAccountUserApi(this.request)
     }
 }
