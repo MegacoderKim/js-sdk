@@ -26,9 +26,10 @@ export { EntitySearchModule as ɵbc } from './app/filters/entity-search/entity-s
 export { UsersFilterComponent as ɵbe } from './app/filters/users-filter/users-filter.component';
 export { UsersFilterModule as ɵbb } from './app/filters/users-filter/users-filter.module';
 export { GroupsChartService as ɵz } from './app/groups-chart-container/groups-chart.service';
-export { HtAccountService as ɵbz } from './app/ht/ht-account-users.service';
-export { HtActionsService as ɵby } from './app/ht/ht-actions.service';
+export { HtAccountService as ɵca } from './app/ht/ht-account-users.service';
+export { HtActionsService as ɵbz } from './app/ht/ht-actions.service';
 export { MAP_TYPE as ɵa } from './app/ht/ht-map.service';
+export { HtRequestService as ɵby } from './app/ht/ht-request.service';
 export { MapComponent as ɵba } from './app/map/map.component';
 export { ActionSortingStringPipe as ɵq } from './app/pipes/action-sorting-string.pipe';
 export { ActionStatusStringPipe as ɵn } from './app/pipes/action-status-string.pipe';
