@@ -106,3 +106,11 @@ export interface IActionsSummary {
   completed: number,
   suspended: number,
 }
+
+export interface ITrackAction {
+    user: IUser,
+    actions: IAction[],
+    account: {
+      logo: string | null
+    }
+}
