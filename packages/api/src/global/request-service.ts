@@ -11,6 +11,10 @@ export const htRequestService = (() => {
             return instance;
         },
         setInstance(newintance: HtRequest) {
+            if (instance) {
+                const tokenService = instance.tokenServie;
+                newintance.tokenServie = tokenService;
+            }
             instance = newintance;
         }
     };
