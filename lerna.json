@@ -3,7 +3,8 @@
   "commands": {
     "publish": {
       "ignore": [
-        "*.md"
+        "*.md",
+        "angular-components"
       ]
     },
     "bootstrap": {
@@ -19,11 +20,6 @@
     "exec": {
       "ignore": [
         "ht-angular"
-      ]
-    },
-    "publish": {
-      "ignore": [
-        "angular-components"
       ]
     }
   },
