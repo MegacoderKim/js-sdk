@@ -1,59 +1,35 @@
-export class HtClient {
-  _token: string;
-  _tempToken: string;
-  _groupToken: string;
-  pollDuration: number = 10000;
+import {htRequestService} from "ht-api";
 
-  constructor(token: string = "", options = {}) {
+export class HtClient {
+  constructor(token: string = "", request) {
+    htRequestService.setInstance(request);
     this.token = token;
-    this.pollDuration = options["pollDuration"] || this.pollDuration;
   }
 
   set token(token) {
-    this._token = token;
-  }
-
-  get token() {
-    return this._token;
+      htRequestService.getInstance().tokenServie.token = token
   }
 
   set tempToken(token) {
-    this._groupToken = "";
-    this._tempToken = token;
-  }
-
-  get tempToken() {
-    return this._tempToken;
-  }
-
-  set groupToken(token) {
-    this._groupToken = token;
-  }
-
-  get groupToken() {
-    return this._groupToken;
-  }
-
-  get currentToken() {
-    return this.groupToken || this.tempToken || this.token;
+      htRequestService.getInstance().tokenServie.tempToken = token
   }
 }
 
-export const initClient = (token, config = {}) => {
-  return htClientService.getInstance(token, config);
+export const initClient = (token, request) => {
+  return htClientService.getInstance(token, request);
 };
 
-export const htClientFactory = (token, config) => {
-  return new HtClient(token, config);
+export const htClientFactory = (token, request) => {
+  return new HtClient(token, request);
 };
 
 export const htClientService = (() => {
   var instance: HtClient;
 
   return {
-    getInstance(token?, config = {}) {
+    getInstance(token = "", request) {
       if (!instance) {
-        instance = htClientFactory(token, (config = {}));
+        instance = htClientFactory(token, request);
       }
       return instance;
     }

@@ -5,7 +5,7 @@ import { EntityListClient } from "../../base/list-client";
 import { clientSubMixin } from "../../mixins/client-subscription";
 import { listQueryMixin } from "../../mixins/entity-query";
 import { getQueryDataMixin } from "../../mixins/get-data";
-import { entityApi } from "../../global/entity-api";
+// import {HtApi, HtUsersApi} from "ht-api";
 import { IPageClientConfig } from "../../interfaces";
 import { IUserListSummary } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
@@ -30,7 +30,7 @@ export class UsersSummary extends EntityListClient {
   ];
   dataSub: Subscription;
   dateParam: string;
-  api$ = query => entityApi.users.summary(query);
+  api$: (query) => Observable<IUserListSummary>;
 
   setActive(isActive: boolean | string = true) {
     isActive = isActive ? new Date().toISOString() : isActive;
@@ -48,8 +48,9 @@ export class UsersSummary extends EntityListClient {
     this.setData(null);
   }
 
-  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
     super();
+    this.api$ = query => api.summary(query);
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.dateParam = dateParam;

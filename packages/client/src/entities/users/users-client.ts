@@ -26,11 +26,11 @@ import { combineLatest } from "rxjs/observable/combineLatest";
 import { of } from "rxjs/observable/of";
 import { empty } from "rxjs/observable/empty";
 import { dateRangeService } from "../../global/date-range";
-import { entityApi } from "../../global/entity-api";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
 import { UsersHeatmapClient } from "./users-heatmap-client";
+import {HtApi} from "ht-api";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -48,7 +48,7 @@ export class HtUsersClient extends EntityClient {
   showAll: boolean = false;
   constructor(public options: IUsersClientConfig) {
     super();
-    let api = entityApi.users;
+    let api = new HtApi().users;
     this.key$ = ApiStoreService.getInstance().select(
       fromRoot.getAccountCurrentKey
     );
@@ -60,17 +60,18 @@ export class HtUsersClient extends EntityClient {
     let dateRange$ = this.options.dateRange$;
     const dateRangeQuery$ = dateRange$;
     let dateParam = 'recorded_at';
-    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store, dateParam });
-    this.placeline = new UsersPlacelineClient({ store });
+    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store, dateParam, api });
+    this.placeline = new UsersPlacelineClient({ store, api });
     this.analyticsAll = new UsersAnalyticsListAllClient({
       dateRangeQuery$,
       store,
-      dateParam
+      dateParam,
+        api
     });
-    this.summary = new UsersSummaryClient({ dateRangeQuery$, store, dateParam });
+    this.summary = new UsersSummaryClient({ dateRangeQuery$, store, dateParam, api });
     this.list = this.analytics;
     this.listAll = this.analyticsAll;
-    this.heatmap = new UsersHeatmapClient({ dateRangeQuery$, dateParam });
+    this.heatmap = new UsersHeatmapClient({ dateRangeQuery$, dateParam, api });
     this.initEffects();
   }
 

@@ -7,16 +7,17 @@ import { EntityItemClient } from "../../base/item-client";
 import { getIdQueryDataMixin } from "../../mixins/get-data";
 import { itemQueryMixin } from "../../mixins/entity-query";
 import { clientSubMixin } from "../../mixins/client-subscription";
-import { entityApi } from "../../global/entity-api";
+import {HtApi, HtUsersApi} from "ht-api";
 import { dataWithSelectedId$ } from "ht-data";
 import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
+import { IUserData } from "ht-models";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 
 export class UsersPlaceline extends EntityItemClient {
   name = "users placeline";
   updateStrategy = "live";
-  api$ = (id, query) => entityApi.users.placeline(id, query);
+  api$: (id, query) => Observable<IUserData>;
   store;
   data$;
   loading$;
@@ -24,8 +25,9 @@ export class UsersPlaceline extends EntityItemClient {
   segmentSelectedId$;
   segmentResetId$;
 
-  constructor({ store }: IClientConfig) {
+  constructor({ store, api }: IClientConfig) {
     super();
+    this.api$ = (id, query) => api.placeline(id, query);
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersPlacelineQuery);
     this.data$ = this.store.select(fromRoot.getUsersUsersData);
@@ -60,9 +62,9 @@ export class UsersPlaceline extends EntityItemClient {
   }
 
   getMapData$() {
-    return dataWithSelectedId$(this.data$, this.segmentSelectedId$, [
-      "segments"
-    ]);
+    // return dataWithSelectedId$(this.data$, this.segmentSelectedId$, [
+    //   "segments"
+    // ]);
   }
 
   clearData() {

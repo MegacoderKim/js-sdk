@@ -7,7 +7,6 @@ import { getPageDataMixin } from "../../mixins/get-data";
 import { of } from "rxjs/observable/of";
 import { PageResults$ } from "ht-data";
 import { Page, IGroup } from "ht-models";
-import { entityApi } from "../../global/entity-api";
 import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
@@ -25,7 +24,7 @@ export class GroupsList {
   active$;
   loading$ = of(false);
   dataArray$;
-  api$ = query => entityApi.groups.index<Page<IGroup>>(query);
+  api$: (query) => Observable<Page<IGroup>>;
   store;
   dataSub: Subscription;
   setData(data) {
@@ -54,7 +53,8 @@ export class GroupsList {
     return { page_size: 10, ...this.defaultQuery };
   }
 
-  constructor({ store }: IClientConfig) {
+  constructor({ store, api }: IClientConfig) {
+    this.api$ = query => api.index<Page<IGroup>>(query);
     this.store = store;
     this.data$ = this.store.select(fromRoot.getGroupAll);
     this.active$ = this.store.select(fromRoot.getGroupListActive);

@@ -2,35 +2,36 @@ import * as fromRoot from "../../reducers";
 import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import { Observable } from "rxjs/Observable";
 import { getPageDataMixin } from "../../mixins/get-data";
-import { IUserAnalyticsPage } from "ht-models";
+import { IUserAnalytics, Page } from "ht-models";
 import { listQueryMixin } from "../../mixins/entity-query";
 import { clientSubMixin } from "../../mixins/client-subscription";
 import { EntityListClient } from "../../base/list-client";
 import { PageResults$ } from "ht-data";
-import { entityApi } from "../../global/entity-api";
+// import { entityApi } from "../../global/entity-api";
 import { IPageClientConfig } from "../../interfaces";
-import { Page } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IAllowedQueryMap } from "ht-data";
+import {HtApi, HtUsersApi} from "ht-api";
 
 export class UsersAnalytics extends EntityListClient {
   // updateStrategy = 'update';
-  api$ = (query): Observable<IUserAnalyticsPage> =>
-    entityApi.users.analytics(query);
+  api$: (query) => Observable<Page<IUserAnalytics>>;
   name = "users analytics list";
   defaultQuery = { ordering: "-last_heartbeat_at" };
   dataSub: Subscription;
   // allowedQueryKeys = null;
   // active$ = store.select(fromRoot.getUsersAnalyticsIsActive);
-  data$: Observable<Page<IUserAnalyticsPage>>;
-  dataArray$: Observable<IUserAnalyticsPage[] | null>;
+  data$: Observable<Page<IUserAnalytics>>;
+  dataArray$: Observable<IUserAnalytics[] | null>;
   id$: Observable<string | null>;
   loading$: Observable<boolean | string>;
   store;
   dateParam;
-  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
     super();
+    this.api$ = (query): Observable<Page<IUserAnalytics>> =>
+        api.analytics(query);
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<

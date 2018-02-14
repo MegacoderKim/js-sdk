@@ -5,10 +5,9 @@ import {getAllPageDataMixin} from "../../mixins/get-data";
 import {EntityAllItemsClient} from "../../base/all-items.client";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
-import {entityApi} from "../../global/entity-api";
 import {Subscription} from "rxjs/Subscription";
 import {AllowedQueryMap, IAllowedQueryMap} from "ht-data";
-import {IAction, AllData} from "ht-models";
+import {IAction, AllData, Page} from "ht-models";
 import {IPageClientConfig} from "../../interfaces";
 
 export class ActionsIndexAll extends EntityAllItemsClient {
@@ -17,12 +16,13 @@ export class ActionsIndexAll extends EntityAllItemsClient {
   loading$ = this.loadingBehaviour$.asObservable();
   activeBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   query$: BehaviorSubject<object>;
-  api$: (query) => Observable<IAction[]> = (query) => entityApi.actions.allPages(entityApi.actions.index(query));
+  api$: (query) => Observable<Page<IAction>>;
   dataSub: Subscription;
   dataEntities$;
   dateParam: string;
-  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
     super();
+    this.api$ = (query) => api.allPages(api.index(query));
     this.dateRangeQuery$ = dateRangeQuery$;
     this.dateParam = dateParam;
     this.query$ = new BehaviorSubject(this.getDefaultQuery());

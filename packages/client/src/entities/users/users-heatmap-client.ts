@@ -5,15 +5,15 @@ import {getFirstDataMixin} from "../../mixins/get-first-data";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
-import {IActionHeat, Page} from "ht-models";
+import {IActionHeat, Page, IPlaceHeat} from "ht-models";
 import {of} from "rxjs/observable/of";
-import {entityApi} from "../../global/entity-api";
+import {HtApi, HtUsersApi} from "ht-api";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {IAllowedQueryMap, PageResults$} from "ht-data";
 
 export class UsersHeatmap {
   query$: Observable<object> = of({});
-  api$ = query => entityApi.users.allPages(entityApi.users.heatmap(query));
+  api$: (query) => Observable<Page<IPlaceHeat>>;
   loadingState$ = new BehaviorSubject(false);
   loading$ = this.loadingState$.asObservable();
   dataState$: BehaviorSubject<Page<IActionHeat> | null> = new BehaviorSubject(null);
@@ -23,7 +23,8 @@ export class UsersHeatmap {
   active$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
-  constructor({ dateRangeQuery$, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, dateParam, api }: IPageClientConfig) {
+    this.api$ = query => api.allPages(api.heatmap(query));
     this.dateRangeQuery$ = dateRangeQuery$;
     this.dateParam = dateParam;
   }

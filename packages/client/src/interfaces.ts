@@ -1,6 +1,7 @@
 import { Observable } from "rxjs/Observable";
 import { Store } from "./store/store";
 import * as fromRoot from "./reducers";
+import {HtBaseApi} from "ht-api";
 
 export const defaultListConfig: IListConfig = {
   isLive: false
@@ -37,11 +38,12 @@ export interface QueryLabel {
   color?: string;
 }
 
-export interface IClientConfig {
+export interface IClientConfig<T = HtBaseApi> {
   store?: Store<fromRoot.State>;
+  api: T
 }
 
-export interface IPageClientConfig extends IClientConfig {
+export interface IPageClientConfig<T = HtBaseApi> extends IClientConfig<T> {
   dateRangeQuery$?: Observable<object> | null;
   dateParam?: string
 }
