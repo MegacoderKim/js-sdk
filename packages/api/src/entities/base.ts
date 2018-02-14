@@ -53,7 +53,7 @@ export class HtBaseApi {
     return api$.pipe(
       expand((data: IPageData) => {
         return data["next"]
-          ? this.request.api$(data["next"], {}, options).pipe(
+          ? this.request.api$(data["next"], {}, {...options, pureUrl: true}).pipe(
             map((newData: IPageData) => {
               return {...newData, results: [...data.results, ...newData.results]}
             })
