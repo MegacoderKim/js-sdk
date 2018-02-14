@@ -1,23 +1,20 @@
 import {Observable} from "rxjs/Observable";
-import {HtRequest} from "ht-client";
+import {HtRequest} from "ht-api";
 import {HttpClient} from "@angular/common/http";
 import {of} from "rxjs/observable/of";
 
 export class HtRequestService extends HtRequest {
   // http;
-
-  constructor(private http: HttpClient) {
-    super()
+  constructor(private http: HttpClient, token) {
+    super(token)
   }
 
   getObservable<T>(url, options: object = {}) {
-    const headers = super.headerObj();
-    return this.http.get<T>(url, {headers, ...options});
+    return this.http.get<T>(url, options);
   }
 
 
   postObservable<T>(url, body, options: object = {}) {
-    const headers = super.headerObj();
-    return this.http.post<T>(url, body, {headers, ...options});
+    return this.http.post<T>(url, body, options);
   }
 }
