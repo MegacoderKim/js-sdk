@@ -7,10 +7,10 @@ import { getIdQueryDataMixin } from "../../mixins/get-data";
 import { of } from "rxjs/observable/of";
 import { empty } from "rxjs/observable/empty";
 import { Observable } from "rxjs/Observable";
-import { entityApi } from "../../global/entity-api";
 import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
+import { IGroup } from "ht-models"
 
 export class GroupsItem extends EntityItemClient {
   name = "group";
@@ -25,7 +25,7 @@ export class GroupsItem extends EntityItemClient {
     return { ...super.getDefaultQuery(), ...this.defaultQuery };
   }
 
-  api$ = (id, query?) => entityApi.groups.get(id, query);
+  api$: (id, query?) => Observable<IGroup>;
 
   setId(id) {
     this.store.dispatch(new fromGroupDispatcher.SetGroupId(id));
@@ -37,8 +37,9 @@ export class GroupsItem extends EntityItemClient {
   setQuery() {}
   store;
   dataSub: Subscription;
-  constructor({ store }: IClientConfig) {
+  constructor({ store, api }: IClientConfig) {
     super();
+    this.api$ = (id, query?) => api.get(id, query);
     this.store = store;
     this.id$ = this.store.select(fromGroup.getGroupId);
     // this.init()

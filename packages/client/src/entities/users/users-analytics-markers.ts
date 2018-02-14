@@ -9,7 +9,7 @@ import { getAllPageDataMixin } from "../../mixins/get-data";
 import { listQueryMixin } from "../../mixins/entity-query";
 import { clientSubMixin } from "../../mixins/client-subscription";
 import { empty } from "rxjs/observable/empty";
-import { entityApi } from "../../global/entity-api";
+import {HtApi, HtUsersApi} from "ht-api";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { listAllClientSubMixin } from "../../mixins/list-all-client-sub";
@@ -20,7 +20,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   id$ = empty();
   allowedQueryKeys = ["status", "show_all", "search"];
   name = "users analytics all";
-  api$ = query => entityApi.users.all$(query, ApiType.analytics);
+  api$: (query) => Observable<Page<IUserAnalytics>>;
   defaultQuery = {};
   store;
   dataArray$;
@@ -40,8 +40,9 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   ];
   dataSub: Subscription;
   dateParam: string;
-  constructor({ dateRangeQuery$, store,dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store,dateParam, api }: IPageClientConfig) {
     super();
+    this.api$ = query => api.allPages(api.analytics(query));
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<

@@ -1,4 +1,3 @@
-import { entityApi } from "../../global/entity-api";
 import { getIdQueryDataMixin } from "../../mixins/get-data";
 import { clientSubMixin } from "../../mixins/client-subscription";
 import { itemQueryMixin } from "../../mixins/entity-query";
@@ -10,7 +9,7 @@ import * as fromAccounts from "../../dispatchers/accounts-dispatcher";
 import { IPageClientConfig } from "../../interfaces";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { EntityItemClient } from "../../base/item-client";
-
+import { IAccountUser } from "ht-models"
 export class AccountUser extends EntityItemClient {
   query$: Observable<object> = of({});
   id$;
@@ -19,9 +18,10 @@ export class AccountUser extends EntityItemClient {
   store;
   data$;
   loading$;
-
-  constructor({ dateRangeQuery$, store }: IPageClientConfig) {
+  api$: (id, query) => Observable<IAccountUser>;
+  constructor({ dateRangeQuery$, store, api }: IPageClientConfig) {
     super();
+    this.api$ = (id, query) => api.get(id, query);
     this.store = store;
     // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
     this.data$ = this.store.select(fromRoot.getAccountUser);
@@ -44,7 +44,7 @@ export class AccountUser extends EntityItemClient {
     this.store.dispatch(new fromAccounts.SetAccountUser(data));
   }
 
-  api$ = (id, query) => entityApi.accounts.get(id, query);
+
 }
 
 export const AccountUserClient = clientSubMixin(

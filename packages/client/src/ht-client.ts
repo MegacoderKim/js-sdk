@@ -1,6 +1,3 @@
-export * from "./api/actions";
-export * from "./api/users";
-export * from "./api/base";
 export * from "./interfaces";
 
 //users
@@ -35,8 +32,6 @@ export * from "./entities/actions/actions-heatmap-client"
 //globals
 export * from "./global/date-range";
 export * from "./global/client";
-export * from "./global/entity-api";
-export * from "./global/request";
 
 //reducers
 export * from "./reducers/index";
