@@ -21,6 +21,9 @@
       ],
       "underscore": [
         "../node_modules/underscore/*"
+      ],
+      "ht-api": [
+        "../node_modules/ht-api"
       ]
     }
   },
