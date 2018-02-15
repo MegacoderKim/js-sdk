@@ -6,11 +6,11 @@ import {clientSubMixin} from "../../mixins/client-subscription";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
-import {entityApi} from "../../global/entity-api";
 import {IActionStatusGraph} from "ht-models";
 import {IAllowedQueryMap} from "ht-data";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
+import {HtActionsApi} from "ht-api";
 
 export class ActionsGraph {
   query$: Observable<object> = of({});
@@ -18,13 +18,14 @@ export class ActionsGraph {
   data$ = this.dataBehaviour$.asObservable();
   loadingBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingBehaviour$.asObservable();
-  api$: (query) => Observable<IActionStatusGraph[]> = (query) => entityApi.actions.graph(query);
+  api$: (query) => Observable<IActionStatusGraph[]>;
   updateStrategy = "once";
   pollDuration = 10000;
   dateRangeQuery$;
   dataSub: Subscription;
   dateParam: string;
-  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
+    this.api$ = (query) => api.graph(query);
     this.dateRangeQuery$ = dateRangeQuery$;
     this.dateParam = dateParam;
   }

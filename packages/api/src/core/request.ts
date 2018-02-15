@@ -42,9 +42,10 @@ export class HtRequest {
         return ["Authorization", `token ${this.currentToken}`];
     }
 
-    url(url: string, query = {}) {
+    url(url: string, query = {}, isPure: boolean = false) {
         let string = HtQuerySerialize(query);
-        return this.baseUrl + url + "?" + string;
+        const base = isPure ? '' : this.baseUrl;
+        return base + url + "?" + string;
     }
 
     getObservable<T>(url, options: object = {}): Observable<T> {
@@ -57,8 +58,8 @@ export class HtRequest {
         return fromPromise(p) as Observable<T>;
     }
 
-    api$<T>(url: string, query, options: {isAdmin?: boolean, token?: string} = {}) {
-        url = this.url(url, query);
+    api$<T>(url: string, query, options: {isAdmin?: boolean, token?: string, pureUrl?: boolean} = {}) {
+        url = this.url(url, query, options.pureUrl);
         let headers = options.isAdmin  ? this.adminHeaderObj() : this.headerObj(options.token);
         return this.getObservable<T>(url, {headers});
     }

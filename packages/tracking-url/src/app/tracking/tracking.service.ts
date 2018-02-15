@@ -1,44 +1,57 @@
 import { Injectable } from '@angular/core';
 const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
-import {trackShortCode, IAction, ISubAccountData, ITrackingOptions, ISubAccount} from "ht-webtracking"
+import { IAction, ITrackAccount } from "ht-models";
 import {Logger} from "../logger";
 import {checkUserAgent, getUserAgent, isRedirectedUrl} from '../helpers';
+import {htRequestService, HtTrackingApi} from "ht-api";
+import {catchError, concatMap, expand, filter, tap} from "rxjs/operators";
+import {timer} from "rxjs/observable/timer";
+import {ReplaySubject} from "rxjs/ReplaySubject";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class TrackingService {
   trackActions;
   isMapDirty: boolean = false;
   isSliding: boolean = false;
+  trackApi;
+  actions$: ReplaySubject<IAction[]> = new ReplaySubject();
+  error$: ReplaySubject<any | null> = new ReplaySubject<any|null>();
   constructor() {
-
+    this.setTrackApi()
   }
 
-  initListers() {
-    this.trackActions.actions$.subscribe((actions) => {
-      this.handleOnUpdate(actions);
-    });
-
-    this.trackActions.subAccountData$.subscribe((subAccountData) => {
-      if (subAccountData && subAccountData.sub_account) {
-        Logger.log('subAccount', subAccountData.sub_account);
-        // this.handleDeepLinkRedirect(subAccountData.sub_account, action);
-      }
-    })
+  setTrackApi() {
+    const request = htRequestService.getInstance(HTPublishableKey);
+    request.setClientType('hypertrack/trct.at');
+    this.trackApi = new HtTrackingApi(request)
   }
 
   initShortCode(shortCode: string) {
-    const trackingOptions = this.getTrackingOptions();
-    this.trackActions = trackShortCode(shortCode, HTPublishableKey, trackingOptions);
-    this.initListers()
-  }
-
-  getTrackingOptions(): ITrackingOptions {
-    return {
-      onError(err) {
-        console.warn(err);
-      },
-      clientType: 'hypertrack/trct.at'
-    };
+    this.trackApi.track(shortCode).pipe(
+      tap((data) => {
+        //loading done
+      }),
+      expand((data) => {
+        return timer(2000).pipe(
+          concatMap((_) => {
+            return this.trackApi.track(shortCode).pipe(
+              catchError((err) => {
+                this.handleOnError(err);
+                return of(null)
+              })
+            )
+          })
+        )
+      }),
+      filter(data => {
+        if (data) this.handleOnError(null);
+        return !!data
+      }),
+      tap((data: IAction[]) => {
+        this.handleOnUpdate(data);
+      }),
+    ).subscribe(this.actions$);
   }
 
   handleOnReady(actions: IAction[]) {
@@ -47,9 +60,13 @@ export class TrackingService {
 
   handleOnUpdate(actions: IAction[]) {
     Logger.log('On Actions update', actions);
+  };
+
+  handleOnError(err: any | null) {
+    this.error$.next(err)
   }
 
-  private handleDeepLinkRedirect(subAccount: ISubAccount, action: IAction) {
+  private handleDeepLinkRedirect(subAccount: ITrackAccount, action: IAction) {
     const userAgent = getUserAgent();
     const iosDeepLinkUrl = subAccount.account.ios_deeplink_url;
     const androidDeepLinkUrl = subAccount.account.android_deeplink_url;

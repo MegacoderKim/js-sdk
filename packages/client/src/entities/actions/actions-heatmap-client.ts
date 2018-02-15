@@ -4,7 +4,6 @@ import {getAllPageDataMixin} from "../../mixins/get-data";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
-import {entityApi} from "../../global/entity-api";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {IActionHeat, Page} from "ht-models"
 import {IAllowedQueryMap, PageResults$} from "ht-data";
@@ -13,7 +12,7 @@ import {IPageClientConfig} from "../../interfaces";
 
 export class ActionsHeatmap {
   query$: Observable<object> = of({});
-  api$ = query => entityApi.actions.allPages(entityApi.actions.heatmap(query));
+  api$: (query) => Observable<Page<IActionHeat>>;
   loadingState$ = new BehaviorSubject(false);
   loading$ = this.loadingState$.asObservable();
   dataState$: BehaviorSubject<Page<IActionHeat> | null> = new BehaviorSubject(null);
@@ -24,7 +23,8 @@ export class ActionsHeatmap {
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
 
-  constructor({ dateRangeQuery$, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, dateParam, api }: IPageClientConfig) {
+    this.api$ = query => api.allPages(api.heatmap(query));
     this.dateRangeQuery$ = dateRangeQuery$;
     this.dateParam = dateParam;
   }

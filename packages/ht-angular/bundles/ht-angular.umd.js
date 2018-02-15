@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('underscore'), require('ht-utility'), require('ht-data'), require('@angular/common'), require('@angular/router'), require('@angular/animations'), require('ht-maps'), require('ht-client'), require('rxjs/operators'), require('rxjs/BehaviorSubject'), require('rxjs/observable/combineLatest'), require('rxjs/observable/of'), require('rxjs/observable/merge'), require('rxjs/Subject'), require('date-fns'), require('rxjs/Observable'), require('frappe-charts/dist/frappe-charts.min.esm'), require('@angular/common/http')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'underscore', 'ht-utility', 'ht-data', '@angular/common', '@angular/router', '@angular/animations', 'ht-maps', 'ht-client', 'rxjs/operators', 'rxjs/BehaviorSubject', 'rxjs/observable/combineLatest', 'rxjs/observable/of', 'rxjs/observable/merge', 'rxjs/Subject', 'date-fns', 'rxjs/Observable', 'frappe-charts/dist/frappe-charts.min.esm', '@angular/common/http'], factory) :
-	(factory((global['ht-angular'] = {}),global.ng.core,global._,global.htUtility,global.htData,global.ng.common,global.ng.router,global.ng.animations,global.htMaps,global.htClient,global.Rx.operators,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable,global.Rx,global.dateFns,global.Rx,global.Chart,global.ng.common.http));
-}(this, (function (exports,core,underscore,htUtility,htData,common,router,animations,htMaps,htClient,operators,BehaviorSubject,combineLatest,of,merge,Subject,dateFns,Observable,Chart,http) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('underscore'), require('ht-utility'), require('ht-data'), require('@angular/common'), require('@angular/router'), require('@angular/animations'), require('ht-maps'), require('ht-client'), require('rxjs/operators'), require('rxjs/BehaviorSubject'), require('rxjs/observable/combineLatest'), require('rxjs/observable/of'), require('rxjs/observable/merge'), require('rxjs/Subject'), require('date-fns'), require('rxjs/Observable'), require('frappe-charts/dist/frappe-charts.min.esm'), require('ht-api'), require('@angular/common/http')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'underscore', 'ht-utility', 'ht-data', '@angular/common', '@angular/router', '@angular/animations', 'ht-maps', 'ht-client', 'rxjs/operators', 'rxjs/BehaviorSubject', 'rxjs/observable/combineLatest', 'rxjs/observable/of', 'rxjs/observable/merge', 'rxjs/Subject', 'date-fns', 'rxjs/Observable', 'frappe-charts/dist/frappe-charts.min.esm', 'ht-api', '@angular/common/http'], factory) :
+	(factory((global['ht-angular'] = {}),global.ng.core,global._,global.htUtility,global.htData,global.ng.common,global.ng.router,global.ng.animations,global.htMaps,global.htClient,global.Rx.operators,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable,global.Rx,global.dateFns,global.Rx,global.Chart,global.htApi,global.ng.common.http));
+}(this, (function (exports,core,underscore,htUtility,htData,common,router,animations,htMaps,htClient,operators,BehaviorSubject,combineLatest,of,merge,Subject,dateFns,Observable,Chart,htApi,http) { 'use strict';
 
 Chart = Chart && Chart.hasOwnProperty('default') ? Chart['default'] : Chart;
 
@@ -2761,9 +2761,6 @@ var UsersMapContainerComponent = (function () {
      */
     UsersMapContainerComponent.prototype.ngOnInit = function () {
         this.userClientService.listAll.setActive();
-        if (this.key) {
-            htClient.htClientService.getInstance().tempToken = this.key;
-        }
     };
     return UsersMapContainerComponent;
 }());
@@ -2780,7 +2777,6 @@ UsersMapContainerComponent.ctorParameters = function () { return [
 ]; };
 UsersMapContainerComponent.propDecorators = {
     "hasPlaceline": [{ type: core.Input },],
-    "key": [{ type: core.Input },],
     "sidebarWidth": [{ type: core.Input },],
     "apiType": [{ type: core.Input },],
     "showFilter": [{ type: core.Input },],
@@ -5931,9 +5927,10 @@ var HtRequestService = (function (_super) {
     __extends(HtRequestService, _super);
     /**
      * @param {?} http
+     * @param {?} token
      */
-    function HtRequestService(http$$1) {
-        var _this = _super.call(this) || this;
+    function HtRequestService(http$$1, token) {
+        var _this = _super.call(this, token) || this;
         _this.http = http$$1;
         return _this;
     }
@@ -5945,8 +5942,7 @@ var HtRequestService = (function (_super) {
      */
     HtRequestService.prototype.getObservable = function (url, options) {
         if (options === void 0) { options = {}; }
-        var /** @type {?} */ headers = _super.prototype.headerObj.call(this);
-        return this.http.get(url, Object.assign({ headers: headers }, options));
+        return this.http.get(url, options);
     };
     /**
      * @template T
@@ -5957,11 +5953,10 @@ var HtRequestService = (function (_super) {
      */
     HtRequestService.prototype.postObservable = function (url, body, options) {
         if (options === void 0) { options = {}; }
-        var /** @type {?} */ headers = _super.prototype.headerObj.call(this);
-        return this.http.post(url, body, Object.assign({ headers: headers }, options));
+        return this.http.post(url, body, options);
     };
     return HtRequestService;
-}(htClient.HtRequest));
+}(htApi.HtRequest));
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
@@ -5990,14 +5985,21 @@ var HtActionsService = (function (_super) {
  */
 var TOKEN = new core.InjectionToken('app.token');
 /**
- * @param {?} token
  * @param {?} http
+ * @param {?} token
  * @return {?}
  */
-function clientServiceFactory(token, http$$1) {
-    var /** @type {?} */ request = new HtRequestService(http$$1);
-    htClient.htRequestService.setInstance(request);
-    var /** @type {?} */ client = htClient.htClientService.getInstance(token);
+function requestServiceFactory(http$$1, token) {
+    var /** @type {?} */ request = new HtRequestService(http$$1, token);
+    return request;
+}
+/**
+ * @param {?} token
+ * @param {?} request
+ * @return {?}
+ */
+function clientServiceFactory(token, request) {
+    var /** @type {?} */ client = htClient.htClientService.getInstance(token, request);
     return client;
 }
 /**
@@ -6049,9 +6051,10 @@ var HtModule = (function () {
                 { provide: MAP_TYPE, useValue: config.mapType },
                 { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
                 { provide: TOKEN, useValue: config.token },
+                { provide: HtRequestService, useFactory: requestServiceFactory, deps: [http.HttpClient, TOKEN] },
                 { provide: HtClientService,
                     useFactory: clientServiceFactory,
-                    deps: [TOKEN, http.HttpClient]
+                    deps: [TOKEN, HtRequestService]
                 },
                 {
                     provide: HtUsersService,
@@ -6131,6 +6134,7 @@ exports.DateRangePickerModule = DateRangePickerModule;
 exports.DateRangePickerComponent = DateRangePickerComponent;
 exports.DateRangeComponent = DateRangeComponent;
 exports.TOKEN = TOKEN;
+exports.requestServiceFactory = requestServiceFactory;
 exports.clientServiceFactory = clientServiceFactory;
 exports.mapServiceFactory = mapServiceFactory;
 exports.userClientServiceFactory = userClientServiceFactory;
@@ -6162,9 +6166,10 @@ exports.ɵbc = EntitySearchModule;
 exports.ɵbe = UsersFilterComponent;
 exports.ɵbb = UsersFilterModule;
 exports.ɵz = GroupsChartService;
-exports.ɵbz = HtAccountService;
-exports.ɵby = HtActionsService;
+exports.ɵca = HtAccountService;
+exports.ɵbz = HtActionsService;
 exports.ɵa = MAP_TYPE;
+exports.ɵby = HtRequestService;
 exports.ɵba = MapComponent;
 exports.ɵq = ActionSortingStringPipe;
 exports.ɵn = ActionStatusStringPipe;

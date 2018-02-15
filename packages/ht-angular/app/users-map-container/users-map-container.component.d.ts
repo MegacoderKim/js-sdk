@@ -4,7 +4,6 @@ import { HtUsersService } from "../ht/ht-users.service";
 export declare class UsersMapContainerComponent implements OnInit {
     private userClientService;
     hasPlaceline: boolean;
-    key: string;
     sidebarWidth: number;
     apiType: ApiType;
     showFilter: boolean;

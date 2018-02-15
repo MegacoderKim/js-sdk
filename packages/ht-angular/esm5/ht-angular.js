@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { animate, keyframes, query, style, transition, trigger, state } from '@angular/animations';
 import { HtMapClass, MapInstance, StopsHeatmapTrace, mapTypeService, ActionsHeatmapTrace } from 'ht-maps';
-import { HtUsersClient, ApiType, HtGroupsClient, htClientService, dateRangeService, HtClient, dateRangeFactory, usersClientFactory, actionsClientFactory, HtRequest, AccountsClient, HtActionsClient, groupsClientFactory, htRequestService } from 'ht-client';
+import { HtUsersClient, ApiType, HtGroupsClient, dateRangeService, HtClient, dateRangeFactory, usersClientFactory, actionsClientFactory, AccountsClient, HtActionsClient, groupsClientFactory, htClientService } from 'ht-client';
 import { distinctUntilChanged, map as map$1, filter, switchMap, take, withLatestFrom, skip, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -17,6 +17,7 @@ import { Subject } from 'rxjs/Subject';
 import { addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm';
+import { HtRequest } from 'ht-api';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 /**
  * @fileoverview added by tsickle
@@ -2721,9 +2722,6 @@ var UsersMapContainerComponent = (function () {
      */
     UsersMapContainerComponent.prototype.ngOnInit = function () {
         this.userClientService.listAll.setActive();
-        if (this.key) {
-            htClientService.getInstance().tempToken = this.key;
-        }
     };
     return UsersMapContainerComponent;
 }());
@@ -2740,7 +2738,6 @@ UsersMapContainerComponent.ctorParameters = function () { return [
 ]; };
 UsersMapContainerComponent.propDecorators = {
     "hasPlaceline": [{ type: Input },],
-    "key": [{ type: Input },],
     "sidebarWidth": [{ type: Input },],
     "apiType": [{ type: Input },],
     "showFilter": [{ type: Input },],
@@ -5891,9 +5888,10 @@ var HtRequestService = (function (_super) {
     tslib_1.__extends(HtRequestService, _super);
     /**
      * @param {?} http
+     * @param {?} token
      */
-    function HtRequestService(http) {
-        var _this = _super.call(this) || this;
+    function HtRequestService(http, token) {
+        var _this = _super.call(this, token) || this;
         _this.http = http;
         return _this;
     }
@@ -5905,8 +5903,7 @@ var HtRequestService = (function (_super) {
      */
     HtRequestService.prototype.getObservable = function (url, options) {
         if (options === void 0) { options = {}; }
-        var /** @type {?} */ headers = _super.prototype.headerObj.call(this);
-        return this.http.get(url, Object.assign({ headers: headers }, options));
+        return this.http.get(url, options);
     };
     /**
      * @template T
@@ -5917,8 +5914,7 @@ var HtRequestService = (function (_super) {
      */
     HtRequestService.prototype.postObservable = function (url, body, options) {
         if (options === void 0) { options = {}; }
-        var /** @type {?} */ headers = _super.prototype.headerObj.call(this);
-        return this.http.post(url, body, Object.assign({ headers: headers }, options));
+        return this.http.post(url, body, options);
     };
     return HtRequestService;
 }(HtRequest));
@@ -5950,14 +5946,21 @@ var HtActionsService = (function (_super) {
  */
 var TOKEN = new InjectionToken('app.token');
 /**
- * @param {?} token
  * @param {?} http
+ * @param {?} token
  * @return {?}
  */
-function clientServiceFactory(token, http) {
-    var /** @type {?} */ request = new HtRequestService(http);
-    htRequestService.setInstance(request);
-    var /** @type {?} */ client = htClientService.getInstance(token);
+function requestServiceFactory(http, token) {
+    var /** @type {?} */ request = new HtRequestService(http, token);
+    return request;
+}
+/**
+ * @param {?} token
+ * @param {?} request
+ * @return {?}
+ */
+function clientServiceFactory(token, request) {
+    var /** @type {?} */ client = htClientService.getInstance(token, request);
     return client;
 }
 /**
@@ -6009,9 +6012,10 @@ var HtModule = (function () {
                 { provide: MAP_TYPE, useValue: config.mapType },
                 { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
                 { provide: TOKEN, useValue: config.token },
+                { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN] },
                 { provide: HtClientService,
                     useFactory: clientServiceFactory,
-                    deps: [TOKEN, HttpClient]
+                    deps: [TOKEN, HtRequestService]
                 },
                 {
                     provide: HtUsersService,
@@ -6120,5 +6124,5 @@ HtModule.ctorParameters = function () { return []; };
 /**
  * Generated bundle index. Do not edit.
  */
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbl, ActionTableModule as ɵbk, ActionsAnalyticsListComponent as ɵbm, ActionsAnalyticsListModule as ɵbj, ActionsSummaryChartComponent as ɵbo, ActionsSummaryChartModule as ɵbn, AnalyticsItemLoadComponent as ɵbq, AnalyticsItemLoadModule as ɵbp, AnalyticsItemComponent as ɵbv, AnalyticsSlotDirective as ɵbu, AnalyticsItemsService as ɵbt, AnalyticsSelectorComponent as ɵbw, AnalyticsTagsComponent as ɵbi, AnalyticsTagsModule as ɵbh, AnalyticsTitleComponent as ɵbx, AnalyticsMapContainerComponent as ɵbs, AnalyticsMapContainerModule as ɵbr, DataTableComponent as ɵbg, DataTableModule as ɵbf, EntitySearchComponent as ɵbd, EntitySearchModule as ɵbc, UsersFilterComponent as ɵbe, UsersFilterModule as ɵbb, GroupsChartService as ɵz, HtAccountService as ɵbz, HtActionsService as ɵby, MAP_TYPE as ɵa, MapComponent as ɵba, ActionSortingStringPipe as ɵq, ActionStatusStringPipe as ɵn, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵr, SafeUrlPipe as ɵo, TimeStringPipe as ɵe, UserSortingStringPipe as ɵp, UsersStatusStringPipe as ɵm, BatteryIconComponent as ɵc, ButtonComponent as ɵs, DropdownDirective as ɵu, LoadingBarComponent as ɵt, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, UsersSummaryContainerComponent as ɵy, UsersSummaryContainerModule as ɵv, UsersSummaryComponent as ɵx, UsersSummaryModule as ɵw };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, requestServiceFactory, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbl, ActionTableModule as ɵbk, ActionsAnalyticsListComponent as ɵbm, ActionsAnalyticsListModule as ɵbj, ActionsSummaryChartComponent as ɵbo, ActionsSummaryChartModule as ɵbn, AnalyticsItemLoadComponent as ɵbq, AnalyticsItemLoadModule as ɵbp, AnalyticsItemComponent as ɵbv, AnalyticsSlotDirective as ɵbu, AnalyticsItemsService as ɵbt, AnalyticsSelectorComponent as ɵbw, AnalyticsTagsComponent as ɵbi, AnalyticsTagsModule as ɵbh, AnalyticsTitleComponent as ɵbx, AnalyticsMapContainerComponent as ɵbs, AnalyticsMapContainerModule as ɵbr, DataTableComponent as ɵbg, DataTableModule as ɵbf, EntitySearchComponent as ɵbd, EntitySearchModule as ɵbc, UsersFilterComponent as ɵbe, UsersFilterModule as ɵbb, GroupsChartService as ɵz, HtAccountService as ɵca, HtActionsService as ɵbz, MAP_TYPE as ɵa, HtRequestService as ɵby, MapComponent as ɵba, ActionSortingStringPipe as ɵq, ActionStatusStringPipe as ɵn, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵr, SafeUrlPipe as ɵo, TimeStringPipe as ɵe, UserSortingStringPipe as ɵp, UsersStatusStringPipe as ɵm, BatteryIconComponent as ɵc, ButtonComponent as ɵs, DropdownDirective as ɵu, LoadingBarComponent as ɵt, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, UsersSummaryContainerComponent as ɵy, UsersSummaryContainerModule as ɵv, UsersSummaryComponent as ɵx, UsersSummaryModule as ɵw };
 //# sourceMappingURL=ht-angular.js.map

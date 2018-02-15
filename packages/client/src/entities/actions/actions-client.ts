@@ -1,7 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "../../interfaces";
 import {dateRangeService} from "../../global/date-range";
-import {entityApi} from "../../global/entity-api";
 import {ActionsGraphClient} from "./actions-graph";
 import { DateRangeToQuery$ } from "ht-data";
 import * as fromActions from "../../reducers/actions-reducer";
@@ -11,6 +10,8 @@ import {ActionsSummaryClient} from "./actions-summary-client"
 import {ActionsFilter} from "../../filters/actions-filter";
 import {ActionsHeatmapClient} from "./actions-heatmap-client";
 import {ActionsIndexAllClient} from "./actions-list-all-client"
+import {HtApi} from "ht-api";
+
 export class HtActionsClient {
   // item: HtActionsGetClient;
   api;
@@ -22,7 +23,7 @@ export class HtActionsClient {
   heatmap;
   filters = new ActionsFilter();
   constructor(config: IActionsClientConfig) {
-    let api = entityApi.actions;
+    let api = new HtApi().actions;
     this.api = api;
     const store = ApiStoreService.getNewInstance();
     store.addReducer("actions", fromActions.actionsReducer);
@@ -30,11 +31,11 @@ export class HtActionsClient {
     let dateRange$ = config.dateRange$;
     const dateRangeQuery$ = dateRange$;
     let dateParam = 'created_at';
-    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$, dateParam});
-    this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
-    this.listAll = new ActionsIndexAllClient({dateRangeQuery$: dateRangeQuery$, dateParam})
-    this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store, dateParam});
-    this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'completed_at'});
+    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$, dateParam, api});
+    this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store, dateParam, api});
+    this.listAll = new ActionsIndexAllClient({dateRangeQuery$: dateRangeQuery$, dateParam, api});
+    this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store, dateParam, api});
+    this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'completed_at', api});
   }
 }
 

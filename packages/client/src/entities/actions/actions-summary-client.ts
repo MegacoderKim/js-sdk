@@ -9,7 +9,6 @@ import {listQueryMixin} from "../../mixins/entity-query";
 import {getQueryDataMixin} from "../../mixins/get-data";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
 import {clientSubMixin} from "../../mixins/client-subscription";
-import {entityApi} from "../../global/entity-api";
 import {IAllowedQueryMap} from "ht-data";
 import {ActionsFilter} from "../../filters/actions-filter";
 import {map} from "rxjs/operators";
@@ -19,7 +18,7 @@ export class ActionsSummary extends EntityListClient {
   data$: Observable<IActionsSummary>;
   loading$: Observable<boolean>;
   dataSub: Subscription;
-  api$ = query => entityApi.actions.summary(query);
+  api$: (query) => Observable<IActionsSummary>;
   allowedQueryMap: IAllowedQueryMap[] = [
     {
       key: "show_all",
@@ -33,8 +32,9 @@ export class ActionsSummary extends EntityListClient {
   filter = new ActionsFilter();
   summaryChart$;
   dateParam: string;
-  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
     super();
+    this.api$ = query => api.summary(query);
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.dateParam = dateParam;

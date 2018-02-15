@@ -9,7 +9,6 @@ import {listQueryMixin} from "../../mixins/entity-query";
 import {getFirstDataMixin} from "../../mixins/get-first-data";
 import {clientSubMixin} from "../../mixins/client-subscription";
 import {getPageDataMixin} from "../../mixins/get-data";
-import {entityApi} from "../../global/entity-api";
 import {Subscription} from "rxjs/Subscription";
 import { IAllowedQueryMap } from "ht-data";
 
@@ -18,12 +17,13 @@ export class ActionsList extends EntityListClient {
   data$: Observable<Page<IAction>>;
   loading$: Observable<boolean | string>;
   dataArray$: Observable<IAction[] | null>;
-  api$ = (query): Observable<Page<IAction>> =>
-    entityApi.actions.index(query);
+  api$: (query) => Observable<Page<IAction>>;
   dataSub: Subscription;
-  dateParam: string
-  constructor({ dateRangeQuery$, store, dateParam }: IPageClientConfig) {
+  dateParam: string;
+  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
     super();
+    this.api$ = (query): Observable<Page<IAction>> =>
+        api.index(query);
     this.dateRangeQuery$ = dateRangeQuery$;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getActionsListQuery) as Observable<

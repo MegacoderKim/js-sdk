@@ -10,7 +10,6 @@ import {HtUsersService} from "../ht/ht-users.service";
 })
 export class UsersMapContainerComponent implements OnInit {
   @Input() hasPlaceline: boolean = true;
-  @Input() key: string;
   @Input() sidebarWidth: number;
   @Input() apiType: ApiType = ApiType.analytics;
   @Input() showFilter: boolean = true;
@@ -32,9 +31,6 @@ export class UsersMapContainerComponent implements OnInit {
 
   ngOnInit() {
     this.userClientService.listAll.setActive();
-    if (this.key) {
-      htClientService.getInstance().tempToken = this.key;
-    }
   }
 
 }

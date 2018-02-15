@@ -13,6 +13,11 @@ export interface IAccount {
   tier: "free" | "test" | "paid";
   timezone: string;
   is_agreement_signed: boolean;
+  ios_app_download_url: string | null,
+  android_app_download_url: string | null,
+  logo: string | null,
+  ios_deeplink_url: string | null,
+  android_deeplink_url: string | null
 }
 
 export type PartialAccount = Partial<IAccount>;
@@ -85,4 +90,12 @@ export interface IGroup {
   name: string;
   token: string;
   lookup_id: string;
+}
+
+export interface ITrackAccount {
+
+    id: string,
+    type: string,
+    token: IToken,
+    account: IAccount
 }
