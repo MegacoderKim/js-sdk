@@ -45,7 +45,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     this.trackinService.initShortCode(this.shortCode);
     // this.actionSummaryComponent = new ComponentPortal(this.trackinService.actionSummaryComponent);
     // console.log(this.actionSummaryComponent);
-    this.actionsData$ = this.trackinService.trackActions.actions$;
+    this.actionsData$ = this.trackinService.actions$.asObservable();
     this.init = true;
     const mapInstance = this.mapService.mapInstance;
     this.actionsTrace = new ActionTrace(mapInstance, {hasPulse: true});
