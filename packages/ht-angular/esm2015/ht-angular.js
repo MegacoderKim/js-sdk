@@ -2410,6 +2410,7 @@ class PlacelineComponent {
         if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
             const /** @type {?} */ id = segment.id;
             let /** @type {?} */ hardSelectedActivity = this.selectedSegmentId === id ? null : segment.id;
+            console.log("emit", this.hardSelectedActivity);
             this.selectedSegment.next(hardSelectedActivity);
         }
         else {
@@ -2557,6 +2558,18 @@ class PlacelineComponent {
         // console.log("last seeg", lastSeg);
         // console.log(activitySegments.length,actionSegments.length , expActionSegments.length);
         // console.log(this.userData.segments.length, this.userData.actions.length);
+        /*
+            Handles specific case when action gets completed exactly at the end of last segment
+            and no information segment is getting created
+             */
+        if (restActiviySegments.length == 1 && restActiviySegments[0].actionText && lastSeg['time']) {
+            const /** @type {?} */ actionTime = this.getMinute(restActiviySegments[0].time);
+            const /** @type {?} */ lastTime = this.getMinute(lastSeg['time']);
+            if (actionTime == lastTime) {
+                return lastSeg['time'] ?
+                    [...currentSegment, ...restActiviySegments, ...expActionSegments] : [...currentSegment, ...expActionSegments];
+            }
+        }
         return lastSeg['time'] ?
             [...currentSegment, lastSeg, ...restActiviySegments, ...expActionSegments] : [...currentSegment, ...expActionSegments];
     }
@@ -2684,7 +2697,7 @@ class PlacelineComponent {
             return segment.activity;
         }
         else if (segment.type === 'stop') {
-            return 'Stop';
+            return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop';
         }
         else if (segment.reason) {
             return this.getLocationVoidText(segment);
@@ -2895,7 +2908,7 @@ PlacelineComponent.decorators = [
         <!--{{segment | json}}-->
         <!--</pre>-->
         <div class="activity-card flex-column" *ngIf="segment.activityText">
-          <div [ngClass]="segment.activityColor">
+          <div [ngClass]="segment.activityColor" class="truncate" style="max-width: 128px;">
             {{segment.activityText | nameCase}}
           </div>
           <div class="flex-row row-gap-4 activity-stats align-center" *ngIf="segment.duration">
@@ -2904,10 +2917,14 @@ PlacelineComponent.decorators = [
               <span>&bull;</span>
               <span>{{segment.distance | distanceLocale}}</span>
             </ng-template>
+            <ng-container *ngIf="segment.step_count">
+              <span>&bull;</span>
+              <span>{{segment.step_count}} {{'step' | pluralize: segment.step_count}}</span>
+            </ng-container>
           </div>
-          <div>
-            {{segment.placeAddress}}
-          </div>
+          <!--<div>-->
+            <!--{{segment.placeAddress}}-->
+          <!--</div>-->
           <table class="table table-bordered table-condensed" *ngIf="segment.events && segment.events.length">
             <tbody>
             <tr *ngFor="let event of segment.events; trackBy:indexId">
@@ -2916,6 +2933,9 @@ PlacelineComponent.decorators = [
             </tr>
             </tbody>
           </table>
+          <div class="text-muted" *ngIf="selectedSegmentId == segment.id && segment.place">
+            {{segment.place.address}}
+          </div>
           <div class="close-card" *ngIf="selectedSegmentId == segment.id && !isMobile" (click)="selectInUserData(null, $event)">
             <i class="fa fa-times-circle fa-2x"></i>
           </div>

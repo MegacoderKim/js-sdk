@@ -61,6 +61,8 @@ export interface IPlace {
   state: string;
   country: string;
   zip_code: string;
+  display_text: string;
+  step_count?: number;
 }
 
 export type ITimeAwarePoint = (number | string)[];
