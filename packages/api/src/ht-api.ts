@@ -7,3 +7,4 @@ export * from "./entities/actions";
 export * from "./entities/groups";
 export * from "./entities/users";
 export * from "./entities/base";
+export * from "./entities/tracking";
