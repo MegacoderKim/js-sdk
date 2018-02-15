@@ -4,17 +4,20 @@
     "publish": {
       "ignore": [
         "*.md",
-        "angular-components"
+        "angular-components",
+        "ht-webtracking"
       ]
     },
     "bootstrap": {
       "ignore": [
-        "ht-angular"
+        "ht-angular",
+        "ht-webtracking"
       ]
     },
     "run": {
       "ignore": [
-        "ht-angular"
+        "ht-angular",
+        "ht-webtracking"
       ]
     },
     "exec": {
