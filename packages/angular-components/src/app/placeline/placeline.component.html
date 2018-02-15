@@ -47,7 +47,7 @@
         <!--{{segment | json}}-->
         <!--</pre>-->
         <div class="activity-card flex-column" *ngIf="segment.activityText">
-          <div [ngClass]="segment.activityColor">
+          <div [ngClass]="segment.activityColor" class="truncate" style="max-width: 128px;">
             {{segment.activityText | nameCase}}
           </div>
           <div class="flex-row row-gap-4 activity-stats align-center" *ngIf="segment.duration">
@@ -56,10 +56,14 @@
               <span>&bull;</span>
               <span>{{segment.distance | distanceLocale}}</span>
             </ng-template>
+            <ng-container *ngIf="segment.step_count">
+              <span>&bull;</span>
+              <span>{{segment.step_count}} {{'step' | pluralize: segment.step_count}}</span>
+            </ng-container>
           </div>
-          <div>
-            {{segment.placeAddress}}
-          </div>
+          <!--<div>-->
+            <!--{{segment.placeAddress}}-->
+          <!--</div>-->
           <table class="table table-bordered table-condensed" *ngIf="segment.events && segment.events.length">
             <tbody>
             <tr *ngFor="let event of segment.events; trackBy:indexId">

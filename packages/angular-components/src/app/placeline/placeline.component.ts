@@ -35,6 +35,7 @@ export class PlacelineComponent implements OnInit {
       const id = segment.id;
 
       let hardSelectedActivity = this.selectedSegmentId === id ? null : segment.id;
+      console.log("emit", this.hardSelectedActivity);
       this.selectedSegment.next(hardSelectedActivity)
     } else {
       this.hardSelectedActivity = "";
@@ -165,6 +166,18 @@ export class PlacelineComponent implements OnInit {
     // console.log("last seeg", lastSeg);
     // console.log(activitySegments.length,actionSegments.length , expActionSegments.length);
     // console.log(this.userData.segments.length, this.userData.actions.length);
+    /*
+    Handles specific case when action gets completed exactly at the end of last segment
+    and no information segment is getting created
+     */
+    if (restActiviySegments.length == 1 && restActiviySegments[0].actionText && lastSeg['time']) {
+      const actionTime = this.getMinute(restActiviySegments[0].time);
+      const lastTime = this.getMinute(lastSeg['time']);
+      if (actionTime == lastTime) {
+        return lastSeg['time'] ?
+          [...currentSegment, ...restActiviySegments, ...expActionSegments] : [...currentSegment, ...expActionSegments]
+      }
+    }
     return lastSeg['time'] ?
       [...currentSegment, lastSeg, ...restActiviySegments, ...expActionSegments] : [...currentSegment, ...expActionSegments]
   }
@@ -299,7 +312,7 @@ export class PlacelineComponent implements OnInit {
     if(segment.activity) {
       return segment.activity
     } else if (segment.type === 'stop') {
-      return 'Stop'
+      return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop'
     } else if(segment.reason) {
       return this.getLocationVoidText(segment)
     } else {
