@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, ElementRef, OnInit } from '@angular/core';
-import { IDateRange } from "ht-client";
+import { IDateRange, DateRange } from "ht-client";
 export declare class DateRangeComponent implements OnInit {
     private elRef;
     private cd;
-    dateRangeService$: any;
+    dateRangeService$: DateRange;
     isRight: boolean;
     showSingleDay: boolean;
     dateRange$: any;
