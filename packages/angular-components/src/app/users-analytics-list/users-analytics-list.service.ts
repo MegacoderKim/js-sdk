@@ -41,7 +41,7 @@ export class UsersAnalyticsListService implements IAnalyticsService {
   }
 
   private initClient(config) {
-    const userClient  = usersClientFactory({dateRange$: this.dateRangeService$.data$});
+    const userClient  = usersClientFactory({dateRange: this.dateRangeService$});
     this.client = userClient.list;
     this.client.updateStrategy = config.updateStrategy || "once";
     this.client.setQuery(this.query);

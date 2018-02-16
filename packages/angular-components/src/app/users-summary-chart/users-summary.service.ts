@@ -32,7 +32,7 @@ export class UsersSummaryService implements IAnalyticsService {
   private setState(config: ISummaryConfig<HtUsersClient>) {
     this.dateRangeService$ = dateRangeFactory(DateRangeMap.last_30_days);
     this.title = config.title;
-    const client: HtUsersClient = config.client || usersClientFactory({dateRange$: this.dateRangeService$.data$});
+    const client: HtUsersClient = config.client || usersClientFactory({dateRange: this.dateRangeService$});
     client.setShowAll();
     this.client = client.summary;
     this.loading$ = this.client.loading$;

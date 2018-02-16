@@ -27,12 +27,12 @@ export class AnalyticsItemsService {
   totalTags: number;
   // selectedTags$: BehaviorSubject<string[]>;
   constructor() {
-    const usersClient = usersClientFactory({dateRange$: dateRangeFactory(DateRangeMap.today).data$});
+    const usersClient = usersClientFactory({dateRange: dateRangeFactory(DateRangeMap.today)});
     const usersFilter = usersClient.filterClass;
     const activityQueryLabel = usersFilter.activityQueryArray;
     const showAllQueryLable = usersFilter.showAllQueryArray;
     const actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-    const actionsClient = actionsClientFactory({dateRange$: actionDateRangeService.data$});
+    const actionsClient = actionsClientFactory({dateRange: actionDateRangeService});
     const actionsStatusQueryLabel = [];
     this.presets = [
       // actionsConfigPreset.max_distance(),

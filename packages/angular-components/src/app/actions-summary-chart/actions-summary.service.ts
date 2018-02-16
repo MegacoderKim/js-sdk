@@ -30,7 +30,7 @@ export class ActionsSummaryService implements IAnalyticsService {
   private initState(config: ISummaryConfig<HtActionsClient>) {
     this.dateRangeService$ = dateRangeFactory(DateRangeMap.today);
     this.title = config.title;
-    const client = config.client || actionsClientFactory({dateRange$: this.dateRangeService$.data$});
+    const client = config.client || actionsClientFactory({dateRange: this.dateRangeService$});
     if (config.dateRangeService) this.dateRangeService$ = config.dateRangeService;
     this.client = client.summary;
     this.loading$ = this.client.loading$;

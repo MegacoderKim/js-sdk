@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 // import * as moment from 'moment-mini'
-import {IDateRange, dateRangeService} from "ht-client";
+import {IDateRange, dateRangeService, DateRange} from "ht-client";
 import {DateRangeMap, isSameDateRange, DateRangeLabelMap} from "ht-data";
 import {of} from "rxjs/observable/of";
 import {map} from "rxjs/operators";
@@ -40,7 +40,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
   ]
 })
 export class DateRangeComponent implements OnInit {
-  @Input() dateRangeService$ = dateRangeService.getInstance();
+  @Input() dateRangeService$: DateRange = dateRangeService.getInstance();
   @Input() isRight: boolean = false;
   @Input() showSingleDay: boolean = true;
   dateRange$;

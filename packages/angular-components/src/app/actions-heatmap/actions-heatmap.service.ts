@@ -45,7 +45,7 @@ export class ActionsHeatmapService implements IAnalyticsMapService {
   private initClient(config) {
     this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
     this.title = config.title;
-    let actionsClient = actionsClientFactory({dateRange$: this.dateRangeService$.data$});
+    let actionsClient = actionsClientFactory({dateRange: this.dateRangeService$});
     this.client = actionsClient.heatmap;
     this.mapLoading$ = this.client.loading$;
     this.data$ = this.client.data$.pipe(

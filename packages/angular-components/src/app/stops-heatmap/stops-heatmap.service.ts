@@ -44,7 +44,7 @@ export class StopsHeatmapService implements IAnalyticsMapService {
   private initClient(config) {
     this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
     this.title = config.title;
-    let userClient = usersClientFactory({dateRange$: this.dateRangeService$.data$});
+    let userClient = usersClientFactory({dateRange: this.dateRangeService$});
     this.client = userClient.heatmap;
     this.mapLoading$ = this.client.loading$;
     this.data$ = this.client.data$.pipe(
