@@ -309,10 +309,10 @@ export class PlacelineComponent implements OnInit {
   }
 
   private getActivityText(segment: ISegment | any) {
-    if(segment.activity) {
+    if (segment.type === 'stop') {
+      return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop';
+    } else if(segment.activity) {
       return segment.activity
-    } else if (segment.type === 'stop') {
-      return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop'
     } else if(segment.reason) {
       return this.getLocationVoidText(segment)
     } else {
