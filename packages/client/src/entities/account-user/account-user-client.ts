@@ -11,42 +11,42 @@ import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { EntityItemClient } from "../../base/item-client";
 import { IAccountUser } from "ht-models"
 export class AccountUser extends EntityItemClient {
-  query$: Observable<object> = of({});
-  id$;
-  updateStrategy = "once";
-  pollDuration = 10000;
-  store;
-  data$;
-  loading$;
-  api$: (id, query) => Observable<IAccountUser>;
-  constructor({ dateParam, store, api }: IPageClientConfig) {
-    super();
-    this.api$ = (id, query) => api.get(id, query);
-    this.store = store;
-    // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
-    this.data$ = this.store.select(fromRoot.getAccountUser);
-    this.id$ = this.store.select(fromRoot.getAccountUserId);
-    this.loading$ = this.store.select(fromRoot.getAccountCurrentKey);
-    // this.init()
-  }
+    query$: Observable<object> = of({});
+    id$;
+    updateStrategy = "once";
+    pollDuration = 10000;
+    store;
+    data$;
+    loading$;
+    api$: (id, query) => Observable<IAccountUser>;
+    constructor({ dateParam, store, api }: IPageClientConfig) {
+        super();
+        this.api$ = (id, query) => api.get(id, query);
+        this.store = store;
+        // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);
+        this.data$ = this.store.select(fromRoot.getAccountUser);
+        this.id$ = this.store.select(fromRoot.getAccountUserId);
+        this.loading$ = this.store.select(fromRoot.getAccountCurrentKey);
+        // this.init()
+    }
 
-  getDefaultQuery() {
-    return {};
-  }
+    getDefaultQuery() {
+        return {};
+    }
 
-  setId(id) {
-    this.store.dispatch(new fromAccounts.SetUserId(id));
-  }
+    setId(id) {
+        this.store.dispatch(new fromAccounts.SetUserId(id));
+    }
 
-  setLoading(loading) {}
+    setLoading(loading) {}
 
-  setData(data) {
-    this.store.dispatch(new fromAccounts.SetAccountUser(data));
-  }
+    setData(data) {
+        this.store.dispatch(new fromAccounts.SetAccountUser(data));
+    }
 
 
 }
 
 export const AccountUserClient = clientSubMixin(
-  getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(AccountUser)))
+    getIdQueryDataMixin(getFirstDataMixin(itemQueryMixin(AccountUser)))
 );
