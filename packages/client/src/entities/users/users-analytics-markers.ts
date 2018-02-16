@@ -13,6 +13,7 @@ import {HtApi, HtUsersApi} from "ht-api";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { listAllClientSubMixin } from "../../mixins/list-all-client-sub";
+import {DateRange} from "../../global/date-range";
 
 export class UsersAnalyticsListAll extends EntityAllItemsClient {
   data$: Observable<Page<IUserAnalytics>>;
@@ -40,10 +41,10 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   ];
   dataSub: Subscription;
   dateParam: string;
-  constructor({ dateRangeQuery$, store,dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store,dateParam, api }: IPageClientConfig) {
     super();
     this.api$ = query => api.allPages(api.analytics(query));
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<
       object | null

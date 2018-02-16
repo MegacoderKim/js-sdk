@@ -13,6 +13,7 @@ import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IAllowedQueryMap } from "ht-data";
 import {HtApi, HtUsersApi} from "ht-api";
+import {DateRange} from "../../global/date-range";
 
 export class UsersAnalytics extends EntityListClient {
   // updateStrategy = 'update';
@@ -28,11 +29,11 @@ export class UsersAnalytics extends EntityListClient {
   loading$: Observable<boolean | string>;
   store;
   dateParam;
-  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
     super();
     this.api$ = (query): Observable<Page<IUserAnalytics>> =>
         api.analytics(query);
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersListQuery) as Observable<
       object | null

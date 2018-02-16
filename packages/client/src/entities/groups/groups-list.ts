@@ -11,6 +11,7 @@ import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IAllowedQueryMap } from "ht-data";
+import {DateRange} from "../../global/date-range";
 
 export class GroupsList {
   name = "group";

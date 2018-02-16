@@ -12,6 +12,7 @@ import {clientSubMixin} from "../../mixins/client-subscription";
 import {IAllowedQueryMap} from "ht-data";
 import {ActionsFilter} from "../../filters/actions-filter";
 import {map} from "rxjs/operators";
+import {DateRange} from "../../global/date-range";
 
 export class ActionsSummary extends EntityListClient {
   store;
@@ -32,10 +33,10 @@ export class ActionsSummary extends EntityListClient {
   filter = new ActionsFilter();
   summaryChart$;
   dateParam: string;
-  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
     super();
     this.api$ = query => api.summary(query);
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.store = store;
     this.dateParam = dateParam;
     this.query$ = this.store.select(fromRoot.getActionsSummaryQuery);

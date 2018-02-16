@@ -25,7 +25,7 @@ import {pluck, flatMap, map, distinctUntilChanged, share} from "rxjs/operators";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { of } from "rxjs/observable/of";
 import { empty } from "rxjs/observable/empty";
-import { dateRangeService } from "../../global/date-range";
+import {DateRange, dateRangeService} from "../../global/date-range";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
@@ -57,21 +57,20 @@ export class HtUsersClient extends EntityClient {
     store.addReducer("users", fromUsers.usersReducer);
     store.addReducer("segments", fromSegments.segmentsReducer);
     this.store = store;
-    let dateRange$ = this.options.dateRange$;
-    const dateRangeQuery$ = dateRange$;
+    let dateRange = this.options.dateRange;
     let dateParam = 'recorded_at';
-    this.analytics = new UsersAnalyticsClient({ dateRangeQuery$, store, dateParam, api });
+    this.analytics = new UsersAnalyticsClient({ dateRange, store, dateParam, api });
     this.placeline = new UsersPlacelineClient({ store, api });
     this.analyticsAll = new UsersAnalyticsListAllClient({
-      dateRangeQuery$,
+        dateRange,
       store,
       dateParam,
         api
     });
-    this.summary = new UsersSummaryClient({ dateRangeQuery$, store, dateParam, api });
+    this.summary = new UsersSummaryClient({ dateRange, store, dateParam, api });
     this.list = this.analytics;
     this.listAll = this.analyticsAll;
-    this.heatmap = new UsersHeatmapClient({ dateRangeQuery$, dateParam, api });
+    this.heatmap = new UsersHeatmapClient({ dateRange, dateParam, api });
     this.initEffects();
   }
 
@@ -332,12 +331,12 @@ export class HtUsersClient extends EntityClient {
 export const usersClientFactory = (
   options: Partial<IUsersClientConfig> = {}
 ) => {
-  let dateRange$ = options.dateRange$ || dateRangeService.getInstance().data$;
-  return new HtUsersClient({ dateRange$ });
+  let dateRange: DateRange = options.dateRange || dateRangeService.getInstance();
+  return new HtUsersClient({ dateRange });
 };
 
 export interface IUsersClientConfig {
-  dateRange$: Observable<IDateRange>;
+  dateRange: DateRange;
 }
 
 export interface IUsersSummaryData {

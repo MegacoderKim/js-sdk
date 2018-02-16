@@ -1,5 +1,6 @@
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
+import {DateRange} from "../global/date-range";
 
 export abstract class EntityListClient {
   //listGetData
@@ -8,7 +9,7 @@ export abstract class EntityListClient {
   // api$;
   name = "list";
   query$;
-  dateRangeQuery$?: Observable<object> | null;
+  dateRange?: DateRange;
   // allowedQueryKeys: string[] | null = null;
   // defaultQuery;
   active$?: Observable<boolean>;

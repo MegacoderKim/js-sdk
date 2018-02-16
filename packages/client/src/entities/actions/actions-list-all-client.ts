@@ -9,6 +9,7 @@ import {Subscription} from "rxjs/Subscription";
 import {AllowedQueryMap, IAllowedQueryMap} from "ht-data";
 import {IAction, AllData, Page} from "ht-models";
 import {IPageClientConfig} from "../../interfaces";
+import {DateRange} from "../../global/date-range";
 
 export class ActionsIndexAll extends EntityAllItemsClient {
   dataBehaviour$: BehaviorSubject<AllData<IAction> | null> = new BehaviorSubject(null);
@@ -20,10 +21,10 @@ export class ActionsIndexAll extends EntityAllItemsClient {
   dataSub: Subscription;
   dataEntities$;
   dateParam: string;
-  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
     super();
     this.api$ = (query) => api.allPages(api.index(query));
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.dateParam = dateParam;
     this.query$ = new BehaviorSubject(this.getDefaultQuery());
     this.active$ = this.activeBehaviour$.asObservable();

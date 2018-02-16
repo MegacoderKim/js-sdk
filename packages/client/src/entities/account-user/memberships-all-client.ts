@@ -24,7 +24,7 @@ export class MembershipsAll {
   data$;
   id$;
   loading$: BehaviorSubject<string | boolean> = new BehaviorSubject(false);
-  constructor({ dateRangeQuery$, store, api }: IPageClientConfig<HtAccountUserApi>) {
+  constructor({ dateParam, store, api }: IPageClientConfig<HtAccountUserApi>) {
     this.api$ = (id, query) => api.membershipsAll(id, query);
     this.store = store;
     // this.active$ = this.store.select(fromRoot.getUsersAnalyticsIsActive);

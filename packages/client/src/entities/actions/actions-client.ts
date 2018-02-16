@@ -1,6 +1,6 @@
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "../../interfaces";
-import {dateRangeService} from "../../global/date-range";
+import {DateRange, dateRangeService} from "../../global/date-range";
 import {ActionsGraphClient} from "./actions-graph";
 import { DateRangeToQuery$ } from "ht-data";
 import * as fromActions from "../../reducers/actions-reducer";
@@ -28,24 +28,23 @@ export class HtActionsClient {
     const store = ApiStoreService.getNewInstance();
     store.addReducer("actions", fromActions.actionsReducer);
     this.store = store;
-    let dateRange$ = config.dateRange$;
-    const dateRangeQuery$ = dateRange$;
+    let dateRange = config.dateRange;
     let dateParam = 'created_at';
-    this.graph = new ActionsGraphClient({dateRangeQuery$: dateRangeQuery$, dateParam, api});
-    this.list = new ActionsListClient({dateRangeQuery$: dateRangeQuery$, store, dateParam, api});
-    this.listAll = new ActionsIndexAllClient({dateRangeQuery$: dateRangeQuery$, dateParam, api});
-    this.summary = new ActionsSummaryClient({dateRangeQuery$: dateRangeQuery$, store, dateParam, api});
-    this.heatmap = new ActionsHeatmapClient({dateRangeQuery$: dateRangeQuery$, dateParam: 'completed_at', api});
+    this.graph = new ActionsGraphClient({dateRange, dateParam, api});
+    this.list = new ActionsListClient({dateRange, store, dateParam, api});
+    this.listAll = new ActionsIndexAllClient({dateRange, dateParam, api});
+    this.summary = new ActionsSummaryClient({dateRange, store, dateParam, api});
+    this.heatmap = new ActionsHeatmapClient({dateRange, dateParam: 'completed_at', api});
   }
 }
 
 export const actionsClientFactory = (
   options: Partial<IActionsClientConfig> = {}
 ) => {
-  let dateRange$ = options.dateRange$ || dateRangeService.getInstance().data$;
-  return new HtActionsClient({ dateRange$ });
+  let dateRange = options.dateRange || dateRangeService.getInstance();
+  return new HtActionsClient({ dateRange });
 };
 
 export interface IActionsClientConfig {
-  dateRange$: Observable<IDateRange>;
+    dateRange: DateRange;
 }

@@ -19,7 +19,7 @@ export class AccountUser extends EntityItemClient {
   data$;
   loading$;
   api$: (id, query) => Observable<IAccountUser>;
-  constructor({ dateRangeQuery$, store, api }: IPageClientConfig) {
+  constructor({ dateParam, store, api }: IPageClientConfig) {
     super();
     this.api$ = (id, query) => api.get(id, query);
     this.store = store;

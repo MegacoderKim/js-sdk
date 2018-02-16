@@ -7,7 +7,7 @@ import { ApiStoreService } from "../../global/store-provider";
 import { Observable } from "rxjs/Observable";
 import { IDateRange } from "../../interfaces";
 import { map } from "rxjs/operators";
-import { dateRangeService } from "../../global/date-range";
+import {DateRange, dateRangeService} from "../../global/date-range";
 import {HtApi, HtGroupsApi} from "ht-api";
 import * as fromGroups from "../../reducers/groups-reducer";
 import { Page, IGroup } from "ht-models";
@@ -66,13 +66,13 @@ export class HtGroupsClient extends EntityClient {
 export const groupsClientFactory = (
   options: Partial<IGroupClientConfig> = {}
 ) => {
-  let dateRange$ = options.noDateRange
+  let dateRange = options.noDateRange
     ? null
-    : options.dateRange$ || dateRangeService.getInstance().data$;
-  return new HtGroupsClient({ dateRange$ });
+    : options.dateRange || dateRangeService.getInstance();
+  return new HtGroupsClient({ dateRange });
 };
 
 export interface IGroupClientConfig {
-  dateRange$: Observable<IDateRange>;
+    dateRange: DateRange;
   noDateRange: boolean;
 }

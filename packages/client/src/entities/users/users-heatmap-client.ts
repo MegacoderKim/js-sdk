@@ -10,6 +10,7 @@ import {of} from "rxjs/observable/of";
 import {HtApi, HtUsersApi} from "ht-api";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {IAllowedQueryMap, PageResults$} from "ht-data";
+import {DateRange} from "../../global/date-range";
 
 export class UsersHeatmap {
   query$: Observable<object> = of({});
@@ -19,13 +20,13 @@ export class UsersHeatmap {
   dataState$: BehaviorSubject<Page<IActionHeat> | null> = new BehaviorSubject(null);
   data$ = this.dataState$.asObservable();
   dataSub: Subscription;
-  dateRangeQuery$;
+  dateRange;
   active$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
-  constructor({ dateRangeQuery$, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, dateParam, api }: IPageClientConfig) {
     this.api$ = query => api.allPages(api.heatmap(query));
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.dateParam = dateParam;
   }
 

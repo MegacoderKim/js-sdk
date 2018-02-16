@@ -11,6 +11,7 @@ import { IUserListSummary } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IAllowedQueryMap } from "ht-data";
+import {DateRange} from "../../global/date-range";
 
 export class UsersSummary extends EntityListClient {
   name = "users summary";
@@ -48,10 +49,10 @@ export class UsersSummary extends EntityListClient {
     this.setData(null);
   }
 
-  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
     super();
     this.api$ = query => api.summary(query);
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.store = store;
     this.dateParam = dateParam;
     this.query$ = this.store.select(fromRoot.getUsersListQuery);

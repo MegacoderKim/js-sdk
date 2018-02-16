@@ -9,6 +9,7 @@ import {IActionHeat, Page} from "ht-models"
 import {IAllowedQueryMap, PageResults$} from "ht-data";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
+import {DateRange} from "../../global/date-range";
 
 export class ActionsHeatmap {
   query$: Observable<object> = of({});
@@ -18,14 +19,14 @@ export class ActionsHeatmap {
   dataState$: BehaviorSubject<Page<IActionHeat> | null> = new BehaviorSubject(null);
   data$ = this.dataState$.asObservable();
   dataSub: Subscription;
-  dateRangeQuery$;
+    dateRange: DateRange;
   active$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
 
-  constructor({ dateRangeQuery$, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, dateParam, api }: IPageClientConfig) {
     this.api$ = query => api.allPages(api.heatmap(query));
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.dateParam = dateParam;
   }
 

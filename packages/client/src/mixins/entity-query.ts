@@ -7,13 +7,14 @@ import { empty } from "rxjs/observable/empty";
 import { MergeQuery, AllowedQueryKeys } from "../helpers/operators";
 import { Constructor } from "ht-models";
 import { of } from "rxjs/observable/of";
+import {DateRange} from "../global/date-range";
 
 export interface IListQueryBase {
   query$: Observable<null | object>;
   // allowedQueryKeys?: string[];
   allowedQueryMap?: IAllowedQueryMap[];
   getDefaultQuery(): object;
-  dateRangeQuery$?: Observable<object> | null;
+  dateRangeQuery$?: DateRange;
   dateParam?: string;
   active$?: Observable<boolean>;
 }
@@ -34,7 +35,7 @@ export function listQueryMixin<TBase extends Constructor<IListQueryBase>>(
       let baseQuery$ = this.query$.pipe(
         AllowedQueryMap(this.allowedQueryMap),
         MergeQuery(this.getDefaultQuery()),
-        CombineQueries([this.dateRangeQuery$.pipe(DateRangeToQuery$(this.dateParam)) || of({})])
+        CombineQueries([this.dateRangeQuery$.data$.pipe(DateRangeToQuery$(this.dateParam)) || of({})])
       );
 
       return baseQuery$;

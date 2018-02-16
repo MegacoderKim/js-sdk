@@ -11,6 +11,7 @@ import {IAllowedQueryMap} from "ht-data";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
 import {HtActionsApi} from "ht-api";
+import {DateRange} from "../../global/date-range";
 
 export class ActionsGraph {
   query$: Observable<object> = of({});
@@ -21,12 +22,12 @@ export class ActionsGraph {
   api$: (query) => Observable<IActionStatusGraph[]>;
   updateStrategy = "once";
   pollDuration = 10000;
-  dateRangeQuery$;
+    dateRange: DateRange;
   dataSub: Subscription;
   dateParam: string;
-  constructor({ dateRangeQuery$, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     this.api$ = (query) => api.graph(query);
-    this.dateRangeQuery$ = dateRangeQuery$;
+    this.dateRange = dateRange;
     this.dateParam = dateParam;
   }
 

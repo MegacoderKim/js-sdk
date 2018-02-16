@@ -10,13 +10,13 @@ export const defaultDateRange = {...DateRangeMap.today};
 
 export class DateRange {
   dataBehaviour$: BehaviorSubject<IDateRange>;
-  data$: Observable<IDateRange>;
+  data$: Observable<IDateRange | null>;
   constructor(initialDate: Partial<IDateRange> = {}) {
     this.dataBehaviour$ = new BehaviorSubject({ ...defaultDateRange, ...initialDate });
     this.data$ = this.dataBehaviour$.asObservable();
   };
 
-  setDateRange(dateRange: IDateRange) {
+  setDateRange(dateRange: IDateRange | null = null) {
     this.dataBehaviour$.next(dateRange);
   }
 
@@ -37,10 +37,10 @@ export const dateRangeFactory = (initialDate: Partial<IDateRange> = {}) => {
 };
 
 export const dateRangeService = (() => {
-  var instance;
+  var instance: DateRange;
 
   return {
-    getInstance(initialDate?: IDateRange) {
+    getInstance(initialDate?: IDateRange): DateRange {
       if (!instance) {
         instance = dateRangeFactory(initialDate);
       }
