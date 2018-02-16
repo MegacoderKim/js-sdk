@@ -17,7 +17,8 @@
     "run": {
       "ignore": [
         "ht-angular",
-        "ht-webtracking"
+        "ht-webtracking",
+        "tracking-url"
       ]
     },
     "exec": {
