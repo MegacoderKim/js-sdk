@@ -8,7 +8,7 @@ export const DateRangeToQuery$ = (
   return (dateRangeQuery$: Observable<IDateRange>) => {
     return dateRangeQuery$.pipe(
       map(dateRange => {
-        if (!dateRange) return {};
+        if (!dateRange || (typeof dateRange == 'object' && Object.keys(dateRange).length == 0)) return {};
         let start = dateRange["start"];
         let end = dateRange["end"];
         let param = dateRangeParam;
