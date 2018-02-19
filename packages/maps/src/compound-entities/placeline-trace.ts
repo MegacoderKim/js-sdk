@@ -159,7 +159,7 @@ export class Placeline {
         }
         return segmentType;
       },
-      { tripSegment: [], stopSegment: [] }
+      { tripSegment: [], stopSegment: [], lastSegment: null }
     );
   }
 
