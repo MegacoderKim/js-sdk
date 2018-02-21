@@ -8,6 +8,7 @@ export declare class PlacelineComponent implements OnInit {
     userData: IUserData;
     selectedSegmentId: string;
     isMobile: boolean;
+    timezone: string;
     selectedAction: string | null;
     selectedActivity: string | null;
     hardSelectedActivity: string | null;
