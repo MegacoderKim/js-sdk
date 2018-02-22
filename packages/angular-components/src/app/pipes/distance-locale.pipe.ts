@@ -7,7 +7,7 @@ import {DistanceLocale} from "ht-utility";
 export class DistanceLocalePipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
-    return DistanceLocale(value);
+    return DistanceLocale(value, args);
   }
 
 }

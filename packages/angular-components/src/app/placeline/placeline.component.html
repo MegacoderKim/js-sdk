@@ -38,7 +38,7 @@
               <span>{{segment.action_duration / 60 | hmString}}</span>
               <ng-template [ngIf]="(segment.action_distance || segment.action_distance == 0)">
                 <span>&bull;</span>
-                <span>{{segment.action_distance | distanceLocale}}</span>
+                <span>{{segment.action_distance | distanceLocale: timezone}}</span>
               </ng-template>
             </div>
           </div>
@@ -54,7 +54,7 @@
             <span>{{segment.duration / 60 | hmString}}</span>
             <ng-template [ngIf]="(segment.distance || segment.distance == 0) && segment.type == 'trip'">
               <span>&bull;</span>
-              <span>{{segment.distance | distanceLocale}}</span>
+              <span>{{segment.distance | distanceLocale: timezone}}</span>
             </ng-template>
             <ng-container *ngIf="segment.step_count">
               <span>&bull;</span>

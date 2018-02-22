@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { animate, keyframes, query, style, transition, trigger, state } from '@angular/animations';
 import { HtMapClass, MapInstance, StopsHeatmapTrace, mapTypeService, ActionsHeatmapTrace } from 'ht-maps';
-import { HtUsersClient, ApiType, HtGroupsClient, dateRangeService, HtClient, dateRangeFactory, usersClientFactory, actionsClientFactory, AccountsClient, HtActionsClient, groupsClientFactory, htClientService } from 'ht-client';
+import { HtUsersClient, ApiType, HtGroupsClient, htClientService, dateRangeService, HtClient, dateRangeFactory, usersClientFactory, actionsClientFactory, HtRequest, AccountsClient, HtActionsClient, groupsClientFactory, htRequestService } from 'ht-client';
 import { distinctUntilChanged, map as map$1, filter, switchMap, take, withLatestFrom, skip, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { combineLatest } from 'rxjs/observable/combineLatest';
@@ -16,7 +16,6 @@ import { Subject } from 'rxjs/Subject';
 import { addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange, startOfMonth, startOfWeek } from 'date-fns';
 import { Observable } from 'rxjs/Observable';
 import Chart from 'frappe-charts/dist/frappe-charts.min.esm';
-import { HtRequest } from 'ht-api';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 /**
@@ -825,7 +824,7 @@ class DistanceLocalePipe {
      * @return {?}
      */
     transform(value, args) {
-        return DistanceLocale(value);
+        return DistanceLocale(value, args);
     }
 }
 DistanceLocalePipe.decorators = [
@@ -2874,7 +2873,7 @@ PlacelineComponent.decorators = [
               <span>{{segment.action_duration / 60 | hmString}}</span>
               <ng-template [ngIf]="(segment.action_distance || segment.action_distance == 0)">
                 <span>&bull;</span>
-                <span>{{segment.action_distance | distanceLocale}}</span>
+                <span>{{segment.action_distance | distanceLocale: timezone}}</span>
               </ng-template>
             </div>
           </div>
@@ -2890,7 +2889,7 @@ PlacelineComponent.decorators = [
             <span>{{segment.duration / 60 | hmString}}</span>
             <ng-template [ngIf]="(segment.distance || segment.distance == 0) && segment.type == 'trip'">
               <span>&bull;</span>
-              <span>{{segment.distance | distanceLocale}}</span>
+              <span>{{segment.distance | distanceLocale: timezone}}</span>
             </ng-template>
             <ng-container *ngIf="segment.step_count">
               <span>&bull;</span>
@@ -3724,6 +3723,7 @@ PlacelineComponent.propDecorators = {
     "userData": [{ type: Input },],
     "selectedSegmentId": [{ type: Input },],
     "isMobile": [{ type: Input },],
+    "timezone": [{ type: Input },],
 };
 
 /**
@@ -6202,12 +6202,11 @@ class MapComponent {
      */
     constructor(elRef, htMapService) {
         this.elRef = elRef;
+        this.options = {};
+        this.onReady = new EventEmitter();
         this.loading = false;
         this.showReset = true;
-        this.onReady = new EventEmitter();
-        this.onMapReset = new EventEmitter();
-        if (htMapService)
-            this.mapInstance = htMapService.mapInstance;
+        this.mapInstance = this.mapInstance || htMapService.mapInstance;
     }
     /**
      * @return {?}
@@ -6220,7 +6219,6 @@ class MapComponent {
      * @return {?}
      */
     ngOnInit() {
-        this.mapInstance = this.mapInstance;
         // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
         // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
         // user$.subscribe((userData) => {
@@ -6246,8 +6244,7 @@ class MapComponent {
      * @return {?}
      */
     resetMap() {
-        this.mapInstance.resetBounds(this.setBoundsOptions);
-        this.onMapReset.next(true);
+        this.mapInstance.resetBounds();
     }
     /**
      * @return {?}
@@ -6637,12 +6634,10 @@ MapComponent.ctorParameters = () => [
 ];
 MapComponent.propDecorators = {
     "options": [{ type: Input },],
-    "setBoundsOptions": [{ type: Input },],
+    "onReady": [{ type: Output },],
     "mapInstance": [{ type: Input },],
     "loading": [{ type: Input },],
     "showReset": [{ type: Input },],
-    "onReady": [{ type: Output },],
-    "onMapReset": [{ type: Output },],
     "mapElem": [{ type: ViewChild, args: ['map',] },],
     "onMapResize": [{ type: HostListener, args: ['resize', ['$event'],] },],
 };
@@ -6688,8 +6683,6 @@ class MapContainerComponent {
         this.mapService.usersCluster.setPageData$(this.userClientService.listAll.data$, {
             hide$: this.userClientService.placeline.id$
         });
-        // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
-        // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
         this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
             roots: ['segments', 'actions'],
             highlighted$: this.userClientService.placeline.segmentSelectedId$,
@@ -7566,6 +7559,9 @@ class UsersMapContainerComponent {
      */
     ngOnInit() {
         this.userClientService.listAll.setActive();
+        if (this.key) {
+            htClientService.getInstance().tempToken = this.key;
+        }
     }
 }
 UsersMapContainerComponent.decorators = [
@@ -7949,6 +7945,7 @@ UsersMapContainerComponent.ctorParameters = () => [
 ];
 UsersMapContainerComponent.propDecorators = {
     "hasPlaceline": [{ type: Input },],
+    "key": [{ type: Input },],
     "sidebarWidth": [{ type: Input },],
     "apiType": [{ type: Input },],
     "showFilter": [{ type: Input },],
@@ -10743,7 +10740,7 @@ class UsersAnalyticsListService {
      * @return {?}
      */
     initClient(config) {
-        const /** @type {?} */ userClient = usersClientFactory({ dateRange: this.dateRangeService$ });
+        const /** @type {?} */ userClient = usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.list;
         this.client.updateStrategy = config.updateStrategy || "once";
         this.client.setQuery(this.query);
@@ -10900,7 +10897,7 @@ class UsersSummaryService {
     setState(config) {
         this.dateRangeService$ = dateRangeFactory(DateRangeMap.last_30_days);
         this.title = config.title;
-        const /** @type {?} */ client = config.client || usersClientFactory({ dateRange: this.dateRangeService$ });
+        const /** @type {?} */ client = config.client || usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         client.setShowAll();
         this.client = client.summary;
         this.loading$ = this.client.loading$;
@@ -11011,7 +11008,7 @@ class StopsHeatmapService {
     initClient(config) {
         this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
         this.title = config.title;
-        let /** @type {?} */ userClient = usersClientFactory({ dateRange: this.dateRangeService$ });
+        let /** @type {?} */ userClient = usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.heatmap;
         this.mapLoading$ = this.client.loading$;
         this.data$ = this.client.data$.pipe(tap((data) => {
@@ -11328,7 +11325,7 @@ class ActionsStatusGraphService {
      * @return {?}
      */
     initClient() {
-        const /** @type {?} */ graphClient = actionsClientFactory({ dateRange: this.dateRangeService$ });
+        const /** @type {?} */ graphClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = graphClient.graph;
         this.loading$ = this.client.loading$;
         this.data$ = this.client.data$.pipe(filter(data => !!data), map$1((data) => {
@@ -11484,7 +11481,7 @@ class ActionsAnalyticsListService {
      * @return {?}
      */
     initClient(config) {
-        const /** @type {?} */ userClient = actionsClientFactory({ dateRange: this.dateRangeService$ });
+        const /** @type {?} */ userClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.list;
         this.client.updateStrategy = config.updateStrategy || "once";
         this.client.setQuery(this.query);
@@ -11590,7 +11587,7 @@ class ActionsSummaryService {
     initState(config) {
         this.dateRangeService$ = dateRangeFactory(DateRangeMap.today);
         this.title = config.title;
-        const /** @type {?} */ client = config.client || actionsClientFactory({ dateRange: this.dateRangeService$ });
+        const /** @type {?} */ client = config.client || actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         if (config.dateRangeService)
             this.dateRangeService$ = config.dateRangeService;
         this.client = client.summary;
@@ -11661,7 +11658,7 @@ class ActionsHeatmapService {
     initClient(config) {
         this.dateRangeService$ = dateRangeFactory(config.initialDateRange || DateRangeMap.last_7_days);
         this.title = config.title;
-        let /** @type {?} */ actionsClient = actionsClientFactory({ dateRange: this.dateRangeService$ });
+        let /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = actionsClient.heatmap;
         this.mapLoading$ = this.client.loading$;
         this.data$ = this.client.data$.pipe(tap((data) => {
@@ -12007,12 +12004,12 @@ class AnalyticsItemsService {
     constructor() {
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject([]);
-        const /** @type {?} */ usersClient = usersClientFactory({ dateRange: dateRangeFactory(DateRangeMap.today) });
+        const /** @type {?} */ usersClient = usersClientFactory({ dateRange$: dateRangeFactory(DateRangeMap.today).data$ });
         const /** @type {?} */ usersFilter = usersClient.filterClass;
         const /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         const /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         const /** @type {?} */ actionDateRangeService = dateRangeFactory(DateRangeMap.today);
-        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange: actionDateRangeService });
+        const /** @type {?} */ actionsClient = actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
@@ -12997,10 +12994,9 @@ AnalyticsContainerModule.ctorParameters = () => [];
 class HtRequestService extends HtRequest {
     /**
      * @param {?} http
-     * @param {?} token
      */
-    constructor(http, token) {
-        super(token);
+    constructor(http) {
+        super();
         this.http = http;
     }
     /**
@@ -13010,7 +13006,8 @@ class HtRequestService extends HtRequest {
      * @return {?}
      */
     getObservable(url, options = {}) {
-        return this.http.get(url, options);
+        const /** @type {?} */ headers = super.headerObj();
+        return this.http.get(url, Object.assign({ headers }, options));
     }
     /**
      * @template T
@@ -13020,7 +13017,8 @@ class HtRequestService extends HtRequest {
      * @return {?}
      */
     postObservable(url, body, options = {}) {
-        return this.http.post(url, body, options);
+        const /** @type {?} */ headers = super.headerObj();
+        return this.http.post(url, body, Object.assign({ headers }, options));
     }
 }
 
@@ -13044,21 +13042,14 @@ class HtActionsService extends HtActionsClient {
  */
 var TOKEN = new InjectionToken('app.token');
 /**
+ * @param {?} token
  * @param {?} http
- * @param {?} token
  * @return {?}
  */
-function requestServiceFactory(http, token) {
-    const /** @type {?} */ request = new HtRequestService(http, token);
-    return request;
-}
-/**
- * @param {?} token
- * @param {?} request
- * @return {?}
- */
-function clientServiceFactory(token, request) {
-    const /** @type {?} */ client = htClientService.getInstance(token, request);
+function clientServiceFactory(token, http) {
+    const /** @type {?} */ request = new HtRequestService(http);
+    htRequestService.setInstance(request);
+    const /** @type {?} */ client = htClientService.getInstance(token);
     return client;
 }
 /**
@@ -13108,10 +13099,9 @@ class HtModule {
                 { provide: MAP_TYPE, useValue: config.mapType },
                 { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
                 { provide: TOKEN, useValue: config.token },
-                { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN] },
                 { provide: HtClientService,
                     useFactory: clientServiceFactory,
-                    deps: [TOKEN, HtRequestService]
+                    deps: [TOKEN, HttpClient]
                 },
                 {
                     provide: HtUsersService,
@@ -13223,5 +13213,5 @@ HtModule.ctorParameters = () => [];
  * Generated bundle index. Do not edit.
  */
 
-export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, requestServiceFactory, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbl, ActionTableModule as ɵbk, ActionsAnalyticsListComponent as ɵbm, ActionsAnalyticsListModule as ɵbj, ActionsSummaryChartComponent as ɵbo, ActionsSummaryChartModule as ɵbn, AnalyticsItemLoadComponent as ɵbq, AnalyticsItemLoadModule as ɵbp, AnalyticsItemComponent as ɵbv, AnalyticsSlotDirective as ɵbu, AnalyticsItemsService as ɵbt, AnalyticsSelectorComponent as ɵbw, AnalyticsTagsComponent as ɵbi, AnalyticsTagsModule as ɵbh, AnalyticsTitleComponent as ɵbx, AnalyticsMapContainerComponent as ɵbs, AnalyticsMapContainerModule as ɵbr, DataTableComponent as ɵbg, DataTableModule as ɵbf, EntitySearchComponent as ɵbd, EntitySearchModule as ɵbc, UsersFilterComponent as ɵbe, UsersFilterModule as ɵbb, GroupsChartService as ɵz, HtAccountService as ɵca, HtActionsService as ɵbz, MAP_TYPE as ɵa, HtRequestService as ɵby, MapComponent as ɵba, ActionSortingStringPipe as ɵq, ActionStatusStringPipe as ɵn, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵr, SafeUrlPipe as ɵo, TimeStringPipe as ɵe, UserSortingStringPipe as ɵp, UsersStatusStringPipe as ɵm, BatteryIconComponent as ɵc, ButtonComponent as ɵs, DropdownDirective as ɵu, LoadingBarComponent as ɵt, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, UsersSummaryContainerComponent as ɵy, UsersSummaryContainerModule as ɵv, UsersSummaryComponent as ɵx, UsersSummaryModule as ɵw };
+export { UserCardModule, UserCardComponent, UsersComponent, UsersModule, UsersContainerModule, UsersContainerComponent, GroupsModule, GroupsComponent, GroupsContainerModule, GroupsContainerComponent, GroupsChartContainerModule, GroupsChartContainerComponent, MapModule, MapContainerModule, MapContainerComponent, SharedModule, PaginationModule, PaginationComponent, PlacelineContainerModule, PlacelineContainerComponent, PlacelineModule, PlacelineComponent, PlacelineMapContainerModule, PlacelineMapContainerComponent, UsersMapContainerModule, UsersMapContainerComponent, GroupKeyResolver, GroupLookupKeyResolver, HtClientService, HtUsersService, HtMapService, HtGroupsService, UsersAnalyticsListModule, UsersAnalyticsListComponent, ActionsStatusGraphModule, ActionsStatusGraphComponent, UserTableModule, UserTableComponent, AnalyticsContainerModule, AnalyticsContainerComponent, UsersSummaryChartComponent, UsersSummaryChartModule, DateRangeModule, DateRangePickerModule, DateRangePickerComponent, DateRangeComponent, TOKEN, clientServiceFactory, mapServiceFactory, userClientServiceFactory, actionClientServiceFactory, groupClientServiceFactory, accountUsersClientServiceFactory, HtModule, ActionTableComponent as ɵbl, ActionTableModule as ɵbk, ActionsAnalyticsListComponent as ɵbm, ActionsAnalyticsListModule as ɵbj, ActionsSummaryChartComponent as ɵbo, ActionsSummaryChartModule as ɵbn, AnalyticsItemLoadComponent as ɵbq, AnalyticsItemLoadModule as ɵbp, AnalyticsItemComponent as ɵbv, AnalyticsSlotDirective as ɵbu, AnalyticsItemsService as ɵbt, AnalyticsSelectorComponent as ɵbw, AnalyticsTagsComponent as ɵbi, AnalyticsTagsModule as ɵbh, AnalyticsTitleComponent as ɵbx, AnalyticsMapContainerComponent as ɵbs, AnalyticsMapContainerModule as ɵbr, DataTableComponent as ɵbg, DataTableModule as ɵbf, EntitySearchComponent as ɵbd, EntitySearchModule as ɵbc, UsersFilterComponent as ɵbe, UsersFilterModule as ɵbb, GroupsChartService as ɵz, HtAccountService as ɵbz, HtActionsService as ɵby, MAP_TYPE as ɵa, MapComponent as ɵba, ActionSortingStringPipe as ɵq, ActionStatusStringPipe as ɵn, DateHumanizePipe as ɵj, DateStringPipe as ɵd, DistanceLocalePipe as ɵk, DotPipe as ɵf, HmStringPipe as ɵl, NameCasePipe as ɵg, PluralizePipe as ɵr, SafeUrlPipe as ɵo, TimeStringPipe as ɵe, UserSortingStringPipe as ɵp, UsersStatusStringPipe as ɵm, BatteryIconComponent as ɵc, ButtonComponent as ɵs, DropdownDirective as ɵu, LoadingBarComponent as ɵt, LoadingDataComponent as ɵi, LoadingDotsComponent as ɵh, ProfileComponent as ɵb, UsersSummaryContainerComponent as ɵy, UsersSummaryContainerModule as ɵv, UsersSummaryComponent as ɵx, UsersSummaryModule as ɵw };
 //# sourceMappingURL=ht-angular.js.map

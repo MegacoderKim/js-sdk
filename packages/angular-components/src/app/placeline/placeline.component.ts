@@ -22,6 +22,7 @@ export class PlacelineComponent implements OnInit {
   @Input() userData: IUserData;
   @Input() selectedSegmentId: string = "__";
   @Input() isMobile: boolean = false;
+  @Input() timezone: string;
   selectedAction: string | null = null;
   selectedActivity: string | null = "";
   hardSelectedActivity: string | null = "";

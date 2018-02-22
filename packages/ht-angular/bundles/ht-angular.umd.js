@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('underscore'), require('ht-utility'), require('ht-data'), require('@angular/common'), require('@angular/router'), require('@angular/animations'), require('ht-maps'), require('ht-client'), require('rxjs/operators'), require('rxjs/BehaviorSubject'), require('rxjs/observable/combineLatest'), require('rxjs/observable/of'), require('rxjs/observable/merge'), require('rxjs/Subject'), require('date-fns'), require('rxjs/Observable'), require('frappe-charts/dist/frappe-charts.min.esm'), require('ht-api'), require('@angular/common/http')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'underscore', 'ht-utility', 'ht-data', '@angular/common', '@angular/router', '@angular/animations', 'ht-maps', 'ht-client', 'rxjs/operators', 'rxjs/BehaviorSubject', 'rxjs/observable/combineLatest', 'rxjs/observable/of', 'rxjs/observable/merge', 'rxjs/Subject', 'date-fns', 'rxjs/Observable', 'frappe-charts/dist/frappe-charts.min.esm', 'ht-api', '@angular/common/http'], factory) :
-	(factory((global['ht-angular'] = {}),global.ng.core,global._,global.htUtility,global.htData,global.ng.common,global.ng.router,global.ng.animations,global.htMaps,global.htClient,global.Rx.operators,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable,global.Rx,global.dateFns,global.Rx,global.Chart,global.htApi,global.ng.common.http));
-}(this, (function (exports,core,underscore,htUtility,htData,common,router,animations,htMaps,htClient,operators,BehaviorSubject,combineLatest,of,merge,Subject,dateFns,Observable,Chart,htApi,http) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('underscore'), require('ht-utility'), require('ht-data'), require('@angular/common'), require('@angular/router'), require('@angular/animations'), require('ht-maps'), require('ht-client'), require('rxjs/operators'), require('rxjs/BehaviorSubject'), require('rxjs/observable/combineLatest'), require('rxjs/observable/of'), require('rxjs/observable/merge'), require('rxjs/Subject'), require('date-fns'), require('rxjs/Observable'), require('frappe-charts/dist/frappe-charts.min.esm'), require('@angular/common/http')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'underscore', 'ht-utility', 'ht-data', '@angular/common', '@angular/router', '@angular/animations', 'ht-maps', 'ht-client', 'rxjs/operators', 'rxjs/BehaviorSubject', 'rxjs/observable/combineLatest', 'rxjs/observable/of', 'rxjs/observable/merge', 'rxjs/Subject', 'date-fns', 'rxjs/Observable', 'frappe-charts/dist/frappe-charts.min.esm', '@angular/common/http'], factory) :
+	(factory((global['ht-angular'] = {}),global.ng.core,global._,global.htUtility,global.htData,global.ng.common,global.ng.router,global.ng.animations,global.htMaps,global.htClient,global.Rx.operators,global.Rx,global.Rx.Observable,global.Rx.Observable,global.Rx.Observable,global.Rx,global.dateFns,global.Rx,global.Chart,global.ng.common.http));
+}(this, (function (exports,core,underscore,htUtility,htData,common,router,animations,htMaps,htClient,operators,BehaviorSubject,combineLatest,of,merge,Subject,dateFns,Observable,Chart,http) { 'use strict';
 
 Chart = Chart && Chart.hasOwnProperty('default') ? Chart['default'] : Chart;
 
@@ -430,7 +430,7 @@ var DistanceLocalePipe = (function () {
      * @return {?}
      */
     DistanceLocalePipe.prototype.transform = function (value, args) {
-        return htUtility.DistanceLocale(value);
+        return htUtility.DistanceLocale(value, args);
     };
     return DistanceLocalePipe;
 }());
@@ -1677,7 +1677,7 @@ var PlacelineComponent = (function () {
 PlacelineComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'ht-placeline',
-                template: "<div class=\"flex-column\">\n  <div\n    class=\"flex-row segment\"\n    (click)=\"selectInUserData(segment)\"\n    [class.active-segment]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id\"\n    (mouseenter)=\"highlightActivity(segment.id)\"\n    (mouseleave)=\"highlightActivity(null)\"\n    *ngFor=\"let segment of placelineMod; trackBy:indexPlaceline; let last = last\">\n    <div class=\"time-container action-time\">\n      <div class=\"target-status text-muted\">\n      </div>\n      <div class=\"timestamp\">\n        {{segment.time | timeString | dot: 'Unknown ETA'}}\n      </div>\n      <div class=\"text-muted\">\n        {{segment.time | dateString: 'short'}}\n      </div>\n      <!--<div class=\"time-container-mid text-muted\" *ngIf=\"!segment.actionD\">-->\n        <!--<span>{{segment.duration / 60 | hmString}}</span>-->\n      <!--</div>-->\n    </div>\n    <div class=\"pipe\">\n      <div class=\"bar\" *ngIf=\"!last\" [class.big]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id\" [class.solid]=\"segment.activityBorder\" [ngClass]=\"segment.activityBorder\"></div>\n    </div>\n    <div class=\"flex-column flex timeline-detail\">\n      <div class=\"activity-dot segment-dot\" [class.activity-dot-ended]=\"segment.actionEnded\" *ngIf=\"segment.actionD\"><div class=\"auto\">{{segment.actionD}} </div></div>\n      <div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"segment-dot\"><div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"pulse\"></div></div>\n      <div *ngIf=\"!segment.isLive && !segment.actionD\" class=\"a-dot\" [ngClass]=\"segment.activityBorder\"></div>\n      <div class=\"flex-column column-gap-10\">\n        <div (mouseenter)=\"selectAction(segment.action_id)\" (mouseleave)=\"selectAction(null)\" class=\"action-card\" *ngIf=\"segment.actionText\">\n          <div class=\"flex-column column-gap-4\">\n            <div class=\"title\">\n              {{segment.actionText}}\n            </div>\n            <div class=\"lookup\" *ngIf=\"segment.actionLookupId\">{{segment.actionLookupId}}</div>\n            <div *ngIf=\"segment.expected_at && segment.actionEnd\">Scheduled at {{segment.expected_at | timeString}}</div>\n            <div *ngIf=\"segment.action_duration\" class=\"flex-row row-gap-4\">\n              <span>{{segment.action_duration / 60 | hmString}}</span>\n              <ng-template [ngIf]=\"(segment.action_distance || segment.action_distance == 0)\">\n                <span>&bull;</span>\n                <span>{{segment.action_distance | distanceLocale}}</span>\n              </ng-template>\n            </div>\n          </div>\n        </div>\n        <!--<pre>-->\n        <!--{{segment | json}}-->\n        <!--</pre>-->\n        <div class=\"activity-card flex-column\" *ngIf=\"segment.activityText\">\n          <div [ngClass]=\"segment.activityColor\" class=\"truncate\" style=\"max-width: 128px;\">\n            {{segment.activityText | nameCase}}\n          </div>\n          <div class=\"flex-row row-gap-4 activity-stats align-center\" *ngIf=\"segment.duration\">\n            <span>{{segment.duration / 60 | hmString}}</span>\n            <ng-template [ngIf]=\"(segment.distance || segment.distance == 0) && segment.type == 'trip'\">\n              <span>&bull;</span>\n              <span>{{segment.distance | distanceLocale}}</span>\n            </ng-template>\n            <ng-container *ngIf=\"segment.step_count\">\n              <span>&bull;</span>\n              <span>{{segment.step_count}} {{'step' | pluralize: segment.step_count}}</span>\n            </ng-container>\n          </div>\n          <!--<div>-->\n            <!--{{segment.placeAddress}}-->\n          <!--</div>-->\n          <table class=\"table table-bordered table-condensed\" *ngIf=\"segment.events && segment.events.length\">\n            <tbody>\n            <tr *ngFor=\"let event of segment.events; trackBy:indexId\">\n              <td>{{event.recorded_at | timeString}}</td>\n              <td>{{event.text}}</td>\n            </tr>\n            </tbody>\n          </table>\n          <div class=\"text-muted\" *ngIf=\"selectedSegmentId == segment.id && segment.place\">\n            {{segment.place.address}}\n          </div>\n          <div class=\"close-card\" *ngIf=\"selectedSegmentId == segment.id && !isMobile\" (click)=\"selectInUserData(null, $event)\">\n            <i class=\"fa fa-times-circle fa-2x\"></i>\n          </div>\n        </div>\n        <div *ngIf=\"segment.isLive\" class=\"text-muted heatbeat\">\n          Last heartbeat\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"card\" *ngIf=\"placelineMod && placelineMod.length == 0\">\n  <div class=\"card-content-mid text-center\"><strong>No Placeline</strong></div>\n</div>\n",
+                template: "<div class=\"flex-column\">\n  <div\n    class=\"flex-row segment\"\n    (click)=\"selectInUserData(segment)\"\n    [class.active-segment]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id\"\n    (mouseenter)=\"highlightActivity(segment.id)\"\n    (mouseleave)=\"highlightActivity(null)\"\n    *ngFor=\"let segment of placelineMod; trackBy:indexPlaceline; let last = last\">\n    <div class=\"time-container action-time\">\n      <div class=\"target-status text-muted\">\n      </div>\n      <div class=\"timestamp\">\n        {{segment.time | timeString | dot: 'Unknown ETA'}}\n      </div>\n      <div class=\"text-muted\">\n        {{segment.time | dateString: 'short'}}\n      </div>\n      <!--<div class=\"time-container-mid text-muted\" *ngIf=\"!segment.actionD\">-->\n        <!--<span>{{segment.duration / 60 | hmString}}</span>-->\n      <!--</div>-->\n    </div>\n    <div class=\"pipe\">\n      <div class=\"bar\" *ngIf=\"!last\" [class.big]=\"(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id\" [class.solid]=\"segment.activityBorder\" [ngClass]=\"segment.activityBorder\"></div>\n    </div>\n    <div class=\"flex-column flex timeline-detail\">\n      <div class=\"activity-dot segment-dot\" [class.activity-dot-ended]=\"segment.actionEnded\" *ngIf=\"segment.actionD\"><div class=\"auto\">{{segment.actionD}} </div></div>\n      <div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"segment-dot\"><div *ngIf=\"segment.isLive\" [ngClass]=\"segment.activityBg\" class=\"pulse\"></div></div>\n      <div *ngIf=\"!segment.isLive && !segment.actionD\" class=\"a-dot\" [ngClass]=\"segment.activityBorder\"></div>\n      <div class=\"flex-column column-gap-10\">\n        <div (mouseenter)=\"selectAction(segment.action_id)\" (mouseleave)=\"selectAction(null)\" class=\"action-card\" *ngIf=\"segment.actionText\">\n          <div class=\"flex-column column-gap-4\">\n            <div class=\"title\">\n              {{segment.actionText}}\n            </div>\n            <div class=\"lookup\" *ngIf=\"segment.actionLookupId\">{{segment.actionLookupId}}</div>\n            <div *ngIf=\"segment.expected_at && segment.actionEnd\">Scheduled at {{segment.expected_at | timeString}}</div>\n            <div *ngIf=\"segment.action_duration\" class=\"flex-row row-gap-4\">\n              <span>{{segment.action_duration / 60 | hmString}}</span>\n              <ng-template [ngIf]=\"(segment.action_distance || segment.action_distance == 0)\">\n                <span>&bull;</span>\n                <span>{{segment.action_distance | distanceLocale: timezone}}</span>\n              </ng-template>\n            </div>\n          </div>\n        </div>\n        <!--<pre>-->\n        <!--{{segment | json}}-->\n        <!--</pre>-->\n        <div class=\"activity-card flex-column\" *ngIf=\"segment.activityText\">\n          <div [ngClass]=\"segment.activityColor\" class=\"truncate\" style=\"max-width: 128px;\">\n            {{segment.activityText | nameCase}}\n          </div>\n          <div class=\"flex-row row-gap-4 activity-stats align-center\" *ngIf=\"segment.duration\">\n            <span>{{segment.duration / 60 | hmString}}</span>\n            <ng-template [ngIf]=\"(segment.distance || segment.distance == 0) && segment.type == 'trip'\">\n              <span>&bull;</span>\n              <span>{{segment.distance | distanceLocale: timezone}}</span>\n            </ng-template>\n            <ng-container *ngIf=\"segment.step_count\">\n              <span>&bull;</span>\n              <span>{{segment.step_count}} {{'step' | pluralize: segment.step_count}}</span>\n            </ng-container>\n          </div>\n          <!--<div>-->\n            <!--{{segment.placeAddress}}-->\n          <!--</div>-->\n          <table class=\"table table-bordered table-condensed\" *ngIf=\"segment.events && segment.events.length\">\n            <tbody>\n            <tr *ngFor=\"let event of segment.events; trackBy:indexId\">\n              <td>{{event.recorded_at | timeString}}</td>\n              <td>{{event.text}}</td>\n            </tr>\n            </tbody>\n          </table>\n          <div class=\"text-muted\" *ngIf=\"selectedSegmentId == segment.id && segment.place\">\n            {{segment.place.address}}\n          </div>\n          <div class=\"close-card\" *ngIf=\"selectedSegmentId == segment.id && !isMobile\" (click)=\"selectInUserData(null, $event)\">\n            <i class=\"fa fa-times-circle fa-2x\"></i>\n          </div>\n        </div>\n        <div *ngIf=\"segment.isLive\" class=\"text-muted heatbeat\">\n          Last heartbeat\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"card\" *ngIf=\"placelineMod && placelineMod.length == 0\">\n  <div class=\"card-content-mid text-center\"><strong>No Placeline</strong></div>\n</div>\n",
                 styles: [".text-center{\n  text-align:center;\n}\n.text-muted{\n  color:#798E9B;\n}\n.text-right{\n  text-align:right;\n}\n.text-left{\n  text-align:left;\n}\n.text-1{\n  font-size:2em;\n}\n.text-4{\n  font-size:0.8em;\n}\n.text-capitalize{\n  text-transform:capitalize;\n}\n.text-uppercase{\n  text-transform:uppercase;\n}\n.text-ontime{\n  color:#58ae5b;\n}\n.text-late{\n  color:#E6413E;\n}\n.text-warning{\n  color:#E6413E !important;\n}\n.text-red{\n  color:#E6413E;\n}\n.text-blue{\n  color:#5496F8;\n}\n.truncate{\n  white-space:nowrap;\n  overflow:hidden;\n  text-overflow:ellipsis;\n}\n.flex-row{\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-orient:horizontal;\n  -webkit-box-direction:normal;\n      -ms-flex-direction:row;\n          flex-direction:row;\n}\n.flex-column{\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-orient:vertical;\n  -webkit-box-direction:normal;\n      -ms-flex-direction:column;\n          flex-direction:column;\n}\n.column-gap-4 > :not(:last-child){\n  margin-bottom:4px;\n}\n.row-gap-4 > :not(:last-child){\n  margin-right:4px;\n}\n.column-gap-7 > :not(:last-child){\n  margin-bottom:7px;\n}\n.row-gap-7 > :not(:last-child){\n  margin-right:7px;\n}\n.column-gap-10 > :not(:last-child){\n  margin-bottom:10px;\n}\n.row-gap-10 > :not(:last-child){\n  margin-right:10px;\n}\n.column-gap-20 > :not(:last-child){\n  margin-bottom:20px;\n}\n.row-gap-20 > :not(:last-child){\n  margin-right:20px;\n}\n.wrap{\n  -ms-flex-wrap:wrap;\n      flex-wrap:wrap;\n}\n.flex{\n  -webkit-box-flex:1;\n      -ms-flex:1;\n          flex:1;\n}\n.auto{\n  margin:auto;\n}\n.relative{\n  position:relative;\n}\n.space-between{\n  -webkit-box-pack:justify;\n      -ms-flex-pack:justify;\n          justify-content:space-between;\n}\n.space-around{\n  -ms-flex-pack:distribute;\n      justify-content:space-around;\n}\n.justify-center{\n  -webkit-box-pack:center;\n      -ms-flex-pack:center;\n          justify-content:center;\n}\n.flex-center{\n  -webkit-box-align:center;\n      -ms-flex-align:center;\n          align-items:center;\n}\n.align-center{\n  -webkit-box-align:center;\n      -ms-flex-align:center;\n          align-items:center;\n}\n.clickable{\n  cursor:pointer;\n}\n.round-icon{\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  width:23px;\n  height:23px;\n  background:#315790;\n  border-radius:50%;\n}\n.flex-half{\n  -ms-flex-preferred-size:50%;\n      flex-basis:50%;\n}\n.link-unstyled{\n  color:inherit;\n}\n.link-unstyled:hover{\n  text-decoration:none;\n}\n.half{\n  width:50%;\n}\n.noselect{\n  -webkit-touch-callout:none;\n  -webkit-user-select:none;\n  -moz-user-select:none;\n  -ms-user-select:none;\n  user-select:none;\n}\n.hover-shadow:hover{\n  -webkit-box-shadow:0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n          box-shadow:0px 0px 4px 2px rgba(0, 0, 0, 0.16);\n}\n.marker-transparent{\n  opacity:0.4;\n}\n.marker-fade{\n  -webkit-filter:contrast(16%) brightness(160%) blur(0.6px);\n          filter:contrast(16%) brightness(160%) blur(0.6px);\n}\n.tooltip-warning{\n  background:#e04745;\n  color:#fff;\n}\n.tooltip-warning-arrow{\n  border-right-color:#e04745 !important;\n}\n.tooltip-info{\n  background:#5496F8;\n  color:#fff;\n}\n.tooltip-info-arrow{\n  border-right-color:#5496F8 !important;\n}\na{\n  color:inherit;\n  text-decoration:none;\n}\na:hover{\n  color:inherit;\n  text-decoration:none;\n}\na:active{\n  color:inherit;\n  text-decoration:none;\n}\na:focus{\n  outline:none;\n  color:inherit;\n  text-decoration:none;\n}\n.spinner-wave{\n  margin:0 auto;\n  width:100px;\n  height:20px;\n  text-align:center;\n}\n.spinner-wave > div{\n  background-color:#5496F8;\n  height:100%;\n  width:6px;\n  display:inline-block;\n  -webkit-animation:wave 1.2s infinite ease-in-out;\n  animation:wave 1.2s infinite ease-in-out;\n}\n.spinner-wave div:nth-child(2){\n  -webkit-animation-delay:-1.1s;\n  animation-delay:-1.1s;\n}\n.spinner-wave div:nth-child(3){\n  -webkit-animation-delay:-1s;\n  animation-delay:-1s;\n}\n.spinner-wave div:nth-child(4){\n  -webkit-animation-delay:-0.9s;\n  animation-delay:-0.9s;\n}\n.spinner-wave div:nth-child(5){\n  -webkit-animation-delay:-0.8s;\n  animation-delay:-0.8s;\n}\n@-webkit-keyframes wave{\n  0%,\n  40%,\n  100%{\n    -webkit-transform:scaleY(0.4);\n  }\n  20%{\n    -webkit-transform:scaleY(1);\n  }\n}\n@keyframes wave{\n  0%,\n  40%,\n  100%{\n    -webkit-transform:scaleY(0.4);\n            transform:scaleY(0.4);\n  }\n  20%{\n    -webkit-transform:scaleY(1);\n            transform:scaleY(1);\n  }\n}\n@media screen and (max-width: 480px){\n  .hide-xs{\n    display:none !important;\n  }\n}\n@media screen and (min-width: 480px){\n  .show-xs{\n    display:none !important;\n  }\n}\n.ht-btn{\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-align:center;\n      -ms-flex-align:center;\n          align-items:center;\n  padding:5px 13px;\n  border:0;\n  background:#ffffff;\n  color:#52616A;\n  -webkit-box-shadow:0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow:0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.ht-btn:focus{\n  background:#fcfcfc;\n  outline:0;\n}\n.ht-btn-card:hover{\n  background:#5496F8;\n  color:rgba(255, 255, 255, 0.96);\n  -webkit-box-shadow:0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n          box-shadow:0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);\n}\n.stopped-color{\n  color:#FFBB44;\n}\n.drive-color{\n  color:#5496F8;\n}\n.walk-color{\n  color:#5496F8;\n}\n.moving-color{\n  color:#5496F8;\n}\n.logged_off-color{\n  color:#A9BAC4;\n}\n.network_offline-color{\n  color:#d19191;\n}\n.location_disabled-color{\n  color:#d19191;\n}\n.location_low_accuracy-color{\n  color:#d19191;\n}\n.stopped-bg{\n  background:#FFBB44;\n}\n.drive-bg{\n  background:#5496F8;\n}\n.walk-bg{\n  background:#5496F8;\n}\n.moving-bg{\n  background:#5496F8;\n}\n.logged_off-bg{\n  background:#A9BAC4;\n}\n.network_offline-bg{\n  background:#d19191;\n}\n.location_disabled-bg{\n  background-color:#d19191;\n}\n.location_low_accuracy-bg{\n  background-color:#d19191;\n}\n:host{\n  margin:30px 0;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-orient:vertical;\n  -webkit-box-direction:normal;\n      -ms-flex-direction:column;\n          flex-direction:column;\n}\n.segment{\n  border-radius:4px;\n  padding-right:18px;\n}\n.active-segment{\n  background:rgba(255, 255, 255, 0.75);\n}\n.trip-status{\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-orient:vertical;\n  -webkit-box-direction:normal;\n      -ms-flex-direction:column;\n          flex-direction:column;\n  text-align:center;\n  color:#52616A;\n  margin-bottom:20px;\n  position:relative;\n}\n.trip-status .status-main{\n  font-size:31px;\n  font-weight:600;\n}\n.trip-status .status-sub{\n  color:#798E9B;\n  font-size:12px;\n}\n.ht-breadcrumb{\n  padding-bottom:19px;\n}\n.card{\n  margin-bottom:9px;\n}\n.card .action-img{\n  margin:0 auto;\n}\n.card .content-right{\n  -ms-flex-pack:distribute;\n      justify-content:space-around;\n  position:relative;\n  text-align:center;\n}\n.driver-container{\n  margin-bottom:20px;\n  border-bottom:1px solid #C9D6DE;\n  padding-bottom:16px;\n}\n.driver-container .text-muted{\n  color:#A9BAC4;\n}\n.task-status{\n  padding-bottom:20px;\n  text-align:center;\n  color:#52616A;\n}\n.time-container{\n  width:84px;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-orient:vertical;\n  -webkit-box-direction:normal;\n      -ms-flex-direction:column;\n          flex-direction:column;\n  text-align:right;\n  padding-right:20px;\n  padding-bottom:16px;\n  z-index:5;\n  color:#52616A;\n}\n.time-container .target-status{\n  font-size:10px;\n}\n.time-container .timestamp{\n  font-size:14px;\n  color:#52616A;\n}\n.time-container .text-muted{\n  color:#A9BAC4;\n  font-size:12px;\n}\n.time-container .timestamp-text{\n  font-size:12px;\n  color:#52616A;\n  font-weight:700;\n}\n.time-container-mid{\n  height:100%;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-pack:end;\n      -ms-flex-pack:end;\n          justify-content:flex-end;\n  -webkit-box-align:center;\n      -ms-flex-align:center;\n          align-items:center;\n}\n.pipe{\n  width:20px;\n  min-width:20px;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  -webkit-box-orient:vertical;\n  -webkit-box-direction:normal;\n      -ms-flex-direction:column;\n          flex-direction:column;\n  -webkit-box-pack:center;\n      -ms-flex-pack:center;\n          justify-content:center;\n  -webkit-box-align:center;\n      -ms-flex-align:center;\n          align-items:center;\n  z-index:1;\n}\n.pipe .bar{\n  height:100%;\n  -webkit-box-flex:1;\n      -ms-flex:1;\n          flex:1;\n}\n.pipe .big{\n  outline:2px solid;\n}\n.pipe .solid{\n  border-right:3px solid #798E9B;\n}\n.pipe .line{\n  border-right:3px dotted #798E9B;\n}\n.pipe .line-border{\n  border-right:3px dotted #798E9B;\n  outline:0;\n}\n.pipe .light{\n  border-right:3px dashed rgba(121, 142, 155, 0.4);\n}\n.pipe .fade{\n  border-right:3px solid rgba(121, 142, 155, 0.14);\n}\n.timeline-detail{\n  padding-bottom:22px;\n  position:relative;\n  padding-left:16px;\n  min-height:66px;\n}\n.timeline-detail .task-action{\n  font-size:16px;\n  color:#52616A;\n  text-transform:capitalize;\n  margin-bottom:4px;\n  -webkit-transition:font-size 0.4s;\n  transition:font-size 0.4s;\n}\n.timeline-detail .action-title{\n  font-size:16px;\n  color:#52616A;\n  text-transform:capitalize;\n  -webkit-transition:font-size 0.4s;\n  transition:font-size 0.4s;\n  font-weight:700;\n}\n.timeline-detail .task-detail{\n  background:#fff;\n  padding:6px 10px;\n  color:#52616A;\n  -webkit-transition:font-size 0.4s;\n  transition:font-size 0.4s;\n}\n.timeline-detail .task-icon{\n  position:absolute;\n  left:-23px;\n  top:-2px;\n}\n.timeline-detail .task-ontime-status{\n  color:#55ad58;\n  padding-bottom:4px;\n  font-size:11px;\n  -webkit-transition:font-size 0.4s;\n  transition:font-size 0.4s;\n}\n.timeline-detail .text-late{\n  color:#E6413E;\n}\n.selected-task .task-action{\n  font-size:18px;\n}\n.selected-task .task-detail{\n  font-size:13px;\n}\n.selected-task .task-ontime-status{\n  font-size:13px;\n}\n.trip-event .pipe{\n  padding-top:7px;\n}\n.trip-event .time-container{\n  padding-bottom:24px;\n}\n.segment-dot{\n  width:25px;\n  height:25px;\n  border-radius:50%;\n  background:#fff;\n  position:absolute;\n  top:-1px;\n  left:-23px;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  z-index:2;\n}\n.a-dot{\n  width:9px;\n  height:9px;\n  border-radius:50%;\n  background:#fff;\n  border:2px solid #798E9B;\n  position:absolute;\n  top:-4px;\n  left:-14px;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n  background-color:white;\n  z-index:2;\n}\n.activity-dot{\n  border:1px solid #798E9B;\n  font-size:10px;\n}\n.activity-dot-ended{\n  background:#798E9B;\n  color:#fff;\n}\n.trip-dot{\n  border:0px solid #5496F8;\n  background:#5496F8;\n}\n.trip-dot .pulse{\n  background:#5496F8;\n}\n.stop-dot{\n  border:0px solid #5496F8;\n  background:#5496F8;\n}\n.stop-dot .pulse{\n  background:#5496F8;\n}\n@-webkit-keyframes pulse{\n  0%{\n    -webkit-transform:scale(0.3, 0.3);\n            transform:scale(0.3, 0.3);\n    opacity:0.9;\n  }\n  100%{\n    -webkit-transform:scale(3, 3);\n            transform:scale(3, 3);\n    opacity:0;\n  }\n}\n@keyframes pulse{\n  0%{\n    -webkit-transform:scale(0.3, 0.3);\n            transform:scale(0.3, 0.3);\n    opacity:0.9;\n  }\n  100%{\n    -webkit-transform:scale(3, 3);\n            transform:scale(3, 3);\n    opacity:0;\n  }\n}\n.ranges li.active{\n  background:#52616A;\n  border-color:#52616A;\n}\n.ranges li{\n  color:#52616A;\n}\n.ranges li:hover{\n  background:#52616A;\n  border-color:#52616A;\n}\n.pulse{\n  border-radius:50%;\n  height:25px;\n  width:25px;\n  -webkit-animation:pulse 3s ease-out;\n          animation:pulse 3s ease-out;\n  -webkit-animation-iteration-count:infinite;\n          animation-iteration-count:infinite;\n  position:absolute;\n  z-index:10;\n  opacity:1;\n  margin:auto;\n}\n.trip{\n  color:#5496F8;\n  border-color:#5496F8 !important;\n}\n.stop{\n  color:#FFBB44;\n  border-color:#FFBB44 !important;\n}\n.no-info{\n  color:#FFBB44;\n  border-color:#A9BAC4 !important;\n}\n.ht-faded{\n  opacity:0.4;\n}\n.action{\n  position:absolute;\n  top:6px;\n  padding:3px;\n  font-size:19px;\n  color:#798E9B;\n}\n.action-left{\n  left:11px;\n  font-size:35px;\n  color:#A9BAC4;\n}\n.action-left:hover{\n  color:#798E9B;\n}\n.text-sm{\n  font-size:11px;\n  color:#52616A;\n  padding-bottom:7px;\n}\n.title{\n  font-size:13px;\n  font-weight:bold;\n}\n.activity-card{\n  padding:6px 10px;\n  color:#52616A;\n  -webkit-transition:font-size 0.4s;\n  transition:font-size 0.4s;\n  font-size:13px;\n  position:relative;\n  cursor:pointer;\n}\n.activity-card-selected{\n  background:#fff;\n}\n.activity-card-selected:hover{\n  background:#fff;\n}\n.activity-card .close-card{\n  position:absolute;\n  top:-3px;\n  right:-3px;\n  color:#52616A;\n  height:14px;\n  width:14px;\n  border-radius:50%;\n  display:-webkit-box;\n  display:-ms-flexbox;\n  display:flex;\n}\n.activity-card .close-card .fa{\n  margin:auto;\n}\n.action-card{\n  background:#fff;\n  padding:3px 11px;\n  border:1px solid #C9D6DE;\n  font-size:11px;\n  cursor:pointer;\n  color:#52616A;\n  margin-left:-127px;\n  padding-left:134px;\n  margin-top:-9px;\n  min-height:50px;\n  -webkit-box-shadow:1px 2px 2px 0px rgba(0, 0, 0, 0.07);\n          box-shadow:1px 2px 2px 0px rgba(0, 0, 0, 0.07);\n}\n.action-card:hover{\n  border:1px solid #798E9B;\n}\n.action-card-active{\n  border:1px solid #798E9B;\n}\n.trip-border{\n  border-color:#5496F8 !important;\n  outline-color:#5496F8 !important;\n}\n.stop-border{\n  border-color:#FFBB44 !important;\n  outline-color:#FFBB44 !important;\n}\n.no-info-border{\n  border-color:#A9BAC4 !important;\n  outline-color:#A9BAC4 !important;\n}\n.warning-border{\n  border-color:#d19191 !important;\n  outline-color:#d19191 !important;\n}\n.trip-bg{\n  background:#5496F8;\n}\n.stop-bg{\n  background:#FFBB44;\n}\n.no-info-bg{\n  background:#A9BAC4;\n}\n.warning-bg{\n  background:#d19191;\n}\n.trip-color{\n  color:#5496F8;\n}\n.stop-color{\n  color:#ffb025;\n}\n.no-info-color{\n  color:#A9BAC4;\n}\n.warning-color{\n  color:#d19191;\n}\n.table{\n  margin:7px 0;\n  font-size:11px;\n}\n.activity-stats{\n  font-size:12px;\n  font-weight:bold;\n}\n.heatbeat{\n  padding-left:12px;\n  font-size:13px;\n}\n"],
                 changeDetection: core.ChangeDetectionStrategy.OnPush
             },] },
@@ -1693,6 +1693,7 @@ PlacelineComponent.propDecorators = {
     "userData": [{ type: core.Input },],
     "selectedSegmentId": [{ type: core.Input },],
     "isMobile": [{ type: core.Input },],
+    "timezone": [{ type: core.Input },],
 };
 /**
  * @fileoverview added by tsickle
@@ -2490,12 +2491,11 @@ var MapComponent = (function () {
      */
     function MapComponent(elRef, htMapService) {
         this.elRef = elRef;
+        this.options = {};
+        this.onReady = new core.EventEmitter();
         this.loading = false;
         this.showReset = true;
-        this.onReady = new core.EventEmitter();
-        this.onMapReset = new core.EventEmitter();
-        if (htMapService)
-            this.mapInstance = htMapService.mapInstance;
+        this.mapInstance = this.mapInstance || htMapService.mapInstance;
     }
     /**
      * @return {?}
@@ -2508,7 +2508,6 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.ngOnInit = function () {
-        this.mapInstance = this.mapInstance;
         // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
         // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
         // user$.subscribe((userData) => {
@@ -2534,8 +2533,7 @@ var MapComponent = (function () {
      * @return {?}
      */
     MapComponent.prototype.resetMap = function () {
-        this.mapInstance.resetBounds(this.setBoundsOptions);
-        this.onMapReset.next(true);
+        this.mapInstance.resetBounds();
     };
     /**
      * @return {?}
@@ -2563,12 +2561,10 @@ MapComponent.ctorParameters = function () { return [
 ]; };
 MapComponent.propDecorators = {
     "options": [{ type: core.Input },],
-    "setBoundsOptions": [{ type: core.Input },],
+    "onReady": [{ type: core.Output },],
     "mapInstance": [{ type: core.Input },],
     "loading": [{ type: core.Input },],
     "showReset": [{ type: core.Input },],
-    "onReady": [{ type: core.Output },],
-    "onMapReset": [{ type: core.Output },],
     "mapElem": [{ type: core.ViewChild, args: ['map',] },],
     "onMapResize": [{ type: core.HostListener, args: ['resize', ['$event'],] },],
 };
@@ -2616,8 +2612,6 @@ var MapContainerComponent = (function () {
         this.mapService.usersCluster.setPageData$(this.userClientService.listAll.data$, {
             hide$: this.userClientService.placeline.id$
         });
-        // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
-        // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
         this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
             roots: ['segments', 'actions'],
             highlighted$: this.userClientService.placeline.segmentSelectedId$,
@@ -2773,6 +2767,9 @@ var UsersMapContainerComponent = (function () {
      */
     UsersMapContainerComponent.prototype.ngOnInit = function () {
         this.userClientService.listAll.setActive();
+        if (this.key) {
+            htClient.htClientService.getInstance().tempToken = this.key;
+        }
     };
     return UsersMapContainerComponent;
 }());
@@ -2789,6 +2786,7 @@ UsersMapContainerComponent.ctorParameters = function () { return [
 ]; };
 UsersMapContainerComponent.propDecorators = {
     "hasPlaceline": [{ type: core.Input },],
+    "key": [{ type: core.Input },],
     "sidebarWidth": [{ type: core.Input },],
     "apiType": [{ type: core.Input },],
     "showFilter": [{ type: core.Input },],
@@ -3976,7 +3974,7 @@ var UsersAnalyticsListService = (function () {
      */
     UsersAnalyticsListService.prototype.initClient = function (config) {
         var _this = this;
-        var /** @type {?} */ userClient = htClient.usersClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ userClient = htClient.usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.list;
         this.client.updateStrategy = config.updateStrategy || "once";
         this.client.setQuery(this.query);
@@ -4124,7 +4122,7 @@ var UsersSummaryService = (function () {
     UsersSummaryService.prototype.setState = function (config) {
         this.dateRangeService$ = htClient.dateRangeFactory(htData.DateRangeMap.last_30_days);
         this.title = config.title;
-        var /** @type {?} */ client = config.client || htClient.usersClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ client = config.client || htClient.usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         client.setShowAll();
         this.client = client.summary;
         this.loading$ = this.client.loading$;
@@ -4231,7 +4229,7 @@ var StopsHeatmapService = (function () {
         var _this = this;
         this.dateRangeService$ = htClient.dateRangeFactory(config.initialDateRange || htData.DateRangeMap.last_7_days);
         this.title = config.title;
-        var /** @type {?} */ userClient = htClient.usersClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ userClient = htClient.usersClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.heatmap;
         this.mapLoading$ = this.client.loading$;
         this.data$ = this.client.data$.pipe(operators.tap(function (data) {
@@ -4546,7 +4544,7 @@ var ActionsStatusGraphService = (function () {
      */
     ActionsStatusGraphService.prototype.initClient = function () {
         var _this = this;
-        var /** @type {?} */ graphClient = htClient.actionsClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ graphClient = htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = graphClient.graph;
         this.loading$ = this.client.loading$;
         this.data$ = this.client.data$.pipe(operators.filter(function (data) { return !!data; }), operators.map(function (data) {
@@ -4676,7 +4674,7 @@ var ActionsAnalyticsListService = (function () {
      */
     ActionsAnalyticsListService.prototype.initClient = function (config) {
         var _this = this;
-        var /** @type {?} */ userClient = htClient.actionsClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ userClient = htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = userClient.list;
         this.client.updateStrategy = config.updateStrategy || "once";
         this.client.setQuery(this.query);
@@ -4774,7 +4772,7 @@ var ActionsSummaryService = (function () {
     ActionsSummaryService.prototype.initState = function (config) {
         this.dateRangeService$ = htClient.dateRangeFactory(htData.DateRangeMap.today);
         this.title = config.title;
-        var /** @type {?} */ client = config.client || htClient.actionsClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ client = config.client || htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         if (config.dateRangeService)
             this.dateRangeService$ = config.dateRangeService;
         this.client = client.summary;
@@ -4848,7 +4846,7 @@ var ActionsHeatmapService = (function () {
         var _this = this;
         this.dateRangeService$ = htClient.dateRangeFactory(config.initialDateRange || htData.DateRangeMap.last_7_days);
         this.title = config.title;
-        var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange: this.dateRangeService$ });
+        var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange$: this.dateRangeService$.data$ });
         this.client = actionsClient.heatmap;
         this.mapLoading$ = this.client.loading$;
         this.data$ = this.client.data$.pipe(operators.tap(function (data) {
@@ -5193,12 +5191,12 @@ var AnalyticsItemsService = (function () {
     function AnalyticsItemsService() {
         this.chosenItemCreater = [];
         this.selectedTags$ = new BehaviorSubject.BehaviorSubject([]);
-        var /** @type {?} */ usersClient = htClient.usersClientFactory({ dateRange: htClient.dateRangeFactory(htData.DateRangeMap.today) });
+        var /** @type {?} */ usersClient = htClient.usersClientFactory({ dateRange$: htClient.dateRangeFactory(htData.DateRangeMap.today).data$ });
         var /** @type {?} */ usersFilter = usersClient.filterClass;
         var /** @type {?} */ activityQueryLabel = usersFilter.activityQueryArray;
         var /** @type {?} */ showAllQueryLable = usersFilter.showAllQueryArray;
         var /** @type {?} */ actionDateRangeService = htClient.dateRangeFactory(htData.DateRangeMap.today);
-        var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange: actionDateRangeService });
+        var /** @type {?} */ actionsClient = htClient.actionsClientFactory({ dateRange$: actionDateRangeService.data$ });
         this.presets = [
             // actionsConfigPreset.max_distance(),
             // actionsConfigPreset.max_duration(),
@@ -5939,10 +5937,9 @@ var HtRequestService = (function (_super) {
     __extends(HtRequestService, _super);
     /**
      * @param {?} http
-     * @param {?} token
      */
-    function HtRequestService(http$$1, token) {
-        var _this = _super.call(this, token) || this;
+    function HtRequestService(http$$1) {
+        var _this = _super.call(this) || this;
         _this.http = http$$1;
         return _this;
     }
@@ -5954,7 +5951,8 @@ var HtRequestService = (function (_super) {
      */
     HtRequestService.prototype.getObservable = function (url, options) {
         if (options === void 0) { options = {}; }
-        return this.http.get(url, options);
+        var /** @type {?} */ headers = _super.prototype.headerObj.call(this);
+        return this.http.get(url, Object.assign({ headers: headers }, options));
     };
     /**
      * @template T
@@ -5965,10 +5963,11 @@ var HtRequestService = (function (_super) {
      */
     HtRequestService.prototype.postObservable = function (url, body, options) {
         if (options === void 0) { options = {}; }
-        return this.http.post(url, body, options);
+        var /** @type {?} */ headers = _super.prototype.headerObj.call(this);
+        return this.http.post(url, body, Object.assign({ headers: headers }, options));
     };
     return HtRequestService;
-}(htApi.HtRequest));
+}(htClient.HtRequest));
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes} checked by tsc
@@ -5997,21 +5996,14 @@ var HtActionsService = (function (_super) {
  */
 var TOKEN = new core.InjectionToken('app.token');
 /**
+ * @param {?} token
  * @param {?} http
- * @param {?} token
  * @return {?}
  */
-function requestServiceFactory(http$$1, token) {
-    var /** @type {?} */ request = new HtRequestService(http$$1, token);
-    return request;
-}
-/**
- * @param {?} token
- * @param {?} request
- * @return {?}
- */
-function clientServiceFactory(token, request) {
-    var /** @type {?} */ client = htClient.htClientService.getInstance(token, request);
+function clientServiceFactory(token, http$$1) {
+    var /** @type {?} */ request = new HtRequestService(http$$1);
+    htClient.htRequestService.setInstance(request);
+    var /** @type {?} */ client = htClient.htClientService.getInstance(token);
     return client;
 }
 /**
@@ -6063,10 +6055,9 @@ var HtModule = (function () {
                 { provide: MAP_TYPE, useValue: config.mapType },
                 { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
                 { provide: TOKEN, useValue: config.token },
-                { provide: HtRequestService, useFactory: requestServiceFactory, deps: [http.HttpClient, TOKEN] },
                 { provide: HtClientService,
                     useFactory: clientServiceFactory,
-                    deps: [TOKEN, HtRequestService]
+                    deps: [TOKEN, http.HttpClient]
                 },
                 {
                     provide: HtUsersService,
@@ -6146,7 +6137,6 @@ exports.DateRangePickerModule = DateRangePickerModule;
 exports.DateRangePickerComponent = DateRangePickerComponent;
 exports.DateRangeComponent = DateRangeComponent;
 exports.TOKEN = TOKEN;
-exports.requestServiceFactory = requestServiceFactory;
 exports.clientServiceFactory = clientServiceFactory;
 exports.mapServiceFactory = mapServiceFactory;
 exports.userClientServiceFactory = userClientServiceFactory;
@@ -6178,10 +6168,9 @@ exports.ɵbc = EntitySearchModule;
 exports.ɵbe = UsersFilterComponent;
 exports.ɵbb = UsersFilterModule;
 exports.ɵz = GroupsChartService;
-exports.ɵca = HtAccountService;
-exports.ɵbz = HtActionsService;
+exports.ɵbz = HtAccountService;
+exports.ɵby = HtActionsService;
 exports.ɵa = MAP_TYPE;
-exports.ɵby = HtRequestService;
 exports.ɵba = MapComponent;
 exports.ɵq = ActionSortingStringPipe;
 exports.ɵn = ActionStatusStringPipe;
