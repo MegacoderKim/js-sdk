@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js",
     "pretty": "./node_modules/.bin/prettier --write \"packages/**/src/**/*.ts\"",
     "release": "lerna publish && lerna run copyback --scope=angular-components",
+    "build": "./build.sh",
     "lint": "tslint packages/client/src"
   },
   "private": true,
