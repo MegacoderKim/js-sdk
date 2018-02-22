@@ -10,13 +10,11 @@
     },
     "bootstrap": {
       "ignore": [
-        "ht-angular",
         "ht-webtracking"
       ]
     },
     "run": {
       "ignore": [
-        "ht-angular",
         "ht-webtracking",
         "tracking-url"
       ]

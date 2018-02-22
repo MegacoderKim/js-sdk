@@ -74,5 +74,8 @@
   "module": "esm5/ht-angular.js",
   "es2015": "esm2015/ht-angular.js",
   "typings": "ht-angular.d.ts",
-  "metadata": "ht-angular.metadata.json"
+  "metadata": "ht-angular.metadata.json",
+  "dependencies": {
+    "tslib": "^1.7.1"
+  }
 }
