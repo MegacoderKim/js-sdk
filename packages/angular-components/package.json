@@ -1,6 +1,6 @@
 {
   "name": "ht-angular",
-  "version": "0.2.19-0",
+  "version": "0.2.19",
   "repository": {
     "type": "git",
     "url": "https://github.com/hypertrack/ht-angular"
@@ -51,12 +51,12 @@
     "date-fns": "^1.29.0",
     "font-awesome": "^4.7.0",
     "frappe-charts": "0.0.8",
-    "ht-api": "^0.0.1-0",
-    "ht-client": "^0.1.6-0",
-    "ht-data": "^0.1.6-0",
-    "ht-maps": "^0.1.6-0",
-    "ht-models": "^0.0.17-0",
-    "ht-utility": "^0.1.4-0",
+    "ht-api": "^0.0.1",
+    "ht-client": "^0.1.6",
+    "ht-data": "^0.1.6",
+    "ht-maps": "^0.1.6",
+    "ht-models": "^0.0.17",
+    "ht-utility": "^0.1.4",
     "leaflet": "^1.2.0",
     "leaflet.heat": "^0.2.0",
     "leaflet.markercluster": "^1.2.0",
