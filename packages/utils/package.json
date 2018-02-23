@@ -19,6 +19,7 @@
   "dependencies": {
     "@types/underscore": "^1.8.6",
     "date-fns": "^1.29.0",
+    "jstz": "^2.0.0",
     "polyline-encoded": "0.0.8"
   },
   "devDependencies": {
