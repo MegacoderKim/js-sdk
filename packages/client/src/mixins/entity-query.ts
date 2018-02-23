@@ -14,7 +14,7 @@ export interface IListQueryBase {
   // allowedQueryKeys?: string[];
   allowedQueryMap?: IAllowedQueryMap[];
   getDefaultQuery(): object;
-  dateRangeQuery$?: DateRange;
+  dateRange?: DateRange;
   dateParam?: string;
   active$?: Observable<boolean>;
 }
@@ -35,7 +35,7 @@ export function listQueryMixin<TBase extends Constructor<IListQueryBase>>(
       let baseQuery$ = this.query$.pipe(
         AllowedQueryMap(this.allowedQueryMap),
         MergeQuery(this.getDefaultQuery()),
-        CombineQueries([this.dateRangeQuery$.data$.pipe(DateRangeToQuery$(this.dateParam)) || of({})])
+        CombineQueries([this.dateRange.data$.pipe(DateRangeToQuery$(this.dateParam)) || of({})])
       );
 
       return baseQuery$;

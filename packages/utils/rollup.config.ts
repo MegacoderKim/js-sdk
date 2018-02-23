@@ -9,7 +9,8 @@ const libraryName = 'ht-utility'
 
 var globals = {
   "date-fns": 'dateFns',
-  "underscore": "_"
+  "underscore": "_",
+  "jstz": "jstz"
 };
 
 export default {

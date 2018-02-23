@@ -43,9 +43,9 @@ export class HtRequest {
     }
 
     url(url: string, query = {}, isPure: boolean = false) {
+        if (isPure) return url;
         let string = HtQuerySerialize(query);
-        const base = isPure ? '' : this.baseUrl;
-        return base + url + "?" + string;
+        return this.baseUrl + url + "?" + string;
     }
 
     getObservable<T>(url, options: object = {}): Observable<T> {
