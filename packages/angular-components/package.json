@@ -36,7 +36,7 @@
     "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
     "copy:styles": "copyfiles -u 2 src/styles/**/* ./dist/src/styles",
     "doc": "typedoc -f --out doc src/app",
-    "postversion": "npm run lib",
+    "version": "./scripts/build.sh",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
