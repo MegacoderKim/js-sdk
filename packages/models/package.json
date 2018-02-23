@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && webpack --config webpack.config.js",
     "lib": "rimraf dist && webpack --config webpack.config.js",
+    "version": "npm run lib",
     "wbuild": "webpack -w --config webpack.config.js",
     "prepack": "npm run build"
   },
