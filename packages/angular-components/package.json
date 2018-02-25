@@ -1,5 +1,5 @@
 {
-  "name": "ht-angular",
+  "name": "ng-components",
   "version": "0.2.19",
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "rel": "ng-packagr -p ./src/ng-package.json && npm run copy:styles",
     "lib": "ng-packagr -p ng-package.json",
     "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
-    "copy:styles": "copyfiles -u 2 src/styles/**/* ./dist/src/styles",
+    "copy:styles": "copyfiles -u 2 src/styles/**/* ../ht-angular/src/styles",
     "doc": "typedoc -f --out doc src/app",
     "version": "npm run lib && ./scripts/build.sh",
     "storybook": "start-storybook -p 6006",

@@ -3,11 +3,13 @@
   "commands": {
     "publish": {
       "ignore": [
-        "*.md"
+        "*.md",
+        "ht-angular"
       ]
     },
     "bootstrap": {
       "ignore": [
+        "ht-angular"
       ]
     },
     "run": {
