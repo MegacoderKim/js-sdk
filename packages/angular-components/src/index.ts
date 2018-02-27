@@ -44,7 +44,7 @@ export { DateRangeModule} from "./app/filters/date-range/date-range.module";
 export {DateRangePickerModule} from "./app/date-range-picker/date-range-picker.module";
 export {DateRangePickerComponent, IDateRangePickerOptions, IDateStyle} from "./app/date-range-picker/date-range-picker.component";
 export {DateRangeComponent} from "./app/filters/date-range/date-range.component";
-
+export { UsersFilterModule } from "./app/filters/users-filter/users-filter.module"
 
 export * from "./app/ht/ht.module"
 

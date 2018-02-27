@@ -1,6 +1,6 @@
 <div class="filter-container flex-column" [@filter]="showFilter$ | async">
-  <ht-entity-search (onSearchQuery)="onQuery($event)"></ht-entity-search>
-  <div class="dropdown" htDropdown>
+  <ht-entity-search (onSearchQuery)="onQuery($event)" *ngIf="options.showSearch"></ht-entity-search>
+  <div class="dropdown" htDropdown *ngIf="options.showSorting">
     <button type="button" class="button dropdown-trigger flex-row row-gap-4">
       <span>Sorting</span>
       <ng-container *ngIf="ordering$ | async as ordering">
@@ -16,7 +16,7 @@
       </div>
     </div>
   </div>
-  <div class="dropdown is-hoverable">
+  <div class="dropdown is-hoverable" *ngIf="options.showFilter">
     <button id="dropdown-keyboard-access" type="button" class="button flex-row row-gap-4">
       <span>Filters</span> <i class="fa fa-filter"></i>
     </button>
@@ -27,7 +27,7 @@
 
     </div>
   </div>
-  <div class="flex flex-row row-gap-4" *ngIf="query$">
+  <div class="flex flex-row row-gap-4" *ngIf="query$ && options.showQueries">
     <div class="" *ngFor="let query of query$ | async as queries">
       <div class="tags has-addons">
         <div class="tag is-medium is-primary">{{query.label}}</div>
@@ -35,7 +35,7 @@
       </div>
     </div>
   </div>
-  <ht-date-range [isRight]="true"></ht-date-range>
+  <ht-date-range *ngIf="options.showDatePicker" [isRight]="true"></ht-date-range>
   <div class="loading-bar" *ngIf="loading$ | async">
     <ht-loading-bar></ht-loading-bar>
   </div>

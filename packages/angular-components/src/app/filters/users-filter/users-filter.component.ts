@@ -1,11 +1,8 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../../ht/ht-users.service";
 import {distinctUntilChanged, map, skip} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
-import {Observable} from "rxjs/Observable";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {empty} from "rxjs/observable/empty";
 
 @Component({
   selector: 'ht-users-filter',
@@ -33,10 +30,24 @@ export class UsersFilterComponent implements OnInit {
   sortingLabels;
   ordering$;
   showFilter$;
+  _options = {
+    showSearch: true,
+    showFilter: true,
+    showSorting: true,
+    showDatePicker: true,
+    showQueries: true
+  };
+  @Input() set options(options) {
+    this._options = {...options, ...this._options}
+  }
   constructor(
     private usersClientService: HtUsersService,
     private cd: ChangeDetectorRef
   ) { }
+
+  get options() {
+    return this._options
+  }
 
   ngOnInit() {
 
