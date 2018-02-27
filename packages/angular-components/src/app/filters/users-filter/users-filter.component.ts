@@ -1,11 +1,9 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, Optional} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../../ht/ht-users.service";
 import {distinctUntilChanged, map, skip} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {empty} from "rxjs/observable/empty";
 
 @Component({
   selector: 'ht-users-filter',
@@ -27,22 +25,39 @@ import {empty} from "rxjs/observable/empty";
   ]
 })
 export class UsersFilterComponent implements OnInit {
-  query$ = of(null);
-  loading$ = of(false);
+  query$: Observable<object> = of(null);
+  loading$: Observable<boolean> = of(false);
   statusFiltes;
   sortingLabels;
   ordering$;
   showFilter$;
+  _options = {
+    showSearch: true,
+    showFilter: true,
+    showSorting: true,
+    showDatePicker: true,
+    showQueries: true
+  };
+  @Input() usersClient;
+  @Input() set options(options) {
+    this._options = {...options, ...this._options}
+  }
   constructor(
-    private usersClientService: HtUsersService,
+    @Optional() private usersClientService: HtUsersService,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {
+    this.usersClient = this.usersClient || this.usersClientService
+  }
+
+  get options() {
+    return this._options
+  }
 
   ngOnInit() {
 
     setTimeout(() => {
-      this.query$ = this.usersClientService.queryLabel$;
-      this.loading$ = this.usersClientService.list.loading$
+      this.query$ = this.usersClient.queryLabel$;
+      this.loading$ = this.usersClient.list.loading$
         .pipe(
           skip(1),
           map(data => !!data),
@@ -52,20 +67,20 @@ export class UsersFilterComponent implements OnInit {
     });
 
 
-    this.statusFiltes = this.usersClientService.filterClass.statusQueryArray;
-    this.sortingLabels = this.usersClientService.filterClass.sortingQueryLabel;
-    this.ordering$ = this.usersClientService.ordering$;
-    this.showFilter$ = this.usersClientService.list.id$.pipe(
+    this.statusFiltes = this.usersClient.filterClass.statusQueryArray;
+    this.sortingLabels = this.usersClient.filterClass.sortingQueryLabel;
+    this.ordering$ = this.usersClient.ordering$;
+    this.showFilter$ = this.usersClient.list.id$.pipe(
       map((id) => !id ? 'show' : 'hide')
     );
   }
 
   onQuery(query) {
-    this.usersClientService.list.setQueryReset(query)
+    this.usersClient.list.setQueryReset(query)
   }
 
   clearQuery(key) {
-    this.usersClientService.list.clearQueryKey(key)
+    this.usersClient.list.clearQueryKey(key)
   }
 
   setStatus(key, event) {
