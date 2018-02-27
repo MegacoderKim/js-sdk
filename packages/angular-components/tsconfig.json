@@ -12,6 +12,10 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "ht-angular": ["src/ht-angular"]
+    },
     "lib": [
       "es2017",
       "dom"

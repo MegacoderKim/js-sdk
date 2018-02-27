@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { GroupsTestRoutingModule } from './groups-test-routing.module';
 import { GroupsTestComponent } from './groups-test.component';
-import {GroupsContainerModule} from "../groups-container/groups-container.module";
+import {GroupsContainerModule} from "ht-angular";
 import {RouterModule} from "@angular/router";
-import {GroupsChartContainerModule} from "../groups-chart-container/groups-chart-container.module";
+import {GroupsChartContainerModule} from "ht-angular";
 
 @NgModule({
   imports: [

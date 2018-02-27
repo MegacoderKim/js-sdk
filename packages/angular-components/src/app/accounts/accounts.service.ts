@@ -6,8 +6,8 @@ import {filter, skip, tap} from "rxjs/operators";
 import {StorageService} from "../internal/storage.service";
 import {GetSecretToken, getAuthHeaders} from "ht-data";
 import {Observable} from "rxjs/Observable";
-import {HtClientService} from "../ht/ht-client.service";
-import {HtAccountService} from "../ht/ht-account-users.service";
+import {HtClientService} from "ht-angular";
+import {HtAccountService} from "ht-angular";
 
 @Injectable()
 export class AccountsService {

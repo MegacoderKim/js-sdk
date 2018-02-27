@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TestPlacelineRoutingModule } from './test-placeline-routing.module';
 import { TestPlacelineComponent } from './test-placeline.component';
-import {PlacelineMapContainerModule} from "../placeline-map-container/placeline-map-container.module";
+import {PlacelineMapContainerModule} from "ht-angular";
 
 @NgModule({
   imports: [

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AccountsService} from "../accounts/accounts.service";
 import {IAccountUser} from "ht-models";
-import {HtClientService} from "../ht/ht-client.service";
+import {HtClientService} from "ht-angular";
 import {GetSecretToken} from "ht-data";
 
 @Component({

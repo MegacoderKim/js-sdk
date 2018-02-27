@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 
 import { TestRoutingModule } from './test-routing.module';
 import { TestComponent } from './test.component';
-import {MapModule} from "../map/map.module";
-import {MapContainerModule} from "../map-container/map-container.module";
-import {SharedModule} from "../shared/shared.module";
-import {UsersContainerModule} from "../users-container/users-container.module";
-import {UserCardModule} from "../user-card/user-card.module";
-import {PlacelineModule} from "../placeline/placeline.module";
-import {UsersMapContainerModule} from "../users-map-container/users-map-container.module";
-import {PlacelineContainerModule} from "../placeline-container/placeline-container.module";
-import {PlacelineMapContainerModule} from "../placeline-map-container/placeline-map-container.module";
-import {UsersSummaryContainerModule} from "../users-summary-container/users-summary-container.module";
-import {UsersListContainerModule} from "../users-list-container/users-list-container.module";
+import {MapModule} from "ht-angular";
+import {MapContainerModule} from "ht-angular";
+import {SharedModule} from "ht-angular";
+import {UsersContainerModule} from "ht-angular";
+import {UserCardModule} from "ht-angular";
+import {PlacelineModule} from "ht-angular";
+import {UsersMapContainerModule} from "ht-angular";
+import {PlacelineContainerModule} from "ht-angular";
+import {PlacelineMapContainerModule} from "ht-angular";
+import {UsersSummaryContainerModule} from "ht-angular";
+import {UsersListContainerModule} from "ht-angular";
 
 @NgModule({
   imports: [
