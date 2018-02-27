@@ -40,7 +40,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
   ]
 })
 export class DateRangeComponent implements OnInit {
-  @Input() dateRangeService$: DateRange = dateRangeService.getInstance();
+  @Input() dateRangeService: DateRange = dateRangeService.getInstance();
   @Input() isRight: boolean = false;
   @Input() showSingleDay: boolean = true;
   dateRange$;
@@ -63,9 +63,9 @@ export class DateRangeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dateRange$ = this.dateRangeService$.display$;
+    this.dateRange$ = this.dateRangeService.display$;
     // this.customDates$ = of(this.customDates);
-    this.dateRangeOptions$ = this.dateRangeService$.data$.pipe(
+    this.dateRangeOptions$ = this.dateRangeService.data$.pipe(
       map((dateRange: IDateRange) => {
         return this.customDates.filter(customRange => {
           return this.showSingleDay ? true : !customRange.isSingleDay;
@@ -79,7 +79,7 @@ export class DateRangeComponent implements OnInit {
   }
 
   setDateRange(range: IDateRange) {
-    this.dateRangeService$.setDateRange(range);
+    this.dateRangeService.setDateRange(range);
     setTimeout(() => {
       this.isActive = false;
       this.cd.detectChanges()

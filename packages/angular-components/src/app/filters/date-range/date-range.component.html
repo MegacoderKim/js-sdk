@@ -10,7 +10,7 @@
   <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
-        <ht-date-range-picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService$.data$ | async"></ht-date-range-picker>
+        <ht-date-range-picker [options]="{showSingleDay: showSingleDay, isRight: isRight}" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService.data$ | async"></ht-date-range-picker>
       </div>
     </div>
   </div>
