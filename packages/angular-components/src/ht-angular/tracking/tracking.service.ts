@@ -57,7 +57,7 @@ export class TrackingService {
   };
 
   handleOnUpdate(actions: IAction[]) {
-    console.log('On Actions update', actions);
+    // console.log('On Actions update', actions);
   };
 
   handleOnError(err: any | null) {
