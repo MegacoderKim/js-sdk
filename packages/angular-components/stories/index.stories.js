@@ -5,7 +5,7 @@ import { action } from '@storybook/addon-actions';
 import { DateRangePickerModule} from "../src/ht-angular/date-range-picker/date-range-picker.module"
 import { DateRangePickerComponent} from "../src/ht-angular/date-range-picker/date-range-picker.component"
 import {PaginationModule} from "../src/ht-angular/pagination/pagination.module"
-import {SharedModule} from "../src/app/shared/shared.module"
+import {SharedModule} from "../src/ht-angular/shared/shared.module"
 import {DateRangeMap} from "ht-data";
 import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
 
