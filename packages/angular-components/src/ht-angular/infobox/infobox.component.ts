@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MapService} from "../core/map-service";
 import {PopperContent} from "../popper/popper-content";
+import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'app-infobox',
@@ -15,7 +15,7 @@ export class InfoboxComponent implements OnInit {
     id: string,
     onUpdate?: any;
   };
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: HtMapService) { }
 
   ngOnInit() {
 
