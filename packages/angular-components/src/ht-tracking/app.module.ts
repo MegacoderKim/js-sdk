@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule} from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HtModule} from "ht-angular";
 
 // import * as Hammer from 'hammerjs';
 // import { HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
@@ -25,7 +26,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    HtModule.forRoot({token: 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c', mapType: 'leaflet'})
   ],
   // providers: [ {
   //   provide: HAMMER_GESTURE_CONFIG,

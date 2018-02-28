@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TrackingContainerRoutingModule } from './tracking-container-routing.module';
 import { TrackingContainerComponent } from './tracking-container.component';
-import {TrackingModule} from "../tracking/tracking.module";
+import {TrackingModule} from "ht-angular";
 
 @NgModule({
   imports: [
