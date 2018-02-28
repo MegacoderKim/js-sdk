@@ -11,11 +11,14 @@ import {HtAccountService} from "./ht-account-users.service";
 import {HtActionsService} from "./ht-actions.service";
 import {mapTypeService} from "ht-maps";
 import {htRequestService} from "ht-api";
+import {HtTrackingService} from "./ht-tracking.service";
 
 export var TOKEN = new InjectionToken('app.token');
+export var BASE_URL = new InjectionToken('app.baseUrl');
 
-export function requestServiceFactory(http, token) {
+export function requestServiceFactory(http, token, baseUrl) {
   const request = new HtRequestService(http, token);
+  request.baseUrl = baseUrl;
   return request
 }
 
@@ -45,6 +48,10 @@ export function accountUsersClientServiceFactory() {
   return new AccountsClient();
 }
 
+export function trackingClientServiceFactory(request) {
+  return new HtTrackingService(request);
+}
+
 @NgModule({
   imports: [HttpClientModule]
 })
@@ -57,7 +64,8 @@ export class HtModule {
         { provide: MAP_TYPE, useValue: config.mapType },
         { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
         { provide: TOKEN, useValue: config.token },
-        { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN]},
+        { provide: BASE_URL, useValue: config.baseUrl },
+        { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN, BASE_URL]},
         { provide: HtClientService,
           useFactory: clientServiceFactory,
           deps: [TOKEN, HtRequestService]
@@ -79,11 +87,22 @@ export class HtModule {
           useFactory: accountUsersClientServiceFactory
           // useClass: AccountsClient
         },
+        {
+          provide: HtTrackingService,
+          useFactory: trackingClientServiceFactory,
+          deps: [HtRequestService]
+        }
 
       ]
     };
 
   };
+};
+
+export interface HtModuleConfig {
+  mapType?: 'leaflet' | 'google',
+  token?: string,
+  baseUrl?: string
 }
 
 

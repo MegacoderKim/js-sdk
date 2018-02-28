@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
-const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
-import { IAction, ITrackAccount } from "ht-models";
-import {htRequestService, HtTrackingApi} from "ht-api";
-import {catchError, concatMap, expand, filter, tap} from "rxjs/operators";
-import {timer} from "rxjs/observable/timer";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {IAction, ITrackAccount, Page} from "ht-models";
+import {htRequestService, HtTrackingApi} from "ht-api";
+import {catchError, concatMap, expand, filter, map, tap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
+import {timer} from "rxjs/observable/timer";
+const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
 
 @Injectable()
-export class TrackingService {
+export class HtTrackingService {
   trackActions;
   isMapDirty: boolean = false;
   isSliding: boolean = false;
   trackApi;
   actions$: ReplaySubject<IAction[]> = new ReplaySubject();
   error$: ReplaySubject<any | null> = new ReplaySubject<any|null>();
-  constructor() {
-    this.setTrackApi()
+  constructor(request) {
+    this.setTrackApi(request)
   }
 
-  setTrackApi() {
-    const request = htRequestService.getInstance(HTPublishableKey);
-    request.setClientType('hypertrack/trct.at');
+  setTrackApi(request) {
+    // const request = htRequestService.getInstance(HTPublishableKey);
+    // request.setClientType('hypertrack/trct.at');
     this.trackApi = new HtTrackingApi(request)
   }
 
@@ -41,6 +41,9 @@ export class TrackingService {
             )
           })
         )
+      }),
+      map((data: Page<IAction>) => {
+        return data.results
       }),
       filter(data => {
         if (data) this.handleOnError(null);
