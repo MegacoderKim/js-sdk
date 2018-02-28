@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppShellComponent } from './app-shell.component';
+import { TrackingMapComponent } from './tracking-map.component';
 
-describe('AppShellComponent', () => {
-  let component: AppShellComponent;
-  let fixture: ComponentFixture<AppShellComponent>;
+describe('TrackingMapComponent', () => {
+  let component: TrackingMapComponent;
+  let fixture: ComponentFixture<TrackingMapComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppShellComponent ]
+      declarations: [ TrackingMapComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppShellComponent);
+    fixture = TestBed.createComponent(TrackingMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

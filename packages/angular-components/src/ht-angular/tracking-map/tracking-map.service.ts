@@ -1,25 +1,29 @@
-import { Injectable, InjectionToken } from '@angular/core';
-import { HtMapClass, MapInstance } from 'ht-maps';
-import {Subscription} from "rxjs/Subscription";
+import { Injectable } from '@angular/core';
+import {HtMapService} from "../ht/ht-map.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Subscription} from "rxjs/Subscription";
+import {MapInstance} from "ht-maps";
 
-export class MapService extends HtMapClass {
+@Injectable()
+export class TrackingMapService {
   checkDirtySub: Subscription;
   mapInstance: MapInstance;
   dirty$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   actionCompleted: boolean = false;
-  constructor(...args: any[]) {
-    super(...args);
+  constructor(public mapService: HtMapService) {
+    this.mapInstance = this.mapService.mapInstance
   }
+
   resetCleanMap(action) {
     if(!this.dirty$.getValue()) {
-      this.resetBounds()
+      this.mapService.resetBounds()
     }
     if(!this.checkDirtySub) {
       this.checkDirtySub = this.mapInstance.onEvent$('click mousedown dragstart')
         .subscribe(data => {
+          console.log("here");
           this.dirty$.next(true);
-      })
+        })
     }
   }
 
@@ -28,11 +32,9 @@ export class MapService extends HtMapClass {
   }
 
   onComplete(action) {
-    this.resetBounds();
+    this.mapService.resetBounds();
     this.dirty$.next(true);
     this.actionCompleted = true;
   }
 
-};
-
-export var MAP_TYPE = new InjectionToken('app.mapType');
+}

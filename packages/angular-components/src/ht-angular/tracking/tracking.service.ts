@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
 import { IAction, ITrackAccount } from "ht-models";
-import {Logger} from "../logger";
-import {checkUserAgent, getUserAgent, isRedirectedUrl} from '../helpers';
 import {htRequestService, HtTrackingApi} from "ht-api";
 import {catchError, concatMap, expand, filter, tap} from "rxjs/operators";
 import {timer} from "rxjs/observable/timer";
@@ -55,11 +53,11 @@ export class TrackingService {
   }
 
   handleOnReady(actions: IAction[]) {
-    Logger.log('On Actions ready', actions);
+    console.log('On Actions ready', actions);
   };
 
   handleOnUpdate(actions: IAction[]) {
-    Logger.log('On Actions update', actions);
+    console.log('On Actions update', actions);
   };
 
   handleOnError(err: any | null) {
@@ -67,40 +65,40 @@ export class TrackingService {
   }
 
   private handleDeepLinkRedirect(subAccount: ITrackAccount, action: IAction) {
-    const userAgent = getUserAgent();
-    const iosDeepLinkUrl = subAccount.account.ios_deeplink_url;
-    const androidDeepLinkUrl = subAccount.account.android_deeplink_url;
-    const actionId = action ? action.id : '';
-    const lookupId = action ? action.lookup_id : '';
-    if (!isRedirectedUrl()
-      && checkUserAgent.iOS(userAgent)
-      && iosDeepLinkUrl
-      && iosDeepLinkUrl !== '' && action.id)  {
-      const iosIntent = iosDeepLinkUrl + '?task_id=' + action.id;
-      const originalUrl = window.location.protocol + '://' + window.location.host + window.location.pathname;
-      window.location.href = iosIntent;
-      setTimeout(function() {
-          window.location.href = originalUrl + '?redirect=true';
-        },
-        5000);
-    } else if (!isRedirectedUrl()
-      && checkUserAgent.Android(getUserAgent())
-      && (checkUserAgent.Chrome(getUserAgent())
-        || checkUserAgent.Firefox(getUserAgent())
-      )
-      && androidDeepLinkUrl
-      && androidDeepLinkUrl !== '' && actionId) {
-      let queryParams = '?task_id=' + actionId;
-      if (lookupId) {
-        queryParams = queryParams + '&order_id=' + lookupId;
-      }
-      const fallbackUrl = window.location.protocol + '://'
-        + window.location.host + window.location.pathname + '?redirect=true';
-      const androidIntent = 'intent:' + queryParams
-        + '#Intent;scheme=' + androidDeepLinkUrl
-        + ';S.browser_fallback_url=' + fallbackUrl + ';end';
-      window.location.href = androidIntent;
-    }
+    // const userAgent = getUserAgent();
+    // const iosDeepLinkUrl = subAccount.account.ios_deeplink_url;
+    // const androidDeepLinkUrl = subAccount.account.android_deeplink_url;
+    // const actionId = action ? action.id : '';
+    // const lookupId = action ? action.lookup_id : '';
+    // if (!isRedirectedUrl()
+    //   && checkUserAgent.iOS(userAgent)
+    //   && iosDeepLinkUrl
+    //   && iosDeepLinkUrl !== '' && action.id)  {
+    //   const iosIntent = iosDeepLinkUrl + '?task_id=' + action.id;
+    //   const originalUrl = window.location.protocol + '://' + window.location.host + window.location.pathname;
+    //   window.location.href = iosIntent;
+    //   setTimeout(function() {
+    //       window.location.href = originalUrl + '?redirect=true';
+    //     },
+    //     5000);
+    // } else if (!isRedirectedUrl()
+    //   && checkUserAgent.Android(getUserAgent())
+    //   && (checkUserAgent.Chrome(getUserAgent())
+    //     || checkUserAgent.Firefox(getUserAgent())
+    //   )
+    //   && androidDeepLinkUrl
+    //   && androidDeepLinkUrl !== '' && actionId) {
+    //   let queryParams = '?task_id=' + actionId;
+    //   if (lookupId) {
+    //     queryParams = queryParams + '&order_id=' + lookupId;
+    //   }
+    //   const fallbackUrl = window.location.protocol + '://'
+    //     + window.location.host + window.location.pathname + '?redirect=true';
+    //   const androidIntent = 'intent:' + queryParams
+    //     + '#Intent;scheme=' + androidDeepLinkUrl
+    //     + ';S.browser_fallback_url=' + fallbackUrl + ';end';
+    //   window.location.href = androidIntent;
+    // }
   }
 
 }

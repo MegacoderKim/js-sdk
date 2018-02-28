@@ -1,7 +1,6 @@
 import {AfterContentInit, Component, Input, OnInit, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {MapService} from '../core/map-service';
 import { ActionTrace, DestinationMarker } from "ht-maps";
 import {debounceTime, filter, map, take, takeUntil} from 'rxjs/operators';
 import {ComponentPortal} from "@angular/cdk/portal";
@@ -10,6 +9,8 @@ import Popper from 'popper.js';
 import {Color} from "ht-utility";
 import {IAction} from "ht-models";
 import {Observable} from "rxjs/Observable";
+import {HtMapService} from "../ht/ht-map.service";
+import {TrackingMapService} from "../tracking-map/tracking-map.service";
 
 @Component({
   selector: 'app-tracking',
@@ -37,7 +38,8 @@ export class TrackingComponent implements OnInit, AfterContentInit {
   // actionSummaryComponent;
   constructor(
     private trackinService: TrackingService,
-    private mapService: MapService,
+    private mapService: HtMapService,
+    private trackingMapService: TrackingMapService
   ) {
   }
 
@@ -90,14 +92,14 @@ export class TrackingComponent implements OnInit, AfterContentInit {
       takeUntil(completedAction$)
     ).subscribe((action) => {
       this.loading = false;
-      this.mapService.resetCleanMap(action)
+      this.trackingMapService.resetCleanMap(action)
     });
 
     completedAction$.subscribe((action) => {
       this.loading = false;
       this.actionsTrace.polyline.toIncludeInBounds = true;
       this.actionsTrace.start.toIncludeInBounds = true;
-      this.mapService.onComplete(action);
+      this.trackingMapService.onComplete(action);
     });
 
     this.startPopup$ = completedAction$.pipe(

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActionSummaryComponent } from './action-summary.component';
-import {SharedModule} from "ht-angular";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   imports: [

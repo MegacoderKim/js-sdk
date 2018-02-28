@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {PopperContent} from "../popper/popper-content";
-import {MapService} from "../core/map-service";
 import {IAction, IPlace} from "ht-models";
+import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'app-destination-popup',
@@ -15,7 +15,7 @@ export class DestinationPopupComponent implements OnInit, AfterViewInit {
     data: any,
     elem: HTMLElement
   };
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: HtMapService) { }
 
   ngOnInit() {
 

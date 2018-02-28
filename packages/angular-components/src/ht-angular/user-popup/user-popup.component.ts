@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { IAction } from "ht-models";
 import {PopperContent} from "../popper/popper-content";
-import {MapService} from "../core/map-service";
+import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'app-user-popup',
@@ -19,7 +19,7 @@ export class UserPopupComponent implements OnInit {
   @ViewChild(PopperContent) popper: PopperContent;
   opened: boolean = false;
   constructor(
-    private mapService: MapService
+    private mapService: HtMapService
   ) { }
 
   ngOnInit() {
