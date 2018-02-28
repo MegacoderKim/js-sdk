@@ -9,6 +9,7 @@ import {UserPopupModule} from "../user-popup/user-popup.module";
 import {ActionStatusModule} from "../action-status/action-status.module";
 import {StartPopupModule} from "../start-popup/start-popup.module";
 import {TrackingMapModule} from "../tracking-map/tracking-map.module";
+import {InfoboxModule} from "../infobox/infobox.module";
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import {TrackingMapModule} from "../tracking-map/tracking-map.module";
     DestinationPopupModule,
     UserPopupModule,
     ActionStatusModule,
-    StartPopupModule
+    StartPopupModule,
+    InfoboxModule
   ],
   declarations: [TrackingComponent],
   exports: [TrackingComponent],

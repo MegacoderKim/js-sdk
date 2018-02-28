@@ -10,11 +10,8 @@ import {HtMapService} from "../ht/ht-map.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DestinationPopupComponent implements OnInit, AfterViewInit {
-  @ViewChild(PopperContent) popper: PopperContent;
-  @Input() item: {
-    data: any,
-    elem: HTMLElement
-  };
+  // @ViewChild(PopperContent) popper: PopperContent;
+  @Input() action: IAction;
   constructor(private mapService: HtMapService) { }
 
   ngOnInit() {
@@ -22,11 +19,11 @@ export class DestinationPopupComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    const mapUtils = this.mapService.mapInstance.mapUtils;
-    const map = this.mapService.mapInstance.map;
-    mapUtils.onEvent(map, 'move', () => {
-      this.popper.scheduleUpdate();
-    });
+    // const mapUtils = this.mapService.mapInstance.mapUtils;
+    // const map = this.mapService.mapInstance.map;
+    // mapUtils.onEvent(map, 'move', () => {
+    //   this.popper.scheduleUpdate();
+    // });
   };
 
   getDestinationName(action: IAction): string {
