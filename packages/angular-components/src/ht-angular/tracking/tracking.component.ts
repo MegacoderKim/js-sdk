@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Input, OnInit, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
+import {AfterContentInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import { ActionTrace, DestinationMarker } from "ht-maps";
@@ -67,6 +67,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     );
 
     this.userPopup$ = this.actionsData$.pipe(
+      debounceTime(100), //todo fix this null elem on first render
       map((data) => {
         const entities = this.actionsTrace.user.entities;
         const keys = Object.keys(entities);
@@ -74,6 +75,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
         return keys.reduce((acc, key) => {
           const entity = entities[key];
           const elem = mapUtils.getElement(entity.item);
+          // console.log("elem", elem);
           const onUpdate = this.actionsTrace.user.onEntityUpdate(key);
           return elem ? [...acc, {data: entity.data, elem, id: key, onUpdate}] : acc
         }, [])

@@ -21,7 +21,6 @@ export class TrackingMapService {
     if(!this.checkDirtySub) {
       this.checkDirtySub = this.mapInstance.onEvent$('click mousedown dragstart')
         .subscribe(data => {
-          console.log("here");
           this.dirty$.next(true);
         })
     }
