@@ -49,7 +49,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "ht",
       "styles": [
-        "styles.scss"
+        "styles.scss",
+        "assets/css/ionicons/ionicons.scss"
       ],
       "scripts": [
 
