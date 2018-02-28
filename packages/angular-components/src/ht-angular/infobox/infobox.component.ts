@@ -32,4 +32,8 @@ export class InfoboxComponent implements OnInit {
     })
   };
 
+  onClick(e) {
+    this.popper.scheduleUpdate();
+  }
+
 }

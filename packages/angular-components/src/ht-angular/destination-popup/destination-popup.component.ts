@@ -1,7 +1,5 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {PopperContent} from "../popper/popper-content";
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IAction, IPlace} from "ht-models";
-import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'app-destination-popup',
@@ -9,22 +7,13 @@ import {HtMapService} from "../ht/ht-map.service";
   styleUrls: ['./destination-popup.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DestinationPopupComponent implements OnInit, AfterViewInit {
-  // @ViewChild(PopperContent) popper: PopperContent;
+export class DestinationPopupComponent implements OnInit {
   @Input() action: IAction;
-  constructor(private mapService: HtMapService) { }
+  constructor() { }
 
   ngOnInit() {
 
   }
-
-  ngAfterViewInit() {
-    // const mapUtils = this.mapService.mapInstance.mapUtils;
-    // const map = this.mapService.mapInstance.map;
-    // mapUtils.onEvent(map, 'move', () => {
-    //   this.popper.scheduleUpdate();
-    // });
-  };
 
   getDestinationName(action: IAction): string {
     const place: IPlace = action.completed_place || action.expected_place;

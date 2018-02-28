@@ -10,8 +10,12 @@
 <app-infobox [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId">
   <app-destination-popup [action]="item.data"></app-destination-popup>
 </app-infobox>
-<app-user-popup [item]="item" *ngFor="let item of userPopup$ | async; trackBy: trackId"></app-user-popup>
-<app-start-popup [item]="item" *ngFor="let item of startPopup$ | async; trackBy: trackId"></app-start-popup>
+<app-infobox [item]="item" *ngFor="let item of userPopup$ | async; trackBy: trackId">
+  <app-user-popup [action]="item.data"></app-user-popup>
+</app-infobox>
+<app-infobox [item]="item" *ngFor="let item of startPopup$ | async; trackBy: trackId">
+  <app-start-popup [action]="item.data"></app-start-popup>
+</app-infobox>
 <div class="is-overlay" *ngIf="loading" [@fade]>
   <div id="root">
     <div class="loading-container">

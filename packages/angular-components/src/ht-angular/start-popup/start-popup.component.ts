@@ -1,7 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {PopperContent} from "../popper/popper-content";
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IAction, IPlace} from "ht-models";
-import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'app-start-popup',
@@ -10,25 +8,12 @@ import {HtMapService} from "../ht/ht-map.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StartPopupComponent implements OnInit {
-  @Input() item: {
-    data: any,
-    elem: HTMLElement,
-    id: string
-  };
-  @ViewChild(PopperContent) popper: PopperContent;
-  constructor(private mapService: HtMapService) { }
+  @Input() action: IAction;
+  constructor() { }
 
   ngOnInit() {
 
   }
-
-  ngAfterViewInit() {
-    const mapUtils = this.mapService.mapInstance.mapUtils;
-    const map = this.mapService.mapInstance.map;
-    mapUtils.onEvent(map, 'move', () => {
-      this.popper.scheduleUpdate();
-    });
-  };
 
   getStartName(action: IAction): string {
     const place: IPlace = action.started_place;
