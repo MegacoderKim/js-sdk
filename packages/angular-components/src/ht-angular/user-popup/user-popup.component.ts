@@ -1,7 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import { IAction } from "ht-models";
-import {PopperContent} from "../popper/popper-content";
-import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
   selector: 'app-user-popup',
@@ -10,36 +8,16 @@ import {HtMapService} from "../ht/ht-map.service";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPopupComponent implements OnInit {
-  @Input() item: {
-    data: IAction,
-    elem: HTMLElement,
-    id: string,
-    onUpdate?: any;
-  };
-  @ViewChild(PopperContent) popper: PopperContent;
+  @Input() action: IAction;
   opened: boolean = false;
-  constructor(
-    private mapService: HtMapService
-  ) { }
+  constructor() { }
 
   ngOnInit() {
-  }
 
-  ngAfterViewInit() {
-    const mapUtils = this.mapService.mapInstance.mapUtils;
-    const map = this.mapService.mapInstance.map;
-    mapUtils.onEvent(map, 'move', () => {
-      this.popper.scheduleUpdate();
-    });
-
-    if (this.item.onUpdate) this.item.onUpdate.subscribe((entity) => {
-      this.popper.scheduleUpdate();
-    })
   }
 
   openCard() {
     this.opened = !this.opened;
-    this.popper.scheduleUpdate();
   }
 
 }
