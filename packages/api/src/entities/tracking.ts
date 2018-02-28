@@ -21,21 +21,7 @@ export class HtTrackingApi extends HtBaseApi {
         if(trackKey) {
             const query = {[trackKey]: id};
             const path = `${this.base}/track/`;
-            return this.api$(path, query).pipe(
-                map((data: Page<ITrackAction>) => {
-                    let actions: IAction[] = [];
-                    data.results.forEach((result: ITrackAction) => {
-                        let actionsWithAccount = result.actions.map((action: IAction) => {
-                            return {
-                                ...action,
-                                account: result.account
-                            };
-                        });
-                        actions.push(...actionsWithAccount);
-                    });
-                    return actions;
-                })
-            );
+            return this.api$(path, query);
         } else {
             console.error('Invalid Tracking type ' + idType)
         }
