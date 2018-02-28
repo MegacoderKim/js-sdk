@@ -1,0 +1,28 @@
+<ht-tracking-map [showSummary]="mapService.actionCompleted">
+  <ng-container *ngFor="let action of actionsData$ | async; trackBy: trackId">
+    <app-action-summary *ngIf="action.display.show_summary; else status" [action]="action"></app-action-summary>
+    <ng-template #status>
+      <app-action-status [action]="action"></app-action-status>
+    </ng-template>
+  </ng-container>
+
+</ht-tracking-map>
+<app-infobox [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId">
+  <app-destination-popup [action]="item.data"></app-destination-popup>
+</app-infobox>
+<app-infobox [item]="item" *ngFor="let item of userPopup$ | async; trackBy: trackId">
+  <app-user-popup [action]="item.data"></app-user-popup>
+</app-infobox>
+<app-infobox [item]="item" *ngFor="let item of startPopup$ | async; trackBy: trackId">
+  <app-start-popup [action]="item.data"></app-start-popup>
+</app-infobox>
+<div class="is-overlay" *ngIf="loading" [@fade]>
+  <div id="root">
+    <div class="loading-container">
+      <div class="loading-section">
+        <div class="loading-section-ht-logo-pale"></div>
+        <div class="loading-section-ht-logo"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+@import "../../styles/variables";
+.truncate {
+  max-width: 217px;
+  justify-content: baseline;
+}
+
+.card {
+  border-top-left-radius: $summary-radius;
+  border-top-right-radius: $summary-radius;
+}

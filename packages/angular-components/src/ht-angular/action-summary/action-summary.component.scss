@@ -1,0 +1,19 @@
+@import "../../styles/variables";
+
+.card {
+  border-top-left-radius: $summary-radius;
+  border-top-right-radius: $summary-radius;
+}
+
+.check {
+  font-size: 2rem;
+  color: #00C94B;
+}
+
+.divider {
+  border: 1px solid #bfbfbf;
+}
+
+.truncate {
+  max-width: 140px;
+}

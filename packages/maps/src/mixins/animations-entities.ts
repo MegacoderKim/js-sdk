@@ -58,7 +58,6 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
           .updateEvent
           .subscribe('update', ({path, bearing}) => {
             const entity = this.getEntity(id);
-            if (this['name'] == "action user") console.log("id sub", entity);
             if (entity) {
               super.update(entity, {path, bearing})
             }

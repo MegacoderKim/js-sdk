@@ -1,0 +1,9 @@
+<ng-container *ngIf="mapInstance">
+  <ht-map (onMapReset)="trackingMapService.resetMap()" [setBoundsOptions]="setBoundsOptions" [showReset]="dirty$ | async" [mapInstance]="mapInstance"></ht-map>
+</ng-container>
+<div class="card-bottom" #card >
+  <div class="card-bottom-content">
+    <ng-content></ng-content>
+  </div>
+</div>
+
