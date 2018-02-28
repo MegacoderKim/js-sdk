@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {htClientService} from "ht-client";
-import {HtClientService} from "../ht/ht-client.service";
+import {HtClientService} from "ht-angular";
 
 @Component({
   selector: 'ht-group-test',

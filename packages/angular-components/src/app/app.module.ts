@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // require('leaflet');
 
-import { HtModule } from "./ht/ht.module";
+import { HtModule } from "ht-angular";
 import {ModalModule} from "./modal/modal.module";
 import {InternalModule} from "./internal/internal.module";
 import {environment} from "../environments/environment";

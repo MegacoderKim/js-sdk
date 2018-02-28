@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import Chart from "frappe-charts/dist/frappe-charts.min.esm"
-import {untilDestroy} from "../until-destroy";
 import {ActionsStatusGraphService} from "./actions-status-graph.service";
+import {untilDestroy} from "../until-destroy";
 // import {filter} from "rxjs/operators";
 
 

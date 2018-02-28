@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {HtUsersService} from "../ht/ht-users.service";
+import {HtUsersService} from "ht-angular";
 import {actionsClientFactory, usersClientFactory, dateRangeFactory} from "ht-client";
 import {DateRangeMap} from "ht-data";
 import {ActionsHeatmapTrace} from "ht-maps";
-import {HtMapService} from "../ht/ht-map.service";
-import {HtActionsService} from "../ht/ht-actions.service";
+import {HtMapService} from "ht-angular";
+import {HtActionsService} from "ht-angular"
 
 @Component({
   selector: 'ht-test',

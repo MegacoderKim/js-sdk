@@ -6,7 +6,6 @@ import {ModalComponent} from "./modal/modal.component";
 import {environment} from "../environments/environment";
 
 const routes: Routes = [
-  // { path: 'ui', component: UikitComponent},
   { path: 'users', loadChildren: "./test/test.module#TestModule"},
   { path: 'users', loadChildren: "./test-placeline/test-placeline.module#TestPlacelineModule"},
   { path: 'groups', loadChildren: "./groups-test/groups-test.module#GroupsTestModule"},

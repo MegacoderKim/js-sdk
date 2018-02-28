@@ -3,7 +3,7 @@ import {Observable} from "rxjs/Observable";
 import {Observer} from "rxjs/Observer";
 import {IGroup, Page} from "ht-models";
 import {Injectable} from "@angular/core";
-import {HtGroupsService} from "../ht/ht-groups.service";
+import {HtGroupsService} from "ht-angular";
 import {map, switchMap, take} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 

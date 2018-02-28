@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {QueryLabel} from "ht-client";
 import {Color, GetUrlParam} from "ht-utility";
-import {HtClientService} from "./ht/ht-client.service";
+import {HtClientService} from "ht-angular";
 
 @Component({
   selector: 'ht-root',

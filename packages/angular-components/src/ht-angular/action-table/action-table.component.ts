@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IAction} from "ht-models";
 import { tableFormat, actionTableFormat } from "ht-data"
+
 @Component({
   selector: 'ht-action-table',
   templateUrl: './action-table.component.html',
