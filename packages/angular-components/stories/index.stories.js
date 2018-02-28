@@ -5,9 +5,13 @@ import { action } from '@storybook/addon-actions';
 import { DateRangePickerModule} from "../src/ht-angular/date-range-picker/date-range-picker.module"
 import { DateRangePickerComponent} from "../src/ht-angular/date-range-picker/date-range-picker.component"
 import {PaginationModule} from "../src/ht-angular/pagination/pagination.module"
+import {ActionSummaryModule} from "../src/ht-angular/action-summary/action-summary.module"
 import {SharedModule} from "../src/ht-angular/shared/shared.module"
 import {DateRangeMap} from "ht-data";
 import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+import "../src/assets/css/ionicons/ionicons.css"
 
 storiesOf('Date range picker', module).add('Basic', () => ({
   template: `
@@ -30,6 +34,7 @@ storiesOf('Date range picker', module).add('Basic', () => ({
     imports: [DateRangePickerModule, SharedModule],
   }
 }));
+
 storiesOf('Pagination', module).add('Basic', () => ({
   template: `
     <ht-pagination [pageDate]="data" [pageSize]="pageSize" (fetchPage)="pageChange($event)"></ht-pagination>
@@ -51,4 +56,24 @@ storiesOf('Pagination', module).add('Basic', () => ({
   moduleMetadata: {
     imports: [PaginationModule]
   }
+}));
+
+storiesOf('Action summary', module).add('Basic', () => ({
+  template: `
+    <app-action-summary [action]="action"></app-action-summary>
+  `,
+  props: {
+    action: {
+      type: 'task',
+      distance: 3000,
+      duration: 3000,
+      user: {
+        name: "Sunil"
+      }
+    },
+  },
+  moduleMetadata: {
+    imports: [ActionSummaryModule, BrowserAnimationsModule, SharedModule]
+  }
 }))
+
