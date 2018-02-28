@@ -1,12 +1,8 @@
-import {AfterContentInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
+import {AfterContentInit, Component, Input, OnInit} from '@angular/core';
 import { TrackingService } from './tracking.service';
 import {animate, style, transition, trigger} from '@angular/animations';
-import { ActionTrace, DestinationMarker } from "ht-maps";
+import { ActionTrace } from "ht-maps";
 import {debounceTime, filter, map, take, takeUntil} from 'rxjs/operators';
-import {ComponentPortal} from "@angular/cdk/portal";
-import {PopperContent} from "../popper/popper-content";
-import Popper from 'popper.js';
-import {Color} from "ht-utility";
 import {IAction} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {HtMapService} from "../ht/ht-map.service";
