@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HtMapService} from "../ht/ht-map.service";
 import {TrackingMapService} from "./tracking-map.service";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 @Component({
   selector: 'ht-tracking-map',
