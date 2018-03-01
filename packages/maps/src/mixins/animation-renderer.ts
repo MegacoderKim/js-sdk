@@ -21,7 +21,7 @@ export function AnimationMixin<TBase extends Constructor<IAnimationBase>>(Base: 
     // item;
 
     setTimeAwareAnimation (animation: TimeAwareAnimation) {
-      this.animation = animation || this.animation;
+      this.animation = animation || new TimeAwareAnimation();
       this.animation.updateEvent.subscribe('update', ({path, bearing}) => {
         let entity = this.getEntity();
         if(entity) this.update(entity, {path, bearing})
