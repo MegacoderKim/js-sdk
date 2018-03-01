@@ -61,7 +61,7 @@
     "leaflet.heat": "^0.2.0",
     "leaflet.markercluster": "^1.2.0",
     "popper.js": "^1.12.5",
-    "time-aware-polyline": "^0.0.3",
+    "time-aware-polyline": "^0.0.8",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
