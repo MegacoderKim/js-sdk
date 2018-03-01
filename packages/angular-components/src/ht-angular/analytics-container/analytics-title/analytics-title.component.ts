@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class AnalyticsTitleComponent implements OnInit {
   @Input() title: string;
-  @Input() dateRangeService$;
+  @Input() dateRangeService;
   @Input() hideDatePicker;
   constructor() { }
 

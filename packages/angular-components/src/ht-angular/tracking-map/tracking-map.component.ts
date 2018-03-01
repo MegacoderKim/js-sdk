@@ -33,7 +33,7 @@ export class TrackingMapComponent implements OnInit {
     //   }});
   }
 
-  get dirty$() {
+  get dirty$(): BehaviorSubject<boolean> {
     return this.trackingMapService.dirty$
   }
 
