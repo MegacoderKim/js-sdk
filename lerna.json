@@ -14,11 +14,13 @@
     },
     "run": {
       "ignore": [
-        "tracking-url"
+        "tracking-url",
+        "ht-angular"
       ]
     },
     "exec": {
       "ignore": [
+        "ht-angular"
       ]
     }
   },
