@@ -14,7 +14,8 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "ht-angular": ["src/ht-angular"]
+      "ht-angular": ["src/ht-angular"],
+      "@angular/elements": ["src/@angular/elements"]
     },
     "lib": [
       "es2017",
