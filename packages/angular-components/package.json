@@ -1,6 +1,6 @@
 {
   "name": "ng-components",
-  "version": "0.2.20-2",
+  "version": "0.2.20-3",
   "repository": {
     "type": "git",
     "url": "https://github.com/hypertrack/ht-angular"
@@ -51,12 +51,12 @@
     "date-fns": "^1.29.0",
     "font-awesome": "^4.7.0",
     "frappe-charts": "0.0.8",
-    "ht-api": "^0.0.2",
-    "ht-client": "^0.1.7",
-    "ht-data": "^0.1.7",
-    "ht-maps": "^0.1.7-1",
-    "ht-models": "^0.0.18",
-    "ht-utility": "^0.1.5",
+    "ht-api": "^0.0.3",
+    "ht-client": "^0.1.8",
+    "ht-data": "^0.1.8",
+    "ht-maps": "^0.1.8",
+    "ht-models": "^0.0.19",
+    "ht-utility": "^0.1.6",
     "leaflet": "^1.2.0",
     "leaflet.heat": "^0.2.0",
     "leaflet.markercluster": "^1.2.0",
