@@ -1,4 +1,4 @@
-<ht-tracking-map [showSummary]="mapService.actionCompleted">
+<ht-tracking-map [showSummary]="trackingMapService.actionCompleted">
   <ng-container *ngFor="let action of actionsData$ | async; trackBy: trackId">
     <app-action-summary *ngIf="action.display.show_summary; else status" [action]="action"></app-action-summary>
     <ng-template #status>
