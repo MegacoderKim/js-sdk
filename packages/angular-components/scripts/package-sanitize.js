@@ -1,7 +1,7 @@
 fs = require('fs');
 var path = require('path');
 
-var jsonPath = path.join(__dirname, '..', '..', 'ht-angular', 'package.json');
+var jsonPath = path.join(__dirname, '..', 'src', 'package.json');
 
 var m = JSON.parse(fs.readFileSync(jsonPath).toString());
 delete m.devDependencies;
