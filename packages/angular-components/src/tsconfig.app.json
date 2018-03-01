@@ -13,6 +13,9 @@
       "@angular/*": [
         "../node_modules/@angular/*"
       ],
+      "ht-angular": [
+        "../libs/ht-angular/index"
+      ],
       "rxjs/*": [
         "../node_modules/rxjs/*"
       ],

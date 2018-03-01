@@ -24,7 +24,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "npm run lib && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
+    "build": "npm run lib && typedoc --out dist/docs --target es6 --theme minimal --mode file libs",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -32,10 +32,10 @@
     "bundle-report": "npm run build:stats && webpack-bundle-analyzer dist/stats.json",
     "dist": "rimraf dist && gulp build",
     "package-sanitize": "node ./scripts/package-sanitize.js",
-    "lib": "npm run package-sanitize && ng-packagr -p ./src/ng-package.json && npm run copy:styles",
+    "lib": "npm run package-sanitize && ng-packagr -p ./libs/ng-package.json && npm run copy:styles",
     "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
-    "copy:styles": "copyfiles -u 2 src/styles/**/* ../ht-angular/src/styles",
-    "doc": "typedoc -f --out doc src/app",
+    "copy:styles": "copyfiles -u 2 libs/styles/**/* ../ht-angular/src/styles",
+    "doc": "typedoc -f --out doc libs/ht-angular",
     "version": "npm run lib && ./scripts/build.sh",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
