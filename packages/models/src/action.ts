@@ -21,6 +21,7 @@ export interface IAction {
   distance: number | null;
   duration: number | null;
   created_at: string;
+  started_at: string;
   started_place: IPlace,
   completed_place: IPlace;
   completed_at: string | null;
