@@ -1,6 +1,6 @@
 {
   "name": "ht-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "HyperTrack apis",
   "main": "dist/ht-api_browser.js",
   "module": "dist/ht-api.es5.js",
@@ -14,8 +14,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ht-models": "^0.0.17",
-    "ht-utility": "^0.1.4"
+    "ht-models": "^0.0.18",
+    "ht-utility": "^0.1.5"
   },
   "devDependencies": {
     "rollup": "^0.55.5"
