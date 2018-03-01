@@ -13,7 +13,8 @@
       "node_modules/@types"
     ],
     "paths": {
-      "ht-angular": ["../libs/ht-angular"]
+      "ht-angular": ["../libs/ht-angular"],
+      "@angular/elements": ["../libs/@angular/elements"]
     },
     "lib": [
       "es2017",

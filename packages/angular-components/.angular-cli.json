@@ -62,9 +62,9 @@
       }
     },
     {
-      "root": "src",
-      "outDir": "dist",
-      "appRoot": "ht-angular",
+      "root": "libs",
+      "outDir": "build",
+      "appRoot": "elements-module",
       "name": "lib",
       "assets": [
         "assets",
@@ -74,7 +74,7 @@
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "tsconfig.lib.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "ht",
       "styles": [
@@ -84,7 +84,34 @@
         "../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
       ],
       "scripts": [
-        "js/richmarkers.js"
+
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "root": "libs",
+      "outDir": "build",
+      "appRoot": "elements-module",
+      "name": "lib",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.lib.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "ht",
+      "styles": [
+        "styles.scss"
+      ],
+      "scripts": [
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

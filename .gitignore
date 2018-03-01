@@ -52,6 +52,7 @@ node_modules
 /packages/**/node_modules/
 /examples/node_modules/
 /packages/**/dist/
+/packages/**/build/
 /packages/ht-angular
 
 /packages/**/src/environments/environment.release.ts
