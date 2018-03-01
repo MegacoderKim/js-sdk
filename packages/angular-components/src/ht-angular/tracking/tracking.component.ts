@@ -34,7 +34,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
   // actionSummaryComponent;
   constructor(
     private trackinService: TrackingService,
-    private mapService: HtMapService,
+    public mapService: HtMapService,
     private trackingMapService: TrackingMapService
   ) {
   }
