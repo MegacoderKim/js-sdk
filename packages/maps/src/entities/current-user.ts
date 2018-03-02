@@ -8,7 +8,6 @@ import {
   itemsFactory,
   mapItemsFactory
 } from "../base/map-items-factory";
-import { point } from "leaflet";
 import {MapInstance} from "../map-utils/map-instance";
 import {SingleItemMixin} from "../mixins/single-item";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";

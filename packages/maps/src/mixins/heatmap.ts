@@ -1,6 +1,6 @@
 import { Constructor, Entities } from "../interfaces";
 import { HtPosition } from "ht-models";
-import {leafletHeat} from "../map-utils/leaflet.heatmap";
+import {leafletHeat} from "../../../leaflet-wrapper/src/wrappers/leaflet.heatmap";
 import {HtBounds} from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 

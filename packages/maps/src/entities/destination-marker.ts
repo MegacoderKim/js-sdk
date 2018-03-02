@@ -6,7 +6,6 @@ import {MapInstance} from "../map-utils/map-instance";
 import {IAction, IPlace, HtPosition} from "ht-models";
 import {Entity, StyleFunct} from "../interfaces";
 import {IPathBearingTime} from "ht-models";
-import {LatLngBounds} from "leaflet";
 import {CircleMixin} from "../mixins/circle-renderer";
 import {Color} from "ht-utility";
 import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-observable";
@@ -16,6 +15,7 @@ import { Observable } from "rxjs/Observable";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {HtBounds} from "ht-map-wrapper";
 
 export class DestinationMap {
   mapInstance: MapInstance;

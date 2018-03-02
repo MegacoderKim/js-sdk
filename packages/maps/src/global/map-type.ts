@@ -1,6 +1,6 @@
 import {HtMapType} from "ht-map-wrapper";
 import {GoogleMapUtilsClass} from "../map-utils/google-map-utils";
-import {LeafletMapUtilsClass} from "../map-utils/leaflet-map-utils";
+import {LeafletMapUtilsClass} from "../../../leaflet-wrapper/src/wrappers/leaflet-map-utils";
 
 export const mapTypeService = (() => {
   var instance;

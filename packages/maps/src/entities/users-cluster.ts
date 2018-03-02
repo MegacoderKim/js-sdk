@@ -8,7 +8,6 @@ import {
   itemsFactory,
   mapItemsFactory
 } from "../base/map-items-factory";
-import { point } from "leaflet";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
