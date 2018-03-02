@@ -45,6 +45,9 @@ export class HtMapClass {
     options: HtMapClassOptions = {}
   ) {
     mapTypeService.getInstance(mapType);
+    if(options.mapKey) {
+      // mapTypeService.getInstance().setKey(options.mapKey);
+    }
     this.usersCluster = new UsersClusterTrace(this.mapInstance);
     this.actionsCluster = new ActionsClusterTrace(this.mapInstance);
     this.usersHeatmap = new StopsHeatmapTrace(this.mapInstance);

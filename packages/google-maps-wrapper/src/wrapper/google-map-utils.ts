@@ -4,6 +4,8 @@ import { ITimeAwarePoint, HtPosition } from "ht-models";
 import {LightColorMapStyle} from "./light-color-map";
 import {fromEventPattern} from "rxjs/observable/fromEventPattern";
 import {Observable} from "rxjs/Observable";
+// import {richmarker} from "./richmarker";
+// import {markercluster} from "./markerclusterer";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 
@@ -43,11 +45,15 @@ export class GoogleMapUtilsClass implements MapUtils {
   }
 
   private loadMarkerCluster() {
-    
+    // const url = "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js";
+    // this.loadScript(url)
+    // import("./markerclusterer")
   }
 
   private loadRichMarker() {
-    
+    // const url = "http://googlemaps.github.io/js-rich-marker/src/richmarker-compiled.js";
+    // this.loadScript(url)
+    // import("./richmarker")
   }
 
   private loadScript(url, cb?) {

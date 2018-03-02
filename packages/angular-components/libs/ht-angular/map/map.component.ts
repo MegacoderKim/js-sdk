@@ -5,7 +5,8 @@ import {
 import {IUserData} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
-import {HtMap, MapInstance} from "ht-maps";
+import {MapInstance} from "ht-maps";
+import {HtMap} from "ht-map-wrapper";
 
 @Component({
   selector: 'ht-map',

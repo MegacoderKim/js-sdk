@@ -9,10 +9,11 @@ import {HtClientService} from "./ht-client.service";
 import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient, HtActionsClient} from "ht-client";
 import {HtAccountService} from "./ht-account-users.service";
 import {HtActionsService} from "./ht-actions.service";
-import {mapTypeService} from "ht-maps";
+import {mapTypeService, HtMapClassOptions} from "ht-maps";
 import {htRequestService} from "ht-api";
 
 export var TOKEN = new InjectionToken('app.token');
+export var MAP_KEY = new InjectionToken('app.mapKey');
 
 export function requestServiceFactory(http, token) {
   const request = new HtRequestService(http, token);
@@ -24,9 +25,11 @@ export function clientServiceFactory(token, request) {
   return client
 }
 
-export function mapServiceFactory(mapType) {
+export function mapServiceFactory(mapType, mapKey) {
   if (mapType === void 0) { mapType = 'google'; }
-  return new HtMapService(mapType);
+  let options: HtMapClassOptions = {};
+  if (mapKey) options.mapKey = mapKey;
+  return new HtMapService(mapType, options);
 }
 
 export function userClientServiceFactory() {
@@ -55,8 +58,9 @@ export class HtModule {
       providers: [
         HttpClient,
         { provide: MAP_TYPE, useValue: config.mapType },
-        { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE] },
         { provide: TOKEN, useValue: config.token },
+        { provide: MAP_KEY, useValue: config.mapKey },
+        { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE, MAP_KEY] },
         { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN]},
         { provide: HtClientService,
           useFactory: clientServiceFactory,

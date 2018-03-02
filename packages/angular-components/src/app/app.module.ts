@@ -24,7 +24,11 @@ import {environment} from "../environments/environment";
     BrowserAnimationsModule,
     ModalModule,
     InternalModule,
-    HtModule.forRoot({token: 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793', mapType: 'leaflet'}) // demo
+    HtModule.forRoot({
+      token: 'sk_55fc65eb64c0b10300c54ff79ea3f6ef22981793',
+      mapType: 'google',
+      // mapKey: "AIzaSyBtboBD4lM6hMR02qtUjJHua9gFs6PFbQE"
+    }) // demo
   ],
   providers: [],
   bootstrap: [AppComponent]
