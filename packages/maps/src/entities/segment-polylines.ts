@@ -13,7 +13,7 @@ import {CircleMixin} from "../mixins/circle-renderer";
 import {PopupMixin} from "../mixins/popup-renderer";
 import {TraceMixin} from "../mixins/trace";
 import {PolylinesMixin} from "../mixins/polyline-renderer";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {Entity, StyleFunct} from "../interfaces";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";

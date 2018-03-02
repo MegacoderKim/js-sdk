@@ -1,5 +1,4 @@
 import { Color } from "ht-utility";
-import { point } from "leaflet";
 import {StyleFunct} from "../interfaces";
 
 export const stopStyles: StyleFunct = {

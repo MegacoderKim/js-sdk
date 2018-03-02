@@ -1,7 +1,7 @@
 import { Constructor, Entities } from "../interfaces";
 import { HtPosition } from "ht-models";
 import {leafletHeat} from "../map-utils/leaflet.heatmap";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 
 export interface IHeatmapBase {

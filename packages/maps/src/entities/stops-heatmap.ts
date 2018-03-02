@@ -5,7 +5,7 @@ import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {StyleMixin} from "../mixins/styles";
 import {Entity, StyleFunct} from "../interfaces";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {IPathBearingTime} from "ht-models";

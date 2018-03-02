@@ -1,4 +1,4 @@
-import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
+import { HtBounds, HtMap, HtMapType } from "ht-map-wrapper";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
 import { IUserData } from "ht-models";
 import { UsersClusterTrace} from "../entities/users-cluster";
@@ -145,4 +145,6 @@ export class HtMapClass {
   }
 }
 
-export interface HtMapClassOptions {}
+export interface HtMapClassOptions {
+  mapKey?: string
+}

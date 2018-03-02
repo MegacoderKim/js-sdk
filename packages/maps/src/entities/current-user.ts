@@ -15,7 +15,7 @@ import {DivMarkersMixin} from "../mixins/div-markers-renderes";
 import {TraceMixin} from "../mixins/trace";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {AnimationMixin} from "../mixins/animation-renderer";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";

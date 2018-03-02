@@ -6,13 +6,12 @@ import {
   itemsFactory,
   mapItemsFactory
 } from "../base/map-items-factory";
-import { point } from "leaflet";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {MapInstance} from "../map-utils/map-instance";
 import {StyleMixin} from "../mixins/styles";
 import {CircleMixin} from "../mixins/circle-renderer";
 import {Entity, StyleFunct} from "../interfaces";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {TraceMixin} from "../mixins/trace";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {IPathBearingTime} from "ht-models";

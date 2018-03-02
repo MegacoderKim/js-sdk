@@ -13,7 +13,7 @@ import {
 } from "../mixins/compounds-data-observable";
 import { HtPosition } from "ht-models";
 import {MapInstance} from "../map-utils/map-instance";
-import {HtMap} from "../map-utils/interfaces";
+import {HtMap} from "ht-map-wrapper";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {SingleItemMixin} from "../mixins/single-item";
 import {ClusterMixin} from "../mixins/clusters";

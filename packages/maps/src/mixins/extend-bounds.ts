@@ -1,6 +1,6 @@
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
-import { HtBounds } from "../map-utils/interfaces";
+import { HtBounds } from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 
 export interface IExtendBoundsBase {

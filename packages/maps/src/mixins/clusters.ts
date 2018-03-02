@@ -1,7 +1,7 @@
 // import { GlobalMap } from "../global/map-service";
 import * as _ from "underscore";
 import { Constructor, Entities } from "../interfaces";
-import {HtBounds, HtMap} from "../map-utils/interfaces";
+import {HtBounds, HtMap} from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 
 export interface IClusterBase {

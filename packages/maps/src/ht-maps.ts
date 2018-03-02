@@ -1,4 +1,3 @@
-export * from "./map-utils/interfaces";
 export * from "./map-utils/leaflet.heatmap";
 export * from "./map-utils/leaflet.markercluster";
 export * from "./map-utils/map-instance";

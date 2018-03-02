@@ -1,4 +1,4 @@
-import {HtBounds, HtMapType, HtMarker, MapUtils} from "./interfaces";
+import {HtBounds, HtMapType, HtMarker, MapUtils} from "ht-map-wrapper";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
 import {LightColorMapStyle} from "../styles/light-color-map";
@@ -24,6 +24,37 @@ export class GoogleMapUtilsClass implements MapUtils {
   renderMap(elem, options) {
     options = {...options, ...this.defaultMapOptions};
     return new google.maps.Map(elem, options);
+  }
+
+  setKey(key) {
+    if (document) {
+      this.loadGoogleMaps(key, () => {
+        // this.loadMarkerCluster();
+        // this.loadRichMarker();
+      });
+      return true;
+    }
+    return false;
+  }
+
+  private loadGoogleMaps(key, cb) {
+    const url = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry,visualization`;
+    this.loadScript(url, cb)
+  }
+
+  private loadMarkerCluster() {
+    
+  }
+
+  private loadRichMarker() {
+    
+  }
+
+  private loadScript(url, cb?) {
+    var script = document.createElement("script");
+    script.src = url;
+    if(cb) script.onload = cb();
+    document.head.appendChild(script);
   }
 
   updatePositionPopup(

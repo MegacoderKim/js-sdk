@@ -22,7 +22,7 @@ import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 
@@ -85,8 +85,8 @@ export class UsersCluster {
   }
 }
 
-export const UsersClusterTrace = DataObservableMixin(
-  PopupMixin(ClusterMixin(TraceMixin(ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(
+export const UsersClusterTrace = (
+  (((ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(
     MapItemsMixin(UsersCluster)
   )))))))
 );

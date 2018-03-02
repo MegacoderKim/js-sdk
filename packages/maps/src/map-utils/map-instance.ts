@@ -1,6 +1,6 @@
 import {GoogleMapUtilsClass} from "./google-map-utils";
 import {filter, take} from "rxjs/operators";
-import {HtBounds, HtMap, HtMapType, MapUtils} from "./interfaces";
+import {HtBounds, HtMap, HtMapType, MapUtils} from "ht-map-wrapper";
 import {LeafletMapUtilsClass} from "./leaflet-map-utils";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {LightColorMapStyle} from "../styles/light-color-map";
@@ -60,8 +60,9 @@ export class MapInstance {
   //     return map;
   //   });
   // }
-  setMapType(mapType: HtMapType) {
-    mapTypeService.getInstance(mapType)
+  setMapType(mapType: HtMapType, key?: string) {
+    mapTypeService.getInstance(mapType);
+    if (key) this.mapUtils.setKey(key)
   };
 
 

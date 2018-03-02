@@ -1,4 +1,4 @@
-import {HtMapType} from "../map-utils/interfaces";
+import {HtMapType} from "ht-map-wrapper";
 import {GoogleMapUtilsClass} from "../map-utils/google-map-utils";
 import {LeafletMapUtilsClass} from "../map-utils/leaflet-map-utils";
 
