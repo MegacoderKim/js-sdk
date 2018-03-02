@@ -1,0 +1,24 @@
+{
+  "name": "ht-map-wrapper",
+  "version": "0.0.0",
+  "description": "hypertrack map wrapper interface",
+  "main": "dist/ht-map-wrapper.js",
+  "module": "dist/ht-map-wrapper.js",
+  "typings": "dist/typings/ht-map-wrapper.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && webpack --config webpack.config.js",
+    "lib": "rimraf dist && webpack --config webpack.config.js",
+    "version": "npm run lib",
+    "wbuild": "webpack -w --config webpack.config.js",
+    "prepack": "npm run build"
+  },
+  "author": "",
+  "license": "ISC",
+  "false": {},
+  "devDependencies": {
+    "@types/googlemaps": "^3.30.7",
+    "@types/leaflet": "^1.2.5",
+    "ht-models": "^0.0.19"
+  }
+}

@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 export interface MapUtils {
   type: HtMapType;
   setMap: (item: HtMapItem, map: HtMap) => void;
+  setKey: (key: string) => boolean;
   setDefaultMapOptions: (options: object) => void;
   defaultMapOptions: object;
   setStyle: (item: HtMapItem, style) => void;
@@ -71,7 +72,7 @@ export interface SetFocusConfig {
 }
 
 export type HtMap = L.Map | google.maps.Map;
-export type HtBounds = L.LatLngBounds | google.maps.LatLngBounds;
+export type HtBounds = any;
 export type HtPolyline = L.Polyline | google.maps.Polyline;
 export type HtLatLng = L.LatLng | google.maps.LatLng;
 export type HtMarker =
