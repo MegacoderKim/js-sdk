@@ -4,6 +4,14 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
+    "paths": {
+      "ht-angular": [
+        "./ht-angular"
+      ],
+      "@angular/elements": [
+        "@angular/elements"
+      ]
+    },
     "types": []
   },
   "exclude": [
