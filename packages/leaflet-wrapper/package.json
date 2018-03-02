@@ -1,0 +1,43 @@
+{
+  "name": "ht-leaflet-wrapper",
+  "version": "0.0.0",
+  "description": "hypertrack maps",
+  "main": "dist/ht-leaflet-wrapper_browser.js",
+  "module": "dist/ht-leaflet-wrapper.es5.js",
+  "typings": "dist/types/ht-leaflet-wrapper.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run lib && typedoc --out dist/docs --target es6 --theme minimal --mode file src",
+    "build:webpack": "rimraf dist && webpack --config webpack.config.js",
+    "wbuild": "webpack -w --config webpack.config.bundle.js",
+    "build:style": "webpack --config webpack.config.js",
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts",
+    "version": "npm run lib",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "prepack": "npm run lib"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^8.0.4",
+    "ht-data": "^0.1.8",
+    "ht-models": "^0.0.19",
+    "ht-utility": "^0.1.6",
+    "rollup": "^0.53.1",
+    "time-aware-polyline": "^0.0.8",
+    "underscore": "^1.8.x"
+  },
+  "dependencies": {
+    "@types/leaflet": "^1.2.5",
+    "@types/leaflet.heat": "^0.2.0",
+    "@types/leaflet.markercluster": "^1.0.2",
+    "leaflet.markercluster": "^1.2.0",
+    "leaflet": "^1.2.0",
+    "ht-map-wrapper": "^0.0.0",
+    "leaflet.heat": "^0.2.0"
+  },
+  "peerDependencies": {
+    "ht-models": "^0.0.19"
+  },
+  "false": {}
+}
