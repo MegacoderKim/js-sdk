@@ -1,7 +1,7 @@
 import {HtBounds, HtMapType, HtMarker, MapUtils} from "ht-map-wrapper";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
-import {LightColorMapStyle} from "../styles/light-color-map";
+import {LightColorMapStyle} from "./light-color-map";
 import {fromEventPattern} from "rxjs/observable/fromEventPattern";
 import {Observable} from "rxjs/Observable";
 declare var MarkerClusterer: any;

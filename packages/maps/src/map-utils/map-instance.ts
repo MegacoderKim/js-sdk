@@ -1,9 +1,6 @@
-import {GoogleMapUtilsClass} from "./google-map-utils";
 import {filter, take} from "rxjs/operators";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "ht-map-wrapper";
-import {LeafletMapUtilsClass} from "ht-leaflet-wrapper";
 import {ReplaySubject} from "rxjs/ReplaySubject";
-import {LightColorMapStyle} from "../styles/light-color-map";
 import {mapTypeService} from "../global/map-type";
 import {fromEventPattern} from "rxjs/observable/fromEventPattern";
 import {Observable} from "rxjs/Observable";

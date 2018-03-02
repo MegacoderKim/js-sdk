@@ -2,7 +2,7 @@ import { HtBounds, HtMap, HtMapType } from "ht-map-wrapper";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
 import { IUserData } from "ht-models";
 import { UsersClusterTrace} from "../entities/users-cluster";
-import { LightColorMapStyle } from "../styles/light-color-map";
+import { LightColorMapStyle } from "ht-google-maps-wrapper";
 import * as _ from "underscore";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";

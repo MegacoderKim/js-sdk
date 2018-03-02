@@ -1,5 +1,3 @@
-export * from "../../leaflet-wrapper/src/wrappers/leaflet.heatmap";
-export * from "../../leaflet-wrapper/src/wrappers/leaflet.markercluster";
 export * from "./map-utils/map-instance";
 export * from "./compound-entities/placeline-trace";
 // export * from "./time-aware-polyline";

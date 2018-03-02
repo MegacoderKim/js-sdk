@@ -1,5 +1,6 @@
 import { HtPosition } from "ht-models";
 import {Observable} from "rxjs/Observable";
+import {Polyline, Map, LatLng, CircleMarker, Circle, Marker, DivIcon} from "leaflet";
 
 export interface MapUtils {
   type: HtMapType;
@@ -71,15 +72,15 @@ export interface SetFocusConfig {
   center?: boolean;
 }
 
-export type HtMap = L.Map | google.maps.Map;
+export type HtMap = Map | google.maps.Map;
 export type HtBounds = any;
-export type HtPolyline = L.Polyline | google.maps.Polyline;
-export type HtLatLng = L.LatLng | google.maps.LatLng;
+export type HtPolyline = Polyline | google.maps.Polyline;
+export type HtLatLng = LatLng | google.maps.LatLng;
 export type HtMarker =
-  | L.CircleMarker
-  | L.Circle
-  | L.Marker
-  | L.DivIcon
+  | CircleMarker
+  | Circle
+  | Marker
+  | DivIcon
   | google.maps.Marker
   | google.maps.Circle;
 export type HtMapItem = HtMarker | HtPolyline;

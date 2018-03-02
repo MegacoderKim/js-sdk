@@ -84,8 +84,8 @@ export class UsersCluster {
   }
 }
 
-export const UsersClusterTrace = (
-  (((ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(
+export const UsersClusterTrace = DataObservableMixin(
+  PopupMixin(ClusterMixin(TraceMixin(ExtendBoundsMixin(DivMarkersMixin(MarkersMixin(StyleMixin(
     MapItemsMixin(UsersCluster)
   )))))))
 );
