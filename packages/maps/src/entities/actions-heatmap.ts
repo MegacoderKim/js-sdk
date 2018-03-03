@@ -7,7 +7,7 @@ import {Subscription} from "rxjs/Subscription";
 import {StyleMixin} from "../mixins/styles";
 import {Entity, StyleFunct} from "../interfaces";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";

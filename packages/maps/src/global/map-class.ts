@@ -1,8 +1,8 @@
-import { HtBounds, HtMap, HtMapType } from "../map-utils/interfaces";
+import { HtBounds, HtMap, HtMapType } from "ht-map-wrapper";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
 import { IUserData } from "ht-models";
 import { UsersClusterTrace} from "../entities/users-cluster";
-import { LightColorMapStyle } from "../styles/light-color-map";
+import { LightColorMapStyle } from "ht-google-maps-wrapper";
 import * as _ from "underscore";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Observable } from "rxjs/Observable";
@@ -45,6 +45,9 @@ export class HtMapClass {
     options: HtMapClassOptions = {}
   ) {
     mapTypeService.getInstance(mapType);
+    if(options.mapKey) {
+      // mapTypeService.getInstance().setKey(options.mapKey);
+    }
     this.usersCluster = new UsersClusterTrace(this.mapInstance);
     this.actionsCluster = new ActionsClusterTrace(this.mapInstance);
     this.usersHeatmap = new StopsHeatmapTrace(this.mapInstance);
@@ -145,4 +148,6 @@ export class HtMapClass {
   }
 }
 
-export interface HtMapClassOptions {}
+export interface HtMapClassOptions {
+  mapKey?: string
+}

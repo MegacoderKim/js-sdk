@@ -1,5 +1,5 @@
 import { Constructor, Entities } from "../interfaces";
-import {HtBounds, HtMap} from "../map-utils/interfaces";
+import {HtBounds, HtMap} from "ht-map-wrapper";
 import { HtPosition } from "ht-models";
 import * as _ from "underscore";
 import {MapInstance} from "../map-utils/map-instance";
@@ -29,7 +29,7 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       return this.mapInstance.mapUtils.getMarker();
     }
 
-    getBounds(item, bounds?): HtBounds {
+    getBounds(item, bounds?) {
       return this.mapInstance.mapUtils.extendItemBounds(item, bounds, this.forceExtendBounds);
     }
 

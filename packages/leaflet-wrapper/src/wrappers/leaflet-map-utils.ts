@@ -1,4 +1,4 @@
-import {HtBounds, HtMapType, HtMarker, MapUtils, SetFocusConfig} from "./interfaces";
+import {HtBounds, HtMapType, HtMarker, MapUtils, SetFocusConfig} from "ht-map-wrapper";
 import {PolylineUtil} from "./encoded-polyline";
 import { HtPosition } from "ht-models";
 import {
@@ -53,6 +53,10 @@ export class LeafletMapUtilsClass implements MapUtils {
       item.addTo(map);
     }
   };
+
+  setKey(key) {
+    return true;
+  }
 
   setStyle(item, style) {
     if (item.setStyle) item.setStyle(style);

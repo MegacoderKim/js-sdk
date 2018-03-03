@@ -8,7 +8,6 @@ import {
   itemsFactory,
   mapItemsFactory
 } from "../base/map-items-factory";
-import { point } from "leaflet";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {StyleMixin} from "../mixins/styles";
@@ -22,7 +21,7 @@ import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 

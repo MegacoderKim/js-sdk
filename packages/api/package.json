@@ -14,10 +14,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+  },
+  "devDependencies": {
+    "rollup": "^0.55.5",
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.6"
   },
-  "devDependencies": {
-    "rollup": "^0.55.5"
+  "peerDependencies": {
+    "ht-models": "^0.0.19",
+    "ht-utility": "^0.1.6"
   }
 }

@@ -11,13 +11,13 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtPosition, ITimeAwarePoint, IPlacelineMod} from "ht-models";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";
-import {LatLngBounds} from "leaflet";
 import { positionTime } from "../helpers/position-time-helper";
 import { Constructor } from "../interfaces";
 import {htAction} from "ht-data";
 import {Color} from "ht-utility";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {HtBounds} from "ht-map-wrapper";
 
 export class ActionsPolyline extends SegmentPolylines {
   lineSymbol = {

@@ -11,7 +11,7 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtPosition} from "ht-models";
 import {MapInstance} from "../map-utils/map-instance";
 import {TraceMixin} from "../mixins/trace";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {DivMarkersMixin} from "../mixins/div-markers-renderes";

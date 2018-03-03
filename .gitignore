@@ -56,5 +56,5 @@ node_modules
 /packages/ht-angular
 
 /packages/**/src/environments/environment.release.ts
-/packages/angular-components/src/package.json
+/packages/angular-components/lib/package.json
 

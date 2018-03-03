@@ -1,9 +1,11 @@
-import {HtBounds, HtMapType, HtMarker, MapUtils} from "./interfaces";
+import {HtBounds, HtMapType, HtMarker, MapUtils} from "ht-map-wrapper";
 import * as _ from "underscore";
 import { ITimeAwarePoint, HtPosition } from "ht-models";
-import {LightColorMapStyle} from "../styles/light-color-map";
+import {LightColorMapStyle} from "./light-color-map";
 import {fromEventPattern} from "rxjs/observable/fromEventPattern";
 import {Observable} from "rxjs/Observable";
+// import {richmarker} from "./richmarker";
+// import {markercluster} from "./markerclusterer";
 declare var MarkerClusterer: any;
 declare var RichMarker: any;
 
@@ -24,6 +26,41 @@ export class GoogleMapUtilsClass implements MapUtils {
   renderMap(elem, options) {
     options = {...options, ...this.defaultMapOptions};
     return new google.maps.Map(elem, options);
+  }
+
+  setKey(key) {
+    if (document) {
+      this.loadGoogleMaps(key, () => {
+        // this.loadMarkerCluster();
+        // this.loadRichMarker();
+      });
+      return true;
+    }
+    return false;
+  }
+
+  private loadGoogleMaps(key, cb) {
+    const url = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry,visualization`;
+    this.loadScript(url, cb)
+  }
+
+  private loadMarkerCluster() {
+    // const url = "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js";
+    // this.loadScript(url)
+    // import("./markerclusterer")
+  }
+
+  private loadRichMarker() {
+    // const url = "http://googlemaps.github.io/js-rich-marker/src/richmarker-compiled.js";
+    // this.loadScript(url)
+    // import("./richmarker")
+  }
+
+  private loadScript(url, cb?) {
+    var script = document.createElement("script");
+    script.src = url;
+    if(cb) script.onload = cb();
+    document.head.appendChild(script);
   }
 
   updatePositionPopup(

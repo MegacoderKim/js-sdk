@@ -1,6 +1,6 @@
 import { Constructor } from "../interfaces";
 import { positionTime } from "../helpers/position-time-helper";
-import {HtBounds} from "../map-utils/interfaces";
+import {HtBounds} from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
 import {ITimeAwarePoint} from "ht-models";
 import {IPathBearingTime} from "ht-models";

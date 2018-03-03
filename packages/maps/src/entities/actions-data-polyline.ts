@@ -9,13 +9,13 @@ import {IAction} from "ht-models";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {MarkersMixin} from "../mixins/marker-renderer";
 import {HtPosition, IPathBearingTime} from "ht-models";
-import {LatLngBounds} from "leaflet";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {HtBounds} from "ht-map-wrapper";
 
 export class ActionsDataPolyline {
   name = "Actions data polyline"

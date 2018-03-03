@@ -11,9 +11,9 @@ import {Entity, StyleFunct} from "../interfaces";
 import {HtPosition} from "ht-models";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {IPathBearingTime} from "ht-models";
-import {LatLngBounds} from "leaflet";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {HtBounds} from "ht-map-wrapper";
 
 export class AnimPolyline extends SegmentPolylines {
   mapInstance: MapInstance;
