@@ -7,6 +7,6 @@
     <ng-template #comp>
       <div class="is-size-7 has-text-weight-bold" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>
     </ng-template>
-    <div class="has-text-weight-bold truncate">{{getDestinationName(action)}}</div>
+    <div class="is-size-7 has-text-weight-bold truncate">{{getDestinationName(action)}}</div>
   </div>
 </div>
