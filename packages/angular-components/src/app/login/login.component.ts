@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {AccountsService} from "../accounts/accounts.service";
 import {IAccountUser} from "ht-models";
-import {HtClientService} from "ht-angular";
-import {GetSecretToken} from "ht-data";
 
 @Component({
   selector: 'ht-login',
@@ -20,7 +18,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private router: Router,
     private accountsService: AccountsService,
-    private htClient: HtClientService,
   ) { }
 
   ngOnInit() {

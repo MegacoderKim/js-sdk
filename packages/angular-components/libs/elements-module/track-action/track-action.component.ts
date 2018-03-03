@@ -8,8 +8,8 @@ import { HtClientService, HtMapService } from 'ht-angular';
 })
 export class TrackActionComponent implements OnInit {
   @Input() shortCode: string;
-  
-  constructor(private clientService: HtClientService, private mapService: HtMapService) {}
+
+  constructor() {}
 
   ngOnInit() {
     // console.log(this.userId);
