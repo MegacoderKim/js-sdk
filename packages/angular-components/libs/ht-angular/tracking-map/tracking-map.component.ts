@@ -10,14 +10,6 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 })
 export class TrackingMapComponent implements OnInit {
   mapInstance;
-  defaultSetBoundsOptions = {
-    paddingTopLeft: [15, 15],
-    paddingBottomRight: [15, 70],
-    duration: 2,
-    animate: true,
-    easeLinearity: 0.2,
-    // easeLinearity: 0.58,
-  };
   @Input() showSummary: boolean = false;
   @ViewChild('card') card;
   constructor(
@@ -39,7 +31,7 @@ export class TrackingMapComponent implements OnInit {
 
   get setBoundsOptions() {
     //todo fix this, not passing defaultSetOptions now
-    const options = this.showSummary ? {...this.defaultSetBoundsOptions, paddingBottomRight: [15, 120]} : {...this.defaultSetBoundsOptions};
+    const options = this.showSummary ? {...this.trackingMapService.defaultSetBoundsOptions, paddingBottomRight: [15, 120]} : {...this.trackingMapService.defaultSetBoundsOptions};
     return options
   }
 
