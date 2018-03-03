@@ -10,6 +10,15 @@ export class TrackingMapService {
   mapInstance: MapInstance;
   dirty$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   actionCompleted: boolean = false;
+  defaultSetBoundsOptions = {
+    paddingTopLeft: [15, 15],
+    paddingBottomRight: [15, 70],
+    duration: 2,
+    animate: true,
+    easeLinearity: 0.2,
+    // easeLinearity: 0.58,
+  };
+  setBoundsOptions =  this.defaultSetBoundsOptions;
   constructor(public mapService: HtMapService) {
     this.mapInstance = this.mapService.mapInstance
   }
@@ -31,7 +40,8 @@ export class TrackingMapService {
   }
 
   onComplete(action) {
-    this.mapService.resetBounds();
+    this.setBoundsOptions = {...this.setBoundsOptions, paddingBottomRight: [15, 120]};
+    this.mapService.resetBounds(this.setBoundsOptions);
     this.dirty$.next(true);
     this.actionCompleted = true;
   }
