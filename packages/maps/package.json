@@ -1,6 +1,6 @@
 {
   "name": "ht-maps",
-  "version": "0.1.9",
+  "version": "0.1.10-0",
   "description": "hypertrack maps",
   "main": "dist/ht-maps_browser.js",
   "module": "dist/ht-maps.es5.js",
@@ -21,26 +21,26 @@
   "devDependencies": {
     "@types/googlemaps": "^3.26.14",
     "@types/node": "^8.0.4",
-    "ht-data": "^0.1.8",
+    "ht-data": "^0.1.9-0",
     "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.6",
+    "ht-utility": "^0.1.7-0",
     "rollup": "^0.53.1",
     "time-aware-polyline": "^0.0.8",
     "underscore": "^1.8.x"
   },
   "dependencies": {
     "date-fns": "^1.29.0",
-    "ht-data": "^0.1.8",
-    "ht-google-maps-wrapper": "^0.0.0",
-    "ht-leaflet-wrapper": "^0.0.0",
-    "ht-map-wrapper": "^0.0.0",
+    "ht-data": "^0.1.9-0",
+    "ht-google-maps-wrapper": "^0.0.1-0",
+    "ht-leaflet-wrapper": "^0.0.1-0",
+    "ht-map-wrapper": "^0.0.1-0",
     "leaflet.heat": "^0.2.0",
     "popper.js": "^1.12.9"
   },
   "peerDependencies": {
-    "ht-data": "^0.1.8",
+    "ht-data": "^0.1.9-0",
     "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.6",
+    "ht-utility": "^0.1.7-0",
     "rxjs": "^5.5.2",
     "underscore": "^1.8.x"
   },

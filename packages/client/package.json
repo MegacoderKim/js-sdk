@@ -1,6 +1,6 @@
 {
   "name": "ht-client",
-  "version": "0.1.8",
+  "version": "0.1.9-0",
   "description": "",
   "main": "dist/ht-client_browser.js",
   "module": "dist/ht-client.es5.js",
@@ -18,24 +18,24 @@
   "author": "",
   "devDependencies": {
     "@types/googlemaps": "^3.26.20",
-    "ht-data": "^0.1.8",
+    "ht-data": "^0.1.9-0",
     "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.6",
+    "ht-utility": "^0.1.7-0",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3",
     "webpack-config-utils": "^2.3.0"
   },
   "peerDependencies": {
-    "ht-data": "^0.1.8",
-    "ht-utility": "^0.1.6",
+    "ht-data": "^0.1.9-0",
+    "ht-utility": "^0.1.7-0",
     "moment-mini": "^2.18.1",
     "rxjs": "^5.4.2",
     "underscore": "^1.8.3"
   },
   "dependencies": {
     "date-fns": "^1.29.0",
-    "ht-api": "^0.0.3",
-    "ht-data": "^0.1.8"
+    "ht-api": "^0.0.4-0",
+    "ht-data": "^0.1.9-0"
   }
 }
