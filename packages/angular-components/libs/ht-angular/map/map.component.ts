@@ -1,6 +1,6 @@
 import {
   AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter,
-  ViewChild, Optional
+  ViewChild, Optional, ContentChild, ViewContainerRef
 } from '@angular/core';
 import {IUserData} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
@@ -22,6 +22,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
   @Output() onMapReset: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('map') mapElem;
+  @ViewChild('resetCta', { read: ViewContainerRef }) resetCta;
+  @ContentChild('reset') reset;
   constructor(
     private elRef: ElementRef,
     @Optional() htMapService: HtMapService
@@ -69,6 +71,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     const el = this.mapElem.nativeElement;
     this.mapInstance.renderMap(el, this.options);
     this.onReady.next(this.mapInstance.map);
+    this.resetCta.createEmbeddedView(this.reset)
     // window['ht-map'] = this.mapService.map;
     // this.mapService.resetBounds()
   }

@@ -1,5 +1,11 @@
 <ng-container *ngIf="mapInstance">
-  <ht-map (onMapReset)="trackingMapService.resetMap()" [setBoundsOptions]="setBoundsOptions" [showReset]="dirty$ | async" [mapInstance]="mapInstance"></ht-map>
+  <ht-map (onMapReset)="trackingMapService.resetMap()" [setBoundsOptions]="setBoundsOptions" [showReset]="dirty$ | async" [mapInstance]="mapInstance">
+    <ng-template #reset>
+      <div class="icon reset-icon">
+        <i class="ion-pinpoint auto"></i>
+      </div>
+    </ng-template>
+  </ht-map>
 </ng-container>
 <div class="card-bottom" #card >
   <div class="card-bottom-content">

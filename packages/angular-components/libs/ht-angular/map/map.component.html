@@ -3,5 +3,9 @@
   <ht-loading-dots *ngIf="loading" class="text-1"></ht-loading-dots>
 </div>
 <div class="map-label map-label-top">
-  <button class="button is-primary" *ngIf="showReset" (click)="resetMap()">Fit in view</button>
+  <div (click)="resetMap()">
+    <div #resetCta></div>
+    <button *ngIf="!reset && showReset" class="button is-primary">Fit in view</button>
+  </div>
+
 </div>
