@@ -1,4 +1,4 @@
-import {InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
+import {Inject, InjectionToken, ModuleWithProviders, NgModule} from '@angular/core';
 import {HtMapService, MAP_TYPE} from "./ht-map.service";
 import { usersClientFactory, groupsClientFactory, htClientService, actionsClientFactory} from "ht-client";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
@@ -88,6 +88,14 @@ export class HtModule {
     };
 
   };
+
+  constructor(
+    @Inject(TOKEN) token,
+    clientService: HtClientService,
+    mapService: HtMapService
+  ) {
+
+  }
 }
 
 
