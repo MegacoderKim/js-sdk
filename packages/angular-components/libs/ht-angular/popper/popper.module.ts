@@ -3,6 +3,7 @@ import {ModuleWithProviders, NgModule} from "@angular/core";
 import {PopperController} from './popper-directive';
 import {PopperContent} from './popper-content';
 import {PopperContentOptions} from './popper.model';
+import { PopperService } from './popper.service';
 
 @NgModule({
   imports: [
@@ -22,7 +23,9 @@ import {PopperContentOptions} from './popper.model';
   providers: [
     {
       provide: 'popperDefaults', useValue: {}
-    }]
+    },
+    PopperService
+    ]
 })
 export class PopperModule {
   ngDoBootstrap() {

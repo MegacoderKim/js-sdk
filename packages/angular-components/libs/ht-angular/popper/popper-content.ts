@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 import Popper from 'popper.js';
 import {Placements, Triggers, PopperContentOptions} from './popper.model';
+import {PopperService} from "./popper.service";
 
 @Component({
   selector: "popper-content",
@@ -32,6 +33,7 @@ import {Placements, Triggers, PopperContentOptions} from './popper.model';
     -moz-animation: ngxp-fadeIn  150ms ease-out;
     -o-animation: ngxp-fadeIn  150ms ease-out;
     animation: ngxp-fadeIn  150ms ease-out;
+  transition: transform 0.2s;
   
 }
 
@@ -122,7 +124,7 @@ export class PopperContent implements OnDestroy {
     this.update();
   }
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private popperService: PopperService) {
   }
 
   ngOnInit() {
@@ -138,11 +140,51 @@ export class PopperContent implements OnDestroy {
 
   }
 
+  private col(data) {
+    // data.flipped
+    const collision = this.popperService.checkCollision(data);
+    if(collision) {
+      data = {...data, placement: this.clockwise(data.placement)}
+    };
+
+    this.popperService.addPopper(data);
+    return data
+  };
+
+  private clockwise(placement) {
+    const placements = [
+      'auto-start',
+      'auto',
+      'auto-end',
+      'top-start',
+      'top',
+      'top-end',
+      'right-start',
+      'right',
+      'right-end',
+      'bottom-end',
+      'bottom',
+      'bottom-start',
+      'left-end',
+      'left',
+      'left-start',
+    ];
+    const validPlacements = placements.slice(3);
+    const index = validPlacements.indexOf(placement);
+    const arr = validPlacements
+      .slice(index + 1)
+      .concat(validPlacements.slice(0, index));
+    return arr.reverse()[0];
+  }
+
   show(): void {
     if (!this.referenceObject) {
       return;
     }
-
+    function applyReactStyle(data) {
+      console.log(data);
+      return data
+    }
     let popperOptions: Popper.PopperOptions = <Popper.PopperOptions>{
       placement: this.popperOptions.placement,
       positionFixed: this.popperOptions.positionFixed,
@@ -153,7 +195,16 @@ export class PopperContent implements OnDestroy {
         },
         offset: {
           offset: '0px, 8px'
-        }
+        },
+        flipCol: {
+          enabled: true,
+          order: 504,
+          // order: 604,
+          // store: this.popperService.poppers,
+          fn: (data) => {
+            return this.col(data)
+          }
+        },
       }
     };
 
@@ -170,11 +221,12 @@ export class PopperContent implements OnDestroy {
       this.popperViewRef.nativeElement,
       popperOptions,
     );
+    // this.popperService.addPopper(this.popperInstance);
     (this.popperInstance as any).enableEventListeners();
     this.scheduleUpdate();
     this.toggleVisibility(true);
     this.globalResize = this.renderer.listen('document', 'resize', this.onDocumentResize.bind(this))
-  }
+  };
 
   update(): void {
     this.popperInstance && (this.popperInstance as any).update();
