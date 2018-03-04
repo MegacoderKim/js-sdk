@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Optional} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {HtMapService} from "ht-angular";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-tracking-container',
@@ -9,8 +11,21 @@ import {ActivatedRoute} from "@angular/router";
 export class TrackingContainerComponent implements OnInit {
   shortCode;
   constructor(
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+    private mapService: HtMapService
+  ) {
+    let add = window.devicePixelRatio > 1 ? '@2x' : '';
+    const key = environment.mapKey;
+    const tileUrl = environment.tileUrl;
+    if (tileUrl) {
+      const url = `${tileUrl}${add}.png?key=${key}`;
+      this.mapService.mapInstance.mapUtils.setDefaultMapOptions({tileLayerUrl: url, tileLayerOptions: {
+          attribution:
+            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }});
+    }
+
+  }
 
   ngOnInit() {
     this.shortCode = this.route.snapshot.paramMap.get('shortCode');
