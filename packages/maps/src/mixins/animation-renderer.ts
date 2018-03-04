@@ -19,7 +19,7 @@ export function AnimationMixin<TBase extends Constructor<IAnimationBase>>(Base: 
   return class extends Base {
     // bearing: number = 0;
     // item;
-
+    isAnimated: boolean = true;
     setTimeAwareAnimation (animation: TimeAwareAnimation) {
       this.animation = animation || new TimeAwareAnimation();
       this.animation.updateEvent.subscribe('update', ({path, bearing}) => {

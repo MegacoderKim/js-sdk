@@ -6,6 +6,7 @@ export interface IStyleBase {
   name?: string;
   mapInstance: MapInstance;
   trackBy(datum): string;
+  isAnimated?: boolean;
 }
 export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
   return class extends Base {
@@ -30,13 +31,14 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
       const mapTypetype = this.styleObj || styleFunct.get(mapType);
       // console.log(this.name, "style", selectedStyleType, styleFunct, this.styleFunct);
       // const styleType = mapTypetype[selectedStyleType] ? selectedStyleType : this.styleType;
-      const style = mapTypetype[selectedStyleType] || fallbackStyle;
+      let style = mapTypetype[selectedStyleType] || fallbackStyle;
       if (!style)
         console.error(
           "style type does not exist ",
           this.name,
           selectedStyleType
         );
+      if (this.isAnimated && style) style = {...style, className: style['className'] ? `${style['className']} animated-marker`: 'animated-marker'};
       return style;
     }
 

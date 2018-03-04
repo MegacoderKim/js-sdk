@@ -2,7 +2,6 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HtMapService} from "../ht/ht-map.service";
 import {TrackingMapService} from "./tracking-map.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-const mapResetAssert = require("../../assets/img/reset-map.svg");
 @Component({
   selector: 'ht-tracking-map',
   templateUrl: './tracking-map.component.html',
@@ -12,7 +11,6 @@ export class TrackingMapComponent implements OnInit {
   mapInstance;
   @Input() showSummary: boolean = false;
   @ViewChild('card') card;
-  mapReset;
   constructor(
     private mapService: HtMapService,
     public trackingMapService: TrackingMapService
@@ -37,10 +35,6 @@ export class TrackingMapComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-
-      this.mapReset = mapResetAssert;
-    }, 10)
     this.mapInstance.setBoundsOptions = this.setBoundsOptions;
   }
 
