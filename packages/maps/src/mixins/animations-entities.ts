@@ -16,6 +16,7 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
   return class extends Base {
     // bearing: number = 0;
     // item;
+    isAnimated: boolean = true;
     animationEntities: AnimationsEntities;
     toNotTraceItem = false;
     subs: {
