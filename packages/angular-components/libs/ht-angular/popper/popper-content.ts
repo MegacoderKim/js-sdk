@@ -33,7 +33,7 @@ import {PopperService} from "./popper.service";
     -moz-animation: ngxp-fadeIn  150ms ease-out;
     -o-animation: ngxp-fadeIn  150ms ease-out;
     animation: ngxp-fadeIn  150ms ease-out;
-  transition: transform 0.2s;
+  transition: transform 0.1s;
   
 }
 
