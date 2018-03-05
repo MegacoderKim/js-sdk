@@ -1,0 +1,14 @@
+@import "bulma";
+
+.text-caption {
+  @extend .is-size-7;
+  @extend .is-uppercase;
+  @extend .has-text-weight-semibold;
+  letter-spacing: 1px; //Need to fix this
+}
+
+.text-title {
+  @extend .is-size-6;
+  @extend .has-text-weight-semibold;
+  @extend .truncate;
+}
