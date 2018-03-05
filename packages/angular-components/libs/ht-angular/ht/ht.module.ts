@@ -14,9 +14,11 @@ import {htRequestService} from "ht-api";
 
 export var TOKEN = new InjectionToken('app.token');
 export var MAP_KEY = new InjectionToken('app.mapKey');
+export var BASE_URL = new InjectionToken('app.baseUrl');
 
-export function requestServiceFactory(http, token) {
+export function requestServiceFactory(http, token, baseUrl) {
   const request = new HtRequestService(http, token);
+  if (baseUrl) request.baseUrl = baseUrl;
   return request
 }
 
@@ -52,7 +54,7 @@ export function accountUsersClientServiceFactory() {
   imports: [HttpClientModule]
 })
 export class HtModule {
-  static forRoot(config): ModuleWithProviders {
+  static forRoot(config: HtModuleConfig): ModuleWithProviders {
     return {
       ngModule: HtModule,
       providers: [
@@ -60,8 +62,9 @@ export class HtModule {
         { provide: MAP_TYPE, useValue: config.mapType },
         { provide: TOKEN, useValue: config.token },
         { provide: MAP_KEY, useValue: config.mapKey },
+        { provide: BASE_URL, useValue: config.baseUrl },
         { provide: HtMapService, useFactory: mapServiceFactory, deps: [MAP_TYPE, MAP_KEY] },
-        { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN]},
+        { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN, BASE_URL]},
         { provide: HtClientService,
           useFactory: clientServiceFactory,
           deps: [TOKEN, HtRequestService]
@@ -96,6 +99,13 @@ export class HtModule {
   ) {
 
   }
+};
+
+export interface HtModuleConfig {
+  token?: string,
+  mapType?: 'leaflet' | 'google',
+  baseUrl?: string,
+  mapKey?: string
 }
 
 
