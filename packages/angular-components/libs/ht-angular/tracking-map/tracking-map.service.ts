@@ -65,6 +65,28 @@ export class TrackingMapService {
   };
 
   setStyle() {
+    /**
+     * radius/innerRadius accepts values which are factor of 3 or 4 between 15 to 32
+     */
+
+    const destinationStyle = {
+      radius: 28,
+      innerRadius: 16,
+      liveColor: "#00C94B",
+      summaryColor: "#250D47"
+    };
+
+    const polylineStyle = {
+      color: '#9013FE',
+      weight: 5,
+    };
+
+    const userStyle = {
+      radius: 24,
+      color: '#9013FE',
+      markerSize: 17,
+    };
+
     const destination = this.actionsTrace.destination;
     const polyline = this.actionsTrace.polyline;
     const start = this.actionsTrace.start;
@@ -75,14 +97,14 @@ export class TrackingMapService {
     user.styleObj = {
       default: {
         zIndexOffset: 12,
-        iconSize: [24, 24],
+        iconSize: [userStyle.radius, userStyle.radius],
         className: "user-marker"
       }
     };
     pulse.styleObj = {
       default: {
         zIndexOffset: 10,
-        iconSize: [24, 24],
+        iconSize: [userStyle.radius, userStyle.radius],
         className: "user-marker"
       }
     };
@@ -90,16 +112,16 @@ export class TrackingMapService {
     destination.styleObj = {
       default: {
         zIndexOffset: 10,
-        iconSize: [32, 32],
+        iconSize: [destinationStyle.radius, destinationStyle.radius],
         className: "destination-marker"
       }
     }
     polyline.toIncludeInBounds = false;
     polyline.styleObj = {
       default: {
-        fillColor: '#9013FE',
-        color: '#9013FE',
-        weight: 5
+        fillColor: polylineStyle.color,
+        color: polylineStyle.color,
+        weight: polylineStyle.weight
         // iconAnchor: [12, 12]
         // iconSize: [35, 35],
         // className: 'current-action-marker',
@@ -132,8 +154,8 @@ export class TrackingMapService {
     pulse.getDivContent = (data) => {
       const pulse = data.user.availability_status == 'online' ? 'pulse' : '';
       const content = `
-    <div class="box-24" style="background: rgba(144,19,254, 1)">
-  <div class="box-24 ${pulse}" style="background: rgba(144,19,254, 1); margin: auto">
+    <div class="box-${userStyle.radius}" style="background: ${userStyle.color}">
+  <div class="box-${userStyle.radius} ${pulse}" style="background: ${userStyle.color}; margin: auto">
 </div>
 </div> 
     `;
@@ -141,25 +163,25 @@ export class TrackingMapService {
     };
 
     user.getDivContent = (data, bearing) => {
-      return `<div class="box-24" style="position: absolute">
+      return `<div class="box-${userStyle.radius}" style="position: absolute">
     <i class="ion-android-navigate" style="margin: auto; 
     color: white; 
-    font-size: 17px; 
-    transition: all 2s;
+    font-size: ${userStyle.markerSize}px; 
+    transition: transform 0.4s;
     transform: rotate(${bearing}deg)"></i>
 </div>`
     }
 
     destination.getDivContent = (action: IAction) => {
       if (action.display.show_summary) {
-        return `<div class="box-32" style="background: #00C94B">
+        return `<div class="box-${destinationStyle.radius}" style="background: ${destinationStyle.liveColor}">
 <!--<div class="icon" style="font-size: 1.5rem; color: white; margin: auto">-->
         <!--<i class="ion-checkmark"></i>-->
       <!--</div>-->
 </div>`
       } else {
-        return `<div class="box-32 is-bordered" style="display: flex; border-color: #250D47">
-    <div class="box-16" style="background: #250D47; margin: auto"></div>
+        return `<div class="box-${destinationStyle.radius} is-bordered" style="display: flex; border-color: #${destinationStyle.summaryColor}">
+    <div class="box-${destinationStyle.innerRadius}" style="background: ${destinationStyle.summaryColor}; margin: auto"></div>
 </div>`
       }
 
