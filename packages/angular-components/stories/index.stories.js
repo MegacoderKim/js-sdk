@@ -2,13 +2,13 @@ import { storiesOf } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { action } from '@storybook/addon-actions';
 
-import { DateRangePickerModule} from "../src/ht-angular/date-range-picker/date-range-picker.module"
-import {PaginationModule} from "../src/ht-angular/pagination/pagination.module"
-import {ActionSummaryModule} from "../src/ht-angular/action-summary/action-summary.module"
-import {ActionStatusModule} from "../src/ht-angular/action-status/action-status.module"
-import {DestinationPopupModule} from "../src/ht-angular/destination-popup/destination-popup.module"
-import {StartPopupModule} from "../src/ht-angular/start-popup/start-popup.module"
-import {SharedModule} from "../src/ht-angular/shared/shared.module"
+import { DateRangePickerModule} from "../libs/ht-angular/date-range-picker/date-range-picker.module"
+import {PaginationModule} from "../libs/ht-angular/pagination/pagination.module"
+import {ActionSummaryModule} from "../libs/ht-angular/action-summary/action-summary.module"
+import {ActionStatusModule} from "../libs/ht-angular/action-status/action-status.module"
+import {DestinationPopupModule} from "../libs/ht-angular/destination-popup/destination-popup.module"
+import {StartPopupModule} from "../libs/ht-angular/start-popup/start-popup.module"
+import {SharedModule} from "../libs/ht-angular/shared/shared.module"
 import {DateRangeMap} from "ht-data";
 import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
