@@ -65,7 +65,7 @@ export class ActionsDataPolyline {
     this.mapInstance = mapInstance;
   }
 
-  getPath(data) {
+  getTimeAwarePath(data) {
     return data.timeAwarePath;
   }
 
