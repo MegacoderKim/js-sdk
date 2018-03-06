@@ -1,14 +1,56 @@
 @import "bulma";
+$trck-black : #3c3c3c;
+$trck-grey : #ABB4BE;
+$trck-secondary-cta : #00C94B;
+
 
 .text-caption {
   @extend .is-size-7;
   @extend .is-uppercase;
   @extend .has-text-weight-semibold;
-  letter-spacing: 1px; //Need to fix this
+  letter-spacing: 1px; //TODO : Need to fix this
 }
 
 .text-title {
   @extend .is-size-6;
   @extend .has-text-weight-semibold;
   @extend .truncate;
+}
+
+.text-normal {
+  font-size: 14px; //TODO : Figure out something for this
+  @extend .has-text-weight-semibold;
+  @extend .truncate;
+}
+
+.tracking-card {
+  @extend .card;
+  border-top-left-radius: $summary-radius;
+  border-top-right-radius: $summary-radius;
+  box-shadow : 0 0 10px rgba( $black, 0.1 );
+  -webkit-box-shadow: 0 0 10px rgba( $black, 0.1 );
+  .card-content {
+    @extend .flex-column;
+    padding: 1rem 1rem 1rem 1rem;
+    .flex-column {
+      margin-top: 1rem;
+    }
+  }
+}
+
+
+.divider {
+  border: 1px solid rgba( $trck-grey, 0.3 );
+}
+
+.--is-text-color-grey {
+  color : $trck-grey;
+}
+
+.--is-text-black {
+  color : $trck-black;
+}
+
+.--is-text-color-cta {
+  color : $trck-secondary-cta;
 }

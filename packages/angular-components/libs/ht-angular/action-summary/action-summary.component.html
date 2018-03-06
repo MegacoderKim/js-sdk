@@ -1,34 +1,34 @@
-<div class="card" [@appear]>
-  <div class="card-content is-small flex-column column-gap-4">
+<div class="tracking-card" [@appear]>
+  <div class="card-content">
     <div class="flex-row align-center justify-center row-gap-10">
       <div class="icon">
         <i class="ion-checkmark-circled check"></i>
       </div>
-      <div  class=" has-text-weight-bold">
+      <div class="text-title">
         {{action.type | nameCase}} completed
       </div>
     </div>
-    <div class="flex-row row-gap-20">
+    <div class="flex-row row-gap-20 column-gap-20">
       <div class="flex-column flex has-text-right column-gap-4">
         <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">Total distance</span>
-          <div class=" has-text-weight-bold">{{action.distance | distanceLocale}}</div>
+          <span class="text-caption --is-text-color-grey">distance</span>
+          <div class="text-normal --is-text-black">{{action.distance | distanceLocale}}</div>
         </div>
         <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">id</span>
-          <div class=" has-text-weight-bold">#</div>
+          <span class="text-caption --is-text-color-grey">Name</span>
+          <div class="text-normal --is-text-black">{{action.user.name | nameCase}}</div>
         </div>
 
       </div>
       <div class="divider"></div>
       <div class="flex-column flex has-text-left column-gap-4">
         <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">Trip time</span>
-          <div class=" has-text-weight-bold">{{action.duration | hmString: 60}}</div>
+          <span class="text-caption --is-text-color-grey">Trip time</span>
+          <div class="text-normal --is-text-black">{{action.duration | hmString: 60}}</div>
         </div>
         <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">Name</span>
-          <div class="truncate has-text-weight-bold">{{action.user.name | nameCase}}</div>
+          <span class="text-caption --is-text-color-grey">id</span>
+          <div class="text-normal --is-text-black">#</div>
         </div>
 
       </div>
