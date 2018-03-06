@@ -20,7 +20,7 @@ export class PopperService {
     }
   };
 
-  checkCollision(data) {
+  checkCollision(data): false | any[] {
     const otherPoppers = this.getOtherPoppers(data);
     return this.detctCollisions(data, otherPoppers)
   };
@@ -31,12 +31,12 @@ export class PopperService {
     }, []);
   };
 
-  detctCollisions(data, otherPoppers) {
+  detctCollisions(data, otherPoppers): false | any[] {
     const detected = otherPoppers.reduce((acc, data1) => {
       const col = this.detctCollision(data, data1);
-      return acc || col
-    }, false);
-    return detected
+      return col ? [...acc, data1] : acc
+    }, []);
+    return detected.length ? detected : false
   }
 
   private detctCollision(data1, data2) {

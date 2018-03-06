@@ -174,7 +174,7 @@ export class PopperContent implements OnDestroy {
     const arr = validPlacements
       .slice(index + 1)
       .concat(validPlacements.slice(0, index));
-    return arr.reverse()[0];
+    return arr.reverse()[1];
   }
 
   show(): void {
