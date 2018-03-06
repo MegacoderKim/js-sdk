@@ -173,7 +173,7 @@ export class TrackingMapService {
     }
 
     destination.getDivContent = (action: IAction) => {
-      if (action.display.show_summary) {
+      if (action['ended_at']) {
         return `<div class="box-${destinationStyle.radius}" style="background: ${destinationStyle.liveColor}">
 <!--<div class="icon" style="font-size: 1.5rem; color: white; margin: auto">-->
         <!--<i class="ion-checkmark"></i>-->
