@@ -65,6 +65,10 @@ export class ActionsDataPolyline {
     this.mapInstance = mapInstance;
   }
 
+  getPath(data) {
+    return data.timeAwarePath;
+  }
+
   getEncodedPositionTime(data: IAction) {
     return data.time_aware_polyline;
   }
