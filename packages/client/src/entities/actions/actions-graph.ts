@@ -17,6 +17,8 @@ export class ActionsGraph {
   query$: Observable<object> = of({});
   dataBehaviour$: BehaviorSubject<IActionStatusGraph[] | null> = new BehaviorSubject(null);
   data$ = this.dataBehaviour$.asObservable();
+  activeBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  active$ = this.activeBehaviour$.asObservable();
   loadingBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingBehaviour$.asObservable();
   api$: (query) => Observable<IActionStatusGraph[]>;
@@ -29,6 +31,10 @@ export class ActionsGraph {
     this.api$ = (query) => api.graph(query);
     this.dateRange = dateRange;
     this.dateParam = dateParam;
+  }
+
+  setActive(active: boolean = true) {
+    this.activeBehaviour$.next(active)
   }
 
   getDefaultQuery() {
