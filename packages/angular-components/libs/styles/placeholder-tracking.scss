@@ -1,56 +1,50 @@
 @import "bulma";
-$trck-black : #3c3c3c;
-$trck-grey : #ABB4BE;
-$trck-secondary-cta : #00C94B;
-
 
 .text-caption {
-  @extend .is-size-7;
   @extend .is-uppercase;
   @extend .has-text-weight-semibold;
-  letter-spacing: 1px; //TODO : Need to fix this
+  font-size: $size-caption-text;
+  letter-spacing: $family-caption-letter-spacing;
 }
 
 .text-title {
-  @extend .is-size-6;
+  font-size: $size-title-text;
   @extend .has-text-weight-semibold;
   @extend .truncate;
 }
 
-.text-normal {
-  font-size: 14px; //TODO : Figure out something for this
+.text-info {
+  font-size: $size-info-text;
   @extend .has-text-weight-semibold;
   @extend .truncate;
 }
 
-.tracking-card {
+.is-tracking-card {
   @extend .card;
-  border-top-left-radius: $summary-radius;
-  border-top-right-radius: $summary-radius;
-  box-shadow : 0 0 10px rgba( $black, 0.1 );
-  -webkit-box-shadow: 0 0 10px rgba( $black, 0.1 );
-  .card-content {
-    @extend .flex-column;
-    padding: 1rem 1rem 1rem 1rem;
-    .flex-column {
-      margin-top: 1rem;
-    }
-  }
+  background: $card-background;
+  border-top-left-radius: $card-radius;
+  border-top-right-radius: $card-radius;
+  box-shadow : $card-shadow;
+  -webkit-box-shadow: $card-shadow;
 }
 
+.is-padding-normal {
+  padding: 1rem 1rem 1rem 1rem;
+}
 
 .divider {
-  border: 1px solid rgba( $trck-grey, 0.3 );
+  border: 1px solid rgba( $secondary-text-color, 0.3 );
 }
 
-.--is-text-color-grey {
-  color : $trck-grey;
+.has-color-secondary-text {
+  color : $secondary-text-color;
 }
 
-.--is-text-black {
-  color : $trck-black;
+.has-color-title-text {
+  color : $title-text-color;
 }
 
-.--is-text-color-cta {
-  color : $trck-secondary-cta;
+.has-color-accent {
+  color : $accent-color;
 }
+
