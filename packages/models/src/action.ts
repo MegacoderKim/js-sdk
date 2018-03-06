@@ -114,4 +114,16 @@ export interface ITrackAction {
     account: {
       logo: string | null
     }
+};
+
+export interface IActionPolyline {
+  id: string,
+  unique_id: string,
+  status: string,
+  updated_at: string,
+  distance: number,
+  encoded_polyline: string,
+  time_aware_polyline: string,
+  shortest_distance: number,
+  shortest_polyline: string
 }
