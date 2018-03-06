@@ -4,6 +4,7 @@ export {HtMapService} from "./ht/ht-map.service";
 export {HtGroupsService} from "./ht/ht-groups.service";
 export {HtAccountService} from "./ht/ht-account-users.service";
 export {HtActionsService} from "./ht/ht-actions.service";
+export {HtRequestService} from "./ht/ht-request.service";
 export * from "./ht/ht.module"
 
 export { UsersSummaryContainerModule } from "./users-summary-container/users-summary-container.module"
