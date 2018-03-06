@@ -16,7 +16,7 @@ export class TrackingContainerComponent implements OnInit {
     private mapService: HtMapService,
     requestService: HtRequestService
   ) {
-    requestService.setClientType('hypertrack/trct.at');
+    if (environment.production) requestService.setClientType('hypertrack/trct.at');
     let add = window.devicePixelRatio > 1 ? '@2x' : '';
     const key = environment.mapKey;
     const tileUrl = environment.tileUrl;
