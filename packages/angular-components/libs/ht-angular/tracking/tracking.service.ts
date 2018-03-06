@@ -60,9 +60,9 @@ export class TrackingService {
 
   private getActiveAction(data: any[]) {
     return data.find((action) => {
-      return false;
+      // return false;
       // return !action.display.show_summary;
-      // return !action.ended_at;
+      return !action.ended_at;
     })
   };
 
@@ -116,19 +116,19 @@ export class TrackingService {
   }
 
   private fillTimeAwarePath(action) {
-    let timeAwarePath = action.time_aware_polyline ?
-      new TimeAwareEncoder().decodeTimeAwarePolyline(action.time_aware_polyline) : [];
+    let timeAwarePath = action.timeAwarePath ?
+      action.timeAwarePath : action.time_aware_polyline ?
+        new TimeAwareEncoder().decodeTimeAwarePolyline(action.time_aware_polyline) : [];
     const lastPoint = timeAwarePath[timeAwarePath.length -1];
-    const lastRecordedAt = lastPoint ? lastPoint[2] : null;
-    const newRecordedAt = action.user.last_location.recorded_at;
-    const newLocation = action.user.last_location.geojson.coordinates;
-    const appendPath = newLocation ? [[newLocation[1], newLocation[0], newRecordedAt]] : [];
+    const lastRecordedAt = lastPoint ? new Date(lastPoint[2]).getTime() : null;
+    const newPoint = action.latest_locations && action.latest_locations.length ? action.latest_locations[0] : null;
+    const newRecordedAt = newPoint ? new Date(newPoint.recorded_at).getTime() : null;
+    const newLocation = newPoint ? newPoint.geojson.coordinates : null;
+    const appendPath = newLocation ? [[newLocation[1], newLocation[0], newPoint.recorded_at]] : [];
 
-    if(lastRecordedAt && newLocation && newRecordedAt > lastRecordedAt) {
+    if(newLocation && newRecordedAt > lastRecordedAt) {
       timeAwarePath.push(...appendPath)
-    } else if (newLocation) {
-      timeAwarePath.push(...appendPath)
-    };
+    }
     action.timeAwarePath = timeAwarePath;
     return action
   }
