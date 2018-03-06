@@ -1,6 +1,7 @@
 @import "bulma";
 $trck-black : #3c3c3c;
 $trck-grey : #ABB4BE;
+$trck-secondary-cta : #00C94B;
 
 
 .text-caption {
@@ -30,12 +31,13 @@ $trck-grey : #ABB4BE;
   -webkit-box-shadow: 0 0 10px rgba( $black, 0.1 );
   .card-content {
     @extend .flex-column;
-    padding: 2rem 2rem 1rem 2rem;
+    padding: 1rem 1rem 1rem 1rem;
     .flex-column {
       margin-top: 1rem;
     }
   }
 }
+
 
 .divider {
   border: 1px solid rgba( $trck-grey, 0.3 );
@@ -47,4 +49,8 @@ $trck-grey : #ABB4BE;
 
 .--is-text-black {
   color : $trck-black;
+}
+
+.--is-text-color-cta {
+  color : $trck-secondary-cta;
 }

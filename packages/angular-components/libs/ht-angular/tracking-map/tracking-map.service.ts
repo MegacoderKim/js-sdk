@@ -78,7 +78,7 @@ export class TrackingMapService {
 
     const polylineStyle = {
       color: '#9013FE',
-      weight: 5,
+      weight: 3,
     };
 
     const userStyle = {
