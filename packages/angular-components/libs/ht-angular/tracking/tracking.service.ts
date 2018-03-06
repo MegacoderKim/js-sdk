@@ -17,18 +17,11 @@ export class TrackingService {
   trackActions;
   isMapDirty: boolean = false;
   isSliding: boolean = false;
-  trackApi;
   actions$: ReplaySubject<IAction[]> = new ReplaySubject();
   error$: ReplaySubject<any | null> = new ReplaySubject<any|null>();
   constructor(private actionsClient: HtActionsService) {
-    this.setTrackApi()
   }
 
-  setTrackApi() {
-    const request = htRequestService.getInstance(HTPublishableKey);
-    request.setClientType('hypertrack/trct.at');
-    this.trackApi = new HtTrackingApi(request)
-  }
 
   initShortCode(shortCode: string) {
     const query = {short_code: shortCode};
