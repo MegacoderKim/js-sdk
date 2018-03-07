@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-const HTPublishableKey = 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c';
-import { IAction, ITrackAccount, Page, IActionPolyline } from "ht-models";
+import { IAction, ITrackAccount, Page, IActionPolyline, IActionWithPolyline, IActionMod } from "ht-models";
 import {htRequestService, HtTrackingApi} from "ht-api";
 import {catchError, concatMap, expand, filter, map, tap} from "rxjs/operators";
 import {timer} from "rxjs/observable/timer";
@@ -50,7 +49,7 @@ export class TrackingService {
         if (data) this.handleOnError(null);
         return !!data
       }),
-      map((actions: any[]) => actions.map(action => ({...action, display: {show_summary: false}}))),
+      // map((actions: IAction[]) => actions.map(action => ({...action, display: {show_summary: false}}))),
       tap((data: IAction[]) => {
         this.handleOnUpdate(data);
       }),
@@ -111,11 +110,11 @@ export class TrackingService {
     )
   }
 
-  private fillTimeAwarePathofActions(actions: any[]) {
+  private fillTimeAwarePathofActions(actions: IActionWithPolyline[]) {
     return actions.map((action) => this.fillTimeAwarePath(action))
   }
 
-  private fillTimeAwarePath(action) {
+  private fillTimeAwarePath(action: IActionWithPolyline): IActionMod {
     let timeAwarePath = action.timeAwarePath ?
       action.timeAwarePath : action.time_aware_polyline ?
         new TimeAwareEncoder().decodeTimeAwarePolyline(action.time_aware_polyline) : [];
@@ -130,7 +129,7 @@ export class TrackingService {
       timeAwarePath.push(...appendPath)
     }
     action.timeAwarePath = timeAwarePath;
-    return action
+    return action as IActionMod
   }
 
   private mergeActiveActionPolyline(actonPolyline, actions: IAction[]) {
@@ -141,7 +140,7 @@ export class TrackingService {
 
   private mergeActionAndPolyline(action, actionPolyline: IActionPolyline) {
     const timeAwarePath = new TimeAwareEncoder().decodeTimeAwarePolyline(actionPolyline.time_aware_polyline);
-    return {...action, ...actionPolyline, timeAwarePath, display: {show_summary: true}}
+    return {...action, ...actionPolyline, timeAwarePath}
   }
 
   private mergeUpdatedActions(updatedActions, currentActions) {
