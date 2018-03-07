@@ -86,7 +86,7 @@ export class ActionsPolyline extends SegmentPolylines {
 
   getPathFromData(data: IPlacelineMod) {
     return data ? data.actions.reduce((path, action) => {
-      return htAction(action).getExpectedPosition() && !action.completed_at ? [...path, htAction(action).getPosition()] : path
+      return htAction(action).getExpectedPosition() && !action.ended_at ? [...path, htAction(action).getPosition()] : path
     }, []) : null
   }
 }

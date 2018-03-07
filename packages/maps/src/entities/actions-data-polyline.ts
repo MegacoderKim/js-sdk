@@ -8,7 +8,7 @@ import {StyleMixin} from "../mixins/styles";
 import {IAction} from "ht-models";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {MarkersMixin} from "../mixins/marker-renderer";
-import {HtPosition, IPathBearingTime} from "ht-models";
+import {HtPosition, IPathBearingTime, IActionWithPolyline} from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {TimeAwareAnimation} from "time-aware-polyline";
@@ -69,14 +69,14 @@ export class ActionsDataPolyline {
     return data.timeAwarePath;
   }
 
-  getEncodedPositionTime(data: IAction) {
+  getEncodedPositionTime(data: IActionWithPolyline) {
     return data.time_aware_polyline;
   }
   //todo remove this, use getTimeAwarePolyline
-  getEncodedPath(data: IAction) {
+  getEncodedPath(data: IActionWithPolyline) {
     return data.encoded_polyline
   }
-  getPosition(action: IAction): HtPosition {
+  getPosition(action: IActionWithPolyline): HtPosition {
     const position = action.user ?
       action.user.last_location ? action.user.last_location.geojson.coordinates : null
       : null;
@@ -85,7 +85,7 @@ export class ActionsDataPolyline {
 
   }
 
-  getTimeAwarePolyline(data: IAction) {
+  getTimeAwarePolyline(data: IActionWithPolyline) {
     return data.time_aware_polyline
   }
 }
