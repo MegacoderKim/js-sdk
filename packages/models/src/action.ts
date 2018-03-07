@@ -136,7 +136,8 @@ export interface IActionWithPolyline extends IAction {
   encoded_polyline: string,
   time_aware_polyline: string,
   shortest_distance: number,
-  shortest_polyline: string
+  shortest_polyline: string,
+  timeAwarePath?: ITimeAwarePoint[]
 };
 
 export interface IActionMod extends IActionWithPolyline {
