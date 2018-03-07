@@ -17,7 +17,7 @@ $size-info-text : 0.875;
 
 //Generally used for main infoboxes
 $primary: #9013FE;
-
+$info: #00C94B;
 //Used for grey text
 $secondary-text-color: #ABB4BE;
 
@@ -25,7 +25,7 @@ $secondary-text-color: #ABB4BE;
 $title-text-color : #3c3c3c;
 
 //Used for secondary CTA's
-$accent-color : #00C94B;
+$accent-color : $info;
 
 //Background color of the main card
 $card-background : white;
