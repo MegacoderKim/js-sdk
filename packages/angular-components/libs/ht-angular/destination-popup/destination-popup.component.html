@@ -7,6 +7,6 @@
     <ng-template #comp>
       <div class="text-caption" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>
     </ng-template>
-    <div class="text-title">{{getDestinationName(action)}}</div>
+    <div class="text-title truncate">{{getDestinationName(action)}}</div>
   </div>
 </div>
