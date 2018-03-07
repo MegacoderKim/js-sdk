@@ -1,17 +1,22 @@
-<div class="card">
-  <div class="card-content is-small">
+<div class="card is-tracking-card">
+  <div class="card-content is-padding-normal">
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
           <ht-profile [url]="action.user.photo" [height]="40"></ht-profile>
         </div>
-        <div class="level-item truncate">
+        <div class="level-item text-title truncate --is-text-black">
           {{action.user.name | nameCase}}
         </div>
       </div>
       <div class="level-right">
         <div class="level-item">
-          <button class="button is-small is-dark">Call</button>
+          <button class="text-caption button has-color-accent">
+            <div class="icon">
+              <i class="ion-android-call has-color-accent"></i>
+            </div>
+            <span>Call</span>
+          </button>
         </div>
       </div>
     </div>

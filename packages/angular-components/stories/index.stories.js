@@ -14,6 +14,7 @@ import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import "../src/assets/css/ionicons/ionicons.css"
+import "../libs/styles/placeholder-tracking.scss"
 
 storiesOf('Date range picker', module).add('Basic', () => ({
   template: `

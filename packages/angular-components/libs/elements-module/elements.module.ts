@@ -12,7 +12,7 @@ export const customElements = [
 @NgModule({
   imports: [
     BrowserModule,
-    HtModule.forRoot({config: "", mapType: 'leaflet'}),
+    HtModule.forRoot({token: "", mapType: 'leaflet'}),
     TrackingModule,
     HttpClientModule,
     BrowserAnimationsModule,

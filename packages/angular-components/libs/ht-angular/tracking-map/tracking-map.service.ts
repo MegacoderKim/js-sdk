@@ -70,15 +70,15 @@ export class TrackingMapService {
      */
 
     const destinationStyle = {
-      radius: 28,
-      innerRadius: 16,
-      liveColor: "#00C94B",
+      radius: 20,
+      innerRadius: 10,
+      liveColor: "#250D47",
       summaryColor: "#250D47"
     };
 
     const polylineStyle = {
       color: '#9013FE',
-      weight: 5,
+      weight: 3,
     };
 
     const userStyle = {

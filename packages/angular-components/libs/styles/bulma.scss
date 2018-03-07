@@ -2,13 +2,7 @@
 @import "~bulma/sass/utilities/initial-variables.sass";
 @import "~bulma/sass/utilities/functions.sass";
 @import "variables";
-
-$blue: $ht-blue;
-$family-serif: 'Source Sans Pro', sans-serif;
-$primary: $live-purple;
-//$primary: $ht-blue;
-$family-primary: $family-serif;
-$grey-darker: $ht-grey-5;
+@import "./hypertrack-theme";
 
 @import "~bulma/sass/utilities/derived-variables";
 //@import "~bulma/sass/utilities/initial-variables.sass";

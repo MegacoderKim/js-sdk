@@ -1,37 +1,35 @@
-<div class="card" [@appear]>
-  <div class="card-content is-small flex-column column-gap-4">
+<div class="card is-tracking-card" [@appear]>
+  <div class="card-content">
     <div class="flex-row align-center justify-center row-gap-10">
       <div class="icon">
         <i class="ion-checkmark-circled check"></i>
       </div>
-      <div  class=" has-text-weight-bold">
+      <div class="text-title truncate has-color-title-text">
         {{action.type | nameCase}} completed
-
       </div>
     </div>
-    <div class="flex-row row-gap-20">
-      <div class="flex-column flex has-text-right column-gap-4">
-        <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">Total distance</span>
-          <div class=" has-text-weight-bold">{{action.distance | distanceLocale}}</div>
+    <div class="flex-column column-gap-4">
+      <div class="flex-row row-gap-20">
+        <div class="has-text-right flex">
+          <span class="text-caption has-color-secondary-text">distance</span>
+          <div class="text-info has-color-title-text">{{action.distance | distanceLocale}}</div>
         </div>
-        <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">id</span>
-          <div class=" has-text-weight-bold">#</div>
+        <div class="divider"></div>
+        <div class="flex">
+          <span class="text-caption has-color-secondary-text">Name</span>
+          <div class="text-info has-color-title-text">{{action.user.name | nameCase}}</div>
         </div>
-
       </div>
-      <div class="divider"></div>
-      <div class="flex-column flex has-text-left column-gap-4">
-        <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">Trip time</span>
-          <div class=" has-text-weight-bold">{{action.duration | hmString: 60}}</div>
+      <div class="flex-row row-gap-20">
+        <div class="has-text-right flex">
+          <span class="text-caption has-color-secondary-text">Trip time</span>
+          <div class="text-info has-color-title-text">{{action.duration | hmString: 60}}</div>
         </div>
-        <div>
-          <span class="has-text-grey-light is-size-7 is-uppercase has-text-weight-bold">Name</span>
-          <div class="truncate has-text-weight-bold">{{action.user.name | nameCase}}</div>
+        <div class="divider"></div>
+        <div class="flex">
+          <span class="text-caption has-color-secondary-text">id</span>
+          <div class="text-info has-color-title-text">#</div>
         </div>
-
       </div>
     </div>
   </div>
