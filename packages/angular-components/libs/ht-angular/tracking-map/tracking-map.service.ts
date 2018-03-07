@@ -71,7 +71,7 @@ export class TrackingMapService {
 
     const destinationStyle = {
       radius: 20,
-      innerRadius: 10,
+      innerRadius: 12,
       liveColor: "#250D47",
       summaryColor: "#250D47"
     };
