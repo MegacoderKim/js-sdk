@@ -9,14 +9,14 @@
           {{action.user.name | nameCase}}
         </div>
       </div>
-      <div class="level-right">
+      <div class="level-right" *ngIf="action.user.phone">
         <div class="level-item">
-          <button class="text-caption button has-color-accent">
+          <a [href]="'tel:'+action.user.phone" class="button is-small is-info is-outlined">
             <div class="icon">
-              <i class="ion-android-call has-color-accent"></i>
+              <i class="ion-android-call"></i>
             </div>
             <span>Call</span>
-          </button>
+          </a>
         </div>
       </div>
     </div>
