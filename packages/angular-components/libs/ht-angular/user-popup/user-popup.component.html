@@ -16,6 +16,9 @@
           <div class="is-uppercase is-size-7">speed</div>
           <div class="has-text-weight-bold">37 kmh</div>
         </div>
+        <div>
+          <ht-battery-icon [layout]="row" [reverse]="true" [battery]="action.latest_health.battery_percentage" [iconType]="'ionicon'"></ht-battery-icon>
+        </div>
         <div class="flex-row row-gap-20">
           <div>
             <div class="is-uppercase is-size-7">distance</div>
