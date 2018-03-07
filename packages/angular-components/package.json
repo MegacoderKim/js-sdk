@@ -95,7 +95,7 @@
     "@types/popper.js": "^1.10.0",
     "@webcomponents/custom-elements": "^1.0.8",
     "autoprefixer": "7.1.5",
-    "codelyzer": "~3.2.0",
+    "codelyzer": "^4.2.1",
     "conventional-github-releaser": "^2.0.0",
     "copyfiles": "^1.2.0",
     "core-js": "^2.4.1",

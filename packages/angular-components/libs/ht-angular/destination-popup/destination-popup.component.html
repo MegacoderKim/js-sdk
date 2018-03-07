@@ -1,11 +1,11 @@
 <div class="card">
   <div class="card-content is-popup">
-    <ng-container *ngIf="action.eta && !action.completed_at; else comp">
+    <ng-container *ngIf="!action.ended_at; else comp">
       <div class="text-caption">ETA</div>
-      <div class="text-title">{{action.eta | timeString }}</div>
+      <div class="text-title">{{action.eta | timeString | dot: '...' }}</div>
     </ng-container>
     <ng-template #comp>
-      <div class="text-caption" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>
+      <div class="text-caption" *ngIf="action.ended_at">{{action.type | nameCase}} | {{action.ended_at | timeString}}</div>
     </ng-template>
     <div class="is-size-7 has-text-weight-bold truncate">{{getDestinationName(action)}}</div>
   </div>
