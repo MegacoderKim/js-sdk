@@ -41,7 +41,7 @@ export class UserCardComponent implements OnInit, OnChanges {
 
   fireAction() {
     this.onAction.next({user: this.user, action: this.action});
-    event.stopPropagation()
+    // event.stopPropagation()
   }
 
   ngOnChanges(a) {

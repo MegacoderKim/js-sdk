@@ -29,7 +29,7 @@ export class GroupsChartService {
       (selectedGroups, groupslevelsEntity) => {
         return selectedGroups.map((group) => {
           const id = group ? group.id : null;
-          return groupslevelsEntity[id] ? groupslevelsEntity[id] : null
+          return id && groupslevelsEntity[id] ? groupslevelsEntity[id] : null
         })
       }
     )
@@ -40,10 +40,11 @@ export class GroupsChartService {
     this.selectedGroups$.pipe(
       take(1),
       filter(groups => {
-        const id = groups[0] ? groups[0].id : null;
+        const firstGroup = groups && groups[0] ? groups[0] : null;
+        const id = firstGroup ? firstGroup.id : null;
         return id !== groupId || (groupId == null && !groups.length);
       }),
-      switchMap(() => {
+      switchMap((): Observable<IGroup | null> => {
         return groupId ? this.groupsService.item.api$(groupId) : of(null)
       })
     ).subscribe((group: IGroup | null) => {
@@ -73,19 +74,19 @@ export class GroupsChartService {
       withLatestFrom(this.groupsLevelsEntity$),
       switchMap(([selectedGroups, groupsLevels]) => {
         const level = selectedGroups.length;
-        const lastId = selectedGroups[level - 1] ? selectedGroups[level - 1].id : null;
-        // groupsLevels.splice(length);
+        const lastSelectedGroup = level && selectedGroups.length ? selectedGroups[level - 1] : null;
+        const lastId = lastSelectedGroup ? lastSelectedGroup.id : null;
         groupsLevels = selectedGroups.reduce((acc, group) => {
           const groupId = group ? group.id : null;
-          return groupsLevels[groupId] ? {...acc, [groupId]: groupsLevels[groupId]} : acc
+          return groupId && groupsLevels[groupId] ? {...acc, [groupId]: groupsLevels[groupId]} : acc
         }, {});
 
-        if (groupsLevels[lastId]) {
+        if (lastId && groupsLevels[lastId]) {
           return of(groupsLevels)
         } else {
           return this.getGroups(lastId).pipe(
             map((groupsPage: Page<IGroup>) => {
-              return {...groupsLevels, [lastId]: groupsPage.results}
+              return lastId ? {...groupsLevels, [lastId]: groupsPage.results} : groupsLevels
             })
           )
         }

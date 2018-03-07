@@ -25,7 +25,7 @@ import {Observable} from "rxjs/Observable";
   ]
 })
 export class UsersFilterComponent implements OnInit {
-  query$: Observable<object> = of(null);
+  query$: Observable<object | null> = of(null);
   loading$: Observable<boolean> = of(false);
   statusFiltes;
   sortingLabels;

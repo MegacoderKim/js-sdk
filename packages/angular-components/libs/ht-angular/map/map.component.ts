@@ -19,7 +19,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   @Input() mapInstance: MapInstance;
   @Input() loading: boolean = false;
   @Input() showReset: boolean = true;
-  @Output() onReady: EventEmitter<HtMap> = new EventEmitter<HtMap>();
+  @Output() onReady: EventEmitter<HtMap | null> = new EventEmitter<HtMap>();
   @Output() onMapReset: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('map') mapElem;
   @ViewChild('resetCta', { read: ViewContainerRef }) resetCta;

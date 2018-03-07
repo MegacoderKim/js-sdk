@@ -91,13 +91,17 @@ export class PlacelineComponent implements OnInit {
       const lastSeg = segment;
       const gapSegment = this.getGapSegment(segment, acc.lastSeg);
       // let lastSeg = _.last(acc.activitySegments);
-      const currentActivitySegment = {...segment, time, events: [], ...this.getSegmentStyle(activityClass), activityText, placeAddress};
+      const currentActivitySegment: {
+        events: any[],
+        [any: string]: any
+      } = {...segment, time, events: [], ...this.getSegmentStyle(activityClass), activityText, placeAddress};
       const events = _.reject(acc.events, (event) => {
 
         if (this.isEventInSegment(segment, event)) {
           // event = {...event, ...this.getEventDisplay(event)};
           const eventDisplay = this.getEventDisplay(event);
-          if (eventDisplay) currentActivitySegment.events.push({...event, ...eventDisplay});
+          event = {...event, ...eventDisplay};
+          if (eventDisplay) currentActivitySegment.events.push(event);
           return true
         }
         return false
@@ -216,7 +220,7 @@ export class PlacelineComponent implements OnInit {
 
   private currentExpActions(actions: IAction[]) {
     return _.reduce(actions, (acc, action: IAction) => {
-      let expActions = [];
+      let expActions: any[] = [];
       this.actionMap = this.setActionMap(action);
       const assign = {
         actionText: `${NameCase(action.type)} assigned`,
@@ -351,7 +355,7 @@ export class PlacelineComponent implements OnInit {
     }
   }
 
-  private getEventDisplay(event) {
+  private getEventDisplay(event): {text: string, subtext: string} {
     switch (event.type) {
       case 'tracking.started':
         return {
@@ -389,10 +393,14 @@ export class PlacelineComponent implements OnInit {
           subtext: ''
         };
     }
+    return {
+      text: "",
+      subtext: ""
+    }
   }
 
   private getGapSegment(segment, lastSeg) {
-    let gaps = [];
+    let gaps: any[] = [];
     if (!lastSeg) return [];
     if (segment.started_at && lastSeg.ended_at) {
       const endMin = this.getMinute(segment.started_at);
