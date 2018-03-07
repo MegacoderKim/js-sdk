@@ -4,8 +4,8 @@ import { ITimeAwarePoint } from "./ht-models";
 
 export interface IAction {
   id: string;
-  user?: IUser;
-  user_id: string;
+  user: IUser;
+  // user_id: string;
   display: {
     status_text: string;
     sub_status_text: string;
@@ -16,35 +16,39 @@ export interface IAction {
     duration_elapsed: number;
     distance_remaining: string | null;
   };
+  unique_id: string;
   lookup_id: string;
   assigned_at: string;
+  distance_to_arrival: null | number,
   distance: number | null;
   duration: number | null;
   created_at: string;
   started_at: string;
   started_place: IPlace,
   completed_place: IPlace;
-  completed_at: string | null;
-  suspended_at: string | null;
-  canceled_at: string | null;
+  ended_at: string | null;
+  latest_activity: null;
+  latest_health: null | {
+
+  },
+  latest_locations: null | any[],
+  // suspended_at: string | null;
+  // canceled_at: string | null;
   expected_place: IPlace;
-  initial_eta: string;
+  eta_at_creation: string;
   eta: string;
   status: string;
   expected_at: string | null;
   type: string;
   tracking_url: string;
-  short_code: string;
-  time_aware_polyline: string,
-  encoded_polyline: string;
-  event_flags: string[];
-  metadata: object;
-  account?: any
+  // short_code: string;
+  // time_aware_polyline: string,
+  // encoded_polyline: string;
+  // event_flags: string[];
+  metadata: object[];
+  // account?: any
 }
 
-export interface IActionMod extends IAction {
-  timeAwarePath: ITimeAwarePoint[]
-}
 export interface IActionMap {
   id: string;
   lookup_id: string;
@@ -126,4 +130,15 @@ export interface IActionPolyline {
   time_aware_polyline: string,
   shortest_distance: number,
   shortest_polyline: string
+};
+
+export interface IActionWithPolyline extends IAction {
+  encoded_polyline: string,
+  time_aware_polyline: string,
+  shortest_distance: number,
+  shortest_polyline: string
+};
+
+export interface IActionMod extends IActionWithPolyline {
+  timeAwarePath: ITimeAwarePoint[]
 }
