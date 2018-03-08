@@ -1,6 +1,6 @@
 export * from "./api-helper";
 export * from "./array-humanize";
-export * from "./common";
+export * from "./array-helpers";
 export * from "./color";
 export * from "./countries";
 export * from "./date-humanize";
