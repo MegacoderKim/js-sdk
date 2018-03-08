@@ -43,7 +43,7 @@ export class BatteryIconComponent implements OnInit {
     } else if (level > 50) {
       className = 'ion-battery-half';
     } else if (level > 10) {
-      className = 'ion-battery-low text-red';
+      className = 'ion-battery-low';
     } else {
       className = 'ion-battery-empty text-red';
     };
