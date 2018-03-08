@@ -10,6 +10,7 @@ import {TimeAwareEncoder} from "time-aware-polyline";
 import {empty} from "rxjs/observable/empty";
 import {Observable} from "rxjs/Observable";
 import {PageResults$} from "ht-data";
+import { indexBy} from "ht-utility";
 
 @Injectable()
 export class TrackingService {
@@ -18,6 +19,7 @@ export class TrackingService {
   isSliding: boolean = false;
   actions$: ReplaySubject<IAction[]> = new ReplaySubject();
   error$: ReplaySubject<any | null> = new ReplaySubject<any|null>();
+  pollDuration: number = 2000;
   constructor(private actionsClient: HtActionsService) {
   }
 
@@ -33,12 +35,8 @@ export class TrackingService {
       expand((data: any[]) => {
         if (data && !this.getActiveAction(data)) {
           return empty()
-        } else if (!data) {
-          return timer(2000).pipe(
-            map(() => null)
-          )
         } else {
-          return timer(2000).pipe(
+          return timer(this.pollDuration).pipe(
             concatMap((_) => {
               return this.fetchActionsWithTimeAwarePath(query, data)
             })
@@ -84,6 +82,7 @@ export class TrackingService {
     return this.fetchActions$(query).pipe(
       concatMap((actions: IAction[]) => {
         if (actions) {
+          actions = currentActions ? this.mergeUpdatedActions(actions, currentActions) : actions;
           const activeAction = this.getActiveAction(currentActions || actions);
           if (!activeAction || (activeAction && !activeAction.time_aware_polyline)) {
             return this.fetchActionPolyline$(actions[actions.length - 1]).pipe(
@@ -92,7 +91,7 @@ export class TrackingService {
               })
             )
           } else {
-            return of(currentActions ? this.mergeUpdatedActions(actions, currentActions) : actions)
+            return of(actions)
           }
         } else {
           return of(actions)
@@ -115,17 +114,17 @@ export class TrackingService {
   }
 
   private fillTimeAwarePath(action: IActionWithPolyline): IActionMod {
-    let timeAwarePath = action.timeAwarePath ?
+    const timeAwarePath = action.timeAwarePath ?
       action.timeAwarePath : action.time_aware_polyline ?
         new TimeAwareEncoder().decodeTimeAwarePolyline(action.time_aware_polyline) : [];
-    const lastPoint = timeAwarePath[timeAwarePath.length -1];
+    const lastPoint = timeAwarePath[timeAwarePath.length - 1];
     const lastRecordedAt = lastPoint ? new Date(lastPoint[2]).getTime() : null;
     const newPoint = action.latest_locations && action.latest_locations.length ? action.latest_locations[0] : null;
     const newRecordedAt = newPoint ? new Date(newPoint.recorded_at).getTime() : null;
     const newLocation = newPoint ? newPoint.geojson.coordinates : null;
     const appendPath = newLocation ? [[newLocation[1], newLocation[0], newPoint.recorded_at]] : [];
 
-    if(newLocation && newRecordedAt > lastRecordedAt) {
+    if (newLocation && newRecordedAt > lastRecordedAt) {
       timeAwarePath.push(...appendPath)
     }
     action.timeAwarePath = timeAwarePath;
@@ -134,7 +133,7 @@ export class TrackingService {
 
   private mergeActiveActionPolyline(actonPolyline, actions: IAction[]) {
     return actions.map((action) => {
-      return action.id == actonPolyline.id ? this.mergeActionAndPolyline(action, actonPolyline) : action
+      return action.id === actonPolyline.id ? this.mergeActionAndPolyline(action, actonPolyline) : action
     })
   }
 
@@ -144,11 +143,12 @@ export class TrackingService {
   }
 
   private mergeUpdatedActions(updatedActions, currentActions) {
-    var currentActionsObject = currentActions.reduce((acc, action) => {
-      return {[action.id]: action, ...acc}
-    }, {});
+    
+    const currentActionsObject = indexBy(currentActions);
     return updatedActions.map((action) => {
-      return {...currentActionsObject[action.id], ...action}
+      const currentAction = currentActionsObject[action.id];
+      const time_aware_polyline = action.time_aware_polyline || currentAction.time_aware_polyline;
+      return {...currentActionsObject[action.id], ...action, time_aware_polyline}
     })
   }
 
