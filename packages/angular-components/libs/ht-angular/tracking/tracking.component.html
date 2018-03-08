@@ -5,8 +5,14 @@
       <ht-action-status [action]="action"></ht-action-status>
     </ng-template>
   </ng-container>
-
 </ht-tracking-map>
+<div class="is-map-overlay has-warning" *ngIf="error$ | async">
+  <div class="card is-warning">
+    <div class="card-content is-small has-text-centered is-size-6">
+      Network error
+    </div>
+  </div>
+</div>
 <ht-infobox [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId">
   <ht-destination-popup [action]="item.data"></ht-destination-popup>
 </ht-infobox>
@@ -16,7 +22,7 @@
 <ht-infobox [item]="item" *ngFor="let item of startPopup$ | async; trackBy: trackId">
   <ht-start-popup [action]="item.data"></ht-start-popup>
 </ht-infobox>
-<div class="is-overlay" *ngIf="loading" [@fade]>
+<div class="is-overlay is-map-overlay has-loading" *ngIf="loading" [@fade]>
   <div id="root">
     <div class="loading-container">
       <div class="loading-section">
