@@ -1,13 +1,13 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {PopperContent} from "../popper/popper-content";
 import {HtMapService} from "../ht/ht-map.service";
 
 @Component({
-  selector: 'app-infobox',
+  selector: 'ht-infobox',
   templateUrl: './infobox.component.html',
   styleUrls: ['./infobox.component.scss']
 })
-export class InfoboxComponent implements OnInit {
+export class InfoboxComponent implements OnInit, AfterViewInit {
   @ViewChild(PopperContent) popper: PopperContent;
   @Input() item: {
     data: any,

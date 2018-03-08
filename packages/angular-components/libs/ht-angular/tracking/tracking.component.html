@@ -1,21 +1,21 @@
 <ht-tracking-map [showSummary]="trackingMapService.actionCompleted">
   <ng-container *ngFor="let action of actionsData$ | async; trackBy: trackId">
-    <app-action-summary *ngIf="action.display.show_summary; else status" [action]="action"></app-action-summary>
+    <ht-action-summary *ngIf="action.display.show_summary; else status" [action]="action"></ht-action-summary>
     <ng-template #status>
-      <app-action-status [action]="action"></app-action-status>
+      <ht-action-status [action]="action"></ht-action-status>
     </ng-template>
   </ng-container>
 
 </ht-tracking-map>
-<app-infobox [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId">
-  <app-destination-popup [action]="item.data"></app-destination-popup>
-</app-infobox>
-<app-infobox [item]="item" *ngFor="let item of userPopup$ | async; trackBy: trackId">
-  <app-user-popup [action]="item.data"></app-user-popup>
-</app-infobox>
-<app-infobox [item]="item" *ngFor="let item of startPopup$ | async; trackBy: trackId">
-  <app-start-popup [action]="item.data"></app-start-popup>
-</app-infobox>
+<ht-infobox [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId">
+  <ht-destination-popup [action]="item.data"></ht-destination-popup>
+</ht-infobox>
+<ht-infobox [item]="item" *ngFor="let item of userPopup$ | async; trackBy: trackId">
+  <ht-user-popup [action]="item.data"></ht-user-popup>
+</ht-infobox>
+<ht-infobox [item]="item" *ngFor="let item of startPopup$ | async; trackBy: trackId">
+  <ht-start-popup [action]="item.data"></ht-start-popup>
+</ht-infobox>
 <div class="is-overlay" *ngIf="loading" [@fade]>
   <div id="root">
     <div class="loading-container">

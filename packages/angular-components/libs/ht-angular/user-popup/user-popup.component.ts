@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import { IAction } from "ht-models";
 
 @Component({
-  selector: 'app-user-popup',
+  selector: 'ht-user-popup',
   templateUrl: './user-popup.component.html',
   styleUrls: ['./user-popup.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

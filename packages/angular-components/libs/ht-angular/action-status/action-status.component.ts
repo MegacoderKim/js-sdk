@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IAction} from "ht-models";
 
 @Component({
-  selector: 'app-action-status',
+  selector: 'ht-action-status',
   templateUrl: './action-status.component.html',
   styleUrls: ['./action-status.component.scss']
 })

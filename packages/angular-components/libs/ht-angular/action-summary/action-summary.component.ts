@@ -3,7 +3,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
 import {IAction} from "ht-models";
 
 @Component({
-  selector: 'app-action-summary',
+  selector: 'ht-action-summary',
   templateUrl: './action-summary.component.html',
   styleUrls: ['./action-summary.component.scss'],
   animations: [
