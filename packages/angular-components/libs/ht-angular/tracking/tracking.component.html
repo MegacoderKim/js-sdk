@@ -13,6 +13,13 @@
     </div>
   </div>
 </div>
+<div class="is-map-overlay has-warning" *ngIf="error$ | async">
+  <div class="card is-warning">
+    <div class="card-content is-small has-text-centered is-size-6">
+      Network error
+    </div>
+  </div>
+</div>
 <ht-infobox [item]="item" *ngFor="let item of popups$ | async; trackBy: trackId">
   <ht-destination-popup [action]="item.data"></ht-destination-popup>
 </ht-infobox>
