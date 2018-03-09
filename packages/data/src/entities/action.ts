@@ -162,7 +162,7 @@ export class HtAction {
   }
 
   hasEnded(): boolean {
-    return !!this.data.display.ended_at;
+    return !!this.data.completed_at;
   }
 
   getETATimestamp() {
