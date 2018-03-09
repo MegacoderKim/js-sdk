@@ -142,9 +142,9 @@ export class PlacelineComponent implements OnInit {
       });
       if(segment.ended && !segment.actionText) {
       } else if(segment.ended) {
-        activitySegments.push({...segment, ended: false});
+        activitySegments.push({...segment, ended: false, type: segment.type});
       } else {
-        activitySegments.push(segment);
+        activitySegments.push({...segment, type: segment.type});
       }
       // activitySegments.push(segment);
       return {activitySegments, actionEvents, lastSeg, actionSegments}
@@ -293,13 +293,13 @@ export class PlacelineComponent implements OnInit {
     }
     const activityClass = this.getActivityClass(lastSeg);
     return {
-      time, 
-      pipeClass, 
-      id: '..', 
-      lastSeg: true, 
-      isLive, 
-      ended: true, 
-      activityClass, 
+      time,
+      pipeClass,
+      id: '..',
+      lastSeg: true,
+      isLive,
+      ended: true,
+      activityClass,
       activityBg: `${this.getActivityClass(lastSeg)}-bg`,
       type: lastSeg.type
     }

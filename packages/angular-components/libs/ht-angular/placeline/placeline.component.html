@@ -56,7 +56,7 @@
               <span>&bull;</span>
               <span>{{segment.distance | distanceLocale: timezone}}</span>
             </ng-template>
-            <ng-container *ngIf="segment.step_count">
+            <ng-container *ngIf="segment.step_count && segment.type == 'stop'">
               <span>&bull;</span>
               <span>{{segment.step_count}} {{'step' | pluralize: segment.step_count}}</span>
             </ng-container>
