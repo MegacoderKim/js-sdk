@@ -27,9 +27,14 @@ export interface IAction {
   started_place: IPlace,
   completed_place: IPlace;
   ended_at: string | null;
-  latest_activity: null;
+  latest_activity: null | {
+    type: string
+  };
   latest_health: null | {
-
+    battery_percentage: number,
+    network_status: string,
+    location_status: string,
+    battery_status: string
   },
   latest_locations: null | any[],
   // suspended_at: string | null;
