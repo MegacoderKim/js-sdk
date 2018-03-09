@@ -163,12 +163,9 @@ export class TrackingMapService {
     };
 
     user.getDivContent = (data, bearing) => {
+      const iconDiv = this.getUserIconDiv(data, bearing, userStyle.markerSize);
       return `<div class="box-${userStyle.radius}" style="position: absolute">
-    <i class="ion-android-navigate" style="margin: auto; 
-    color: white; 
-    font-size: ${userStyle.markerSize}px; 
-    transition: transform 0.4s;
-    transform: rotate(${bearing}deg)"></i>
+    ${iconDiv}
 </div>`
     }
 
@@ -187,6 +184,18 @@ export class TrackingMapService {
 
     }
 
+  }
+
+  getUserIconDiv(action, bearing, size): string {
+    const cycleClass = "ion-android-bicycle";
+    const movingClass = "ion-android-navigate";
+    const stopClass = "ion-stop";
+    const errorClass = "ion-minus-circled";
+    return `<i class="ion-android-navigate" style="margin: auto; 
+    color: white; 
+    font-size: ${size}px; 
+    transition: transform 0.4s;
+    transform: rotate(${bearing}deg)"></i>`
   }
 
 }
