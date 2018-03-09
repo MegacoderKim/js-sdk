@@ -78,7 +78,7 @@ export class ActionsDataPolyline {
   }
   getPosition(action: IActionWithPolyline): HtPosition {
     const position = action.user ?
-      action.user.last_location ? action.user.last_location.geojson.coordinates : null
+      action.location ? action.location.geojson.coordinates : null
       : null;
 
     return position ? {lat: position[1], lng: position[0]} : null;

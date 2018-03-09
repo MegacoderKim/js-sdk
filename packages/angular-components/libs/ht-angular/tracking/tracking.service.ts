@@ -32,7 +32,7 @@ export class TrackingService {
       tap((data) => {
         //loading done
       }),
-      expand((data: any[]) => {
+      expand((data: IActionWithPolyline[]) => {
         if (data && !this.getActiveAction(data)) {
           return empty()
         } else {
@@ -55,11 +55,11 @@ export class TrackingService {
   }
 
 
-  private getActiveAction(data: any[]) {
+  private getActiveAction(data: IActionWithPolyline[]) {
     return data.find((action) => {
       // return false;
       // return !action.display.show_summary;
-      return !action.ended_at;
+      return !action.completed_at;
     })
   };
 
@@ -78,9 +78,9 @@ export class TrackingService {
     return this.actionsClient.api.polyline(action.id)
   }
 
-  private fetchActionsWithActivePolyline$(query: object, currentActions?: IAction[]) {
+  private fetchActionsWithActivePolyline$(query: object, currentActions?: IActionWithPolyline[]) {
     return this.fetchActions$(query).pipe(
-      concatMap((actions: IAction[]) => {
+      concatMap((actions: IActionWithPolyline[]) => {
         if (actions) {
           actions = currentActions ? this.mergeUpdatedActions(actions, currentActions) : actions;
           const activeAction = this.getActiveAction(currentActions || actions);
@@ -101,7 +101,7 @@ export class TrackingService {
     )
   };
 
-  private fetchActionsWithTimeAwarePath(query: object, currentActions?: IAction[]) {
+  private fetchActionsWithTimeAwarePath(query: object, currentActions?: IActionWithPolyline[]) {
     return this.fetchActionsWithActivePolyline$(query, currentActions).pipe(
       map(actions => {
         return actions ? this.fillTimeAwarePathofActions(actions) : actions
@@ -119,7 +119,7 @@ export class TrackingService {
         new TimeAwareEncoder().decodeTimeAwarePolyline(action.time_aware_polyline) : [];
     const lastPoint = timeAwarePath[timeAwarePath.length - 1];
     const lastRecordedAt = lastPoint ? new Date(lastPoint[2]).getTime() : null;
-    const newPoint = action.latest_locations && action.latest_locations.length ? action.latest_locations[0] : null;
+    const newPoint = action.location;
     const newRecordedAt = newPoint ? new Date(newPoint.recorded_at).getTime() : null;
     const newLocation = newPoint ? newPoint.geojson.coordinates : null;
     const appendPath = newLocation ? [[newLocation[1], newLocation[0], newPoint.recorded_at]] : [];
@@ -143,7 +143,7 @@ export class TrackingService {
   }
 
   private mergeUpdatedActions(updatedActions, currentActions) {
-    
+
     const currentActionsObject = indexBy(currentActions);
     return updatedActions.map((action) => {
       const currentAction = currentActionsObject[action.id];

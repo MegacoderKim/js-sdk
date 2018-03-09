@@ -39,16 +39,13 @@ export class ActionMap {
     this.destination.setData$(data$);
     this.polyline.setData$(data$);
     this.start.setData$(data$);
-    if (this.pulse) this.pulse.setData$(data$.pipe(map((actions: IAction[]) => {
-      return actions.reduce((acc, action) =>{
+    const users$ = data$.pipe(map((actions: IAction[]) => {
+      return actions.reduce((acc, action) => {
         return action.completed_at ? acc : [...acc, action];
       }, [])
-    })));
-    this.user.setData$(data$.pipe(map((actions: IAction[]) => {
-      return actions.reduce((acc, action) =>{
-        return action.completed_at ? acc : [...acc, action];
-      }, [])
-    })));
+    }));
+    if (this.pulse) this.pulse.setData$(users$);
+    this.user.setData$(users$);
 
   };
 
