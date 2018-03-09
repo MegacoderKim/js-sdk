@@ -41,12 +41,12 @@ export class ActionMap {
     this.start.setData$(data$);
     if (this.pulse) this.pulse.setData$(data$.pipe(map((actions: IAction[]) => {
       return actions.reduce((acc, action) =>{
-        return action.ended_at ? acc : [...acc, action];
+        return action.completed_at ? acc : [...acc, action];
       }, [])
     })));
     this.user.setData$(data$.pipe(map((actions: IAction[]) => {
       return actions.reduce((acc, action) =>{
-        return action.ended_at ? acc : [...acc, action];
+        return action.completed_at ? acc : [...acc, action];
       }, [])
     })));
 
