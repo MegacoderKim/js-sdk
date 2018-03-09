@@ -292,7 +292,17 @@ export class PlacelineComponent implements OnInit {
       time = placeline.last_heartbeat_at
     }
     const activityClass = this.getActivityClass(lastSeg);
-    return {time, pipeClass, id: '..', lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg`}
+    return {
+      time, 
+      pipeClass, 
+      id: '..', 
+      lastSeg: true, 
+      isLive, 
+      ended: true, 
+      activityClass, 
+      activityBg: `${this.getActivityClass(lastSeg)}-bg`,
+      type: lastSeg.type
+    }
   }
 
   private isSegmentLive(placeline: IUserData) {
