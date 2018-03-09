@@ -4,7 +4,17 @@ import { ITimeAwarePoint } from "./ht-models";
 
 export interface IAction {
   id: string;
-  user: IUser;
+  user: {
+    created_at: string,
+    group_id: string | null,
+    id: string,
+    is_tracking: boolean,
+    name: string | null,
+    phone: string | null,
+    photo: string | null,
+    unique_id: string | null,
+    vehicle_type: string
+  };
   // user_id: string;
   display: {
     status_text: string;
@@ -26,17 +36,17 @@ export interface IAction {
   started_at: string;
   started_place: IPlace,
   completed_place: IPlace;
-  ended_at: string | null;
-  latest_activity: null | {
+  completed_at: string | null;
+  activity: null | {
     type: string
   };
-  latest_health: null | {
+  health: null | {
     battery_percentage: number,
     network_status: string,
     location_status: string,
     battery_status: string
   },
-  latest_locations: null | any[],
+  location: null | HtLocation,
   // suspended_at: string | null;
   // canceled_at: string | null;
   expected_place: IPlace;
@@ -49,7 +59,7 @@ export interface IAction {
   // short_code: string;
   // time_aware_polyline: string,
   // encoded_polyline: string;
-  // event_flags: string[];
+  event_flags: string[];
   metadata: object[];
   // account?: any
 }

@@ -9,7 +9,7 @@ export interface IPageData {
 export interface HtLocation {
   bearing?: number;
   activity_confidence?: number;
-  activity: string;
+  activity?: string;
   provider?: string;
   geojson: GeoJson;
   recorded_at: string;
