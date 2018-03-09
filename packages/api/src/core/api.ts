@@ -11,11 +11,16 @@ export class HtApi {
     actions: HtActionsApi;
     groups: HtGroupsApi;
     accountUser: HtAccountUserApi;
-    constructor() {
+    constructor(token) {
         this.request = htRequestService.getInstance();
+        if (token) this.request.tokenServie.token = token;
         this.users = new HtUsersApi(this.request);
         this.actions = new HtActionsApi(this.request);
         this.groups = new HtGroupsApi(this.request);
         this.accountUser = new HtAccountUserApi(this.request)
+    };
+
+    setToken(token) {
+      this.request.tokenServie.token = token;
     }
 }
