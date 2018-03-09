@@ -84,7 +84,7 @@ export class TrackingMapService {
     const userStyle = {
       radius: 24,
       color: '#9013FE',
-      markerSize: 17,
+      markerSize: 15,
     };
 
     const destination = this.actionsTrace.destination;
@@ -188,10 +188,19 @@ export class TrackingMapService {
 
   getUserIconDiv(action, bearing, size): string {
     const cycleClass = "ion-android-bicycle";
+    const walkClass = "ion-android-walk";
     const movingClass = "ion-android-navigate";
     const stopClass = "ion-stop";
     const errorClass = "ion-minus-circled";
-    return `<i class="ion-android-navigate" style="margin: auto; 
+
+    const activityType = action.latest_activity.type;
+    const iconClass = activityType == 'stop' ?
+      stopClass : activityType == 'cycle' ?
+        cycleClass : activityType == 'walk' ?
+          walkClass : movingClass;
+
+    bearing = iconClass == movingClass ? bearing : 0;
+    return `<i class="${iconClass}" style="margin: auto; 
     color: white; 
     font-size: ${size}px; 
     transition: transform 0.4s;
