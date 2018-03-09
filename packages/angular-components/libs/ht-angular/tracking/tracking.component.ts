@@ -74,13 +74,13 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
     const completedAction$ = this.actionsData$.pipe(
       filter((data: IAction[]) => {
-        return !!data && data.length && !!data[0].ended_at;
+        return !!data && data.length && !!data[0].completed_at;
       }),
       take(1)
     );
 
     this.actionsData$.pipe(
-      filter((data: IAction[]) => !!data && data.length && !data[0].ended_at),
+      filter((data: IAction[]) => !!data && data.length && !data[0].completed_at),
       takeUntil(completedAction$)
     ).subscribe((action) => {
       this.loading = false;

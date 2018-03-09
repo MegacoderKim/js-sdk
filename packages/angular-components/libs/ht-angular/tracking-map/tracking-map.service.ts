@@ -4,7 +4,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Subscription} from "rxjs/Subscription";
 import {MapInstance} from "ht-maps";
 import {ActionTrace} from "ht-maps";
-import {IAction} from "ht-models";
+import {IAction, IActionWithPolyline} from "ht-models";
 
 @Injectable()
 export class TrackingMapService {
@@ -170,7 +170,7 @@ export class TrackingMapService {
     }
 
     destination.getDivContent = (action: IAction) => {
-      if (action.ended_at) {
+      if (action.completed_at) {
         return `<div class="box-${destinationStyle.radius}" style="background: ${destinationStyle.liveColor}">
 <!--<div class="icon" style="font-size: 1.5rem; color: white; margin: auto">-->
         <!--<i class="ion-checkmark"></i>-->
@@ -186,14 +186,14 @@ export class TrackingMapService {
 
   }
 
-  getUserIconDiv(action, bearing, size): string {
+  getUserIconDiv(action: IActionWithPolyline, bearing, size): string {
     const cycleClass = "ion-android-bicycle";
     const walkClass = "ion-android-walk";
     const movingClass = "ion-android-navigate";
     const stopClass = "ion-stop";
     const errorClass = "ion-minus-circled";
 
-    const activityType = action.latest_activity.type;
+    const activityType = action.activity.type;
     const iconClass = activityType == 'stop' ?
       stopClass : activityType == 'cycle' ?
         cycleClass : activityType == 'walk' ?

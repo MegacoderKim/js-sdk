@@ -193,7 +193,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
           {
             label: "Last updated at",
             selector(action: IAction) {
-              return action.user ? TimeString(action.user.last_heartbeat_at) : "--"
+              return action.user ? TimeString(action.location.recorded_at) : "--"
             }
           },
           {
