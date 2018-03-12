@@ -1,9 +1,9 @@
 import {getTimezone} from "./timezone";
 
-export function DistanceLocale(meters, timezone?) {
+export function DistanceLocale(meters, timezone = "_") {
   timezone = timezone || getTimezone();
   if (meters != undefined && typeof meters == "number" && meters >= 0) {
-    let america: boolean = timezone && timezone.indexOf("America") > -1;
+    let america: boolean = timezone.indexOf("America") > -1;
     // console.log(config.timezone.indexOf('America'), america, config.timezone);
     // let test = false;
     if (america) {
