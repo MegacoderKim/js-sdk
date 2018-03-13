@@ -23,12 +23,14 @@ export class UsersSummaryContainerComponent implements OnInit, OnDestroy {
   @Input() queryLabels: QueryLabel[];
   @Input() hideTotal: boolean = false;
   @Input() selectable: boolean = false;
+  @Input() clearDataOnDestroy: boolean = true;
+  @Input() toSetActive: boolean = true;
   constructor(
     private usersClientService: HtUsersService
   ) { }
 
   ngOnInit() {
-    this.usersClientService.summary.setActive();
+    if (this.toSetActive) this.usersClientService.summary.setActive();
     this.summary$ = this.usersClientService.listStatusChart$(this.queryLabels);
     // this.summary$ = this.usersClientService.summary.data$
 
@@ -43,7 +45,7 @@ export class UsersSummaryContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.usersClientService.summary.clearData()
+    if (this.clearDataOnDestroy) this.usersClientService.summary.clearData()
   }
 
 }
