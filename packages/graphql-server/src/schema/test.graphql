@@ -1,0 +1,74 @@
+type User {
+    id: ID!
+    name: String
+    phone: String
+    photo: String,
+    last_update: String,
+    group: Group,
+    group_id: String,
+    pending_actions: [Action]
+}
+
+interface Page {
+    next: String,
+    previous: String,
+    count: Int!,
+    page_size: Int!,
+    page: Int
+}
+
+type Users implements Page {
+    next: String,
+    previous: String,
+    count: Int!,
+    page_size: Int!
+    results: [User]!,
+    page: Int,
+}
+
+type Actions {
+    results: [Action]!,
+    next: String,
+    previous: String,
+    count: Int!,
+    page_size: Int!
+    page: Int
+}
+
+type Group {
+    id: ID,
+    name: String,
+    lookup_id: String,
+    users(page_size: Int = 3): Users
+}
+
+type Groups implements Page {
+    next: String,
+    previous: String,
+    count: Int!,
+    page_size: Int!
+    results: [Group]!,
+    page: Int
+}
+
+enum DistanceUnit {
+    km,
+    mile
+}
+
+type Action {
+    type: String,
+    id: String
+    user: User,
+    distance_string(unit: DistanceUnit): String,
+    distance: Float
+}
+
+type Query {
+    user(id: String!): User,
+    users(ordering: String, page_size: Int, status: String): Users,
+    actions(ordering: String, page_size: Int, type: String, status: String): Actions,
+    action(id: String): Action,
+    group(id: String): Group,
+    groups(parent_id: String): Groups
+}
