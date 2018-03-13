@@ -27,13 +27,13 @@ export class HtAccountUserApi extends HtBaseApi {
     return this.api$(path, {}, { isAdmin: true });
   }
 
-  memberships(id, query = {}, options?) {
+  memberships(id, query = {}, options?: object) {
     const path = `${this.base}/${id}/memberships/`;
     return this.api$(path, query, options);
   }
 
-  membershipsAll(id, query) {
-    const options = {isAdmin: true};
+  membershipsAll(id, query, token?: string) {
+    const options = {isAdmin: true, token};
     return this.allPages(this.memberships(id, query, options), options)
   }
 }
