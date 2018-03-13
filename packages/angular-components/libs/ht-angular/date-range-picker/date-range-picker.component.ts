@@ -8,7 +8,7 @@ import {
   startOfMonth,
   startOfWeek
 } from "date-fns";
-import {distinctUntilChanged, filter, map, take} from "rxjs/operators";
+import {distinctUntilChanged, map, take} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
@@ -211,7 +211,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   };
 
   isHovered(date: Date, dateStyle: IDateStyle): boolean {
-    let hovered = dateStyle.hoveredDate as string;
+    let hovered = dateStyle.hoveredDate;
     let start = dateStyle.selectedRange.start || hovered;
     let end = dateStyle.selectedRange.end || hovered || start;
     return isWithinRange(date, start, end);
@@ -250,7 +250,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
     if(this.options.datePicker) {
       this.setDate(date)
     } else {
-      this.currentDateStyle$.pipe(take(1), filter(data => !!data)).subscribe(dateStyle => {
+      this.currentDateStyle$.pipe(take(1)).subscribe(dateStyle => {
         if(dateStyle.hoveredDate || (!dateStyle.selectedRange.start || !dateStyle.selectedRange.end)) {
           this.setDateFromDayRange(date, dateStyle)
         } else {
@@ -262,10 +262,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   };
 
   setDateFromDayRange(date: IDay, dateStyle: IDateStyle) {
-    let range = {
-      end: dateStyle && dateStyle.selectedRange ? dateStyle.selectedRange.end : date.timeStamp,
-      start: dateStyle && dateStyle.selectedRange ? dateStyle.selectedRange.start : date.timeStamp
-    };
+    let range = {end: dateStyle.selectedRange.end || date.timeStamp, start: dateStyle.selectedRange.start || date.timeStamp};
     // console.log(range, "range");
     this.selectedDate$.next(null);
     this.hoveredDate.next(null);
@@ -303,7 +300,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
 
 export interface IDateStyle {
   // selectedDates?: string[],
-  selectedRange: IDateRange
+  selectedRange?: Partial<IDateRange>
   hoveredDate: string | null,
   display?: Array<string | null>,
 }
