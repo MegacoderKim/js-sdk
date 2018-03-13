@@ -9,8 +9,8 @@ export class HtUsersApi extends HtBaseApi {
     super(request, "users");
   }
 
-  analytics(query): Observable<IUserAnalyticsPage> {
+  analytics(query, token?: string): Observable<IUserAnalyticsPage> {
     let path = `${this.base}/analytics/`;
-    return this.api$<IUserAnalyticsPage>(path, query);
+    return this.api$<IUserAnalyticsPage>(path, query, {token});
   }
 }
