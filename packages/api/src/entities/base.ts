@@ -8,24 +8,24 @@ export class HtBaseApi {
 
   constructor(public request: HtRequest, public base: string) {}
 
-  get<T>(id: string, query = {}): Observable<T> {
+  get<T>(id: string, query = {}, token?: string): Observable<T> {
     let path = `${this.base}/${id}/`;
-    return this.api$<T>(path, query);
+    return this.api$<T>(path, query, {token});
   }
 
-  index<T>(query = {}): Observable<T> {
+  index<T>(query = {}, token?: string): Observable<T> {
     let path = `${this.base}/`;
-    return this.api$<T>(path, query);
+    return this.api$<T>(path, query, {token});
   }
 
-  summary<T>(query = {}): Observable<T> {
+  summary<T>(query = {}, token?: string): Observable<T> {
     let path = `${this.base}/summary/`;
-    return this.api$<T>(path, query);
+    return this.api$<T>(path, query, {token});
   }
 
-  heatmap<T>(query = {}): Observable<T> {
+  heatmap<T>(query = {}, token?: string): Observable<T> {
     let path = `${this.base}/heatmap/`;
-    return this.api$(path, query);
+    return this.api$(path, query, {token});
   }
 
   api$<T>(path, query = {}, options: {isAdmin?: boolean, token?: string} = {}): Observable<T> {
@@ -44,9 +44,9 @@ export class HtBaseApi {
   //   return this.request.postApi$(this.base + tail, body, options)
   // }
 
-  placeline<T>(id, query = {}): Observable<T> {
+  placeline<T>(id, query = {}, token?: string): Observable<T> {
     let tail = this.base + `/${id}/placeline/`;
-    return this.api$<T>(tail, query);
+    return this.api$<T>(tail, query, {token});
   }
 
   allPages<T = any>(api$, options: {isAdmin?: boolean, token?: string} = {}) {

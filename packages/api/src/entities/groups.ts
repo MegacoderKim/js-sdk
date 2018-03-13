@@ -9,17 +9,17 @@ export class HtGroupsApi extends HtBaseApi {
     super(request, "groups");
   }
 
-  children(groupId: string): Observable<Page<IGroup>> {
+  children(groupId: string, token?: string): Observable<Page<IGroup>> {
     const query = { parent_group_id: groupId };
-    return this.getAll(query)
+    return this.getAll(query, token)
   }
 
-  root(): Observable<Page<IGroup>> {
+  root(token?: string): Observable<Page<IGroup>> {
     const query = { has_parent: false };
-    return this.getAll(query)
+    return this.getAll(query, token)
   }
 
-  getAll(query) {
-    return this.allPages(this.index(query))
+  getAll(query, token?: string) {
+    return this.allPages(this.index(query, token))
   }
 }

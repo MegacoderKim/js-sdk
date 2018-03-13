@@ -9,9 +9,9 @@ export class HtActionsApi extends HtBaseApi {
     super(request, "actions");
   }
 
-  graph(query): Observable<IActionStatusGraph[]> {
+  graph(query, token?: string): Observable<IActionStatusGraph[]> {
     let path = `${this.base}/graph/`;
-    return this.api$(path, query).pipe(
+    return this.api$(path, query, {token}).pipe(
       map(obj => {
         return Object.keys(obj).reduce((dataArray: IActionStatusGraph[], key: string) => {
           dataArray.push(obj[key]);

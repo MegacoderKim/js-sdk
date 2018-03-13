@@ -16,12 +16,12 @@ export class HtTrackingApi extends HtBaseApi {
         super(request, "actions");
     }
 
-    track(id: string, idType: 'shortCode' | 'lookupId' | 'collectionId' | 'actionId' = 'shortCode'): Observable<IAction[]> {
+    track(id: string, idType: 'shortCode' | 'lookupId' | 'collectionId' | 'actionId' = 'shortCode', token?: string): Observable<IAction[]> {
         let trackKey = this.trackType[idType];
         if(trackKey) {
             const query = {[trackKey]: id};
             const path = `${this.base}/track/`;
-            return this.api$(path, query).pipe(
+            return this.api$(path, query, {token}).pipe(
                 map((data: Page<ITrackAction>) => {
                     let actions: IAction[] = [];
                     data.results.forEach((result: ITrackAction) => {

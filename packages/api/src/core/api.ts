@@ -11,7 +11,7 @@ export class HtApi {
     actions: HtActionsApi;
     groups: HtGroupsApi;
     accountUser: HtAccountUserApi;
-    constructor(token) {
+    constructor(token?) {
         this.request = htRequestService.getInstance();
         if (token) this.request.tokenServie.token = token;
         this.users = new HtUsersApi(this.request);
