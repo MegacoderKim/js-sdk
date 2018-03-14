@@ -1,6 +1,6 @@
 {
   "name": "ht-leaflet-wrapper",
-  "version": "0.0.1-0",
+  "version": "0.0.1",
   "description": "hypertrack maps",
   "main": "dist/ht-leaflet-wrapper_browser.js",
   "module": "dist/ht-leaflet-wrapper.es5.js",
@@ -20,9 +20,9 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^8.0.4",
-    "ht-data": "^0.1.9-0",
+    "ht-data": "^0.1.9",
     "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.7-0",
+    "ht-utility": "^0.1.7",
     "rollup": "^0.53.1",
     "time-aware-polyline": "^0.0.8",
     "underscore": "^1.8.x"
@@ -31,7 +31,7 @@
     "@types/leaflet": "^1.2.5",
     "@types/leaflet.heat": "^0.2.0",
     "@types/leaflet.markercluster": "^1.0.2",
-    "ht-map-wrapper": "^0.0.1-0",
+    "ht-map-wrapper": "^0.0.1",
     "leaflet": "^1.2.0",
     "leaflet.heat": "^0.2.0",
     "leaflet.markercluster": "^1.2.0"

@@ -1,6 +1,6 @@
 {
   "name": "ht-google-maps-wrapper",
-  "version": "0.0.1-0",
+  "version": "0.0.1",
   "description": "hypertrack maps",
   "main": "dist/ht-google-maps-wrapper_browser.js",
   "module": "dist/ht-google-maps-wrapper.es5.js",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@types/googlemaps": "^3.26.14",
-    "ht-map-wrapper": "^0.0.1-0"
+    "ht-map-wrapper": "^0.0.1"
   },
   "peerDependencies": {
     "ht-models": "^0.0.19"
