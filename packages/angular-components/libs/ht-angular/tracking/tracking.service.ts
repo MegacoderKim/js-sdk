@@ -26,6 +26,32 @@ export class TrackingService {
 
   initShortCode(shortCode: string) {
     const query = {short_code: shortCode};
+    // const trackApi = this.actionsClient.api;
+    // trackApi.track(query).pipe(
+    //   tap((data) => {
+    //     //loading done
+    //   }),
+    //   expand((data) => {
+    //     return timer(2000).pipe(
+    //       concatMap((_) => {
+    //         return trackApi.track(query).pipe(
+    //           catchError((err) => {
+    //             this.handleOnError(err);
+    //             return of(null)
+    //           })
+    //         )
+    //       })
+    //     )
+    //   }),
+    //   filter(data => {
+    //     if (data) this.handleOnError(null);
+    //     return !!data
+    //   }),
+    //   tap((data: IAction[]) => {
+    //     this.handleOnUpdate(data);
+    //   }),
+    // ).subscribe(this.actions$);
+
     const track$ = this.fetchActionsWithTimeAwarePath(query);
 
     track$.pipe(
