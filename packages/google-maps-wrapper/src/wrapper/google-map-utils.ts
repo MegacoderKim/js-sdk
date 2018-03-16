@@ -4,10 +4,10 @@ import { ITimeAwarePoint, HtPosition } from "ht-models";
 import {LightColorMapStyle} from "./light-color-map";
 import {fromEventPattern} from "rxjs/observable/fromEventPattern";
 import {Observable} from "rxjs/Observable";
+import {MarkerClusterer} from "./markercluster_es5";
 // import {richmarker} from "./richmarker";
 // import {markercluster} from "./markerclusterer";
-declare var MarkerClusterer: any;
-declare var RichMarker: any;
+import { RichMarker} from "./richmarker";
 
 export class GoogleMapUtilsClass implements MapUtils {
   type: HtMapType = 'google';
