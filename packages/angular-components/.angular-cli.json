@@ -30,7 +30,6 @@
         "../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
       ],
       "scripts": [
-        "assets/js/richmarkers.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
