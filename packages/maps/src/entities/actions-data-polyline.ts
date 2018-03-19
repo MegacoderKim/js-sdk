@@ -74,7 +74,7 @@ export class ActionsDataPolyline {
   }
   //todo remove this, use getTimeAwarePolyline
   getEncodedPath(data: IActionWithPolyline) {
-    return data.encoded_polyline
+    return data.route
   }
 
   getPosition(action: IActionWithPolyline): HtPosition | null {
