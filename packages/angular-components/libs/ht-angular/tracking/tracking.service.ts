@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import { IAction, ITrackAccount, Page, IActionPolyline, IActionWithPolyline, IActionMod } from "ht-models";
-import {htRequestService, HtTrackingApi} from "ht-api";
+import { IAction, ITrackAccount, Page, IActionWithPolyline, IActionMod } from "ht-models";
 import {catchError, concatMap, expand, filter, map, tap} from "rxjs/operators";
 import {timer} from "rxjs/observable/timer";
 import {ReplaySubject} from "rxjs/ReplaySubject";
@@ -94,55 +93,55 @@ export class TrackingService {
     })
   };
 
-  private fetchActions$(query: object): Observable<IAction[]> {
-    return this.actionsClient.api.index(query).pipe(
-      PageResults$,
-      catchError((err) => {
-        console.log("err", err);
-        this.handleOnError(err);
-        return of(null)
-      })
-    )
-  };
+  // private fetchActions$(query: object): Observable<IAction[]> {
+  //   return this.actionsClient.api.index(query).pipe(
+  //     PageResults$,
+  //     catchError((err) => {
+  //       console.log("err", err);
+  //       this.handleOnError(err);
+  //       return of(null)
+  //     })
+  //   )
+  // };
 
-  private fetchActionPolyline$(action): Observable<IActionPolyline> {
-    return this.actionsClient.api.polyline(action.id)
-  }
+  // private fetchActionPolyline$(action): Observable<IActionPolyline> {
+  //   return this.actionsClient.api.polyline(action.id)
+  // }
 
-  private fetchActionsWithActivePolyline$(query: object, currentActions?: IActionWithPolyline[]) {
-    return this.fetchActions$(query).pipe(
-      concatMap((actions: IActionWithPolyline[]) => {
-        if (actions) {
-          actions = currentActions ? this.mergeUpdatedActions(actions, currentActions) : actions;
-          const activeAction = this.getActiveAction(currentActions || actions);
-          if (!activeAction || (activeAction && !activeAction.location_time_series)) {
-            return this.fetchActionPolyline$(actions[actions.length - 1]).pipe(
-              map((actionPolyline) => {
-                return this.mergeActiveActionPolyline(actionPolyline, actions)
-              })
-            )
-          } else {
-            return of(actions)
-          }
-        } else {
-          return of(actions)
-        }
+  // private fetchActionsWithActivePolyline$(query: object, currentActions?: IActionWithPolyline[]) {
+  //   return this.fetchActions$(query).pipe(
+  //     concatMap((actions: IActionWithPolyline[]) => {
+  //       if (actions) {
+  //         actions = currentActions ? this.mergeUpdatedActions(actions, currentActions) : actions;
+  //         const activeAction = this.getActiveAction(currentActions || actions);
+  //         if (!activeAction || (activeAction && !activeAction.location_time_series)) {
+  //           return this.fetchActionPolyline$(actions[actions.length - 1]).pipe(
+  //             map((actionPolyline) => {
+  //               return this.mergeActiveActionPolyline(actionPolyline, actions)
+  //             })
+  //           )
+  //         } else {
+  //           return of(actions)
+  //         }
+  //       } else {
+  //         return of(actions)
+  //       }
+  //
+  //     })
+  //   )
+  // };
 
-      })
-    )
-  };
+  // private fetchActionsWithTimeAwarePath(query: object, currentActions?: IActionWithPolyline[]) {
+  //   return this.fetchActionsWithActivePolyline$(query, currentActions).pipe(
+  //     map(actions => {
+  //       return actions ? this.fillTimeAwarePathofActions(actions) : actions
+  //     })
+  //   )
+  // }
 
-  private fetchActionsWithTimeAwarePath(query: object, currentActions?: IActionWithPolyline[]) {
-    return this.fetchActionsWithActivePolyline$(query, currentActions).pipe(
-      map(actions => {
-        return actions ? this.fillTimeAwarePathofActions(actions) : actions
-      })
-    )
-  }
-
-  private fillTimeAwarePathofActions(actions: IActionWithPolyline[]) {
-    return actions.map((action) => this.fillTimeAwarePath(action))
-  }
+  // private fillTimeAwarePathofActions(actions: IActionWithPolyline[]) {
+  //   return actions.map((action) => this.fillTimeAwarePath(action))
+  // }
 
   private fillTimeAwarePath(action: IAction): IActionMod {
     const timeAwarePath = action.location_time_series ?
@@ -159,35 +158,35 @@ export class TrackingService {
     if (newLocation) {
       // timeAwarePath.push(...appendPath)
     }
-    return {...action, timeAwarePath} as IActionMod
+    return {...action, timeAwarePath}
   }
 
-  private mergeActiveActionPolyline(actonPolyline, actions: IAction[]) {
-    return actions.map((action) => {
-      return action.id === actonPolyline.id ? this.mergeActionAndPolyline(action, actonPolyline) : action
-    })
-  }
+  // private mergeActiveActionPolyline(actonPolyline, actions: IAction[]) {
+  //   return actions.map((action) => {
+  //     return action.id === actonPolyline.id ? this.mergeActionAndPolyline(action, actonPolyline) : action
+  //   })
+  // }
 
-  private mergeActionAndPolyline(action, actionPolyline: IActionPolyline) {
-    actionPolyline = actionPolyline || action;
-    const timeAwarePath = actionPolyline.location_time_series ?
-      new TimeAwareEncoder().decodeTimeAwarePolyline(actionPolyline.location_time_series) :
-      action.timeAwarePath ?
-        action.timeAwarePath : [];
+  // private mergeActionAndPolyline(action, actionPolyline: IActionPolyline) {
+  //   actionPolyline = actionPolyline || action;
+  //   const timeAwarePath = actionPolyline.location_time_series ?
+  //     new TimeAwareEncoder().decodeTimeAwarePolyline(actionPolyline.location_time_series) :
+  //     action.timeAwarePath ?
+  //       action.timeAwarePath : [];
+  //
+  //
+  //   return {...action, ...actionPolyline, timeAwarePath}
+  // }
 
-
-    return {...action, ...actionPolyline, timeAwarePath}
-  }
-
-  private mergeUpdatedActions(updatedActions, currentActions) {
-
-    const currentActionsObject = indexBy(currentActions);
-    return updatedActions.map((action: IActionWithPolyline) => {
-      const currentAction: IActionWithPolyline = currentActionsObject[action.id];
-      const location_time_series = action.location_time_series || currentAction.location_time_series;
-      return {...currentActionsObject[action.id], ...action, location_time_series, timeAwarePath: currentAction.timeAwarePath}
-    })
-  }
+  // private mergeUpdatedActions(updatedActions, currentActions) {
+  //
+  //   const currentActionsObject = indexBy(currentActions);
+  //   return updatedActions.map((action: IActionWithPolyline) => {
+  //     const currentAction: IActionWithPolyline = currentActionsObject[action.id];
+  //     const location_time_series = action.location_time_series || currentAction.location_time_series;
+  //     return {...currentActionsObject[action.id], ...action, location_time_series, timeAwarePath: currentAction.timeAwarePath}
+  //   })
+  // }
 
   handleOnReady(actions: IAction[]) {
     console.log('On Actions ready', actions);
