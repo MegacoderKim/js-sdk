@@ -82,7 +82,7 @@ storiesOf('Action summary', module).add('Basic', () => ({
 
 storiesOf('Action status', module).add('Basic', () => ({
   template: `
-    <app-action-status [action]="action"></app-action-status>
+    <ht-action-status [action]="action"></ht-action-status>
   `,
   props: {
     action: {
@@ -102,7 +102,7 @@ storiesOf('Action status', module).add('Basic', () => ({
 
 storiesOf('Infobox', module).add('Destination ongoing', () => ({
   template: `
-    <app-destination-popup [action]="action"></app-destination-popup>
+    <ht-destination-popup [action]="action"></ht-destination-popup>
   `,
   props: {
     action: {
@@ -123,7 +123,7 @@ storiesOf('Infobox', module).add('Destination ongoing', () => ({
   }
 })).add('Destination completed', () => ({
   template: `
-    <app-destination-popup [action]="action"></app-destination-popup>
+    <ht-destination-popup [action]="action"></ht-destination-popup>
   `,
   props: {
     action: {
@@ -144,7 +144,7 @@ storiesOf('Infobox', module).add('Destination ongoing', () => ({
   }
 })).add('Start', () => ({
   template: `
-    <app-start-popup [action]="action"></app-start-popup>
+    <ht-start-popup [action]="action"></ht-start-popup>
   `,
   props: {
     action: {
