@@ -20,6 +20,9 @@ export class TrackingMapService {
     easeLinearity: 0.2,
     // easeLinearity: 0.58,
   };
+  summarySetBoundsOptions = {
+    paddingBottomRight: [15, 170]
+  };
   setBoundsOptions =  this.defaultSetBoundsOptions;
   actionsTrace;
   destination;
@@ -197,7 +200,8 @@ export class TrackingMapService {
     const iconClass = activityType == 'stop' ?
       stopClass : activityType == 'cycle' ?
         cycleClass : activityType == 'walk' ?
-          walkClass : movingClass;
+          walkClass : action.user.display.is_warning ?
+            errorClass : movingClass;
 
     bearing = iconClass == movingClass ? bearing : 0;
     return `<i class="${iconClass}" style="margin: auto; 
