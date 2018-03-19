@@ -13,6 +13,11 @@ export interface IAction {
     phone: string | null,
     photo: string | null,
     unique_id: string | null,
+    display: {
+      last_updated_text: string,
+      status_text: string,
+      is_warning: boolean
+    }
     vehicle_type: string
   };
   // user_id: string;
@@ -59,6 +64,8 @@ export interface IAction {
   // short_code: string;
   // time_aware_polyline: string,
   // encoded_polyline: string;
+  route: string,
+  location_time_series: string,
   event_flags: string[];
   metadata: object[];
   // account?: any
@@ -135,23 +142,7 @@ export interface ITrackAction {
     }
 };
 
-export interface IActionPolyline {
-  id: string,
-  unique_id: string,
-  status: string,
-  updated_at: string,
-  distance: number,
-  encoded_polyline: string,
-  time_aware_polyline: string,
-  shortest_distance: number,
-  shortest_polyline: string
-};
-
 export interface IActionWithPolyline extends IAction {
-  encoded_polyline: string,
-  time_aware_polyline: string,
-  shortest_distance: number,
-  shortest_polyline: string,
   timeAwarePath?: ITimeAwarePoint[]
 };
 
