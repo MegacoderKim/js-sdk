@@ -70,23 +70,21 @@ export class ActionsDataPolyline {
   }
 
   getEncodedPositionTime(data: IActionWithPolyline) {
-    return data.time_aware_polyline;
+    return data.location_time_series;
   }
   //todo remove this, use getTimeAwarePolyline
   getEncodedPath(data: IActionWithPolyline) {
     return data.encoded_polyline
   }
-  getPosition(action: IActionWithPolyline): HtPosition {
-    const position = action.user ?
-      action.location ? action.location.geojson.coordinates : null
-      : null;
 
-    return position ? {lat: position[1], lng: position[0]} : null;
+  getPosition(action: IActionWithPolyline): HtPosition | null {
+    const lastLocation =  action.timeAwarePath ? action.timeAwarePath[action.timeAwarePath.length - 1] : null;
+    return lastLocation ? {lat: +lastLocation[0], lng: +lastLocation[1]} : null;
 
   }
 
   getTimeAwarePolyline(data: IActionWithPolyline) {
-    return data.time_aware_polyline
+    return data.location_time_series
   }
 }
 
