@@ -154,11 +154,12 @@ export class TrackingMapService {
     //   }
     // }
 
-    pulse.getDivContent = (data) => {
-      const pulse = data.user.availability_status == 'online' ? 'pulse' : '';
+    pulse.getDivContent = (data: IAction) => {
+      const pulse = !data.user.display.is_warning ? 'pulse' : '';
+      const color = data.user.display.is_warning ? '#ff634c' : userStyle.color;
       const content = `
-    <div class="box-${userStyle.radius}" style="background: ${userStyle.color}">
-  <div class="box-${userStyle.radius} ${pulse}" style="background: ${userStyle.color}; margin: auto">
+    <div class="box-${userStyle.radius}" style="background: ${color}">
+  <div class="box-${userStyle.radius} ${pulse}" style="background: ${color}; margin: auto">
 </div>
 </div> 
     `;
@@ -166,10 +167,7 @@ export class TrackingMapService {
     };
 
     user.getDivContent = (data, bearing) => {
-      const iconDiv = this.getUserIconDiv(data, bearing, userStyle.markerSize);
-      return `<div class="box-${userStyle.radius}" style="position: absolute">
-    ${iconDiv}
-</div>`
+      return this.getUserDiv(data, bearing, userStyle);
     }
 
     destination.getDivContent = (action: IAction) => {
@@ -189,7 +187,7 @@ export class TrackingMapService {
 
   }
 
-  getUserIconDiv(action: IActionWithPolyline, bearing, size): string {
+  getUserDiv(action: IActionWithPolyline, bearing, userStyle): string {
     const cycleClass = "ion-android-bicycle";
     const walkClass = "ion-android-walk";
     const movingClass = "ion-android-navigate";
@@ -204,11 +202,18 @@ export class TrackingMapService {
             errorClass : movingClass;
 
     bearing = iconClass == movingClass ? bearing : 0;
-    return `<i class="${iconClass}" style="margin: auto; 
+
+    const iconDiv = `<i class="${iconClass}" style="margin: auto; 
     color: white; 
-    font-size: ${size}px; 
+    font-size: ${userStyle.size}px; 
     transition: transform 0.4s;
-    transform: rotate(${bearing}deg)"></i>`
+    transform: rotate(${bearing}deg)"></i>`;
+
+    const iconContainer = `<div class="box-${userStyle.radius}" style="position: absolute">
+      ${iconDiv}
+      </div>`;
+
+    return iconContainer
   }
 
 }
