@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, Component, EventEmitter, HostBinding, HostListener, Input, OnChanges, OnInit,
   Output
 } from '@angular/core';
-import {IUser, IUserAnalytics, IUserData} from "ht-models";
+import {IUser, IUserAnalytics, IUserPlaceline} from "ht-models";
 import * as _ from "underscore";
 
 @Component({
@@ -12,7 +12,7 @@ import * as _ from "underscore";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserCardComponent implements OnInit, OnChanges {
-  @Input() user: IUserData | IUserAnalytics | IUser;
+  @Input() user: IUserPlaceline | IUserAnalytics | IUser;
   @Input() selectedUserId: string | null = null;
   @Input() action: 'default' | 'close' | 'loading' | 'detail' = 'default';
   @Output() onAction = new EventEmitter();
@@ -32,10 +32,7 @@ export class UserCardComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  getShowStatus(user: IUserData): boolean {
-    if (user.segments) {
-      return !!user.segments.length && ! _.last(user.segments)['ended_at']
-    }
+  getShowStatus(user: IUserPlaceline): boolean {
     return !!user
   }
 

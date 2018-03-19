@@ -1,6 +1,4 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IUserData} from "ht-models";
-import {animate, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../ht/ht-users.service";
 
 @Component({

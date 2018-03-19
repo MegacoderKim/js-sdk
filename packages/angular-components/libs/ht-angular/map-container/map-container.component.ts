@@ -1,5 +1,5 @@
 import {AfterContentInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IUserData} from "ht-models";
+import {IUserPlaceline} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {HtUsersService} from "../ht/ht-users.service";
 import {HtMapService} from "../ht/ht-map.service";

@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit,
   Output
 } from '@angular/core';
-import {IAction, ISegment, IUserData} from "ht-models";
+import {IAction, IUserPlaceline, IPlaceline} from "ht-models";
 import {NameCase} from "ht-utility";
 import * as _ from "underscore";
 import {HtPlaceline} from "ht-data";
@@ -19,7 +19,7 @@ export class PlacelineComponent implements OnInit {
   @Output() highlightedSegmentId: EventEmitter<string> = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
   @Output() selectedSegment: EventEmitter<string | null> = new EventEmitter();
-  @Input() userData: IUserData;
+  @Input() userData: IUserPlaceline;
   @Input() selectedSegmentId: string = "__";
   @Input() isMobile: boolean = false;
   @Input() timezone: string;
@@ -75,15 +75,15 @@ export class PlacelineComponent implements OnInit {
   }
 
   get placelineMod() {
-    const placeline = this.userData;
-    if (this.userData.segments.length === 0) return [];
+    const placeline: IUserPlaceline = this.userData;
+    if (this.userData.placeline.length === 0) return [];
     const actions = placeline.actions;
     this.actionMap = {};
     const {currentActions, expActions} = this.currentExpActions(actions);
     const allEvents = this.userData.events;
 
 
-    let {activitySegments} = _.reduce(this.userData.segments, (acc, segment: ISegment) => {
+    let {activitySegments} = _.reduce(this.userData.placeline, (acc, segment: IPlaceline) => {
       const time = segment.started_at;
       const activityText = this.getActivityText(segment);
       const activityClass = this.getActivityClass(segment);
@@ -264,7 +264,7 @@ export class PlacelineComponent implements OnInit {
     }, {currentActions: [], expActions: []});
   }
 
-  // private getActionsSegments(segment: ISegment, actionsEvents, lastSeg) {
+  // private getActionsSegments(segment: IPlaceline, actionsEvents, lastSeg) {
   //   let currentSegment = {};
   //   let start = segment.started_at;
   //   let lastStart = lastSeg ? lastSeg.started_at : null;
@@ -278,15 +278,15 @@ export class PlacelineComponent implements OnInit {
   //   return {preSegment, postSegment, currentSegment}
   // }
 
-  private lastSeg(placeline: IUserData) {
-    let lastSeg: ISegment = _.last(placeline.segments);
+  private lastSeg(placeline: IUserPlaceline) {
+    let lastSeg: IPlaceline = _.last(placeline.placeline);
     if(!lastSeg) return {};
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
     let time;
     let isLive = new HtPlaceline().isLive(placeline);
     if(!isLive) {
-      time = lastSeg.ended_at
+      time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration))
     } else {
       isLive = true;
       time = placeline.last_heartbeat_at
@@ -295,7 +295,7 @@ export class PlacelineComponent implements OnInit {
     return {time, pipeClass, id: '..', lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg`}
   }
 
-  private isSegmentLive(placeline: IUserData) {
+  private isSegmentLive(placeline: IUserPlaceline) {
     let old = placeline.display.seconds_elapsed_since_last_heartbeat;
     let status = placeline.display.status_text;
     return status !== 'Logged off' && old < 15 * 60;
@@ -314,7 +314,7 @@ export class PlacelineComponent implements OnInit {
     return status === 'stop' ? 'stop solid' : 'trip solid'
   }
 
-  private getActivityText(segment: ISegment | any) {
+  private getActivityText(segment: IPlaceline | any) {
     if (segment.type === 'stop') {
       return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop';
     } else if(segment.activity) {
@@ -326,7 +326,7 @@ export class PlacelineComponent implements OnInit {
     }
   }
 
-  private getActivityPlaceAddress(segment: ISegment) {
+  private getActivityPlaceAddress(segment: IPlaceline) {
     if (segment.type === 'stop' && segment.place && segment.place.locality) {
       return segment.place.locality
     }

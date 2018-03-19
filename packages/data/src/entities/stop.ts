@@ -1,12 +1,12 @@
-import { ISegment } from "ht-models";
+import { IPlaceline } from "ht-models";
 
 export class HtStop {
-  constructor(public data?: ISegment) {}
+  constructor(public data?: IPlaceline) {}
 
   getPosition() {
     let pos = null;
-    if (this.data.location && this.data.location.geojson.coordinates) {
-      pos = this.data.location.geojson.coordinates;
+    if (this.data.place && this.data.place.location.coordinates) {
+      pos = this.data.place.location.coordinates;
       return { lat: pos[1], lng: pos[0] };
     } else {
       return null;
@@ -14,4 +14,4 @@ export class HtStop {
   }
 }
 
-export const htStop = (action?: ISegment) => new HtStop(action);
+export const htStop = (action?: IPlaceline) => new HtStop(action);

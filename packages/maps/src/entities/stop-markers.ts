@@ -1,5 +1,5 @@
 import { stopStyles } from "../styles/stop-styles";
-import { ISegment, HtPosition } from "ht-models";
+import { IPlaceline, HtPosition } from "ht-models";
 import { Color, HMString, TimeString, DateString } from "ht-utility";
 import {
   ItemClassFactoryConfig,
@@ -33,12 +33,14 @@ export const stopMarkersConfig: ItemClassFactoryConfig = {
         return null;
       }
     },
-    getInfoContent(data: ISegment) {
+    getInfoContent(data: IPlaceline) {
       let durationString = null;
-      if (data.started_at && data.ended_at) {
+      const endedAt = data.started_at && data.duration ?
+        new Date(new Date(data.started_at).getTime() + (1000 * data.duration) ).toISOString() : null;
+      if (data.started_at && endedAt) {
         let durationMin =
           new Date(
-            new Date(data.ended_at).getTime() -
+            new Date(endedAt).getTime() -
               new Date(data.started_at).getTime()
           ).getTime() /
           (1000 * 60);
@@ -46,10 +48,10 @@ export const stopMarkersConfig: ItemClassFactoryConfig = {
       }
 
       let start = TimeString(data.started_at);
-      let end = TimeString(data.ended_at);
+      let end = TimeString(endedAt);
       let startDate = DateString(data.started_at);
       let startDateShort = DateString(data.started_at, "short");
-      let endDate = DateString(data.ended_at);
+      let endDate = DateString(endedAt);
       let sameDate = startDate == endDate;
       function htShow(item) {
         return `display: ${item ? "flex" : "none"}`;
@@ -106,12 +108,14 @@ export class StopMarkers {
     }
   };
 
-  getInfoContent(data: ISegment) {
+  getInfoContent(data: IPlaceline) {
     let durationString = null;
-    if (data.started_at && data.ended_at) {
+    const endedAt = data.started_at && data.duration ?
+      new Date(new Date(data.started_at).getTime() + (1000 * data.duration) ).toISOString() : null;
+    if (data.started_at && endedAt) {
       let durationMin =
         new Date(
-          new Date(data.ended_at).getTime() -
+          new Date(endedAt).getTime() -
           new Date(data.started_at).getTime()
         ).getTime() /
         (1000 * 60);
@@ -119,10 +123,10 @@ export class StopMarkers {
     }
 
     let start = TimeString(data.started_at);
-    let end = TimeString(data.ended_at);
+    let end = TimeString(endedAt);
     let startDate = DateString(data.started_at);
     let startDateShort = DateString(data.started_at, "short");
-    let endDate = DateString(data.ended_at);
+    let endDate = DateString(endedAt);
     let sameDate = startDate == endDate;
     function htShow(item) {
       return `display: ${item ? "flex" : "none"}`;
@@ -177,7 +181,7 @@ export const StopMarkersTrace = PopupMixin(
 //
 //   };
 //
-//   getInfoContent(data: ISegment) {
+//   getInfoContent(data: IPlaceline) {
 //     function htShow(item) {
 //       return `display: ${item ? 'flex' : 'none'}`
 //     };

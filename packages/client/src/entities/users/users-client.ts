@@ -2,9 +2,9 @@ import { UsersPlacelineClient } from "./users-placeline-client";
 import { IDateRange, QueryLabel } from "../../interfaces";
 import {
   AllData,
-  ISegment,
+  IPlaceline,
   IUserAnalytics,
-  IUserData,
+  IUserPlaceline,
   IUserListSummary,
   Partial
 } from "ht-models";
@@ -197,15 +197,15 @@ export class HtUsersClient extends EntityClient {
     return combineLatest(
       this.placeline.data$,
       this.getSegmentsStates(),
-      (userData: IUserData, { selectedId, resetMapId }) => {
+      (userData: IUserPlaceline, { selectedId, resetMapId }) => {
         if (userData && (selectedId || resetMapId)) {
           const id = selectedId || resetMapId;
-          let segments = _.filter(userData.segments, (segment: ISegment) => {
+          let placeline = _.filter(userData.placeline, (segment: IPlaceline) => {
             return segment.id === id;
           });
           userData = {
             ...userData,
-            segments: segments,
+            placeline: placeline,
             events: [],
             actions: []
           };

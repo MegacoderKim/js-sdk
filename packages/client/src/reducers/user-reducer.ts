@@ -1,6 +1,6 @@
 import * as UserDispatch from "../dispatchers/user-dispatcher";
 import {
-  IUserData,
+  IUserPlaceline,
   AllData,
   Page,
   IUser,
@@ -10,7 +10,6 @@ import {
 import { ApiType } from "../interfaces";
 import { createSelector, MemoizedSelector } from "../store/selector";
 import * as _ from "underscore";
-import { htUser } from "ht-data";
 
 const initialUsersAnalyticsAll = {
   resultsEntity: {},
@@ -32,7 +31,7 @@ const initialState: State = {
 };
 
 export interface State {
-  userData?: IUserData | undefined | null; //placeline data,
+  userData?: IUserPlaceline | undefined | null; //placeline data,
   placelineId?: string | null;
   placelineQuery?: object;
   placelineLoading?: boolean;

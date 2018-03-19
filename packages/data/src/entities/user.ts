@@ -1,8 +1,8 @@
 import {
-  ISegment,
+  IPlaceline,
   IUser,
   IUserAnalytics,
-  IUserData,
+  IUserPlaceline,
   HtLocation,
   IAction,
   ITimelineEvent,
@@ -61,7 +61,7 @@ export class HtUser {
     }
   };
 
-  constructor(public data?: IUserData | IUser | IUserAnalytics) {}
+  constructor(public data?: IUserPlaceline | IUser | IUserAnalytics) {}
 
   getMarkerSearched(key: string) {
     return (user: IUserAnalytics) => {
@@ -89,15 +89,15 @@ export class HtUser {
     return Object.keys(this.sortingQueryMap);
   }
 
-  getSegmentTypes(userSegments: ISegment[]) {
+  getSegmentTypes(userSegments: IPlaceline[]) {
     return _.reduce(
       userSegments,
-      (segmentType: ISegmentType, segment: ISegment) => {
+      (segmentType: ISegmentType, segment: IPlaceline) => {
         if (segment.type == "stop") {
-          if (segment.location && segment.location.geojson)
+          if (segment.place && segment.place.location.coordinates)
             segmentType.stopSegment.push(segment);
         } else {
-          if (segment.encoded_polyline) segmentType.tripSegment.push(segment);
+          if (segment.route) segmentType.tripSegment.push(segment);
         }
         return segmentType;
       },
@@ -123,7 +123,7 @@ export class HtUser {
   }
 }
 
-export const htUser = (user?: IUser | IUserData | IUserAnalytics) => {
+export const htUser = (user?: IUser | IPlaceline | IUserAnalytics) => {
   let extras = {
     statusQueryMap: {
       stopped: "Stopped",
