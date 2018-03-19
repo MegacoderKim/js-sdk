@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit,
   Output
 } from '@angular/core';
-import {IAction, IUserPlaceline, IPlaceline} from "ht-models";
+import {IAction, IUserPlaceline, IPlaceline, IEvent} from "ht-models";
 import {NameCase} from "ht-utility";
 import * as _ from "underscore";
 import {HtPlaceline} from "ht-data";
@@ -19,7 +19,11 @@ export class PlacelineComponent implements OnInit {
   @Output() highlightedSegmentId: EventEmitter<string> = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
   @Output() selectedSegment: EventEmitter<string | null> = new EventEmitter();
-  @Input() userData: IUserPlaceline;
+  @Input() placelines: IPlaceline[];
+  @Input() events: IEvent[];
+  @Input() actions: IAction[];
+  @Input() isLive: boolean;
+  @Input() lastHeartbeat: string;
   @Input() selectedSegmentId: string = "__";
   @Input() isMobile: boolean = false;
   @Input() timezone: string;
@@ -75,15 +79,15 @@ export class PlacelineComponent implements OnInit {
   }
 
   get placelineMod() {
-    const placeline: IUserPlaceline = this.userData;
-    if (this.userData.placeline.length === 0) return [];
-    const actions = placeline.actions;
+    const iPlacelines: IPlaceline[] = this.placelines;
+    if (this.placelines.length === 0) return [];
+    const actions = this.actions;
     this.actionMap = {};
     const {currentActions, expActions} = this.currentExpActions(actions);
-    const allEvents = this.userData.events;
+    const allEvents = this.events;
 
 
-    let {activitySegments} = _.reduce(this.userData.placeline, (acc, segment: IPlaceline) => {
+    let {activitySegments} = _.reduce(this.placelines, (acc, segment: IPlaceline) => {
       const time = segment.started_at;
       const activityText = this.getActivityText(segment);
       const activityClass = this.getActivityClass(segment);
@@ -113,7 +117,7 @@ export class PlacelineComponent implements OnInit {
     }, {activitySegments: [], events: allEvents, lastSeg: null});
 
 
-    const lastSeg = this.lastSeg(placeline);
+    const lastSeg = this.lastSeg(iPlacelines);
     // activitySegments.push(lastSeg);
     // return activitySegments
 
@@ -278,18 +282,18 @@ export class PlacelineComponent implements OnInit {
   //   return {preSegment, postSegment, currentSegment}
   // }
 
-  private lastSeg(placeline: IUserPlaceline) {
-    let lastSeg: IPlaceline = _.last(placeline.placeline);
+  private lastSeg(placelines: IPlaceline[]) {
+    let lastSeg: IPlaceline = _.last(placelines);
     if(!lastSeg) return {};
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
     let time;
-    let isLive = new HtPlaceline().isLive(placeline);
+    let isLive = this.isLive;
     if(!isLive) {
       time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration))
     } else {
       isLive = true;
-      time = placeline.last_heartbeat_at
+      time = this.lastHeartbeat
     }
     const activityClass = this.getActivityClass(lastSeg);
     return {time, pipeClass, id: '..', lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg`}

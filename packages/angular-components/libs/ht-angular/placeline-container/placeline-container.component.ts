@@ -1,10 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HtUsersService} from "../ht/ht-users.service";
+import {htPlaceline} from "ht-data";
 
 @Component({
   selector: 'ht-placeline-container',
   templateUrl: './placeline-container.component.html',
   styleUrls: ['./placeline-container.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
   // animations: [
   //   trigger('slide', [
   //     transition(':enter', [
@@ -34,6 +36,10 @@ export class PlacelineContainerComponent implements OnInit, OnDestroy {
     if (this.userId) {
       this.userClientService.placeline.setId(this.userId)
     }
+  };
+
+  getPlacelineLive(userPlaceline): boolean {
+    return htPlaceline().isLive(userPlaceline)
   }
 
   onHighlightSegment(segmentId: string) {
