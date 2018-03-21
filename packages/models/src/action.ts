@@ -33,6 +33,7 @@ export interface IAction {
   };
   unique_id: string;
   lookup_id: string;
+  arrival_status: string,
   assigned_at: string;
   distance_to_arrival: null | number,
   distance: number | null;
@@ -69,6 +70,7 @@ export interface IAction {
   // time_aware_polyline: string,
   // encoded_polyline: string;
   route: string,
+  expected_route: string,
   location_time_series: string,
   event_flags: string[];
   metadata: object[];

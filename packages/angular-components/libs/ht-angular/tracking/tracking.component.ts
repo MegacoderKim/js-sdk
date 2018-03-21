@@ -57,7 +57,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     );
 
     this.userPopup$ = this.actionsData$.pipe(
-      debounceTime(100), // todo fix this null elem on first render
+      debounceTime(300), // todo fix this null elem on first render
       map((data) => {
         const entities = this.trackingMapService.actionsTrace.user.entities;
         const keys = Object.keys(entities);

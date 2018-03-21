@@ -156,7 +156,7 @@ export class TrackingMapService {
 
     pulse.getDivContent = (data: IAction) => {
       const pulse = !data.user.display.is_warning ? 'pulse' : '';
-      const color = data.user.display.is_warning ? '#ff634c' : userStyle.color;
+      const color = data.user.display.is_warning ? '#FC5F5B' : userStyle.color;
       const content = `
     <div class="box-${userStyle.radius}" style="background: ${color}">
   <div class="box-${userStyle.radius} ${pulse}" style="background: ${color}; margin: auto">

@@ -1,11 +1,14 @@
 <div class="card" (click)="isOpended = !isOpended">
-  <div class="card-content is-popup flex-row">
+  <div class="card-content is-popup flex-row row-gap-4">
     <div>
       <ng-container *ngIf="!action.completed_at; else comp">
         <div class="text-caption is-single-line">ETA <span *ngIf="action.user.display.is_warning">(Last known)</span></div>
-        <div class="text-title">
+        <div class="text-title" *ngIf="action.eta; else noEta">
           <ht-time-to [time]="action.eta"></ht-time-to>
         </div>
+        <ng-template #noEta>
+          Not Available
+        </ng-template>
       </ng-container>
       <ng-template #comp>
         <div class="text-caption is-single-line" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>

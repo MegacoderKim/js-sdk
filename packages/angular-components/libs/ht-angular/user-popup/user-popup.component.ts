@@ -13,7 +13,8 @@ export class UserPopupComponent implements OnInit, OnChanges {
   opened: boolean = false;
   activityData = {
     title: "speed",
-    body: ""
+    body: "",
+    showSubtext: false
   };
   constructor() { }
 
@@ -21,27 +22,35 @@ export class UserPopupComponent implements OnInit, OnChanges {
 
   }
 
+  getStatus(action: IAction): string {
+    const suffix = action.user.display.is_warning ? "" : " on";
+    return action.user.display.status_text + suffix;
+  }
+
   ngOnChanges() {
     switch (this.action.activity.type) {
       case "stop": {
         const duration = HMString(this.action.activity.duration, 60);
         this.activityData = {
-          title: "been here",
-          body: "" + duration
+          title: "Been here",
+          body: "" + duration,
+          showSubtext: true
         };
         break;
       };
       case "walk": {
         this.activityData = {
           title: "steps covered",
-          body: "" + this.action.activity.step_count
+          body: "" + this.action.activity.step_count,
+          showSubtext: false
         };
         break;
       };
       default: {
         this.activityData = {
           title: "speed",
-          body: "--"
+          body: "--",
+          showSubtext: false
         };
       }
     }

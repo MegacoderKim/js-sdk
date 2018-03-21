@@ -32,6 +32,14 @@ export class DestinationPopupComponent implements OnInit {
     } else {
       return ""
     }
+  };
+
+  forNoEta(action: IAction): string {
+    if (action.arrival_status == 'arrived' || action.arrival_status == 'arriving') {
+      return action.display.status_text
+    } else {
+      return "Unavailable"
+    }
   }
 
 }
