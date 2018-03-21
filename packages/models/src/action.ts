@@ -43,7 +43,11 @@ export interface IAction {
   completed_place: IPlace;
   completed_at: string | null;
   activity: null | {
-    type: string
+    type: string,
+    distance: number,
+    duration: number,
+    step_count: number,
+    started_at: string
   };
   health: null | {
     battery_percentage: number,
