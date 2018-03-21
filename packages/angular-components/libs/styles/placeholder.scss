@@ -167,6 +167,10 @@
   width: 50%;
 }
 
+.is-single-line {
+  width: max-content;
+}
+
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
