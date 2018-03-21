@@ -8,3 +8,8 @@
   border-top-left-radius: $summary-radius;
   border-top-right-radius: $summary-radius;
 }
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
