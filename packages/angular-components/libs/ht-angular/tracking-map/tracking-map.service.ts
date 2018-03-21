@@ -95,6 +95,7 @@ export class TrackingMapService {
     const start = this.actionsTrace.start;
     const user = this.actionsTrace.user;
     const pulse = this.actionsTrace.pulse;
+    const expectedPolyline  = this.actionsTrace.expectedPolyline;
     polyline.toIncludeInBounds = false;
     start.toIncludeInBounds = false;
     user.styleObj = {
@@ -118,7 +119,7 @@ export class TrackingMapService {
         iconSize: [destinationStyle.radius, destinationStyle.radius],
         className: "destination-marker"
       }
-    }
+    };
     polyline.toIncludeInBounds = false;
     polyline.styleObj = {
       default: {
@@ -135,6 +136,16 @@ export class TrackingMapService {
         // offset: point(0, -35),
         offset: [0, -5],
         closeButton: false
+      }
+    };
+    if (expectedPolyline) {
+      expectedPolyline.styleObj = {
+        default: {
+          weight: polylineStyle.weight,
+          color: polylineStyle.color,
+          opacity: 1,
+          dashArray: "5 10"
+        }
       }
     }
 

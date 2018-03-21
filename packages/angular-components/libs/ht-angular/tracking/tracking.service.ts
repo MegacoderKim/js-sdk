@@ -153,10 +153,10 @@ export class TrackingService {
     const newLocation = newPoint ? newPoint.geojson.coordinates : null;
     const appendPath = newLocation ? [[newLocation[1], newLocation[0], newPoint.recorded_at]] : [];
     if (newLocation && newRecordedAt > lastRecordedAt) {
-      timeAwarePath.push(...appendPath)
-    }
-    if (newLocation) {
       // timeAwarePath.push(...appendPath)
+    }
+    if (!action.location_time_series) {
+      timeAwarePath.push(...appendPath)
     }
     return {...action, timeAwarePath}
   }
