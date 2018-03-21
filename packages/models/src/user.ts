@@ -25,6 +25,7 @@ export interface IUser {
   last_location: HtLocation | null;
   last_heartbeat_at: string | null;
   last_online_at: string | null;
+  status: string,
   display: {
     status_text: string;
     sub_status_text: string;
