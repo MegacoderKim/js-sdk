@@ -9,6 +9,7 @@ import {IAction, IPlace} from "ht-models";
 })
 export class DestinationPopupComponent implements OnInit {
   @Input() action: IAction;
+  isOpended: boolean = false;
   constructor() { }
 
   ngOnInit() {
@@ -18,7 +19,16 @@ export class DestinationPopupComponent implements OnInit {
   getDestinationName(action: IAction): string {
     const place: IPlace = action.completed_place || action.expected_place;
     if (place) {
-      return place.name;
+      return place.display_text;
+    } else {
+      return ""
+    }
+  }
+
+  getAddress(action): string {
+    const place: IPlace = action.completed_place || action.expected_place;
+    if (place) {
+      return place.address;
     } else {
       return ""
     }
