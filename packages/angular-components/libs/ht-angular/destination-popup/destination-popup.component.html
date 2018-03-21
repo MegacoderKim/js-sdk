@@ -3,7 +3,9 @@
     <div>
       <ng-container *ngIf="!action.completed_at; else comp">
         <div class="text-caption">ETA <span *ngIf="action.user.display.is_warning">(Last known)</span></div>
-        <div class="text-title">{{action.eta | timeString | dot: '...' }}</div>
+        <div class="text-title">
+          <ht-time-to [time]="action.eta"></ht-time-to>
+        </div>
       </ng-container>
       <ng-template #comp>
         <div class="text-caption" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>
