@@ -34,5 +34,8 @@
     "test.ts",
     "**/*.spec.ts",
     "index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
+  }
 }
