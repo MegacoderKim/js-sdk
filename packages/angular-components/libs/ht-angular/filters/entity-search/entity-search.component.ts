@@ -15,7 +15,7 @@ export class EntitySearchComponent implements OnInit {
   @Input() entity: string = "";
   @Output() onSearchQuery: EventEmitter<object> = new EventEmitter();
 
-  @HostListener('click')
+  @HostListener('click', ['$event'])
   clickSearch(e) {
     this.input.nativeElement.focus()
   }

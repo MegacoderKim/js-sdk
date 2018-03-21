@@ -7,7 +7,7 @@
     (mouseleave)="hover(null)"
     (click)="selectUser(user)"
     [user]="user" *ngFor="let user of users; let i = index; trackBy:indexId">
-    <div *ngIf="selectedUserId" class="card-content-mid card-action flex-row align-center" (click)="onAction.next({event: $event, action: 'close'})">
+    <div *ngIf="selectedUserId" class="card-content-mid card-action flex-row align-center">
       <a class="delete is-medium"></a>
     </div>
     <ht-loading-dots

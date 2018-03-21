@@ -32,13 +32,13 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   @HostListener('resize', ['$event'])
-  onMapResize() {
+  onMapResize(event) {
     this.mapInstance.inValidateSize()
     // todo this.mapService.map.resize();
   }
 
   ngOnInit() {
-    this.mapInstance = this.mapInstance;
+    // this.mapInstance = this.mapInstance;
     // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
     // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
     // user$.subscribe((userData) => {
