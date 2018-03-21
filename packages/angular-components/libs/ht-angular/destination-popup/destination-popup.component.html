@@ -2,13 +2,13 @@
   <div class="card-content is-popup flex-row">
     <div>
       <ng-container *ngIf="!action.completed_at; else comp">
-        <div class="text-caption">ETA <span *ngIf="action.user.display.is_warning">(Last known)</span></div>
+        <div class="text-caption is-single-line">ETA <span *ngIf="action.user.display.is_warning">(Last known)</span></div>
         <div class="text-title">
           <ht-time-to [time]="action.eta"></ht-time-to>
         </div>
       </ng-container>
       <ng-template #comp>
-        <div class="text-caption" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>
+        <div class="text-caption is-single-line" *ngIf="action.completed_at">{{action.type | nameCase}} | {{action.completed_at | timeString}}</div>
       </ng-template>
       <div *ngIf="!isOpended; else address" class="is-size-7 has-text-weight-bold truncate">{{getDestinationName(action)}}</div>
       <ng-template #address>
