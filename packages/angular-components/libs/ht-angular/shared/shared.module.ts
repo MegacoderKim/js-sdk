@@ -21,6 +21,7 @@ import { PluralizePipe } from '../pipes/pluralize.pipe';
 import { ButtonComponent } from './button/button.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { DropdownDirective } from './dropdown/dropdown.directive';
+import { TimeToComponent } from './time-to/time-to.component';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { DropdownDirective } from './dropdown/dropdown.directive';
     ButtonComponent,
     LoadingBarComponent,
     DropdownDirective,
+    TimeToComponent,
   ],
   exports: [
     ProfileComponent,
@@ -69,6 +71,7 @@ import { DropdownDirective } from './dropdown/dropdown.directive';
     PluralizePipe,
     LoadingBarComponent,
     DropdownDirective,
+    TimeToComponent,
   ]
 })
 export class SharedModule { }
