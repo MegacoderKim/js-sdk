@@ -10,11 +10,13 @@ import {TimeAwareAnimation} from "time-aware-polyline";
 import {map} from "rxjs/operators";
 import {ActionUser, ActionUserTrace} from "../entities/action-user";
 import {AnimationsEntities} from "../mixins/animations-entities";
+import {ActionsExpectedPolyline, ActionsExpectedPolylineTrace} from "../entities/actions-expected-polyline";
 
 export class ActionMap {
   mapInstance: MapInstance;
   destination;
   polyline: ActionsDataPolyline;
+  expectedPolyline: ActionsExpectedPolyline;
   start;
   user: ActionUser;
   pulse: ActionUser;
@@ -29,6 +31,9 @@ export class ActionMap {
     if (options.hasPulse) {
       this.pulse = new ActionUserTrace(mapInstance);
       this.pulse.setTimeAwareAnimationEntity(this.anim);
+    }
+    if (!options.hideExpected) {
+      this.expectedPolyline = new ActionsExpectedPolylineTrace(this.mapInstance)
     }
     // this.user.setTimeAwareAnimation(this.anim);
     // this.user.toNotTraceItem = true;
@@ -45,6 +50,7 @@ export class ActionMap {
       }, [])
     }));
     if (this.pulse) this.pulse.setData$(users$);
+    if (this.expectedPolyline) this.expectedPolyline.setData$(users$);
     this.user.setData$(users$);
 
   };
@@ -53,7 +59,8 @@ export class ActionMap {
 }
 
 export interface IActionTraceOptions {
-  hasPulse?: boolean
+  hasPulse?: boolean,
+  hideExpected?: boolean
 }
 
 export const ActionTrace = ActionMap;

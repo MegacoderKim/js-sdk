@@ -8,8 +8,8 @@ import {HtPosition} from "ht-models";
 
 export interface IPolylinesBase {
   getPath?(path: ITimeAwarePoint[]): HtPosition[];
-  getEncodedPositionTime;
-  getEncodedPath(data): any;
+  getEncodedPositionTime?;
+  getEncodedPath?(data): any;
   getStyle: (string?) => object;
   mapInstance: MapInstance;
   toNotSetMap?: boolean;

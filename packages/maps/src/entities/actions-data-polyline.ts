@@ -65,6 +65,10 @@ export class ActionsDataPolyline {
     this.mapInstance = mapInstance;
   }
 
+  isValidMapItems(data) {
+    return !!this.getTimeAwarePath(data)
+  }
+
   getTimeAwarePath(data) {
     return data.timeAwarePath;
   }
