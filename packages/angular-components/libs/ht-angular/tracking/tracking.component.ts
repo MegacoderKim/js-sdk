@@ -7,6 +7,7 @@ import {IAction} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {HtMapService} from "../ht/ht-map.service";
 import {TrackingMapService} from "../tracking-map/tracking-map.service";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 @Component({
   selector: 'ht-tracking',
@@ -107,7 +108,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
   }
 
-  get error$() {
+  get error$(): ReplaySubject<boolean> {
     return this.trackinService.error$
   }
 
