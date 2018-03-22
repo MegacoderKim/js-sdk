@@ -1,0 +1,9 @@
+
+<div class="action" *ngIf="showMapSwitch$ | async; else showlist" (click)="showMap(false)">
+  <i class="fa fa-list"></i>
+</div>
+<ng-template #showlist>
+  <div class="action" id="toggle-map" (click)="showMap(true)">
+    <i class="fa fa-map"></i>
+  </div>
+</ng-template>

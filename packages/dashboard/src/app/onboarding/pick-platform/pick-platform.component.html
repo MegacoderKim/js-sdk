@@ -1,0 +1,31 @@
+<div class="chooser-container">
+  <div class="info-container">
+    <div class="title" *ngIf="title">
+      <span> {{title}}</span>
+    </div>
+    <div class="subtitle" *ngIf="subtitle">
+      <span> {{subtitle}} </span>
+    </div>
+  </div>
+  <!-- Todo: Scale down logos-->
+  <div class="platform-options-container">
+    <div class="option-container android" [ngClass]="selectedPlatform === 'android' ? 'selected' : ''" (click)="navigateToPlatform('android')">
+      <a class="">
+        <div class="logo-container"><img src="{{logos.android}}" class= "android-logo"/> </div>
+        <div class="platform-name"> Android </div>
+      </a>
+    </div>
+    <div class="option-container apple" [ngClass]="selectedPlatform === 'ios' ? 'selected' : ''" (click)="navigateToPlatform('ios')">
+      <a class="">
+        <div class="logo-container"><img src="{{logos.apple}}" class= "apple-logo"/> </div>
+        <div class="platform-name"> iOS </div>
+      </a>
+    </div>
+    <div class="option-container react-native" *ngIf="showReactNative" [ngClass]="selectedPlatform === 'react-native' ? 'selected' : ''" (click)="navigateToPlatform('react-native')">
+      <a class="">
+        <div class="logo-container"><img src="{{logos.react}}" class= "react-logo"/> </div>
+        <div class="platform-name"> React Native </div>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div [ngClass]="{'closed': !isOpen}">
+  <div class="modal-overlay" (click)="close(true)"></div>
+  <div class="modal-new" [ngClass]="modalType">
+    <div class="close-button" (click)="close(true)">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>

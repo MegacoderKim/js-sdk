@@ -1,0 +1,22 @@
+<div class="invitations-list" *ngIf="invitations$ | async as invitations">
+  <div *ngIf="invitations.count" (click)="setOpenInvitation(!openInvitation)" class="card head">
+    <div class="card-content flex-row card-content is-small">
+      <span class="flex">{{invitations.count}} Invitations sent, {{invitations.accepted}} Accepted</span>
+      <i [ngClass]="openInvitation ? 'fa-chevron-up' : 'fa-chevron-down'" class="fa"></i>
+    </div>
+  </div>
+  <table class="table" *ngIf="openInvitation">
+    <tbody>
+      <tr *ngFor="let invite of invitations.results; let i = index">
+        <td>{{invite.phone}}</td>
+        <td>{{invite.status}}</td>
+        <td (click)="removeInvite(invite.id, i)" class="clickable text-red text-center action">
+          <i *ngIf="removeLoadingIndex != i" class="fa fa-trash"></i>
+          <i *ngIf="removeLoadingIndex == i" class="fa fa-circle-o-notch fa-spin"></i>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+

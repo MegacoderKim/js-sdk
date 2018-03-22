@@ -1,0 +1,48 @@
+@import "~style/variables.less";
+
+.event-item {
+  padding: 3px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  &:hover {
+    background: #f6f6f6;
+  }
+  .fa {
+    padding-right: 10px;
+  }
+}
+.dropdown-menu {
+  min-width: 219px;
+}
+.dropdown-section {
+  max-height: 200px;
+  overflow: auto;
+}
+.dropdown-header {
+  padding: 3px 10px;
+  background: #f3f3f3;
+}
+.card {
+  margin-bottom: 20px;
+  .text-muted {
+    font-size: 15px;
+  }
+  &:last-child {
+    //margin-bottom: 0;
+  }
+}
+
+.test-events {
+  color: @ht-grey-5;
+  max-height: 300px;
+  overflow: auto;
+  .test-event {
+    padding: 5px 10px;
+    cursor: pointer;
+    text-align: right;
+    &:hover {
+      background: #fafafa;
+    }
+  }
+}

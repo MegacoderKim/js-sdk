@@ -1,0 +1,30 @@
+<!--<div class="input-group">-->
+  <!--<input #query (input)="test(query.value)" (keydown.enter)="setSearch(query)" [class.input-sm]="small" type="text" class="form-control" placeholder="Search {{entity}}">-->
+  <!--<span class="input-group-btn" *ngIf="!small">-->
+        <!--<button (click)="setSearch(query)" class="btn btn-default" type="button"><i class="fa fa-search"></i></button>-->
+      <!--</span>-->
+  <!--<div id="results" *ngIf="showResults && results" class="flex-column">-->
+    <!--<div class="item clickable">{{results.count}} {{entity}}</div>-->
+    <!--<div class="flex-column" *ngIf="entity == 'users'; else action">-->
+      <!--<a *ngFor="let result of results.results" class="item">-->
+        <!--{{result.name}}-->
+      <!--</a>-->
+    <!--</div>-->
+    <!--<ng-template #action>-->
+      <!--<a *ngFor="let result of results.results" class="item">-->
+        <!--{{result.lookup_id}}-->
+      <!--</a>-->
+    <!--</ng-template>-->
+  <!--</div>-->
+<!--</div>&lt;!&ndash; /input-group &ndash;&gt;-->
+
+<div class="field has-addons">
+  <div class="control flex">
+    <input #query (input)="test(query.value)" (keydown.enter)="setSearch(query)" type="text" class="input" placeholder="Search {{entity}}">
+  </div>
+  <div class="control">
+    <a (click)="setSearch(query)" class="button">
+      <i class="fa fa-search"></i>
+    </a>
+  </div>
+</div>

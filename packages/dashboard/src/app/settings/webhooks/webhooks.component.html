@@ -1,0 +1,144 @@
+<div class="card" *ngFor="let webhook of webhooks">
+  <div class="card-content  is-small flex-column">
+    <div class="field">
+      <label for="" class="label">{{webhook.type == 'web' ? 'Webhook' : 'Slack Alert'}}</label>
+    </div>
+    <div class="field is-grouped">
+      <div class="control is-expanded">
+        <div>{{webhook.url}}</div>
+      </div>
+      <div class="dropdown" appDropdown="" *ngIf="webhook.allowed_events.length || webhook.group_id">
+        <a class="dropdown-toggle text-muted">customization</a>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <ng-template [ngIf]="webhook.group_id && groupEntity">
+              <div class="dropdown-header">Group</div>
+              <div class="event-item dropdown-item">{{groupEntity[webhook.group_id].name}}</div>
+            </ng-template>
+            <div class="dropdown-header">Event types</div>
+            <ng-template [ngIf]="webhook.allowed_events.length">
+              <div class="event-item " *ngFor="let event of webhook.allowed_events">
+                <span>{{event}}</span>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="webhook.allowed_events.length == 0">
+              <div class="event-item ">
+                <span>All events</span>
+              </div>
+            </ng-template>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <!--<div class="text-red clickable" (click)="saveWebhook(webhook.value)">Save</div>-->
+      <!--<div class="text-red clickable" (click)="closeAddingWebhook()"><i class="fa fa-close"></i></div>-->
+      <!--<div class="text-red clickable">Edit</div>-->
+      <div class="control">
+        <div class="dropdown is-hoverable">
+          <div class="dropdown-toggle clickable">
+            <button class="button is-info is-outlined">Test</button>
+          </div>
+          <div class="dropdown-menu test-events">
+            <div class="dropdown-content">
+              <a (click)="testWebhook(webhook, event)" class="dropdown-item" *ngFor="let event of eventsChoices">
+                {{event}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control">
+        <button class="button is-warning is-outlined" (click)="deleteWebhook(webhook.id)" title="Delete webhook"><i class="fa fa-trash-o"></i></button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<div class="card" *ngIf="addSlackWebhook">
+  <div class="card-content is-small">
+
+    <div class="field">
+      <label for="" class="label">Slack alert url</label>
+
+    </div>
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input #slackwebhook type="text" (keydown.enter)="saveSlackWebhook(slackwebhook.value, option)" class="input" placeholder="Enter your slack alert url">
+      </div>
+      <div class="control">
+        <app-webhooks-options #option [events]="eventsChoices" [groups]="groups" (updateParams)="onUpdateParams($event)"></app-webhooks-options>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-info is-outlined" (click)="saveSlackWebhook(slackwebhook.value, option)">
+          <span class="icon">
+            <i class="fa fa-save"></i>
+          </span>
+          <span>Save</span>
+        </button>
+      </div>
+      <div class="control">
+        <button class="button" (click)="closeAddingSlackWebhook()">
+          <span class="icon">
+            <i class="fa fa-close"></i>
+          </span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="addWebhook">
+  <div class="card-content is-small">
+    <div class="field">
+      <label for="" class="label">Webhook url</label>
+
+    </div>
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input #webhook type="text" (keydown.enter)="saveWebhook(webhook.value, option2)" class="input" placeholder="Enter your webhook url">
+      </div>
+      <div class="control">
+        <app-webhooks-options #option2 [events]="eventsChoices" [groups]="groups" (updateParams)="onUpdateParams($event)"></app-webhooks-options>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-info is-outlined" (click)="saveWebhook(webhook.value, option2)">
+          <span class="icon">
+            <i class="fa fa-save"></i>
+          </span>
+          <span>Save</span>
+        </button>
+      </div>
+      <div class="control">
+        <button class="button" (click)="closeAddingWebhook()">
+          <span class="icon">
+            <i class="fa fa-close"></i>
+          </span>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="flex-row row-gap-20" *ngIf="!addWebhook && !addSlackWebhook">
+  <div class="card clickable-card" (click)="addingSlackWebhook()" style="flex-basis: 50%">
+    <div class="card-content is-small flex-row justify-center">
+      <div class="">Add Slack alert <i class="fa fa-plus text-red"></i></div>
+    </div>
+  </div>
+  <div class="card clickable-card" (click)="addingWebhook()" style="flex-basis: 50%">
+    <div class="card-content is-small flex-row justify-center">
+      <div class="">Add webhook <i class="fa fa-plus text-red"></i></div>
+    </div>
+  </div>
+</div>
+

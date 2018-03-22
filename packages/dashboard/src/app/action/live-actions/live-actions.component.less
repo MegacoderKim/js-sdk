@@ -1,0 +1,74 @@
+@import "~style/variables.less";
+:host {
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.box {
+  height: 20px;
+  width: 30px;
+  border-radius: 3px;
+}
+.user-graphs {
+  //margin-bottom: 20px;
+}
+
+.user-filter {
+  border-bottom: 1px solid @ht-grey-border;
+  padding-bottom: 11px;
+  font-weight: 700;
+  //margin-bottom: 20px;
+}
+
+.counter {
+  .number {
+    font-weight: 600;
+    font-size: 47px;
+  }
+
+  //margin-bottom: 20px;
+}
+
+.dropdown-menu {
+  right: 0;
+  left: inherit;
+}
+
+.sticky {
+  position: absolute;
+  background: @ht-grey-bg;
+  /* width: 100%; */
+  top: 0;
+  width: 100%;
+  left: 0;
+  max-width: 400px;
+  padding: 10px 40px;
+  z-index: 150;
+  border-bottom: 1px solid @ht-grey-border;
+}
+
+app-action-page {
+  padding: 20px 0;
+}
+.fade-out {
+  opacity: 0.3;
+}
+
+.graph-label {
+  transition: color 0.2s;
+  cursor: pointer;
+  padding: 3px;
+  display: flex;
+  flex-direction: row;
+  &:hover {
+    //color: @ht-blue;
+    background: rgb(220, 220, 220);
+  }
+}
+
+.graph-active {
+  background: rgb(220, 220, 220);
+  //text-decoration: underline;
+  //color: @ht-blue;
+}

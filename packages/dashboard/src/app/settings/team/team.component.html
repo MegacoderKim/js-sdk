@@ -1,0 +1,73 @@
+<div class="settings-section flex-column column-gap-20" *ngIf="account$ | async as account">
+  <div class="is-size-4 text-uppercase">Team members</div>
+  <div class="card" *ngFor="let member of account.members; let i = index">
+    <div class="card-content is-small flex-row row-gap-10">
+      <div class="flex-row flex align-center">
+        <div>{{member.user.email}}</div> &nbsp;
+        <div class="text-muted" *ngIf="member.status == 'pending'">({{member.status}})</div>
+      </div>
+      <div style="flex-basis: 70px">
+        {{member.role}}
+      </div>
+      <div class="settings-control" *ngIf="removingIndex != i; else removeTeam ">
+        <div class="text-red clickable" *ngIf="member.role != 'owner' && !isReadonly" (click)="removeMember(member, i)"><i class="fa fa-trash"></i></div>
+        <div class="text-red clickable" *ngIf="member.status == 'pending' && !isReadonly" (click)="resendInvite(member.user.email)">Resend</div>
+      </div>
+      <ng-template #removeTeam>
+        <div class="settings-control">
+          <div class="flex-row" loading-dots>Removing</div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div *ngIf="!showAddUser && !isReadonly" (click)="toAddUser(addTeam)" class="card clickable-card">
+    <div class="card-content is-small text-center">
+      Add team member
+    </div>
+  </div>
+  <div class="card" [hidden]="!showAddUser">
+    <div class="card-content is-small">
+      <div class="field">
+        <label for="" class="label">Add team member</label>
+      </div>
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <input #addTeam (keyup.enter)="addAccountUser(addTeam, role.value, groupValue)" class="input" type="text" placeholder="Email Id">
+
+        </div>
+        <div class="control" [hidden]="role.value != 'read_only'">
+          <div class="select">
+            <select name="" id="groups" #groupValue>
+              <option value="">All groups</option>
+              <option [value]="group.id" *ngFor="let group of groups">{{group.name}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="control">
+          <div class="select">
+            <select name="" id="role" #role>
+              <option value="admin" selected>Admin</option>
+              <option value="read_only">Read only</option>
+            </select>
+          </div>
+        </div>
+        <div class="help" *ngIf="loading" loading-dots>Adding</div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button" (click)="addAccountUser(addTeam, role.value, groupValue)">
+            <span class="icon">
+              <i class="fa fa-check"></i>
+            </span>
+            <span>Done</span>
+          </button>
+
+        </div>
+        <div class="control">
+          <button (click)="showAddUser = false" class="button"><i class="fa fa-times"></i></button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

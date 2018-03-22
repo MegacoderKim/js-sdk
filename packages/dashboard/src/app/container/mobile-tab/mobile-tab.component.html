@@ -1,0 +1,29 @@
+<div class="mobile-tab flex-row row-gap-10 show-xs">
+  <div class="flex-row row-gap-4 settings">
+    <div *ngIf="!showFilter; else settings" class="back"><i class="fa fa-backward"></i></div>
+    <ng-template #settings>
+      <button class="button"><i class="fa fa-gear"></i></button>
+      <button class="button"><i class="fa fa-search"></i></button>
+    </ng-template>
+  </div>
+  <div class="flex flex-row">
+    <div class="link-group">
+      <a [routerLink]="['/map', 'users']" queryParamsHandling="preserve" routerLinkActive="active" class="link"><i class="fa fa-user"></i><span>Users</span></a>
+      <a [routerLink]="['/map', 'actions']" queryParamsHandling="preserve" routerLinkActive="active" class="link"><i class="fa fa-map-o"></i><span>Actions</span></a>
+    </div>
+    <!--<div class="flex-row row-gap-4  align-center">-->
+      <!--<a [routerLink]="['/map', 'users']">Users</a>-->
+      <!--<a [routerLink]="['/map', 'actions']">Actions</a>-->
+    <!--</div>-->
+  </div>
+  <div class="flex-row align-center">
+    <app-map-switch></app-map-switch>
+
+  </div>
+</div>
+<!--<div class="mobile-tab flex-row show-xs">-->
+  <!--<div class="flex-row row-gap-4">-->
+    <!--<button class="btn btn-default"><i class="fa fa-filter"></i></button>-->
+    <!--<button class="btn btn-default"><i class="fa fa-sort-asc"></i></button>-->
+  <!--</div>-->
+<!--</div>-->

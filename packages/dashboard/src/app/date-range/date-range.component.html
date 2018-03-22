@@ -1,0 +1,47 @@
+<!--<div id="reportrangea" class="clickable">-->
+  <!--<button [class.small]="small" class="btn btn-dateRange" *ngIf="range">-->
+    <!--<i class="fa fa-calendar"></i>&nbsp;-->
+    <!--<ng-template [ngIf]="!small">-->
+      <!--<span *ngIf="!isToday; else today">{{range.start | dateString : 'short'}} - {{range.end || today | dateString}}</span>-->
+      <!--<ng-template #today>-->
+        <!--<span>Today</span>-->
+      <!--</ng-template>-->
+      <!--<b class="caret"></b>-->
+    <!--</ng-template>-->
+
+  <!--</button>-->
+
+<!--</div>-->
+<div class="dropdown is-active" [class.is-right]="true" *ngIf="default">
+  <button type="button dropdown-trigger" class="button flex-row row-gap-4">
+    <span>{{display}}</span>
+    <span class="icon">
+      <i class="fa fa-calendar"></i>
+    </span>
+    <!--<span *ngIf="ordering$ | async as ordering"></span>-->
+    <!--<i class="fa fa-filter"></i>-->
+  </button>
+  <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
+    <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <div class="dropdown-item">
+        <ht-date-range-picker [options]="options" (onRangeChange)="rangeChange.next($event)" [dateRange]="default"></ht-date-range-picker>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--<div id="reportrange" class="">-->
+  <!--<button type="button" class="button">-->
+    <!--<span class="icon">-->
+      <!--<i class="fa fa-calendar"></i>&nbsp;-->
+    <!--</span>-->
+    <!--<ng-template [ngIf]="!small && !!range">-->
+      <!--<span *ngIf="!isToday; else today">{{range.start | dateString : 'short'}} - {{range.end || today | dateString}}</span>-->
+      <!--<ng-template #today>-->
+        <!--<span>Today</span>-->
+      <!--</ng-template>-->
+      <!--<b class="caret"></b>-->
+    <!--</ng-template>-->
+  <!--</button>-->
+
+<!--</div>-->

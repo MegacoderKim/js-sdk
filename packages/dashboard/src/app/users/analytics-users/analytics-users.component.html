@@ -1,0 +1,129 @@
+<div class="analytics-user-container">
+  <div class="table-container">
+    <!--<div appScrollTop class="summary-container hide" style="display: flex;justify-content: space-between;" *ngIf="userSummaryResult">-->
+      <!--<app-summary-card [label]="'Trips/User'" [value]="userSummaryResult.tripsPerUser"> </app-summary-card>-->
+      <!--<app-summary-card [label]="'Distance/User'" [value]="userSummaryResult.distancePerUser"> </app-summary-card>-->
+      <!--<app-summary-card [label]="'Duration/User'" [value]="userSummaryResult.durationPerUser"> </app-summary-card>-->
+      <!--<app-summary-card [label]="'Places/User'" [value]="userSummaryResult.placesPerUser"> </app-summary-card>-->
+      <!--<app-summary-card [label]="'Location disabled/User'" [value]="userSummaryResult.locationDisabledPerUser"> </app-summary-card>-->
+      <!--<app-summary-card class="last" [label]="'Network offline/User'" [value]="userSummaryResult.networkOfflinePerUser"> </app-summary-card>-->
+    <!--</div>-->
+    <div class="table-loader">
+      <table class="table is-striped is-hoverable is-fullwidth">
+        <thead class = 'table-header'>
+          <tr>
+            <th *ngFor="let column of dataColumns; let i = index" [ngClass]="column.key + '_column'">
+              <div class="column-header" (click)="handleSorting(column.key)">
+                <span [class.has-text-black]="isActiveOrderKey(column.key)" class="column-label">{{column.label}}</span>
+                <span class="fa-stack fa-lg sort" *ngIf="column.key">
+                <i [class.active]="isActiveOrdering(column.key, true)" class="fa fa-sort-asc fa-stack-1x" aria-hidden="true"></i>
+                <i [class.active]="isActiveOrdering(column.key, false)" class="fa fa-sort-desc fa-stack-1x" aria-hidden="true"></i>
+              </span>
+                <div hidden class="filter dropdown">
+                <span class="fa-stack fa-lg dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-filter" aria-hidden="true" ></i>
+                </span>
+                  <ul class="dropdown-menu">
+                  </ul>
+                </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="table-body" *ngIf="items || summary">
+          <tr class="has-text-weight-bold" *ngIf="userSummaryResult">
+            <td class=" ">
+              <span>
+                {{userSummaryResult.totalUsersDisplay}}
+              </span>
+            </td>
+            <td class=" ">
+              <span>—</span>
+            </td>
+            <td class=" ">
+              <span>—</span>
+            </td>
+            <td class=" ">
+              <span>{{userSummaryResult.distancePerUser}}</span>
+            </td>
+            <td class=" ">
+              <span>{{userSummaryResult.durationPerUser}}</span>
+            </td>
+            <!--<td class="column num_trips_column">-->
+              <!--<span>{{userSummaryResult.tripsPerUser}}</span>-->
+            <!--</td>-->
+            <td class="">
+              <span>{{userSummaryResult.stopDurationPerUser}}</span>
+            </td>
+            <td class=" ">
+              <span>{{userSummaryResult.locationDisabledPerUser}}</span>
+            </td>
+            <td class=" ">
+              <span>{{userSummaryResult.networkOfflinePerUser}}</span>
+            </td>
+            <td class=" ">
+              <span>{{userSummaryResult.actionsPerUser}}</span>
+            </td>
+            </tr>
+          <tr class="user-link" (click)="openUser(user.id)" *ngFor="let user of userDataResult; trackBy:indexId">
+            <td class="">
+              <div class="user-cell">
+                <app-profile [url]="user.photo"></app-profile>
+                <div class="name">
+                  <span>{{user.name | nameCase | dot: 'Unknown Name'}}</span>
+                </div>
+              </div>
+            </td>
+            <td class="">
+              <span [ngClass]="user.status_display.isWarning ? 'text-warning' : ''">{{user.status_display.text}}</span>
+            </td>
+            <td class="">
+              <span>{{user.last_heartbeat_display}}</span>
+            </td>
+            <td class="">
+              <span>{{user.total_distance_display}}</span>
+            </td>
+            <td class="">
+              <span>{{user.total_duration_display}}</span>
+            </td>
+            <!--<td class="column num_trips_column">-->
+              <!--<span>{{user.num_trips}}</span>-->
+            <!--</td>-->
+            <td class="">
+              <span>{{user.stop_duration | hmString: 60 | dot: '--'}}</span>
+            </td>
+            <td class="">
+              <span>{{user.location_unavailable_display}}</span>
+            </td>
+            <td class=" ">
+              <span>{{user.network_unavailable_display}}</span>
+            </td>
+            <td class=" ">
+              <span>{{user.num_actions}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top: 20px" *ngIf="!items && baseLoading.data">
+      <app-loading-data message="users"></app-loading-data>
+    </div>
+    <div class="noresult-mssg-container" *ngIf="!baseLoading.data && userDataResult?.length === 0">
+      <div class="noresult-mssg flex-column"><p>No Users in this date range</p><span *ngIf="!showAll" (click)="updateListQuery({show_all: true})" class="clickable text-blue">Show all</span></div>
+    </div>
+    <div class="error-mssg-container" *ngIf="!!errorMessage">
+      <div class="error-mssg"><span>{{errorMessage}}</span></div>
+    </div>
+    <div class="pagination-container" *ngIf="(usersData && usersData.count > 15)">
+      <app-pagination [currentPage]="currentPage" [hasNext]="!!usersData.next" [hasPrevious]="!!usersData.previous"  [totalCount]="usersData.count" [pageSize]="15" (fetchPage)="onFetchPage($event)"> </app-pagination>
+      <div class="text-muted text-right hide">
+        <div *ngIf="baseLoading.page || baseLoading.data" loading-dots>Loading</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay" *ngIf="selectedUserSegmentId">
+  <app-map-container>
+    <app-timeline-user baseLink="./" [showPop]="true" [forceClose]="true"></app-timeline-user>
+  </app-map-container>
+</div>

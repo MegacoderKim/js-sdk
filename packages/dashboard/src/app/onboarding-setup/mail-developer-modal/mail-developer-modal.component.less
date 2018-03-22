@@ -1,0 +1,27 @@
+@import "../../main/main.component.less";
+
+app-modal {
+  .mail-developer-container {
+    position: relative;
+    overflow: hidden;
+    width: 500px;
+    height: 50%;
+    padding: 4rem;
+    background: white;
+    border-radius: 6px;
+  }
+}
+
+.close-button {
+  .text-normal();
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: @dark-grey;
+  cursor: pointer;
+  transition: 0.4s all ease-in-out;
+  &:hover {
+    color: black;
+    transform: scale( 1.1 );
+  }
+}

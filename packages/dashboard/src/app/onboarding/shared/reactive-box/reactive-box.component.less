@@ -1,0 +1,28 @@
+.box-container {
+  padding-top: 12px;
+  blockquote {
+    display: flex;
+    align-items: center;
+    /deep/ span {
+      font-size: 13px;
+      font-weight: bold;
+      color: #4e4e4e;
+    }
+    &.event-pending {
+      background: #f9f7af;
+      border-color: #c1bc00;
+    }
+    &.event-complete {
+      background: #def5de;
+      border-color: #89d089;
+    }
+    color: rgb(68, 68, 68);
+    p {
+      font-size: 14px;
+    }
+    a {
+      cursor: pointer;
+      color: #5496F8;
+    }
+  }
+}

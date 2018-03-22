@@ -1,0 +1,82 @@
+<div class="columns">
+  <div class="column is-4 flex-column column-gap-10">
+    <div class="text-white is-size-1">Pick a Plan</div>
+    <div>Upgrade now to build programmable location features. We bill you as per usage without any minimums</div>
+    <div>
+      <img id="payment-img" src="{{img}}" alt="">
+    </div>
+  </div>
+  <div class="column is-8">
+    <div class="payment-selector flex-row row-gap-20">
+      <div class="flex-column column-gap-4">
+        <div class="type-text has-text-weight-bold">
+          Pay per action
+        </div>
+        <div (click)="paymentType = 'paid_actions'" [class.payment-type-selected]="paymentType == 'paid_actions'" class="payment-type">
+          <div class="count">
+            $0.04
+          </div>
+          <div class="type-label">
+            per action
+          </div>
+        </div>
+      </div>
+      <div class="flex-row align-center">
+        OR
+      </div>
+      <div class="flex-column column-gap-4">
+        <div class="type-text has-text-weight-bold">
+          Pay per user
+        </div>
+        <div (click)="paymentType = 'paid_users'" [class.payment-type-selected]="paymentType == 'paid_users'" class="payment-type ">
+          <div class="count">
+            $5
+          </div>
+          <div class="type-label">
+            per user per month
+          </div>
+        </div>
+      </div>
+    </div>
+    <form class="form" #billingForm="ngForm" (ngSubmit)="submitCard($event)">
+      <div class="flex-column column-gap-10">
+        <div class="field">
+          <div class="label">Card number</div>
+          <div class="control relative">
+            <input type="text" [appCleave]="cleaveOptions" class="input" id="card-number" [(ngModel)]="cardInfo.number" [disabled]="savingCard" required  autocomplete="off" placeholder="" name="card-number">
+            <div class="card-icon">
+              <i [ngClass]="'fa-cc-'+cardType" class="fa fa-2x"></i>
+            </div>
+          </div>
+
+        </div>
+        <div class="flex-row row-gap-20">
+          <div class="field flex">
+            <div for="card-name" class="label is-uppercase">Name on card</div>
+            <div class="control">
+              <input type="text" class="input" id="card-name" placeholder="" required type="text" name="name" [(ngModel)]="cardInfo.name" [disabled]="savingCard">
+            </div>
+          </div>
+          <div class="field mini-input">
+            <div for="card-exp-month" class="label is-uppercase">Exp month</div>
+            <input type="text" [appCleave]="monthOptions" class="input" id="card-exp-month" [(ngModel)]="cardInfo.exp_month" [disabled]="savingCard" autocomplete="off" maxlength="2" minlength="2" placeholder="MM" name="exp_month">
+          </div>
+          <div class="field mini-input">
+            <div for="card-exp-year" class="label is-uppercase">Exp year</div>
+            <input type="text" [appCleave]="yearOptions" class="input" id="card-exp-year" autocomplete="off"  name="exp-year" [(ngModel)]="cardInfo.exp_year" [disabled]="savingCard" maxlength="4" minlength="4" required placeholder="YYYY">
+          </div>
+          <div class="field mini-input">
+            <div for="card-cvv" class="label is-uppercase">CVV</div>
+            <input type="password" class="input" id="card-cvv" placeholder="" autocomplete="off" type="password" name="cvc" [(ngModel)]="cardInfo.cvc" maxlength="4" minlength="3" [disabled]="savingCard" required>
+          </div>
+        </div>
+        <div class="field" *ngIf="!loading">
+          <button [disabled]="!billingForm.form.valid || savingCard" type="submit" class="pay-btn is-uppercase">Upgrade now</button>
+        </div>
+        <div class="field" *ngIf="loading">
+          <button class="pay-btn pay-btn-loading is-uppercase">Upgrading ...</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<svg id="stacked" width="800" height="300">
+    <g [attr.transform]="gtransform" id="stackedContainer">
+        <g *ngFor="let area of stack; let i = index">
+            <g class="rect-container" *ngFor="let bar of area; let ii = index">
+                <rect [attr.fill]="color(i)" [attr.y]="yScale(bar[1])" [attr.x]="xScale(bar.data.date)" [attr.height]="getHeightBar(bar)" [attr.width]="xScale.bandwidth()"></rect>
+                <g class="rect-text-container">
+                    <rect height="20" [attr.width]="xScale.bandwidth()" [attr.y]="yScale(bar[1]) - 22" [attr.x]="xScale(bar.data.date)" fill-opacity="0.4"></rect>
+                    <text class="rect-text" dy="-8" [attr.dx]="xScale.bandwidth()/2" [attr.y]="yScale(bar[1])" [attr.x]="xScale(bar.data.date)" font-size="10" fill="#ffffff">{{bar.data[area.key]}}</text>
+                </g>
+            </g>
+        </g>
+        <g class="y-axis" id="y-axis"></g>
+        <g class="x-axis" id="x-axis" [attr.transform]="xAxisTransform"></g>
+    </g>
+</svg>
+
+<!--<pre>-->
+    <!--{{stack || json}}-->
+<!--</pre>-->

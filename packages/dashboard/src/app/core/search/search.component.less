@@ -1,0 +1,101 @@
+@import "../../../style/variables";
+
+.results-container {
+  position: absolute;
+  top: 37px;
+  right: 0;
+  background: #fff;
+  width: 100%;
+  border-left: 1px solid @ht-grey-border;
+  border-right: 1px solid @ht-grey-border;
+  border-bottom: 1px solid @ht-grey-border;
+  color: @ht-grey-text-bold;
+  display: flex;
+  flex-direction: column;
+  .result {
+    padding: 3px 12px;
+    &:hover {
+      background: @ht-grey-bg;
+    }
+  }
+  a {
+    color: inherit !important;
+  }
+  .title {
+    color: @ht-green;
+    margin: 5px 10px 5px;
+    font-weight: 500;
+    padding: 3px 2px 0;
+    border-top: 1px solid @ht-grey-border;
+    .text-muted {
+      color: @ht-grey-3;
+    }
+    &:first-child {
+      margin: 3px 10px 5px;
+      border-top: 0;
+      padding-top: 10px;
+    }
+  }
+}
+.search-container {
+  //margin-right: 20px;
+  position: relative;
+  &:hover {
+    #ht-search {
+      background: #fff;
+    }
+  }
+}
+#ht-search {
+  padding: 5px 30px 5px 43px;
+  margin-top: 9px;
+  border: 0px;
+  background: @ht-header;
+  color: @ht-grey-5;
+  border-left: 1px solid @ht-grey-border;
+  border-right: 1px solid @ht-grey-border;
+  border-radius: 4px;
+  &:focus {
+    outline: 0;
+    background: #fff;
+  }
+
+}
+.focus {
+  border-color: @ht-grey-border;
+}
+#search-icon {
+  left: 2px;
+}
+.icon {
+  display: flex;
+  color: @ht-grey-4;
+  padding: 0 13px;
+  position: absolute;
+  top: 4px;
+  height: 100%;
+}
+#action {
+  right: 13px;
+
+}
+:host {
+  //margin-right: 10px;
+}
+@placeholder-color: @ht-grey-3;
+
+::-webkit-input-placeholder {
+  color: @placeholder-color;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: @placeholder-color;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color: @placeholder-color;
+}
+
+:-ms-input-placeholder {
+  color: @placeholder-color;
+}

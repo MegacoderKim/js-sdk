@@ -1,0 +1,138 @@
+@import "../../main/main.component.less";
+
+.hidden {
+  display: none;
+}
+.code-block {
+  position: relative;
+  overflow: hidden;
+  margin-top: @space--double;
+}
+.code-top-nav {
+  position: relative;
+  overflow: hidden;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: @space;
+  padding-right: @space--double;
+  .code-file-container {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 50%;
+    .code-file-icon {
+      display: inline-block;
+      position: relative;
+      font-size: 2rem;
+      line-height: 2rem;
+      vertical-align: top;
+      color: @purple--dark;
+    }
+    .code-file-name {
+      .text-small();
+      font-weight: 500;
+      color: @purple--dark;
+      line-height: 2rem;
+      position: relative;
+      display: inline-block;
+      padding-left: @space--half;
+      cursor: pointer;
+    }
+  }
+  .code-toolkit {
+    position: relative;
+    overflow: hidden;
+    width: 50%;
+    float: right;
+    .code-file-help {
+      position: relative;
+      display: block;
+      float: right;
+      margin-right: @space--double;
+      height: 2rem;
+      width: 2rem;
+      font-size: 1rem;
+      text-align: center;
+      line-height: 2rem;
+      color: @purple;
+      transition: 0.4s all ease-in-out;
+      cursor: pointer;
+      border-radius: 50%;
+      background: @light-purple;
+      &:hover {
+        background: @purple--dark;
+        color: white;
+      }
+
+    }
+    .code-expand-icon {
+      position: relative;
+      display: block;
+      float: right;
+      height: 2rem;
+      width: 2rem;
+      font-size: 1rem;
+      text-align: center;
+      line-height: 2rem;
+      color: @purple;
+      transition: 0.4s all ease-in-out;
+      cursor: pointer;
+      border-radius: 50%;
+      background: @light-purple;
+      &:hover {
+        background: @purple--dark;
+        color: white;
+      }
+      &.hide {
+        display: none;
+      }
+    }
+  }
+}
+.code-file-copy-container {
+  overflow: hidden;
+  position: absolute;
+  bottom: -2rem;
+  width: 20%;
+  left: 40%;
+  padding: @space;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  background: @purple;
+  text-align: center;
+  transition: 0.4s all ease-in-out;
+  z-index: 99;
+  color: white;
+  .code-file-copy {
+    .text-smallcaps-s();
+    cursor: pointer;
+  }
+  &:hover {
+    background: darken( @purple, 10% );
+  }
+}
+.code-main-container {
+  position: relative;
+  overflow: hidden;
+  .code-container {
+    /deep/ .code-pre-container {
+      .text-normal();
+      font-weight: 300;
+      .hljs {
+        padding: @space--4x;
+        overflow-x: scroll;
+        position: relative;
+        font-weight: 300;
+      }
+      code {
+        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 6px;
+      }
+    }
+  }
+  &:hover {
+    .code-file-copy-container {
+      bottom: 0;
+    }
+  }
+}

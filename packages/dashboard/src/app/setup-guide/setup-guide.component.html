@@ -1,0 +1,297 @@
+<div class="sg-container">
+  <div class="sg-container-inner">
+
+    <!--===========================================
+    =            SECTION SIDEBAR STEPS            =
+    ============================================-->
+    <div class="sg-progress-steps">
+      <div (click)="setStep(step)" class="ps-item" [ngClass]="step.status" *ngFor="let step of steps; trackBy:indexId">
+        <div class="ps-item-number">{{step.index}}</div>
+        <div class="ps-item-icon">
+          <i class="fa fa-check" aria-hidden="true"></i>
+        </div>
+        <div class="ps-item-incomplete-label {{step.status}}">{{step.incompleteLabel}}</div>
+        <div class="ps-item-complete {{step.status}}">
+          <div class="ps-item-complete-label">{{step.completeLabel}}</div>
+          <div class="ps-item-complete-cta">{{step.completeCta}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!--===================================
+    =            MAIN SECTIONS            =
+    ====================================-->
+    <div class="sg-section-container">
+      <!--====================================
+      =            SIGNUP SECTION            =
+      =====================================-->
+      <div class="sg-section-signup sg-section" *ngIf="currentStep.index == 1" [@drop]>
+        <div class="section-signup-title sg-section-title">
+          Build with us
+        </div>
+        <div class="section-signup-description sg-section-description">
+          You signed up for your HyperTrack account. Nice work! You can visit your <a href="/settings">account settings</a> to edit your name, email address, notifications, preferences, and to change your password.
+        </div>
+        <div class="section-signup-keys">
+          <div class="keys-title">Here are the keys for your account</div>
+          <div class="keys-section keys-section-test"  [ngClass]="testKeyToggle ? 'isOpen' : ''">
+            <div class="keys-section-title" (click)="onKeyContainerToggle('test')">
+              <div class="title">Test environment</div>
+              <div class="toggle-button" >
+                <i class="ion-android-arrow-dropdown-circle"></i>
+              </div>
+            </div>
+            <div class="keys-section-keys">
+              <div class="key-box">
+                <div class="key-box-text">
+                  <div class="key-box-label">Publishable Key</div>
+                  <div class="key-box-key">{{pkValue.test}}</div>
+                </div>
+                <div class="key-box-copy" (click)="initiateCopiedTimer('testKey')" [attr.data-clipboard-text]="pkValue.test">{{copyStates.testKey ? 'Copied!': 'Copy'}}</div>
+              </div>
+              <div class="key-box">
+                <div class="key-box-text">
+                  <div class="key-box-label">Secret Key</div>
+                  <div class="key-box-key">{{skValue.test}}</div>
+                </div>
+                <div class="key-box-copy" (click)="initiateCopiedTimer('testSecret')" [attr.data-clipboard-text]="skValue.test">{{copyStates.testSecret ? 'Copied!': 'Copy'}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="keys-section keys-section-test"  [ngClass]="prodKeyToggle ? 'isOpen' : ''">
+            <div class="keys-section-title" (click)="onKeyContainerToggle('prod')">
+              <div class="title">Production Keys</div>
+              <div class="toggle-button">
+                <i class="ion-android-arrow-dropdown-circle"></i>
+              </div>
+            </div>
+            <div class="keys-section-keys">
+              <div class="key-box">
+                <div class="key-box-text">
+                  <div class="key-box-label">Publishable Key</div>
+                  <div class="key-box-key">{{pkValue.prod}}</div>
+                </div>
+                <div class="key-box-copy" (click)="initiateCopiedTimer('prodKey')" [attr.data-clipboard-text]="pkValue.prod">{{copyStates.prodKey ? 'Copied!': 'Copy'}}</div>
+              </div>
+              <div class="key-box">
+                <div class="key-box-text">
+                  <div class="key-box-label">Secret Key</div>
+                  <div class="key-box-key">{{skValue.prod}}</div>
+                </div>
+                <div class="key-box-copy" (click)="initiateCopiedTimer('prodSecret')" [attr.data-clipboard-text]="skValue.prod">{{copyStates.prodSecret ? 'Copied!': 'Copy'}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-signup-cta" (click)="setStep(steps[1])">Start with Integration</div>
+      </div>
+
+      <!--========================================
+      =            SDK PLUGIN SECTION            =
+      =========================================-->
+      <div class="sg-section sg-section-plugin-sdk" *ngIf="currentStep.index == 2">
+        <div class="sg-section-title">Plugin the SDK into the app</div>
+        <!--========================================
+        =            SDK INTEGRATION SECTION       =
+        =========================================-->
+        <div *ngIf="currentStep.index == 2">
+          <app-onboarding-setup></app-onboarding-setup>
+        </div>
+
+      </div>
+
+
+      <!--========================================
+      =            PRIMITIVES SECTION            =
+      =========================================-->
+      <div class="sg-section sg-section-primitives" *ngIf="currentStep.index == 3" [@drop]>
+        <div class="sg-section-title">Build with data, visuals & events</div>
+        <div class="sg-section-description">
+          Use HyperTrack Primitives to consume location, activity and health data for Users. Annotate your user’s journey with Actions to get ETAs, mileage and status.
+        </div>
+        <div class="sg-section-primitives-guides">
+          <div class="sg-section-primitives-content">
+            <a class="guide-item" *ngFor="let guide of guides;" [href]="guide.link" target="_blank">
+              <div class="guide-item-image">
+                <img src="{{guide.image}}" alt="{{guide.title}}">
+              </div>
+              <div class="guide-item-content">
+                <div class="guide-item-title">{{guide.title}}</div>
+                <div class="guide-item-description">{{guide.description}}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!--=====================================
+      =            PRICING SECTION            =
+      ======================================-->
+      <div class="sg-section sg-section-pricing" *ngIf="currentStep.index == 4" [@drop]>
+        <div class="sg-section-title">Setup billing</div>
+        <!--Case when card and plan both selected -->
+        <div class="sg-section-current-plan" *ngIf="currentPlanId != 'free_forever:1' && isCardAdded">
+          <div class="pricing-box">
+            <div class="pricing-box-content">
+              <div class="pricing-box-name">{{currentPlan.name}}</div>
+              <div class="pricing-box-highlight">
+                SELECTED PLAN
+              </div>
+              <div class="pricing-box-icon">
+                <img src="{{currentPlan.icon}}" alt="">
+              </div>
+              <div class="pricing-box-cost">
+                <div class="cost-currency-icon" *ngIf="currentPlan.name!='Enterprise'">$</div>
+                <div class="cost-value">{{currentPlan.cost}}</div>
+                <div class="cost-label" [ngClass]="(currentPlan.name=='Enterprise') ? 'isHidden' : ''">Per month</div>
+              </div>
+              <div class="pricing-box-actions-count">
+                <div class="actions-label" *ngIf="currentPlan.name!='Enterprise'">includes</div>
+                <div class="actions-label" *ngIf="currentPlan.name=='Enterprise'">more than</div>
+                <div class="actions-value">{{currentPlan.actionsCount}} actions</div>
+                <div class="actions-users-count">Unlimited users</div>
+              </div>
+            </div>
+          </div>
+          <div class="current-plan-info">
+            <div class="current-plan-icon">
+              <i class="ion-checkmark-circled"></i>
+            </div>
+            <div class="current-plan-title">All done here</div>
+            <div class="plan-description">
+              Your billing plan is all setup. You can track the usage, upgrade or downgrade the plan from the settings.
+            </div>
+            <a [routerLink]="['/settings', 'billing']"><div class="plan-cta">Change billing settings</div></a>
+          </div>
+        </div>
+        <!--Case when card and plan both not selected -->
+        <div class="sg-section-select-plan" *ngIf="currentPlanId == 'free_forever:1'">
+          <div class="select-plan-description">
+            You are currently on the Free Forever plan that includes 2500 actions/month. Upgrade to one of the following plans if you expect a higher usage.
+          </div>
+          <div class="section-billing-plans">
+            <div class="section-billing-boxes-title">Select the plan that suits you</div>
+            <div class="section-billing-plans">
+              <div class="pricing-boxes">
+                <div class="pricing-box" *ngFor="let plan of plans">
+                  <div class="pricing-box-content">
+                    <div class="pricing-box-name">{{plan.name}}</div>
+                    <div class="pricing-box-highlight" *ngIf="plan.name=='Regular'">
+                      MOST POPULAR
+                    </div>
+                    <div class="pricing-box-icon">
+                      <img src="{{plan.icon}}" alt="">
+                    </div>
+                    <div class="pricing-box-cost">
+                      <div class="cost-currency-icon" *ngIf="plan.name!='Enterprise'">$</div>
+                      <div class="cost-value">{{plan.cost}}</div>
+                      <div class="cost-label" [ngClass]="(plan.name=='Enterprise') ? 'isHidden' : ''">Per month</div>
+                    </div>
+                    <div class="pricing-box-actions-count">
+                      <div class="actions-label" *ngIf="plan.name!='Enterprise'">includes</div>
+                      <div class="actions-label" *ngIf="plan.name=='Enterprise'">more than</div>
+                      <div class="actions-value">{{plan.actionsCount}} actions</div>
+                      <div class="actions-users-count">Unlimited users</div>
+                    </div>
+                    <a [routerLink]="['/payment', {type: plan.id}]" *ngIf="plan.name!='Enterprise'" ><div class="pricing-box-inside-cta">{{plan.cta}}</div></a>
+                    <div class="pricing-box-inside-cta" *ngIf="plan.name=='Enterprise'" (click)="openEnterpriseIntercom()">{{plan.cta}}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="faq-section">
+                <div class="faq-item" *ngFor="let faq of faqs">
+                  <div class="faq-item-question">{{faq.question}}</div>
+                  <div class="faq-item-answer">{{faq.answer}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Case when card not entered but plan selected -->
+        <div class="sg-section-add-credit-card" *ngIf="currentPlanId!= 'free_forever:1' && !isCardAdded">
+          <div class="pricing-box">
+            <div class="pricing-box-content">
+              <div class="pricing-box-name">{{currentPlan.name}}</div>
+              <div class="pricing-box-highlight">
+                SELECTED PLAN
+              </div>
+              <div class="pricing-box-icon">
+                <img src="{{currentPlan.icon}}" alt="">
+              </div>
+              <div class="pricing-box-cost">
+                <div class="cost-currency-icon" *ngIf="currentPlan.name!='Enterprise'">$</div>
+                <div class="cost-value">{{currentPlan.cost}}</div>
+                <div class="cost-label" [ngClass]="(currentPlan.name=='Enterprise') ? 'isHidden' : ''">Per month</div>
+              </div>
+              <div class="pricing-box-actions-count">
+                <div class="actions-label" *ngIf="currentPlan.name!='Enterprise'">includes</div>
+                <div class="actions-label" *ngIf="currentPlan.name=='Enterprise'">more than</div>
+                <div class="actions-value">{{currentPlan.actionsCount}} actions</div>
+                <div class="actions-users-count">Unlimited users</div>
+              </div>
+            </div>
+          </div>
+          <div class="current-plan-info">
+            <div class="current-plan-icon">
+              <i class="ion-card"></i>
+            </div>
+            <div class="current-plan-title">We need your card details</div>
+            <div class="plan-description">
+              Your billing plan is all setup. You can track the usage, upgrade or downgrade the plan from the settings.
+            </div>
+            <a href="/payment?type={{currentPlanId}}"><div class="plan-cta">Add card details</div></a>
+          </div>
+        </div>
+      </div>
+
+
+      <!--========================================
+      =            PRODUCTION SECTION            =
+      =========================================-->
+      <div class="sg-section sg-section-production" *ngIf="currentStep.index == 5" [@drop]>
+        <div class="sg-section-title">Move to production</div>
+        <div class="sg-section-description">You are all set to roll out your product to your users. Here are a few quick things that you need to do to move to production.</div>
+        <div class="sg-section-content">
+          <div class="sg-section-step">
+            <div class="step-title">1. Switch to production secret keys on the server</div>
+            <div class="step-api-key">
+              <div class="api-key">{{skValue.prod}}</div>
+              <div class="api-key-copy" (click)="initiateCopiedTimer('prodSecret')" [attr.data-clipboard-text]="skValue.prod">{{copyStates.prodSecret ? 'Copied!': 'Copy'}}</div>
+            </div>
+          </div>
+          <div class="sg-section-step">
+            <div class="step-title">2. Switch to production publishable keys in the app</div>
+            <div class="step-api-key">
+              <div class="api-key">{{pkValue.prod}}</div>
+              <div class="api-key-copy" (click)="initiateCopiedTimer('prodKey')" [attr.data-clipboard-text]="pkValue.prod">{{copyStates.prodKey ? 'Copied!': 'Copy'}}</div>
+            </div>
+          </div>
+          <div class="sg-section-step step-final">
+            <div class="step-title">3. Release app with production keys on Playstore and Appstore</div>
+            <a href="/"><div class="sg-section-cta" *ngIf="config.tokenType == 'production'" (click)="toggleToProduction()">Go live on production</div></a>
+            <div class="sg-section-cta" *ngIf="config.tokenType == 'test'" (click)="toggleToProduction()">See production dashboard</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--====================================
+    =            FOOTER SECTION            =
+    =====================================-->
+    <div class="sg-footer">
+      <div class="sg-footer-item footer-item-invite">
+        <div class="footer-item-title">Invite your team</div>
+        <div class="footer-item-description">Want more people to look at this data. Invite them to hypertrack dashboard</div>
+        <a class="footer-item-cta" href="https://dashboard.hypertrack.com/settings/team" target="_blank">Onboard your team →</a>
+
+      </div>
+      <div class="sg-footer-item">
+        <div class="footer-item-title">Speak to our developers</div>
+        <div class="footer-item-description">Our team of developers are here to help you in whatever you need help in</div>
+        <a class="footer-item-cta cta-break" href="http://slack.hypertrack.com" target="_blank">Join us on slack </a>
+        <a class="footer-item-cta cta-break" href="mailto:help@hypertrack.com?Subject=Hello">Email us </a>
+      </div>
+    </div>
+  </div>
+</div>
+

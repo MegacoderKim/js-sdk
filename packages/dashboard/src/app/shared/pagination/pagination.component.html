@@ -1,0 +1,11 @@
+<div class="app-pagination">
+  <div [class.disabled]="!hasPreviousPage" (click)="onFetchPage(currentPage - 1)" class="pagination-element">
+    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+  </div>
+  <div (click)="onFetchPage(page)" class="pagination-element" *ngFor="let page of pages" [ngClass]="currentPage === page ? 'selected' : ''">
+    <span class="pagination-number">{{page}}</span>
+  </div>
+  <div [class.disabled]="!hasNextPage" (click)="onFetchPage(currentPage + 1)" class="pagination-element">
+    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+  </div>
+</div>

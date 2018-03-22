@@ -1,0 +1,69 @@
+<div id="desktop-replay" class="flex-column" *ngIf="stats$ | async as stats">
+  <div class="new-timeline">
+    <div class="flex-row" #timeline (click)="jumpToTimePercent($event, timeline)">
+      <div class="segment" [class.segment-trip]="segment.type == 'trip'" [class.segment-nolocation]="segment.type == 'location_void'" [class.segment-gap]="segment.type == 'gap'" [style.width.%]="segment.endPercent - segment.startPercent" *ngFor="let segment of stats.placeline"></div>
+    </div>
+    <div (mousedown)="startDrag($event, timeline)" class="flex-row flex">
+      <div class="peg" draggable="false" [style.left.%]="(head$ | async)?.timePercent || 0">
+        <div class="dot"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="timeline" *ngIf="stats$ | async as stats">-->
+    <!--<div class="time">{{(stats$ | async)?.start | timeString}}</div>-->
+    <!--<div class="flex">-->
+      <!--<input type="range" name="timeline" id="timeline-d" max="100" min="0" step="0.05" #time (ngModelChange)="setTimePercent(time.value)"-->
+             <!--[ngModel]="(head$ | async)?.timePercent || 0">-->
+    <!--</div>-->
+    <!--<div class="time">{{(stats$ | async)?.end | timeString}}</div>-->
+  <!--</div>-->
+  <div class="media-panel">
+    <div class="replay-data flex-row spaced">
+      <div class="flex-column">
+        <div class="flex-row align-center">
+          <span>{{(head$ | async)?.currentTime || stats.start | timeString}}</span>
+          <span class="text-muted">, &nbsp;{{(head$ | async)?.currentTime || stats.start | dateString}} </span>
+        </div>
+        <span class="text-muted">Playhead time</span>
+      </div>
+    </div>
+    <div class="controls flex-row flex" *ngIf="player$ | async as player">
+      <div class="action play" *ngIf="!player.isStopped" (click)="stop()">
+        <i class=" fa-1x fa fa-stop auto"></i>
+      </div>
+      <div *ngIf="!player.isPlaying" class="action play" (click)="play()">
+        <i class="fa-play fa-1x fa auto"></i>
+      </div>
+      <div *ngIf="player.isPlaying" class="action play" (click)="pause()">
+        <i class="fa-pause fa-1x fa auto"></i>
+      </div>
+    </div>
+    <div class="replay-data flex-row">
+
+      <div class="flex-column">
+        <div class = "speed-slider-container">
+          <img src="{{icons.tortoise}}" class = "tortoise-icon"/>
+          <input  class = "replayspeed" type="range" name="replaySpeed" id="replay-speed" max="10" min="1" step="0.5" #speed (ngModelChange)="changeSpeed(speed.value)"
+                 [ngModel]="speed$ | async">
+          <img src="{{icons.hare }}" class= "hare-icon"/>
+        </div>
+        <span style="padding-top: 9px;" class="text-muted">Playback speed</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<div id="mobile-replay" class="flex-column">-->
+  <!--<div class="current-time">{{currentTime$ | async | timeString}}</div>-->
+  <!--<div class="timeline">-->
+    <!--<div class="action play" (click)="playToggle()">-->
+      <!--<i [ngClass]="(replay$.share() | async)?.isPlaying ? 'fa-pause' : 'fa-play'" class=" fa-1x fa auto"></i>-->
+    <!--</div>-->
+    <!--<div class="flex">-->
+      <!--<input type="range" name="timeline" id="timeline-m" max="100" min="0" step="0.05" #time (ngModelChange)="setTimePercent(time.value, true)"-->
+             <!--[ngModel]="(replay$.share() | async).timePercent">-->
+    <!--</div>-->
+    <!--<div (click)="cycleSpeed()" class="action speed"><span class="auto">{{speeds[currentSpeedIndex].text}}</span></div>-->
+  <!--</div>-->
+<!--</div>-->

@@ -1,0 +1,77 @@
+<div class="analytics-actions-container">
+  <ng-template #zeroState>
+    <app-action-zero-state></app-action-zero-state>
+  </ng-template>
+  <!--<div class="graph-container" *ngIf="graphData && graphData.xAxis && graphData.xAxis.length > 1">-->
+    <!--<area-graph [dataset]="data" [areaFill]="onlineAreaFill" [graphData]="graphData"> </area-graph>-->
+  <!--</div>-->
+  <div class="table-container" *ngIf="!isNotPremium; else zeroState">
+    <table appScrollTop class="table is-hoverable is-striped is-fullwidth">
+      <thead class = 'table-header'>
+        <tr>
+          <th *ngFor="let column of dataColumns; let i = index">
+            <div class="column-header" (click)="handleSorting(column.key)">
+              <span class="column-label">{{column.label}}</span>
+              <span class="fa-stack fa-lg sort" *ngIf="column.key">
+                <i [class.active]="isActiveOrdering(column.key, true)" class="fa fa-sort-asc fa-stack-1x" aria-hidden="true"></i>
+                <i [class.active]="isActiveOrdering(column.key, false)" class="fa fa-sort-desc fa-stack-1x" aria-hidden="true"></i>
+              </span>
+              <div hidden class="filter dropdown">
+                <span class="fa-stack fa-lg dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-filter" aria-hidden="true" ></i>
+                </span>
+                <ul class="dropdown-menu">
+                </ul>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="table-body" *ngIf="items">
+        <tr (click)="openAction(action)" class="user-link" *ngFor="let action of actionDataResult">
+        <td class="">
+          {{action.lookup_id}}
+        </td>
+        <td>
+          <span>{{action.type}}</span>
+        </td>
+        <td>
+          <span *ngIf="action.user">{{action.user.name}}</span>
+        </td>
+        <td>
+          <span><i class="fa" [ngClass]="getDelayedIcon(action)"></i>&nbsp; {{action.status}} </span>
+        </td>
+        <td>
+          <span>{{action.assigned_at}}</span>
+        </td>
+          <td>
+          <span>{{action.completed_at}}</span>
+        </td>
+          <td>
+            <span>{{action.duration | hmString: 60}}</span>
+          </td>
+          <td>
+            <span>{{action.distance | distanceLocale: timezone}}</span>
+          </td>
+      </tr>
+      </tbody>
+    </table>
+    <div style="margin-top: 20px" *ngIf="!items && baseLoading.data">
+      <app-loading-data message="actions"></app-loading-data>
+    </div>
+    <div class="noresult-mssg-container"  *ngIf="!baseLoading.data && actionDataResult && actionDataResult.length === 0">
+      <div class="noresult-mssg"><span>No Actions in this date range</span></div>
+    </div>
+    <div class="error-mssg-container" *ngIf="!!errorMessage">
+      <div class="error-mssg"><span>{{errorMessage}}</span></div>
+    </div>
+    <div class="pagination-container" *ngIf="(actionsData && actionsData.count > 15)">
+      <app-pagination [currentPage]="currentPage" [hasNext]="!!actionsData.next" [hasPrevious]="!!actionsData.previous"  [totalCount]="actionsData.count" pageSize="15" (fetchPage)="onFetchPage($event)"> </app-pagination>
+    </div>
+  </div>
+</div>
+<div [@overlay] class="overlay" *ngIf="detailActionId || detailLookupId">
+  <app-map-container>
+    <app-action-page baseLink="./" [showPop]="true" [forceClose]="true"></app-action-page>
+  </app-map-container>
+</div>

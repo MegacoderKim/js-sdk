@@ -1,0 +1,19 @@
+<div class="card flex-column">
+  <div class="card-content is-small flex-row">
+    <div class="text-left flex-row row-gap-10 flex">
+      <app-profile [url]="user.photo"></app-profile>
+      <div class="user-info-container">
+        <div class="user-name flex-row">
+          {{user.name | nameCase | dot: 'Unknown user'}}
+        </div>
+        <div class="user-status-display">
+          <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
+        </div>
+        <div class="flex-row text-muted user-status">
+          <div>{{user.display.sub_status_text}}<span *ngIf="user.display.battery">&nbsp; &bull; &nbsp;</span></div>
+          <app-battery-icon *ngIf="user.display.battery && showStatus" [battery]="user.display.battery"></app-battery-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

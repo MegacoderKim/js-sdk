@@ -1,0 +1,40 @@
+<div [style.marginTop.px]="showPop && !isMobile ? 30 : 0">
+  <div class="sticky flex-row align-center" *ngIf="showPop && !isMobile">
+    <div (click)="closePopup()" class="popup-close clickable">
+      <i class="fa fa-arrow-circle-left fa-2x"></i>
+    </div>
+  </div>
+  <div *ngIf="users$ | async as user; else loading;">
+    <app-map-switch></app-map-switch>
+    <div class="action-detail-header">{{this.getActionTypesHeader(user.actions)}}</div>
+    <div class = "lookup-id" *ngIf="user.actions.length && user.actions[0].lookup_id" (click)="openLookupIdPage(user.actions[0].lookup_id)">#{{user.actions[0].lookup_id}}</div>
+    <app-users-card [user]="user"></app-users-card>
+    <div class="card-container" *ngFor="let action of user.actions; trackBy:indexId; let last = last;let index = index;" (mouseleave)="selectAction(null)" (mouseenter)="selectAction(action.id)">
+      <app-action-info [user]="user" [action]="action"></app-action-info>
+    </div>
+    <app-user-device *ngIf="user" [userId]="user.id"></app-user-device>
+    <!--<app-placeline [selectedPartialSegmentId]="selectedPartialSegmentId$ | async" (hoveredAction)="selectAction($event)" (hoveredActivity)="handleTimelineMouseOver($event)" [placeline]="user"></app-placeline>-->
+    <ht-placeline
+            [timezone]="timezone"
+            [isMobile]="isMobile"
+            [selectedSegmentId]="selectedPartialSegmentId$ | async"
+            (hoveredAction)="selectAction($event)"
+            (highlightedSegmentId)="handleTimelineMouseOver($event)"
+            [actions]="user.actions"
+            [events]="user.events"
+            [placelines]="user.placeline"></ht-placeline>
+
+  </div>
+
+  <ng-template #loading>
+    <div class="card" *ngIf="!notFound">
+      <div class="card-content text-center" loading-dots>Loading</div>
+    </div>
+  </ng-template>
+</div>
+<div class="card" *ngIf="notFound">
+  <div class="card-content text-center">
+    <h4 class="is-text-4">404</h4>
+    <p>Page was not found</p>
+  </div>
+</div>

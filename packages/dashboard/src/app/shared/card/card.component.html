@@ -1,0 +1,37 @@
+<div class="card-container">
+  <div class="card clickable-card flex-column column-gap-10">
+    <div class="bg card-content-top flex-row row-gap-10">
+      <div class="bg text-left flex flex-row row-gap-10">
+        <app-profile></app-profile>
+        <div class="flex align-center">Driver name</div>
+      </div>
+      <div class="bg text-right flex-column flex">
+        <div class="text-muted">Status</div>
+        <div>Status string</div>
+      </div>
+    </div>
+    <div class="border"></div>
+    <div class="bg  card-content flex-row row-gap-10">
+      <div class="bg text-left flex-column flex">
+        <div class="text-muted">Status</div>
+        <div>Status string</div>
+      </div>
+      <div class="bg text-right flex-column flex">
+        <div class="text-muted">Status</div>
+        <div>Status string</div>
+      </div>
+    </div>
+    <div class="bg  card-content-bottom flex-row row-gap-10">
+      <div class="bg text-left flex-column flex">
+        <div class="text-muted">Current task eta</div>
+        <div>Task action at location</div>
+      </div>
+    </div>
+  </div>
+  <a (click)="openLink($event)" [routerLink]="['./' ]" *ngIf="selected && !isWidget" class="card-action">
+    <span>View detail</span>
+  </a>
+  <div class="sub-status">
+    <div class="text-muted">Sub status</div>
+  </div>
+</div>

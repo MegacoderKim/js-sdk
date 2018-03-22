@@ -1,0 +1,34 @@
+<div class="search-container">
+  <div class="icon" id="search-icon">
+    <span class="auto"><i class="fa fa-search"></i></span>
+  </div>
+  <input id="ht-search" placeholder="Search Dashboard" #query [ngModel]="q" (ngModelChange)="term.next(query.value)" type="text">
+  <div class="icon" id="action">
+    <span *ngIf="!loading && query.value.length" (click)="query.value = ''" class="auto"><i class="fa fa-times auto"></i></span>
+    <span *ngIf="loading && query.value.length" class="auto"><i class="fa fa-pulse fa-circle-o-notch"></i></span>
+  </div>
+
+  <div *ngIf="query.value.length" class="results-container">
+    <div [hidden]="hideTitle('users')" class="title flex-row space-between"><span>USERS</span><span [hidden]="users?.count <= resultsCount" class="text-muted">{{users?.count - resultsCount}} more</span></div>
+    <a (click)="clearDate()" [routerLink]="['/users', driver.id, 'timeline']" (click)="query.value = ''" class="result" *ngFor="let driver of users?.results">
+      {{driver.name}}
+    </a>
+    <!--<div [hidden]="hideTitle('customers')" class="title flex-row spaced"><span>CUSTOMERS</span><span [hidden]="customers?.count <= resultsCount" class="text-muted">{{customers?.count - resultsCount}} more</span></div>-->
+    <!--<a  [routerLink]="['/', 'customers/' + customer.id]" (click)="query.value = ''; selectCustomer(customer)" class="result" *ngFor="let customer of customers?.results">-->
+    <!--{{customer.name}}-->
+    <!--</a>-->
+    <!--<div [hidden]="hideTitle('fleets')" class="title flex-row spaced"><span>FLEETS</span><span [hidden]="fleets?.count <= resultsCount" class="text-muted">{{fleets?.count - resultsCount}} more</span></div>-->
+    <!--<a [routerLink]="['../', 'drivers']" [queryParams]="{fleet_id: fleet.id}" class="result" *ngFor="let fleet of fleets?.results" (click)="query.value = ''">-->
+    <!--{{fleet.name}}-->
+    <!--</a>-->
+    <!--<div [hidden]="hideTitle('neighborhoods')" class="title flex-row spaced"><span>NEIGHBORHOODS</span><span [hidden]="neighborhoods?.count <= resultsCount" class="text-muted">{{neighborhoods?.count - resultsCount}} more</span></div>-->
+    <!--<a [routerLink]="['/customers']" class="result" *ngFor="let neighborhood of neighborhoods?.results" (click)="query.value = ''; selectNeighborhood(neighborhood)">-->
+    <!--{{neighborhood.name}}-->
+    <!--</a>-->
+    <div [hidden]="hideTitle('actions')" class="title flex-row space-between"><span>ACTIONS</span><span [hidden]="actions?.count <= resultsCount" class="text-muted">{{actions?.count - resultsCount}} more</span></div>
+    <a (click)="clearDate()" [routerLink]="['/actions' , action.id]" class="result" *ngFor="let action of actions?.results" (click)="query.value = ''">
+      # {{action.lookup_id}} {{action.type}}
+    </a>
+    <div *ngIf="noResults()" class="title text-center"><span class="text-muted">NO RESULTS TO SHOW</span></div>
+  </div>
+</div>

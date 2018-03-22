@@ -1,0 +1,5 @@
+<div class="container">
+  <div *ngIf="loading" loading-dots>Confirming token roll</div>
+  <div *ngIf="confirmed">Token is rolled successfully. New token has been mailed to you</div>
+  <div *ngIf="error">There was an error. Please contact us to resolve the issue</div>
+</div>

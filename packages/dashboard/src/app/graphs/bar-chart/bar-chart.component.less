@@ -1,0 +1,104 @@
+:host {
+  position: relative;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.axis path {
+  /*display: none;*/
+}
+
+:host /deep/ .graph-tooltip {
+  position: absolute;
+  background: #1F2D3D;
+  color: #fff;
+  padding: 9px 12px;
+  border-radius: 6px;
+  min-width: 30px;
+  &.right {
+    &:after {
+      right: 100%;
+      top: 50%;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border: 5px solid rgba(136, 183, 213, 0);
+      border-right-color: #1F2D3D;
+      margin-top: -5px;
+    }
+  }
+  &.top {
+    &:after {
+      left: 40%;
+      top: 100%;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border: 5px solid rgba(136, 183, 213, 0);
+      border-top-color: #1F2D3D;
+    }
+  }
+  &.left {
+    &:after {
+      left: 100%;
+      top: 50%;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border: 5px solid rgba(136, 183, 213, 0);
+      border-left-color: #1F2D3D;
+      margin-top: -5px;
+    }
+  }
+  .x-value {
+    font-size: 14px;
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+  .y-value-container {
+    display: flex;
+    align-items: center;
+    .y-value-label {
+      font-size: 13px;
+      color: #FFFFFF;
+      line-height: 19px;
+    }
+    .y-value-legend {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+  }
+}
+
+:host {
+  display: flex;
+}
+
+svg {
+  //margin: auto;
+}
+
+.rect-container {
+  .rect-text-container {
+    display: none;
+  }
+  &:hover {
+    .rect-text-container {
+      display: block;
+    }
+  }
+}
+
+.rect-text {
+  text-anchor: middle;
+}

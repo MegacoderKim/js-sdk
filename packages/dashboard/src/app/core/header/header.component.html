@@ -1,0 +1,89 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a [routerLink]="[config.isMobile ? '/map' : '/list', 'users']" queryParamsHandling="preserve" class="navbar-item navbar-logo">
+      <span id="logo" class="auto"></span>
+    </a>
+    <ng-container *ngIf="entityLink$ | async as entityLink">
+      <a class="navbar-item is-nav" [class.is-active]="(currentEntity$ | async) == 'users'" [class.is]="(currentEntity$ | async) == 'users'" [routerLink]="entityLink.users">Users</a>
+      <a class="navbar-item is-nav" [class.is-active]="(currentEntity$ | async) == 'actions'" [routerLink]="entityLink.actions">Actions</a>
+      <a class="navbar-item is-nav" [routerLinkActive]="['is-active']" [routerLink]="['/analytics']">Analytics</a>
+    </ng-container>
+  </div>
+  <div id="navbar" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" [routerLinkActive]="['is-active']" *ngIf="!config.isDemo" [routerLink]="['/setup']">
+        <span class="quickstart-icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Setup Guide
+      </a>
+    </div>
+    <div class="navbar-end">
+      <a class="navbar-item upgrade" routerLink="/payment" *ngIf="account && !account.card">
+        UPGRADE
+      </a>
+      <a class="navbar-item" *ngIf="config.isDemo" (click)="signup()">Signup</a>
+      <ng-container *ngIf="!config.isDemo && !config.isReadOnly">
+        <hr class="navbar-divider">
+        <div class="navbar-item">
+          <div class="tags has-addons">
+            <span (click)="setTokenType('production')" class="tag" [class.is-primary]="config.tokenType == 'production'">Production</span>
+            <span (click)="setTokenType('test')" class="tag" [class.is-primary]="config.tokenType == 'test'">Test</span>
+          </div>
+        </div>
+        <hr class="navbar-divider">
+      </ng-container>
+      <ng-container *ngIf="!config.isDemo && !config.isReadOnly">
+        <div appDropdown class="navbar-item has-dropdown" *ngIf="accountUser$ | async as accountUser">
+          <a id="accounts" class="navbar-link">{{(account$ | async)?.name}}</a>
+          <div class="navbar-dropdown is-right acc-dropdown">
+            <div class="navbar-item has-text-weight-bold">{{accountUser.email}}</div>
+            <a class="navbar-item has-text-danger" (click)="logout()">
+              Sign out
+            </a>
+            <hr class="dropdown-divider">
+            <ng-container *ngIf="memberships$ | async as memberships">
+              <div class="navbar-item is-search test-muted" *ngIf="memberships.length > 4">
+                <div class="flex flex-row space-between" (click)="setShowSearch(search)">
+                  <span *ngIf="!showSearch">Search</span>
+                  <div class="control flex" [hidden]="!showSearch">
+                    <input type="text" #search (input)="searchAccount(search)" class="input is-small">
+                  </div>
+                  <span *ngIf="!showSearch" class="icon">
+                  <i class="fa fa-search"></i>
+                </span>
+                  <div *ngIf="showSearch" class="delete" (click)="clearSearch($event)"></div>
+                </div>
+
+              </div>
+              <hr class="dropdown-divider" *ngIf="memberships.length > 4">
+              <a class="navbar-item" *ngIf="memberships.length > 1" [class.is-active]="account?.id == accountUser.default_account.id" (click)="selectDefaultAccount()">
+                <span>{{accountUser.default_account.name}}</span>
+              </a>
+            </ng-container>
+
+            <a class="navbar-item navbar-item-dropdown" [class.is-active]="account?.id == member.account.id" *ngFor="let member of filteredMemberships$ | async" (click)="selectAccount(member.account)">
+              <ng-container *ngIf="member.account.id != accountUser.default_account.id">
+                <span>{{getMembersName(member)}}</span>
+              </ng-container>
+            </a>
+          </div>
+        </div>
+      </ng-container>
+      <div appDropdown class="navbar-item has-dropdown" *ngIf="!config.isMobile && !config.isDemo && !isReadOnlyMembership()">
+        <a class="navbar-link">
+          <span class="icon">
+            <i class="fa fa-cog"></i>
+          </span>
+        </a>
+        <div class="navbar-dropdown is-right">
+          <a class="navbar-item" [routerLink]="['/settings']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Account</a>
+          <a class="navbar-item" [routerLink]="['/settings', 'billing']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Billing</a>
+          <a class="navbar-item" [routerLink]="['/settings', 'team']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+true}">Team</a>
+          <a class="navbar-item" [routerLink]="['/settings', 'profile']" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
+true}">Profile</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</nav>
+

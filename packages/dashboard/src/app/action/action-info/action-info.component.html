@@ -1,0 +1,61 @@
+<div class="card flex-column" (mouseenter)="show.expToggle = true" (mouseleave)="show.expToggle = false" (click)="show.exp = !show.exp">
+  <div class="card-content is-small action-detail-container relative flex-column">
+    <div class="flex-column" (dblclick)="onDebug(action)">
+      <div class="bg text-left flex-row row-gap-7">
+        <img src="{{getActionIcon(action)}}" alt="" class="action-icon" />
+        <div class="flex-column flex">
+          <div class="flex-row space-between">
+            <div class="flex-column">
+              <div>
+                <span class="action-display-status">{{action.type | nameCase}}</span>
+                <a href="{{action.tracking_url}}" target="_blank">
+                  <span><i class="fa fa-link tracking-icon"></i></span>
+                </a>
+              </div>
+              <div class="action-stats flex-row">
+                <div *ngIf="action.distance">{{action.distance | distanceLocale: timezone}}<span *ngIf="action.duration">&nbsp; &bull; &nbsp; </span></div>
+                <div *ngIf="action.duration">{{action.duration / 60 | hmString}} <span *ngIf="!action.distance">long</span></div>
+              </div>
+
+              <div *ngIf="action.completed_at"></div>
+            </div>
+            <div class="flex flex-column text-right">
+              <div class="action-status">
+                <div class="action-display-status">{{action.display.status_text}}</div>
+              </div>
+              <div *ngIf="action.eta && !action.completed_at">ETA {{action.eta | timeString}}</div>
+              <div *ngIf="!action.eta && !action.completed_at">ETA unavailable</div>
+              <div *ngIf="action.completed_at"> at {{action.completed_at | timeString}}</div>
+            </div>
+          </div>
+          <div class="flex-column">
+            <div [class.text-red]="action.display.is_late" *ngIf="action.expected_at">{{getExpectedStatus(action)}}</div>
+            <div *ngIf="isAwayFromExpected(action)" class="text-red">Completed away from expected place</div>
+          </div>
+          <div class="metadata">
+            <div *ngFor="let datum of action.metadata">
+              <span class="text-muted">{{datum[0]}}:</span> <span>{{datum[1]}}</span>
+            </div>
+          </div>
+          <div class="flex-column expanded" *ngIf="show.exp">
+            <!--<div *ngIf="action.expected_at">Scheduled at {{action.expected_at | timeString}}</div>-->
+            <div *ngIf="action.expected_at"><span class="text-muted">Scheduled at:</span> {{action.expected_at | timeString}}</div>
+            <div class="add flex-column" *ngIf="action.expected_place && (!action.completed_at || isAwayFromExpected(action))">
+              <span class="text-muted add-label">Expected place:</span>
+              <div class="add-content">{{action.expected_place.address}}</div>
+            </div>
+            <div class="add flex-column" *ngIf="action.completed_place">
+              <span class="text-muted add-label">Completed Place:</span>
+              <div class="add-content">{{action.completed_place.address}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="expand text-muted" *ngIf="show.expToggle">
+      <span class="">Show {{show.exp ? 'less' : 'more'}}</span>&nbsp;<i [ngClass]="show.exp ? 'fa-chevron-up' : 'fa-chevron-down'" class="fa"></i>
+    </div>
+  </div>
+</div>
+

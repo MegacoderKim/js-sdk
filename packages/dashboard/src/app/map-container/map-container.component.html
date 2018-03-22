@@ -1,0 +1,56 @@
+<div class="ht-cont">
+  <div id="sidebar" [hidden]="showMapMobile$ | async" [ngClass]="(disableSidebarScroll && isMobile) ? 'disable-scroll' : ''">
+    <ng-content></ng-content>
+  </div>
+  <app-map-switch type="map" *ngIf="mapService.showMapSwitch" class="hide-gt-xs"></app-map-switch>
+  <div class="map-container flex-column flex"  [class.hide-xs]="!(showMapMobile$ | async)">
+    <div class="map-label" *ngIf="showHeatmap$ | async">
+      <div class="map-label-item clickable" (click)="closeSelected()" *ngIf="hasSelectedUserPlaces$ | async; else heatLabel">
+        Close selection <i class="fa fa-close"></i>
+      </div>
+      <ng-template #heatLabel>
+        <div class="map-label-item">
+          Places heatmap
+        </div>
+      </ng-template>
+    </div>
+    <div class="map-label">
+      <div class="map-label-item" *ngIf="!(showLoading$ | async) && invalidUsers$ | async as invalidUsers">
+        {{invalidUsers}} {{'User' | pluralize:invalidUsers}} {{'ha' | pluralize:invalidUsers:'ve':'s'}} no location
+      </div>
+    </div>
+    <div class="map-label hide-xs" *ngIf="fitToMapService.toShowFitToMap">
+      <div (click)="toggleFitToMap()" class="fit-map flex-row">
+        <i [ngClass]="fitToMapService.toFitToMap ? 'fa-check-square-o' : 'fa-square-o'" class="fa "></i>
+        Search as I move the map
+      </div>
+    </div>
+    <div class="map-label" *ngIf="hasPartialSegment$ | async">
+      <div (click)="closeSelectedSegment()" class="map-label-item clickable">
+        Close segment <i class="fa fa-close"></i>
+      </div>
+    </div>
+    <div class="flex-column flex relative">
+      <ht-map [showReset]="false" [options]="mapOptions"></ht-map>
+      <div class="map-control flex-column" [class.map-control-top]="isMobile">
+        <div *ngIf="showLoading$ | async" class="card leaflet-control leaflet-bar">
+          <b class="card-content is-small" loading-dots>
+            Loading
+          </b>
+        </div>
+        <div *ngIf="showNoSegment$ | async" class="card leaflet-control leaflet-bar">
+          <b class="card-content is-small">
+            No placeline
+          </b>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isMobile && (showMapMobile$ | async) && userData$ | async as userData">
+      <app-users-card *ngIf="userData" [user]="userData"></app-users-card>
+      <!--<app-placeline-mobile (hoveredActivity)="handleTimelineMouseOver($event)"  [placeline]="userData"></app-placeline-mobile>-->
+    </div>
+
+    <div id="map-ready" [hidden] *ngIf="mapReady"></div>
+    <app-replay *ngIf="showReplay$ | async"></app-replay>
+  </div>
+</div>

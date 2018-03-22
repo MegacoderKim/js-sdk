@@ -1,0 +1,74 @@
+<div *ngIf="account$ | async as account">
+    <div class="settings-section column-gap-10">
+        <div class="is-size-4 text-uppercase">Billing Information</div>
+        <div class="card" *ngIf="!account.card" [hidden]="showBillingForm">
+            <div class="card-content is-small flex-row">
+                <div class="flex">Add card to enable billing</div>
+                <div class="text-red clickable" (click)="displayBillingForm($event)">Add</div>
+            </div>
+        </div>
+        <div class="card" *ngIf="account.card" [hidden]="showBillingForm">
+            <div class="card-content is-small flex-row row-gap-7">
+                <div class="flex">Card details</div>
+                <div class="edit-field form-card-detail">
+                    <i class="fa fa-cc-visa" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='Visa'"></i>
+                    <i class="fa fa-cc-amex" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='American Express'"></i>
+                    <i class="fa fa-cc-mastercard" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='MasterCard'"></i>
+                    <i class="fa fa-cc-discover" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='Discover'"></i>
+                    <i class="fa fa-cc-jcb" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='JCB'"></i>
+                    <i class="fa fa-cc-diners-club" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='Diners Club'"></i>
+                    <i class="fa fa-credit-card" aria-hidden="true" style="padding: 5px;" *ngIf="account.card?.brand=='Unknown'"></i>
+                    <span>**** {{account.card?.last4}}</span>
+                </div>
+                <div class="text-red clickable" (click)="displayBillingForm($event)">Update</div>
+            </div>
+        </div>
+        <div class="card" [hidden]="!showBillingForm">
+            <div class="card-content is-small">
+              <app-billing-form (cardAdded)="onCardAdded($event)"></app-billing-form>
+            </div>
+        </div>
+
+        <div class="card" *ngIf="account.free_credits">
+            <div class="card-content is-small flex-row">
+                <div class="flex">Free Credits</div>
+                <div class="text-red">{{account.free_credits}}</div>
+            </div>
+        </div>
+
+      <app-settings-editor
+        label="Email"
+        [value]="(account.billing_email)"
+        (onSubmit)="addBillingContact($event)"
+        placeholder="Enter email"></app-settings-editor>
+    </div>
+    <div class="settings-section column-gap-10">
+      <div class="is-size-4 text-uppercase">Plan options</div>
+      <app-plan-options></app-plan-options>
+    </div>
+    <div class="settings-section column-gap-10">
+        <div class="is-size-4 text-uppercase">Actions Usage</div>
+
+      <div class="card">
+        <div id="chart"></div>
+      </div>
+        <!--<app-bar-chart [data]="billingData"></app-bar-chart>-->
+        <div class="summary" style="margin:auto;" *ngIf="billingData && billingData.length">
+            <div style="display:inline;">This Month - </div>
+            <div style="display:inline;margin-right:5px;">Unbilled: {{ getNumberLocaleString(paid) }}</div>
+            <div style="display:inline;" *ngIf="account.free_credits">Free: {{ free }}</div>
+        </div>
+    </div>
+  <div class="settings-section column-gap-10">
+    <div class="is-size-4 text-uppercase">Invoices</div>
+    <app-invoices></app-invoices>
+
+  </div>
+    <!--<div fxFlexOffset="20%" fxFlex="60%" fxLayout="column" fxLayoutGap="20px" class="settings-section">-->
+        <!--<div class="title text-muted text-uppercase">Invoices</div>-->
+    <!--</div>-->
+    <!--<pre>-->
+            <!--{{account | json}}-->
+        <!--</pre>-->
+
+</div>

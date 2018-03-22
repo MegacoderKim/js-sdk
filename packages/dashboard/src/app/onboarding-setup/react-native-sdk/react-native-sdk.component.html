@@ -1,0 +1,98 @@
+<div class="step-navigator">
+  <div class="step-navigator-item step-navigator-install" [ngClass]="showTabContent('install') ? 'active': ''" (click)="onNextStep('install')">
+    <div class="step-bar"></div>
+    <div class="step-label">Install SDK</div>
+  </div>
+  <div class="step-navigator-item step-navigator-permissions" [ngClass]="showTabContent('permissions') ? 'active': ''" (click)="onNextStep('permissions')">
+    <div class="step-bar"></div>
+    <div class="step-label">Location permissions</div>
+  </div>
+  <div class="step-navigator-item step-navigator-tracking" [ngClass]="showTabContent('tracking') ? 'active': ''" (click)="onNextStep('tracking')">
+    <div class="step-bar"></div>
+    <div class="step-label">Start tracking</div>
+  </div>
+</div>
+<div class="language-switcher-container">
+  <div class="language-switcher">
+    <div class="code-language first"
+         [ngClass]="codeLanguage === 'android' ? 'selected': ''"
+         (click)="selectLanguage('android')"> Android </div>
+    <div class="code-language last"
+         [ngClass]="codeLanguage === 'ios' ? 'selected': ''"
+         (click)="selectLanguage('ios')"> iOS</div>
+  </div>
+</div>
+
+<div class="ios-step-container sg-step-container" [ngClass]="showTabContent('install') ? 'active': ''">
+  <div class="step-label" (click)="onNextStep('install')">
+    <div class="step-label-marker">
+      <i class="fa fa-circle" aria-hidden="true"></i>
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+    </div>
+    <div class="step-label-title">Install our SDK</div>
+  </div>
+  <div class="step-content">
+    <div class="code-block-container">
+      <app-code-block
+        [codeContent]="createCodeContent('install', 0)"
+        [publishableKey]="getPublishableKey()"
+        [codeBlockKey]="'react-native-install-0'">
+      </app-code-block>
+    </div>
+    <div class="code-block-container">
+      <app-code-block
+        [codeContent]="createCodeContent('install', 1)"
+        [publishableKey]="getPublishableKey()"
+        [codeBlockKey]="'react-native-install-1'">
+      </app-code-block>
+    </div>
+    <div class="code-block-container">
+      <app-code-block
+        [codeContent]="createCodeContent('install', 2)"
+        [publishableKey]="getPublishableKey()"
+        [codeBlockKey]="'react-native-install-2'">
+      </app-code-block>
+    </div>
+    <div class="ob-button" (click)="onNextStep('permissions')">Next</div>
+  </div>
+</div>
+<div class="ios-step-container sg-step-container" [ngClass]="showTabContent('permissions') ? 'active': ''">
+  <div class="step-label" (click)="onNextStep('permissions')">
+    <div class="step-label-marker">
+      <i class="fa fa-circle" aria-hidden="true"></i>
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+    </div>
+    <div class="step-label-title">Ask your users permission to access location </div>
+  </div>
+  <div class="step-content">
+    <div class="code-block-container">
+      <app-code-block
+        [codeContent]="createCodeContent('permissions', 0)"
+        [publishableKey]="getPublishableKey()"
+        [codeBlockKey]="'ios-permissions-0'">
+      </app-code-block>
+    </div>
+    <div class="ob-button" (click)="onNextStep('tracking')">Next</div>
+  </div>
+</div>
+<div class="ios-step-container sg-step-container" [ngClass]="showTabContent('tracking') ? 'active': ''">
+  <div class="step-label" (click)="onNextStep('tracking')">
+    <div class="step-label-marker">
+      <i class="fa fa-circle" aria-hidden="true"></i>
+      <i class="fa fa-check-circle" aria-hidden="true"></i>
+    </div>
+    <div class="step-label-title">
+      Create a HyperTrack user and start tracking!
+    </div>
+  </div>
+  <div class="step-content">
+    <div class="code-block-container">
+      <app-code-block
+        [codeContent]="createCodeContent('tracking', 0)"
+        [publishableKey]="getPublishableKey()"
+        [codeBlockKey]="'ios-tracking-0'">
+      </app-code-block>
+    </div>
+    <div class="ob-button" (click)="onNextStep('location')">Next</div>
+  </div>
+</div>

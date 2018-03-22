@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="card-content is-small flex-column">
+    <div class="field">
+      <label class="label">{{label}}</label>
+      <div class="control">
+        <input [readonly]="!editable" [value]="value || ''" #data  class="input" (keydown.enter)="submit(data)" [attr.placeholder]="placeholder" style="flex-basis: 60%" type="{{inputType}}" (click)="edit(data)">
+      </div>
+    </div>
+    <ng-content></ng-content>
+    <div class="field is-grouped">
+      <p class="control" *ngIf="!editable">
+        <button class="button is-outlined is-info" (click)="edit(data)">
+        <span class="icon">
+          <i class="fa fa-edit"></i>
+        </span>
+          <span>Edit</span>
+        </button>
+      </p>
+      <p class="control" *ngIf="editable">
+        <button class="button is-success is-outlined" (click)="submit(data)">
+        <span class="icon">
+          <i class="fa fa-check"></i>
+        </span>
+          <span>Done</span>
+        </button>
+
+      </p>
+      <p class="control" *ngIf="editable">
+        <button class="button" (click)="edit(data, false)">
+          <span class="icon">
+            <i class="fa fa-times"></i>
+          </span>
+        </button>
+
+      </p>
+    </div>
+  </div>
+</div>

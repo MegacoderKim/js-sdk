@@ -1,0 +1,84 @@
+<div class="mobile-tab flex-row row-gap-10 show-xs" *ngIf="switchViewLink$ | async as switchView">
+  <div class="flex-row flex row-gap-4 settings align-center space-around" *ngIf="!showSearch" [@slide]>
+    <div (click)="goBack()" class="back" *ngIf="!showFilter; else settings" [@slide]>
+      <div class="flex"><i class="fa fa-arrow-circle-left"></i></div>
+    </div>
+    <ng-template #settings>
+      <!--settings-->
+      <div class="dropdown" appDropdown="onClick">
+        <button class="button dropdown-toggle"><i class="fa fa-filter"></i></button>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <div class="dropdown-header">Status</div>
+            <a (click)="selectFilter(filter.query)" class="dropdown-item" *ngFor="let filter of actionStatusFilters"><span>{{filter.label}}</span></a>
+            <div class="dropdown-header">On time</div>
+            <a class="dropdown-item" (click)="selectFilter(filter.query)" *ngFor="let filter of actionOntimeFilters">
+              <span>{{filter.label}}</span>
+            </a>
+            <div class="dropdown-header">Types</div>
+            <a class="dropdown-item" (click)="selectFilter(type.query)" *ngFor="let type of actionTypes">
+              <span>{{type.label}}</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+      <div class="dropdown" *ngIf="ordering$ | async as ordering" appDropdown="onClick">
+        <button class="button dropdown-toggle flex-row row-gap-7 align-center" data-toggle="dropdown"><i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i></button>
+        <!--<ul class="dropdown-menu">-->
+          <!--<li class="sort-items" *ngFor="let sorting of actionSortings">-->
+            <!--<div (click)="setSorting(sorting.key, 0)" class="sort-item flex flex-row space-between align-center">-->
+              <!--<span>{{sorting.label}}</span>-->
+              <!--<i class="fa fa-sort-amount-desc"></i>-->
+            <!--</div>-->
+            <!--<div (click)="setSorting(sorting.key)" class="sort-item text-center" style="flex-basis: 40px">-->
+              <!--<i class="fa fa-sort-amount-asc"></i>-->
+            <!--</div>-->
+          <!--</li>-->
+        <!--</ul>-->
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item sort-header sort-items text-muted">
+              <div class="sort-item flex flex-row space-between">
+                <span>ORDERING</span>
+                <span>DESC</span>
+              </div>
+              <div class="text-center"  style="flex-basis: 40px">ASC</div>
+            </div>
+            <div [class.is-active]="ordering.type == sorting.key" class="sort-items dropdown-item" *ngFor="let sorting of actionSortings">
+              <div (click)="setSorting(sorting.key, 0)" class="sort-item flex flex-row row-gap-10 align-center space-between">
+                <span>{{sorting.label}}</span>
+                <i [class.fa-active]="!ordering.sign" class="fa fa-sort-amount-desc"></i>
+              </div>
+              <div (click)="setSorting(sorting.key)" class="sort-item text-center dropdown-item" style="flex-basis: 40px">
+                <i [class.fa-active]="ordering.sign" class="fa fa-sort-amount-asc"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <button class="button" (click)="showSearch = true">
+        <i class="fa fa-search"></i>
+      </button>
+      <!--<app-date-range small="true" *ngIf="default" [isToday]="isToday" [default]="default" (rangeChange)="setDateRange($event)"></app-date-range>-->
+    </ng-template>
+  </div>
+  <div class="flex-row flex align-center row-gap-10" *ngIf="showSearch" [@slide]>
+    <button class="delete" (click)="showSearch = false"><i class="fa fa-close"></i></button>
+
+    <app-entity-filter *ngIf="showSearch" [searchApi$]="searchApi" [entity]="switchView.entity"></app-entity-filter>
+  </div>
+
+  <div class="flex-row align-center">
+    <app-map-switch></app-map-switch>
+
+  </div>
+</div>
+<div class="mobile-tab flex-row show-xs" *ngIf="showFilter && mobileFilters$ | async as filters">
+  <div class="flex-row row-gap-10 align-center">
+    <div (click)="clearFilter(filter)" class="filter" *ngFor="let filter of filters ">
+      {{filter.value | actionStatusString}} <i class="fa fa-times"></i>
+    </div>
+  </div>
+</div>
