@@ -35,6 +35,12 @@ export interface IUser {
     seconds_elapsed_since_last_heartbeat: number;
     battery: number;
   };
+  health: {
+    battery_percentage: number,
+    location_status: string,
+    battery_status: string,
+    network_status: string
+  }
 }
 
 // export interface IUserData extends IUser {
