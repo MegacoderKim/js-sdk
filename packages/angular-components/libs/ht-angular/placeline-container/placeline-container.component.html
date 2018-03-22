@@ -6,7 +6,9 @@
     (highlightedSegmentId)="onHighlightSegment($event)"
     [isLive]="getPlacelineLive(userData)"
     [lastHeartbeat]="userData.last_heartbeat_at"
-    [userData]="userData"></ht-placeline>
+    [actions]="userData.actions"
+    [events]="userData.events"
+    [placelines]="userData.placeline"></ht-placeline>
 </div>
 <ng-template #loading>
   <ht-loading-dots class="text-1 text-center flex-row"></ht-loading-dots>

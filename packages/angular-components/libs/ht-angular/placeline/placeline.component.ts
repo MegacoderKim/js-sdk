@@ -235,10 +235,10 @@ export class PlacelineComponent implements OnInit {
         ...action
       };
       let currentActions = (assign.actionTime) ? [...acc.currentActions, assign] : acc.currentActions;
-      if (action.display.ended_at) {
+      if (action.completed_at) {
         const end = {
           actionText: `${NameCase(action.type)} ${action.status}`,
-          actionTime: action.display.ended_at,
+          actionTime: action.completed_at,
           actionD: NameCase(action.type[0]) + this.actionMap[action.id],
           actionEnd: true,
           action_id: action.id,
