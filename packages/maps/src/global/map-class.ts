@@ -1,6 +1,6 @@
 import { HtBounds, HtMap, HtMapType } from "ht-map-wrapper";
 import { PlacelineTrace } from "../compound-entities/placeline-trace";
-import { IUserData } from "ht-models";
+import { IUserPlaceline } from "ht-models";
 import { UsersClusterTrace} from "../entities/users-cluster";
 import { LightColorMapStyle } from "ht-google-maps-wrapper";
 import * as _ from "underscore";
@@ -15,7 +15,7 @@ import {mapTypeService} from "./map-type";
 export class HtMapClass {
   // map: HtMap;
   // mapUtils: MapUtils;
-  // userData$: Observable<IUserData | null>;
+  // userData$: Observable<IUserPlaceline | null>;
   mapInstance: MapInstance = new MapInstance();
   userDataSub: Subscription;
   placeline;
@@ -80,14 +80,14 @@ export class HtMapClass {
     return map;
   }
 
-  // setPlacelineData$(data$: Observable<IUserData | null>) {
+  // setPlacelineData$(data$: Observable<IUserPlaceline | null>) {
   //   if (this.userDataSub) {
   //     this.userDataSub.unsubscribe();
   //   }
   //   this.initUserDataObserver(data$)
   // }
   //
-  // private initUserDataObserver(data$: Observable<IUserData | null>) {
+  // private initUserDataObserver(data$: Observable<IUserPlaceline | null>) {
   //   let userData$ = data$.scan((acc, data) => {
   //     const oldId = acc.user ? acc.user.id : null;
   //     const currentId = data ? data.id : null;
@@ -104,7 +104,7 @@ export class HtMapClass {
   //   this.userDataSub = sub;
   // }
 
-  tracePlaceline(user: IUserData) {
+  tracePlaceline(user: IUserPlaceline) {
     this.placeline.trace(user);
   }
 

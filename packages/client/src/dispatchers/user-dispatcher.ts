@@ -1,6 +1,5 @@
 import { Action } from "../store/models";
-import { IUserData, AllData } from "ht-models";
-import { IUserAnalytics, IUser, Page, IUserListSummary } from "ht-models";
+import { IUserAnalytics, IUser, Page, IUserListSummary, AllData, IUserPlaceline } from "ht-models";
 import { ApiType } from "../interfaces";
 
 //placeline
@@ -45,7 +44,7 @@ export const SET_USERS_LIST_API_TYPE = "[USERS] set users list api type";
 
 export class SetUserData implements Action {
   readonly type = SET_USER_DATA;
-  constructor(public payload: IUserData | null) {}
+  constructor(public payload: IUserPlaceline | null) {}
 }
 
 export class SetPlacelineId implements Action {

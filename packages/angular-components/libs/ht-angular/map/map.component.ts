@@ -2,7 +2,7 @@ import {
   AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter,
   ViewChild, Optional, ContentChild, ViewContainerRef
 } from '@angular/core';
-import {IUserData} from "ht-models";
+import {IUserPlaceline} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {MapInstance} from "ht-maps";

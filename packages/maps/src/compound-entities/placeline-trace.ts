@@ -1,5 +1,5 @@
 import * as _ from "underscore";
-import { IAction, ISegment, ITimelineEvent, IUserData, IPlacelineMod } from "ht-models";
+import { IAction, IPlaceline, ITimelineEvent, IUserPlaceline, IPlacelineMod } from "ht-models";
 import { SegmentPolylinesTrace } from "../entities/segment-polylines";
 import {StopMarkersTrace} from "../entities/stop-markers";
 import { ActionMarkersTrace } from "../entities/action-markers";
@@ -51,7 +51,7 @@ export class Placeline {
   trace(user: IPlacelineMod, map?) {
     const selectedSegment = user ? user.selectedSegment : null;
     this.setHighlightId(user);
-    let userSegments = user && user.segments ? user.segments : [];
+    let userSegments = user && user.placeline ? user.placeline : [];
     let segType = this.getSegmentTypes(userSegments);
     let lastSegment = segType.lastSegment;
     let restTrips = segType.tripSegment.pop();
@@ -99,14 +99,14 @@ export class Placeline {
     }
   }
 
-  traceStops(stops: ISegment[], selectedSegment, lastSegment) {
+  traceStops(stops: IPlaceline[], selectedSegment, lastSegment) {
     if (selectedSegment) {
       stops = selectedSegment.type == 'stop' ? [selectedSegment] : [];
     }
     this.stopMarkers.trace(stops);
   }
 
-  traceSegments(trips: ISegment[] = [], selectedSegment) {
+  traceSegments(trips: IPlaceline[] = [], selectedSegment) {
     if (selectedSegment) {
       let matchedTrip = trips.find(trip => trip.id === selectedSegment.id);
       trips = matchedTrip ? [matchedTrip] : [];
@@ -115,7 +115,7 @@ export class Placeline {
   }
 
 
-  traceAction(user: IUserData, selectedSegment) {
+  traceAction(user: IUserPlaceline, selectedSegment) {
     let actions = user && user.actions && !selectedSegment ? user.actions : [];
     let filteredActions = _.filter(actions, (action: IAction) => {
       return htAction(action).isValidMarker();
@@ -131,8 +131,8 @@ export class Placeline {
     this.animPolyline.highlightedId = id;
   }
 
-  getTimeAwarePolyline(segment: ISegment) {
-    return segment ? segment.time_aware_polyline : null
+  getTimeAwarePolyline(segment: IPlaceline) {
+    return segment ? segment.location_time_series : null
   }
 
   extendBounds(bounds) {
@@ -146,16 +146,16 @@ export class Placeline {
   }
 
 
-  protected getSegmentTypes(userSegments: ISegment[]) {
+  protected getSegmentTypes(userSegments: IPlaceline[]) {
     return _.reduce(
       userSegments,
-      (segmentType: ISegmentType, segment: ISegment) => {
+      (segmentType: ISegmentType, segment: IPlaceline) => {
         segmentType.lastSegment = segment;
         if (segment.type == "stop") {
-          if (segment.location && segment.location.geojson)
+          if (segment.place && segment.place.location.coordinates)
             segmentType.stopSegment.push(segment);
         } else {
-          if (segment.encoded_polyline) segmentType.tripSegment.push(segment);
+          if (segment.route) segmentType.tripSegment.push(segment);
         }
         return segmentType;
       },
@@ -168,9 +168,9 @@ export class Placeline {
 export const PlacelineTrace = CompoundDataObservableMixin(Placeline);
 
 export interface ISegmentType {
-  tripSegment: ISegment[];
-  stopSegment: ISegment[];
-  lastSegment?: ISegment
+  tripSegment: IPlaceline[];
+  stopSegment: IPlaceline[];
+  lastSegment?: IPlaceline
 }
 
 export interface HtSegmentsTraceOptions {

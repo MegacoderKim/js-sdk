@@ -37,36 +37,36 @@ export interface IUser {
   };
 }
 
-export interface IUserData extends IUser {
-  segments: ISegment[];
-  events: ITimelineEvent[];
-  actions: IAction[];
-  timeline_date: string;
-  pending_actions: string[];
-  last_battery: number | null;
-  location_status: string;
-}
-
-export interface ISegment {
-  id: string;
-  user_id: string;
-  started_at: string;
-  ended_at: string;
-  place?: IPlace;
-  duration: number;
-  // start_location: HtLocation,
-  // end_location: HtLocation,
-  location?: HtLocation;
-  type: "stop" | "trip" | "location_void";
-  distance?: number;
-  display?: string;
-  encoded_polyline?: string;
-  time_aware_polyline?: string;
-  vehicle_type?: string;
-  displayColor?: string;
-  trip_id?: string;
-  activity?: string;
-}
+// export interface IUserData extends IUser {
+//   segments: ISegment[];
+//   events: ITimelineEvent[];
+//   actions: IAction[];
+//   timeline_date: string;
+//   pending_actions: string[];
+//   last_battery: number | null;
+//   location_status: string;
+// }
+//
+// export interface ISegment {
+//   id: string;
+//   user_id: string;
+//   started_at: string;
+//   ended_at: string;
+//   place?: IPlace;
+//   duration: number;
+//   // start_location: HtLocation,
+//   // end_location: HtLocation,
+//   location?: HtLocation;
+//   type: "stop" | "trip" | "location_void";
+//   distance?: number;
+//   display?: string;
+//   encoded_polyline?: string;
+//   time_aware_polyline?: string;
+//   vehicle_type?: string;
+//   displayColor?: string;
+//   trip_id?: string;
+//   activity?: string;
+// }
 
 export interface IUserMap {
   id: string;
@@ -165,7 +165,7 @@ export interface IPlaceHeatPage extends IPageData {
   results: IPlaceHeat[];
 }
 
-export interface IDecodedSegment extends Partial<ISegment> {
+export interface IDecodedSegment extends Partial<IPlaceline> {
   startPercent: number;
   endPercent: number;
   timeAwareArray?: ITimeAwarePoint[];
@@ -194,9 +194,37 @@ export interface IUserDevice {
   app_package_name: string
 }
 
-export interface IPlacelineMod extends IUserData {
-  selectedSegment?: ISegment,
-  highlightedSegment?: ISegment,
+export interface IUserPlaceline extends IUser {
+  placeline: IPlaceline[],
+  actions: IAction[],
+  events: IEvent[],
+  timeline_date: string | null
+}
+
+export interface IPlacelineMod extends IUserPlaceline {
+  selectedSegment?: IPlaceline,
+  highlightedSegment?: IPlaceline,
   segmentsStats?: any
 }
-// export type IUserData = IUserData
+
+
+export interface IPlaceline {
+  id: string,
+  user_id: string,
+  lookup_id: string,
+  type: string,
+  unknown_reason: string,
+  started_at: string,
+  duration: number,
+  distance: number,
+  start_location: IPlace,
+  end_location: IPlace,
+  route: string,
+  location_time_series: string,
+  health: {
+    type: string,
+    recorded_at: string
+  },
+  place?: IPlace,
+  step_count: number | null
+}

@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IUserAnalytics, IUserData, Page} from "ht-models";
+import {IUserAnalytics, IUserPlaceline, Page} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {ApiType, QueryLabel} from "ht-client";
 import {listwithSelectedId$, listWithItem$} from "ht-data";
@@ -166,7 +166,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
 
   };
 
-  selectUserData(userData: IUserData, event) {
+  selectUserData(userData: IUserPlaceline, event) {
     const id = userData.id;
     event.stopPropagation();
     this.userService.placeline.toggleId(id);

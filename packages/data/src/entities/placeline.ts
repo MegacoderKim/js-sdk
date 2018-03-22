@@ -1,4 +1,4 @@
-import { IUserData, IAction, IEvent, ISegment, ITimelineEvent } from "ht-models";
+import { IUserPlaceline, IAction, IEvent, IPlaceline, ITimelineEvent } from "ht-models";
 import {
   IActionMark,
   IActivitySegment,
@@ -13,7 +13,7 @@ import { CommonFunctions } from "../common";
 import {isToday} from "date-fns";
 
 export class HtPlaceline {
-  constructor(public userData?: IUserData) {}
+  constructor(public userData?: IUserPlaceline) {}
 
   getPlacelineSegments() {
     let userData = this.userData;
@@ -30,8 +30,8 @@ export class HtPlaceline {
     let segments = userData.segments;
     let { lastSegment, activitySegments } = _.reduce(
       [...segments, {}],
-      ({ lastSegment, activitySegments }, segment: ISegment) => {
-        let nextLastSegment: ISegment | IPlacelineSegment = segment;
+      ({ lastSegment, activitySegments }, segment: IPlaceline) => {
+        let nextLastSegment: IPlaceline | IPlacelineSegment = segment;
         if (lastSegment) {
           if (segment.id) {
             let activitySegment = this.createActivitySegment(lastSegment);
@@ -52,11 +52,11 @@ export class HtPlaceline {
     return { lastSegment, activitySegments };
   }
 
-  createActivitySegment(segment: ISegment): IActivitySegment | null {
+  createActivitySegment(segment: IPlaceline): IActivitySegment | null {
     let placelineTime = segment.started_at;
     let activityText = this.getActivityText(segment);
     let activityAddress = this.getActivityPlaceAddress(segment);
-    let end = segment.ended_at ? new Date(segment.ended_at).getTime() : null;
+    let end = segment.duration && segment.started_at ? new Date(segment.started_at).getTime() + (segment.duration * 1000) : null;
     return {
       placelineTime,
       activityText,
@@ -117,13 +117,13 @@ export class HtPlaceline {
     return { event, display: htEvent().getEventDisplay(event) };
   }
 
-  getLastSegment(lastSeg: ISegment, lastHearbeatAt: string): IPlacelineSegment {
+  getLastSegment(lastSeg: IPlaceline, lastHearbeatAt: string): IPlacelineSegment {
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
     let placelineTime;
     let isLive = false;
-    if (lastSeg.ended_at) {
-      placelineTime = lastSeg.ended_at;
+    if (lastSeg.duration && lastSeg.started_at) {
+      placelineTime = new Date(new Date(lastSeg.started_at).getTime() + 1000 * lastSeg.duration).toISOString();
     } else {
       isLive = true;
       placelineTime = lastHearbeatAt;
@@ -137,22 +137,22 @@ export class HtPlaceline {
     };
   }
 
-  isLive(placeline: IUserData) {
+  isLive(placeline: IUserPlaceline) {
     let old = placeline.display.seconds_elapsed_since_last_heartbeat;
     let date = placeline.timeline_date;
     let status = placeline.display.status_text;
     return status !== "Tracking stopped" && old < 15 * 60 && isToday(new Date(date));
   }
 
-  getSegmentTypes(userSegments: ISegment[]) {
+  getSegmentTypes(userSegments: IPlaceline[]) {
     return _.reduce(
       userSegments,
-      (segmentType: ISegmentType, segment: ISegment) => {
+      (segmentType: ISegmentType, segment: IPlaceline) => {
         if (segment.type == "stop") {
-          if (segment.location && segment.location.geojson)
+          if (segment.place && segment.place.location.coordinates)
             segmentType.stopSegment.push(segment);
         } else {
-          if (segment.encoded_polyline) segmentType.tripSegment.push(segment);
+          if (segment.route) segmentType.tripSegment.push(segment);
         }
         return segmentType;
       },
@@ -203,7 +203,7 @@ export class HtPlaceline {
     };
   }
 
-  private getActivityText(segment: ISegment | any) {
+  private getActivityText(segment: IPlaceline | any) {
     if (segment.activity) {
       return segment.activity;
     } else if (segment.type == "stop") {
@@ -215,7 +215,7 @@ export class HtPlaceline {
     }
   }
 
-  private getActivityPlaceAddress(segment: ISegment) {
+  private getActivityPlaceAddress(segment: IPlaceline) {
     if (segment.type == "stop" && segment.place && segment.place.locality) {
       return segment.place.locality;
     }
@@ -301,4 +301,4 @@ export class HtPlaceline {
   }
 }
 
-export const htPlaceline = (userData?: IUserData) => new HtPlaceline(userData);
+export const htPlaceline = (userData?: IUserPlaceline) => new HtPlaceline(userData);
