@@ -5,7 +5,7 @@ import { EntityListClient } from "../../base/list-client";
 import { clientSubMixin } from "../../mixins/client-subscription";
 import { listQueryMixin } from "../../mixins/entity-query";
 import { getQueryDataMixin } from "../../mixins/get-data";
-// import {HtApi, HtUsersApi} from "ht-api";
+import {HtApi, HtUsersApi} from "ht-api";
 import { IPageClientConfig } from "../../interfaces";
 import { IUserListSummary } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
@@ -49,7 +49,7 @@ export class UsersSummary extends EntityListClient {
     this.setData(null);
   }
 
-  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtUsersApi>) {
     super();
     this.api$ = query => api.summary(query);
     this.dateRange = dateRange;

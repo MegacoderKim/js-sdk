@@ -41,7 +41,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   ];
   dataSub: Subscription;
   dateParam: string;
-  constructor({ dateRange, store,dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store,dateParam, api }: IPageClientConfig<HtUsersApi>) {
     super();
     this.api$ = query => api.allPages(api.analytics(query));
     this.dateRange = dateRange;

@@ -10,6 +10,7 @@ import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { IUserPlaceline } from "ht-models";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
+import {HtUsersApi} from "ht-api";
 
 export class UsersPlaceline extends EntityItemClient {
   name = "users placeline";
@@ -22,7 +23,7 @@ export class UsersPlaceline extends EntityItemClient {
   segmentSelectedId$;
   segmentResetId$;
 
-  constructor({ store, api }: IClientConfig) {
+  constructor({ store, api }: IClientConfig<HtUsersApi>) {
     super();
     this.api$ = (id, query) => api.placeline(id, query);
     this.store = store;

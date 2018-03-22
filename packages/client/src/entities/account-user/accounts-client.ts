@@ -4,10 +4,10 @@ import { AccountUserClient } from "./account-user-client";
 import { MemberShipsClient } from "./memberships-all-client";
 import * as fromRoot from "../../reducers";
 import * as fromAccounts from "../../dispatchers/accounts-dispatcher";
-import {HtApi} from "ht-api";
+import {HtApi, HtAccountUserApi} from "ht-api";
 
 export class AccountsClient {
-  api;
+  api: HtAccountUserApi;
   store;
   accountUser;
   memberships;

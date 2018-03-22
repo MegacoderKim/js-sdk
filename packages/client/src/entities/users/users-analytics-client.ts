@@ -29,7 +29,7 @@ export class UsersAnalytics extends EntityListClient {
   loading$: Observable<boolean | string>;
   store;
   dateParam;
-  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtUsersApi>) {
     super();
     this.api$ = (query): Observable<Page<IUserAnalytics>> =>
         api.analytics(query);

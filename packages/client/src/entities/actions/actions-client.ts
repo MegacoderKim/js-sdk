@@ -10,11 +10,11 @@ import {ActionsSummaryClient} from "./actions-summary-client"
 import {ActionsFilter} from "../../filters/actions-filter";
 import {ActionsHeatmapClient} from "./actions-heatmap-client";
 import {ActionsIndexAllClient} from "./actions-list-all-client"
-import {HtApi} from "ht-api";
+import {HtApi, HtActionsApi} from "ht-api";
 
 export class HtActionsClient {
   // item: HtActionsGetClient;
-  api;
+  api: HtActionsApi;
   graph;
   store;
   list;

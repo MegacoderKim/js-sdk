@@ -10,6 +10,7 @@ import {IAllowedQueryMap, PageResults$} from "ht-data";
 import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
 import {DateRange} from "../../global/date-range";
+import {HtActionsApi} from "ht-api";
 
 export class ActionsHeatmap {
   query$: Observable<object> = of({});
@@ -24,7 +25,7 @@ export class ActionsHeatmap {
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
 
-  constructor({ dateRange, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     this.api$ = query => api.allPages(api.heatmap(query));
     this.dateRange = dateRange;
     this.dateParam = dateParam;

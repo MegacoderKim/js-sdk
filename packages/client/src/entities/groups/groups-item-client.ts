@@ -11,6 +11,7 @@ import { IClientConfig } from "../../interfaces";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IGroup } from "ht-models"
+import {HtGroupsApi} from "ht-api";
 
 export class GroupsItem extends EntityItemClient {
   name = "group";
@@ -37,7 +38,7 @@ export class GroupsItem extends EntityItemClient {
   setQuery() {}
   store;
   dataSub: Subscription;
-  constructor({ store, api }: IClientConfig) {
+  constructor({ store, api }: IClientConfig<HtGroupsApi>) {
     super();
     this.api$ = (id, query?) => api.get(id, query);
     this.store = store;

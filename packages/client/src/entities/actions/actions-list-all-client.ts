@@ -10,6 +10,7 @@ import {AllowedQueryMap, IAllowedQueryMap} from "ht-data";
 import {IAction, AllData, Page} from "ht-models";
 import {IPageClientConfig} from "../../interfaces";
 import {DateRange} from "../../global/date-range";
+import {HtActionsApi} from "ht-api";
 
 export class ActionsIndexAll extends EntityAllItemsClient {
   dataBehaviour$: BehaviorSubject<AllData<IAction> | null> = new BehaviorSubject(null);
@@ -21,7 +22,7 @@ export class ActionsIndexAll extends EntityAllItemsClient {
   dataSub: Subscription;
   dataEntities$;
   dateParam: string;
-  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     super();
     this.api$ = (query) => api.allPages(api.index(query));
     this.dateRange = dateRange;
