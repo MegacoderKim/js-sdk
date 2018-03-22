@@ -18,7 +18,6 @@ import {Color} from "ht-utility";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 import {HtBounds} from "ht-map-wrapper";
-import {ISegment} from "ht-models";
 import {IAction} from "ht-models";
 import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-observable";
 import {Observable} from "rxjs/Observable";
