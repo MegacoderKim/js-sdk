@@ -18,7 +18,7 @@ export var BASE_URL = new InjectionToken('app.baseUrl');
 
 export function requestServiceFactory(http, token, baseUrl) {
   const request = new HtRequestService(http, token);
-  if (baseUrl) request.baseUrl = baseUrl;
+  if (baseUrl) request.setBaseUrl(baseUrl);
   return request
 }
 

@@ -10,12 +10,12 @@ export class HtUsersApi extends HtBaseApi {
   }
 
   get<T>(id: string, query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/${id}/`;
+    let path = `v2/${this.base}/${id}/`;
     return this.api$<T>(path, query, {token});
   }
 
   index<T>(query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/`;
+    let path = `v2/${this.base}/`;
     return this.api$<T>(path, query, {token});
   }
 
