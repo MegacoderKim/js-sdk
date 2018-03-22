@@ -4,9 +4,19 @@ import {Observable} from "rxjs/Observable";
 
 export class HtGroupsApi extends HtBaseApi {
   name = "group";
-
+  base = "groups";
   constructor(request) {
-    super(request, "groups");
+    super(request);
+  }
+
+  get<T>(id: string, query = {}, token?: string): Observable<T> {
+    let path = `v1/${this.base}/${id}/`;
+    return this.api$<T>(path, query, {token});
+  }
+
+  index<T>(query = {}, token?: string): Observable<T> {
+    let path = `v1/${this.base}/`;
+    return this.api$<T>(path, query, {token});
   }
 
   children(groupId: string, token?: string): Observable<Page<IGroup>> {

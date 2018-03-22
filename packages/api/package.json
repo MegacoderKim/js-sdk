@@ -1,25 +1,32 @@
 {
-  "name": "ht-api",
-  "version": "0.0.4-0",
-  "description": "HyperTrack apis",
-  "main": "dist/ht-api_browser.js",
-  "module": "dist/ht-api.es5.js",
-  "typings": "dist/types/ht-api.d.ts",
-  "scripts": {
-    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts",
-    "start": "tsc -w & rollup -c rollup.config.ts -w",
-    "version": "npm run lib",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "_id": "ht-api@0.0.4-0",
+  "_inBundle": true,
+  "_location": "/ht-client/ht-api",
+  "_phantomChildren": {},
+  "_requiredBy": [
+    "/ht-client"
+  ],
   "author": "",
-  "license": "ISC",
+  "description": "HyperTrack apis",
   "devDependencies": {
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.7-0",
     "rollup": "^0.55.5"
   },
+  "license": "ISC",
+  "main": "dist/ht-api_browser.js",
+  "module": "dist/ht-api.es5.js",
+  "name": "ht-api",
   "peerDependencies": {
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.7-0"
-  }
+  },
+  "scripts": {
+    "lib": "tsc && tsc --module commonjs --outDir dist/lib && rollup -c rollup.config.ts",
+    "start": "tsc -w & rollup -c rollup.config.ts -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "version": "npm run lib"
+  },
+  "typings": "dist/types/ht-api.d.ts",
+  "version": "0.0.4-0"
 }
