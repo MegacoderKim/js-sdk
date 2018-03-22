@@ -21,6 +21,7 @@
     "ht-data": "^0.1.9-0",
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.7-0",
+    "ht-api": "^0.0.4-0",
     "rollup": "^0.53.1",
     "underscore": "^1.8.3",
     "webpack-bundle-analyzer": "^2.8.3",
@@ -35,7 +36,6 @@
   },
   "dependencies": {
     "date-fns": "^1.29.0",
-    "ht-api": "^0.0.4-0",
     "ht-data": "^0.1.9-0"
   }
 }
