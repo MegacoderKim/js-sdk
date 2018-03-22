@@ -25,9 +25,9 @@ export interface IAction {
     status_text: string;
     sub_status_text: string;
     duration_remaining: number;
-    show_summary: boolean;
+    // show_summary: boolean;
     is_late: boolean;
-    ended_at: null | string;
+    // ended_at: null | string;
     duration_elapsed: number;
     distance_remaining: string | null;
   };
