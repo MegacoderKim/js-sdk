@@ -215,6 +215,7 @@ export interface IPlaceline {
   type: string,
   unknown_reason: string,
   started_at: string,
+  ended_at: string
   duration: number,
   distance: number,
   start_location: IPlace,
