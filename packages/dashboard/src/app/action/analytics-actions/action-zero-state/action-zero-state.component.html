@@ -1,65 +1,55 @@
 <div class="title">
-  Use actions to build your use case
+    Use actions to build your use case
 </div>
 <div class="section">
-  <p>
-    An <a target="_blank" href="https://docs.hypertrack.com/api/entities/action.html">Action</a> represents a pickup, delivery, appointment, drop-off, visit, stopover, or any other transaction event being performed by your Users. Use actions to build a use case of your choice, e.g., Order Tracking, Mileage Tracking, and Live Location Sharing,.
-  </p>
-  <div class="text-center">
-    <img style="height: 90px;" [src]="platforms.actiontypes" alt="">
-  </div>
+    <p>
+        An <a target="_blank" href="https://www.hypertrack.com/docs/guides/action">Action</a> represents a pickup, delivery, appointment, drop-off, visit, stopover, or any other transaction event being performed by your Users. Use actions to build a use case of your choice, e.g., Order Tracking, Mileage Tracking, and Live Location Sharing,.
+    </p>
 </div>
 <div class="section">
-  <p>
-    You need to <span class="action" (click)="openBilling()">set up billing</span> to use Actions. Check <a
-    href="https://www.hypertrack.com/pricing" target="_blank">pricing</a> for details. In case you want to play with our APIs before putting in your card, switch to the Test environment. Once you are comfortable, switch back to Production environment.
-  </p>
-  <p>
-    Once you set up billing, start using Actions from the platform/language of your choice.
-  </p>
-  <a target="_blank" href="https://docs.hypertrack.com/sdks/android/actions.html" class="flex-row platforms row-gap-20">
-    <div class="platform">
-      <img [src]="platforms.andorid" alt="" style="height: 40px;">
-      <div class="platform-text">
-        Android
-      </div>
-    </div>
-    <a target="_blank" href="https://docs.hypertrack.com/sdks/ios/actions.html" class="platform">
-      <img [src]="platforms.apple" alt="" style="height: 40px;">
-      <div class="platform-text">
-        iOS
-      </div>
+    <a target="_blank" href="https://docs.hypertrack.com/sdks/android/actions.html" class="flex-row platforms row-gap-20">
+        <div class="platform">
+            <img [src]="platforms.andorid" alt="" style="height: 40px;">
+            <div class="platform-text">
+                Android
+            </div>
+        </div>
+        <a target="_blank" href="https://docs.hypertrack.com/sdks/ios/actions.html" class="platform">
+            <img [src]="platforms.apple" alt="" style="height: 40px;">
+            <div class="platform-text">
+                iOS
+            </div>
+        </a>
+        <a target="_blank" href="https://docs.hypertrack.com/sdks/reactnative/actions.html" class="platform">
+            <img [src]="platforms.react" alt="" style="height: 40px;">
+            <div class="platform-text">
+                React Native
+            </div>
+        </a>
+        <a href="https://docs.hypertrack.com/api/entities/action.html" target="_blank" class="platform">
+            <img [src]="platforms.python" alt="" style="height: 40px;">
+            <div class="platform-text">
+                Python
+            </div>
+        </a>
+        <a href="https://docs.hypertrack.com/api/entities/action.html" target="_blank" class="platform">
+            <img [src]="platforms.java" alt="" style="height: 40px;">
+            <div class="platform-text">
+                Java
+            </div>
+        </a>
+        <a href="https://docs.hypertrack.com/api/entities/action.html" target="_blank" class="platform">
+            <img [src]="platforms.ruby" alt="" style="height: 40px;">
+            <div class="platform-text">
+                Ruby
+            </div>
+        </a>
     </a>
-    <a target="_blank" href="https://docs.hypertrack.com/sdks/reactnative/actions.html" class="platform">
-      <img [src]="platforms.react" alt="" style="height: 40px;">
-      <div class="platform-text">
-        React Native
-      </div>
-    </a>
-    <a href="https://docs.hypertrack.com/api/entities/action.html" target="_blank" class="platform">
-      <img [src]="platforms.python" alt="" style="height: 40px;">
-      <div class="platform-text">
-        Python
-      </div>
-    </a>
-    <a href="https://docs.hypertrack.com/api/entities/action.html" target="_blank" class="platform">
-      <img [src]="platforms.java" alt="" style="height: 40px;">
-      <div class="platform-text">
-        Java
-      </div>
-    </a>
-    <a href="https://docs.hypertrack.com/api/entities/action.html" target="_blank" class="platform">
-      <img [src]="platforms.ruby" alt="" style="height: 40px;">
-      <div class="platform-text">
-        Ruby
-      </div>
-    </a>
-  </a>
 </div>
 <div id="billing-modal" class="modal fade" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <app-billing-form (cardAdded)="onCardAdded($event)" [isPopup]="true"></app-billing-form>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <app-billing-form (cardAdded)="onCardAdded($event)" [isPopup]="true"></app-billing-form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
