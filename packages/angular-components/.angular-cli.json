@@ -9,6 +9,48 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "favicon.ico",
+        "images"
+      ],
+      "appRoot": "dashboard",
+      "index": "d-index.html",
+      "main": "d-main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "prefix": "app",
+      "styles": [
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+        "../node_modules/leaflet/dist/leaflet.css",
+        "../node_modules/frappe-charts/dist/frappe-charts.min.css",
+        "../node_modules/ht-maps/dist/styles.css",
+        "./style/bulma.scss",
+        "d-styles.less"
+      ],
+
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "../libs/styles"
+        ]
+      },
+      "scripts": [
+        "../node_modules/js-cookie/src/js.cookie.js",
+        "./assets/highlight/highlight.pack.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "source": "environments/environment.ts",
+        "dev": "environments/environment.ts",
+        "staging": "environments/environment.staging.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets",
         "favicon.ico"
       ],
       "index": "index.html",

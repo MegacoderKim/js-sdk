@@ -272,6 +272,8 @@ const globals = {
   'underscore': '-',
   'ht-utility': 'htUtility',
   'ht-data': 'htData',
+  'ht-map-wrapper': "htMapWrapper",
+  'ht-leaflet-wrapper': 'htLeafletWrapper',
   'moment-mini': 'moment',
   'ht-models': 'htModels',
   'leaflet': 'L',

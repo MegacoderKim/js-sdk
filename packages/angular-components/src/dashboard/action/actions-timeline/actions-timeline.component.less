@@ -1,0 +1,188 @@
+@import "variables";
+//action timeline
+.trip-status {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: @ht-grey-text-bold;
+  margin-bottom: 20px;
+  position: relative;
+  .status-main {
+    font-size: 31px;
+    font-weight: 600;
+  }
+  .status-sub {
+    color: @ht-grey-4;
+    font-size: 12px;
+  }
+}
+.ht-breadcrumb {
+  padding-bottom: 19px;
+}
+.card {
+  margin-bottom: 9px;
+  .action-img {
+    margin: 0 auto;
+  }
+  .content-right {
+    justify-content: space-around;
+    position: relative;
+    text-align: center;
+  }
+}
+
+.driver-container {
+  margin-bottom: 20px;
+  border-bottom: 1px solid @ht-grey-2;
+  padding-bottom: 16px;
+  .text-muted {
+    color: @ht-grey-3;
+  }
+}
+
+.task-status {
+  padding-bottom: 20px;
+  text-align: center;
+  color: @ht-grey-5;
+}
+
+.time-container {
+  width: 102px;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  .target-status {
+    font-size: 10px;
+  }
+  .timestamp {
+    font-size: 16px;
+    color: @ht-grey-5;
+    //padding-bottom: 5px;
+  }
+  .text-muted {
+    color: @ht-grey-3;
+  }
+}
+.pipe {
+  width: 20px;
+  min-width: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .bar {
+    height: 100%;
+    flex:1;
+  }
+  .solid {
+    border-right: 10px solid @ht-grey-4;
+  }
+  .line {
+    border-right: 3px dotted @ht-grey-4 ;
+  }
+  .light {
+    border-right: 3px dashed fade(@ht-grey-4, 40%);
+  }
+  .fade {
+    border-right: 3px solid fade(@ht-grey-4, 14%);
+  }
+}
+.timeline-detail {
+  padding-bottom: 22px;
+  position: relative;
+  padding-left: 16px;
+  min-height: 66px;
+  .task-action {
+    font-size: 16px;
+    color: @ht-grey-5;
+    text-transform: capitalize;
+    margin-bottom: 4px;
+    transition: font-size 0.4s;
+  }
+  .task-detail {
+    background: #fff;
+    padding: 6px 10px;
+    color: @ht-grey-5;
+    transition: font-size 0.4s;
+  }
+  .task-icon {
+    position: absolute;
+    left: -23px;
+    top: -2px;
+  }
+  .task-ontime-status {
+    color: darken(@ht-green, 14%);
+    padding-bottom: 4px;
+    font-size: 11px;
+    transition: font-size 0.4s;
+  }
+  .text-late {
+    color: @ht-red;
+  }
+}
+.selected-task {
+  .task-action {
+    font-size: 18px;
+  }
+  .task-detail {
+    font-size: 13px;
+  }
+  .task-ontime-status {
+    font-size: 13px;
+  }
+}
+.trip-event {
+  .pipe {
+    padding-top: 7px;
+  }
+  .time-container {
+    padding-bottom: 24px;
+  }
+  &-start {
+
+  }
+  &-end {
+
+  }
+}
+
+.start-dot {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #fff;
+  border: 7px solid @ht-grey-4;
+  position: absolute;
+  top: -1px;
+  left: -23px;
+}
+.start-dot.small {
+  border-width: 2px;
+}
+
+.ht-faded {
+  opacity: 0.4;
+}
+
+.action {
+  position: absolute;
+  top: 6px;
+  padding: 3px;
+  font-size: 19px;
+  color: @ht-grey-4;
+}
+.action-left {
+  left: 11px;
+  font-size: 35px;
+  color: @ht-grey-3;
+  &:hover {
+    color: @ht-grey-4;
+  }
+}
+.text-sm {
+  font-size: 11px;
+  color: @ht-grey-5;
+  padding-bottom: 7px;
+}

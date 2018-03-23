@@ -1,0 +1,55 @@
+@import "variables";
+
+:host {
+  font-family: 'Work Sans', sans-serif;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+#signup {
+  background: #fff;
+  box-shadow: 0 -1px 50px 3px rgba(111, 112, 139, .14);
+  border-radius: 4px;
+  max-width: 600px;
+  min-height: 300px;
+  min-width: 500px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  letter-spacing: 1px;
+}
+.brand {
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: black;
+  padding-bottom: 21px;
+  .img {
+    height: 40px;
+  }
+  .brand-text {
+    margin-bottom: 10px;
+    font-size: 36px;
+    padding-top: 4px;
+    letter-spacing: -1px;
+  }
+}
+@media all and (max-width: 479px) {
+  #signup {
+    width: 90vw;
+    min-width: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    form {
+      width: 90%;
+    }
+  }
+}

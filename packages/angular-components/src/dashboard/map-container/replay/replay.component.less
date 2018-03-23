@@ -1,0 +1,274 @@
+@import "variables";
+
+:host {
+
+  input[type=range] {
+    /*removes default webkit styles*/
+    -webkit-appearance: none;
+
+    /*fix for FF unable to apply focus style bug */
+    border: 1px solid white;
+
+    /*required for proper track sizing in FF*/
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: @ht-blue;
+    margin-top: -4px;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+  }
+
+  input[type=range]::-moz-range-track {
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+  }
+  input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: @ht-blue;
+  }
+
+  /*hide the outline behind the border*/
+  input[type=range]:-moz-focusring{
+    outline: 1px solid white;
+    outline-offset: -1px;
+  }
+
+  input[type=range]::-ms-track {
+    height: 5px;
+
+    /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+    background: transparent;
+
+    /*leave room for the larger thumb to overflow with a transparent border */
+    border-color: transparent;
+    border-width: 6px 0;
+
+    /*remove default tick marks*/
+    color: transparent;
+  }
+  input[type=range]::-ms-fill-lower {
+    background: #777;
+    border-radius: 10px;
+  }
+  input[type=range]::-ms-fill-upper {
+    background: #ddd;
+    border-radius: 10px;
+  }
+  input[type=range]::-ms-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: @ht-blue;
+  }
+  input[type=range]:focus::-ms-fill-lower {
+    background: #888;
+  }
+  input[type=range]:focus::-ms-fill-upper {
+    background: #ccc;
+  }
+
+  background: @ht-grey-light;
+  //bottom: 20px;
+  //right: 30px;
+  //width: 90%;
+  padding: 0px 11px;
+  border-radius: 3px;
+  color: @ht-grey-text-bold;
+  .timeline {
+    display: flex;
+    align-items: center;
+    padding: 9px 0;
+    .time {
+      padding: 3px 13px;
+      font-size: 13px;
+    }
+  }
+
+  .media-panel {
+    display: flex;
+    text-align: center;
+    padding-bottom: 10px;
+    .replay-data {
+      font-size: 21px;
+    }
+    .controls {
+      justify-content: center;
+      align-items: baseline;
+      .action {
+        padding: 3px 7px;
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        border: 1px solid @ht-grey-3;
+        display: flex;
+        margin: 0 4px;
+      }
+      .play {
+        height: 40px;
+        width: 40px;
+      }
+      .disabled {
+        color: @ht-grey-2;
+      }
+    }
+  }
+  .text-muted {
+    color: @ht-grey-4;
+    font-size: 11px;
+  }
+
+  .speed-slider-container {
+    display: flex;
+    img {
+      height: 19px;
+      &.hare-icon {
+        height: 23px;
+      }
+    }
+    .replayspeed {
+      background: transparent;
+      border: transparent;
+      margin-left: 16px;
+      margin-right: 16px;
+    }
+    input[type=range]::-ms-thumb {
+      background: #91BAD2;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      background: #91BAD2;
+    }
+    input[type=range]::-moz-range-thumb {
+      background: #91BAD2;
+    }
+
+  }
+
+}
+
+@media @desktop {
+  #mobile-replay {
+    display: none;
+  }
+}
+
+@media @non-desktop {
+  #desktop-replay {
+    display: none;
+  }
+  :host {
+    //width: 100vw;
+    position: relative;
+  }
+}
+#mobile-replay {
+  .container-slide {
+    height: 117px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .points {
+    width: 30px;
+    border-right: #000 solid;
+    height: 100%;
+  }
+  .action {
+    width: 28px;
+    height: 28px;
+    border: 1px solid @ht-grey-4;
+    display: flex;
+    border-radius: 50%;
+  }
+
+  .play {
+    padding-left: 2px;
+    margin-right: 5px;
+  }
+  .speed {
+    margin-left: 5px;
+  }
+  .current-time {
+    font-size: 21px;
+    text-align: center;
+    position: absolute;
+    top: -36px;
+    padding-top: 10px;
+    left: 0;
+    right: 0;
+    background: linear-gradient(rgba(249, 249, 249, 0), @ht-grey-light, @ht-grey-light);
+    pointer-events: none;
+    z-index: 701;
+  }
+}
+
+@segmentHeight: 10px;
+.segment {
+  height: @segmentHeight;
+  background: @ht-yellow;
+}
+.segment-trip {
+  background: @ht-blue;
+}
+.segment-gap {
+  background: @ht-grey-3;
+}
+.segment-nolocation {
+  background: rgb(209, 145, 145);
+}
+
+.new-timeline {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+.peg {
+  position: relative;
+
+  .dot {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    margin-left: -10px;
+    background-color: @ht-grey-5;
+    position: absolute;
+    top: 0;
+  }
+  .bar {
+    height: @segmentHeight;
+    width: 2px;
+    margin-left: -1px;
+    background-color: @ht-grey-5;
+    position: absolute;
+    top: -@segmentHeight;
+  }
+  &:hover {
+    .dot {
+      background-color: #000;
+    }
+    .bar {
+      background-color: #000;
+    }
+  }
+
+}
