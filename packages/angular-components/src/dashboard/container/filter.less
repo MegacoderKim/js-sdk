@@ -1,0 +1,119 @@
+@import "variables";
+@import "placeholder";
+
+
+.ordering-menu {
+  min-width: 200px;
+}
+:host {
+  background: white;
+  //background: darken(#F6F4EF, 10% );
+  display: flex;
+  flex-direction: row;
+  padding: 16px 40px;
+  //margin: 0 40px 0 40px;
+  //border-radius: 5px;
+  border-bottom: 1px solid darken(#F6F4EF, 10% );
+  //border-top: 1px solid darken(#F6F4EF, 10% );
+  //background: #f1f1f1;
+}
+.filter-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  .row-gap-10;
+  .align-center;
+}
+.dropdown-menu {
+  z-index: 800;
+}
+.link-group {
+  display:flex;
+  flex-direction: row;
+  .link {
+    padding: 4px 12px;
+    background: #efefef;
+    color: @ht-grey-5;
+    border: 1px solid @ht-grey-border;
+    flex:1;
+    cursor: pointer;
+    @border-rad: 3px;
+    display: flex;
+    flex-direction: row;
+    .row-gap-4;
+    .align-center;
+    &:hover {
+      background: #e5e5e5;
+    }
+    &:first-child{
+      border-right: 0;
+      border-bottom-left-radius: @border-rad;
+      border-top-left-radius: @border-rad;
+    }
+    &:last-child {
+      border-top-right-radius: @border-rad;
+      border-bottom-right-radius: @border-rad;
+    }
+  }
+  .active {
+    background: @ht-blue;
+    color: #fff;
+    cursor: default;
+    border-color: darken(@ht-blue, 9%);
+    &:hover {
+      background: @ht-blue;
+    }
+  }
+}
+.filter {
+  background: @ht-grey-4;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 3px 5px;
+  color: #fff;
+  &:hover {
+    background: darken(@ht-grey-4, 4%);
+  }
+}
+.recommended {
+  opacity: 0.6;
+  &:hover {
+    opacity: 1;
+  }
+}
+.loading {
+  //position: absolute;
+  //left: 4px;
+  font-size: 18px;
+  color: @ht-blue;
+}
+
+.sort-items {
+  display: flex;
+  font-size: 11px;
+  .sort-item {
+    padding: 4px 6px;
+    cursor: pointer;
+    &:hover {
+      background: #ededed;
+    }
+  }
+
+}
+.dropdown-menu {
+  .active {
+    //border-top: 1px solid @ht-grey-border-light;
+    //border-bottom: 1px solid @ht-grey-border-light;
+    //font-weight: 700;
+    background: @ht-grey-5;
+    color: #f3f3f3;
+    .fa-active {
+      color: @ht-blue;
+    }
+  }
+}
+.sort-header {
+  background: #ededed;
+  align-items: center;
+}
+

@@ -1,0 +1,87 @@
+:host {
+  .tab-pane {
+    position: relative;
+  }
+  .onboarding-container {
+    padding-top: 12px;
+  }
+
+  .branch-link-value-container {
+    margin-right: 12px;
+    flex-grow: 1;
+  }
+
+  @media (max-width: 479px) {
+    text-align: center;
+  }
+
+  .branch-link-copy-container {
+    max-width: 124px;
+    min-width: 108px;
+    background: white;
+    color: gray;
+  }
+
+  .copy-button-trigger {
+    cursor: pointer;
+    padding-right: 10px;
+  }
+
+  .ob-platformlogo {
+    transform-style: preserve-3d;
+    transition: transform 100ms;
+    transform: scaleX(1) scaleY(1) scaleZ(1);
+  }
+
+  .tab-disabled {
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .active-tab {
+    background-color: #31ce5b;
+  }
+
+  .number-error {
+    color: #f88585;
+    font-size: 14px;
+    &.hide {
+      display: none;
+    }
+  }
+
+  .number-success {
+    color: #30dc7c;
+    font-size: 14px;
+    &.hide {
+      display: none;
+    }
+  }
+
+  .phone-number-form {
+    flex-direction: column;
+  }
+
+  .iframe-container {
+    height: 500px;
+  }
+
+  .hide {
+    display: none;
+  }
+  .phonenumber-form {
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      transition: background-color 5000s ease-in-out 0s;
+      -webkit-text-fill-color: white !important;
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    .branch-link-copy-container {
+      display: none;
+    }
+  }
+}

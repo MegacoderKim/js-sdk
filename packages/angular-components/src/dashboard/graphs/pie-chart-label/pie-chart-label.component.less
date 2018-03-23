@@ -1,0 +1,27 @@
+@import "placeholder.less";
+.box {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+.label-container {
+  min-width: 170px;
+}
+.graph-label {
+  transition: color 0.2s;
+  cursor: pointer;
+  padding: 5px;
+  .flex-row;
+  .align-center;
+  border-radius: 4px;
+  font-size: 12px;
+  &:hover {
+    background: rgb(220, 220, 220);
+  }
+}
+
+.graph-active {
+  //text-decoration: underline;
+  //color: @ht-blue;
+  background: rgb(211, 211, 211);
+}
