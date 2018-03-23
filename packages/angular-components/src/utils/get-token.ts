@@ -1,5 +1,5 @@
 import {GetUrlParam} from "./getUrlParam";
-import {config} from "../app/config";
+import {config} from "../dashboard/config";
 import {environment} from '../environments/environment';
 var Cookies = require('js-cookie');
 

@@ -1,2 +1,2 @@
-import {config} from "../app/config";
+import {config} from "../dashboard/config";
 export const LinkBaseUrl = config.isWidget ? '../' : './'
