@@ -10,8 +10,8 @@
           <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
         </div>
         <div class="flex-row text-muted user-status">
-          <div>{{user.display.sub_status_text}}<span *ngIf="user.display.battery">&nbsp; &bull; &nbsp;</span></div>
-          <app-battery-icon *ngIf="user.display.battery && showStatus" [battery]="user.display.battery"></app-battery-icon>
+          <div>{{user.display.last_updated_text}}<span *ngIf="user.health.battery_percentage">&nbsp; &bull; &nbsp;</span></div>
+          <app-battery-icon *ngIf="user.health.battery_percentage && showStatus" [battery]="user.health.battery_percentage"></app-battery-icon>
         </div>
       </div>
     </div>

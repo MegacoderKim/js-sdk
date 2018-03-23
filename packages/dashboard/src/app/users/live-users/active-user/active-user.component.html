@@ -6,7 +6,7 @@
 
         <div class="flex-column flex">
           <div class="flex-row"><span>{{user.name | nameCase | dot: 'Unknown name'}}</span></div>
-          <div class="text-muted flex-row" *ngIf="user.display.sub_status_text && isToday">{{user.display.sub_status_text}}
+          <div class="text-muted flex-row" *ngIf="user.display.last_updated_text && isToday">{{user.display.last_updated_text}}
           </div>
         </div>
       </div>
