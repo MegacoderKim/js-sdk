@@ -1,6 +1,6 @@
 import { IPageData, HtLocation, GeoJson, IPlace } from "./common";
 import { IUser } from "./user";
-import { ITimeAwarePoint } from "./ht-models";
+import { ITimeAwarePoint } from "../ht-models";
 
 export interface IAction {
   id: string;
