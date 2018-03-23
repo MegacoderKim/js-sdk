@@ -290,7 +290,7 @@ export class PlacelineComponent implements OnInit {
     let time;
     let isLive = this.isLive;
     if(!isLive) {
-      time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration))
+      time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration)).toISOString()
     } else {
       isLive = true;
       time = this.lastHeartbeat
