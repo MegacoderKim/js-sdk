@@ -15,25 +15,27 @@ export interface IUserPage extends IPageData {
 export interface IUser {
   created_at: string;
   id: string;
-  lookup_id: string;
+  unique_id: string;
   group_id: string;
   phone: string | null;
   photo: string | null;
   name: string;
   vehicle_type: string;
+  is_tracking: boolean,
   availability_status: string;
-  last_location: HtLocation | null;
+  // last_location: HtLocation | null;
   last_heartbeat_at: string | null;
-  last_online_at: string | null;
+  // last_online_at: string | null;
   status: string,
+  location: HtLocation,
   display: {
     status_text: string;
-    sub_status_text: string;
-    activity_text?: string;
+    last_updated_text: string;
+    // activity_text?: string;
     has_new_sdk: boolean;
     is_warning: boolean;
     seconds_elapsed_since_last_heartbeat: number;
-    battery: number;
+    // battery: number;
   };
   health: {
     battery_percentage: number,
@@ -74,24 +76,11 @@ export interface IUser {
 //   activity?: string;
 // }
 
-export interface IUserMap {
-  id: string;
-  name: string;
-  photo: string;
-  last_location: null | HtLocation;
-  availability_status: string;
-  display: {
-    status_text: string;
-    sub_status_text: string;
-  };
+export interface IUserMap extends IUser { // todo remove this
+
 }
 
-export interface IUserAnalytics {
-  id: string;
-  name: string;
-  photo: string;
-  status: string;
-  last_heartbeat_at: string;
+export interface IUserAnalytics extends IUser {
   num_trips: number;
   num_places: number;
   total_distance: number;
@@ -100,16 +89,31 @@ export interface IUserAnalytics {
   num_actions: number;
   location_disabled_duration: null | number;
   network_offline_duration: null | number;
-  has_new_sdk: boolean;
-  last_location: HtLocation | null;
-  display: {
-    activity_text: string;
-    status_text: string;
-    sub_status_text: string;
-    has_new_sdk: boolean;
-    is_warning: boolean;
-  };
 }
+// export interface IUserAnalytics {
+//   id: string;
+//   name: string;
+//   photo: string;
+//   status: string;
+//   last_heartbeat_at: string;
+//   num_trips: number;
+//   num_places: number;
+//   total_distance: number;
+//   total_duration: number;
+//   stop_duration: number | null;
+//   num_actions: number;
+//   location_disabled_duration: null | number;
+//   network_offline_duration: null | number;
+//   has_new_sdk: boolean;
+//   last_location: HtLocation | null;
+//   display: {
+//     activity_text: string;
+//     status_text: string;
+//     sub_status_text: string;
+//     has_new_sdk: boolean;
+//     is_warning: boolean;
+//   };
+// }
 
 export interface IUserAnalyticsPage extends IPageData {
   results: IUserAnalytics[];
