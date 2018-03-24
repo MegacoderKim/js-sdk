@@ -4,8 +4,8 @@ import { fromPromise } from "rxjs/observable/fromPromise";
 import { HtToken } from "./token";
 
 export class HtRequest {
-    // baseUrl: string = "https://api.hypertrack.com/api/";
-    baseUrl: string = "https://staging-api.hypertrack.com/api/";
+    baseUrl: string = "https://api.hypertrack.com/api/";
+    // baseUrl: string = "https://staging-api.hypertrack.com/api/";
     isAdmin: boolean = false;
     tokenServie: HtToken;
     defaultHeader = {"X-Hypertrack-Client": 'js-sdk'};
