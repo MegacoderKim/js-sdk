@@ -30,20 +30,20 @@ export class ActionTraceService {
     this.actionsCluster.onClick = (data) => {
       this.selectAction(data.data)
     };
-    this.actionsCluster.setPageData$(
-      this.store.select(fromRoot.getActionMapList)
-        .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"})),
-      {
-        hide$: this.store.select(fromRoot.getUserSelectedUserId)
-      }
-    )
+    // this.actionsCluster.setPageData$(
+    //   this.store.select(fromRoot.getActionMapList)
+    //     .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"})),
+    //   {
+    //     hide$: this.store.select(fromRoot.getUserSelectedUserId)
+    //   }
+    // )
   }
 
   private initHeatmap() {
     this.actionsHeat = this.htMapService.actionsHeatmap;
-    this.actionsHeat.setData$(this.store.select(fromRoot.getActionFilteredHeat), {
-      hide$: this.store.select(fromRoot.getUserSelectedUserId)
-    })
+    // this.actionsHeat.setData$(this.store.select(fromRoot.getActionFilteredHeat), {
+    //   hide$: this.store.select(fromRoot.getUserSelectedUserId)
+    // })
   };
 
   get map(): L.Map {
@@ -73,15 +73,15 @@ export class ActionTraceService {
 
 
   private resetBounds() {
-    if(!config.toReset) return false;
-    let bounds = this.htMapService.mapInstance.getItemsSetBounds([this.actionsCluster,this.actionsHeat]);
-    // this.actionsHeat.extendBounds(bounds);
-    if(bounds.isValid()) this.map.fitBounds(bounds, {
-      animate: true,
-      duration: 1.3,
-      easeLinearity: 0.2,
-      paddingTopLeft: [15, 15],
-      paddingBottomRight: [15, 15]
-    });
+    // if(!config.toReset) return false;
+    // let bounds = this.htMapService.mapInstance.getItemsSetBounds([this.actionsCluster,this.actionsHeat]);
+    // // this.actionsHeat.extendBounds(bounds);
+    // if(bounds.isValid()) this.map.fitBounds(bounds, {
+    //   animate: true,
+    //   duration: 1.3,
+    //   easeLinearity: 0.2,
+    //   paddingTopLeft: [15, 15],
+    //   paddingBottomRight: [15, 15]
+    // });
   };
 }

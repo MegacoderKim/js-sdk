@@ -58,6 +58,7 @@ require('smoothscroll-polyfill').polyfill();
 // import * as L from "leaflet";
 const L = require("leaflet")
 import "leaflet.heat";
+import "leaflet.markercluster";
 
 mainBoot();
 // mapTypeService.getInstance('leaflet');

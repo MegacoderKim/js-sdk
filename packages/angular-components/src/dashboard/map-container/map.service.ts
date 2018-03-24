@@ -137,19 +137,19 @@ export class InnerMapService {
   }
 
   invalidate() {
-    setTimeout(() => {
-      if(this.map && this.map.getContainer().offsetWidth) {
-        this.map.invalidateSize();
-      }
-    }, 600)
+    // setTimeout(() => {
+    //   if(this.map && this.map.getContainer().offsetWidth) {
+    //     this.map.invalidateSize();
+    //   }
+    // }, 600)
   }
 
   resetSize() {
     setTimeout(() => {
-      if(this.map && this.map.getContainer().offsetWidth) {
-        this.map.invalidateSize();
-        this.broadcast.emit('reset-map')
-      }
+      // if(this.map && this.map.getContainer().offsetWidth) {
+      //   this.map.invalidateSize();
+      //   this.broadcast.emit('reset-map')
+      // }
 
     }, 400)
   }

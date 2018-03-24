@@ -10,7 +10,7 @@ import {MembershipsService} from "../../account/memberships.service";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {Subject} from "rxjs/Subject";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {IMember} from "ht-models/dist/typings/account";
+import {IMember} from "ht-models";
 
 @Component({
   selector: 'app-header',

@@ -37,10 +37,10 @@ export class UserService {
   ) { }
 
   getUserTimeLine(userId: string, query: any = {}): Observable<IUserPlaceline> {
-    if (!userId) {
-      console.log("BAD TIMELINE CALL", userId, query);
-      return Observable.empty();
-    }
+    // if (!userId) {
+    //   console.log("BAD TIMELINE CALL", userId, query);
+    //   return Observable.empty();
+    // }
     const date = query ? query.date : null;
     query = this.addTimeRangeForPlaceline(query);
     let string = HtQuerySerialize(query);
@@ -48,6 +48,7 @@ export class UserService {
     return this.client.api.placeline(userId, query).map((data: IUserPlaceline) => {
       return date ? {...data, timeline_date: date} : data;
     })
+
     // return this.http.get(`app/users/${userId}/placeline${v}/?${string}`).map((res) => res.json());
   };
 

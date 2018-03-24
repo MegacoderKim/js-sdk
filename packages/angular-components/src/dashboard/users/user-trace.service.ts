@@ -40,9 +40,9 @@ export class UserTraceService {
 
   private initListeners() {
 
-    this.segmentsTrace.setSegmentPlayCallback((segmentId) => {
-      this.broadcast.emit('replay-segment', segmentId);
-    });
+    // this.segmentsTrace.setSegmentPlayCallback((segmentId) => {
+    //   this.broadcast.emit('replay-segment', segmentId);
+    // });
 
     // this.broadcast.on('map-init').subscribe((data: L.Map) => {
     //   this.map = data;
@@ -59,7 +59,7 @@ export class UserTraceService {
     });
 
     this.store.select(fromRoot.getReplayHeadState).subscribe((head) => {
-      this.segmentsTrace.setReplayHead(head, this.map)
+      // this.segmentsTrace.setReplayHead(head, this.map)
     });
 
     this.store.select(fromRoot.getUserSelectedSegment).scan((acc, segment) => {
@@ -70,11 +70,11 @@ export class UserTraceService {
     }, {oldSegment: null, newSegment: null}).subscribe(data => {
       if(data.oldSegment) {
         let segment = data.oldSegment;
-        this.segmentsTrace.unselectSegment(segment);
+        // this.segmentsTrace.unselectSegment(segment);
       }
       if(data.newSegment) {
         let segment = data.newSegment;
-        this.segmentsTrace.selectSegment(segment);
+        // this.segmentsTrace.selectSegment(segment);
       }
     });
 
@@ -101,7 +101,7 @@ export class UserTraceService {
 
     this.store.select(fromRoot.getUserSelectedActionId).subscribe((actionId: string) => {
       // console.log("select action", actionId);
-      this.segmentsTrace.selectAction(actionId)
+      // this.segmentsTrace.selectAction(actionId)
     });
 
     this.broadcast.on('hover-user').subscribe((user: IUserAnalytics) => {
@@ -117,46 +117,46 @@ export class UserTraceService {
       }
     });
 
-    this.userPlaces.setData$(places$, {
-      hide$: this.store.select(fromRoot.getUserSelectedUserId)
-    });
+    // this.userPlaces.setData$(places$, {
+    //   hide$: this.store.select(fromRoot.getUserSelectedUserId)
+    // });
 
   }
 
   //helpers
 
   private renderSegments(user: IUserPlaceline) {
-    this.segmentsTrace.trace(user, this.map);
+    // this.segmentsTrace.trace(user, this.map);
   }
 
   private resetBounds(fly: boolean = false) {
-    if(!config.toReset) return false;
-
-    // let bounds = L.latLngBounds([]);
-    let bounds = this.htMapService.mapInstance.getItemsSetBounds([this.usersCluster,this.userPlaces]);
-    this.segmentsTrace.extendBounds(bounds);
-
-    if(bounds.isValid() && this.map) {
-      if(fly && !config.isMobile) {
-        this.map.flyToBounds(bounds, {
-          animate: true,
-          duration: 1,
-          easeLinearity: 0.58,
-          padding: [60, 60],
-        });
-      } else {
-        this.map.fitBounds(bounds, {
-          animate: true,
-          duration: 1.3,
-          easeLinearity: 0.2,
-          padding: [60, 60],
-        });
-      }
-
-    } else if(this.map) {
-      this.segmentsTrace.focusUserMarker(this.map);
-      // this.map.setView(userPosition, 14)
-    }
+    // if(!config.toReset) return false;
+    //
+    // // let bounds = L.latLngBounds([]);
+    // let bounds = this.htMapService.mapInstance.getItemsSetBounds([this.usersCluster,this.userPlaces]);
+    // this.segmentsTrace.extendBounds(bounds);
+    //
+    // if(bounds.isValid() && this.map) {
+    //   if(fly && !config.isMobile) {
+    //     this.map.flyToBounds(bounds, {
+    //       animate: true,
+    //       duration: 1,
+    //       easeLinearity: 0.58,
+    //       padding: [60, 60],
+    //     });
+    //   } else {
+    //     this.map.fitBounds(bounds, {
+    //       animate: true,
+    //       duration: 1.3,
+    //       easeLinearity: 0.2,
+    //       padding: [60, 60],
+    //     });
+    //   }
+    //
+    // } else if(this.map) {
+    //   this.segmentsTrace.focusUserMarker(this.map);
+    //   // this.map.setView(userPosition, 14)
+    // }
   }
 
 }
