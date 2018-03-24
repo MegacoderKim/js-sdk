@@ -1,6 +1,7 @@
 import { IPageData, HtLocation, GeoJson, IPlace } from "./common";
 import { IUser } from "./user";
 import { ITimeAwarePoint } from "../ht-models";
+import {IPlaceline} from "./placeline";
 
 export interface IAction {
   id: string;
@@ -154,4 +155,8 @@ export interface IActionWithPolyline extends IAction {
 
 export interface IActionMod extends IActionWithPolyline {
   timeAwarePath: ITimeAwarePoint[]
+}
+
+export interface IActionPlaceline extends IAction {
+  placeline: IPlaceline[]
 }
