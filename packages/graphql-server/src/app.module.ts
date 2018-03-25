@@ -14,6 +14,7 @@ import {GroupsService} from './services/groups.service';
 import {GroupResolver} from './resolvers/group.resolver';
 import {GroupsResolver} from './resolvers/groups.resolver';
 import {LoggerMiddleware} from "./middlewares/logger.middleware";
+import {PlacelineResolver} from "./resolvers/placeline.resolver";
 
 @Module({
   imports: [GraphQLModule],
@@ -28,7 +29,8 @@ import {LoggerMiddleware} from "./middlewares/logger.middleware";
     ActionResolver,
     GroupsService,
     GroupResolver,
-    GroupsResolver
+    GroupsResolver,
+    PlacelineResolver
   ],
 })
 export class ApplicationModule implements NestModule {
