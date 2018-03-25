@@ -55,8 +55,7 @@ if(global) global['jQuery'] = require('jquery');
 // import * as jQuery from "jquery"
 // require('bootstrap');
 require('smoothscroll-polyfill').polyfill();
-// import * as L from "leaflet";
-const L = require("leaflet")
+import "leaflet";
 import "leaflet.heat";
 import "leaflet.markercluster";
 
