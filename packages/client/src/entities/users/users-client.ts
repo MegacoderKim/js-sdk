@@ -31,6 +31,7 @@ import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
 import { UsersHeatmapClient } from "./users-heatmap-client";
 import {HtApi, HtUsersApi} from "ht-api";
+import {htClientService} from "../../global/client";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -48,7 +49,7 @@ export class HtUsersClient extends EntityClient {
   showAll: boolean = false;
   constructor(public options: IUsersClientConfig) {
     super();
-    let api = new HtApi().users;
+    let api = htClientService.getInstance().api.users;
     this.key$ = ApiStoreService.getInstance().select(
       fromRoot.getAccountCurrentKey
     );
