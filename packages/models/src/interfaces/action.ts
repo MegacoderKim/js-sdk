@@ -58,6 +58,7 @@ export interface IAction {
     battery_status: string
   },
   location: null | HtLocation,
+  place?: IPlace,
   // suspended_at: string | null;
   // canceled_at: string | null;
   expected_place: IPlace;

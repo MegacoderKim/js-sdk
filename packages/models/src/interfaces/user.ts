@@ -35,6 +35,7 @@ export interface IUser {
     // activity_text?: string;
     has_new_sdk: boolean;
     is_warning: boolean;
+    warning_since_text: string,
     seconds_elapsed_since_last_heartbeat: number;
     // battery: number;
   };
