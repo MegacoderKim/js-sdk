@@ -29,15 +29,15 @@
         </div>
       </div>
       <div class="has-text-weight-bold current-plan">
-          <span class="icon">
-            <i class="fa fa-check-circle"></i>
-          </span>
-          <span>Current plan</span>
+        <span class="icon">
+          <i class="fa fa-check-circle"></i>
+        </span>
+        <span>Current plan</span>
       </div>
     </div>
   </div>
   <div class="card">
-    <div class="card-content flex-row row-gap-20">
+    <div class="card-content flex-row row-gap-20" *ngIf="account.billing_plan != plans.regular && account.billing_plan != plans.starter">
       <div class="plan-name has-text-weight-bold">
         Free Forever
       </div>
@@ -55,10 +55,10 @@
       </div>
       <ng-template #currentFreeForever>
         <div class="has-text-weight-bold current-plan">
-            <span class="icon">
-              <i class="fa fa-check-circle"></i>
-            </span>
-            <span>Current plan</span>
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
         </div>
       </ng-template>
     </div>
@@ -83,14 +83,14 @@
             Upgrade
           </button>
         </ng-template>
-      
+
       </div>
       <ng-template #currentStarter>
         <div class="has-text-weight-bold current-plan">
-            <span class="icon">
-              <i class="fa fa-check-circle"></i>
-            </span>
-            <span>Current plan</span>
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
         </div>
       </ng-template>
     </div>
@@ -111,10 +111,10 @@
       </div>
       <ng-template #currentRegular>
         <div class="has-text-weight-bold current-plan">
-            <span class="icon">
-              <i class="fa fa-check-circle"></i>
-            </span>
-            <span>Current plan</span>
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
         </div>
       </ng-template>
     </div>

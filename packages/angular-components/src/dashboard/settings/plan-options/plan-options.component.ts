@@ -3,6 +3,7 @@ import { AccountUsersService } from '../../account/account-users.service';
 import { Observable } from 'rxjs/Observable';
 import { IAccount, PartialAccount } from 'ht-models';
 import { SnackbarService } from '../../shared/snackbar/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plan-options',
@@ -19,9 +20,11 @@ export class PlanOptionsComponent implements OnInit {
     regular: "regular:1"
   };
   account$: Observable<IAccount>;
+  hasCard;
   constructor(
     public accountUserService: AccountUsersService,
-    public snackbarService: SnackbarService
+    public snackbarService: SnackbarService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -31,11 +34,18 @@ export class PlanOptionsComponent implements OnInit {
   }
 
   choosePlan(planType) {
+    this.accountUserService.getAccount().take(1).subscribe((account) => {
+      if (account.card) {
     this.accountUserService.setBillingPlan(planType);
+      } else {
+        this.router.navigate(['/payment', { type: planType }])
+      }
+    })
+
   }
 
   chooseEnterpice() {
-    if ( window[ "Intercom"] ) {
+    if (window["Intercom"]) {
       window["Intercom"]('showNewMessage', 'I am interested in the Enterprise plan. Could you give me more details about it ?');
     }
   }
