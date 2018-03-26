@@ -11,7 +11,11 @@ import {HMString} from "ht-utility";
 export class UserPopupComponent implements OnInit, OnChanges {
   @Input() action: IAction;
   opened: boolean = false;
-  activityData = {
+  activityData: {
+    title: string,
+    body: string,
+    showSubtext: boolean,
+  } | null = {
     title: "speed",
     body: "",
     showSubtext: false
@@ -47,11 +51,7 @@ export class UserPopupComponent implements OnInit, OnChanges {
         break;
       };
       default: {
-        this.activityData = {
-          title: "speed",
-          body: "--",
-          showSubtext: false
-        };
+        this.activityData = null;
       }
     }
   }
