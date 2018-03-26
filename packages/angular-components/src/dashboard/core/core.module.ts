@@ -50,7 +50,11 @@ import {HtModule} from "ht-angular";
       UiEffectsService,
       LoadingEffectsService
     ]),
-    HtModule.forRoot({token: config.token, mapType: 'leaflet', baseUrl: "https://api.hypertrack.com/api/"}),
+    HtModule.forRoot({
+      token: config.token,
+      mapType: 'leaflet',
+      baseUrl: "https://staging-api.hypertrack.com/api/"
+    }),
   ],
   providers: [
     BroadcastService,
