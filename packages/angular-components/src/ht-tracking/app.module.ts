@@ -30,7 +30,6 @@ import {HtModule} from "ht-angular";
     HtModule.forRoot({
       token: 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c',
       mapType: 'leaflet',
-      baseUrl: "https://api.hypertrack.com/api/v2/"
     })
   ],
   // providers: [ {
