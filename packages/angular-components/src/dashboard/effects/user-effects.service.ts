@@ -163,7 +163,7 @@ export class UserEffectsService {
               return {
                     userId: userState.selectedUserId,
                     timelineQuery,
-                    toFetch: !!userState.selectedUserId && toFetch
+                    toFetch: toFetch
                 }
             }
         );
