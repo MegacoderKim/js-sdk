@@ -33,9 +33,9 @@
             <div *ngIf="isAwayFromExpected(action)" class="text-red">Completed away from expected place</div>
           </div>
           <div class="metadata">
-            <div *ngFor="let datum of action.metadata">
-              <span class="text-muted">{{datum[0]}}:</span> <span>{{datum[1]}}</span>
-            </div>
+            <!--<div *ngFor="let datum of action.metadata">-->
+              <!--<span class="text-muted">{{datum[0]}}:</span> <span>{{datum[1]}}</span>-->
+            <!--</div>-->
           </div>
           <div class="flex-column expanded" *ngIf="show.exp">
             <!--<div *ngIf="action.expected_at">Scheduled at {{action.expected_at | timeString}}</div>-->

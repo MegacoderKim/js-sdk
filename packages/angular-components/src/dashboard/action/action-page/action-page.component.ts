@@ -67,21 +67,21 @@ export class ActionPageComponent implements OnInit {
 
     this.users$ = this.store.select(fromRoot.getUserData);
 
-    let param$ = this.route.params
+    let param$ = this.route.params;
 
     let placelineParams$ = param$
-      .switchMap((param) => {
-        return this.getPlacelineParams$(param)
+      .map((param) => {
+        return this.getPlacelineParam(param)
       });
 
-    let sub2 = placelineParams$.subscribe(({query, userId}) => {
+    let sub2 = placelineParams$.subscribe((query) => {
         this.store.dispatch(new fromUser.SelectTimelineQueryAction(query));
       // this.store.dispatch(new fromUser.SelectUserIdAction(userId))
       });
 
-    placelineParams$.share().take(1).subscribe(({query, userId}) => {
-      this.store.dispatch(new fromUser.SelectUserIdAction(userId))
-    })
+    // placelineParams$.share().take(1).subscribe(({query, userId}) => {
+    //   this.store.dispatch(new fromUser.SelectUserIdAction(userId))
+    // })
     // this.actionSub$ = this.actions$.asObservable().scan((actions, currentActions) => {
     //   console.log(currentActions, actions, "Test");
     //   if(currentActions && actions) {
@@ -111,57 +111,68 @@ export class ActionPageComponent implements OnInit {
     this.router.navigate([base, {lookup_id: lookupId}], {relativeTo: this.route, queryParamsHandling: 'preserve'});
   }
 
-  private getPlacelineParams$(params) {
-    return this.getUserId$(params)
-      .map((userId) => {
-        this.store.dispatch(new fromUser.SelectUserIdAction(userId))
-        let timelineQuery = {};
-        let actionId = params['id'];
-        let lookupId = params['lookup_id'];
-        let collectionId = params['collection_id'];
-        let ids = params['ids'];
-        if(actionId) timelineQuery['action_id'] = actionId;
-        if(lookupId) timelineQuery['action_lookup_id'] = lookupId;
-        if(collectionId) timelineQuery['action_collection_id'] = collectionId;
-        if(ids) timelineQuery['ids'] = ids;
-        return {
-          query: {
-            action_id: actionId,
-            action_lookup_id: lookupId,
-            action_collection_id: collectionId
-          },
-          userId
-        }
-      })
+  private getPlacelineParam(params) {
+    let actionId = params['id'];
+    let lookupId = params['lookup_id'];
+    let collectionId = params['collection_id'];
+    return {
+      action_id: actionId,
+      collection_id: collectionId,
+      lookup_id: lookupId
+    }
   }
 
-  private getUserId$(params) {
-    let action$ = this.actionService.index(params);
+  // private getPlacelineParams$(params) {
+  //   return this.getUserId$(params)
+  //     .map((userId) => {
+  //       this.store.dispatch(new fromUser.SelectUserIdAction(userId))
+  //       let timelineQuery = {};
+  //       let actionId = params['id'];
+  //       let lookupId = params['lookup_id'];
+  //       let collectionId = params['collection_id'];
+  //       let ids = params['ids'];
+  //       if(actionId) timelineQuery['action_id'] = actionId;
+  //       if(lookupId) timelineQuery['action_lookup_id'] = lookupId;
+  //       if(collectionId) timelineQuery['action_collection_id'] = collectionId;
+  //       if(ids) timelineQuery['ids'] = ids;
+  //       return {
+  //         query: {
+  //           action_id: actionId,
+  //           action_lookup_id: lookupId,
+  //           action_collection_id: collectionId
+  //         },
+  //         userId
+  //       }
+  //     })
+  // }
 
-    return this.users$.take(1)
-      .switchMap((userData: IUserPlaceline | null) => {
-        if(userData) {
-          return of(userData.id)
-        } else {
-          return timer(0, 20000).pipe(
-            switchMap(() => action$.pipe(
-              catchError(err => of({results: []}))
-            )),
-            map((actions: IActionPage) => {
-              if(actions.results.length) {
-                return actions.results[0].user ? actions.results[0].user.id : null
-              } else {
-                this.notFound = true;
-                this.loadingPage = false;
-                return null
-              }
-            }),
-            filter((data) => !!data)
-          )
-
-        }
-      })
-  }
+  // private getUserId$(params) {
+  //   let action$ = this.actionService.index(params);
+  //
+  //   return this.users$.take(1)
+  //     .switchMap((userData: IUserPlaceline | null) => {
+  //       if(userData) {
+  //         return of(userData.id)
+  //       } else {
+  //         return timer(0, 20000).pipe(
+  //           switchMap(() => action$.pipe(
+  //             catchError(err => of({results: []}))
+  //           )),
+  //           map((actions: IActionPage) => {
+  //             if(actions.results.length) {
+  //               return actions.results[0].user ? actions.results[0].user.id : null
+  //             } else {
+  //               this.notFound = true;
+  //               this.loadingPage = false;
+  //               return null
+  //             }
+  //           }),
+  //           filter((data) => !!data)
+  //         )
+  //
+  //       }
+  //     })
+  // }
 
   private fetchFirstAction(params) {
     let action$ = this.actionService.index(params);

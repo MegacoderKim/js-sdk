@@ -10,7 +10,7 @@
     <div class = "lookup-id" *ngIf="user.actions.length && user.actions[0].lookup_id" (click)="openLookupIdPage(user.actions[0].lookup_id)">#{{user.actions[0].lookup_id}}</div>
     <!--<app-users-card [user]="user"></app-users-card>-->
     <div class="card-container" *ngFor="let action of user.actions; trackBy:indexId; let last = last;let index = index;" (mouseleave)="selectAction(null)" (mouseenter)="selectAction(action.id)">
-      <!--<app-action-info [user]="user" [action]="action"></app-action-info>-->
+      <app-action-info [user]="user" [action]="action"></app-action-info>
     </div>
     <app-user-device *ngIf="user" [userId]="user.id"></app-user-device>
     <!--<app-placeline [selectedPartialSegmentId]="selectedPartialSegmentId$ | async" (hoveredAction)="selectAction($event)" (hoveredActivity)="handleTimelineMouseOver($event)" [placeline]="user"></app-placeline>-->
