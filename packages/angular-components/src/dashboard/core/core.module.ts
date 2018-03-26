@@ -41,6 +41,11 @@ import {HtModule} from "ht-angular";
   imports: [
     CommonModule,
     AsyncLocalStorageModule,
+    HtModule.forRoot({
+      token: config.token,
+      mapType: 'leaflet',
+      baseUrl: "https://staging-api.hypertrack.com/api/"
+    }),
     StoreModule.forRoot(reducers, {metaReducers}),
     EffectsModule.forRoot([
       AccountUserEffectsService,
@@ -50,11 +55,6 @@ import {HtModule} from "ht-angular";
       UiEffectsService,
       LoadingEffectsService
     ]),
-    HtModule.forRoot({
-      token: config.token,
-      mapType: 'leaflet',
-      baseUrl: "https://staging-api.hypertrack.com/api/"
-    }),
   ],
   providers: [
     BroadcastService,
