@@ -10,7 +10,7 @@ import {HtClient, HtUsersClient, HtGroupsClient, AccountsClient, HtActionsClient
 import {HtAccountService} from "./ht-account-users.service";
 import {HtActionsService} from "./ht-actions.service";
 import {mapTypeService, HtMapClassOptions} from "ht-maps";
-import {htRequestService} from "ht-api";
+import {HtRequest} from "ht-api";
 
 export var TOKEN = new InjectionToken('app.token');
 export var MAP_KEY = new InjectionToken('app.mapKey');
@@ -22,8 +22,8 @@ export function requestServiceFactory(http, token, baseUrl) {
   return request
 }
 
-export function clientServiceFactory(token, request) {
-  const client = htClientService.getInstance(token, request);
+export function clientServiceFactory(request: HtRequest, token) {
+  const client = htClientService.setInstance(request, token);
   return client
 }
 
@@ -67,7 +67,7 @@ export class HtModule {
         { provide: HtRequestService, useFactory: requestServiceFactory, deps: [HttpClient, TOKEN, BASE_URL]},
         { provide: HtClientService,
           useFactory: clientServiceFactory,
-          deps: [TOKEN, HtRequestService]
+          deps: [HtRequestService, TOKEN ]
         },
         {
           provide: HtUsersService,
