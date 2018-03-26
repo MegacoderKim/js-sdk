@@ -1,4 +1,3 @@
-export * from "./global/request-service";
 export * from "./core/api";
 export * from "./core/request";
 export * from "./core/token";
