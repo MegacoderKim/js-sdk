@@ -14,6 +14,7 @@ import { orCombine } from "ht-data";
 import {MapInstance} from "../map-utils/map-instance";
 import {take} from "rxjs/operator/take";
 import {skip, skipUntil} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
 
 export interface ICompoundsDataObservableBase {
   trace: (data, map?) => any;
@@ -121,11 +122,14 @@ export function CompoundDataObservableMixin<
         })
       );
 
+      const resetMap$ = this.compoundSetDataConfig.resetMap$ ?
+        this.compoundSetDataConfig.resetMap$.pipe(
+        map(data => true)
+      ) : of(true);
+
       let sub = orCombine(
         newPlaceline$.pipe(filter(data => !!data)),
-        this.compoundSetDataConfig.resetMap$.pipe(
-          map(data => true)
-        )
+        resetMap$
       ).subscribe(toReset => {
         if (toReset) this.mapInstance.resetBounds();
       });
