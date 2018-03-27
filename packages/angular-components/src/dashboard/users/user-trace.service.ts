@@ -41,7 +41,12 @@ export class UserTraceService {
   }
 
   setReplayHead(head) {
-    console.log(head);
+    if (head) {
+      console.log(head, "replay head");
+    } else {
+
+    }
+
   }
 
 

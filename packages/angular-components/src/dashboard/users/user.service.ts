@@ -62,7 +62,7 @@ export class UserService {
 
   getUserAnalytics(query: any = {}): Observable<Page<IUser>> {
     let string = HtQuerySerialize({page_size: 15, ...GetUserDateRangeQuery(query) });
-    return this.client.api.index({page_size: 15, ...GetUserDateRangeQuery(query) });
+    return this.client.api.analytics({page_size: 15, ...GetUserDateRangeQuery(query) });
   }
 
   getAllUserAnalytics(query = {}, callback?) {

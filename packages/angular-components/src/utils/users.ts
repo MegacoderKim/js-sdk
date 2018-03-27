@@ -54,7 +54,7 @@ let sortingQueryMap = {
   status: 'Status',
   total_distance: 'Distance',
   total_duration: 'Duration',
-  stop_duration: 'Stop duration',
+  // stop_duration: 'Stop duration',
   location_disabled_duration: 'Location disabled',
   network_offline_duration: 'Network offline',
   num_actions: 'Actions',

@@ -56,11 +56,11 @@ export class AnalyticsUsersComponent extends UsersListComponent implements OnIni
       sortOrder: '-',
       key: 'total_duration'
     },
-    {
-      label: 'Stop duration',
-      sortOrder: '-',
-      key: 'stop_duration'
-    },
+    // {
+    //   label: 'Stop duration',
+    //   sortOrder: '-',
+    //   key: 'stop_duration'
+    // },
     {
       label: 'Location disabled',
       sortOrder: '-',
