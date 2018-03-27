@@ -1,7 +1,7 @@
 <div class="global-payment-form-container">
   <div class="payment-form-step step-select-plan" *ngIf="!paymentType || paymentType == 'enterprise:1'">
     <div class="payment-form-step-title">Plans that scale with your growth</div>
-    <div class="payment-form-step-description">Upgrade now to build programmable location features. We bill you as per usage without any minimums</div>
+    <div class="payment-form-step-description">Select a plan that suits the scale of your business. You can change the plan at any point of time.</div>
     <div class="section-billing-plans {{paymentType}}">
       <div class="pricing-boxes">
         <div class="pricing-box" (click)="selectPaymentMethod(plan.id)" *ngFor="let plan of plans">
@@ -24,7 +24,7 @@
               <div class="actions-value">{{plan.actionsCount}} actions</div>
               <div class="actions-users-count">Unlimited users</div>
             </div>
-            <div class="pricing-box-inside-cta">{{plan.cta}}</div>
+            <div class="pricing-box-inside-cta" [class.cta]="plan.id !== 'free_forever:1'">{{plan.cta}}</div>
           </div>
           <div class="pricing-box-cta">{{plan.cta}}</div>
         </div>
