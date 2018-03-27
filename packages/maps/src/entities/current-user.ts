@@ -21,49 +21,6 @@ import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 
-export const currentUserConfig: ItemClassFactoryConfig = {
-  renderConfig: {
-    getPosition(data): HtPosition {
-      return htUser(data).getPosition();
-    },
-    getDivContent(data) {
-      return userDivFactory(data);
-    }
-  },
-
-  styleFunct: {
-    get(type) {
-      switch (type) {
-        case "google": {
-          return {
-            default: {
-              flat: true,
-              anchor: RichMarkerPosition.BOTTOM_CENTER
-            }
-          }
-        };
-        case "leaflet": {
-          return {
-            default: {
-              // iconAnchor: point(15, 43)
-              iconAnchor: [15, 43]
-            }
-          }
-        }
-      }
-    }
-  },
-  typeConfig: {
-    isSingleItem: true,
-    isDiv: true,
-    hasDataObservable: false
-  },
-  name: "Current user"
-};
-
-export const currentUserTrace = () => {
-  return itemsFactory(currentUserConfig);
-};
 
 export class CurrentUser {
   name = "Current user";
@@ -95,7 +52,9 @@ export class CurrentUser {
   constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
-    return htUser(data).getPosition();
+    const p = htUser(data).getPosition();
+    console.log("get pos", p);
+    return p
   };
 
   getDivContent(data) {
@@ -108,6 +67,51 @@ export const CurrentUserTrace = AnimationMixin(SingleItemMixin(DivMarkersMixin(
     MapItemsMixin(CurrentUser)
   )))
 )));
+
+
+// export const currentUserConfig: ItemClassFactoryConfig = {
+//   renderConfig: {
+//     getPosition(data): HtPosition {
+//       return htUser(data).getPosition();
+//     },
+//     getDivContent(data) {
+//       return userDivFactory(data);
+//     }
+//   },
+//
+//   styleFunct: {
+//     get(type) {
+//       switch (type) {
+//         case "google": {
+//           return {
+//             default: {
+//               flat: true,
+//               anchor: RichMarkerPosition.BOTTOM_CENTER
+//             }
+//           }
+//         };
+//         case "leaflet": {
+//           return {
+//             default: {
+//               // iconAnchor: point(15, 43)
+//               iconAnchor: [15, 43]
+//             }
+//           }
+//         }
+//       }
+//     }
+//   },
+//   typeConfig: {
+//     isSingleItem: true,
+//     isDiv: true,
+//     hasDataObservable: false
+//   },
+//   name: "Current user"
+// };
+//
+// export const currentUserTrace = () => {
+//   return itemsFactory(currentUserConfig);
+// };
 // export class CurrentUser {
 //   name = "Current user";
 //   styleFunct: StyleFunct = {

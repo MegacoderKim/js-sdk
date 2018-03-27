@@ -22,76 +22,6 @@ import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 
-export const stopMarkersConfig: ItemClassFactoryConfig = {
-  renderConfig: {
-    getPosition(data) {
-      if (data.location && data.location.geojson) {
-        let lat = data.location.geojson.coordinates[1];
-        let lng = data.location.geojson.coordinates[0];
-        return { lat, lng };
-      } else {
-        return null;
-      }
-    },
-    getInfoContent(data: IPlaceline) {
-      let durationString = null;
-      const endedAt = data.started_at && data.duration ?
-        new Date(new Date(data.started_at).getTime() + (1000 * data.duration) ).toISOString() : null;
-      if (data.started_at && endedAt) {
-        let durationMin =
-          new Date(
-            new Date(endedAt).getTime() -
-              new Date(data.started_at).getTime()
-          ).getTime() /
-          (1000 * 60);
-        durationString = HMString(durationMin);
-      }
-
-      let start = TimeString(data.started_at);
-      let end = TimeString(endedAt);
-      let startDate = DateString(data.started_at);
-      let startDateShort = DateString(data.started_at, "short");
-      let endDate = DateString(endedAt);
-      let sameDate = startDate == endDate;
-      function htShow(item) {
-        return `display: ${item ? "flex" : "none"}`;
-      }
-      return `<div class="flex-column">
-<strong class="text-muted text-center" style="padding-bottom: 0; color: ${
-        Color.stop
-      }">Stop</strong>
-<div style="display: ${
-        start ? "display" : "none"
-      }" class="flex-row space-between">
-    <div>${start ||
-      "--:--"}</div><div>&nbsp; to &nbsp;</div><div class="text-right">${end ||
-        "--:--"}</div>
-</div>
-<div style="${htShow(startDate || endDate)}" class="${
-        sameDate || !endDate ? "space-around" : "space-between"
-      } text-2 text-muted flex-row">
-    <div>${startDateShort}</div><div style="display: ${
-        sameDate || !endDate ? "none" : "block"
-      }">${endDate}</div>
-</div>
-<div style="display: ${
-        durationString ? "block" : "none"
-      }" class="text-3 text-center">${durationString}</div>
-</div>`;
-    }
-  },
-  styleFunct: stopStyles,
-  typeConfig: {
-    hasPopup: true,
-    isCircle: true,
-    hasDataObservable: false
-  },
-  name: "stop"
-};
-
-export const stopMarkersTrace = () => {
-  return itemsFactory(stopMarkersConfig);
-};
 
 export class StopMarkers {
   styleFunct: StyleFunct = stopStyles
@@ -99,9 +29,9 @@ export class StopMarkers {
   constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
-    if (data.location && data.location.geojson) {
-      let lat = data.location.geojson.coordinates[1];
-      let lng = data.location.geojson.coordinates[0];
+    if (data.place && data.place.location) {
+      let lat = data.place.location.coordinates[1];
+      let lng = data.place.location.coordinates[0];
       return { lat, lng };
     } else {
       return null;
@@ -110,23 +40,15 @@ export class StopMarkers {
 
   getInfoContent(data: IPlaceline) {
     let durationString = null;
-    const endedAt = data.started_at && data.duration ?
-      new Date(new Date(data.started_at).getTime() + (1000 * data.duration) ).toISOString() : null;
-    if (data.started_at && endedAt) {
-      let durationMin =
-        new Date(
-          new Date(endedAt).getTime() -
-          new Date(data.started_at).getTime()
-        ).getTime() /
-        (1000 * 60);
-      durationString = HMString(durationMin);
+    if (data.duration) {
+      durationString = HMString(data.duration, 60);
     }
 
     let start = TimeString(data.started_at);
-    let end = TimeString(endedAt);
+    let end = TimeString(data.ended_at);
     let startDate = DateString(data.started_at);
     let startDateShort = DateString(data.started_at, "short");
-    let endDate = DateString(endedAt);
+    let endDate = DateString(data.ended_at);
     let sameDate = startDate == endDate;
     function htShow(item) {
       return `display: ${item ? "flex" : "none"}`;
@@ -160,7 +82,73 @@ export const StopMarkersTrace = PopupMixin(
   TraceMixin(ExtendBoundsMixin(CircleMixin(MarkersMixin(StyleMixin(
     MapItemsMixin(StopMarkers)
   )))))
-)
+);
+
+
+// export const stopMarkersConfig: ItemClassFactoryConfig = {
+//   renderConfig: {
+//     getPosition(data: IPlaceline) {
+//       console.log("stop", data);
+//       if (data.place && data.place.location) {
+//         let lat = data.place.location.coordinates[1];
+//         let lng = data.place.location.coordinates[0];
+//         console.log("lat", lat, lng);
+//         return { lat, lng };
+//       } else {
+//         return null;
+//       }
+//     },
+//     getInfoContent(data: IPlaceline) {
+//       let durationString = null;
+//       if (data.duration) {
+//         durationString = HMString(data.duration, 60);
+//       }
+//
+//       let start = TimeString(data.started_at);
+//       let end = TimeString(data.ended_at);
+//       let startDate = DateString(data.started_at);
+//       let startDateShort = DateString(data.started_at, "short");
+//       let endDate = DateString(data.ended_at);
+//       let sameDate = startDate == endDate;
+//       function htShow(item) {
+//         return `display: ${item ? "flex" : "none"}`;
+//       }
+//       return `<div class="flex-column">
+// <strong class="text-muted text-center" style="padding-bottom: 0; color: ${
+//         Color.stop
+//       }">Stop</strong>
+// <div style="display: ${
+//         start ? "display" : "none"
+//       }" class="flex-row space-between">
+//     <div>${start ||
+//       "--:--"}</div><div>&nbsp; to &nbsp;</div><div class="text-right">${end ||
+//         "--:--"}</div>
+// </div>
+// <div style="${htShow(startDate || endDate)}" class="${
+//         sameDate || !endDate ? "space-around" : "space-between"
+//       } text-2 text-muted flex-row">
+//     <div>${startDateShort}</div><div style="display: ${
+//         sameDate || !endDate ? "none" : "block"
+//       }">${endDate}</div>
+// </div>
+// <div style="display: ${
+//         durationString ? "block" : "none"
+//       }" class="text-3 text-center">${durationString}</div>
+// </div>`;
+//     }
+//   },
+//   styleFunct: stopStyles,
+//   typeConfig: {
+//     hasPopup: true,
+//     isCircle: true,
+//     hasDataObservable: false
+//   },
+//   name: "stop"
+// };
+//
+// export const stopMarkersTrace = () => {
+//   return itemsFactory(stopMarkersConfig);
+// };
 
 // export abstract class StopMarkers {
 //   name = "Stop";
