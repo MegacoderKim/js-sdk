@@ -11,12 +11,12 @@ export class HtActionsApi extends HtBaseApi {
   }
 
   get<T>(id: string, query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/${id}/`;
+    let path = `v2/${this.base}/${id}/`;
     return this.api$<T>(path, query, {token});
   }
 
   index<T>(query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/`;
+    let path = `v2/${this.base}/`;
     return this.api$<T>(path, query, {token});
   }
 
@@ -30,10 +30,10 @@ export class HtActionsApi extends HtBaseApi {
     return this.api$(path, query, {token});
   };
 
-  placeline<T>(id, query = {}, token?: string): Observable<T> {
-    let tail =  `v1/${this.base}/${id}/placeline/`;
-    return this.api$<T>(tail, query, {token});
-  }
+  // placeline<T>(id, query = {}, token?: string): Observable<T> {
+  //   let tail =  `v1/${this.base}/${id}/placeline/`;
+  //   return this.api$<T>(tail, query, {token});
+  // }
 
   graph(query, token?: string): Observable<IActionStatusGraph[]> {
     let path = `v1/${this.base}/graph/`;
