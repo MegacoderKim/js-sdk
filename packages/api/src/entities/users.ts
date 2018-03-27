@@ -31,7 +31,7 @@ export class HtUsersApi extends HtBaseApi {
   }
 
   analytics(query, token?: string): Observable<IUserAnalyticsPage> {
-    let path = `v1/${this.base}/analytics/`;
+    let path = `v2/${this.base}/analytics/`;
     return this.api$<IUserAnalyticsPage>(path, query, {token});
   }
 
