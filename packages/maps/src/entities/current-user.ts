@@ -52,9 +52,7 @@ export class CurrentUser {
   constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {
-    const p = htUser(data).getPosition();
-    console.log("get pos", p);
-    return p
+    return htUser(data).getPosition();
   };
 
   getDivContent(data) {

@@ -72,7 +72,12 @@ export class Placeline {
         // if (!selectedSegment) this.animPolyline.trace(restTrips);
         this.anim.clear();
       }
-      this.userMarker.trace(user);
+      if (this.userMarker.getPosition(user)) {
+        this.userMarker.trace(user);
+      } else {
+        this.userMarker.clear()
+      }
+
       this.traceAnimPolyline(restTrips, selectedSegment);
       this.actionsPolyline.setConnector(this.userMarker.getEntity());
       this.actionsPolyline.trace(user)
