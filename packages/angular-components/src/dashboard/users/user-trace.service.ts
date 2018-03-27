@@ -19,6 +19,7 @@ export class UserTraceService {
   segmentsTrace = new SegmentsTrace;
   usersCluster;
   userPlaces;
+  placeline;
   // map: L.Map;
   constructor(
       private store: Store<fromRoot.State>,
@@ -30,6 +31,7 @@ export class UserTraceService {
   ) {
     this.usersCluster = this.htMapService.usersCluster;
     this.userPlaces = this.htMapService.usersHeatmap;
+    this.placeline = this.htMapService.placeline;
     this.initListeners();
   }
 
@@ -54,9 +56,19 @@ export class UserTraceService {
       this.resetBounds(toFly)
     });
 
-    this.store.select(fromRoot.getCurrentUserData).subscribe((user: IUserPlaceline) => {
-      this.renderSegments(user);
-    });
+    this.placeline.setCompoundData$(
+      this.store.select(fromRoot.getCurrentUserData),
+      {
+        // roots: ['segments', 'actions'],
+        // highlighted$: this.store.select(fromRoot.getUserSelectedSegment),
+        // filter$: this.userClientService.placeline.segmentResetId$,
+        // resetMap$: this.store.select(fromRoot.getUserSelectedSegment)
+      }
+    )
+
+    // this.store.select(fromRoot.getCurrentUserData).subscribe((user: IUserPlaceline) => {
+    //   this.renderSegments(user);
+    // });
 
     this.store.select(fromRoot.getReplayHeadState).subscribe((head) => {
       // this.segmentsTrace.setReplayHead(head, this.map)
@@ -126,6 +138,7 @@ export class UserTraceService {
   //helpers
 
   private renderSegments(user: IUserPlaceline) {
+    console.log(user);
     // this.segmentsTrace.trace(user, this.map);
   }
 
