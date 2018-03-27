@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import * as fromRoot from "../reducers";
 import {Store} from "@ngrx/store";
-import {IPlaceHeat, IUserAnalytics, IUserPlaceline, IUserMap} from "ht-models";
+import {IPlaceHeat, IUserAnalytics, IUserPlaceline, IUserMap, IUser} from "ht-models";
 import {BroadcastService} from "../core/broadcast.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {config} from "../config";
@@ -13,6 +13,7 @@ import {HtMapService} from "ht-angular";
 import {StopsHeatmapTrace} from "ht-maps";
 // import * as L from "leaflet";
 import * as _ from "underscore";
+import {htUser} from "ht-data";
 
 @Injectable()
 export class UserTraceService {
@@ -39,9 +40,15 @@ export class UserTraceService {
     return this.htMapService.map as L.Map;
   }
 
+  setReplayHead(head) {
+    console.log(head);
+  }
+
 
   private initListeners() {
-
+    this.segmentsTrace.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
+      this.setReplayHead(head)
+    })
     // this.segmentsTrace.setSegmentPlayCallback((segmentId) => {
     //   this.broadcast.emit('replay-segment', segmentId);
     // });
@@ -71,7 +78,7 @@ export class UserTraceService {
     // });
 
     this.store.select(fromRoot.getReplayHeadState).subscribe((head) => {
-      // this.segmentsTrace.setReplayHead(head, this.map)
+      this.setReplayHead(head)
     });
 
     this.store.select(fromRoot.getUserSelectedSegment).scan((acc, segment) => {
@@ -94,11 +101,12 @@ export class UserTraceService {
     //   console.log(eventId, "selected event");
     // });
 
-    this.usersCluster.setPageData$(
-      this.store.select(fromRoot.getUserMapList)
-        .pluck('validUsers')
-        .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"}))
-    )
+    // this.usersCluster.setData$(
+    //   this.store.select(fromRoot.getUserMapList)
+    //     .pluck('validUsers')
+    //     // .filter((data: IUser) => !!htUser(data).getPosition())
+    //     // .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"}))
+    // );
 
     this.usersCluster.onClick = (data) => {
       let userMap = data.data;
@@ -138,7 +146,7 @@ export class UserTraceService {
   //helpers
 
   private renderSegments(user: IUserPlaceline) {
-    console.log(user);
+    // console.log(user);
     // this.segmentsTrace.trace(user, this.map);
   }
 

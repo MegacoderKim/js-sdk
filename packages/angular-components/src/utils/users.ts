@@ -49,7 +49,7 @@ export const GetUserFiltersMap = _.map(UserFilters, (filter: object) => {
 });
 
 let sortingQueryMap = {
-  num_trips: 'Trips',
+  // num_trips: 'Trips',
   name: 'Name',
   status: 'Status',
   total_distance: 'Distance',

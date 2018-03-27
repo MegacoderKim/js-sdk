@@ -37,6 +37,7 @@ export class ReplayComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.stats$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats();
+
     this.head$ = this.userTraceService.segmentsTrace.timelineSegment.head$;
     this.player$ = this.userTraceService.segmentsTrace.timelineSegment.player$;
     this.speed$ = this.player$.map(player => player.speed);

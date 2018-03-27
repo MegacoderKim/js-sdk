@@ -10,51 +10,52 @@ import {IAction} from "ht-models";
 import * as _ from "underscore";
 import { StopMarkersTrace} from "ht-maps";
 import {HtSegmentsTrace} from "./ht-js-map/segments-trace";
+import {HtCurrentUser} from "./ht-js-map/current-user";
+import {HtMarkerItem} from "./ht-js-map/marker-item";
+import {TimelineSegment} from "./ht-js-map/timeline-segment";
+import {HtMapItems} from "./ht-js-map/map-items";
+import {IPlaceline, ITimelineEvent, IUserPlaceline} from "ht-models";
+import {Color} from "ht-utility";
 
-export class SegmentsTrace extends HtSegmentsTrace {
-  segmentsPolylines: HtPolylines = new HtPolylines();
-  stopMarkers: StopMarkers = new StopMarkers();
-  actionMarkers: ActionMarkers = new ActionMarkers();
-  actionsPolylines: HtActionsPolylines = new HtActionsPolylines();
-  userMarker: CurrentUserMarker = new CurrentUserMarker();
-  replayMarker: ReplayMarker = new ReplayMarker();
-  allowedEvents = AllowedEvents;
-  eventMarkers: EventMarkers = new EventMarkers();
+export class SegmentsTrace {
+  timelineSegment =  new TimelineSegment();
 
-  extendBounds(bounds) {
-    this.stopMarkers.getBounds(bounds);
-    this.segmentsPolylines.getBounds(bounds);
-    this.actionMarkers.getBounds(bounds);
-  }
-
-  getActionPolylineWithId(currentPosition, items: IAction[]) {
-    let sortedAction = _.sortBy(items, action => {
-      let finalEta = action.eta || action.expected_at;
-      return finalEta
-    });
-    let polylinesWithId = sortedAction.reduce((acc, action: IAction) => {
-      let finalEta = action.eta || action.expected_at;
-      if(finalEta && !action.completed_at) {
-        let actionPostiion = htAction(action).getPositionsObject().position;
-        if(acc.length == 0) {
-          return actionPostiion ? [...acc, {
-            path: [currentPosition, [actionPostiion.lat, actionPostiion.lng]],
-            id: action.id
-          }]: acc
-        } else {
-          let pastPoint = _.last(acc).path[1];
-          return actionPostiion ? [...acc, {
-            path: [pastPoint, [actionPostiion.lat, actionPostiion.lng]],
-            id: action.id
-          }] : acc
-
-        }
+  private getSegmentTypes(userSegments: IPlaceline[]) {
+    return _.reduce(userSegments, (segmentType: ISegmentType, segment: IPlaceline) => {
+      if(segment.type == 'stop') {
+        if(segment.place && segment.place.location) segmentType.stopSegment.push(segment)
       } else {
-        return acc
+        if(segment.route) segmentType.tripSegment.push(segment)
       }
-    }, []);
-    return polylinesWithId;
+      return segmentType;
+    }, {tripSegment: [], stopSegment: []});
   }
+
+
+  //segments replay
+  clearTimeline() {
+    this.timelineSegment.clearTimeline()
+  }
+
+  get stats() {
+    return this.timelineSegment.stats
+  }
+
+  // get segments() {
+  //   return this.timelineSegment.placeline
+  // }
+
+  updateTimeline(user: IUserPlaceline) {
+    this.timelineSegment.update(user)
+  }
+
+
+  setSegmentPlayCallback(cb) {
+    this.timelineSegment.playSegmentCallback = cb
+  }
+
+
+
 }
 
 const AllowedEvents = {
@@ -69,4 +70,10 @@ const AllowedEvents = {
   'device.location_permission.enabled': 'Location permission enabled',
   'action.assigned': 'Action assigned',
   'action.delayed': 'Action delayed',
+};
+
+
+interface ISegmentType {
+  tripSegment: IPlaceline[],
+  stopSegment: IPlaceline[]
 };

@@ -1,21 +1,22 @@
 import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
 import {IDecodedSegment, IReplayHead} from "./interfaces";
+import {IUserPlaceline, IPlaceline} from "ht-models";
 
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
   allSegments: IDecodedSegment[];
   duration: number;
   playSegmentCallback;
-  update(userData: any) {
-    let segments = userData.placeline;
+  update(userData: IUserPlaceline) {
+    let segments: IPlaceline[] = userData.placeline;
     // let noTrackingSegments = this.getNoTrackingSegments(userData.events);
     // console.log(noTrackingSegments);
     let lastUpdated = userData.last_heartbeat_at;
     lastUpdated = lastUpdated  || new Date().toISOString();
     let duration = 0;
     var totalTimeAwareArray = [];
-    this.allSegments = _.reduce(segments, (acc: IDecodedSegment[], segment: IDecodedSegment, i: number) => {
+    this.allSegments = _.reduce(segments, (acc: IDecodedSegment[], segment: IPlaceline, i: number) => {
       let segmentLastUpdatedAt = i == segments.length - 1 ? lastUpdated : null;
       let segmentData = this.getSegmentData(segment, segmentLastUpdatedAt);
       let currentSegment;
@@ -125,7 +126,7 @@ export class TimelineSegment extends TimelineReplay {
         duration: end - start,
         distance: 0,
         timeAwarePolylineArray: this.timeAwareArray,
-        segments
+        placeline: this.segments
       };
       return stats;
     }
@@ -140,7 +141,7 @@ export class TimelineSegment extends TimelineReplay {
     let start = new Date(segmentStart).getTime();
     let durationSeg = end - start;
     let timeAwareArray;
-    if(segment.type == 'trip') {
+    if(segment && segment.type !== 'stop' && segment.type !== 'unknown' && segment.type != 'gap') {
       timeAwareArray = this.getTripTimeAwareArray(segment, segmentEnd)
 
     } else if(!segment.timeAwareArray) {

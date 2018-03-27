@@ -51,7 +51,7 @@ export interface IReplayStats {
   duration: number,
   distance: number,
   timeAwarePolylineArray?: ITimeAwarePoint[],
-  segments: IDecodedSegment[]
+  placeline: IDecodedSegment[]
 }
 
 export interface IReplayPlayer {

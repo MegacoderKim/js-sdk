@@ -1,7 +1,12 @@
 <div id="desktop-replay" class="flex-column" *ngIf="stats$ | async as stats">
   <div class="new-timeline">
     <div class="flex-row" #timeline (click)="jumpToTimePercent($event, timeline)">
-      <div class="segment" [class.segment-trip]="segment.type == 'trip'" [class.segment-nolocation]="segment.type == 'location_void'" [class.segment-gap]="segment.type == 'gap'" [style.width.%]="segment.endPercent - segment.startPercent" *ngFor="let segment of stats.placeline"></div>
+      <div class="segment"
+           [class.segment-trip]="segment.type !== 'stop' && segment.type !== 'unknown' && segment.type !== 'gap'"
+           [class.segment-nolocation]="segment.type == 'unknown'"
+           [class.segment-gap]="segment.type == 'gap'"
+           [style.width.%]="segment.endPercent - segment.startPercent"
+           *ngFor="let segment of stats.placeline"></div>
     </div>
     <div (mousedown)="startDrag($event, timeline)" class="flex-row flex">
       <div class="peg" draggable="false" [style.left.%]="(head$ | async)?.timePercent || 0">
