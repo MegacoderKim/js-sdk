@@ -53,10 +53,11 @@ export class HtUsersApi extends HtBaseApi {
   }
 
   private convertActionPlacelineToUserPlaceline(actionPlaceline: IActionPlaceline): IUserPlaceline {
-    const user = actionPlaceline.user as IUser;
+    let user = actionPlaceline.user as IUser;
     const placeline = actionPlaceline.placeline as IPlaceline[];
     const events = [];
     let action = {...actionPlaceline, placeline: null} as IAction;
+    user.location = user.location || action.location;
     return {
       ...user,
       actions: [action],
