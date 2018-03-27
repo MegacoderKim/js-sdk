@@ -11,10 +11,10 @@
           <div class="dropdown-content">
             <div class="dropdown-header">Status</div>
             <a (click)="selectFilter(filter.query)" class="dropdown-item" *ngFor="let filter of actionStatusFilters"><span>{{filter.label}}</span></a>
-            <div class="dropdown-header">On time</div>
-            <a class="dropdown-item" (click)="selectFilter(filter.query)" *ngFor="let filter of actionOntimeFilters">
-              <span>{{filter.label}}</span>
-            </a>
+            <!--<div class="dropdown-header">On time</div>-->
+            <!--<a class="dropdown-item" (click)="selectFilter(filter.query)" *ngFor="let filter of actionOntimeFilters">-->
+              <!--<span>{{filter.label}}</span>-->
+            <!--</a>-->
             <div class="dropdown-header">Types</div>
             <a class="dropdown-item" (click)="selectFilter(type.query)" *ngFor="let type of actionTypes">
               <span>{{type.label}}</span>
