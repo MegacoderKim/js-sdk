@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": [
+    "polyfills.ts",
+    "ht-tracking",
+    "main2.ts"
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
+  }
+}

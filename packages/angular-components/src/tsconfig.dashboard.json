@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.app.json",
+  "includes": [
+    "polyfills.ts",
+    "dashboard",
+    "d-main.ts"
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
+  }
+}

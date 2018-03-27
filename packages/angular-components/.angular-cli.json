@@ -17,7 +17,7 @@
       "main": "d-main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "tsconfig.dashboard.json",
       "prefix": "app",
       "styles": [
         "../node_modules/font-awesome/css/font-awesome.css",
@@ -91,7 +91,7 @@
       "main": "main2.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "tsconfig.track.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "stylePreprocessorOptions": {

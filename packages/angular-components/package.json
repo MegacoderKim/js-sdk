@@ -23,7 +23,7 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --preserve-symlink --proxy-config proxy.conf.json",
+    "start": "ng serve --preserve-symlink --env=staging --proxy-config proxy.conf.json",
     "build": "npm run lib && typedoc --out dist/docs --target es6 --theme minimal --mode file libs",
     "build:elem": "ng build --aot --prod --output-hashing=none --app 2 && gulp",
     "test": "ng test",
@@ -31,7 +31,7 @@
     "e2e": "ng e2e",
     "release:staging": "ng build --prod --env=staging --preserve-symlink -d https://d2cn7bwfutuzjl.cloudfront.net/ && cp dist/d-index.html dist/index.html && node d-upload.js",
     "release:production": "ng build --prod --preserve-symlink -d https://d29wq6n9fk0vmd.cloudfront.net/ && cp dist/d-index.html dist/index.html && NODE_ENV='production' node d-upload.js",
-    "build:stats": "ng build --prod --preserve-symlink --stats-json",
+    "build:stats": "ng build --prod --app 2 --preserve-symlink --stats-json",
     "bundle-report": "npm run build:stats && webpack-bundle-analyzer dist/stats.json",
     "dist": "rimraf dist && gulp build",
     "package-sanitize": "node ./scripts/package-sanitize.js",
@@ -55,6 +55,7 @@
     "@ngrx/store": "^5.2.0",
     "angular-async-local-storage": "^3.1.1",
     "bulma": "^0.6.2",
+    "classlist.js": "^1.1.20150312",
     "cleave": "^1.0.0-alpha.10",
     "cleave.js": "^1.2.1",
     "clipboard": "^2.0.0",
@@ -70,6 +71,7 @@
     "ht-api": "^0.0.4-0",
     "ht-client": "^0.1.9-0",
     "ht-data": "^0.1.9-0",
+    "ht-leaflet-wrapper": "^0.0.1-0",
     "ht-maps": "^0.1.10-0",
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.7-0",
@@ -87,7 +89,8 @@
     "reselect": "^3.0.1",
     "smoothscroll-polyfill": "^0.4.3",
     "time-aware-polyline": "^0.0.8",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "web-animations-js": "^2.3.1"
   },
   "devDependencies": {
     "@angular/animations": "^5.2.0",
