@@ -227,8 +227,8 @@ export class PlacelineComponent implements OnInit {
       let expActions: any[] = [];
       this.actionMap = this.setActionMap(action);
       const assign = {
-        actionText: `${NameCase(action.type)} assigned`,
-        actionTime: action.assigned_at,
+        actionText: `${NameCase(action.type)} created`,
+        actionTime: action.created_at,
         actionD: NameCase(action.type[0]) + this.actionMap[action.id],
         action_id: action.id,
         actionLookupId: action.lookup_id,
