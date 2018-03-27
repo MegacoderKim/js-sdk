@@ -107,9 +107,9 @@ export class HtUser {
 
   getPosition(): HtPosition | null {
     let data = this.data;
-    if (data.last_location && data.last_location.geojson) {
-      const lat = data.last_location.geojson.coordinates[1];
-      const lng = data.last_location.geojson.coordinates[0];
+    if (data.location && data.location.geojson) {
+      const lat = data.location.geojson.coordinates[1];
+      const lng = data.location.geojson.coordinates[0];
       return { lat, lng };
       // return L.latLng([item.last_location.geojson.coordinates[1], item.last_location.geojson.coordinates[0]])
     } else {
@@ -119,7 +119,7 @@ export class HtUser {
 
   isValidMarker(user?: IUserAnalytics | IUser) {
     user = user || this.data;
-    return !!(user.last_location && user.last_location.geojson);
+    return !!(user.location && user.location.geojson);
   }
 }
 

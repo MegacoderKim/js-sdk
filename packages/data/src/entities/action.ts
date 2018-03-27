@@ -8,7 +8,7 @@ export class HtAction {
   types = ["delivery", "pickup", "task", "visit", "stopover", "trip"];
 
   sortingQueryMap: object = {
-    assigned_at: "Assigned",
+    created_at: "Created",
     completed_at: "Completed",
     type: "Type",
     user__name: "User name",
@@ -21,9 +21,7 @@ export class HtAction {
   ];
 
   statusQueryMap = {
-    created: "Not yet started",
-    "assigned,started": "Assigned",
-    "started,assigned": "Assigned",
+    "created": "Created",
     completed: "Completed"
   };
 
@@ -58,6 +56,7 @@ export class HtAction {
   }
 
   getStatusString(status: string) {
+    console.log("Status", status);
     return this.statusQueryMap[status] || status;
   }
 

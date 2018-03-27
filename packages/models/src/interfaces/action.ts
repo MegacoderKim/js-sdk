@@ -18,6 +18,7 @@ export interface IAction {
       last_updated_text: string,
       status_text: string,
       is_warning: boolean
+      warning_since_text: string,
     }
     vehicle_type: string
   };
@@ -35,7 +36,7 @@ export interface IAction {
   unique_id: string;
   lookup_id: string;
   arrival_status: string,
-  assigned_at: string;
+  // assigned_at: string;
   distance_to_arrival: null | number,
   distance: number | null;
   duration: number | null;
@@ -75,7 +76,7 @@ export interface IAction {
   expected_route: string,
   location_time_series: string,
   event_flags: string[];
-  metadata: object[];
+  metadata: object;
   // account?: any
 }
 
