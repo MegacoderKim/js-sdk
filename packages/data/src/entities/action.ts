@@ -56,7 +56,6 @@ export class HtAction {
   }
 
   getStatusString(status: string) {
-    console.log("Status", status);
     return this.statusQueryMap[status] || status;
   }
 
