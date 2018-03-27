@@ -52,7 +52,7 @@
       <div class="flex">
 
         <div class="flex-column">
-          <div class="">{{action.user.name}} <span *ngIf="action.assigned_at">assigned at {{action.assigned_at | timeString}}</span>
+          <div class="">{{action.user.name}} <span *ngIf="action.created_at">created at {{action.created_at | timeString}}</span>
           </div>
           <!--<span class="text-muted">{{action.user.display.status_text}}</span>-->
           <div [class.text-warning]="action.user?.display.is_warning" class="flex-row">{{action.user.display.status_text}}</div>

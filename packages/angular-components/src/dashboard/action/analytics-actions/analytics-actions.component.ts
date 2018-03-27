@@ -34,9 +34,9 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
   actionDataResult:  any[];
   dataColumns = [
     {
-      label: 'Lookup ID',
+      label: 'Unique',
       sortOrder: '-',
-      key: 'lookup_id'
+      key: 'unique_id'
 
     },
     {
@@ -57,7 +57,7 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
       key: 'status'
     },
     {
-      label: 'Assigned Time',
+      label: 'Created at',
       sortOrder: '-',
       key: 'created_at'
     },

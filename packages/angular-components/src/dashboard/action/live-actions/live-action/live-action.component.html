@@ -23,16 +23,16 @@
             <div class="">{{action.user.name | nameCase | dot: 'Unknown name'}}</div>
           </div>
           <div class="text-muted space-between flex-row">
-            <div>{{action.assigned_at ? 'Assigned' : 'Created'}}</div>
+            <div>Created</div>
             <div *ngIf="action.completed_at">{{action.status | nameCase}}</div>
             <div *ngIf="!action.completed_at">{{action.eta ? 'ETA' : 'Expected'}}</div>
           </div>
           <div class="space-between flex-row">
-            <div>{{action.assigned_at || action.created_at | timeString}}</div>
+            <div>{{action.created_at | timeString}}</div>
             <div>{{action.completed_at || action.eta || action.expected_at | timeString | dot: '--:--'}}</div>
           </div>
           <div class="text-muted space-between flex-row">
-            <div>{{action.assigned_at | dateHumanize}}</div>
+            <div>{{action.created_at | dateHumanize}}</div>
             <div>{{action.completed_at || action.eta || action.expected_at | dateHumanize | dot: '----'}}</div>
           </div>
 

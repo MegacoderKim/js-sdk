@@ -10,15 +10,16 @@ export function GetActionDateRangeQuery(query) {
 
 const ActionStatusFilters = [
     { status: 'created'},
-    { status: 'assigned,started'},
     { status: 'completed'},
 ];
 
 export const GetActionStatusFiltersMap = _.map(ActionStatusFilters, (filter: object) => {
     let key = Object.keys(filter)[0];
+    const prop = filter[key];
+
     return {
         query: filter,
-        label: htAction().getStatusString(filter[key])
+        label: htAction().getStatusString(prop)
     }
 });
 
