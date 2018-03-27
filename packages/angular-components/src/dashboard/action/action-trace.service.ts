@@ -30,13 +30,13 @@ export class ActionTraceService {
     this.actionsCluster.onClick = (data) => {
       this.selectAction(data.data)
     };
-    // this.actionsCluster.setPageData$(
-    //   this.store.select(fromRoot.getActionMapList)
-    //     .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"})),
-    //   {
-    //     hide$: this.store.select(fromRoot.getUserSelectedUserId)
-    //   }
-    // )
+    this.actionsCluster.setPageData$(
+      this.store.select(fromRoot.getActionMapList)
+        .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"})),
+      {
+        hide$: this.store.select(fromRoot.getUserSelectedUserId)
+      }
+    )
   }
 
   private initHeatmap() {

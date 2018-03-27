@@ -29,9 +29,14 @@ export class ActionService {
   }
 
   getAll(query = {}, callback?) {
-    let string = HtQuerySerialize(GetActionDateRangeQuery({page_size: 15, ...query, ordering: null}));
-    let url = `app/actions/?${string}`;
-    return this.page.all(url, callback)
+    const queryWithDate = GetActionDateRangeQuery({page_size: 15, ...query, ordering: null});
+    // let string = HtQuerySerialize(queryWithDate);
+    // let url = `app/actions/?${string}`;
+    const index$ = this.client.api.index(queryWithDate);
+    return this.client.api.allPages(index$).do((data) => {
+      if (callback) callback(data)
+    })
+    // return this.page.all(url, callback)
   }
 
   graph(query) {
