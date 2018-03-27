@@ -71,7 +71,7 @@ export class InnerMapService {
     if(config.toReset) {
       // this.setResetMapControl(map);
       map.addControl(control.zoom({
-        position: 'topright'
+        position: 'topleft'
       }));
     }
 

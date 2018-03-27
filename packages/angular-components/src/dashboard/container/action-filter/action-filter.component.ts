@@ -87,7 +87,7 @@ export class ActionFilterComponent extends FilterCommonComponent implements OnIn
 
   csvApi$(query) {
     let string = HtQuerySerialize({...query, output_format: 'csv', 'min_created_at': query.start, 'max_created_at': query.end, start: null, end: null, page_size: null});
-    let url = `https://api.hypertrack.com/api/v1/actions/?${string}`;
+    let url = `https://api.hypertrack.com/api/v2/actions/?${string}`;
     return this.http.get(url, {responseType: 'text'})
   }
 
