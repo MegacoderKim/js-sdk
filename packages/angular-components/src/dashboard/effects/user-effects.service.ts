@@ -159,7 +159,8 @@ export class UserEffectsService {
             (userState: fromUserReducer.State, range: IRange) => {
               let date = (range.end && !userState['action_id'] && !userState['action_lookup_id'] && !userState['action_collection_id'] && !userState.timelineQuery.date) ? moment(range.end).format('YYYY-MM-DD') : null;
                 // console.log(userState.timelineQuery, date, "query", toFetch);
-                let timelineQuery = date ? {...userState.timelineQuery, date} : userState.timelineQuery;
+              let timelineQuery = date ? {...userState.timelineQuery, date} : userState.timelineQuery;
+              toFetch = toFetch && (userState.selectedUserId || userState.timelineQuery.action_id || userState.timelineQuery.action_collection_id)
               return {
                     userId: userState.selectedUserId,
                     timelineQuery,
