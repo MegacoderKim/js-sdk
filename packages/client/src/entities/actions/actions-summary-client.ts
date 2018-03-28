@@ -66,7 +66,7 @@ export class ActionsSummary extends EntityListClient {
 
   getSummaryChart() {
     return this.data$.pipe(
-      map((summaryData) => {
+      map((summaryData: IActionsSummary) => {
         return this.filter.summaryCharts(this.filter.statusQueryArray, summaryData)
       })
     )

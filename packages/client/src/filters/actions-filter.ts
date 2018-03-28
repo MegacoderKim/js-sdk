@@ -17,10 +17,28 @@ export class ActionsFilter extends BaseFilter {
     },
     {
       label: "Completed",
-      values: ["completed"],
+      values: ["completed", "autocompleted"],
       color: Color.stop
 
     },
+    // {
+    //   label: "AutoCompleted",
+    //   values: ["autocompleted"],
+    //   color: 'grey'
+    //
+    // },
+    {
+      label: "Canceled",
+      values: ["canceled", "autocanceled"],
+      color: Color.red
+
+    },
+    // {
+    //   label: "autocanceled",
+    //   values: ["autocanceled"],
+    //   color: 'purple'
+    //
+    // },
     // {
     //   label: "Suspended",
     //   values: ["suspended"],
