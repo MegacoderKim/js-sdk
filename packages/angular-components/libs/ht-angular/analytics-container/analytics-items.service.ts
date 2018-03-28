@@ -53,7 +53,7 @@ export class AnalyticsItemsService {
       usersAnalyticsListPresets.users_actions(),
       usersAnalyticsListPresets.max_location_disabled_duration(),
       usersAnalyticsListPresets.current_location_disabled(),
-      usersAnalyticsListPresets.max_stop_duration(),
+      // usersAnalyticsListPresets.max_stop_duration(),
       // usersAnalyticsListPresets.max_network_offline(),
       usersAnalyticsListPresets.max_distance(),
     ];
