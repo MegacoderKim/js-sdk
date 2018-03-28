@@ -46,7 +46,8 @@ export class ActionService {
 
   overview(query = {}) {
     let string = HtQuerySerialize(GetActionDateRangeQuery({...query, ordering: null}));
-    return this.http.get(`app/actions/summary/?${string}`)
+    return this.client.api.summary(GetActionDateRangeQuery({...query, ordering: null}));
+    // return this.http.get(`app/actions/summary/?${string}`)
   }
 
   getAction(id) {
@@ -76,8 +77,9 @@ export class ActionService {
   }
 
   summary(query) {
-    let string = HtQuerySerialize(query);
-    return this.http.get(`app/actions/summary/?${string}`)
+    // let string = HtQuerySerialize(query);
+    return this.client.api.summary(query);
+    // return this.http.get(`app/actions/summary/?${string}`)
   }
 
 }

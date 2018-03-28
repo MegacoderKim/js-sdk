@@ -23,6 +23,7 @@ import {Page} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {config} from "../../config";
 import {startOfToday} from 'date-fns';
+import {HtActionsService} from "ht-angular";
 
 @Component({
   selector: 'app-live-actions',
@@ -143,6 +144,7 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
   hoveredItemKey: string | null;
   totalActions: number;
   isToday: boolean;
+  summary$;
   @ViewChildren(LiveActionComponent, { read: ElementRef }) actionCard: QueryList<LiveActionComponent>;
   constructor(
       public actionService: ActionService,
@@ -151,9 +153,11 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
       private router: Router,
       public store: Store<fromRoot.State>,
       private containerService: ContainerService,
-      private mapService: InnerMapService
+      private mapService: InnerMapService,
+      private actionsService: HtActionsService
   ) {
     super(route, broadcast, store, actionService);
+    this.summary$ = this.actionsService.summary.summaryChart$;
   }
 
   ngOnInit() {
@@ -300,27 +304,31 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
       this.items = data;
     });
 
-    let sub2 = this.store.select(fromRoot.getActionSummary).filter(data => !!data).subscribe((data) => {
-      this.summary = data;
-      let total = 0;
-      this.overview = _.map(this.actionSummary, (entity) => {
-        let sum = _.reduce(entity.keys, (acc, key: string) => {
-          return acc + data[key]
-        }, 0);
-        let value = entity.value + sum;
-        total = total + sum;
-        let selected = false;
-        if(this.status) {
-          let status = this.status.split(',');
-          selected = _.reduce(entity.keys, (acc, key) => {
-            return acc && status.indexOf(key) > -1
-          }, true)
-        };
-        return {...entity, value, selected }
-      });
-      this.totalActions = total;
-      // console.log("total", total);
-    })
+    let sub2 = this.store.select(fromRoot.getActionSummary).subscribe((data) => {
+      this.actionsService.summary.setData(data)
+    });
+
+    // let sub2 = this.store.select(fromRoot.getActionSummary).filter(data => !!data).subscribe((data) => {
+    //   this.summary = data;
+    //   let total = 0;
+    //   this.overview = _.map(this.actionSummary, (entity) => {
+    //     let sum = _.reduce(entity.keys, (acc, key: string) => {
+    //       return acc + data[key]
+    //     }, 0);
+    //     let value = entity.value + sum;
+    //     total = total + sum;
+    //     let selected = false;
+    //     if(this.status) {
+    //       let status = this.status.split(',');
+    //       selected = _.reduce(entity.keys, (acc, key) => {
+    //         return acc && status.indexOf(key) > -1
+    //       }, true)
+    //     };
+    //     return {...entity, value, selected }
+    //   });
+    //   this.totalActions = total;
+    //   // console.log("total", total);
+    // })
 
     this.subs.push(sub, sub2)
   }

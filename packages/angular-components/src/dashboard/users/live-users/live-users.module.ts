@@ -6,6 +6,7 @@ import {SharedModule} from "../../shared/shared.module";
 import {ActiveUserComponent} from "./active-user/active-user.component";
 import {TimelineUserModule} from "../timeline-user/timeline-user.module";
 import {GraphsModule} from "../../graphs/graphs.module";
+import {UsersSummaryModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import {GraphsModule} from "../../graphs/graphs.module";
       SharedModule,
       TimelineUserModule,
       GraphsModule,
+    UsersSummaryModule
   ],
   declarations: [
       LiveUsersComponent,

@@ -1,35 +1,14 @@
 <app-action-page [@popup] *ngIf="detailActionId || detailLookupId" [showPop]="detailActionId || detailLookupId"></app-action-page>
 <app-loading-data *ngIf="baseLoading.data && !items && !detailActionId && !detailLookupId" message="Actions"></app-loading-data>
 <div appScrollTop [@appear] [hidden]="detailActionId || detailLookupId" *ngIf="items" class="flex-column column-gap-10">
-
-  <!--<div class="counter" fxLayout="column" *ngIf="overview" fxLayoutAlign="center center">-->
-    <!--<div class="number">{{totalActions}}</div>-->
-  <!--</div>-->
-  <ng-template [ngIf]="overview && items">
-    <app-pie-chart-label [countLabel]="'ACTION' | pluralize:totalActions:'S'" [totalCount]="totalActions" [overview]="overview" (selectDatum)="setStatusFilter($event)"></app-pie-chart-label>
-    <!--<div class="user-graphs flex-row row-gap-10 space-around">-->
-      <!--<app-pie-chart #chart [centerText]="totalActions" [data]="overview"></app-pie-chart>-->
-      <!--<div class="flex-column justify-center">-->
-        <!--<div-->
-                <!--class="graph-label row-gap-10"-->
-                <!--[class.graph-active]="datum.selected"-->
-                <!--(click)="setStatusFilter(datum)"-->
-                <!--*ngFor="let datum of overview; let i = index">-->
-          <!--<div class="box" [style.background-color]="chart.color(i)"></div>-->
-          <!--<span>{{datum.name}} ({{datum.value}})</span>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--&lt;!&ndash;<div fxLayout="column" fxLayoutGap="40px">&ndash;&gt;-->
-        <!--&lt;!&ndash;<app-pie-chart centerText="Availability" [data]="overview?.availability"></app-pie-chart>&ndash;&gt;-->
-        <!--&lt;!&ndash;<div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center start">&ndash;&gt;-->
-          <!--&lt;!&ndash;<div fxLayout="row" fxLayoutGap="10px" *ngFor="let label of availabilityLable; let i = index">&ndash;&gt;-->
-            <!--&lt;!&ndash;<div class="box" [style.background-color]="chart.color(i)"></div>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span>{{label}}</span>&ndash;&gt;-->
-          <!--&lt;!&ndash;</div>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--</div>-->
-  </ng-template>
+  <ng-container *ngIf="summary$ | async as summary">
+    <ht-users-summary
+      label="action"
+      [summary]="summary"></ht-users-summary>
+  </ng-container>
+  <!--<ng-template [ngIf]="overview && items">-->
+    <!--<app-pie-chart-label [countLabel]="'ACTION' | pluralize:totalActions:'S'" [totalCount]="totalActions" [overview]="overview" (selectDatum)="setStatusFilter($event)"></app-pie-chart-label>-->
+  <!--</ng-template>-->
 
   <div *ngIf="items">
     <div *ngFor="let action of items.results; trackBy:indexId">

@@ -1,23 +1,14 @@
 <app-timeline-user baseLink="../" [@popup] *ngIf="selectedUserSegmentId" [showPop]="selectedUserSegmentId"></app-timeline-user>
 <app-loading-data *ngIf="baseLoading.data && !items && !selectedUserSegmentId" [message]="'Users'"></app-loading-data>
 <div appScrollTop *ngIf="items" [hidden]="selectedUserSegmentId" class="flex-column column-gap-10">
-    <ng-template [ngIf]="overview && items && isToday">
-      <app-pie-chart-label [countLabel]="'USER' | pluralize:totalUsers:'S'" [totalCount]="totalUsers" [pieColor]="pieColor" [overview]="overview" (selectDatum)="setStatusFilter($event)"></app-pie-chart-label>
-        <!--<div class="user-graphs flex-row space-around row-gap-10">-->
-            <!--<app-pie-chart [color]="pieColor" #chart [centerText]="totalUsers" [data]="overview"></app-pie-chart>-->
-            <!--<div class="flex-column justify-center">-->
-                <!--<div-->
-                        <!--class="graph-label flex-row row-gap-10"-->
-                        <!--[class.graph-active]="datum.selected"-->
-                        <!--(click)="setStatusFilter(datum)"-->
-                        <!--*ngFor="let datum of overview; let i = index">-->
-                    <!--<div class="box" [style.background-color]="pieColor(i)"></div>-->
-                    <!--&lt;!&ndash;<div class="box" style="background-color: #ccc;"></div>&ndash;&gt;-->
-                    <!--<span>{{datum.name}} ({{datum.value}})</span>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    </ng-template>
+    <!--<ng-template [ngIf]="overview && items && isToday">-->
+      <!--<app-pie-chart-label [countLabel]="'USER' | pluralize:totalUsers:'S'" [totalCount]="totalUsers" [pieColor]="pieColor" [overview]="overview" (selectDatum)="setStatusFilter($event)"></app-pie-chart-label>-->
+      <!---->
+    <!--</ng-template>-->
+  <ng-container *ngIf="isToday && summary$ | async as summary">
+    <ht-users-summary
+    [summary]="summary"></ht-users-summary>
+  </ng-container>
     <div *ngIf="!isToday" class="text-center">
         <div class="count">{{items.count}} {{'User' | pluralize:items.count}}</div>
     </div>
