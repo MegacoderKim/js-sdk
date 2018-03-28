@@ -1,19 +1,8 @@
-import {StopMarkers} from "./stop-markers";
-import {HtPolylines} from "./polylines";
-import {HtActionsPolylines} from "./actions-polylines";
-import {ActionMarkers} from "./actions";
-import {CurrentUserMarker} from "./current-user-marker";
-import {ReplayMarker} from "./replay-marker";
-import {EventMarkers} from "./events";
 import {htAction} from "ht-data";
 import {IAction} from "ht-models";
 import * as _ from "underscore";
 import { StopMarkersTrace} from "ht-maps";
-import {HtSegmentsTrace} from "./ht-js-map/segments-trace";
-import {HtCurrentUser} from "./ht-js-map/current-user";
-import {HtMarkerItem} from "./ht-js-map/marker-item";
 import {TimelineSegment} from "./ht-js-map/timeline-segment";
-import {HtMapItems} from "./ht-js-map/map-items";
 import {IPlaceline, ITimelineEvent, IUserPlaceline} from "ht-models";
 import {Color} from "ht-utility";
 

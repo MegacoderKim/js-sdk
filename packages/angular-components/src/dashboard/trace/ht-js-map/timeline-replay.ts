@@ -12,12 +12,12 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimeAwarePoint, ITimelineEvent} from "ht-models";
 import {timer} from "rxjs/observable/timer";
 import {TimeAwareEncoder} from "time-aware-polyline";
-import {polyline, latLngBounds} from "leaflet";
+// import {polyline, latLngBounds} from "leaflet";
 
 export class TimelineReplay extends TimeAwareEncoder {
   // timeAwarePolyline: TimeAwarePolyline = new TimeAwarePolyline();
   timeAwareArray: ITimeAwarePoint[];
-  polyline: L.Polyline = polyline([]);
+  // polyline: L.Polyline = polyline([]);
   map;
   stats;
   stats$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -107,11 +107,11 @@ export class TimelineReplay extends TimeAwareEncoder {
   }
 
 
-  getBounds(bounds: L.LatLngBounds = latLngBounds([])) {
-    return _.reduce(this.timeAwareArray, (bounds, point) => {
-      return bounds.extend([+point[0], +point[1]])
-    }, bounds)
-  }
+  // getBounds(bounds: L.LatLngBounds) {
+  //   return _.reduce(this.timeAwareArray, (bounds, point) => {
+  //     return bounds.extend([+point[0], +point[1]])
+  //   }, bounds)
+  // }
 
   private getNoTrackingSegments(events: ITimelineEvent[]) {
     return _.reduce(events, (acc: {segments: string[][], start: string}, event: ITimelineEvent) => {
