@@ -28,17 +28,35 @@ export const actionsConfigPreset: IAnalyticsPresets = {
         tags: [],
         chartFormat: [
           {
-            title: "Assigned",
+            title: "Created",
             selector(graphData: IActionStatusGraph) {
-              return graphData.assigned
+              return graphData.created
             }
           },
           {
             title: "Completed",
             selector(graphData: IActionStatusGraph) {
-              return graphData.completed
+              return graphData.completed + graphData.autocompleted
             }
           },
+          // {
+          //   title: "Autocompleted",
+          //   selector(graphData: IActionStatusGraph) {
+          //     return graphData.autocompleted
+          //   }
+          // },
+          // {
+          //   title: "Canceled",
+          //   selector(graphData: IActionStatusGraph) {
+          //     return graphData.canceled
+          //   }
+          // },
+          // {
+          //   title: "Autocanceled",
+          //   selector(graphData: IActionStatusGraph) {
+          //     return graphData.autocanceled
+          //   }
+          // },
 
 
         ]
