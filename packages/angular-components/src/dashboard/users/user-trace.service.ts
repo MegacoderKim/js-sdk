@@ -64,9 +64,9 @@ export class UserTraceService {
     //   // this.map.addLayer(this.userPlaces.markerCluster);
     // });
 
-    this.broadcast.on('reset-map').debounceTime(50).subscribe((toFly: boolean) => {
-      this.resetBounds(toFly)
-    });
+    // this.broadcast.on('reset-map').debounceTime(50).subscribe((toFly: boolean) => {
+    //   this.resetBounds(toFly)
+    // });
 
     this.placeline.setCompoundData$(
       this.store.select(fromRoot.getCurrentUserData),

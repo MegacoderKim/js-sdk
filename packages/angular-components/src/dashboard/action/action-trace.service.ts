@@ -57,9 +57,9 @@ export class ActionTraceService {
     // });
 
 
-    this.broadcast.on('reset-map').debounceTime(200).subscribe(() => {
-      this.resetBounds()
-    });
+    // this.broadcast.on('reset-map').debounceTime(200).subscribe(() => {
+    //   this.resetBounds()
+    // });
 
     this.broadcast.on('hover-action').subscribe((actionId: string | null) => {
       this.actionsCluster.setPopup(actionId)

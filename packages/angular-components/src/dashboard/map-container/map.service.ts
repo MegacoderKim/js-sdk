@@ -26,7 +26,12 @@ export class InnerMapService {
       private actionTrace: ActionTraceService,
       private htMapService: HtMapService
   ) {
-    this.setMapStyle()
+    this.setMapStyle();
+    this.broadcast.on('reset-map').debounceTime(50).subscribe((toFly: boolean) => {
+      if (this.map) {
+        this.htMapService.resetBounds()
+      }
+    });
   }
 
   setMapStyle() {
