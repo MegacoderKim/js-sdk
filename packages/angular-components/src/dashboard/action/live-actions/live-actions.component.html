@@ -4,6 +4,9 @@
   <ng-container *ngIf="summary$ | async as summary">
     <ht-users-summary
       label="action"
+      [selectable]="true"
+      (setQuery)="setQuery($event)"
+      (clearQueryKey)="clearStatusQuery()"
       [summary]="summary"></ht-users-summary>
   </ng-container>
   <!--<ng-template [ngIf]="overview && items">-->

@@ -169,9 +169,12 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
     this.getMapList();
   }
 
-  setStatusFilter(overview) {
-    let query = {status: overview.keys.toString()};
+  setQuery(query) {
     this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
+  }
+
+  clearStatusQuery() {
+    this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction('status'))
   }
 
   onListDateQueryChange(query) {

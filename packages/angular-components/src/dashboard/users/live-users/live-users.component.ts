@@ -178,6 +178,15 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
     this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
   }
 
+  setQuery(query) {
+    console.log("quer");
+    this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
+  }
+
+  clearQueryKey() {
+    this.store.dispatch(new fromQuery.ClearUserPageQueryKeyQueryAction('status'))
+  }
+
   onListDateQueryChange(query) {
     let status = query.status;
     let search = query.search;

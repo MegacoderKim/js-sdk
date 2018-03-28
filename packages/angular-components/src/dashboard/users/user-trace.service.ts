@@ -88,21 +88,21 @@ export class UserTraceService {
       this.setReplayHead(head)
     });
 
-    this.store.select(fromRoot.getUserSelectedSegment).scan((acc, segment) => {
-      return {
-        newSegment: segment,
-        oldSegment: acc.newSegment
-      }
-    }, {oldSegment: null, newSegment: null}).subscribe(data => {
-      if(data.oldSegment) {
-        let segment = data.oldSegment;
-        // this.segmentsTrace.unselectSegment(segment);
-      }
-      if(data.newSegment) {
-        let segment = data.newSegment;
-        // this.segmentsTrace.selectSegment(segment);
-      }
-    });
+    // this.store.select(fromRoot.getUserSelectedSegment).scan((acc, segment) => {
+    //   return {
+    //     newSegment: segment,
+    //     oldSegment: acc.newSegment
+    //   }
+    // }, {oldSegment: null, newSegment: null}).subscribe(data => {
+    //   if(data.oldSegment) {
+    //     let segment = data.oldSegment;
+    //     // this.segmentsTrace.unselectSegment(segment);
+    //   }
+    //   if(data.newSegment) {
+    //     let segment = data.newSegment;
+    //     // this.segmentsTrace.selectSegment(segment);
+    //   }
+    // });
 
     // this.store.select(fromRoot.getUserSelectedEventId).subscribe((eventId: string) => {
     //   console.log(eventId, "selected event");
@@ -125,15 +125,15 @@ export class UserTraceService {
         })
     };
 
-    this.store.select(fromRoot.getUserSelectedActionId).subscribe((actionId: string) => {
-      // console.log("select action", actionId);
-      // this.segmentsTrace.selectAction(actionId)
-    });
+    // this.store.select(fromRoot.getUserSelectedActionId).subscribe((actionId: string) => {
+    //   // console.log("select action", actionId);
+    //   // this.segmentsTrace.selectAction(actionId)
+    // });
 
     this.broadcast.on('hover-user').subscribe((user: IUserAnalytics) => {
       let userId = user ? user.id : null;
       this.usersCluster.setPopup(userId)
-    })
+    });
 
     let places$ = this.store.select(fromRoot.getUserPlaceList).switchMap((places) => {
       if(config.isMobile) {
@@ -143,12 +143,9 @@ export class UserTraceService {
       }
     });
 
-    this.userPlaces.setData$(
-      this.store.select(fromRoot.getUserPlaceList),
-      {
-        hide$: this.store.select(fromRoot.getUserSelectedUserId)
-      }
-    );
+    this.userPlaces.setData$(places$, {
+      hide$: this.store.select(fromRoot.getUserSelectedUserId)
+    });
 
   }
 

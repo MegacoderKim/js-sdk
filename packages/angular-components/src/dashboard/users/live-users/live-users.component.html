@@ -7,6 +7,9 @@
     <!--</ng-template>-->
   <ng-container *ngIf="isToday && summary$ | async as summary">
     <ht-users-summary
+      [selectable]="true"
+      (clearQueryKey)="clearQueryKey()"
+      (setQuery)="setQuery($event)"
     [summary]="summary"></ht-users-summary>
   </ng-container>
     <div *ngIf="!isToday" class="text-center">
