@@ -71,12 +71,14 @@ export class UserTraceService {
     this.placeline.setCompoundData$(
       this.store.select(fromRoot.getCurrentUserData),
       {
-        // roots: ['segments', 'actions'],
-        // highlighted$: this.store.select(fromRoot.getUserSelectedSegment),
-        // filter$: this.userClientService.placeline.segmentResetId$,
-        // resetMap$: this.store.select(fromRoot.getUserSelectedSegment)
+        roots: ['placeline', 'actions'],
+        highlighted$: this.store.select(fromRoot.getUserSelectedSegment).map((data => {
+          return data ? data.id : null
+        })),
+        filter$: this.store.select(fromRoot.getUserSelectedPartialSegmentId),
+        resetMap$: this.store.select(fromRoot.getUserSelectedPartialSegmentId)
       }
-    )
+    );
 
     // this.store.select(fromRoot.getCurrentUserData).subscribe((user: IUserPlaceline) => {
     //   this.renderSegments(user);
