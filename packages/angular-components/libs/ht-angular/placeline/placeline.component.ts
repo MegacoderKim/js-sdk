@@ -104,7 +104,7 @@ export class PlacelineComponent implements OnInit {
         if (this.isEventInSegment(segment, event)) {
           // event = {...event, ...this.getEventDisplay(event)};
           const eventDisplay = this.getEventDisplay(event);
-          event = {...event, ...eventDisplay};
+          event = {...event, ...eventDisplay} as IEvent;
           if (eventDisplay) currentActivitySegment.events.push(event);
           return true
         }
