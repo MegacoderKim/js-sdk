@@ -21,12 +21,12 @@ export class HtActionsApi extends HtBaseApi {
   }
 
   summary<T>(query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/summary/`;
+    let path = `v2/${this.base}/summary/`;
     return this.api$<T>(path, query, {token});
   }
 
   heatmap<T>(query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/heatmap/`;
+    let path = `v2/${this.base}/heatmap/`;
     return this.api$(path, query, {token});
   };
 
@@ -36,7 +36,7 @@ export class HtActionsApi extends HtBaseApi {
   // }
 
   graph(query, token?: string): Observable<IActionStatusGraph[]> {
-    let path = `v1/${this.base}/graph/`;
+    let path = `v2/${this.base}/graph/`;
     return this.api$(path, query, {token}).pipe(
       map(obj => {
         return Object.keys(obj).reduce((dataArray: IActionStatusGraph[], key: string) => {

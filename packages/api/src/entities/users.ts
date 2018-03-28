@@ -21,7 +21,7 @@ export class HtUsersApi extends HtBaseApi {
   }
 
   summary<T>(query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/summary/`;
+    let path = `v2/${this.base}/summary/`;
     return this.api$<T>(path, query, {token});
   }
 
