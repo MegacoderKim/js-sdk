@@ -5,7 +5,6 @@ import {LiveUsersComponent} from "./live-users.component";
 import {SharedModule} from "../../shared/shared.module";
 import {ActiveUserComponent} from "./active-user/active-user.component";
 import {TimelineUserModule} from "../timeline-user/timeline-user.module";
-import {GraphsModule} from "../../graphs/graphs.module";
 import {UsersSummaryModule} from "ht-angular";
 
 @NgModule({
@@ -14,7 +13,6 @@ import {UsersSummaryModule} from "ht-angular";
     LiveUsersRoutingModule,
       SharedModule,
       TimelineUserModule,
-      GraphsModule,
     UsersSummaryModule
   ],
   declarations: [

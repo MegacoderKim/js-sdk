@@ -12,8 +12,8 @@ import {ActivatedRoute} from "@angular/router";
 import {IRange} from "../../model/common";
 import {ContainerService} from "../../container/container.service";
 import {GetUserMarkerFilter, GetUserMarkerSeached} from "../../../utils/users";
-import {scaleOrdinal} from "d3-scale";
-import {schemeSet2} from "d3-scale-chromatic";
+// import {scaleOrdinal} from "d3-scale";
+// import {schemeSet2} from "d3-scale-chromatic";
 import {Color} from "../../../utils/color";
 import {ActiveUserComponent} from "./active-user/active-user.component";
 import {IsRangeToday} from "../../../utils/time-utils";
@@ -284,22 +284,22 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
     };
   }
 
-  pieColor(index) {
-    let d3Color = scaleOrdinal(schemeSet2);
-    let userColor = [
-        Color.stop,
-      Color.blue,
-      Color.red,
-      '#cc8f6f',
-        '#8a91a0',
-      '#ccc'
-    ];
-    if(index < 6) {
-      return userColor[index]
-    } else {
-      return d3Color(index)
-    }
-  }
+  // pieColor(index) {
+  //   let d3Color = scaleOrdinal(schemeSet2);
+  //   let userColor = [
+  //       Color.stop,
+  //     Color.blue,
+  //     Color.red,
+  //     '#cc8f6f',
+  //       '#8a91a0',
+  //     '#ccc'
+  //   ];
+  //   if(index < 6) {
+  //     return userColor[index]
+  //   } else {
+  //     return d3Color(index)
+  //   }
+  // }
 
 
   onQueryChange(query) {

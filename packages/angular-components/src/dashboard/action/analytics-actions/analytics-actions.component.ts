@@ -3,10 +3,6 @@ import {ActionService} from "../action.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "underscore";
 import {TimeString, DateString, NameCase} from "ht-utility";
-import {timeParse} from "d3-time-format";
-import {bisector, extent, max} from "d3-array";
-import {scaleTime} from "d3-scale";
-import {timeDay} from "d3-time";
 import {BroadcastService} from "../../core/broadcast.service";
 import * as fromAction from "../../actions/action";
 import * as fromRoot from "../../reducers";
@@ -151,157 +147,12 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
       this.actionDataResult = this.formattedActionsResultData(data.results);
     });
 
-    let sub2 = this.store.select(fromRoot.getActionGraph).filter(data => !!data).subscribe((data) => {
-      this.fillGraphData(data);
-    });
 
-    this.subs.push(sub, sub2)
+    this.subs.push(sub)
   }
 
   getOrdering$() {
     return this.store.select(fromRoot.getQueryActionSorting)
-  }
-
-  // getGraphApi(query) {
-  //   return this.actionService.graph(query);
-  // }
-
-  updateGraphData(data) {
-    this.store.dispatch(new fromAction.SetActionGraph(data))
-  }
-
-  fillGraphData(graphData) {
-    if (!graphData) {
-      this.graphData = null;
-      return;
-    }
-    let objData = _.values(graphData);
-    if (objData.length > 0) {
-      let parseTime = timeParse("%Y-%m-%d");
-      let data = objData.map((d) => {
-        return {
-          ...d,
-          created_date: parseTime(d.created_date)
-        };
-      });
-      data = this.interpolateGraphData(data);
-      let dataSets = [];
-      let createdTasksData = data.map((d) => {
-        return {
-          x: d.created_date,
-          y: d.created || 0
-        }
-      }).sort(this.sortByDateAscending);
-      let assignedTasksData = data.map((d) => {
-        return {
-          x: d.created_date,
-          y: d.assigned || 0
-        }
-      }).sort(this.sortByDateAscending);
-      let canceledTasksData = data.map((d) => {
-        return {
-          x: d.created_date,
-          y: (d.canceled + d.completed) || 0,
-          labelY: d.canceled
-        }
-      }).sort(this.sortByDateAscending);
-      let completedTasksData = data.map((d) => {
-        return {
-          x: d.created_date,
-          y: d.completed || 0
-        }
-      }).sort(this.sortByDateAscending);
-      let xAxis = createdTasksData.map((d) => {
-        return d.x;
-      });
-      dataSets.push({
-        label: 'Created',
-        fill: '#56D990',
-        data: createdTasksData
-      });
-      dataSets.push({
-        label: 'Assigned',
-        fill: '#5FB9FB',
-        data: assignedTasksData
-      });
-      dataSets.push({
-        label: 'Canceled',
-        fill: '#F6CB66',
-        data: canceledTasksData
-      });
-      dataSets.push({
-        label: 'Completed',
-        fill: '#FB7C7C',
-        data: completedTasksData
-      });
-      let domainX = extent([...xAxis], function(d) { return d; });
-      let domainY = [0, max([...createdTasksData, ...assignedTasksData, ...canceledTasksData, ...completedTasksData], function(d) { return d.y; })];
-      this.graphData = {
-        dataSets: dataSets,
-        domainX: domainX,
-        domainY: domainY,
-        xAxis: xAxis,
-        getIndexPosition(mouseX) {
-          let bisectDate = bisector(function(d: any) { return d }).left;
-          let i = bisectDate(xAxis, mouseX);
-          let d0 = xAxis[i - 1];
-          let d1 = xAxis[i];
-          return (mouseX - d0 > d1 - mouseX ? i : i - 1);
-        },
-        getDataSetYValues(xValue, dataSets) {
-          let yValues = [];
-          dataSets.forEach((dataSet) => {
-            let d = dataSet.data.find((d) => {
-              return (d.x.getTime() === xValue.getTime());
-            });
-            yValues.push({
-              y: d.y,
-              labelY: d.labelY,
-              fill: dataSet.fill,
-              label: dataSet.label
-            });
-          });
-          return yValues;
-        }
-      };
-    } else {
-      this.graphData = null;
-    }
-  }
-
-  interpolateGraphData(data) {
-    let xAxis = data.map((d) => {
-      return d.created_date;
-    }).sort(this.sortByDateAscending);
-    if (xAxis.length === 1) {
-      let prevDay = new Date();
-      prevDay.setDate(xAxis[0].getDate() - 1);
-      xAxis.unshift(prevDay);
-    }
-    // let domainX = extent([...xAxis], function(d) { return d; });
-    // let dateTicks = scaleTime().domain(domainX).ticks(timeDay);
-    let dateTicks = scaleTime().domain([xAxis[0], _.last(xAxis)]).ticks(timeDay);
-    let interpolatedData = dateTicks.map(function(date) {
-      let value = _.find(data, (d: any) => {
-        return (d.created_date.getTime() === date.getTime());
-      });
-      if (!value) {
-        value = {
-          created_date: date,
-          created_tasks: 0,
-          assigned_tasks: 0,
-          started_tasks: 0,
-          completed_tasks: 0
-        }
-      }
-      return value;
-    });
-    return interpolatedData;
-  }
-
-  sortByDateAscending(a, b) {
-    // Dates will be cast to numbers:
-    return a.x - b.x;
   }
 
   openAction(action: IAction) {

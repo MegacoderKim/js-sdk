@@ -22,7 +22,6 @@ import {TooltipContent} from "./tooltip/tooltip-content";
 import {Tooltip} from "./tooltip/tooltip.directive";
 import {DistanceLocalePipe} from './../pipes/distance-locale.pipe';
 import {HmStringPipe} from './../pipes/hm-string.pipe';
-import {TimelineComponent} from "../users/timeline/timeline.component";
 import {SnackbarComponent} from './snackbar/snackbar.component';
 import {UsersStatusStringPipe} from './../pipes/users-status-string.pipe';
 import {ScrollTopDirective} from './scroll-top.directive';
@@ -63,7 +62,6 @@ import { PluralizePipe } from '../pipes/pluralize.pipe';
     TooltipContent,
     DistanceLocalePipe,
     HmStringPipe,
-    TimelineComponent,
     SnackbarComponent,
     UsersStatusStringPipe,
     ScrollTopDirective,
@@ -97,7 +95,6 @@ import { PluralizePipe } from '../pipes/pluralize.pipe';
     TooltipContent,
     DistanceLocalePipe,
     HmStringPipe,
-    TimelineComponent,
     SnackbarComponent,
     UsersStatusStringPipe,
     ScrollTopDirective,

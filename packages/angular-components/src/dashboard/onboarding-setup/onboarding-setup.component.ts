@@ -1,5 +1,5 @@
 import {Component, Input, Output, OnInit, SimpleChanges, EventEmitter} from '@angular/core';
-import * as firebase from "firebase";
+// import * as firebase from "firebase";
 import {ExternalAnalyticsService} from "../core/external-analytics.service";
 import {QuickstartService} from "../core/quickstart.service";
 import {ModalService} from "../core/modal.service";
@@ -270,32 +270,32 @@ export class OnboardingSetupComponent implements OnInit {
   }
 
   setupFirebaseDatabase() {
-    let config = {
-      apiKey: "AIzaSyAFTrOIHjZsl4p75P9Da2tO5DeNsQd5YUM",
-      authDomain: "live-demo-mvp.firebaseapp.com",
-      databaseURL: "https://live-demo-mvp.firebaseio.com/",
-      storageBucket: "live-demo-mvp.appspot.com"
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-    }
-    this.firebaseDatabase = firebase.database();
+    // let config = {
+    //   apiKey: "AIzaSyAFTrOIHjZsl4p75P9Da2tO5DeNsQd5YUM",
+    //   authDomain: "live-demo-mvp.firebaseapp.com",
+    //   databaseURL: "https://live-demo-mvp.firebaseio.com/",
+    //   storageBucket: "live-demo-mvp.appspot.com"
+    // };
+    // if (!firebase.apps.length) {
+    //   firebase.initializeApp(config);
+    // }
+    // this.firebaseDatabase = firebase.database();
   }
 
   setupFirebaseReceiverOnAccount(accountId: string, secretKey: string) {
-    let receiver = this.firebaseDatabase.ref('accounts/' + accountId);
-    receiver.on('value', (snapshot) => {
-      let value = snapshot.val();
-      if (value != null && value.user_id) {
-        let userId = value.user_id;
-        let timestamp = value.accepted_at;
-        if (!timestamp || this.isValidFirebaseEventTimestamp(timestamp)) {
-          this.isAccountAccepted = true;
-          this.setupDashboardIframe(userId, secretKey);
-          this.onSwitchTab('location');
-        }
-      }
-    });
+    // let receiver = this.firebaseDatabase.ref('accounts/' + accountId);
+    // receiver.on('value', (snapshot) => {
+    //   let value = snapshot.val();
+    //   if (value != null && value.user_id) {
+    //     let userId = value.user_id;
+    //     let timestamp = value.accepted_at;
+    //     if (!timestamp || this.isValidFirebaseEventTimestamp(timestamp)) {
+    //       this.isAccountAccepted = true;
+    //       this.setupDashboardIframe(userId, secretKey);
+    //       this.onSwitchTab('location');
+    //     }
+    //   }
+    // });
   }
 
   /**
