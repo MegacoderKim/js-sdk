@@ -36,8 +36,8 @@ export class PlacelineComponent implements OnInit {
 
   }
 
-  selectInUserData(segment, event?) {
-    if (segment && (segment.type === 'trip' || segment.type === 'stop')) {
+  selectInUserData(segment: IPlaceline, event?) {
+    if (segment && (segment.location_time_series || segment.place)) {
       const id = segment.id;
 
       let hardSelectedActivity = this.selectedSegmentId === id ? null : segment.id;
