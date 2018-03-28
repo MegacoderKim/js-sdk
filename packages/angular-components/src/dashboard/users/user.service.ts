@@ -83,7 +83,7 @@ export class UserService {
 
   getUserListSummary(query: any = {}): Observable<IUserListSummary> {
     let string = HtQuerySerialize(query);
-    return this.http.get<IUserListSummary>(`app/users/summary/?${string}`)
+    return this.client.api.summary(query);
   }
 
   device(id) {
@@ -104,8 +104,11 @@ export class UserService {
   placeList(query = {}, callback?: (userPlacePage) => any) {
     query = GetUserDateRangeQuery(query);
     let string = HtQuerySerialize({page_size: 200, ...query});
-    let url = `app/users/heatmap/?${string}`;
-    return this.page.all(url, callback)
+    // let url = `app/users/heatmap/?${string}`;
+    const heat$ = this.client.api.heatmap({page_size: 200, ...query});
+    return this.client.api.allPages(heat$).do((data) => {
+      if (callback) callback(data)
+    })
   }
 
   mapList(query = {}, callback?: (userMapPage: IUserMapPage) => any): Observable<IUserMap[]> {
@@ -116,7 +119,8 @@ export class UserService {
 
   summary(query: object = {}) {
     let string = HtQuerySerialize(GetUserDateRangeQuery({...query, ordering: null}));
-    return this.http.get<IUserListSummary>(`app/users/summary/?${string}`);
+    return this.client.api.summary(GetUserDateRangeQuery({...query, ordering: null}));
+    // return this.http.get<IUserListSummary>(`app/users/summary/?${string}`);
   }
 
   getUserPlaceFilter(query: object) {
