@@ -9,7 +9,7 @@ import {ActionTraceService} from "../action/action-trace.service";
 import {ActivatedRoute} from "@angular/router";
 import {config} from "../config";
 import {HtMapService} from "ht-angular";
-import {control, Control, DomUtil, Map} from "leaflet";
+// import {control, Control, DomUtil, Map} from "leaflet";
 // import * as L from "leaflet";
 
 @Injectable()
@@ -42,8 +42,8 @@ export class InnerMapService {
     }
   }
 
-  get map(): Map {
-    return this.htMapService.map as Map;
+  get map(): L.Map {
+    return this.htMapService.map as L.Map;
   }
 
   init(map, cb?) {
@@ -70,9 +70,9 @@ export class InnerMapService {
     if(config.isStaff) window['map'] = map;
     if(config.toReset) {
       // this.setResetMapControl(map);
-      map.addControl(control.zoom({
-        position: 'topleft'
-      }));
+      this.htMapService.mapInstance.mapUtils.setZoomControl(map, {
+        position: 'bottomright'
+      })
     }
 
 
@@ -109,31 +109,31 @@ export class InnerMapService {
   }
 
   private getRestMapControl() {
-    return Control.extend({
-      onAdd: (map) => {
-        var img = DomUtil.create('div', 'leaflet-control leaflet-bar');
-        let size = '27px';
-        img.innerHTML = `<div class="flex-row clickable"><span class="auto">FIT IN VIEW</span></div>`;
-        // img.innerHTML = `<i style="font-size: 1.3em" class="fa fa-arrows-alt auto"></i>`;
-        // img.style.width = size;
-        // img.style.height = size;
-        img.style.display = 'flex';
-        img.style.padding = '2px 6px';
-        img.style.backgroundColor = '#fff';
-        img.onclick = () => {
-          this.broadcast.emit('reset-map')
-        };
-        return img;
-      },
-
-      onRemove: function(map) {
-        // Nothing to do here
-      },
-
-      options: {
-        position: 'topright'
-      }
-    });
+    // return Control.extend({
+    //   onAdd: (map) => {
+    //     var img = DomUtil.create('div', 'leaflet-control leaflet-bar');
+    //     let size = '27px';
+    //     img.innerHTML = `<div class="flex-row clickable"><span class="auto">FIT IN VIEW</span></div>`;
+    //     // img.innerHTML = `<i style="font-size: 1.3em" class="fa fa-arrows-alt auto"></i>`;
+    //     // img.style.width = size;
+    //     // img.style.height = size;
+    //     img.style.display = 'flex';
+    //     img.style.padding = '2px 6px';
+    //     img.style.backgroundColor = '#fff';
+    //     img.onclick = () => {
+    //       this.broadcast.emit('reset-map')
+    //     };
+    //     return img;
+    //   },
+    //
+    //   onRemove: function(map) {
+    //     // Nothing to do here
+    //   },
+    //
+    //   options: {
+    //     position: 'topright'
+    //   }
+    // });
   }
 
   invalidate() {
