@@ -26,7 +26,7 @@ export class HtUsersApi extends HtBaseApi {
   }
 
   heatmap<T>(query = {}, token?: string): Observable<T> {
-    let path = `v1/${this.base}/heatmap/`;
+    let path = `v2/${this.base}/heatmap/`;
     return this.api$(path, query, {token});
   }
 
