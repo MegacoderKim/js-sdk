@@ -376,25 +376,25 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
   }
 
   private updateMap(totalUsers, hasStatus: boolean = false) {
-    let toUpdate$ = this.store.select(fromRoot.getUserMapList).take(1).map((obj) => {
-      let currentTotal = obj.validUsers.length + obj.invalidUsers.length;
-      let toUpdate = currentTotal != totalUsers && !!currentTotal && !!totalUsers && this.isToday && this.mapDataReady;
-      return toUpdate
-    }).filter((toUpdate) => toUpdate);
-
-    let cb = (usersMapPage) => {
-      this.store.dispatch(new fromUser.AddUsersMapAction(usersMapPage.results))
-    };
-    let updateQuery = hasStatus ? {} : {min_last_heartbeat_at: this.mapRefreshTimestamp};
-    let api$ = (query) => this.userService.getAllUserAnalytics({...query, show_all: null, ordering: '-created_at', ...updateQuery}, cb);
-    let range$ = toUpdate$.withLatestFrom(this.getListDateQuery()).map(([toUpdate, range]) => range);
-    let update$ = range$.switchMap((range) => api$(range));
-    let time = new Date().toISOString();
-    let sub = update$.subscribe(() => {
-      if(!hasStatus) this.mapRefreshTimestamp = time
-      //map updated
-    });
-    this.subs.push(sub)
+    // let toUpdate$ = this.store.select(fromRoot.getUserMapList).take(1).map((obj) => {
+    //   let currentTotal = obj.validUsers.length + obj.invalidUsers.length;
+    //   let toUpdate = currentTotal != totalUsers && !!currentTotal && !!totalUsers && this.isToday && this.mapDataReady;
+    //   return toUpdate
+    // }).filter((toUpdate) => toUpdate);
+    //
+    // let cb = (usersMapPage) => {
+    //   this.store.dispatch(new fromUser.AddUsersMapAction(usersMapPage.results))
+    // };
+    // let updateQuery = hasStatus ? {} : {min_last_heartbeat_at: this.mapRefreshTimestamp};
+    // let api$ = (query) => this.userService.getAllUserAnalytics({...query, show_all: null, ordering: '-created_at', ...updateQuery}, cb);
+    // let range$ = toUpdate$.withLatestFrom(this.getListDateQuery()).map(([toUpdate, range]) => range);
+    // let update$ = range$.switchMap((range) => api$(range));
+    // let time = new Date().toISOString();
+    // let sub = update$.subscribe(() => {
+    //   if(!hasStatus) this.mapRefreshTimestamp = time
+    //   //map updated
+    // });
+    // this.subs.push(sub)
   }
 
   private scrollSelected(id: string) {
