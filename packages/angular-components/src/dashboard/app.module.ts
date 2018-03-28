@@ -33,7 +33,6 @@ import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/expand';
 import {SharedModule} from "./shared/shared.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {HtModule} from "ht-angular";
 import {GetToken} from "../utils/get-token";
 import {config} from "./config";
 
@@ -55,9 +54,9 @@ if(global) global['jQuery'] = require('jquery');
 // import * as jQuery from "jquery"
 // require('bootstrap');
 require('smoothscroll-polyfill').polyfill();
-import "leaflet";
-import "leaflet.heat";
-import "leaflet.markercluster";
+// import "leaflet";
+// import "leaflet.heat";
+// import "leaflet.markercluster";
 
 mainBoot();
 // mapTypeService.getInstance('leaflet');
