@@ -106,12 +106,11 @@ export class UserTraceService {
     //   console.log(eventId, "selected event");
     // });
 
-    // this.usersCluster.setData$(
-    //   this.store.select(fromRoot.getUserMapList)
-    //     .pluck('validUsers')
-    //     // .filter((data: IUser) => !!htUser(data).getPosition())
-    //     // .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"}))
-    // );
+    this.usersCluster.setPageData$(
+      this.store.select(fromRoot.getUserMapList)
+        .pluck('validUsers')
+        .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"}))
+    );
 
     this.usersCluster.onClick = (data) => {
       let userMap = data.data;
@@ -142,9 +141,12 @@ export class UserTraceService {
       }
     });
 
-    // this.userPlaces.setData$(places$, {
-    //   hide$: this.store.select(fromRoot.getUserSelectedUserId)
-    // });
+    this.userPlaces.setData$(
+      this.store.select(fromRoot.getUserPlaceList),
+      {
+        hide$: this.store.select(fromRoot.getUserSelectedUserId)
+      }
+    );
 
   }
 
