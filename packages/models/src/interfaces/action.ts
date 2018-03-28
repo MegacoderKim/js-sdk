@@ -127,20 +127,16 @@ export interface IActionMapPage extends IPageData {
   results: IActionMap[];
 }
 
-export interface IActionStatusGraph {
+export interface IActionStatusGraph extends IActionsSummary {
   created_date: string,
-  created: number,
-  completed: number,
-  assigned: number,
-  started: number
 }
 
 export interface IActionsSummary {
   created: number,
-  assigned: number,
-  started: number,
   completed: number,
-  suspended: number,
+  autocompleted: number,
+  canceled: number
+  autocanceled: number
 }
 
 export interface ITrackAction {
