@@ -162,9 +162,9 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
     return this.store.select(fromRoot.getQueryActionSorting)
   }
 
-  getGraphApi(query) {
-    return this.actionService.graph(query);
-  }
+  // getGraphApi(query) {
+  //   return this.actionService.graph(query);
+  // }
 
   updateGraphData(data) {
     this.store.dispatch(new fromAction.SetActionGraph(data))

@@ -69,23 +69,23 @@ export class FitToMapService {
   }
 
   startWatchZoom() {
-    let map = this.mapService.map;
-    if(!map) return false;
-    let moveEnd$ = Observable.fromEvent(map, 'moveend');
-    let userData$ = this.store.select(fromRoot.getUserPageData);
-    let checkZoom$ = moveEnd$
-      .withLatestFrom(userData$).map(([e, userData]) => {
-        // console.log(userId, userData, "zip");
-        return userData && userData.results.length > 0
-      }).filter(() => this.isToday);
-    if(this.checkZoomSub) this.checkZoomSub.unsubscribe();
-    this.checkZoomSub = checkZoom$.subscribe((toShow: boolean) => {
-      let oldToShow = this.toShowFitToMap;
-      this.toShowFitToMap = map.getZoom() > this.zoomCutOff && toShow ? true : false;
-      if(!this.toShowFitToMap && oldToShow && this.toFitToMap) this.dispatchClearQuery();
-      // this.mapService.toShowFitToMap = this.toShowRecommended;
-      if(this.getToFitToBounds()) this.dispatchFitMapFilter();
-    });
+    // let map = this.mapService.map;
+    // if(!map) return false;
+    // let moveEnd$ = Observable.fromEvent(map, 'moveend');
+    // let userData$ = this.store.select(fromRoot.getUserPageData);
+    // let checkZoom$ = moveEnd$
+    //   .withLatestFrom(userData$).map(([e, userData]) => {
+    //     // console.log(userId, userData, "zip");
+    //     return userData && userData.results.length > 0
+    //   }).filter(() => this.isToday);
+    // if(this.checkZoomSub) this.checkZoomSub.unsubscribe();
+    // this.checkZoomSub = checkZoom$.subscribe((toShow: boolean) => {
+    //   let oldToShow = this.toShowFitToMap;
+    //   this.toShowFitToMap = map.getZoom() > this.zoomCutOff && toShow ? true : false;
+    //   if(!this.toShowFitToMap && oldToShow && this.toFitToMap) this.dispatchClearQuery();
+    //   // this.mapService.toShowFitToMap = this.toShowRecommended;
+    //   if(this.getToFitToBounds()) this.dispatchFitMapFilter();
+    // });
   }
 
   clearFitToMap() {

@@ -127,18 +127,12 @@ export class EntityListComponent implements OnInit {
           this.onPageQueryChange(query)
         });
 
-    let sub3 = this.getDateRange()
-      .switchMap((query) => {
-        return this.getGraphApi(query)
-      }).subscribe(data => {
-        this.updateGraphData(data);
-      });
 
-    let sub4 = this.getOrdering$().subscribe((orderingObj) => {
+    let sub3 = this.getOrdering$().subscribe((orderingObj) => {
       this.orderingObj = orderingObj;
     });
 
-    this.subs.push(sub, sub1, sub2, sub3, sub4)
+    this.subs.push(sub, sub1, sub2, sub3)
   }
 
   updateSummary(query) {
@@ -267,7 +261,6 @@ export class EntityListComponent implements OnInit {
 
   updateSummaryData(data) {}
 
-  updateGraphData(data) {}
 
   markUnmatched(results: any[], query: object) {
     return results

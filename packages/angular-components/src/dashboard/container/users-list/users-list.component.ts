@@ -32,8 +32,13 @@ export class UsersListComponent extends EntityListComponent implements OnInit {
     this.initDetailListner()
     let sub = this.getQuery().map((query) => !!query['show_all'] || !!query['last_location__bbox']).distinctUntilChanged().subscribe((showAll) => {
       this.showAll = showAll;
+      this.setShowAll(showAll);
     });
     this.subs.push(sub)
+  }
+
+  setShowAll(showAll) {
+
   }
 
   getQuery() {
@@ -85,7 +90,7 @@ export class UsersListComponent extends EntityListComponent implements OnInit {
     return Observable.zip(
       this.getListApi(query),
       this.getSummaryApi({...query, page: null, ordering: null})
-    ).map(([pageData, summary]) => {
+    ).map(([pageData, summary]: [any, IUserListSummary]) => {
       this.updateSummaryData(summary);
       return pageData
     });
