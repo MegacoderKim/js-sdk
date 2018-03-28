@@ -41,9 +41,9 @@ export class ActionTraceService {
 
   private initHeatmap() {
     this.actionsHeat = this.htMapService.actionsHeatmap;
-    // this.actionsHeat.setData$(this.store.select(fromRoot.getActionFilteredHeat), {
-    //   hide$: this.store.select(fromRoot.getUserSelectedUserId)
-    // })
+    this.actionsHeat.setData$(this.store.select(fromRoot.getActionFilteredHeat), {
+      hide$: this.store.select(fromRoot.getUserSelectedUserId)
+    })
   };
 
   get map(): L.Map {
