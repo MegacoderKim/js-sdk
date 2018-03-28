@@ -88,7 +88,6 @@ export class DefaultUsersFilter extends BaseFilter {
       ...this.customQueryArray
     ];
   }
-
   getStatusQueryArray(showAll: boolean = false) {
     return showAll
       ? [...this.statusQueryArray, ...this.showAllQueryArray]

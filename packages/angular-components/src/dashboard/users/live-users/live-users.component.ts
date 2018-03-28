@@ -24,6 +24,7 @@ import {FitToMapService} from "../../container/user-filter/fit-to-map.service";
 import {InnerMapService} from "../../map-container/map.service";
 import {htUser} from "ht-data";
 import {config} from "../../config";
+import {HtUsersService} from "ht-angular";
 
 @Component({
   selector: 'app-live-users',
@@ -91,6 +92,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
   isSingleDay: boolean;
   totalUsers: number;
   mapDataReady: boolean = false;
+  summary$;
   @ViewChildren(ActiveUserComponent, { read: ElementRef }) userCard: QueryList<ActiveUserComponent>;
   constructor(
       public userService: UserService,
@@ -99,10 +101,12 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
       public route: ActivatedRoute,
       public containerService: ContainerService,
       public fitToMapService: FitToMapService,
-      private mapService: InnerMapService
+      private mapService: InnerMapService,
+      private htUsersService: HtUsersService
   ) {
     super(route, broadcast, store, userService);
     this.getData();
+    this.summary$ = this.htUsersService.summary.getSummaryChart$()
   }
 
   ngOnInit() {
@@ -346,33 +350,16 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
       // if(data && this.isToday) this.store.dispatch(new fromUser.AddUsersMapAction(data.results))
     });
 
-    let sub2 = this.store.select(fromRoot.getUserSummary).filter(data => !!data).subscribe((data: IUserListSummary) => {
-      this.summary = data;
-      let total = 0;
-      let statusTotal;
-      let summaryEntity = this.showAll ? [...this.summaryEntities, this.neverTrackedSummary] : this.summaryEntities;
-      this.overview = _.map(summaryEntity, (entity) => {
-        let sum = _.reduce(entity.keys, (acc, key: string) => {
-          return acc + data.status_overview[key]
-        }, 0);
-        let value = entity.value + sum;
-        total = total + value;
-        let selected = false;
-        if(this.status) {
-          if(this.status == entity.keys[0]) statusTotal = value;
-          let status = this.status.split(',');
-          selected = _.reduce(entity.keys, (acc, key) => {
-            return acc && status.indexOf(key) > -1
-          }, true)
-        };
-        return {...entity, value, selected }
-      });
-      this.totalUsers = total;
-      if(!this.currentTotal) this.currentTotal = total;
-      this.updateMap(statusTotal || total, !!this.status)
+    let sub2 = this.store.select(fromRoot.getUserSummary).subscribe((data: IUserListSummary) => {
+      this.htUsersService.summary.setData(data);
     });
 
+
     this.subs.push(sub1, sub2)
+  }
+
+  setShowAll(showAll) {
+    this.htUsersService.summary.showAll = showAll
   }
 
   private updateMap(totalUsers, hasStatus: boolean = false) {

@@ -6,12 +6,15 @@ import { clientSubMixin } from "../../mixins/client-subscription";
 import { listQueryMixin } from "../../mixins/entity-query";
 import { getQueryDataMixin } from "../../mixins/get-data";
 import {HtApi, HtUsersApi} from "ht-api";
-import { IPageClientConfig } from "../../interfaces";
+import {IPageClientConfig, QueryLabel} from "../../interfaces";
 import { IUserListSummary } from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IAllowedQueryMap } from "ht-data";
 import {DateRange} from "../../global/date-range";
+import {filter, map} from "rxjs/operators";
+import {DefaultUsersFilter} from "../../filters/users-filter";
+import {IActionsSummary} from "../../../../models";
 
 export class UsersSummary extends EntityListClient {
   name = "users summary";
@@ -32,7 +35,8 @@ export class UsersSummary extends EntityListClient {
   dataSub: Subscription;
   dateParam: string;
   api$: (query) => Observable<IUserListSummary>;
-
+  filter = new DefaultUsersFilter();
+  showAll: boolean = false;
   setActive(isActive: boolean | string = true) {
     isActive = isActive ? new Date().toISOString() : isActive;
     this.store.dispatch(new fromUsersDispatcher.SetSummaryActive(isActive));
@@ -65,6 +69,24 @@ export class UsersSummary extends EntityListClient {
     this.clearData();
     this.setActive(false);
     this.dataSub.unsubscribe();
+  }
+
+  getSummaryChart$(queryLabels?: QueryLabel[]) {
+    return this.listStatusOverview$().pipe(
+      map((summaryData) => {
+        const finalQueryLabels = queryLabels || this.filter.getStatusQueryArray(this.showAll);
+        return this.filter.summaryCharts(finalQueryLabels, summaryData)
+      })
+    )
+  }
+
+  private listStatusOverview$() {
+    return this.data$.pipe(
+      filter(data => !!data),
+      map((summary: IUserListSummary) => {
+        return summary.status_overview;
+      })
+    );
   }
 }
 
