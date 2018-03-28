@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-// import {GetUserSortingString} from "ht-data";
+import {DefaultUsersFilter} from "ht-client";
+import {htUser} from "ht-data";
 
 @Pipe({
   name: 'userSortingString'
@@ -7,8 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class UserSortingStringPipe implements PipeTransform {
 
   transform(value: any, args?: any): any {
-    return value
-    // return GetUserSortingString(value);
+    return htUser().sortingQueryMap[value] || value;
   }
 
 }
