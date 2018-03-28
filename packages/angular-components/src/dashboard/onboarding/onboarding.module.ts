@@ -3,7 +3,7 @@ import {CommonModule} from "@angular/common";
 
 import {OnboardingRoutingModule} from "./onboarding-routing.module";
 import {HeaderLoggedoffModule} from "../core/header-loggedoff/header-loggedoff.module";
-import {SharedModule} from "../shared/shared.module";
+import {InnerSharedModule} from "../shared/shared.module";
 import {OnboardingComponent} from "./onboarding/onboarding.component";
 import {SdkAndroidComponent} from "./sdk-android/sdk-android.component";
 import {PickPlatformComponent} from "./pick-platform/pick-platform.component";
@@ -31,11 +31,13 @@ import { IntegrationOverviewComponent } from './shared/integration-overview/inte
 import { LiveLocationSharingComponent } from './live-location-sharing/live-location-sharing.component';
 import {CoreServiceModule} from "../core/core.module";
 import {RouterModule} from "@angular/router";
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
+    InnerSharedModule,
     RouterModule,
     // OnboardingRoutingModule,
     HeaderLoggedoffModule,

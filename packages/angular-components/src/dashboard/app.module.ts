@@ -31,7 +31,7 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/skip';
 import 'rxjs/add/operator/expand';
-import {SharedModule} from "./shared/shared.module";
+import {InnerSharedModule} from "./shared/shared.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {GetToken} from "../utils/get-token";
 import {config} from "./config";
@@ -70,7 +70,7 @@ mainBoot();
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    SharedModule,
+    InnerSharedModule,
     CoreServiceModule,
   ],
   providers: [

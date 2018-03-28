@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DateRangeComponent } from './date-range.component';
-import {SharedModule} from "../shared/shared.module";
-import {DateRangePickerModule} from "ht-angular";
+import {InnerSharedModule} from "../shared/shared.module";
+import {DateRangePickerModule, SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
-    DateRangePickerModule
+    InnerSharedModule,
+    DateRangePickerModule,
+    SharedModule
   ],
   declarations: [
       DateRangeComponent

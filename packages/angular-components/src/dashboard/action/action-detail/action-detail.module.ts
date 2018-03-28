@@ -1,14 +1,16 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {ActionDetailComponent} from "./action-detail.component";
-import {SharedModule} from "../../shared/shared.module";
+import {InnerSharedModule} from "../../shared/shared.module";
 import {RouterModule} from "@angular/router";
 import {ActionsTimelineModule} from "../actions-timeline/actions-timeline.module";
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
-      SharedModule,
+      InnerSharedModule,
+    SharedModule,
       RouterModule,
       ActionsTimelineModule
   ],

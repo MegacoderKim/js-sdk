@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlacelineDateComponent } from './placeline-date.component';
-import {SharedModule} from "../../shared/shared.module";
-import {DateRangePickerModule} from "ht-angular";
+import {InnerSharedModule} from "../../shared/shared.module";
+import {DateRangePickerModule, SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
+    InnerSharedModule,
     SharedModule,
     DateRangePickerModule
   ],

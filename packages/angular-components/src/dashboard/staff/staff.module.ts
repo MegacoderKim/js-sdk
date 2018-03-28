@@ -5,9 +5,10 @@ import { StaffRoutingModule } from './staff-routing.module';
 import { StaffComponent } from './staff.component';
 import { TraceEventsComponent } from './trace-events/trace-events.component';
 import {MapContainerModule} from "../map-container/map-container.module";
-import {SharedModule} from "../shared/shared.module";
+import {InnerSharedModule} from "../shared/shared.module";
 import { EventTraceService } from './event-trace.service';
 import {UserDeviceModule} from "../user-device/user-device.module";
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import {UserDeviceModule} from "../user-device/user-device.module";
     StaffRoutingModule,
     MapContainerModule,
     SharedModule,
+    InnerSharedModule,
     UserDeviceModule
   ],
   declarations: [StaffComponent, TraceEventsComponent],

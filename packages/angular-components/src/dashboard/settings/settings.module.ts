@@ -7,7 +7,7 @@ import { UserAccountComponent } from './user-account/user-account.component';
 import { BillingComponent } from './billing/billing.component';
 import { TeamComponent } from './team/team.component';
 import { SettingsEditorComponent } from './settings-editor/settings-editor.component';
-import {SharedModule} from "../shared/shared.module";
+import {InnerSharedModule} from "../shared/shared.module";
 import {FormsModule} from "@angular/forms";
 // import {GraphsModule} from "../graphs/graphs.module";
 import { WebhooksComponent } from './webhooks/webhooks.component';
@@ -16,12 +16,14 @@ import {BillingFormModule} from "./billing-form/billing-form.module";
 import { InvoicesComponent } from './invoices/invoices.component';
 import {SdkControlModule} from "./sdk-control/sdk-control.module";
 import { PlanOptionsComponent } from './plan-options/plan-options.component';
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
     SettingsRoutingModule,
     SharedModule,
+    InnerSharedModule,
     FormsModule,
     // GraphsModule,
     BillingFormModule,

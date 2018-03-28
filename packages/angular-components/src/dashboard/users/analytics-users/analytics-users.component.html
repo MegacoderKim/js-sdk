@@ -68,7 +68,7 @@
           <tr class="user-link" (click)="openUser(user.id)" *ngFor="let user of userDataResult; trackBy:indexId">
             <td class="">
               <div class="user-cell">
-                <app-profile [url]="user.photo"></app-profile>
+                <ht-profile [url]="user.photo"></ht-profile>
                 <div class="name">
                   <span>{{user.name | nameCase | dot: 'Unknown Name'}}</span>
                 </div>

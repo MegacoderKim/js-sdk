@@ -46,7 +46,7 @@
     <div class="border" *ngIf="action.completed_place || action.expected_place"></div>
     <div *ngIf="action.user" class="card-content-top flex-row row-gap-10">
       <div class="card-icon">
-        <app-profile [height]="25" [url]="action.user.photo"></app-profile>
+        <ht-profile [height]="25" [url]="action.user.photo"></ht-profile>
       </div>
 
       <div class="flex">

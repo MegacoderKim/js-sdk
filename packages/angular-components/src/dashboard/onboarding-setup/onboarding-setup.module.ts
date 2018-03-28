@@ -11,17 +11,19 @@ import {ExpandedCodeModalComponent} from "./expanded-code-modal/expanded-code-mo
 import {ExpandedCodeBlockComponent} from "./expanded-code-block/expanded-code-block.component";
 import {CodeBlockComponent} from "./code-block/code-block.component";
 import {IframeModalComponent} from "./iframe-modal/iframe-modal.component";
-import {SharedModule} from "../shared/shared.module";
+import {InnerSharedModule} from "../shared/shared.module";
 import {FormsModule} from "@angular/forms";
 import {ModalModule} from "../modal/modal.module";
 import {MailDeveloperModalComponent} from "./mail-developer-modal/mail-developer-modal.component";
 import {OnboardingModule} from '../onboarding/onboarding.module';
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
     OnboardingSetupRoutingModule,
     SharedModule,
+    InnerSharedModule,
     ModalModule,
     FormsModule,
     OnboardingModule

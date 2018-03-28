@@ -11,7 +11,7 @@ import {FilterCommonComponent} from './filter-common/filter-common.component';
 import {EntityFilterComponent} from './entity-filter/entity-filter.component';
 import {RouterModule} from "@angular/router";
 import {EntityListComponent} from './entity-list/entity-list.component';
-import {SharedModule} from "../shared/shared.module";
+import {InnerSharedModule} from "../shared/shared.module";
 import {UsersListComponent} from './users-list/users-list.component';
 import {ActionsListComponent} from './actions-list/actions-list.component';
 import {MapSwitchModule} from "../map-container/map-switch/map-switch.module";
@@ -19,6 +19,7 @@ import { MobileTabComponent } from './mobile-tab/mobile-tab.component';
 import { UserFilterMobileComponent } from './user-filter-mobile/user-filter-mobile.component';
 import { ActionFilterMobileComponent } from './action-filter-mobile/action-filter-mobile.component';
 import {LoadingModule} from "../core/loading/loading.module";
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -27,9 +28,10 @@ import {LoadingModule} from "../core/loading/loading.module";
     SearchModule,
       DateRangeModule,
       RouterModule,
-      SharedModule,
+      InnerSharedModule,
     MapSwitchModule,
-    LoadingModule
+    LoadingModule,
+    SharedModule
   ],
   declarations: [
     ContainerComponent,

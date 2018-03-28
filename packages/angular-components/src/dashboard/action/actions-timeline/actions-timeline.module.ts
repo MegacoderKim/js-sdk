@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ActionsTimelineComponent} from "./actions-timeline.component";
-import {SharedModule} from "../../shared/shared.module";
+import {InnerSharedModule} from "../../shared/shared.module";
 import {UserCardModule} from "../../users/user-card/user-card.module";
+import {SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
     CommonModule,
-      SharedModule,
-    UserCardModule
+      InnerSharedModule,
+    UserCardModule,
+    SharedModule
   ],
   declarations: [
       ActionsTimelineComponent
