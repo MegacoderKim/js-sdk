@@ -1,5 +1,5 @@
 <div class="flex-column justify-center label-container has-text-grey">
-  <div *ngIf="!hideTotal" class="count text-center">{{summary.totalUsers}} {{'user' | pluralize: summary.totalUsers}}</div>
+  <div *ngIf="!hideTotal" class="count text-center">{{summary.totalUsers}} {{label | pluralize: summary.totalUsers}}</div>
 
   <div class="flex-row" *ngIf="summary.totalUsers">
     <ng-container *ngFor="let datum of summary.chart; trackBy:indexId; let i = index">

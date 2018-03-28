@@ -23,6 +23,8 @@ export {UsersMapContainerComponent} from "./users-map-container/users-map-contai
 export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-chart.component"
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
 
+export { UsersSummaryModule } from "./users-summary/users-summary.module"
+
 export { UsersAnalyticsListModule } from "./users-analytics-list/users-analytics-list.module"
 export { UsersAnalyticsListComponent } from "./users-analytics-list/users-analytics-list.component"
 export { UsersListContainerModule } from "./users-list-container/users-list-container.module"
