@@ -1,140 +1,140 @@
-<app-map-container>
-  <div class="event-debug flex-column column-gap-10">
-    <div class="flex-row space-around">
-      <div class="clickable flex-row row-gap-4 align-center" (click)="setPrimaryQueryType(type)" *ngFor="let type of _primaryQueryTypes">
-        <div style="flex-basis: 20px">
-          <i class="fa" [ngClass]="type == primaryQueryType ? 'fa-check-circle-o' : 'fa-circle-o'"></i>
-        </div>
-        <div>{{type}}</div>
-      </div>
-    </div>
-    <div class="field has-addons">
-      <div class="control flex">
-        <input [placeholder]="primaryQueryType" #primary type="text" class="input">
-      </div>
-      <div class="control">
-        <button class="button is-info" (click)="setPrimaryQuery(primary.value)">
-          GO
-        </button>
-      </div>
-    </div>
-    <div [hidden]="primaryQueryType != 'user_id'">
-      <div class="flex-row row-gap-4 align-center" (click)="showISO = !showISO">
-        <div>
-          <i class="fa" [ngClass]="showISO ? 'fa-check-circle-o' : 'fa-circle-o'"></i>
-        </div>
-        <div>ISO time</div>
-      </div>
-      <div class="field is-grouped" [hidden]="!showISO">
-        <div class="control is-expanded">
-          <input class="input" #isoStart type="text" placeholder="ISO start">
-        </div>
-        <div class="control is-expanded">
-          <input class="input" #isoEnd type="text" placeholder="ISO end">
-        </div>
-      </div>
-      <!--<div class="flex-row row-gap-10" [hidden]="!showISO">-->
-        <!--<div class="form-group flex">-->
-          <!--&lt;!&ndash;<input class="form-control" #isoStart type="text" placeholder="ISO start">&ndash;&gt;-->
+<!--<app-map-container>-->
+  <!--<div class="event-debug flex-column column-gap-10">-->
+    <!--<div class="flex-row space-around">-->
+      <!--<div class="clickable flex-row row-gap-4 align-center" (click)="setPrimaryQueryType(type)" *ngFor="let type of _primaryQueryTypes">-->
+        <!--<div style="flex-basis: 20px">-->
+          <!--<i class="fa" [ngClass]="type == primaryQueryType ? 'fa-check-circle-o' : 'fa-circle-o'"></i>-->
         <!--</div>-->
-        <!--<div class="form-group flex">-->
-          <!--&lt;!&ndash;<input class="form-control" #isoEnd type="text" placeholder="ISO end">&ndash;&gt;-->
+        <!--<div>{{type}}</div>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="field has-addons">-->
+      <!--<div class="control flex">-->
+        <!--<input [placeholder]="primaryQueryType" #primary type="text" class="input">-->
+      <!--</div>-->
+      <!--<div class="control">-->
+        <!--<button class="button is-info" (click)="setPrimaryQuery(primary.value)">-->
+          <!--GO-->
+        <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div [hidden]="primaryQueryType != 'user_id'">-->
+      <!--<div class="flex-row row-gap-4 align-center" (click)="showISO = !showISO">-->
+        <!--<div>-->
+          <!--<i class="fa" [ngClass]="showISO ? 'fa-check-circle-o' : 'fa-circle-o'"></i>-->
+        <!--</div>-->
+        <!--<div>ISO time</div>-->
+      <!--</div>-->
+      <!--<div class="field is-grouped" [hidden]="!showISO">-->
+        <!--<div class="control is-expanded">-->
+          <!--<input class="input" #isoStart type="text" placeholder="ISO start">-->
+        <!--</div>-->
+        <!--<div class="control is-expanded">-->
+          <!--<input class="input" #isoEnd type="text" placeholder="ISO end">-->
         <!--</div>-->
       <!--</div>-->
-      <div class="control is-expanded" [hidden]="showISO">
-        <input type="text" class="input" name="daterange" placeholder="USE ISO (WIP)">
-      </div>
-    </div>
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-small" (click)="selectEvents(events)">
-          All events
-        </button>
-      </div>
-      <div class="control">
-        <button class="button is-small" (click)="selectEvents([])">
-          Remove all events
-        </button>
-      </div>
-      <div class="control">
-        <button class="button is-small" [ngClass]="newData ? 'is-primary' : 'is-warning'" (click)="newData = !newData">
-          New data
-        </button>
-      </div>
-    </div>
-    <app-user-device *ngIf="userId$ | async as userId" [debug]="true" [userId]="userId"></app-user-device>
+      <!--&lt;!&ndash;<div class="flex-row row-gap-10" [hidden]="!showISO">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="form-group flex">&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<input class="form-control" #isoStart type="text" placeholder="ISO start">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="form-group flex">&ndash;&gt;-->
+          <!--&lt;!&ndash;&lt;!&ndash;<input class="form-control" #isoEnd type="text" placeholder="ISO end">&ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--<div class="control is-expanded" [hidden]="showISO">-->
+        <!--<input type="text" class="input" name="daterange" placeholder="USE ISO (WIP)">-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="field is-grouped">-->
+      <!--<div class="control">-->
+        <!--<button class="button is-small" (click)="selectEvents(events)">-->
+          <!--All events-->
+        <!--</button>-->
+      <!--</div>-->
+      <!--<div class="control">-->
+        <!--<button class="button is-small" (click)="selectEvents([])">-->
+          <!--Remove all events-->
+        <!--</button>-->
+      <!--</div>-->
+      <!--<div class="control">-->
+        <!--<button class="button is-small" [ngClass]="newData ? 'is-primary' : 'is-warning'" (click)="newData = !newData">-->
+          <!--New data-->
+        <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<app-user-device *ngIf="userId$ | async as userId" [debug]="true" [userId]="userId"></app-user-device>-->
 
-    <div class="flex-column">
+    <!--<div class="flex-column">-->
 
-      <div class="flex-row" (click)="setEventType(event)" *ngFor="let event of events">
-        <div style="flex-basis: 30px">
-          <i class="fa" [style.color]="eventColor(event)" [ngClass]="selectedEvents.indexOf(event) > -1 ? 'fa-circle' : 'fa-circle-o'"></i>
-        </div>
-        <div style="align-items: center;" class="flex-row"><span>{{event}}</span>
-          <!--<div style="margin-left: 10px" class="box" [style.background]="eventColor(event)"></div>-->
-        </div>
-      </div>
+      <!--<div class="flex-row" (click)="setEventType(event)" *ngFor="let event of events">-->
+        <!--<div style="flex-basis: 30px">-->
+          <!--<i class="fa" [style.color]="eventColor(event)" [ngClass]="selectedEvents.indexOf(event) > -1 ? 'fa-circle' : 'fa-circle-o'"></i>-->
+        <!--</div>-->
+        <!--<div style="align-items: center;" class="flex-row"><span>{{event}}</span>-->
+          <!--&lt;!&ndash;<div style="margin-left: 10px" class="box" [style.background]="eventColor(event)"></div>&ndash;&gt;-->
+        <!--</div>-->
+      <!--</div>-->
 
-    </div>
-    <div class="flex-column" *ngIf="debugPolyline">
-      <h4 class="is-text-5">Polylines</h4>
-      <div class="field is-grouped">
-        <div class="control">
-          <button
-            class="button is-small flex"
-            [class.active-normal]="eventTraceService.hasPolylineType('normal')"
-            (click)="setPolyline(debugPolyline.encoded_polyline, 'normal')">Polyline {{debugPolyline.distance | distanceLocale}}
-          </button>
-        </div>
-        <div class="control">
-          <button
-            class="button is-small flex"
-            [class.active-filtered]="eventTraceService.hasPolylineType('filtered')"
-            (click)="setPolyline(debugPolyline.filtered_polyline, 'filtered')">Filtered {{debugPolyline.filtered_polyline_distance | distanceLocale}}
-          </button>
-        </div>
-        <div class="control">
-          <button
-            class="button is-small flex"
-            [class.active-gmap]="eventTraceService.hasPolylineType('gmap')"
-            (click)="setPolyline(debugPolyline.gmaps_polyline, 'gmap')">G Map {{debugPolyline.gmaps_polyline_distance | distanceLocale}}
-          </button>
-        </div>
-      </div>
+    <!--</div>-->
+    <!--<div class="flex-column" *ngIf="debugPolyline">-->
+      <!--<h4 class="is-text-5">Polylines</h4>-->
+      <!--<div class="field is-grouped">-->
+        <!--<div class="control">-->
+          <!--<button-->
+            <!--class="button is-small flex"-->
+            <!--[class.active-normal]="eventTraceService.hasPolylineType('normal')"-->
+            <!--(click)="setPolyline(debugPolyline.encoded_polyline, 'normal')">Polyline {{debugPolyline.distance | distanceLocale}}-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--<div class="control">-->
+          <!--<button-->
+            <!--class="button is-small flex"-->
+            <!--[class.active-filtered]="eventTraceService.hasPolylineType('filtered')"-->
+            <!--(click)="setPolyline(debugPolyline.filtered_polyline, 'filtered')">Filtered {{debugPolyline.filtered_polyline_distance | distanceLocale}}-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--<div class="control">-->
+          <!--<button-->
+            <!--class="button is-small flex"-->
+            <!--[class.active-gmap]="eventTraceService.hasPolylineType('gmap')"-->
+            <!--(click)="setPolyline(debugPolyline.gmaps_polyline, 'gmap')">G Map {{debugPolyline.gmaps_polyline_distance | distanceLocale}}-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>-->
 
-    </div>
-    <app-loading-data *ngIf="loading"></app-loading-data>
-    <div class="flex-column" *ngIf="filteredEvents">
-      <h4 class="flex-row clickable is-text-5" (click)="showEvents = !showEvents">
-        SDK events
-        <div class="badge">{{filteredEvents.length}}</div>
-        <i [ngClass]="showEvents ? 'fa-chevron-up' : 'fa-chevron-down'" class="fa"></i>
-      </h4>
-      <div class="flex-column" *ngIf="showEvents">
-        <div class="card" (mouseenter)="hoverEvent(event)" *ngFor="let event of filteredEvents">
-          <div class="card-content is-small flex-column space-around">
-            <strong><i class="fa fa-circle" [style.color]="eventColor(event.type)"></i> &nbsp;{{event.type}} at {{event.recorded_at | timeString}}</strong>
-            <span>recorded: {{event.recorded_at}} </span>
-            <span>created: {{event.created_at}}</span>
-            <span *ngIf="event.location && event.location.geojson">lat, lng: {{event.location.geojson.coordinates[1]}}, {{event.location.geojson.coordinates[0]}}</span>
-            <span *ngIf="event.stopDistance">stop: {{event.stopDistance | distanceLocale}} away</span>
-            <span>data: {{event.data | json}}</span>
-            <pre *ngIf="event.activity">
-              activity: {{event.activity | json}}
-            </pre>
-            <pre>
-              health: {{event.health | json}}
-            </pre>
-            <pre>
-              data: {{event.data | json}}
-            </pre>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--</div>-->
+    <!--<app-loading-data *ngIf="loading"></app-loading-data>-->
+    <!--<div class="flex-column" *ngIf="filteredEvents">-->
+      <!--<h4 class="flex-row clickable is-text-5" (click)="showEvents = !showEvents">-->
+        <!--SDK events-->
+        <!--<div class="badge">{{filteredEvents.length}}</div>-->
+        <!--<i [ngClass]="showEvents ? 'fa-chevron-up' : 'fa-chevron-down'" class="fa"></i>-->
+      <!--</h4>-->
+      <!--<div class="flex-column" *ngIf="showEvents">-->
+        <!--<div class="card" (mouseenter)="hoverEvent(event)" *ngFor="let event of filteredEvents">-->
+          <!--<div class="card-content is-small flex-column space-around">-->
+            <!--<strong><i class="fa fa-circle" [style.color]="eventColor(event.type)"></i> &nbsp;{{event.type}} at {{event.recorded_at | timeString}}</strong>-->
+            <!--<span>recorded: {{event.recorded_at}} </span>-->
+            <!--<span>created: {{event.created_at}}</span>-->
+            <!--<span *ngIf="event.location && event.location.geojson">lat, lng: {{event.location.geojson.coordinates[1]}}, {{event.location.geojson.coordinates[0]}}</span>-->
+            <!--<span *ngIf="event.stopDistance">stop: {{event.stopDistance | distanceLocale}} away</span>-->
+            <!--<span>data: {{event.data | json}}</span>-->
+            <!--<pre *ngIf="event.activity">-->
+              <!--activity: {{event.activity | json}}-->
+            <!--</pre>-->
+            <!--<pre>-->
+              <!--health: {{event.health | json}}-->
+            <!--</pre>-->
+            <!--<pre>-->
+              <!--data: {{event.data | json}}-->
+            <!--</pre>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <!--<pre>-->
-      <!--{{eventTraceService.selectedEvent | json}}-->
-    <!--</pre>-->
-  </div>
-</app-map-container>
+    <!--&lt;!&ndash;<pre>&ndash;&gt;-->
+      <!--&lt;!&ndash;{{eventTraceService.selectedEvent | json}}&ndash;&gt;-->
+    <!--&lt;!&ndash;</pre>&ndash;&gt;-->
+  <!--</div>-->
+<!--</app-map-container>-->
