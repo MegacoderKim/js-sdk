@@ -26,8 +26,8 @@ export class HtPlaceline {
     );
   }
 
-  createActivitiesSegments(userData) {
-    let segments = userData.segments;
+  createActivitiesSegments(userData: IUserPlaceline) {
+    let segments = userData.placeline;
     let { lastSegment, activitySegments } = _.reduce(
       [...segments, {}],
       ({ lastSegment, activitySegments }, segment: IPlaceline) => {
