@@ -3,7 +3,7 @@ import {
   Output
 } from '@angular/core';
 import {IAction, IUserPlaceline, IPlaceline, IEvent} from "ht-models";
-import {NameCase} from "ht-utility";
+import {NameCase, propToString} from "ht-utility";
 import * as _ from "underscore";
 import {HtPlaceline} from "ht-data";
 // import {IPlacelineMod} from "ht-models";
@@ -356,7 +356,7 @@ export class PlacelineComponent implements OnInit {
         return "Device off"
       }
       default:
-        return "Location unavailable"
+        return propToString(segment.unknown_reason)
     }
   }
 
