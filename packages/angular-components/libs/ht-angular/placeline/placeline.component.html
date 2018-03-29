@@ -47,12 +47,12 @@
         <!--{{segment | json}}-->
         <!--</pre>-->
         <div class="activity-card flex-column" *ngIf="segment.activityText">
-          <div [ngClass]="segment.activityColor" class="truncate" style="max-width: 128px;">
+          <div [ngClass]="segment.activityColor" [class.truncate]="segment.type == 'stop'">
             {{segment.activityText | nameCase}}
           </div>
           <div class="flex-row row-gap-4 activity-stats align-center" *ngIf="segment.duration">
             <span>{{segment.duration / 60 | hmString}}</span>
-            <ng-template [ngIf]="(segment.distance || segment.distance == 0) && segment.type == 'trip'">
+            <ng-template [ngIf]="(segment.distance || segment.distance == 0)">
               <span>&bull;</span>
               <span>{{segment.distance | distanceLocale: timezone}}</span>
             </ng-template>

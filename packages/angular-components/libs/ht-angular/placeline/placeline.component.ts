@@ -305,9 +305,9 @@ export class PlacelineComponent implements OnInit {
     return status !== 'Logged off' && old < 15 * 60;
   }
 
-  private getActivityClass(segment) {
+  private getActivityClass(segment: IPlaceline) {
     const type = segment.type;
-    if (type === 'location_void') {
+    if (segment.unknown_reason) {
       return 'warning'
     }
     return type === 'stop' ? 'stop' : 'trip'
@@ -318,12 +318,10 @@ export class PlacelineComponent implements OnInit {
     return status === 'stop' ? 'stop solid' : 'trip solid'
   }
 
-  private getActivityText(segment: IPlaceline | any) {
+  private getActivityText(segment: IPlaceline) {
     if (segment.type === 'stop') {
       return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop';
-    } else if(segment.activity) {
-      return segment.activity
-    } else if(segment.reason) {
+    } else if(segment.unknown_reason) {
       return this.getLocationVoidText(segment)
     } else {
       return NameCase(segment.type)
@@ -337,8 +335,8 @@ export class PlacelineComponent implements OnInit {
     return ""
   }
 
-  private getLocationVoidText(segment) {
-    switch(segment.reason) {
+  private getLocationVoidText(segment: IPlaceline) {
+    switch(segment.unknown_reason) {
       case 'disabled':
         return "Location disabled";
       case 'no_permission':
@@ -350,6 +348,9 @@ export class PlacelineComponent implements OnInit {
       }
       case "no_activity_permission": {
         return "No activity permission"
+      }
+      case "activity_permission_denied": {
+        return "Activity permission denied"
       }
       case "device_off": {
         return "Device off"
@@ -403,7 +404,7 @@ export class PlacelineComponent implements OnInit {
     }
   }
 
-  private getGapSegment(segment, lastSeg) {
+  private getGapSegment(segment: IPlaceline, lastSeg) {
     let gaps: any[] = [];
     if (!lastSeg) return [];
     if (segment.started_at && lastSeg.ended_at) {
