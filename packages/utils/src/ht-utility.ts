@@ -17,6 +17,7 @@ export * from "./time-utils";
 export * from "./date-range";
 export * from "./validations";
 export * from "./url-helps";
+export * from "./string-helpers";
 export * from "./custom-events";
 export * from "./timezone";
 
