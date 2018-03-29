@@ -9,7 +9,7 @@ import "rxjs/add/operator/share";
 import "rxjs/add/operator/takeUntil";
 import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {ITimeAwarePoint, ITimelineEvent} from "ht-models";
+import {ITimeAwarePoint, ITimelineEvent, HtPosition} from "ht-models";
 import {timer} from "rxjs/observable/timer";
 import {TimeAwareEncoder} from "time-aware-polyline";
 // import {polyline, latLngBounds} from "leaflet";
@@ -50,7 +50,7 @@ export class TimelineReplay extends TimeAwareEncoder {
     })
   }
 
-  getPositionBearingnAtTime(time: string): {position: number[], bearing: number} {
+  getPositionBearingnAtTime(time: string): {position: HtPosition, bearing: number} {
     if(!this.stats) return null;
     // let currentTimeValue = (timePercent * (this.stats.duration) / 100) + new Date(this.stats.start).getTime();
     // let time = new Date(currentTimeValue).toISOString();
@@ -63,7 +63,7 @@ export class TimelineReplay extends TimeAwareEncoder {
     if (pathSegment && pathSegment.locations.length > 0) {
       // let pathBeaing = _.last(pathSegment);
       let point = _.last(pathSegment.locations);
-      position = [point[0], point[1]];
+      position = {lat: point[0], lng: point[1]};
       bearing = pathSegment.bearing;
       // return [point[0], point[1]]
     } else {

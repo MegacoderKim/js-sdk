@@ -1,4 +1,4 @@
-import {IPlaceline, ITimeAwarePoint} from "ht-models";
+import {IPlaceline, ITimeAwarePoint, HtPosition} from "ht-models";
 
 export interface MapUtils {
   setMap: (item: HtMapItem, map: HtMap) => void,
@@ -26,10 +26,10 @@ export type HtMapItem = HtMarker | HtPolyline
 export interface IReplayHead {
   timePercent: number,
   currentTime: string,
-  currentPosition: number[],
+  currentPosition: HtPosition,
   bearing: number,
-  currentSegment: IDecodedSegment,
-  segmentPercent: number
+  currentSegment?: IDecodedSegment,
+  segmentPercent?: number
 }
 
 export interface IDecodedSegment extends  Partial<IPlaceline> {

@@ -9,6 +9,7 @@ import {IPlaceline, IUserPlaceline} from "ht-models";
 import {Store} from "@ngrx/store";
 import {UserTraceService} from "../users/user-trace.service";
 import {timer} from "rxjs/observable/timer";
+import {IReplayHead} from "../trace/ht-js-map/interfaces";
 
 @Injectable()
 export class ReplayEffectsService {
@@ -147,7 +148,7 @@ export class ReplayEffectsService {
     return this.getHead(timePercent)
   }
 
-  private getHead(timePercent) {
+  private getHead(timePercent): IReplayHead {
     let stats = this.userTraceService.segmentsTrace.stats;
     let currentTimeValue = (timePercent * (stats.duration) / 100) + new Date(stats.start).getTime();
     let currentTime = new Date(currentTimeValue).toISOString();

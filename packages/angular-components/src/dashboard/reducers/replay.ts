@@ -1,7 +1,6 @@
 import * as fromReplay from "../actions/replay"
-import {state} from "@angular/core";
 import {ITimeAwarePoint} from "../model/common";
-import {stat} from "fs";
+import {HtPosition} from "ht-models";
 
 export const initialState: State = {
     stats: null,
@@ -21,7 +20,7 @@ export interface State {
 export interface IReplayHead {
     timePercent: number,
     currentTime: string,
-    currentPosition: number[],
+    currentPosition: HtPosition,
     bearing: number
 }
 

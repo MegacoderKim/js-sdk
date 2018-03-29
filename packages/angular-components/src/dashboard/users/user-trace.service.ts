@@ -11,6 +11,7 @@ import {InnerMapService} from "../map-container/map.service";
 import {Observable} from "rxjs/Observable";
 import {HtMapService} from "ht-angular";
 import {StopsHeatmapTrace} from "ht-maps";
+import {ReplayMarkerTrace} from "../trace/replay-marker";
 // import * as L from "leaflet";
 import * as _ from "underscore";
 import {htUser} from "ht-data";
@@ -21,6 +22,7 @@ export class UserTraceService {
   usersCluster;
   userPlaces;
   placeline;
+  replayMarker;
   // map: L.Map;
   constructor(
       private store: Store<fromRoot.State>,
@@ -30,6 +32,7 @@ export class UserTraceService {
       private htMapService: HtMapService,
       private mapService: InnerMapService
   ) {
+    this.replayMarker = new ReplayMarkerTrace(this.htMapService.mapInstance);
     this.usersCluster = this.htMapService.usersCluster;
     this.userPlaces = this.htMapService.usersHeatmap;
     this.placeline = this.htMapService.placeline;
@@ -42,9 +45,11 @@ export class UserTraceService {
 
   setReplayHead(head) {
     if (head) {
-      console.log(head, "replay head");
+      this.replayMarker.setPopup('replay');
+      this.replayMarker.trace({...head, id: "replay"})
     } else {
-
+      this.replayMarker.setPopup();
+      this.replayMarker.clear()
     }
 
   }
