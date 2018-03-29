@@ -52,7 +52,7 @@
           </div>
           <div class="flex-row row-gap-4 activity-stats align-center" *ngIf="segment.duration">
             <span>{{segment.duration / 60 | hmString}}</span>
-            <ng-template [ngIf]="(segment.distance || segment.distance == 0)">
+            <ng-template [ngIf]="(segment.distance || segment.distance == 0) && segment.type !== 'stop'">
               <span>&bull;</span>
               <span>{{segment.distance | distanceLocale: timezone}}</span>
             </ng-template>
