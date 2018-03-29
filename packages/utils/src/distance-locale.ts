@@ -2,7 +2,7 @@ import {getTimezone} from "./timezone";
 
 export function DistanceLocale(meters, timezone?) {
   timezone = timezone || getTimezone();
-  if (meters != undefined && typeof meters == "number" && meters >= 0) {
+  if (meters != undefined && meters !== null && typeof meters == "number" && meters >= 0) {
     let america: boolean = timezone && timezone.indexOf("America") > -1;
     // console.log(config.timezone.indexOf('America'), america, config.timezone);
     // let test = false;
@@ -22,6 +22,6 @@ export function DistanceLocale(meters, timezone?) {
       return kmLocaleString + " km";
     }
   } else {
-    return "-";
+    return meters;
   }
 }
