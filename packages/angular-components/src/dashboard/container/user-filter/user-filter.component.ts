@@ -104,7 +104,7 @@ export class UserFilterComponent extends FilterCommonComponent implements OnInit
 
   csvApi$(query) {
     let string = HtQuerySerialize({...query, output_format: 'csv', 'min_recorded_at': query.start, 'max_recorded_at': query.end, start: null, end: null, page_size: null});
-    let url = `https://api.hypertrack.com/api/v1/users/analytics/?${string}`
+    let url = `https://api.hypertrack.com/api/v2/users/analytics/?${string}`
     return this.http.get(url, {responseType: 'text'})
   }
 
