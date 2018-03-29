@@ -37,6 +37,7 @@ export * from "./mixins/popup-renderer";
 export * from "./mixins/single-item";
 export * from "./mixins/styles";
 export * from "./mixins/trace";
+export * from "./mixins/map-items";
 
 //compounds entities
 export * from "./compound-entities/placeline-trace";
