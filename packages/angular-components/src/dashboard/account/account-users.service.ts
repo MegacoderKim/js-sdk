@@ -19,7 +19,8 @@ import {HtQuerySerialize} from "../../utils/query-serializer";
 import {MembershipsService} from "./memberships.service";
 import {HttpClient} from "@angular/common/http";
 import {IInvoices} from "../../models/invoices";
-var Cookies = require("js-cookie");
+import * as Cookies from "js-cookie"
+
 import {merge} from "rxjs/observable/merge";
 import {environment} from '../../environments/environment';
 

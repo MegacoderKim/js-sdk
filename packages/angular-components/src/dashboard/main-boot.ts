@@ -2,7 +2,7 @@ import {config} from "./config";
 import {GetToken, GetAdminToken, GetReadOnlyToken} from "../utils/get-token";
 import {environment} from "../environments/environment";
 import {GetUrlParam} from "../utils/getUrlParam";
-let Cookies = require("js-cookie");
+import * as Cookies from "js-cookie"
 import * as jstz from "jstz";
 declare const Raven: any;
 declare const ga: any;

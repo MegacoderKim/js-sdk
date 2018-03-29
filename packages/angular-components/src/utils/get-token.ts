@@ -1,7 +1,8 @@
 import {GetUrlParam} from "./getUrlParam";
 import {config} from "../dashboard/config";
 import {environment} from '../environments/environment';
-var Cookies = require('js-cookie');
+import * as Cookies from "js-cookie"
+
 
 export function GetToken (): string {
     return GetUrlParam('key') || Cookies.get(environment.tokenName) || config.token

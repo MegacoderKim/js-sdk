@@ -3,7 +3,8 @@ import {IAccountUser} from "ht-models";
 import {AccountUsersService} from "../account/account-users.service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from '../../environments/environment';
-var Cookies = require("js-cookie");
+import * as Cookies from "js-cookie"
+
 
 @Component({
   selector: 'app-demo',

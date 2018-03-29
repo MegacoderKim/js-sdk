@@ -1,4 +1,4 @@
-let Cookies = require('js-cookie');
+import * as Cookies from "js-cookie"
 import {environment} from '../../environments/environment';
 import * as URLUtils from './url.util';
 

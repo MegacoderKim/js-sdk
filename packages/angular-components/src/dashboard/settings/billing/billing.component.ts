@@ -6,7 +6,7 @@ import * as moment from "moment-mini"
 // import  from "frappe-charts"
 // import Chart from "../../../../node_modules/frappe-charts/dist/frappe-charts.min.esm.js"
 // import Chart from "frappe-charts"
-const Chart = require("../../../../node_modules/frappe-charts/dist/frappe-charts.min.cjs.js");
+const Chart = require("../../../../../../node_modules/frappe-charts/dist/frappe-charts.min.cjs.js");
 
 // import * as Chart from "../../../../node_modules/frappe-charts/dist/frappe-charts.min.esm.js"
 // import * as Chart from "frappe-charts"
