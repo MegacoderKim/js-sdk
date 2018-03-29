@@ -30,6 +30,7 @@ import {HtModule} from "ht-angular";
     HtModule.forRoot({
       token: 'pk_fe8200189bbdfd44b078bd462b08cb86174aa97c',
       mapType: 'leaflet',
+      baseUrl: "https://staging-api.hypertrack.com/api/"
     })
   ],
   // providers: [ {
