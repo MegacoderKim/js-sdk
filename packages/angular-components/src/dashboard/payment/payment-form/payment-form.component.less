@@ -28,7 +28,6 @@
     position: relative;
     float: left;
     border-radius: 6px;
-    cursor: pointer;
     //overflow: hidden;
     .pricing-box-content {
       border-radius: 6px;
@@ -110,10 +109,20 @@
         }
       }
       .pricing-box-inside-cta {
-        .button( @light-green, @green);
+        font-size: 1.1rem;
+        line-height: 1.5;
+        font-weight: 400;
+        color: #92A5AE;
+        text-align: center;
         margin: @space--double auto;
         width: 90%;
         position: relative;
+        padding: 0.75rem 1rem;
+        background: #f3f3f3;
+      }
+      .cta {
+
+        .button( @light-green, @green);
         transition: 0.5s all ease-in-out;
       }
     }

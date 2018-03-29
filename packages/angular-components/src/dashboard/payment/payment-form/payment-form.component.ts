@@ -118,19 +118,23 @@ export class PaymentFormComponent implements OnInit {
   ) { }
 
   selectPaymentMethod(paymentType) {
-    this.externalAnalyticsService.logSegmentEvent('selected plan', 'interaction', 'payment', {
-      selectedPlanName: paymentType
-    });
-    this.externalAnalyticsService.logSegmentIdentify({
-      selectedPlanName: paymentType
-    });
-    if (paymentType === 'enterprise:1') {
-      if (window["analytics"]) {
-        window["Intercom"]('showNewMessage', 'I am interested in the Enterprise plan. Could you give me more details about it ?');
-      }
+    if (paymentType == 'free_forever:1') {
+
     } else {
-      this.paymentType = paymentType;
-    }
+      this.externalAnalyticsService.logSegmentEvent( 'selected plan', 'interaction','payment', {
+        selectedPlanName : paymentType
+      });
+      this.externalAnalyticsService.logSegmentIdentify( {
+        selectedPlanName: paymentType
+      });
+      if ( paymentType === 'enterprise:1' ) {
+        if ( window[ "analytics"] ) {
+          window["Intercom"]('showNewMessage', 'I am interested in the Enterprise plan. Could you give me more details about it ?');
+        }
+      } else {
+        this.paymentType = paymentType;
+      }
+    };
   }
 
   ngOnInit() {

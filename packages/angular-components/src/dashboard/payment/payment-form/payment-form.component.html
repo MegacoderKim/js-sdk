@@ -4,7 +4,7 @@
     <div class="payment-form-step-description">Select a plan that suits the scale of your business. You can change the plan at any point of time.</div>
     <div class="section-billing-plans {{paymentType}}">
       <div class="pricing-boxes">
-        <div class="pricing-box" (click)="selectPaymentMethod(plan.id)" *ngFor="let plan of plans">
+        <div class="pricing-box" [class.clickable]="plan.id !== 'free_forever:1'" (click)="selectPaymentMethod(plan.id)" *ngFor="let plan of plans">
           <div class="pricing-box-highlight" *ngIf="plan.name=='Regular'">
             MOST POPULAR
           </div>
