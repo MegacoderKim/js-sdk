@@ -30,7 +30,7 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
   actionDataResult:  any[];
   dataColumns = [
     {
-      label: 'Unique',
+      label: 'Unique Id',
       sortOrder: '-',
       key: 'unique_id'
 

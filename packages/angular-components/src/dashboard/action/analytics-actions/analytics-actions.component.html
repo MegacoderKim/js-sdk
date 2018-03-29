@@ -39,7 +39,7 @@
           <span *ngIf="action.user">{{action.user.name}}</span>
         </td>
         <td>
-          <span><i class="fa" [ngClass]="getDelayedIcon(action)"></i>&nbsp; {{action.status}} </span>
+          <span><i class="fa" [ngClass]="getDelayedIcon(action)"></i>&nbsp; {{action.display.status_text}} </span>
         </td>
         <td>
           <span>{{action.assigned_at}}</span>
