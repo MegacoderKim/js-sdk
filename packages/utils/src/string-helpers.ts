@@ -6,6 +6,6 @@
 export const propToString = (prop: string, separator: string = '_'): string => {
     const words = prop.split(separator);
     return words.reduce((string: string, word: string) => {
-        return string ? `${string} word` : word[0].toUpperCase + word.slice(1);
+        return !!string ? `${string} ${word}` : word[0].toUpperCase() + word.slice(1);
     }, "")
 }
