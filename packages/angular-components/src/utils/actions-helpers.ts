@@ -1,6 +1,6 @@
 import {GetDateRangeQuery} from "./time-utils";
 import * as _ from "underscore";
-import {NameCase} from "./name-case";
+import {NameCase} from "ht-utility";
 import {htAction} from "ht-data";
 import { moment } from "moment-mini"
 

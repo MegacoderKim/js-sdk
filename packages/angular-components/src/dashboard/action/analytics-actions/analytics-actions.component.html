@@ -30,28 +30,28 @@
       <tbody class="table-body" *ngIf="items">
         <tr (click)="openAction(action)" class="user-link" *ngFor="let action of actionDataResult">
         <td class="">
-          {{action.lookup_id}}
+          {{action.lookup_id | dot}}
         </td>
         <td>
-          <span>{{action.type}}</span>
+          <span>{{action.type | nameCase}}</span>
         </td>
         <td>
-          <span *ngIf="action.user">{{action.user.name}}</span>
+          <span *ngIf="action.user">{{action.user.name | dot}}</span>
         </td>
         <td>
           <span><i class="fa" [ngClass]="getDelayedIcon(action)"></i>&nbsp; {{action.display.status_text}} </span>
         </td>
         <td>
-          <span>{{action.assigned_at}}</span>
+          <span>{{action.created_at}}</span>
         </td>
           <td>
           <span>{{action.completed_at}}</span>
         </td>
           <td>
-            <span>{{action.duration | hmString: 60}}</span>
+            <span>{{action.duration | hmString: 60 | dot}}</span>
           </td>
           <td>
-            <span>{{action.distance | distanceLocale: timezone}}</span>
+            <span>{{action.distance | distanceLocale: timezone | dot}}</span>
           </td>
       </tr>
       </tbody>

@@ -163,16 +163,14 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
     }
   }
 
-  formattedActionsResultData(data: any) {
+  formattedActionsResultData(data: IAction[]): IAction[] {
     if (!data) return [];
     return data.map((action: IAction) => {
       let completed_at = action.completed_at || action.eta;
       return {
         ...action,
-        type: NameCase(action.type),
-        lookup_id: action.unique_id ? action.unique_id : '—',
-        completed_at: completed_at ? `${TimeString(completed_at)}, ${DateString(completed_at, 'short')}` : '—',
-        assigned_at: action.created_at ? `${TimeString(action.created_at)}, ${DateString(action.created_at, 'short')}` : '—',
+        completed_at: completed_at ? `${TimeString(completed_at)}, ${DateString(completed_at, 'short')}` : "--",
+        created_at: action.created_at ? `${TimeString(action.created_at)}, ${DateString(action.created_at, 'short')}` : "--",
       }
     });
   }
