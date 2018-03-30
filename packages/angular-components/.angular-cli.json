@@ -41,7 +41,7 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "source": "environments/environment.ts",
-        "dev": "environments/environment.ts",
+        "release": "environments/environment.release.ts",
         "staging": "environments/environment.staging.ts",
         "prod": "environments/environment.prod.ts"
       }

@@ -44,7 +44,7 @@ import {HtModule} from "ht-angular";
     HtModule.forRoot({
       token: config.token,
       mapType: 'leaflet',
-      baseUrl: "https://staging-api.hypertrack.com/api/"
+      // baseUrl: "https://staging-api.hypertrack.com/api/"
     }),
     StoreModule.forRoot(reducers, {metaReducers}),
     EffectsModule.forRoot([
