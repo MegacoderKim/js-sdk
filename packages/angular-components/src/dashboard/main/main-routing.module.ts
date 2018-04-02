@@ -10,6 +10,7 @@ export const mainRoutes: Routes = [
   {path: 'payment', loadChildren: "../payment/payment.module#PaymentModule"},
   {path: 'setup', loadChildren: "../setup-guide/setup-guide.module#SetupGuideModule"},
   // {path: 'onboarding-setup', loadChildren: "../onboarding-setup/onboarding-setup.module#OnboardingSetupModule"},
+  { path: 'blocked', loadChildren: "../block/block.module#BlockModule"},
   { path: 'analytics', loadChildren: "../analytics/analytics.module#AnalyticsModule"},
   {path: '', loadChildren: "../settings/settings.module#SettingsModule"},
   {path: '', loadChildren: "../container/container.module#ContainerModule", canActivate: [ContainerGuardGuard]},

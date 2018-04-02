@@ -6,6 +6,7 @@ import {DOCUMENT} from '@angular/common';
 import * as CookieUtil from './utils/cookie.utils';
 import {ExternalAnalyticsService} from './core/external-analytics.service';
 import {HtClientService, HtRequestService} from 'ht-angular';
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,10 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    if (this.document && this.document.body) {
+    if (config.isWidget) this.blockWidget()
+
+
+      if (this.document && this.document.body) {
       const width = this.document.body.clientWidth;
       config.isMobile = width < 480
     }
@@ -73,5 +77,13 @@ export class AppComponent {
     // return the global native browser window object
     return window;
   };
+
+
+  blockWidget() {
+    const token = config.token;
+    if (environment.bk.includes(token)) {
+      location.href = '/widget/blocked'
+    }
+  }
 
 }
