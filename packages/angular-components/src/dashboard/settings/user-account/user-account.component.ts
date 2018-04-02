@@ -96,6 +96,10 @@ export class UserAccountComponent implements OnInit {
     });
 
 
+  };
+
+  showSnackbar(message: string) {
+    this.snackbarService.displaySuccessToast(message)
   }
 
 

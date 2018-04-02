@@ -146,6 +146,10 @@
           placeholder="Enter URL to download link Android app"></app-settings-editor>
 </div>
 <div class="settings-section flex-column column-gap-20">
+  <div class="is-size-4 text-uppercase">Track through the day</div>
+  <app-ttd (onDelete)="showSnackbar('Rule successfully removed')" (onAdd)="showSnackbar('Rule successfully added')"></app-ttd>
+</div>
+<div class="settings-section flex-column column-gap-20">
   <div class="is-size-4 text-uppercase">SDK controls</div>
   <app-sdk-control [showCustom]="config.isStaff"></app-sdk-control>
 </div>

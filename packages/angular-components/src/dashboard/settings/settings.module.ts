@@ -17,6 +17,7 @@ import { InvoicesComponent } from './invoices/invoices.component';
 import {SdkControlModule} from "./sdk-control/sdk-control.module";
 import { PlanOptionsComponent } from './plan-options/plan-options.component';
 import {SharedModule} from "ht-angular";
+import {TtdModule} from "./ttd/ttd.module";
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import {SharedModule} from "ht-angular";
     FormsModule,
     // GraphsModule,
     BillingFormModule,
-    SdkControlModule
+    SdkControlModule,
+    TtdModule
   ],
   declarations: [
     SettingsComponent,

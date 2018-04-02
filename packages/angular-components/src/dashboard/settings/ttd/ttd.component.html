@@ -1,0 +1,55 @@
+<div class="card" *ngFor="let rule of rules">
+  <div class="card-content flex-column column-gap-4">
+    <div class="flex-row">
+      <div class="flex">Start tracking at</div>
+      <div class="dash"></div>
+      <div class="flex">End tracking at</div>
+      <div class="flex"></div>
+    </div>
+    <div class="flex-row">
+      <div class="flex">
+        <div class="has-text-weight-bold">{{getTime(rule.start)}}</div>
+      </div>
+      <div class="dash">---------------</div>
+      <div class="flex">
+        <div class="has-text-weight-bold">{{getTime(rule.end)}}</div>
+      </div>
+      <div class="flex">
+        <button class="button is-warning" [class.is-loading]="loadingDelete == rule.id" (click)="delete(rule.id)">
+          <span class="icon">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-content flex-column column-gap-4">
+    <div class="flex-row">
+      <div class="flex">Start tracking at</div>
+      <div class="dash"></div>
+      <div class="flex">End tracking at</div>
+      <div class="flex"></div>
+    </div>
+    <div class="flex-row">
+      <div class="flex">
+        <button class="button is-info is-outlined" (click)="openStart()">{{getTime(start)}}</button>
+      </div>
+      <div class="dash">---------------</div>
+
+      <div class="flex">
+        <button class="button is-info is-outlined" (click)="openEnd()">{{getTime(end)}}</button>
+      </div>
+      <div class="flex">
+        <button class="button is-primary" [class.is-loading]="loading" (click)="save()">
+          <span class="icon">
+            <i class="fa fa-plus"></i>
+          </span>
+          <span>Create Rule</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
