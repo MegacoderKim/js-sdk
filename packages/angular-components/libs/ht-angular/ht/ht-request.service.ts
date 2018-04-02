@@ -17,4 +17,8 @@ export class HtRequestService extends HtRequest {
   postObservable<T>(url, body, options: object = {}) {
     return this.http.post<T>(url, body, options);
   }
+
+  deleteObservable<T>(url, options: object = {}): Observable<any> {
+    return this.http.delete(url, options)
+  }
 }

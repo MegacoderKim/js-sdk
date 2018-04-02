@@ -59,6 +59,11 @@ export class HtRequest {
         return fromPromise(p) as Observable<T>;
     }
 
+    deleteObservable<T>(url, options: object = {}): Observable<any> {
+      let p = this.deleteFetch(url, options);
+      return fromPromise(p) as Observable<T>;
+    }
+
     api$<T>(url: string, query, options: {isAdmin?: boolean, token?: string, pureUrl?: boolean} = {}) {
         url = this.url(url, query, options.pureUrl);
         let headers = options.isAdmin  ? this.adminHeaderObj() : this.headerObj(options.token);
@@ -69,6 +74,12 @@ export class HtRequest {
         url = this.url(url);
         let headers = options.isAdmin  ? this.adminHeaderObj() : this.headerObj(options.token);
         return this.postObservable(url, body, {headers});
+    }
+
+    deleteApi$(url, options?) {
+      url = this.url(url);
+      let headers = options.isAdmin  ? this.adminHeaderObj() : this.headerObj(options.token);
+      return this.deleteObservable(url, {headers});
     }
 
     getFetch(url, options: object = {}) {
@@ -84,5 +95,13 @@ export class HtRequest {
             ...options
         }).then(res => res.json());
     }
+
+    deleteFetch(url, options: object = {}) {
+      return fetch(url, {
+        method: "DELETE",
+        ...options
+      }).then(res => res.json());
+    }
+
 }
 

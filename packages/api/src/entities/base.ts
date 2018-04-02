@@ -16,6 +16,10 @@ export class HtBaseApi {
     return this.request.postApi$(path, body, options);
   }
 
+  deleteApi$(path: string, options: {isAdmin?: boolean, token?: string} = {}) {
+    return this.request.deleteApi$(path, options);
+  }
+
   allPages<T = any>(api$, options: {isAdmin?: boolean, token?: string} = {}) {
     return api$.pipe(
       expand((data: IPageData) => {
