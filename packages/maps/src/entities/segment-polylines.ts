@@ -21,7 +21,7 @@ import {MapItemsMixin} from "../mixins/map-items";
 
 export class SegmentPolylines {
   styleFunct: StyleFunct = segmentPolylineStyles;
-  name = "segment polyline";
+  name = "polyline";
 
   constructor(public mapInstance: MapInstance) {}
 

@@ -25,7 +25,7 @@ import {MapItemsMixin} from "../mixins/map-items";
 
 export class StopMarkers {
   styleFunct: StyleFunct = stopStyles
-
+  name = "stop"
   constructor(public mapInstance: MapInstance) {}
 
   getPosition(data): HtPosition {

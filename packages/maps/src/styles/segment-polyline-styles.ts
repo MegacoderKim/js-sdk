@@ -35,9 +35,9 @@ export const segmentPolylineStyles = {
             opacity: 1
           },
           fade: {
-            weight: 2,
-            color: Color.grey2,
-            opacity: 0.2
+            weight: 4,
+            color: Color.grey4,
+            opacity: 0.5
           }
         }
       }
