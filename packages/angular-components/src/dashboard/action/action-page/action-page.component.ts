@@ -113,12 +113,12 @@ export class ActionPageComponent implements OnInit {
 
   private getPlacelineParam(params) {
     let actionId = params['id'];
-    let lookupId = params['lookup_id'];
+    const action_unique_id = params['unique_id'] || params['lookup_id'];
     let collectionId = params['collection_id'];
     return {
       action_id: actionId,
-      collection_id: collectionId,
-      lookup_id: lookupId
+      action_collection_id: collectionId,
+      action_unique_id
     }
   }
 

@@ -131,7 +131,7 @@ export class SelectTimelineQueryAction implements Action {
     constructor(public payload: {
       date?: string,
       action_id?: string,
-      action_lookup_id?: string
+      action_unique_id?: string
       action_collection_id?: string
     }) {}
 }

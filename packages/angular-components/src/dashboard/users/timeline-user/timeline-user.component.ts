@@ -84,9 +84,9 @@ export class TimelineUserComponent implements OnInit {
       this.loading.timeline = true;
       this.timeLineDay = params['day'];
       this.actionId = params['action_id'];
-      this.actionLookupId = params['action_lookup_id'];
+      this.actionLookupId = params['action_unique_id'] || params['action_lookup_id'];
       this.actionCollectionId = params['action_collection_id'];
-      this.store.dispatch(new fromUser.SelectTimelineQueryAction({date: this.timeLineDay, action_id: this.actionId, action_lookup_id: this.actionLookupId, action_collection_id: this.actionCollectionId}));
+      this.store.dispatch(new fromUser.SelectTimelineQueryAction({date: this.timeLineDay, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId}));
       this.notToday = this.isBeforeToday(this.timeLineDay);
       let id = params[this.paramsKey];
       if(id) {
