@@ -25,6 +25,7 @@
             (highlightedSegmentId)="handleMouseOver($event)"
             [actions]="timeLine.actions"
             [events]="timeLine.actions"
+            [isLive]="user.is_tracking"
             [lastHeartbeat]="timeLine.last_heartbeat_at"
             [placelines]="timeLine.placeline"></ht-placeline>
   </div>
