@@ -30,6 +30,20 @@ export class HtActionsApi extends HtBaseApi {
     return this.api$(path, query, {token});
   };
 
+  rules(query = {}, token?: string): Observable<any> {
+    let path = `v2/${this.base}/rules/`;
+    return this.api$(path, query, {token});
+  };
+
+  postRules(body, token?: string): Observable<any> {
+    let path = `v2/${this.base}/rules/`;
+    return this.postApi$(path, body, {token});
+  }
+
+  deleteRules(id, token?: string) {
+    let path = `v2/${this.base}/rules/${id}/`;
+    return this.deleteApi$(path, {token});
+  }
   // placeline<T>(id, query = {}, token?: string): Observable<T> {
   //   let tail =  `v1/${this.base}/${id}/placeline/`;
   //   return this.api$<T>(tail, query, {token});
