@@ -58,7 +58,7 @@ export class Placeline {
     this.traceStops(segType.stopSegment, selectedSegment, lastSegment);
     if (lastSegment) {
       var string = this.getTimeAwarePolyline(lastSegment);
-      if(string && lastSegment.place) {
+      if(string) {
         //todo infer toNotTraceItem from animMixin trace
         this.userMarker.toNotTraceItem = true;
         this.animPolyline.toNotTraceItem = true;
@@ -72,7 +72,7 @@ export class Placeline {
         // if (!selectedSegment) this.animPolyline.trace(restTrips);
         this.anim.clear();
       }
-      if (this.userMarker.getPosition(user)) {
+      if (this.userMarker.isValidMapItems(user)) {
         this.userMarker.trace(user);
       } else {
         this.userMarker.clear()

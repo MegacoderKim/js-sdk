@@ -58,6 +58,10 @@ export class CurrentUser {
   getDivContent(data) {
     return userDivFactory(data);
   }
+
+  isValidMapItems(data) {
+    return htUser(data).isValidMarker()
+  }
 }
 
 export const CurrentUserTrace = AnimationMixin(SingleItemMixin(DivMarkersMixin(

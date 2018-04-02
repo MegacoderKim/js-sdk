@@ -117,9 +117,14 @@ export class HtUser {
     }
   }
 
-  isValidMarker(user?: IUserAnalytics | IUser) {
+  isValidMarker(user?: IUserAnalytics | IUser | IUserPlaceline) {
     user = user || this.data;
-    return !!(user.location && user.location.geojson);
+    return !!(user.location && user.location.geojson) && this.isLive(user);
+  }
+
+  isLive(user?: IUserAnalytics | IUser | IUserPlaceline) {
+    user = user || this.data;
+    return user.is_tracking;
   }
 }
 
