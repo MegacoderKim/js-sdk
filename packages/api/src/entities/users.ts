@@ -72,6 +72,8 @@ export class HtUsersApi extends HtBaseApi {
       return {id: query['action_id']}
     } else if (query['action_collection_id']) {
       return {collection_id: query['action_collection_id']}
+    } else if(query['action_unique_id']) {
+      return {unique_id: query['action_unique_id']}
     };
     return null;
   }
