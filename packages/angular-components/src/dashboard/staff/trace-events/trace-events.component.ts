@@ -35,12 +35,7 @@ export class TraceEventsComponent {
   primaryQuery = new Subject();
   subs = [];
   primaryQueryType: string = 'user_id';
-  _primaryQueryTypes1 = [
-    'action_id',
-    'trip_id',
-    'user_id',
-  ];
-  _primaryQueryTypes2 = [
+  primaryQueryTypes = [
     'action_id',
     'activity_id',
     'user_id',
@@ -54,7 +49,7 @@ export class TraceEventsComponent {
   filteredEvents: ISdkEvent[] | null = null;
   showEvents: boolean = false;
   $dateRange;
-  newData: boolean = true;
+  showDevice: boolean = false;
   constructor(
     private page: PageService,
     public eventTraceService: EventTraceService,
@@ -83,10 +78,6 @@ export class TraceEventsComponent {
 
   }
 
-  get _primaryQueryTypes() {
-    return this.newData ? this._primaryQueryTypes2 : this._primaryQueryTypes1;
-  }
-
   ngOnInit() {
     this.userId$ = this.route.params.pluck('user_id');
     let sub = this.broadcast.on('reset-map').debounceTime(200).subscribe(() => {
@@ -112,8 +103,7 @@ export class TraceEventsComponent {
       let string = HtQuerySerialize(query);
       // console.log(this.isoStart, "iso view child");
       // return Observable.of([])
-      let api = this.newData ? "sdk_data" : "sdk_events";
-      return this.page.all(`app/${api}/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
+      return this.page.all(`app/sdk_data/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
     }).map((events: ISdkEvent[]) => {
       return this.eventTraceService.processEvents(events)
     })
@@ -287,7 +277,7 @@ export class TraceEventsComponent {
       this.isoStart.nativeElement.value = params.min_recorded_at;
       this.isoEnd.nativeElement.value = params.max_recorded_at;
     }
-    let queryType = _.find(this._primaryQueryTypes, (type) => {
+    let queryType = _.find(this.primaryQueryTypes, (type) => {
       return !!params[type]
     });
     if(queryType) {

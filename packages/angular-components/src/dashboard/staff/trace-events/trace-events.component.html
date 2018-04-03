@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="event-debug flex-column column-gap-10">
       <div class="flex-row space-around">
-        <div class="clickable flex-row row-gap-4 align-center" (click)="setPrimaryQueryType(type)" *ngFor="let type of _primaryQueryTypes">
+        <div class="clickable flex-row row-gap-4 align-center" (click)="setPrimaryQueryType(type)" *ngFor="let type of primaryQueryTypes">
           <div style="flex-basis: 20px">
             <i class="fa" [ngClass]="type == primaryQueryType ? 'fa-check-circle-o' : 'fa-circle-o'"></i>
           </div>
@@ -57,13 +57,11 @@
             Remove all events
           </button>
         </div>
-        <div class="control">
-          <button class="button is-small" [ngClass]="newData ? 'is-primary' : 'is-warning'" (click)="newData = !newData">
-            New data
-          </button>
-        </div>
       </div>
-      <app-user-device *ngIf="userId$ | async as userId" [debug]="true" [userId]="userId"></app-user-device>
+      <button class="button" *ngIf="!showDevice" (click)="showDevice = true">Show device detail</button>
+      <div *ngIf="showDevice">
+        <app-user-device *ngIf="userId$ | async as userId" [debug]="true" [userId]="userId"></app-user-device>
+      </div>
 
       <div class="flex-column">
 
