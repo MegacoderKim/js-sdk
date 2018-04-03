@@ -35,7 +35,6 @@ export function DataObservableMixin<
 
     constructor(...args: any[]) {
       super(...args);
-      this.mapInstance.addToItemsSet(this)
     }
 
     _procData$() {
