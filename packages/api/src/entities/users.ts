@@ -59,6 +59,7 @@ export class HtUsersApi extends HtBaseApi {
     let action = {...actionPlaceline, placeline: null} as IAction;
     user.location = user.location || action.location;
     user.health = user.health || action.health;
+    user.is_tracking = !!action.health && user.is_tracking;
     return {
       ...user,
       actions: [action],
