@@ -4,11 +4,7 @@
     [selectedSegmentId]="selectedSegmentId$ | async"
     (selectedSegment)="onSelectSegmentId($event)"
     (highlightedSegmentId)="onHighlightSegment($event)"
-    [isLive]="getPlacelineLive(userData)"
-    [lastHeartbeat]="userData.last_heartbeat_at"
-    [actions]="userData.actions"
-    [events]="userData.events"
-    [placelines]="userData.placeline"></ht-placeline>
+    [userPlaceline]="userData"></ht-placeline>
 </div>
 <ng-template #loading>
   <ht-loading-dots class="text-1 text-center flex-row"></ht-loading-dots>

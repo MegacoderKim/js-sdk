@@ -19,11 +19,7 @@ export class PlacelineComponent implements OnInit {
   @Output() highlightedSegmentId: EventEmitter<string> = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
   @Output() selectedSegment: EventEmitter<string | null> = new EventEmitter();
-  @Input() placelines: IPlaceline[];
-  @Input() events: IEvent[];
-  @Input() actions: IAction[];
-  @Input() isLive: boolean;
-  @Input() lastHeartbeat: string;
+  @Input() userPlaceline: IUserPlaceline;
   @Input() selectedSegmentId: string = "__";
   @Input() isMobile: boolean = false;
   @Input() timezone: string;
@@ -79,15 +75,15 @@ export class PlacelineComponent implements OnInit {
   }
 
   get placelineMod() {
-    const iPlacelines: IPlaceline[] = this.placelines;
-    if (this.placelines.length === 0) return [];
-    const actions = this.actions;
+    const placeline: IPlaceline[] = this.userPlaceline.placeline;
+    if (placeline.length === 0) return [];
+    const actions = this.userPlaceline.actions;
     this.actionMap = {};
     const {currentActions, expActions} = this.currentExpActions(actions);
-    const allEvents = this.events;
+    const allEvents = this.userPlaceline.events;
 
 
-    let {activitySegments} = _.reduce(this.placelines, (acc, segment: IPlaceline) => {
+    let {activitySegments} = _.reduce(placeline, (acc, segment: IPlaceline) => {
       const time = segment.started_at;
       const activityText = this.getActivityText(segment);
       const activityClass = this.getActivityClass(segment);
@@ -117,7 +113,7 @@ export class PlacelineComponent implements OnInit {
     }, {activitySegments: [], events: allEvents, lastSeg: null});
 
 
-    const lastSeg = this.lastSeg(iPlacelines);
+    const lastSeg = this.lastSeg(placeline);
     // activitySegments.push(lastSeg);
     // return activitySegments
 
@@ -287,23 +283,18 @@ export class PlacelineComponent implements OnInit {
     if(!lastSeg) return {};
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
-    let time;
-    let isLive = this.isLive;
+    let time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration)).toISOString();
+    let isLive = this.userPlaceline.is_tracking;
     if(!isLive) {
       time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration)).toISOString()
     } else {
       // isLive = true;
-      time = this.lastHeartbeat
+      time = this.userPlaceline.last_heartbeat_at || time;
     }
     const activityClass = this.getActivityClass(lastSeg);
     return {time, pipeClass, id: '..', lastSeg: true, isLive, ended: true, activityClass, activityBg: `${this.getActivityClass(lastSeg)}-bg`}
   }
 
-  private isSegmentLive(placeline: IUserPlaceline) {
-    let old = placeline.display.seconds_elapsed_since_last_heartbeat;
-    let status = placeline.display.status_text;
-    return status !== 'Logged off' && old < 15 * 60;
-  }
 
   private getActivityClass(segment: IPlaceline) {
     const type = segment.type;
