@@ -11,7 +11,7 @@
         </div>
         <div class="flex-row text-muted user-status" *ngIf="user.health">
           <div>{{user.display.last_updated_text}}<span *ngIf="user.health.battery_percentage">&nbsp; &bull; &nbsp;</span></div>
-          <ht-battery-icon *ngIf="user.health.battery_percentage && showStatus" [battery]="user.health.battery_percentage"></ht-battery-icon>
+          <ht-battery-icon *ngIf="user.health.battery_percentage" [battery]="user.health.battery_percentage"></ht-battery-icon>
         </div>
       </div>
     </div>
