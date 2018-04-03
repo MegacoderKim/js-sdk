@@ -31,17 +31,17 @@ export class HtActionsApi extends HtBaseApi {
   };
 
   rules(query = {}, token?: string): Observable<any> {
-    let path = `v2/${this.base}/rules/`;
+    let path = `v2/${this.base}/autocreate/`;
     return this.api$(path, query, {token});
   };
 
   postRules(body, token?: string): Observable<any> {
-    let path = `v2/${this.base}/rules/`;
+    let path = `v2/${this.base}/autocreate/`;
     return this.postApi$(path, body, {token});
   }
 
   deleteRules(id, token?: string) {
-    let path = `v2/${this.base}/rules/${id}/`;
+    let path = `v2/${this.base}/autocreate/${id}/`;
     return this.deleteApi$(path, {token});
   }
   // placeline<T>(id, query = {}, token?: string): Observable<T> {
