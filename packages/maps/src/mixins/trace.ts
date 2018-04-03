@@ -2,6 +2,7 @@
 import {Constructor, Entities, Entity} from "../interfaces";
 import { HtBounds } from "ht-map-wrapper";
 import {MapInstance} from "../map-utils/map-instance";
+import {IPathBearingTime} from "ht-models";
 
 export interface ITraceBase {
   getItem: (data) => any;
@@ -9,7 +10,7 @@ export interface ITraceBase {
   onClick?: (trace) => void;
   onMouseEnter?: (trace) => void;
   setStyle: (entity: Entity) => void;
-  update: (entity) => void;
+  update: (entity, pathBearing?: IPathBearingTime) => void;
   traceEffect?: () => void;
   removeAll: (entities) => void;
   getBounds: (item, bounds?) => HtBounds;

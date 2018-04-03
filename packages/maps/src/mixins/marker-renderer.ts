@@ -1,7 +1,6 @@
 import { Constructor, Entities } from "../interfaces";
 import {HtBounds, HtMap} from "ht-map-wrapper";
 import { HtPosition } from "ht-models";
-import * as _ from "underscore";
 import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
@@ -13,6 +12,7 @@ export interface IMarkersBase {
   mapInstance: MapInstance;
   toNotSetMap?: boolean;
   trackBy(datum): string;
+  event: HtCustomEvent
 }
 
 export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
@@ -20,10 +20,8 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
 ) {
   return class extends Base {
     entities: Entities<any> = {};
-    event = new HtCustomEvent();
-    htShow(item) {
-      return `display: ${item ? "flex" : "none"}`;
-    }
+    // event = new HtCustomEvent();
+
 
     getItem(data) {
       return this.mapInstance.mapUtils.getMarker();
@@ -43,44 +41,6 @@ export function MarkersMixin<TBase extends Constructor<IMarkersBase>>(
       this.event.next('update-'+ id, {item, data})
     }
 
-    /**
-     *
-     * @param id string return trackBy
-     * @returns {{subscribe: (cb) => IEventSub}}
-     */
-    onEntityUpdate(id): {subscribe: (cb) => IEventSub} {
-      const eventName = `update-${id}`;
-      return {
-        subscribe: (cb) => {
-          return this.event.subscribe(eventName, cb)
-        }
-      }
-    }
 
-    removeItem(item) {
-      this.mapInstance.mapUtils.clearItem(item);
-    }
-
-    removeAll(entities) {
-      _.each(entities, (entity: any) => {
-        this.removeItem(entity.item);
-      });
-      this.entities = {};
-    }
-
-    clear() {
-      const entities = this.entities;
-      this.removeAll(entities)
-    }
-
-    clearItem({item, data}) {
-      this.removeData(data);
-      this.removeItem(item);
-    }
-
-    removeData(data) {
-      let id = this.trackBy(data);
-      if (this.entities[id]) delete this.entities[id];
-    }
   };
 }
