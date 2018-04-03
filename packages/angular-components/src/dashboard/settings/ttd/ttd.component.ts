@@ -63,7 +63,7 @@ export class TtdComponent implements OnInit {
   save() {
     const { minutes, hours, durationInSec} = this.getRuleData();
     this.loading = true;
-    this.cd.detectChanges()
+    this.cd.detectChanges();
     const rule = {
       type: "TRACK_THROUGH_THE_DAY",
       "autocreate_rule": {
@@ -101,43 +101,6 @@ export class TtdComponent implements OnInit {
   };
 
   getTime(time: string): string {
-    const procTime = this.getProcTime(time);
-    return `${procTime.hours12}:${procTime.minutesString} ${procTime.suffix}`
-  };
-
-  private getRuleData() {
-    const { hours, minutes, time } = this.minHourString(this.start);
-    let duration;
-    const endMinHour = this.minHourString(this.end);
-
-    if (time <= endMinHour.time) {
-      duration = endMinHour.time - time;
-    } else {
-      duration = 24 * 60 - (time - endMinHour.time);
-    }
-    return {
-      minutes,
-      hours,
-      durationInSec: duration * 60
-    }
-  }
-
-  private minHourString(time: string) {
-    const timeArray = time.split(":");
-    const hoursString = timeArray[0];
-    const minutesString = timeArray[1];
-    const hours = parseInt(hoursString);
-    const minutes = parseInt(minutesString);
-    return {
-      hoursString,
-      minutesString,
-      hours,
-      minutes,
-      time: 60 * hours + minutes
-    }
-  }
-
-  private getProcTime(time: string) {
     const { minutesString, hoursString, hours, minutes} = this.minHourString(time);
     let suffix;
     let hours12;
@@ -151,8 +114,32 @@ export class TtdComponent implements OnInit {
       hours12 = hours;
       suffix = 'am'
     }
-    return {hours, minutes, hours12, suffix, minutesString}
+    return `${hours12}:${minutesString} ${suffix}`
   };
+
+  private getRuleData() {
+    const { hours, minutes, time } = this.minHourString(this.start, true);
+    const endMinHour = this.minHourString(this.end, true);
+    let duration = this.getDuration(time, endMinHour.time);
+    return {
+      minutes,
+      hours,
+      durationInSec: duration * 60
+    }
+  }
+
+  private getDuration(startTime: number, endTime: number): number {
+    if (startTime <= endTime) {
+      return endTime - startTime;
+    } else {
+      return 24 * 60 - (startTime - endTime);
+    }
+  }
+
+  private minHourString(time: string, convertToUTC: boolean = false) {
+    const timeArray = time.split(":");
+    return this.procMinutesHours(timeArray[0], timeArray[1], convertToUTC ? -1 : 0)
+  }
 
   private procRule(rule) {
     const startEnd = this.getRuleStartEnd(rule);
@@ -163,38 +150,74 @@ export class TtdComponent implements OnInit {
   };
 
   private getRuleStartEnd(rule) {
-    const crontab = rule.autocreate_rule.crontab;
-    const crontabArray = crontab.split(" ");
-    const minutesString = crontabArray[0].length > 1 ? crontabArray[0] : `0${crontabArray[0]}`;
-    const minutes = parseInt(minutesString);
-    const hoursString = crontabArray[1];
-    const hours = parseInt(hoursString);
-    const string = `${hoursString}:${minutesString}`
+    const crontabMinHr = this.getCrontabMinHours(rule);
+    const {hoursString, minutesString, minutes, hours, time} = crontabMinHr;
+    const string = `${hoursString}:${minutesString}`;
     const durationInSec = rule.autocomplete_rule.after;
     const durationInMin = Math.floor(durationInSec/60);
-    const endMinutesOffset = (durationInMin % 60);
-    let endHoursOffset = Math.floor((durationInMin / 60))
-    let endMinutes = endMinutesOffset + minutes;
-    // let endHoursOffset = 0;
-    if (endMinutes > 59) {
-      endHoursOffset = 1 + endHoursOffset;
-      endMinutes = endMinutes % 60;
-    } else {
-
-    }
-    const endHours = (hours + endHoursOffset) % 24
+    const endMinHr = this.getMinHrAfter(time, durationInMin);
+    // console.log(rule, endMinHr);
     return {
       start: string,
-      end: endMinutes > 9 ? `${endHours}:${endMinutes}` : `${endHours}:0${endMinutes}`
+      end: `${endMinHr.hoursString}:${endMinHr.minutesString}`
+    }
+  };
+
+  private getMinHrAfter(time, durationInMin: number) {
+    const endTimeInMin = (time + durationInMin) % (24 * 60);
+    const minutes = endTimeInMin % 60;
+    const hoursString = Math.floor(endTimeInMin / 60);
+    const minutesString = minutes > 9 ? `${minutes}` : `0${minutes}`;
+
+    return {
+      hoursString,
+      minutesString,
     }
   }
 
-  private getRuleEnd(rule) {
+  private getCrontabMinHours(rule) {
     const crontab = rule.autocreate_rule.crontab;
     const crontabArray = crontab.split(" ");
-    const minutesString = crontabArray[0].length > 1 ? crontabArray[0] : `0${crontabArray[0]}`;
-    const hoursString = crontabArray[1];
-    return `${hoursString}:${minutesString}`
+    return this.procMinutesHours(crontabArray[1], crontabArray[0]);
+  };
+
+  private procMinutesHours(hoursString: string, minutesString: string, sign = 1): MinHr {
+    let minutes = parseInt(minutesString);
+    let hours = parseInt(hoursString);
+    let time = (60 * hours + minutes);
+    time = !!sign ? (time + (new Date().getTimezoneOffset() * sign)) % (24 * 60) : (time  % (24 * 60));
+    time = time >= 0 ? time : (24 * 60 - time);
+    minutes = time % 60;
+    hours = Math.floor(time / 60);
+    minutesString = minutes > 9 ? `${minutes}` : `0${minutes}`;
+    return {
+      minutesString,
+      hoursString: `${hours}`,
+      minutes,
+      hours,
+      time
+    }
   }
 
+  // private localToUTC(timeInMin: number) {
+  //   var d = new Date(timeInMin * 60 * 1000)
+  //   return {
+  //     // minutes: d.getU(),
+  //   }
+  // }
+  // private UTCToLocal(timeInMin: number) {
+  //   var d = new Date(timeInMin * 60 * 1000)
+  //   return {
+  //     minutes: d.getU(),
+  //   }
+  // }
+
+};
+
+interface MinHr {
+  minutesString: string,
+  hoursString: string,
+  minutes: number,
+  hours: number,
+  time: number
 }
