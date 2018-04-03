@@ -58,6 +58,7 @@ export class HtUsersApi extends HtBaseApi {
     const events = [];
     let action = {...actionPlaceline, placeline: null} as IAction;
     user.location = user.location || action.location;
+    user.health = user.health || action.health;
     return {
       ...user,
       actions: [action],
