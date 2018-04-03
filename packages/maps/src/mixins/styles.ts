@@ -25,10 +25,10 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
       super(...args);
     }
 
-    getStyle(selectedStyleType: string = "default", fallbackStyle?) {
+    getStyle(selectedStyleType: string = "default", data?, fallbackStyle?) {
       const mapType = this.mapInstance.mapUtils.type;
       const styleFunct = this.styleFunct || this.defaultstyleFunct;
-      const mapTypetype = this.styleObj || styleFunct.get(mapType);
+      const mapTypetype = this.styleObj || styleFunct.get(mapType, data);
       // console.log(this.name, "style", selectedStyleType, styleFunct, this.styleFunct);
       // const styleType = mapTypetype[selectedStyleType] ? selectedStyleType : this.styleType;
       let style = mapTypetype[selectedStyleType] || fallbackStyle;
@@ -49,7 +49,7 @@ export function StyleMixin<TBase extends Constructor<IStyleBase>>(Base: TBase) {
 
     setStyle({item, data}) {
       const styleType = this.getStyleType(data);
-      const style = this.getStyle(styleType);
+      const style = this.getStyle(styleType, data);
       this.setItemStyle(item, style);
     }
 

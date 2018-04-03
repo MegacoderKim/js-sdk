@@ -51,7 +51,7 @@ export interface Entity<T = any> {
 }
 
 export interface StyleFunct {
-  get: (type: HtMapType) => {
+  get: (type: HtMapType, data?: any) => {
     default: object;
     [key: string]: object;
   }
