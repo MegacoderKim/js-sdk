@@ -231,7 +231,7 @@ export class PlacelineComponent implements OnInit {
         actionTime: action.created_at,
         actionD: NameCase(action.type[0]) + this.actionMap[action.id],
         action_id: action.id,
-        actionLookupId: action.lookup_id,
+        actionLookupId: action.unique_id,
         ...action
       };
       let currentActions = (assign.actionTime) ? [...acc.currentActions, assign] : acc.currentActions;
@@ -245,7 +245,7 @@ export class PlacelineComponent implements OnInit {
           action_distance: action.distance,
           action_duration: action.duration,
           actionEnded: true,
-          actionLookupId: action.lookup_id,
+          actionLookupId: action.unique_id,
           ...action
         };
         currentActions = [...currentActions, end];
@@ -258,7 +258,7 @@ export class PlacelineComponent implements OnInit {
           action_id: action.id,
           action_distance: action.distance,
           action_duration: action.duration,
-          actionLookupId: action.lookup_id,
+          actionLookupId: action.unique_id,
           ...action
         };
         expActions.push(end)

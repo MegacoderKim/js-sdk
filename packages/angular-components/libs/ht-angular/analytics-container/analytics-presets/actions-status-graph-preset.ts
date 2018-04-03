@@ -74,7 +74,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
           {
             label: "id",
             selector(action: IAction) {
-              return action.lookup_id || "NA"
+              return action.unique_id || "NA"
             }
           },
           {

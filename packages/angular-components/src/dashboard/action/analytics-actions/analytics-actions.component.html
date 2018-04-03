@@ -30,7 +30,7 @@
       <tbody class="table-body" *ngIf="items">
         <tr (click)="openAction(action)" class="user-link" *ngFor="let action of actionDataResult">
         <td class="">
-          {{action.lookup_id | dot}}
+          {{action.unique_id | dot}}
         </td>
         <td>
           <span>{{action.type | nameCase}}</span>
