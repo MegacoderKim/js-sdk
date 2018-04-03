@@ -185,8 +185,8 @@ export class TtdComponent implements OnInit {
     let minutes = parseInt(minutesString);
     let hours = parseInt(hoursString);
     let time = (60 * hours + minutes);
-    time = !!sign ? (time + (new Date().getTimezoneOffset() * sign)) % (24 * 60) : (time  % (24 * 60));
-    time = time >= 0 ? time : (24 * 60 - time);
+    time = !!sign ? (time - (new Date().getTimezoneOffset() * sign)) % (24 * 60) : (time  % (24 * 60));
+    time = time >= 0 ? time : (24 * 60 + time);
     minutes = time % 60;
     hours = Math.floor(time / 60);
     minutesString = minutes > 9 ? `${minutes}` : `0${minutes}`;
