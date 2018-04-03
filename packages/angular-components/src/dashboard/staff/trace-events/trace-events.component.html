@@ -119,16 +119,9 @@
               <span>created: {{event.created_at}}</span>
               <span *ngIf="event.location && event.location.geojson">lat, lng: {{event.location.geojson.coordinates[1]}}, {{event.location.geojson.coordinates[0]}}</span>
               <span *ngIf="event.stopDistance">stop: {{event.stopDistance | distanceLocale}} away</span>
-              <span>data: {{event.data | json}}</span>
-              <pre *ngIf="event.activity">
-              activity: {{event.activity | json}}
-            </pre>
-              <pre>
-              health: {{event.health | json}}
-            </pre>
-              <pre>
-              data: {{event.data | json}}
-            </pre>
+              <pre *ngIf="event.activity">activity: {{event.activity | json}}</pre>
+              <pre *ngIf="event.health">health: {{event.health | json}}</pre>
+              <pre>data: {{event.data | json}}</pre>
             </div>
           </div>
         </div>

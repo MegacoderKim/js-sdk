@@ -9,6 +9,8 @@ import {HtLocation} from "ht-models";
 import {MapInstance} from "ht-maps";
 import {EventMarkers, EventMarkersTrace} from "./map-items/event-markers";
 import {EventPolyline, EventPolylineTrace} from "./map-items/event-polyline";
+import {DebugPolyline, DebugPolylineTrace} from "./map-items/debug-polyline";
+import {ISdkEvent, SdkEvents} from "./interfaces";
 
 @Injectable()
 export class EventTraceService {
@@ -18,22 +20,24 @@ export class EventTraceService {
 //   markers: L.CircleMarker[] = [];
 //   polyline: L.Polyline = polyline([]);
   selectedEvent: ISdkEvent;
-//   debugPolylines: {
-//     [type: string]: L.Polyline
-//   } = {};
+  debugPolylines: DebugPolyline;
+  debugPolylinesData: {
+    [type: string]: any
+  } = {};
   events = SdkEvents;
 //   popup: L.Popup = popup();
   constructor(
 
   ) {
     this.markers = new EventMarkersTrace(this.mapInstance);
-    this.polyline = new EventPolylineTrace(this.mapInstance)
+    this.polyline = new EventPolylineTrace(this.mapInstance);
+    this.debugPolylines = new DebugPolylineTrace(this.mapInstance)
   }
 
   traceEvents(events: ISdkEvent[]) {
     console.log(events);
     this.markers.trace(events);
-    this.polyline.trace({id: 'pol', events})
+    this.polyline.trace({id: 'pol', events});
     // this.clear();
     // let latlng = [];
     // _.each(events, (event) => {
@@ -76,22 +80,6 @@ export class EventTraceService {
     // this.markers = []
   }
 
-  getEventContent(event: ISdkEvent): string {
-    let stringArray = GetJsonStringArray(event.location);
-    let locationDom = _.reduce(stringArray, (string, strings) => {
-      return `${string}<div><span class="text-muted">${strings[0]}</span>&nbsp;<span>${strings[1]}</span></div>`
-    }, '');
-    locationDom = event.stopDistance ? locationDom + `<div><span class="text-muted">stop distance</span>&nbsp;${event.stopDistance}m</div>` : locationDom;
-    return `
-    <div class="flex-column">
-    <div>${event.type}</div>
-    <div><span class="text-muted">Recorded:</span> ${event.recorded_at}</div>
-    <div><span class="text-muted">Created:</span> ${event.created_at}</div>
-    ${locationDom}
-</div>`
-
-  }
-
   setBounds() {
     this.mapInstance.resetBounds();
 
@@ -112,25 +100,27 @@ export class EventTraceService {
   }
 
   renderPolyline(encodedPolyline: string, type: string) {
-    // let debugPolyline = this.debugPolylines[type];
-    // if(debugPolyline) {
-    //   debugPolyline.remove();
-    //   delete this.debugPolylines[type];
-    // } else {
-    //   let polylinez = polyline([], {
-    //     color: DebugPolylineColorMap[type] || '#000',
-    //     opacity: 0.8
-    //   });
-    //   SetEncodedPath(polylinez, encodedPolyline);
-    //   polylinez.addTo(this.mapService.map as Map);
-    //   this.debugPolylines[type] = polylinez;
-    //   // this.setBounds();
-    // }
+    console.log("enc", encodedPolyline, type);
+    let debugPolyline = this.debugPolylinesData[type];
+    if(debugPolyline) {
+      delete this.debugPolylinesData[type];
+    } else {
+      this.debugPolylinesData[type] = encodedPolyline;
+    }
+    const keys = Object.keys(this.debugPolylinesData);
+    const data = keys.map((key) => {
+      return {
+        id: key,
+        encodedPolyline: this.debugPolylinesData[key]
+      }
+    });
+    this.debugPolylines.trace(data);
+    this.setBounds();
   }
 
   hasPolylineType(type): boolean {
-    return false;
-    // return !!this.debugPolylines[type];
+    // return false;
+    return !!this.debugPolylinesData[type];
   }
 
   focusEvent(event: ISdkEvent) {
@@ -168,62 +158,8 @@ export class EventTraceService {
   }
 }
 
-export function GetJsonStringArray(object: object): any[][] {
-  let keys = _.keys(object);
-  return _.reduce(keys, (acc: [string, string][], key: string) => {
-    let type = typeof object[key];
-    if(type == 'number' || type == 'string') {
-      return [...acc, [key, object[key]]]
-    } else {
-      return acc
-    }
-  }, [])
-}
-
-export const SdkEvents = [
-  'stop.started',
-  'stop.ended',
-  'location.changed',
-  'action.completed',
-  'tracking.ended',
-  'tracking.started',
-  'activity.changed',
-  'activity.started',
-  'activity.ended',
-  'activity.updated',
-  'device.power.changed',
-  'device.radio.changed',
-  'device.location_config.changed',
-  'device.info.changed',
-  'device.service.restarted',
-  'activity.created',
-  'activity.updated',
-  'device.power.state',
-  'health.info.changed',
-  'health.power.changed',
-  'health.radio.changed',
-  'health.location.changed'
-];
-
-export function GetEventColor(type) {
-  let n = SdkEvents.indexOf(type);
-  var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
-  return colores_g[n % colores_g.length];
-}
 
 
-export interface ISdkEvent {
-  id: string,
-  type: string,
-  user_id: string,
-  location: HtLocation,
-  recorded_at: string,
-  created_at: string,
-  stopDistance?: number,
-  data: {
-    stop_id?: string
-  }
-}
 export interface IDebugPolylines {
   time_aware_polyline: string,
   filtered_time_aware_polyline: string,

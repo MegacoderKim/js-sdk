@@ -1,10 +1,10 @@
 import { TraceMixin, ExtendBoundsMixin, PolylinesMixin, MarkersMixin, StyleMixin, MapItemsMixin, MapInstance, SingleItemMixin} from "ht-maps";
 import {Color} from "ht-utility";
 import {StyleFunct} from "ht-maps";
-import {ISdkEvent} from "../interfaces";
 
-export class EventPolyline {
-  trace: (data: {events: ISdkEvent[], id: string}) => void;
+export class DebugPolyline {
+  trace: (data: {encodedPolyline: string, id: string}[]) => void;
+
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {
@@ -31,7 +31,7 @@ export class EventPolyline {
           return {
             default: {
               weight: 5,
-              color: Color.blue,
+              color: Color.red,
               opacity: 1
             },
             highlight: {
@@ -51,24 +51,13 @@ export class EventPolyline {
   };
   constructor(public mapInstance: MapInstance) {};
 
-  getPosition(data: ISdkEvent) {
-    if (data.location && data.location.geojson) {
-      return {
-        lat: data.location.geojson.coordinates[1],
-        lng: data.location.geojson.coordinates[0]
-      }
-    } else {
-      return null
-    }
-  };
-
-  getPath(data) {
-    return data.events.map(event => this.getPosition(event)).filter(pos => !!pos)
+  getEncodedPath(data) {
+    return data.encodedPolyline
   }
 }
 
-export const EventPolylineTrace = SingleItemMixin(
-  TraceMixin((PolylinesMixin(MarkersMixin(StyleMixin(
-    MapItemsMixin(EventPolyline)
+export const DebugPolylineTrace = (
+  TraceMixin(ExtendBoundsMixin(PolylinesMixin((StyleMixin(
+    MapItemsMixin(DebugPolyline)
   )))))
 )

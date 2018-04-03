@@ -1,21 +1,23 @@
 import {PopupMixin, TraceMixin, ExtendBoundsMixin, CircleMixin, MarkersMixin, StyleMixin, MapItemsMixin, MapInstance} from "ht-maps";
 import {Color} from "ht-utility";
-import {GetJsonStringArray, ISdkEvent} from "../event-trace.service";
-
+import {ISdkEvent, SdkEvents, GetEventColor} from "../interfaces";
+import * as _ from "underscore";
 
 export class EventMarkers {
   trace: (events: ISdkEvent[]) => void;
   setPopup: (id) => void;
   styleFunct = {
-    get(type) {
+    get(type, data) {
+      const eventColor = GetEventColor(data.type);
+      console.log(eventColor, data, "style");
       switch (type) {
         case 'google': {
           return {
             default: {
               icon: {
-                fillColor: Color.stop,
+                fillColor: eventColor,
                 fillOpacity: 1,
-                strokeColor: Color.stopDark,
+                strokeColor: eventColor,
                 strokeOpacity: 1,
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 8,
@@ -28,9 +30,9 @@ export class EventMarkers {
             },
             highlight: {
               icon: {
-                fillColor: Color.stop,
+                fillColor: eventColor,
                 fillOpacity: 1,
-                strokeColor: Color.stopDark,
+                strokeColor: eventColor,
                 strokeOpacity: 1,
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 8,
@@ -39,9 +41,9 @@ export class EventMarkers {
             },
             fade: {
               icon: {
-                fillColor: Color.stop,
+                fillColor: eventColor,
                 fillOpacity: 0.1,
-                strokeColor: Color.stopDark,
+                strokeColor: eventColor,
                 strokeOpacity: 0.2,
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 8,
@@ -53,11 +55,11 @@ export class EventMarkers {
         case "leaflet": {
           return {
             default: {
-              radius: 10,
-              fillColor: Color.stop,
+              radius: 7,
+              fillColor: eventColor,
               fillOpacity: 1,
-              weight: 2,
-              color: Color.stopDark,
+              weight: 1,
+              color: eventColor,
               pane: "markerPane"
             },
             popup: {
@@ -67,19 +69,19 @@ export class EventMarkers {
             },
             highlight: {
               radius: 10,
-              fillColor: Color.stop,
+              fillColor: eventColor,
               fillOpacity: 1,
               weight: 4,
-              color: Color.stopDark,
+              color: eventColor,
               pane: "markerPane"
             },
             fade: {
               radius: 10,
-              fillColor: Color.stop,
+              fillColor: eventColor,
               fillOpacity: 0.3,
               opacity: 0.4,
               weight: 2,
-              color: Color.stopDark,
+              color: eventColor,
               pane: "markerPane"
             }
           }
@@ -121,3 +123,17 @@ export const EventMarkersTrace = PopupMixin(
     MapItemsMixin(EventMarkers)
   )))))
 );
+
+export function GetJsonStringArray(object: object): any[][] {
+  let keys = _.keys(object);
+  return _.reduce(keys, (acc: [string, string][], key: string) => {
+    let type = typeof object[key];
+    if(type == 'number' || type == 'string') {
+      return [...acc, [key, object[key]]]
+    } else {
+      return acc
+    }
+  }, [])
+}
+
+

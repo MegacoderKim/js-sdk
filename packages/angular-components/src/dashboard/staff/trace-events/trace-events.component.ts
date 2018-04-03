@@ -4,12 +4,12 @@ import * as _ from "underscore";
 import {Subject} from "rxjs/Subject";
 import {HtQuerySerialize} from "../../../utils/query-serializer";
 import {PageService} from "../../core/page.service";
-import {EventTraceService, GetEventColor, IDebugPolylines, ISdkEvent} from "../event-trace.service";
+import {EventTraceService, IDebugPolylines} from "../event-trace.service";
 import {BroadcastService} from "../../core/broadcast.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {config} from "../../config";
 import {HttpClient} from "@angular/common/http";
-import {IAction} from "ht-models";
+import {ISdkEvent, GetEventColor} from "../interfaces";
 
 @Component({
   selector: 'app-trace-events',
@@ -112,7 +112,7 @@ export class TraceEventsComponent {
       let string = HtQuerySerialize(query);
       // console.log(this.isoStart, "iso view child");
       // return Observable.of([])
-      let api = this.newData ? "sdk_events" : "sdk_events";
+      let api = this.newData ? "sdk_data" : "sdk_events";
       return this.page.all(`app/${api}/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
     }).map((events: ISdkEvent[]) => {
       return this.eventTraceService.processEvents(events)
