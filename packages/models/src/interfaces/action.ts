@@ -34,7 +34,7 @@ export interface IAction {
     distance_remaining: string | null;
   };
   unique_id: string;
-  lookup_id: string;
+  // lookup_id: string;
   arrival_status: string,
   // assigned_at: string;
   distance_to_arrival: null | number,
