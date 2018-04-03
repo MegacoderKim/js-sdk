@@ -28,7 +28,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     private elRef: ElementRef,
     @Optional() htMapService: HtMapService
   ) {
-    if(htMapService) this.mapInstance = htMapService.mapInstance
+    if(htMapService && !this.mapInstance) this.mapInstance = htMapService.mapInstance
   }
 
   @HostListener('resize', ['$event'])
