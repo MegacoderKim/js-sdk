@@ -8,7 +8,7 @@ import {MapContainerModule} from "../map-container/map-container.module";
 import {InnerSharedModule} from "../shared/shared.module";
 import { EventTraceService } from './event-trace.service';
 import {UserDeviceModule} from "../user-device/user-device.module";
-import {SharedModule} from "ht-angular";
+import {MapModule, SharedModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -17,7 +17,8 @@ import {SharedModule} from "ht-angular";
     MapContainerModule,
     SharedModule,
     InnerSharedModule,
-    UserDeviceModule
+    UserDeviceModule,
+    MapModule
   ],
   declarations: [StaffComponent, TraceEventsComponent],
   exports: [StaffComponent],
