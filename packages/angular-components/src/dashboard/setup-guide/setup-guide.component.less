@@ -446,19 +446,11 @@
     position: relative;
     overflow: hidden;
   }
-  .section-billing-faq {
+  .faq-section {
     position: relative;
     overflow: hidden;
     padding: @space--double 0;
-    .billing-faq-title {
-      .text-title-h4();
-      font-weight: 400;
-      color: @black;
-      margin-bottom: @space--double;
-      position: relative;
-      overflow: hidden;
-    }
-    .billing-faq-item {
+    .faq-item {
       .text-normal();
       width: 70%;
       padding: 1rem;
@@ -466,44 +458,15 @@
       border-radius: 4px;
       position: relative;
       overflow: hidden;
-      cursor: pointer;
       transition: 0.2s all ease-in-out;
-      &:hover {
-        background: @blue-grey;
-      }
-      &.isOpen {
-        .faq-item-answer {
-          display: block;
-        }
-        .faq-item-question {
-          color: black;
-          .question-collapse {
-            transform: rotate( 90deg );
-          }
-        }
-      }
     }
     .faq-item-question {
-      .question-text {
-        position: relative;
-        overflow: hidden;
-        display: inline-block;
-        line-height: 1.5rem;
-      }
-      .question-collapse {
-        .text-caption();
-        padding-right: 0.5em;
-        line-height: 1.5rem;
-        transition: 0.4s all ease-in-out;
-        display: inline-block;
-        vertical-align: top;
-      }
+      color: @black;
     }
     .faq-item-answer {
       color: @dark-grey;
-      display: none;
-      padding-left: 1em;
-      float: right;
+      position: relative;
+      overflow: hidden;
     }
   }
   .section-billing-plans {
