@@ -15,7 +15,7 @@ import {HMString} from "ht-utility";
 import * as moment from "moment-mini";
 import {ContainerService} from "../../container/container.service";
 import {anim} from "../../../utils/animations";
-import {NameCase} from "ht-utility";
+import {NameCase, propToString} from "ht-utility";
 import {config} from "../../config";
 import {IActionPage} from "ht-models";
 import {InnerMapService} from "../../map-container/map.service";
@@ -271,7 +271,7 @@ export class ActionPageComponent implements OnInit {
   }
 
   getRawActionType(action) {
-    return action.type
+    return propToString(action.type)
     // switch (action.type) {
     //   case 'task':
     //     return 'task';

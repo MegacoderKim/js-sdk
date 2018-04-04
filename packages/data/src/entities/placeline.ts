@@ -1,4 +1,4 @@
-import { IUserPlaceline, IAction, IEvent, IPlaceline, ITimelineEvent } from "ht-models";
+import { IUserPlaceline, IAction, IEvent, IPlaceline, ITimelineEvent,IActionPlaceline, IUser } from "ht-models";
 import {
   IActionMark,
   IActivitySegment,
@@ -158,6 +158,40 @@ export class HtPlaceline {
       },
       { tripSegment: [], stopSegment: [] }
     );
+  }
+
+  procActionPlaceline(actionPlaceline: IActionPlaceline): IUserPlaceline {
+    let user = actionPlaceline.user as IUser;
+    const placeline = actionPlaceline.placeline as IPlaceline[];
+    const events = [];
+    let action = {...actionPlaceline, placeline: null} as IAction;
+    user.location = user.location || action.location;
+    user.health = user.health || action.health;
+    user.is_tracking = !!action.health && user.is_tracking;
+    return {
+      ...user,
+      actions: [action],
+      events,
+      placeline: this.procPlaceline(placeline),
+      timeline_date: null
+    }
+  };
+
+  procUsersPlaceline(user: IUserPlaceline, query?): IUserPlaceline {
+    if (user && query) {
+      user.placeline = this.procPlaceline(user.placeline);
+      const maxRecorded = query['max_recorded_at'];
+      const today = maxRecorded ? isToday(new Date(maxRecorded)) : true;
+      user.is_tracking = user.is_tracking && today;
+      return user;
+    } else {
+      user.placeline = this.procPlaceline(user.placeline);
+      return user
+    }
+  };
+
+  procPlaceline(placelines: IPlaceline[]): IPlaceline[] {
+    return placelines
   }
 
   //helpers

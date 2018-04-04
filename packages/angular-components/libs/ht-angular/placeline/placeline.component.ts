@@ -6,7 +6,7 @@ import {IAction, IUserPlaceline, IPlaceline, IEvent} from "ht-models";
 import {NameCase, propToString} from "ht-utility";
 import * as _ from "underscore";
 import {HtPlaceline} from "ht-data";
-// import {IPlacelineMod} from "ht-models";
+import {isToday} from "date-fns";
 
 @Component({
   selector: 'ht-placeline',
@@ -111,7 +111,6 @@ export class PlacelineComponent implements OnInit {
       // let activitySegments =  [...acc.activitySegments, currentActivitySegment];
       return {activitySegments, events, lastSeg};
     }, {activitySegments: [], events: allEvents, lastSeg: null});
-
 
     const lastSeg = this.lastSeg(placeline);
     // activitySegments.push(lastSeg);
@@ -223,7 +222,7 @@ export class PlacelineComponent implements OnInit {
       let expActions: any[] = [];
       this.actionMap = this.setActionMap(action);
       const assign = {
-        actionText: `${NameCase(action.type)} created`,
+        actionText: `${this.actionType(action)} created`,
         actionTime: action.created_at,
         actionD: NameCase(action.type[0]) + this.actionMap[action.id],
         action_id: action.id,
@@ -233,7 +232,7 @@ export class PlacelineComponent implements OnInit {
       let currentActions = (assign.actionTime) ? [...acc.currentActions, assign] : acc.currentActions;
       if (action.completed_at) {
         const end = {
-          actionText: `${NameCase(action.type)} ${action.status}`,
+          actionText: `${this.actionType(action)} ${action.status}`,
           actionTime: action.completed_at,
           actionD: NameCase(action.type[0]) + this.actionMap[action.id],
           actionEnd: true,
@@ -247,7 +246,7 @@ export class PlacelineComponent implements OnInit {
         currentActions = [...currentActions, end];
       } else {
         const end = {
-          actionText: `${NameCase(action.type)} scheduled`,
+          actionText: `${this.actionType(action)} scheduled`,
           actionTime: action.eta || null,
           actionD: NameCase(action.type[0]) + this.actionMap[action.id],
           actionEnd: true,
@@ -262,6 +261,10 @@ export class PlacelineComponent implements OnInit {
 
       return {currentActions, expActions}
     }, {currentActions: [], expActions: []});
+  }
+
+  private actionType(action): string {
+    return NameCase(propToString(action.type))
   }
 
   // private getActionsSegments(segment: IPlaceline, actionsEvents, lastSeg) {
