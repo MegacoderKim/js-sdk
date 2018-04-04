@@ -111,15 +111,38 @@
         </div>
         <div class="sg-section-primitives-guides">
           <div class="sg-section-primitives-content">
-            <a class="guide-item" *ngFor="let guide of guides;" [href]="guide.link" target="_blank">
-              <div class="guide-item-image">
-                <img src="{{guide.image}}" alt="{{guide.title}}">
-              </div>
-              <div class="guide-item-content">
-                <div class="guide-item-title">{{guide.title}}</div>
-                <div class="guide-item-description">{{guide.description}}</div>
-              </div>
-            </a>
+            <div class="guide-card">
+              <a href="https://www.hypertrack.com/docs/guides/action">
+                <div class="card-content">
+                  <div class="card-content-title">
+                    Actions Guide
+                  </div>
+                  <div class="card-content-text">
+                    Guide to building your use case using Actions
+                  </div>
+                  <div class="card-content-cta">
+                    VIEW GUIDE →
+                  </div>
+                  <!-- /.card-content-cta -->
+                </div>
+              </a>
+            </div>
+            <div class="guide-card">
+              <a href="https://www.hypertrack.com/docs/guides/events">
+                <div class="card-content">
+                  <div class="card-content-title">
+                    Events Guide
+                  </div>
+                  <div class="card-content-text">
+                    Guide to building your use case using Webhooks and Events
+                  </div>
+                  <div class="card-content-cta">
+                    VIEW GUIDE →
+                  </div>
+                  <!-- /.card-content-cta -->
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>

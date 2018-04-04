@@ -318,44 +318,58 @@
   overflow: hidden;
   .sg-section-primitives-guides {
     position: relative;
-    overflow: hidden;
+    //overflow: hidden;
     padding: 1rem 0;
     .sg-section-primitives-content {
       position: relative;
-      overflow: hidden;
+      //overflow: hidden;
       float: left;
       width: 100%;
-      .guide-item {
-        width: 30%;
-        float: left;
+      .guide-card {
+        width: 45%;
         position: relative;
         overflow: hidden;
-        margin: 1rem 1.5%;
+        float: left;
+        margin-right: 3%;
+        padding: @space--4x;
+        transition: 0.4s all ease-in-out;
         cursor: pointer;
         border-radius: 4px;
-        box-shadow: 0 0 24px @shadow;
-        transition: 0.2s all ease-in-out;
-        .guide-item-content {
-          padding: 1rem;
+        //border: 1px solid @grey;
+        .card-content {
           position: relative;
           overflow: hidden;
+          z-index: 2;
+          .card-content-title {
+            .text-normal();
+            padding-bottom: @space;
+            margin-bottom: @space;
+            border-bottom: 1px solid @purple--dark;
+            color: @purple--dark;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+          }
+          .card-content-text {
+            .text-small();
+            padding-bottom: @space--double;
+            color: @dark-grey;
+            position: relative;
+            overflow: hidden;
+          }
+          .card-content-cta {
+            .text-smallcaps-s();
+            position: relative;
+            overflow: hidden;
+            color: @purple--dark;
+          }
         }
-        .guide-item-title {
-          .text-small();
-          position: relative;
-          overflow: hidden;
-          font-weight: 500;
-          height: 1.5em;
-        }
-        .guide-item-description {
-          .text-small();
-          position: relative;
-          overflow: hidden;
-          height: 4.5em;
-          color: @dark-grey;
+        &:first-child {
+          margin-left: -@space--4x;
         }
         &:hover {
-          transform: scale( 1.05 );
+          box-shadow: 0 0 20px @shadow ;
+          transform: scale( 1.01 ) translateX(10px);
         }
       }
     }
