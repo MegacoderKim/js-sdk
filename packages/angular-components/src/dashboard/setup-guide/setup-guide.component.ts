@@ -10,7 +10,6 @@ import {timer} from "rxjs/observable/timer";
 import {ActivatedRoute} from '@angular/router';
 let ClipboardJS = require('clipboard');
 
-
 const steps = [{
   "index" : 1,
   "incompleteLabel" : "Signed up",
@@ -80,14 +79,14 @@ const plans = [{
   "icon" : require( '../../assets/images/pricing/illustration-starter.svg'),
   "cost" : "599",
   "actionsCount" : "10,000",
-  "cta" : "Try free for 30 days",
+  "cta" : "Upgrade",
   "id": "starter:1"
 },{
   "name" : "Regular",
   "icon" : require( '../../assets/images/pricing/illustration-regular.svg'),
   "cost" : "1,899",
   "actionsCount" : "50,000",
-  "cta" : "Try free for 30 days",
+  "cta" : "Upgrade",
   "id" : "regular:1"
 },{
   "name" : "Enterprise",
@@ -153,9 +152,6 @@ export class SetupGuideComponent implements OnInit {
   plans = plans;
   currentPlanId;
   isCardAdded;
-  testKeyToggle: boolean = false;
-  prodKeyToggle: boolean = false;
-  currentBillingFaqOpen: number = -1;
   copyStates = copyStates;
   pkValue = {
     test: 'YOUR TEST PUBLISHABLE KEY',
@@ -201,23 +197,6 @@ export class SetupGuideComponent implements OnInit {
     });
   }
 
-  onKeyContainerToggle(type) {
-    if (type === 'test') {
-      this.testKeyToggle = !this.testKeyToggle;
-    }
-    if (type === 'prod') {
-      this.prodKeyToggle = !this.prodKeyToggle;
-    }
-  }
-
-  toggleToProduction() {
-    this.accountUserService.setTokenType('production');
-  }
-
-  openBillingFaq(index) {
-    this.currentBillingFaqOpen = index;
-  }
-
   findPlanObject( planID ) {
     this.currentPlan = plans.find( function ( element ) {
         return element.id == planID;
@@ -230,15 +209,10 @@ export class SetupGuideComponent implements OnInit {
     .subscribe((account) => {
         this.currentPlanId = account['billing_plan'];
         this.currentPlanId = this.currentPlanId || 'free_forever:1';
+        this.currentPlanId = 'free_forever:1';
         this.findPlanObject( this.currentPlanId );
         this.isCardAdded = !!(account['card']);
     });
-  }
-
-  openEnterpriseIntercom() {
-      if ( window[ "analytics"] ) {
-          window["Intercom"]('showNewMessage', 'I am interested in the Enterprise plan. Could you give me more details about it ?');
-      }
   }
 
   initiateCopiedTimer( key ) {
