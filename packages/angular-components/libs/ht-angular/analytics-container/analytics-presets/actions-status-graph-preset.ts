@@ -28,17 +28,35 @@ export const actionsConfigPreset: IAnalyticsPresets = {
         tags: [],
         chartFormat: [
           {
-            title: "Assigned",
+            title: "Created",
             selector(graphData: IActionStatusGraph) {
-              return graphData.assigned
+              return graphData.created
             }
           },
           {
             title: "Completed",
             selector(graphData: IActionStatusGraph) {
-              return graphData.completed
+              return graphData.completed + graphData.autocompleted
             }
           },
+          // {
+          //   title: "Autocompleted",
+          //   selector(graphData: IActionStatusGraph) {
+          //     return graphData.autocompleted
+          //   }
+          // },
+          // {
+          //   title: "Canceled",
+          //   selector(graphData: IActionStatusGraph) {
+          //     return graphData.canceled
+          //   }
+          // },
+          // {
+          //   title: "Autocanceled",
+          //   selector(graphData: IActionStatusGraph) {
+          //     return graphData.autocanceled
+          //   }
+          // },
 
 
         ]
@@ -56,7 +74,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
           {
             label: "id",
             selector(action: IAction) {
-              return action.lookup_id || "NA"
+              return action.unique_id || "NA"
             }
           },
           {
@@ -193,7 +211,7 @@ export const actionsConfigPreset: IAnalyticsPresets = {
           {
             label: "Last updated at",
             selector(action: IAction) {
-              return action.user ? TimeString(action.user.last_heartbeat_at) : "--"
+              return action.user ? TimeString(action.location.recorded_at) : "--"
             }
           },
           {

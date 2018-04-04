@@ -427,4 +427,8 @@ export class GoogleMapUtilsClass implements MapUtils {
     return item ? item.markerWrapper_ : null
   }
 
+  setZoomControl(map, options) {
+
+  }
+
 }

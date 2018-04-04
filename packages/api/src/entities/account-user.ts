@@ -1,21 +1,23 @@
 import { HtBaseApi } from "./base";
 import { Observable } from "rxjs/Observable";
 import { IAccountUser } from "ht-models";
-import { Page, IMembership } from "ht-models";
+import { Page, IMembership,IPageData } from "ht-models";
 import {HtRequest} from "../core/request";
+import {empty} from "rxjs/observable/empty";
+import { expand, map } from "rxjs/operators";
 
 export class HtAccountUserApi extends HtBaseApi {
-  name = "user";
-
+  name = "account user";
+  base = "account_users";
   constructor(request: HtRequest) {
-    super(request, "account_users");
+    super(request);
   }
 
   login(user: {
     username: string;
     password: string;
   }): Observable<IAccountUser> {
-    let tail = `login/`;
+    let tail = `v1/login/`;
     return this.request.postObservable<IAccountUser>(
       this.request.baseUrl + tail,
       user
@@ -23,12 +25,12 @@ export class HtAccountUserApi extends HtBaseApi {
   }
 
   get<IAccountUser>(id, token): Observable<IAccountUser> {
-    let path = `${this.base}/${id}/`;
+    let path = `v1/${this.base}/${id}/`;
     return this.api$(path, {}, { isAdmin: true });
   }
 
   memberships(id, query = {}, options?: object) {
-    const path = `${this.base}/${id}/memberships/`;
+    const path = `v1/${this.base}/${id}/memberships/`;
     return this.api$(path, query, options);
   }
 

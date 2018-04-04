@@ -1,0 +1,349 @@
+@import "variables";
+@import "../../main/main.component.less";
+
+:host {
+  position: relative;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.global-payment-form-container {
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 10%;
+  overflow-y: scroll;
+  .payment-form-title {
+    .text-title-h4();
+    position: relative;
+  }
+}
+
+.pricing-boxes {
+  position: relative;
+  overflow: hidden;
+  padding: @space--10x 0;
+  .pricing-box {
+    width: 23%;
+    margin: 0 1%;
+    position: relative;
+    float: left;
+    border-radius: 6px;
+    //overflow: hidden;
+    .pricing-box-content {
+      border-radius: 6px;
+      padding: @space--4x;
+      position: relative;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 0 30px @shadow;
+      transition: 0.4s all ease-in-out;
+      z-index: 2;
+      .pricing-box-name {
+        .text-smallcaps-s();
+        color: @dark-grey;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      }
+      .pricing-box-icon {
+        position: relative;
+        overflow: hidden;
+        height: 6rem;
+        margin: @space--double 0;
+        text-align: center;
+        img {
+          display: inline;
+          height: 100%;
+        }
+      }
+      .pricing-box-cost {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        .cost-currency-icon {
+          .text-normal();
+          color: @dark-grey;
+          display: inline;
+          position: relative;
+          vertical-align: middle;
+          line-height: 2.4rem;
+        }
+        .cost-value {
+          .text-title-h2;
+          display: inline;
+          font-weight: 400;
+          position: relative;
+          overflow: hidden;
+        }
+        .cost-label {
+          .text-smallcaps-s();
+          clear: both;
+          text-align: center;
+          color: @dark-grey;
+          &.isHidden {
+            visibility: hidden;
+          }
+        }
+      }
+      .pricing-box-actions-count {
+        position: relative;
+        overflow: hidden;
+        margin-top: @space--double;
+        .actions-label {
+          .text-small();
+          position: relative;
+          overflow: hidden;
+          text-align: center;
+        }
+        .actions-value {
+          .text-title-h4();
+          font-weight: 500;
+          text-align: center;
+          position: relative;
+        }
+        .actions-users-count {
+          .text-caption();
+          padding-top: @space;
+          text-align: center;
+          color: @dark-grey;
+        }
+      }
+      .pricing-box-inside-cta {
+        font-size: 1.1rem;
+        line-height: 1.5;
+        font-weight: 400;
+        color: #92A5AE;
+        text-align: center;
+        margin: @space--double auto;
+        width: 90%;
+        position: relative;
+        padding: 0.75rem 1rem;
+        background: #f3f3f3;
+      }
+      .cta {
+
+        .button( @light-green, @green);
+        transition: 0.5s all ease-in-out;
+      }
+    }
+    .pricing-box-highlight {
+      .text-smallcaps-s();
+      position: absolute;
+      color: white;
+      width: 90%;
+      left: 5%;
+      border-radius: 6px;
+      background: @green;
+      text-align: center;
+      padding: 1rem 0;
+      top: -2.5rem;
+    }
+    .pricing-box-cta {
+      z-index: 1;
+      .text-smallcaps-s();
+      position: absolute;
+      width: 80%;
+      left: 10%;
+      border-radius: 6px;
+      background: darken( @light-green, 10% );
+      color: @green;
+      text-align: center;
+      padding: 1.5rem 0 1rem 0;
+      bottom: 0;
+      transition: 0.4s all ease-in-out;
+    }
+    &:hover {
+      .pricing-box-content {
+        .cta {
+          background: @green;
+          color: white;
+          box-shadow: 1px 1px 10px lighten( @green, 40% );
+        }
+      }
+    }
+    @media @smartphones {
+      width: 100%;
+      position: relative;
+      margin: 1rem 0%;
+      float: left;
+      .pricing-box-highlight {
+        display: none;
+      }
+      .pricing-box-content {
+        .pricing-box-inside-cta {
+          display: block;
+        }
+      }
+    }
+  }
+  @media @smartphones {
+    padding: @space--10x 5%;
+  }
+}
+.faq-section {
+  position: relative;
+  overflow: hidden;
+  padding: @space--double 0;
+  max-width: 600px;
+  .faq-section-title {
+    .text-title-h3();
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed @dark-grey;
+    font-weight: 400;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .faq-item {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: @space--4x;
+    .faq-item-question {
+      .text-normal();
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    .faq-item-answer {
+      .text-normal();
+      font-weight: 300;
+      position: relative;
+      overflow: hidden;
+    }
+  }
+  @media @smartphones {
+    padding: @space--double 10%;
+  }
+}
+
+.payment-form-step {
+  position: relative;
+  overflow: hidden;
+  .payment-form-step-title {
+    .text-title-h3();
+    position: relative;
+    overflow: hidden;
+  }
+  .payment-form-step-description {
+    .text-normal();
+    color: @dark-grey;
+    position: relative;
+    overflow: hidden;
+  }
+}
+
+.billing-plan-selected-plan {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 2rem;
+  background: darken( @light-green, 2% );
+  background: @blue-grey;
+  background: @purple;
+  border-radius: 4px;
+  margin: 1rem 0;
+  .plan-content  {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 70%;
+    .plan-subtitle {
+      .text-caption();
+      position: relative;
+      overflow: hidden;
+      color: @dark-grey;
+      color: white;
+    }
+    .plan-title {
+      .text-normal();
+      position: relative;
+      overflow: hidden;
+      color: @green;
+      color: white;
+      font-weight: 500;
+    }
+  }
+  .plan-change-button {
+    .button--small( darken( @purple, 10% ), white );
+    position: relative;
+    overflow: hidden;
+    float: right;
+    width: 100px;
+  }
+}
+
+.payment-form-step {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  &.step-billing-details {
+    width: 50%;
+  }
+}
+
+.payment-type {
+  //background: white;
+  border: 2px solid @pay-dark;
+  padding: 21px 0px 0;
+  width: 215px;
+  height: 108px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.3s;
+  .count {
+    font-size: 35px;
+  }
+  &:hover {
+    border-color: #FFFFFF;
+    color: white;
+  }
+  &-selected {
+    background-color: #fff;
+    border-color: #fff;
+    color: @pay-green;
+    &:hover {
+      color: @pay-green;
+    }
+  }
+}
+form {
+  position: relative;
+  overflow: hidden;
+  padding-top: 1rem;
+  input {
+    .text-normal();
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    background: @light-purple;
+    border-radius: 4px;
+    color: @purple;
+    border: none;
+    width: 100%;
+  }
+  .form-label {
+    .text-small();
+    color: @dark-grey;
+    margin-bottom: 0.5rem;
+  }
+  .mini-input {
+    position: relative;
+    overflow: hidden;
+  }
+  .pay-btn {
+    outline: none;
+    border: none;
+    .button( @green, white );
+    width: 200px;
+
+  }
+}
+input.ng-invalid.ng-dirty {
+  border: 2px solid #c73f29;
+}
+.card-icon {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  color: @purple;
+}
+

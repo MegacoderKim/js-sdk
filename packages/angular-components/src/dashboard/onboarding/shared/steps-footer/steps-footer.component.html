@@ -1,0 +1,28 @@
+<div class="step-detail-footer">
+  <div class="footer-content">
+    <div class="step-path-container">
+      <div class="step-path" *ngIf="showPlatformPicker" (click)="jumpToPlatformPicker()">
+        <div class="step-path-detail">
+          <div class="step-path-title">
+            Pick Platform
+          </div>
+          <div class="step-progress">
+            <img *ngIf="getPlatformLogo()" [src]="getPlatformLogo()" class= "platform-logo" [ngClass]="platform ? platform : ''" />
+          </div>
+        </div>
+      </div>
+      <div class="step-path" *ngFor="let step of steps; let first = first; let index = index" (click)="onJumpToStep(index, step)" [ngClass] = "(step.subSteps.length) === 0 ? 'disabled' : ''">
+        <div style="left:-50%;right:50%;margin-bottom:8px;" class="step-path-connector" *ngIf="showPlatformPicker || !first"></div>
+        <div class="step-path-detail" [ngClass]="(index === activeState.stepIndex) ? 'selected' : ''">
+          <div class="step-path-title">
+            {{step.label}}
+          </div>
+          <div class="step-progress">
+            <div class="round-full" *ngIf="!(index < activeState.stepIndex)"></div>
+            <i class="fa fa-check" *ngIf="index < activeState.stepIndex"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

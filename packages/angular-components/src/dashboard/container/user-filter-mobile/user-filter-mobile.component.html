@@ -1,0 +1,85 @@
+<div class="mobile-tab flex-row row-gap-10 show-xs" *ngIf="switchViewLink$ | async as switchView">
+  <div class="flex-row flex row-gap-4 settings align-center space-around" *ngIf="!showSearch"  [@slide]>
+    <div (click)="goBack()" class="back" *ngIf="!showFilter; else settings" [@slide]>
+      <div class="flex"><i class="fa fa-arrow-circle-left"></i></div>
+    </div>
+
+    <ng-template #settings>
+      <!--settings-->
+      <div class="dropdown" [@slide] appDropdown="onClick">
+        <div class="dropdown-toggle">
+          <button class="button">
+            <span class="icon">
+              <i class="fa fa-filter"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <ng-template [ngIf]="isToday">
+              <a (click)="selectFilter(filter.query)" class="dropdown-item" *ngFor="let filter of userFilters">
+                <span>{{filter.label}}</span>
+              </a>
+              <hr class="dropdown-divider">
+            </ng-template>
+            <a class="dropdown-item" (click)="selectFilter({show_all: true, status: null, search: null})">
+              Show All
+              <i style="padding-left: 3px" tooltipPlacement="right" class="text-muted fa fa-exclamation-circle"></i>
+              <!--<tooltip-content #myTooltip toolTipClass="tooltip-info" [animation]="true" placement="right">-->
+                <!--<div class="flex-column">-->
+                  <!--<span>Include inactive users</span>-->
+                <!--</div>-->
+              <!--</tooltip-content>-->
+            </a>
+          </div>
+
+        </div>
+      </div>
+      <div [class.disabled]="showMobileMap$ | async" class="dropdown disabled" appDropdown="onClick" *ngIf="ordering$ | async as ordering">
+        <button class="button dropdown-toggle flex-row row-gap-7 align-center"><i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i></button>
+        <div class="dropdown-menu">
+          <div class="dropdown-content">
+            <div class="sort-header dropdown-item sort-items text-muted">
+              <div class="sort-item flex flex-row space-between">
+                <span>ORDERING</span>
+                <span>DESC</span>
+              </div>
+              <div class="text-center"  style="flex-basis: 40px">ASC</div>
+            </div>
+            <a [class.is-active]="ordering.type == sorting.key" class="sort-items dropdown-item" *ngFor="let sorting of userSorings">
+              <div (click)="setSorting(sorting.key, 0)" class="sort-item flex flex-row row-gap-10 align-center space-between">
+                <span>{{sorting.label}}</span>
+                <i [class.fa-active]="!ordering.sign" class="fa fa-sort-amount-desc"></i>
+              </div>
+              <div (click)="setSorting(sorting.key)" class="sort-item text-center" style="flex-basis: 40px">
+                <i [class.fa-active]="ordering.sign" class="fa fa-sort-amount-asc"></i>
+              </div>
+            </a>
+          </div>
+
+        </div>
+      </div>
+      <button class="button" (click)="showSearch = true">
+        <i class="fa fa-search"></i>
+      </button>
+      <!--<app-date-range small="true" *ngIf="default" [isToday]="isToday" (rangeChange)="setDateRange($event)"></app-date-range>-->
+    </ng-template>
+  </div>
+  <div class="flex-row flex align-center row-gap-10" *ngIf="showSearch" [@slide]>
+    <button class="delete" (click)="showSearch = false"></button>
+
+    <app-entity-filter *ngIf="showSearch" [searchApi$]="searchApi" [entity]="switchView.entity"></app-entity-filter>
+  </div>
+
+  <div class="flex-row align-center">
+    <app-map-switch></app-map-switch>
+
+  </div>
+</div>
+<div class="mobile-tab flex-row show-xs" *ngIf="showFilter && mobileFilters$ | async as filters">
+  <div class="flex-row row-gap-10 align-center">
+    <div (click)="clearFilter(filter)" class="filter" *ngFor="let filter of filters ">
+      {{filter.value | usersStatusString}} <i class="fa fa-times"></i>
+    </div>
+  </div>
+</div>

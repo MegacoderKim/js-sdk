@@ -8,7 +8,7 @@ import {StyleMixin} from "../mixins/styles";
 import {IAction} from "ht-models";
 import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {MarkersMixin} from "../mixins/marker-renderer";
-import {HtPosition, IPathBearingTime} from "ht-models";
+import {HtPosition, IPathBearingTime, IActionWithPolyline} from "ht-models";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import {TimeAwareAnimation} from "time-aware-polyline";
@@ -65,24 +65,30 @@ export class ActionsDataPolyline {
     this.mapInstance = mapInstance;
   }
 
-  getEncodedPositionTime(data: IAction) {
-    return data.time_aware_polyline;
+  isValidMapItems(data) {
+    return !!this.getTimeAwarePath(data)
+  }
+
+  getTimeAwarePath(data) {
+    return data.timeAwarePath;
+  }
+
+  getEncodedPositionTime(data: IActionWithPolyline) {
+    return data.location_time_series;
   }
   //todo remove this, use getTimeAwarePolyline
-  getEncodedPath(data: IAction) {
-    return data.encoded_polyline
+  getEncodedPath(data: IActionWithPolyline) {
+    return data.route
   }
-  getPosition(action: IAction): HtPosition {
-    const position = action.user ?
-      action.user.last_location ? action.user.last_location.geojson.coordinates : null
-      : null;
 
-    return position ? {lat: position[1], lng: position[0]} : null;
+  getPosition(action: IActionWithPolyline): HtPosition | null {
+    const lastLocation =  action.timeAwarePath ? action.timeAwarePath[action.timeAwarePath.length - 1] : null;
+    return lastLocation ? {lat: +lastLocation[0], lng: +lastLocation[1]} : null;
 
   }
 
-  getTimeAwarePolyline(data: IAction) {
-    return data.time_aware_polyline
+  getTimeAwarePolyline(data: IActionWithPolyline) {
+    return data.location_time_series
   }
 }
 

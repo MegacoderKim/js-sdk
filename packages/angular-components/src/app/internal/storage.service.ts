@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-const Cookies = require("js-cookie");
+import * as Cookies from "js-cookie"
 
 @Injectable()
 export class StorageService {

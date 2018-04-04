@@ -12,6 +12,7 @@ import {getPageDataMixin} from "../../mixins/get-data";
 import {Subscription} from "rxjs/Subscription";
 import { IAllowedQueryMap } from "ht-data";
 import {DateRange} from "../../global/date-range";
+import {HtActionsApi} from "ht-api";
 
 export class ActionsList extends EntityListClient {
   store;
@@ -21,7 +22,7 @@ export class ActionsList extends EntityListClient {
   api$: (query) => Observable<Page<IAction>>;
   dataSub: Subscription;
   dateParam: string;
-  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     super();
     this.api$ = (query): Observable<Page<IAction>> =>
         api.index(query);

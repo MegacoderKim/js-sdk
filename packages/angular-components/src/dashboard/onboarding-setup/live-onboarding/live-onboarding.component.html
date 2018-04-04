@@ -1,0 +1,26 @@
+<div class="tab-pane" *ngIf="showTabContent('install')">
+    <div class="ob-connect">
+      <div class="ob-header">Download the test app</div><img class="ob-img" [src]="images.obWaiting">
+      <div class="ob-trck">
+        <div class="ob-secondhead">Your personalised app download link</div>
+        <div class="ob-trcklink copy-button-trigger" data-ix="trckhover" (click)="handleBranchLinkClick()">
+          <div class="ob-linkaddress branch-link-value-container">{{getBranchTrackingLink()}}</div>
+          <div class="ob-button branch-link-copy-container">{{showCopiedMessage ? 'Copied!' : 'Copy'}}</div>
+        </div>
+        <div class="ob-form phonenumber-form">
+          <div class="ob-form-block w-form">
+            <form class="form-2" (keydown.enter)="handleEnterKeyPress($event)">
+              <div class="ob-sendtome w-clearfix">
+                <img class="image-2" [src]="images.obPhone">
+                <input class="ob-formfield w-input" data-name="Name" id="name" maxlength="256" name="name" placeholder="+1 415 444 4444" autocomplete="off" [(ngModel)]="phoneNumber" (ngModelChange)="phoneNumberChanged($event)" />
+                <div class="ob-button" (click)="onSendViaMessage()">{{getSMSButtonMessage()}}</div>
+              </div>
+            </form>
+          </div>
+          <div class="number-error" [ngClass]="showError ? '' : 'hide'">
+            {{errorMessage}}
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

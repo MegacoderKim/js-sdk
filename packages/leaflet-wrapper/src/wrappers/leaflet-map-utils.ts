@@ -14,7 +14,7 @@ import {
   tileLayer,
   Map,
   LatLng,
-  LatLngBounds, Popup
+  LatLngBounds, Popup, control
 } from "leaflet";
 import { markerCluster } from "./leaflet.markercluster";
 import {LineString, MultiLineString} from "geojson";
@@ -308,6 +308,10 @@ export class LeafletMapUtilsClass implements MapUtils {
 
   getElement(item) {
     return item ? item.getElement() : null
+  }
+
+  setZoomControl(map, options = {}) {
+    map.addControl(control.zoom(options))
   }
 
 }

@@ -28,7 +28,13 @@ export const actionTableFormat = {
   "assigned_at": {
     label: "Assigned at",
     selector(action: IAction) {
-      return dateTimeString(action.assigned_at)
+      return dateTimeString(action.created_at)
+    }
+  },
+  "created_at": {
+    label: "Created at",
+    selector(action: IAction) {
+      return dateTimeString(action.created_at)
     }
   },
   "expected_at": {
@@ -91,7 +97,7 @@ export const userTableFormat = {
   "last_battery": {
     label: "Last battery",
     selector(user: IUser) {
-      return user.display.battery + " %"
+      return user.health.battery_status + " %"
     }
   },
   "total_duration": {

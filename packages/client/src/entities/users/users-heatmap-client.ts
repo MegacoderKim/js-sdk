@@ -24,7 +24,7 @@ export class UsersHeatmap {
   active$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   dataArray$ = this.data$.pipe(PageResults$);
   dateParam: string;
-  constructor({ dateRange, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, dateParam, api }: IPageClientConfig<HtUsersApi>) {
     this.api$ = query => api.allPages(api.heatmap(query));
     this.dateRange = dateRange;
     this.dateParam = dateParam;

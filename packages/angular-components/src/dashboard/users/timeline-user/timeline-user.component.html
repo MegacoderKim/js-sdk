@@ -1,0 +1,38 @@
+<div class="timeline-container flex-column align-center" [style.marginTop.px]="showPop && !isMobile ? 40 : 0">
+  <ng-template [ngIf]="action">
+    <app-action-detail [action]="action"></app-action-detail>
+  </ng-template>
+  <ng-template [ngIf]="!loading.data && !actionId">
+    <app-users-card (dblclick)="onDebug(user, timeLineDay)" [user]="timeLine"></app-users-card>
+  </ng-template>
+  <div class="sticky flex-row space-between align-center" *ngIf="showPop && !isMobile" >
+    <div (click)="closePopup()" class="popup-close clickable">
+      <i class="fa fa-arrow-circle-left fa-2x"></i>
+    </div>
+    <app-placeline-date *ngIf="timeLine?.timeline_date" [date]="timeLineDay" [disableNext]="!notToday || loading.timeline" [disablePrevious]="loading.timeline" (onChangeDate)="setDate($event)"></app-placeline-date>
+  </div>
+  <app-user-device *ngIf="timeLine" [userId]="timeLine.id"></app-user-device>
+  <div class="date-container" *ngIf="!loading.data && (!showPop || isMobile) && timeLine?.timeline_date">
+    <app-placeline-date *ngIf="timeLine?.timeline_date" [date]="timeLineDay" [disableNext]="!notToday || loading.timeline" [disablePrevious]="loading.timeline" (onChangeDate)="setDate($event)"></app-placeline-date>
+  </div>
+  <div [@appear] style="width: 100%;" *ngIf="!loading.timeline" class="flex-column">
+    <ht-placeline
+            [timezone]="timezone"
+            [isMobile]="isMobile"
+            [selectedSegmentId]="selectedPartialSegmentId$ | async"
+            (selectedSegment)="selectPartialSegment($event)"
+            (hoveredAction)="hoverAction($event)"
+            (highlightedSegmentId)="handleMouseOver($event)"
+            [userPlaceline]="timeLine"></ht-placeline>
+  </div>
+  <ng-template [ngIf]="!notFound">
+    <app-loading-data *ngIf="loading.timeline && !loading.data" message="placeline"></app-loading-data>
+    <app-loading-data *ngIf="loading.data" message="data"></app-loading-data>
+  </ng-template>
+  <div style="width: 100%;" class="card" *ngIf="notFound">
+    <div class="card-content flex-column">
+      <h3 class="text-center is-size-4">404</h3>
+      <span class="text-center">User not found</span>
+    </div>
+  </div>
+</div>

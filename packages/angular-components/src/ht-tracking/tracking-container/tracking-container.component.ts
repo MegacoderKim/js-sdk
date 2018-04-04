@@ -2,6 +2,7 @@ import {Component, OnInit, Optional} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HtMapService} from "ht-angular";
 import {environment} from "../../environments/environment";
+import {HtRequestService} from "ht-angular";
 
 @Component({
   selector: 'app-tracking-container',
@@ -12,8 +13,10 @@ export class TrackingContainerComponent implements OnInit {
   shortCode;
   constructor(
     private route: ActivatedRoute,
-    private mapService: HtMapService
+    private mapService: HtMapService,
+    requestService: HtRequestService
   ) {
+    if (environment.production) requestService.setClientType('hypertrack/trct.at');
     let add = window.devicePixelRatio > 1 ? '@2x' : '';
     const key = environment.mapKey;
     const tileUrl = environment.tileUrl;

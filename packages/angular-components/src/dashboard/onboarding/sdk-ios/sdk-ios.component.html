@@ -1,0 +1,15 @@
+<app-integration-overview *ngIf="showIntegrationOverview; else onboarding" [overviewImage]="images.overview" [steps]="steps" [currentState]="currentState" (startIntegration)="onStartIntegration($event)" [showPlatformPicker]="true" [platform]="'ios'"> </app-integration-overview>
+
+<ng-template #onboarding>
+  <app-onboarding [steps]="steps" [platform]="'ios'" [showPlatformPicker]="true" (nextState)="handleNextState($event)">
+    <div class="onboarding-content" *ngIf="showSignupBox(currentState)">
+      <app-signup-box> </app-signup-box>
+    </div>
+    <div class="onboarding-content" *ngIf="showMailYourDeveloperBox(currentState)">
+      <app-not-developer-box> </app-not-developer-box>
+    </div>
+    <div class="reactive-container" *ngIf="showReactiveBox(currentState)">
+      <app-reactive-box [eventType]="getReactiveEventType(currentState)"> </app-reactive-box>
+    </div>
+  </app-onboarding>
+</ng-template>

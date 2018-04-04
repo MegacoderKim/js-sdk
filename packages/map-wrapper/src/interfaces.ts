@@ -64,6 +64,7 @@ export interface MapUtils {
   getItemPosition(item): HtPosition | null;
   updateHeatMapLatlng: (latlngs: HtPosition[], heatmap) => void;
   getElement(item): HTMLElement | null;
+  setZoomControl(map, options?: object): void;
 }
 
 export interface SetFocusConfig {

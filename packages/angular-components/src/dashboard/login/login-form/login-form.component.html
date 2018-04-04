@@ -1,0 +1,34 @@
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label class="label" for="email">Email Address</label>
+    <input [disabled]="disableUsername" id="email" name="email" [class.error]="error ? true : false" type="text" class="form-control" placeholder="MVP@Unicorn.com" aria-describedby="sizing-addon1" [(ngModel)]="user.username" [ngModelOptions]="{standalone: true}" required>
+  </div>
+  <div class="form-group">
+    <label class="label" for="password">password</label>
+    <input [class.error]="error ? true : false" type="password" id="password" name="password" class="form-control" placeholder="What&#39;s your password?" aria-describedby="sizing-addon2" [(ngModel)]="user.password" [ngModelOptions]="{standalone: true}" required>
+  </div>
+  <div *ngIf="!loading" class="form-group">
+    <button class="form-control" type="submit" id="submit">LOG IN</button>
+  </div>
+  <div *ngIf="loading" class="form-group">
+    <button class="form-control" id="loging">Logging in...</button>
+  </div>
+  <div *ngIf="verified" class="alert alert-success" role="alert" style="font-size: 13px;">You have successfully verified your email. Please login.</div>
+  <div *ngIf="failedVerification" class="alert alert-danger" role="alert" style="font-size: 13px;">There was an error with verifying your email. Login.</div>
+  <div *ngIf="message" class="message">
+    {{message}}
+  </div>
+</form>
+<a *ngIf="toRedirect" [routerLink]="['/reset-password', 'init']" class="text-center clickable flex-column">
+  <strong>Forgot password?</strong>
+</a>
+<div class="action flex-column" *ngIf="!invitedAccountId && toRedirect">
+  <div class="signup text-center">
+    <a href="https://www.hypertrack.com/signup">
+      <div class="">need an account? sign up instead</div>
+    </a>
+  </div>
+  <div class="demo text-center">
+    <a href="/demo" class="clickable">Click here</a> to log-in using demo credentials
+  </div>
+</div>

@@ -2,9 +2,9 @@ import { UsersPlacelineClient } from "./users-placeline-client";
 import { IDateRange, QueryLabel } from "../../interfaces";
 import {
   AllData,
-  ISegment,
+  IPlaceline,
   IUserAnalytics,
-  IUserData,
+  IUserPlaceline,
   IUserListSummary,
   Partial
 } from "ht-models";
@@ -30,7 +30,8 @@ import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
 import { UsersHeatmapClient } from "./users-heatmap-client";
-import {HtApi} from "ht-api";
+import {HtApi, HtUsersApi} from "ht-api";
+import {htClientService} from "../../global/client";
 
 export class HtUsersClient extends EntityClient {
   analytics;
@@ -43,12 +44,12 @@ export class HtUsersClient extends EntityClient {
   heatmap;
   _statusQueryArray: QueryLabel[];
   store;
-  api;
+  api: HtUsersApi;
   key$;
   showAll: boolean = false;
   constructor(public options: IUsersClientConfig) {
     super();
-    let api = new HtApi().users;
+    let api = htClientService.getInstance().api.users;
     this.key$ = ApiStoreService.getInstance().select(
       fromRoot.getAccountCurrentKey
     );
@@ -197,15 +198,15 @@ export class HtUsersClient extends EntityClient {
     return combineLatest(
       this.placeline.data$,
       this.getSegmentsStates(),
-      (userData: IUserData, { selectedId, resetMapId }) => {
+      (userData: IUserPlaceline, { selectedId, resetMapId }) => {
         if (userData && (selectedId || resetMapId)) {
           const id = selectedId || resetMapId;
-          let segments = _.filter(userData.segments, (segment: ISegment) => {
+          let placeline = _.filter(userData.placeline, (segment: IPlaceline) => {
             return segment.id === id;
           });
           userData = {
             ...userData,
-            segments: segments,
+            placeline: placeline,
             events: [],
             actions: []
           };

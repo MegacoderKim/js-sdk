@@ -13,6 +13,10 @@ export function ExtendBoundsMixin<TBase extends Constructor<IExtendBoundsBase>>(
     toIncludeInBounds: boolean = true;
     constructor(...args: any[]) {
       super(...args);
+      if (this.toIncludeInBounds) {
+        this.mapInstance.addToItemsSet(this)
+      }
+
     }
     extendBounds(bounds: HtBounds) {
       if (!this.toIncludeInBounds) return bounds;

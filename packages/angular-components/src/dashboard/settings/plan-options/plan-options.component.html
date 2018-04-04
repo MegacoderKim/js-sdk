@@ -1,0 +1,138 @@
+<div class="card-stacked" *ngIf="account$ | async as account">
+  <div class="card" *ngIf="account.billing_plan == plans.freeToView">
+    <div class="card-content flex-row row-gap-20">
+      <div class="plan-name has-text-weight-bold">
+        Free to view
+      </div>
+      <div class="flex flex-column">
+        <div class="has-text-weight-bold current-plan">
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="account.billing_plan == plans.paidActions || account.billing_plan == plans.paidActions">
+    <div class="card-content flex-row row-gap-20">
+      <div class="plan-name has-text-weight-bold">
+        {{account.billing_plan == 'paid_actions' ? 'Pay per action' : 'Pay per user'}}
+      </div>
+      <div class="flex flex-column">
+        <div class="has-text-weight-bold">
+          {{account.billing_plan == 'paid_actions' ? '$0.04 per action' : '$5 per user'}}
+        </div>
+        <div>
+          {{account.billing_plan == 'paid_actions' ? 'Unlimited users' : 'Unlimited actions'}}
+        </div>
+      </div>
+      <div class="has-text-weight-bold current-plan">
+        <span class="icon">
+          <i class="fa fa-check-circle"></i>
+        </span>
+        <span>Current plan</span>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content flex-row row-gap-20" *ngIf="account.billing_plan != plans.regular && account.billing_plan != plans.starter">
+      <div class="plan-name has-text-weight-bold">
+        Free Forever
+      </div>
+      <div class="flex flex-column">
+        <div class="has-text-weight-bold">
+          Free
+        </div>
+        <div>Includes 2,500 actions, unlimited users</div>
+      </div>
+      <div class="" *ngIf="account.billing_plan != plans.freeForever; else currentFreeForever">
+        <button class="button is-medium" (click)="choosePlan(plans.freeForever)" *ngIf="account.billing_plan != plans.freeToView; else upgradeFree">Downgrade</button>
+        <ng-template #upgradeFree>
+          <button class="button is-medium is-primary" (click)="choosePlan(plans.freeForever)">Upgrade</button>
+        </ng-template>
+      </div>
+      <ng-template #currentFreeForever>
+        <div class="has-text-weight-bold current-plan">
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content flex-row row-gap-20">
+      <div class="plan-name has-text-weight-bold">
+        Starter
+      </div>
+      <div class="flex flex-column">
+        <div class="has-text-weight-bold">
+          $599 per month
+        </div>
+        <div>Includes 10,000 actions, unlimited users</div>
+      </div>
+      <div class="" *ngIf="account.billing_plan != plans.starter; else currentStarter">
+        <button class="button is-medium" (click)="choosePlan(plans.starter)" *ngIf="account.billing_plan == plans.regular; else upgrade">
+          Downgrade
+        </button>
+        <ng-template #upgrade>
+          <button class="button is-medium is-primary" (click)="choosePlan(plans.starter)">
+            Upgrade
+          </button>
+        </ng-template>
+
+      </div>
+      <ng-template #currentStarter>
+        <div class="has-text-weight-bold current-plan">
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content flex-row row-gap-20">
+      <div class="plan-name has-text-weight-bold">
+        Regular
+      </div>
+      <div class="flex flex-column">
+        <div class="has-text-weight-bold">
+          $1,899 per month
+        </div>
+        <div>Includes 50,000 actions, unlimited users</div>
+      </div>
+      <div class="" *ngIf="account.billing_plan != plans.regular; else currentRegular">
+        <button class="button is-medium is-primary" (click)="choosePlan(plans.regular)">Upgrade</button>
+      </div>
+      <ng-template #currentRegular>
+        <div class="has-text-weight-bold current-plan">
+          <span class="icon">
+            <i class="fa fa-check-circle"></i>
+          </span>
+          <span>Current plan</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content flex-row row-gap-20">
+      <div class="plan-name has-text-weight-bold">
+        Enterprice
+      </div>
+      <div class="flex flex-column">
+        <div class="has-text-weight-bold">
+          Custom pricing
+        </div>
+        <div>More than 50,000 actions, unlimited users</div>
+      </div>
+      <div class="">
+        <button class="button is-medium is-primary" (click)="chooseEnterpice()">Contact us</button>
+      </div>
+    </div>
+  </div>
+</div>

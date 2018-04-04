@@ -1,0 +1,860 @@
+@import "../main/main.component.less";
+
+:host {
+  overflow: auto;
+}
+.sg-container {
+  position: relative;
+  //overflow: hidden;
+  padding: 5rem 2% 0 2%;
+  margin: 2rem 7.5% 0 7.5%;
+  background: white;
+  width: 85%;
+  //overflow-y: scroll;
+  border-radius: 4px;
+  border: 1px solid darken( @offwhite, 10% );
+  .sg-container-inner {
+    position: relative;
+    overflow: hidden;
+    max-width: 1200px;
+    margin: 0 auto;
+
+  }
+}
+
+/*=============================================
+=            PROGRESS STEPS STYLES            =
+=============================================*/
+.sg-progress-steps {
+  position: relative;
+  overflow: hidden;
+  float: left;
+  width: 25%;
+  .ps-item {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+    transition: 0.5s all ease-in-out;
+    cursor: pointer;
+    .ps-item-number {
+      .text-small();
+      width: 2.5rem;
+      height: 2.5rem;
+      background: white;
+      color: black;
+      box-shadow: 0 0 20px 0 @shadow;
+      border-radius: 50%;
+      line-height: 2.5rem;
+      text-align: center;
+      float: left;
+    }
+    .ps-item-icon {
+      .text-small();
+      width: 2.5rem;
+      height: 2.5rem;
+      background: @light-green;
+      color: @green;
+      border-radius: 50%;
+      line-height: 2.5rem;
+      text-align: center;
+      float: left;
+      display: none;
+      border: 1px solid @green;
+    }
+    .ps-item-incomplete-label {
+      .text-normal();
+      line-height: 2.5rem;
+      color: @dark-grey;
+      position: relative;
+      overflow: hidden;
+      width: 85%;
+      float: left;
+      padding-left: 5%;
+    }
+    .ps-item-complete {
+      display: none;
+    }
+    &:hover {
+      .ps-item-incomplete-label {
+        color: black;
+      }
+    }
+    &.complete {
+      .ps-item-number {
+        background: @green;
+        box-shadow: none;
+        color: white;
+        display: none;
+      }
+      .ps-item-icon {
+        display: block;
+      }
+      .ps-item-incomplete-label {
+        display: none;
+      }
+      .ps-item-complete {
+        position: relative;
+        overflow: hidden;
+        float: left;
+        width: 85%;
+        display: block;
+        padding-left: 5%;
+        .ps-item-complete-label {
+          .text-small();
+          color: @dark-grey;
+        }
+        .ps-item-complete-cta {
+          .text-small();
+          font-weight: 500;
+          color: darken( @dark-grey, 10% );
+          cursor: pointer;
+          &:hover {
+            color: black;
+
+          }
+        }
+      }
+    }
+    &.active {
+      padding: 2em 1em;
+      .ps-item-number {
+        background: @green;
+        color: white;
+      }
+      .ps-item-icon {
+        background: @green;
+        color: white;
+      }
+      .ps-item-incomplete-label {
+        font-weight: 700;
+        color: @green;
+      }
+    }
+  }
+}
+/*=====  End of PROGRESS STEPS STYLES  ======*/
+
+
+/*=============================================
+=            SECTION COMMON STYLES            =
+=============================================*/
+.sg-section-container {
+  position: relative;
+  overflow: hidden;
+  float: left;
+  width: 70%;
+  padding-left: 5%;
+  min-height: 70vh;
+}
+.sg-section {
+  position: relative;
+  overflow: hidden;
+  padding: 1rem 3rem 1rem 0;
+  clear: both;
+  .sg-section-title {
+    .text-title-h2();
+    color: @purple--dark;
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+  }
+  .sg-section-description {
+    .text-normal();
+    position: relative;
+    max-width: 600px;
+    padding-bottom: @space--double;
+    color: @dark-grey;
+    margin-top: @space;
+  }
+  &.isInactive {
+    display: none;
+  }
+}
+/*=====  End of SECTION COMMON STYLES  ======*/
+
+
+/*=============================================
+=            Section Signup Styles            =
+=============================================*/
+.sg-section-signup {
+  .section-signup-title {
+    position: relative;
+    overflow: hidden;
+  }
+  .section-signup-keys {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+    .keys-title {
+      .text-normal();
+      font-weight: 600;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .keys-section {
+      margin-bottom: 1em;
+      position: relative;
+      overflow: hidden;
+      padding: 1.5rem;
+      max-width: 600px;
+      border: 1px solid darken( @blue-grey, 10% );
+      border-radius: 4px;
+      transition: 0.4s all ease-in-out;
+      cursor: pointer;
+      .keys-section-title {
+        .text-normal();
+        color: @dark-grey;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+        .title {
+          float: left;
+        }
+        .refresh {
+          padding-left: 1rem;
+          color: @dark-grey;
+          float: left;
+          &:hover {
+            color: black;
+          }
+        }
+        .toggle-button {
+          float: right;
+          padding-right: 1rem;
+          color: @dark-grey;
+          font-size: 1.25rem;
+          &:hover {
+            color: @purple;
+          }
+        }
+      }
+      .keys-section-keys {
+        position: relative;
+        overflow: hidden;
+        display: none;
+        .key-box {
+          position: relative;
+          overflow: hidden;
+          padding: 1rem;
+          background: @light-purple;
+          border-radius: 4px;
+          margin: 1rem 0 0 0;
+          .key-box-text {
+            position: relative;
+            overflow: hidden;
+            float: left;
+            max-width: 70%;
+          }
+          .key-box-label {
+            .text-small();
+            color: @dark-grey;
+          }
+          .key-box-key {
+            .text-normal()
+          }
+          .key-box-copy {
+            .text-smallcaps-s;
+            color: @purple;
+            text-align: center;
+            width: 70px;
+            float: right;
+            padding: 0.5rem;
+            max-width: 30%;
+            line-height: 2rem;
+            cursor: pointer;
+            &:hover {
+              color: @green;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+
+      }
+      &.isOpen {
+        .keys-section-keys {
+          display: block;
+        }
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+
+    }
+  }
+  .section-signup-cta {
+    .button( @green, white );
+    position: relative;
+    overflow: hidden;
+    clear: both;
+    margin-top: 1rem;
+    width: 250px;
+  }
+}
+/*=====  End of Section Signup Styles  ======*/
+
+
+/*==========================================
+=            Section Plugin SDK            =
+==========================================*/
+
+.sg-section-plugin-sdk {
+  position: relative;
+  // overflow: hidden;
+  padding: 1rem;
+}
+
+/*=====  End of Section Plugin SDK  ======*/
+
+/*=================================================
+=            Primitives Guides Section            =
+=================================================*/
+.sg-section-primitives {
+  position: relative;
+  overflow: hidden;
+  .sg-section-primitives-guides {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 0;
+    .sg-section-primitives-content {
+      position: relative;
+      overflow: hidden;
+      float: left;
+      width: 100%;
+      .guide-item {
+        width: 30%;
+        float: left;
+        position: relative;
+        overflow: hidden;
+        margin: 1rem 1.5%;
+        cursor: pointer;
+        border-radius: 4px;
+        box-shadow: 0 0 24px @shadow;
+        transition: 0.2s all ease-in-out;
+        .guide-item-content {
+          padding: 1rem;
+          position: relative;
+          overflow: hidden;
+        }
+        .guide-item-title {
+          .text-small();
+          position: relative;
+          overflow: hidden;
+          font-weight: 500;
+          height: 1.5em;
+        }
+        .guide-item-description {
+          .text-small();
+          position: relative;
+          overflow: hidden;
+          height: 4.5em;
+          color: @dark-grey;
+        }
+        &:hover {
+          transform: scale( 1.05 );
+        }
+      }
+    }
+  }
+}
+/*=====  End of Primitives Guides Section  ======*/
+
+
+
+/*=======================================
+=            Pricing section            =
+=======================================*/
+.sg-section-pricing {
+  position: relative;
+  overflow: visible;
+}
+.sg-section-current-plan {
+  position: relative;
+  display: block;
+  padding: @space--4x 0;
+  .current-plan-info {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    float: left;
+    width: 50%;
+    padding-top: @space--10x;
+    .current-plan-icon {
+      .text-title-h3();
+      color: @green;
+      padding-right: @space;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    .current-plan-title {
+      .text-title-h3();
+      display: inline-block;
+      color: @green;
+      font-weight: 400;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-description {
+      .text-normal();
+      color: @dark-grey;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-cta {
+      .button--small( transparent, @green, @green);
+      width: 200px;
+      position: relative;
+      overflow: hidden;
+      margin-top: @space--double;
+    }
+  }
+  .pricing-box {
+    width: 45%;
+    float: right;
+    margin: 0;
+    margin-left: 5%;
+    position: relative;
+    //overflow: hidden;
+    cursor: default;
+    &:hover {
+      transform: none;
+      .pricing-box-content {
+        transform: none;
+      }
+    }
+
+  }
+}
+.sg-section-select-plan {
+  position: relative;
+  overflow: hidden;
+  padding: @space--double 0;
+  .select-plan-title {
+    .text-title-h4();
+    color: @black;
+    font-weight: 400;
+  }
+  .select-plan-description {
+    .text-normal();
+    color: @dark-grey;
+    padding-top: @space;
+    position: relative;
+    overflow: hidden;
+  }
+  .section-billing-faq {
+    position: relative;
+    overflow: hidden;
+    padding: @space--double 0;
+    .billing-faq-title {
+      .text-title-h4();
+      font-weight: 400;
+      color: @black;
+      margin-bottom: @space--double;
+      position: relative;
+      overflow: hidden;
+    }
+    .billing-faq-item {
+      .text-normal();
+      width: 70%;
+      padding: 1rem;
+      float: left;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.2s all ease-in-out;
+      &:hover {
+        background: @blue-grey;
+      }
+      &.isOpen {
+        .faq-item-answer {
+          display: block;
+        }
+        .faq-item-question {
+          color: black;
+          .question-collapse {
+            transform: rotate( 90deg );
+          }
+        }
+      }
+    }
+    .faq-item-question {
+      .question-text {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        line-height: 1.5rem;
+      }
+      .question-collapse {
+        .text-caption();
+        padding-right: 0.5em;
+        line-height: 1.5rem;
+        transition: 0.4s all ease-in-out;
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+    .faq-item-answer {
+      color: @dark-grey;
+      display: none;
+      padding-left: 1em;
+      float: right;
+    }
+  }
+  .section-billing-plans {
+    position: relative;
+    overflow: hidden;
+    padding: @space--double 0;
+    .section-billing-boxes-title {
+      .text-normal();
+      color: darken( @dark-grey, 10% );
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      display: none;
+    }
+  }
+  .pricing-boxes {
+    position: relative;
+    overflow: hidden;
+    padding: @space--double 0;
+    @media @smartphones {
+      padding: @space--10x 5%;
+    }
+  }
+}
+.pricing-box {
+  width: 31%;
+  margin: 0 1%;
+  position: relative;
+  float: left;
+  border-radius: 6px;
+  //cursor: pointer;
+  //overflow: hidden;
+  &.isHighlight {
+    margin-top: -4rem;
+  }
+  .pricing-box-content {
+    border-radius: 6px;
+    padding: @space--4x;
+    position: relative;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 0 30px @shadow;
+    transition: 0.4s all ease-in-out;
+    z-index: 2;
+    .pricing-box-name {
+      .text-smallcaps-s();
+      color: @dark-grey;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .pricing-box-icon {
+      position: relative;
+      overflow: hidden;
+      height: 6rem;
+      margin: @space--double 0;
+      text-align: center;
+      img {
+        display: inline;
+        height: 100%;
+      }
+    }
+    .pricing-box-cost {
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      .cost-currency-icon {
+        .text-normal();
+        color: @dark-grey;
+        display: inline;
+        position: relative;
+        vertical-align: middle;
+        line-height: 2.4rem;
+      }
+      .cost-value {
+        .text-title-h3;
+        display: inline;
+        font-weight: 400;
+        position: relative;
+        overflow: hidden;
+      }
+      .cost-label {
+        .text-smallcaps-s();
+        clear: both;
+        text-align: center;
+        color: @dark-grey;
+        &.isHidden {
+          visibility: hidden;
+        }
+      }
+    }
+    .pricing-box-actions-count {
+      position: relative;
+      overflow: hidden;
+      margin-top: @space--double;
+      .actions-label {
+        .text-small();
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      }
+      .actions-value {
+        .text-normal();
+        font-weight: 500;
+        text-align: center;
+        position: relative;
+      }
+      .actions-users-count {
+        .text-caption();
+        padding-top: @space;
+        text-align: center;
+        color: @dark-grey;
+      }
+    }
+    .pricing-box-inside-cta {
+      .button--small( @light-green, @green);
+      margin: @space--double auto;
+      width: 100%;
+      position: relative;
+    }
+  }
+  .pricing-box-highlight {
+    .text-caption();
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    font-weight: 400;
+    position: relative;
+    padding: @space--half 0;
+    width: 150px;
+    border-radius: 20px;
+    background: @green;
+    color: white;
+    margin: @space--double auto;
+  }
+  .pricing-box-cta {
+    z-index: 1;
+    .text-smallcaps-s();
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    border-radius: 6px;
+    background: darken( @light-green, 10% );
+    color: @green;
+    text-align: center;
+    padding: 1.5rem 0 1rem 0;
+    bottom: 0;
+    transition: 0.4s all ease-in-out;
+  }
+  &:hover {
+    .pricing-box-content {
+      transform: scale(1.02);
+      .pricing-box-inside-cta {
+        background: @green;
+        color: white;
+      }
+    }
+
+  }
+  @media @smartphones {
+    width: 100%;
+    position: relative;
+    margin: 1rem 0%;
+    float: left;
+    .pricing-box-highlight {
+      display: none;
+    }
+    .pricing-box-content {
+      .pricing-box-inside-cta {
+        display: block;
+      }
+    }
+  }
+}
+.sg-section-add-credit-card {
+  position: relative;
+  display: block;
+  padding: @space--4x 0;
+  .current-plan-info {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    float: left;
+    width: 50%;
+    padding-top: @space--10x;
+    .current-plan-icon {
+      .text-title-h3();
+      color: @orange;
+      padding-right: @space;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    .current-plan-title {
+      .text-title-h3();
+      display: inline-block;
+      color: @orange;
+      font-weight: 400;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-description {
+      .text-normal();
+      color: @dark-grey;
+      position: relative;
+      overflow: hidden;
+    }
+    .plan-cta {
+      .button( @orange, white );
+      width: 200px;
+      position: relative;
+      overflow: hidden;
+      margin-top: @space--double;
+    }
+  }
+  .pricing-box {
+    width: 45%;
+    float: right;
+    margin: 0;
+    margin-left: 5%;
+    position: relative;
+    //overflow: hidden;
+    cursor: default;
+    &:hover {
+      transform: none;
+      .pricing-box-content {
+        transform: none;
+      }
+    }
+  }
+}
+
+/*=====  End of Pricing section  ======*/
+
+
+/*=============================================
+=            Production step section            =
+=============================================*/
+.sg-section-production {
+  .sg-section-content {
+    padding: 2rem 0;
+    .sg-section-step {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      clear: both;
+      .step-title {
+        .text-normal();
+        font-weight: 400;
+        color: black;
+        padding-bottom: 0.5rem;
+      }
+      .step-api-key {
+        position: relative;
+        overflow: hidden;
+        background: @blue-grey;
+        color: @dark-grey;
+        max-width: 500px;
+        padding: 1rem;
+        border-radius: 4px;
+        .api-key-copy {
+          .button( @purple, white );
+          position: absolute;
+          right: 0.5rem;
+          width: 100px;
+          top: 0.5rem;
+          padding: 0.5rem 1em;
+        }
+      }
+      .sg-section-cta {
+        .button( @green, white );
+        .text-smallcaps-s;
+        width: 300px;
+        padding: 1em;
+        margin-top: 1rem;
+      }
+      &.step-final {
+      }
+    }
+  }
+}
+/*=====  End of Production step section  ======*/
+
+
+
+/*=====================================
+=            FOOTER STYLES            =
+=====================================*/
+.sg-footer {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem 5%;
+  clear: both;
+  margin: 2rem 0;
+  // background: @light-purple;
+  border-radius: 4px;
+  .sg-footer-item {
+    width: 45%;
+    float: left;
+    position: relative;
+    overflow: hidden;
+    margin: 0 2.5%;
+    padding: 0;
+    border: 1px solid darken( @blue-grey, 10% );
+    border-radius: 4px;
+    .footer-item-title {
+      .text-normal();
+      color: darken( @dark-grey, 10% );
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+      padding: 2rem 2rem 0 2rem;
+    }
+    .footer-item-description {
+      .text-small();
+      color: @dark-grey;
+      position: relative;
+      padding: 0 2rem 2rem 2rem;
+    }
+    .footer-item-cta {
+      display: block;
+      a {
+        color: @purple;
+      }
+      .text-smallcaps-s;
+      color: @purple;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      transition: 0.4s all ease-in-out;
+      border-top: 1px solid darken( @blue-grey, 10% );
+      &.cta-break {
+        float: left;
+        position: relative;
+        width: 50%;
+        float: left;
+      }
+      &:hover {
+        background: @purple;
+        border-color: @purple;
+        color: white;
+        a {
+          color: white;
+        }
+      }
+      &:nth-child(2n) {
+        border-left: 1px solid darken( @blue-grey, 10% );
+      }
+
+    }
+  }
+}
+/*=====  End of FOOTER STYLES  ======*/
+

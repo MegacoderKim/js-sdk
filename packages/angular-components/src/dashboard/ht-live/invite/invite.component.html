@@ -1,0 +1,25 @@
+<form novalidate (ngSubmit)="submit()" [formGroup]="invite">
+  <div class="title">
+    Invite User
+  </div>
+  <p class="text text-center">
+    Use HyperTrack Live (<a target="_blank" href="http://play.google.com/store/apps/details?id=io.hypertrack.sendeta">Android</a>/<a target="_blank" href="https://itunes.apple.com/us/app/hypertrack-live/id1076924821?mt=8">iOS</a>) to see live location of your users on a map. Just invite your users by adding their phone number. Once they accept your invite, you would start seeing their live location on HyperTrack dashboard.
+  </p>
+  <div class="flex-column number">
+    <div class="flex-row">
+      <input type="tel" class="flex" id="phone" aria-label="...">
+    </div>
+  </div>
+  <div class="flex-column" *ngIf="!loading; else loading_btn">
+    <button type="submit" class="button is-primary">Invite</button>
+  </div>
+  <ng-template #loading_btn>
+    <div class="flex-column">
+      <button disabled class="button is-primary" loading-dots >Inviting</button>
+    </div>
+  </ng-template>
+
+</form>
+<div class="invitations">
+  <app-invitation-list></app-invitation-list>
+</div>

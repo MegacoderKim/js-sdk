@@ -5,31 +5,49 @@ import {Color} from "ht-utility";
 export class ActionsFilter extends BaseFilter {
   customQueryArray: QueryLabel[] = [];
   statusQueryArray: QueryLabel[] = [
+    // {
+    //   label: "Not yet started",
+    //   values: ["created"],
+    //   color: "#8a91a0"
+    // },
     {
-      label: "Not yet started",
+      label: "Created",
       values: ["created"],
-      color: "#8a91a0"
-    },
-    {
-      label: "Assigned",
-      values: ["assigned", "started"],
       color: Color.blue
     },
     {
       label: "Completed",
-      values: ["completed"],
+      values: ["completed", "autocompleted"],
       color: Color.stop
 
     },
+    // {
+    //   label: "AutoCompleted",
+    //   values: ["autocompleted"],
+    //   color: 'grey'
+    //
+    // },
     {
-      label: "Suspended",
-      values: ["suspended"],
+      label: "Canceled",
+      values: ["canceled", "autocanceled"],
       color: Color.red
-    }
+
+    },
+    // {
+    //   label: "autocanceled",
+    //   values: ["autocanceled"],
+    //   color: 'purple'
+    //
+    // },
+    // {
+    //   label: "Suspended",
+    //   values: ["suspended"],
+    //   color: Color.red
+    // }
   ];
 
   sortingQueryMap = {
-    assigned_at: "Assigned",
+    created_at: "Created",
     completed_at: "Completed",
     distance: "Distance",
     duration: "Duration",

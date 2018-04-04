@@ -71,7 +71,8 @@ export const stopStyles: StyleFunct = {
           fade: {
             radius: 10,
             fillColor: Color.stop,
-            fillOpacity: 0.1,
+            fillOpacity: 0.3,
+            opacity: 0.4,
             weight: 2,
             color: Color.stopDark,
             pane: "markerPane"

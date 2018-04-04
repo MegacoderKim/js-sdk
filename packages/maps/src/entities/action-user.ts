@@ -61,8 +61,10 @@ export class ActionUser {
 
   constructor(public mapInstance: MapInstance) {}
 
-  getPosition(data): HtPosition {
-    return htUser(data.user).getPosition();
+  getPosition(data: IAction): HtPosition {
+    const lastLocation = data.location;
+    const lastPosition = lastLocation ? lastLocation.geojson.coordinates : null;
+    return lastPosition ? {lat: lastPosition[1], lng: lastPosition[0]} : null
   };
 
   trackBy(action: IAction) {

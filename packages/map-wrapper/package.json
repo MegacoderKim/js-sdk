@@ -17,8 +17,8 @@
   "license": "ISC",
   "false": {},
   "devDependencies": {
-    "@types/googlemaps": "^3.30.7",
-    "@types/leaflet": "^1.2.5",
-    "ht-models": "^0.0.19"
+    "ht-models": "^0.0.19",
+    "@types/googlemaps": "^3.30.8",
+    "@types/leaflet": "^1.2.6"
   }
 }

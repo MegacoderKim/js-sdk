@@ -1,0 +1,19 @@
+<div class="info-container">
+  <div class="title"> Invite your developer</div>
+  <div class="content"> Request your mobile app developer to plug in the SDK. It takes a few lines of code for you to start seeing unlimited trips, stops and events for unlimited users on the dashboard - all for free. </div>
+</div>
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label class="label" for="to-email">Developer's Email Address</label>
+    <input id="to-email" name="email" type="email" class="form-control" placeholder="developer@example.com" aria-describedby="sizing-addon1" required [(ngModel)]="mailIds.developerEmail" [ngModelOptions]="{standalone: true}">
+  </div>
+  <div class = "error-messages flex-column">
+    <span *ngIf="showValidationError()" class="message">
+        {{emailValidationMessage}}
+    </span>
+  </div>
+  <div class="form-group">
+    <button *ngIf="!showSuccessMessage" class="form-control send-button" type="submit" id="submit-to-developer" [ngClass]="loading ? 'disabled' : ''">{{loading ? 'Sending email...': 'Send'}}</button>
+    <button *ngIf="showSuccessMessage" class="form-control success" type="button" [ngClass]="loading ? 'disabled' : ''">Email Sent</button>
+  </div>
+</form>

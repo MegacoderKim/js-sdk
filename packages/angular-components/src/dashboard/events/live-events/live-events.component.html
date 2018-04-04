@@ -1,0 +1,39 @@
+<!--<app-timeline-user *ngIf="selectedEventUserId" [showPop]="selectedEventUserId"></app-timeline-user>-->
+<!--<div [hidden]="selectedEventUserId" fxLayout="column" fxLayoutGap="20px">-->
+  <!--&lt;!&ndash;<div class="counter" fxLayout="column" *ngIf="overview" fxLayoutAlign="center center">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="number">{{overview?.online}}</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="text-uppercase">Online users</div>&ndash;&gt;-->
+  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+  <!--<div class="user-filter" fxLayout="row" fxLayoutAlign="space-between center">-->
+    <!--<div>{{(selectedFiler$ | async).name}} Events</div>-->
+    <!--<div class="filter dropdown">-->
+      <!--<button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-filter"></i> Filters</button>-->
+      <!--<ul class="dropdown-menu">-->
+        <!--<li (click)="selectFilter(filter)" [class.active]="(selectedFiler$ | async) == filter" *ngFor="let filter of filters"><a>{{filter.name}}</a></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="text-center">-->
+    <!--<button *ngIf="newData && newData > 0" (click)="getNewData()" class="btn btn-primary btn-sm">{{newData}} New {{(selectedFiler$ | async).name}} Events</button>-->
+  <!--</div>-->
+  <!--<app-loading-data *ngIf="baseLoading.data" [message]="(selectedFiler$ | async)?.name + ' Users'"></app-loading-data>-->
+  <!--<div>-->
+    <!--<app-live-event *ngFor="let event of listData?.results; trackBy:indexId"-->
+                     <!--(select)="selectEvent($event, event)"-->
+                     <!--[selected]="selectedEventId == event.id"-->
+                     <!--[event]="event"-->
+    <!--&gt;</app-live-event>-->
+  <!--</div>-->
+  <!--<div class="card" *ngIf="listData?.results.length == 0 && !baseLoading.data">-->
+    <!--<div class=" card-content-top card-content-bottom text-center">-->
+      <!--<strong>No Events</strong>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="card" *ngIf="baseLoading.page">-->
+    <!--<div class=" card-content-top card-content-bottom text-center">-->
+      <!--<div loading-dots>Loading more events</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+

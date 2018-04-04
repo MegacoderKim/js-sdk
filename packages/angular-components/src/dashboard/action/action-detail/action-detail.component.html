@@ -1,0 +1,92 @@
+<div class="action-status">
+  <div>{{action.type | nameCase}}
+    <span *ngIf="!action.completed_at && !action.completed_at && !!action.display.duration_remaining">in {{action.display.duration_remaining / 60 | hmString}}</span>
+    <span *ngIf="action.completed_at">completed</span>
+  </div>
+
+</div>
+<div class="action-duration-status">
+  <div *ngIf="action.completed_at; else duration" class="action-duration-status">
+     At {{action.completed_at | timeString}}, <span class="text-muted">{{action.completed_at | dateString}}</span>
+  </div>
+  <ng-template #duration>
+
+    <div *ngIf="action.display.status_text" class="action-duration-status">
+      {{action.display.status_text}}
+    </div>
+  </ng-template>
+</div>
+<div *ngIf="action" class="card-container">
+  <div class="card" (mouseenter)="selectActionId(action.id)" (mouseleave)="unselectAction()">
+    <div class="card-content-top flex-row row-gap-10">
+      <div class="card-icon">
+        <img style="height: 25px;" src="{{icons(action.type)}}" alt="">
+      </div>
+      <div class="flex-column flex">
+        <div class="flex-row">
+          <span>{{action.type | nameCase}}</span>
+          <span *ngIf="action.unique_id">| #{{action.unique_id}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="border"></div>
+    <div class="card-content flex-row row-gap-10" *ngIf="action.completed_place || action.expected_place">
+      <div class="card-icon">
+        <div class="icon-box">
+          <i style="font-size: 19px" class=" fa fa-map-marker"></i>
+
+        </div>
+      </div>
+      <div class="flex">
+        <div class="">
+          {{action.completed_place ? action.completed_place.address : action.expected_place.address}}
+        </div>
+      </div>
+    </div>
+    <div class="border" *ngIf="action.completed_place || action.expected_place"></div>
+    <div *ngIf="action.user" class="card-content-top flex-row row-gap-10">
+      <div class="card-icon">
+        <ht-profile [height]="25" [url]="action.user.photo"></ht-profile>
+      </div>
+
+      <div class="flex">
+
+        <div class="flex-column">
+          <div class="">{{action.user.name}} <span *ngIf="action.created_at">created at {{action.created_at | timeString}}</span>
+          </div>
+          <!--<span class="text-muted">{{action.user.display.status_text}}</span>-->
+          <div [class.text-warning]="action.user?.display.is_warning" class="flex-row">{{action.user.display.status_text}}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="action.user" class="border"></div>
+    <div *ngIf="action.expected_at || (action.eta && !action.completed_at)" class="card-content flex-row row-gap-10">
+      <div class="card-icon ">
+        <div class="icon-box">
+          <i class=" fa" [class.fa-hourglass-2]="!action.completed_at" [class.fa-hourglass-3]="action.completed_at"></i>
+
+        </div>
+      </div>
+      <div class="flex-column flex">
+        <div *ngIf="action.eta && !action.completed_at">ETA {{action.eta | timeString}}, <span class="">{{action.eta | dateString: 'short'}}</span></div>
+        <div *ngIf="action.expected_at">Scheduled at {{action.expected_at | timeString}}, <span class="">{{action.expected_at | dateString: 'short'}}</span></div>
+      </div>
+    </div>
+    <div *ngIf="(action.eta || action.expected_at)" class="border"></div>
+    <a href="{{action.tracking_url}}" target="_blank" class="card-content-bottom flex-row row-gap-10">
+      <div class="card-icon">
+        <div class="icon-box">
+          <i class=" fa fa-link"></i>
+        </div>
+      </div>
+      <div class="flex">
+        {{action.tracking_url}}
+      </div>
+    </a>
+  </div>
+  <div class="sub-status">
+    to be filled
+  </div>
+</div>
+<!--{{user | json}}-->
+<!--<app-actions-timeline [action]="action"></app-actions-timeline>-->

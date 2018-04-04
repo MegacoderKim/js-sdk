@@ -5,7 +5,8 @@ import {IAnalyticsService, IAnalyticsServiceConfig} from "./analytics";
 export interface IAnalyticsList extends  IAnalyticsService{
   dataTable$: Observable<string[][]>,
   client: any,
-  columns: string[]
+  columns: string[],
+  hideDatePicker?: boolean
 }
 
 export interface ITableFormat {

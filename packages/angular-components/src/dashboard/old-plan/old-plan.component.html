@@ -1,0 +1,4 @@
+<div class="container">
+  <app-plan-form *ngIf="!isCardAdded" (cardAdded)="isCardAdded = $event"></app-plan-form>
+  <app-plan-success *ngIf="isCardAdded && !addAddress"></app-plan-success>
+</div>

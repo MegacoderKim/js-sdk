@@ -14,7 +14,7 @@ import * as fromGroups from "./groups-reducer";
 import * as fromAccounts from "./account-reducer";
 import * as fromActions from "./actions-reducer";
 import {
-  IUserData,
+  IUserPlaceline,
   IUser,
   IUserAnalytics,
   IGroup,

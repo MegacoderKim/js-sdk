@@ -10,6 +10,8 @@ import { IPageClientConfig } from "../../interfaces";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { EntityItemClient } from "../../base/item-client";
 import { IAccountUser } from "ht-models"
+import {HtAccountUserApi} from "ht-api";
+
 export class AccountUser extends EntityItemClient {
     query$: Observable<object> = of({});
     id$;
@@ -19,7 +21,7 @@ export class AccountUser extends EntityItemClient {
     data$;
     loading$;
     api$: (id, query) => Observable<IAccountUser>;
-    constructor({ dateParam, store, api }: IPageClientConfig) {
+    constructor({ dateParam, store, api }: IPageClientConfig<HtAccountUserApi>) {
         super();
         this.api$ = (id, query) => api.get(id, query);
         this.store = store;

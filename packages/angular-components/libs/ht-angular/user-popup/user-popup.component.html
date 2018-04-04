@@ -1,29 +1,41 @@
-<div class="card" (click)="openCard()">
+<div class="card is-warning-title" *ngIf="action.user.display.is_warning">
+  <div class="card-content is-popup is-size-7">
+    Offline {{action.user.display.warning_since_text}}
+  </div>
+</div>
+<div class="card" [class.is-warning]="action.user.display.is_warning" (click)="openCard()">
   <div class="card-content is-popup">
-    <p *ngIf="!opened" class="is-size-7 has-text-weight-bold is-uppercase">
-      {{action.user.display.status_text}}
+    <div *ngIf="!opened" class="is-size-7 flex-row row-gap-4">
+      <div class="flex-column">
+        <div class=" has-text-weight-bold is-uppercase">{{getStatus(action)}} </div>
+        <span class=" has-text-weight-bold">{{action.place?.display_text | dot}}</span>
+        <span *ngIf="activityData && activityData.showSubtext">{{activityData.title}} for {{activityData.body}}</span>
+      </div>
       <span class="icon">
           <i class="ion-chevron-right"></i>
         </span>
-    </p>
+    </div>
     <ng-container *ngIf="opened">
       <div class="flex-column column-gap-4">
         <div>
-          <div class="is-uppercase is-size-7">{{action.user.display.status_text}} on</div>
-          <div class="has-text-weight-bold">Random place</div>
+          <div class="is-uppercase has-text-weight-bold is-size-7">{{getStatus(action)}}</div>
+          <div class="has-text-weight-bold is-size-7">{{action.place?.display_text | dot}}</div>
+        </div>
+        <div *ngIf="activityData">
+          <div class="is-uppercase is-size-7">{{activityData.title}}</div>
+          <div class="has-text-weight-bold">{{activityData.body}}</div>
         </div>
         <div>
-          <div class="is-uppercase is-size-7">speed</div>
-          <div class="has-text-weight-bold">37 kmh</div>
+          <ht-battery-icon [layout]="'row'" [reverse]="true" [battery]="action.health.battery_percentage" [iconType]="'ionicon'"></ht-battery-icon>
         </div>
         <div class="flex-row row-gap-20">
           <div>
             <div class="is-uppercase is-size-7">distance</div>
-            <div class="has-text-weight-bold">{{action.distance | distanceLocale}}</div>
+            <div class="has-text-weight-bold">{{action.distance | distanceLocale | dot}}</div>
           </div>
           <div>
             <div class="is-uppercase is-size-7">time</div>
-            <div class="has-text-weight-bold">{{action.duration | hmString: 60}}</div>
+            <div class="has-text-weight-bold">{{action.duration | hmString: 60 | dot}}</div>
           </div>
         </div>
       </div>

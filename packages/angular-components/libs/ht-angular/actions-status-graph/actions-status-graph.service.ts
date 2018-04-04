@@ -38,6 +38,7 @@ export class ActionsStatusGraphService implements IAnalyticsService {
   private initClient() {
     const graphClient = actionsClientFactory({dateRange: this.dateRangeService$});
     this.client = graphClient.graph;
+    this.client.setActive();
     this.loading$ = this.client.loading$;
     this.data$ = this.client.data$.pipe(
       filter(data => !!data),

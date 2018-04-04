@@ -1,0 +1,14 @@
+<app-loading *ngIf="isMobile"></app-loading>
+<ng-template [ngIf]="showFilter && !isMobile">
+    <app-user-filter *ngIf="view == 'users'"></app-user-filter>
+    <app-action-filter *ngIf="view == 'actions'"></app-action-filter>
+
+</ng-template>
+<ng-template [ngIf]="isMobile">
+  <app-user-filter-mobile *ngIf="view == 'users'" [showFilter]="showFilter"></app-user-filter-mobile>
+  <app-action-filter-mobile *ngIf="view == 'actions'" [showFilter]="showFilter"></app-action-filter-mobile>
+
+</ng-template>
+<div class="flex-row" style="height: 100%;" [@routerTransition]="getState(o)">
+  <router-outlet #o="outlet"></router-outlet>
+</div>

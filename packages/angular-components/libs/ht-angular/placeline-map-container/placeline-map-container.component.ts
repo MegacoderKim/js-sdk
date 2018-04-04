@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IUserData} from "ht-models";
+import {IUserPlaceline} from "ht-models";
 import {HtUsersService} from "../ht/ht-users.service";
 import {HtMapService} from "../ht/ht-map.service";
 

@@ -10,11 +10,12 @@ import {ActionsSummaryClient} from "./actions-summary-client"
 import {ActionsFilter} from "../../filters/actions-filter";
 import {ActionsHeatmapClient} from "./actions-heatmap-client";
 import {ActionsIndexAllClient} from "./actions-list-all-client"
-import {HtApi} from "ht-api";
+import {HtApi, HtActionsApi} from "ht-api";
+import {htClientService} from "../../global/client";
 
 export class HtActionsClient {
   // item: HtActionsGetClient;
-  api;
+  api: HtActionsApi;
   graph;
   store;
   list;
@@ -23,7 +24,7 @@ export class HtActionsClient {
   heatmap;
   filters = new ActionsFilter();
   constructor(config: IActionsClientConfig) {
-    let api = new HtApi().actions;
+    let api = htClientService.getInstance().api.actions;
     this.api = api;
     const store = ApiStoreService.getNewInstance();
     store.addReducer("actions", fromActions.actionsReducer);

@@ -2,7 +2,7 @@ import {
   AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, Output, EventEmitter,
   ViewChild, Optional, ContentChild, ViewContainerRef
 } from '@angular/core';
-import {IUserData} from "ht-models";
+import {IUserPlaceline} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {MapInstance} from "ht-maps";
@@ -28,17 +28,17 @@ export class MapComponent implements OnInit, AfterViewInit {
     private elRef: ElementRef,
     @Optional() htMapService: HtMapService
   ) {
-    if(htMapService) this.mapInstance = htMapService.mapInstance
+    if(htMapService && !this.mapInstance) this.mapInstance = htMapService.mapInstance
   }
 
   @HostListener('resize', ['$event'])
-  onMapResize() {
+  onMapResize(event) {
     this.mapInstance.inValidateSize()
     // todo this.mapService.map.resize();
   }
 
   ngOnInit() {
-    this.mapInstance = this.mapInstance;
+    // this.mapInstance = this.mapInstance;
     // const user$ = this.userService.placeline.getListener({id: "1f33d4cb-49e9-49b9-ad52-19f732ee55d8"});
     // // const user$ = this.userService.placeline.e("1f33d4cb-49e9-49b9-ad52-19f732ee55d8");
     // user$.subscribe((userData) => {
@@ -71,7 +71,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     const el = this.mapElem.nativeElement;
     this.mapInstance.renderMap(el, this.options);
     this.onReady.next(this.mapInstance.map);
-    if (this.reset) this.resetCta.createEmbeddedView(this.reset)
+    if (this.resetCta && this.reset) this.resetCta.createEmbeddedView(this.reset)
     // window['ht-map'] = this.mapService.map;
     // this.mapService.resetBounds()
   }

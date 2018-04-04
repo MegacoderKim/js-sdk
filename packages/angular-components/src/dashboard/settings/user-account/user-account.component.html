@@ -1,0 +1,158 @@
+<div class="settings-section flex-column column-gap-20">
+  <div class="is-size-4 text-uppercase">Account  details</div>
+  <app-settings-editor
+          label="Account name"
+          [value]="(account$ | async)?.name"
+          (onSubmit)="update({name: $event}, 'accountName')"
+          placeholder="Enter you account name"></app-settings-editor>
+  <div class="card" *ngFor="let token of (subAccount$ | async)?.tokens; let i = index">
+    <div class="card-content is-small flex-column">
+      <div class="field">
+        <label for="" class="label">{{label[token.scope]}}</label>
+        <div class="control">
+          <span class="is-size-6">{{token.key}}</span>
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button class=" button is-info is-outlined" [appCopy]="token.key" (onSuccess)="hasCopied()">
+            <span class="icon">
+              <i class="fa fa-copy"></i>
+            </span>
+            <span>Copy</span>
+          </button>
+        </div>
+        <div class="control">
+          <button class="button is-warning is-outlined" (click)="rollKey(token)">
+            <span class="icon">
+              <i class="fa fa-refresh"></i>
+            </span>
+            <span>Roll key</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="settings-section flex-column column-gap-20">
+  <div class="is-size-4 text-uppercase">Webhooks  <i *ngIf="webhook.loadingWebhooks" class="fa fa-circle-o-notch fa-spin"></i></div>
+  <app-webhooks #webhook></app-webhooks>
+</div>
+<div *ngIf="subAccount$ | async as subAccount" class="settings-section flex-column column-gap-20">
+  <div class="is-size-4 text-uppercase">Set up</div>
+  <app-settings-editor
+          label="GCM API Key"
+          [value]="subAccount.gcm_api_key"
+          (onSubmit)="updateSubAccount({gcm_api_key: $event}, 'gcm')"
+          placeholder="Enter your GCM API Key"></app-settings-editor>
+  <app-settings-editor
+          label="FCM Server Key"
+          [value]="subAccount.fcm_api_key"
+          (onSubmit)="updateSubAccount({fcm_api_key: $event}, 'fcm', $event)"
+          placeholder="Enter your FCM Server key"></app-settings-editor>
+  <app-settings-editor
+          label="Deep link to iOS App"
+          [value]="(account$ | async)?.ios_deeplink_url"
+          (onSubmit)="update({ios_deeplink_url: $event}, 'iosDeeplink')"
+          placeholder="Enter URL to deep link iOS app"></app-settings-editor>
+  <app-settings-editor
+          label="Deep link to Android App"
+          [value]="(account$ | async)?.android_deeplink_url"
+          (onSubmit)="update({android_deeplink_url: $event}, 'androidDeeplink')"
+          placeholder="Enter URL to deep link Android app"></app-settings-editor>
+  <div class="card">
+    <div class="card-content flex-row row-gap-10">
+      <div class="flex">APNs pem file (development)</div>
+      <div class="file" [class.has-name]="apnsDev.files.length">
+        <label class="file-label">
+          <input (change)="changeFile(apnsDev, 'apnsDev')" #apnsDev class="file-input" type="file" name="apns_cert_development">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fa fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a {{apnsDev.files[0] ? 'another': ''}} file
+            </span>
+          </span>
+          <span class="file-name" *ngIf="apnsDev.files[0]">
+            {{apnsDev.files[0].name | json}}
+          </span>
+        </label>
+      </div>
+      <!--<input (change)="changeFile(apnsDev, 'apnsDev')" #apnsDev type="file" id="dev-select" name="apns_cert_development" placeholder="Upload cert"/>-->
+      <div *ngIf="!showUpload['apnsDev']">
+        {{subAccount.apns_cert_development}}
+      </div>
+      <div class="text-red clickable flex-row row-gap-10" [hidden]="!showUpload['apnsDev']" style="flex-basis: 70px">
+        <div (click)="uploadFile(apnsDev, 'apns_cert_development', 'apnsDev')">Upload</div>
+        <div (click)="removeShow('apnsDev', apnsDev)"><i class="fa fa-remove"></i></div>
+
+      </div>
+      <div class="text-red clickable" *ngIf="!showUpload['apnsDev'] && subAccount.apns_cert_development" (click)="removeUpload('apns_cert_development', 'apnsDev')" style="flex-basis: 70px">
+        <i class="fa fa-trash"></i>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content flex-row row-gap-10">
+      <div class="flex">APNs pem file (distribution)</div>
+      <div class="file" [class.has-name]="apnsDist.files.length">
+        <label class="file-label">
+          <input (change)="changeFile(apnsDist, 'apnsDist')" #apnsDist class="file-input" type="file" name="apns_cert_distribution">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fa fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a {{apnsDist.files[0] ? 'another': ''}} file
+            </span>
+          </span>
+          <span class="file-name" *ngIf="apnsDist.files[0]">
+            {{apnsDist.files[0].name | json}}
+          </span>
+        </label>
+      </div>
+      <!--<input (change)="changeFile(apnsDist, 'apnsDist')" #apnsDist type="file" id="dist-select" name="apns_cert_distribution" placeholder="Upload cert"/>-->
+      <div>
+        {{subAccount.apns_cert_distribution}}
+      </div>
+      <div class="text-red clickable flex-row row-gap-10" [hidden]="!showUpload['apnsDist']" style="flex-basis: 70px">
+        <div (click)="uploadFile(apnsDist, 'apns_cert_distribution', 'apnsDist')">Upload</div>
+        <div (click)="removeShow('apnsDist', apnsDist)"><i class="fa fa-remove"></i></div>
+
+      </div>
+      <div class="text-red clickable" *ngIf="!showUpload['apnsDist'] && subAccount.apns_cert_distribution" (click)="removeUpload('apns_cert_distribution', 'apnsDist')" style="flex-basis: 70px">
+        <i class="fa fa-trash"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="settings-section flex-column column-gap-20">
+  <div class="is-size-4  text-uppercase">Web tracking experience</div>
+  <app-settings-editor
+          label="Tagline"
+          (onSubmit)="updateTagline($event)"
+          [value]="(account$ | async)?.tagline"
+          placeholder="Enter you tagline"></app-settings-editor>
+  <app-settings-editor
+          label="Link to iOS App"
+          [value]="(account$ | async)?.ios_app_download_url"
+          (onSubmit)="updateUrl({ios_app_download_url: $event}, 'iosDownload', 'ios_app_download_url')"
+          placeholder="Enter URL to download link iOS app"></app-settings-editor>
+  <app-settings-editor
+          label="Link to Android App"
+          [value]="(account$ | async)?.android_app_download_url"
+          (onSubmit)="updateUrl({android_app_download_url: $event}, 'androidDownload', 'android_app_download_url')"
+          placeholder="Enter URL to download link Android app"></app-settings-editor>
+</div>
+<div class="settings-section flex-column column-gap-20">
+  <div class="is-size-4 text-uppercase">Track through the day</div>
+  <app-ttd (onDelete)="showSnackbar('Rule successfully removed')" (onAdd)="showSnackbar('Rule successfully added')"></app-ttd>
+</div>
+<div class="settings-section flex-column column-gap-20">
+  <div class="is-size-4 text-uppercase">SDK controls</div>
+  <app-sdk-control [showCustom]="config.isStaff"></app-sdk-control>
+</div>
+<!--<pre>-->
+  <!--{{account$ | async | json}}-->
+<!--</pre>-->

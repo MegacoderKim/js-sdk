@@ -1,0 +1,134 @@
+<div class="filter-container" *ngIf="switchViewLink$ | async as switchView">
+  <div class="link-group">
+    <a [routerLink]="switchView.list" queryParamsHandling="preserve" routerLinkActive="active" class="link">
+      <span class="icon"><i class="fa fa-list"></i></span>
+      <span>List</span>
+    </a>
+    <a [routerLink]="switchView.map" queryParamsHandling="preserve" routerLinkActive="active" class="link">
+      <span class="icon"><i class="fa fa-map-o"></i></span>
+      <span>Map</span>
+    </a>
+  </div>
+  <div class="dropdown" appDropdown *ngIf="ordering$ | async as ordering">
+    <div class="dropdown-toggle">
+      <button class="button">
+        <span class="icon">
+          <i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i>
+        </span>
+        <span>{{ordering.type | actionSortingString}}  </span>
+      </button>
+    </div>
+    <div class="dropdown-menu ordering-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <div class="dropdown-content">
+        <div class="dropdown-item sort-header sort-items text-muted">
+          <div class="sort-item flex flex-row space-between">
+            <span>ORDERING</span>
+            <span>DESC</span>
+          </div>
+          <div class="text-center"  style="flex-basis: 40px">ASC</div>
+        </div>
+        <div class="dropdown-item" *ngFor="let sorting of actionSortings">
+          <div class="level">
+            <div class="level-left">
+              <span class="level-item">{{sorting.label}}</span>
+            </div>
+            <div class="level-right">
+              <button [class.is-primary]="ordering.type == sorting.key && !ordering.sign" class="button is-small level-item" (click)="setSorting(sorting.key, 0)">
+                <span class="icon">
+                  <i class="fa fa-sort-amount-desc"></i>
+                </span>
+              </button>
+              <button [class.is-primary]="ordering.type == sorting.key && ordering.sign" class="button is-small level-item" (click)="setSorting(sorting.key)">
+                <span class="icon">
+                  <i class="fa fa-sort-amount-asc"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<div class="dropdown" *ngIf="ordering$ | async as ordering">-->
+    <!--<button class="btn btn-sm btn-default text-muted dropdown-toggle flex-row row-gap-7 align-center" data-toggle="dropdown"><i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i><span>{{ordering.type | actionSortingString}}  </span></button>-->
+    <!--<ul class="dropdown-menu">-->
+      <!--<li class="sort-items" *ngFor="let sorting of actionSortings">-->
+        <!--<div (click)="setSorting(sorting.key, 0)" class="sort-item flex flex-row space-between align-center">-->
+          <!--<span>{{sorting.label}}</span>-->
+          <!--<i class="fa fa-sort-amount-desc"></i>-->
+        <!--</div>-->
+        <!--<div (click)="setSorting(sorting.key)" class="sort-item text-center" style="flex-basis: 40px">-->
+          <!--<i class="fa fa-sort-amount-asc"></i>-->
+        <!--</div>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
+  <div class="dropdown" appDropdown>
+    <div class="dropdown-toggle">
+      <button id="dropdown-keyboard-access" type="button" class="button" >
+        <span>Filters</span>
+        <span class="icon">
+        <i class="fa fa-filter"></i>
+      </span>
+      </button>
+    </div>
+    <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+      <div class="dropdown-content">
+        <div class="dropdown-header dropdown-item">Status</div>
+        <a (click)="selectFilter(filter.query)" class="dropdown-item" *ngFor="let filter of actionStatusFilters">
+          <span>{{filter.label}}</span>
+        </a>
+        <!--<div class="dropdown-header dropdown-item">On time</div>-->
+        <!--<a (click)="selectFilter(filter.query)" class="dropdown-item" *ngFor="let filter of actionOntimeFilters">-->
+          <!--<span>{{filter.label}}</span>-->
+        <!--</a>-->
+        <div class="dropdown-header dropdown-item">Types</div>
+        <a (click)="selectFilter(filter.query)" class="dropdown-item" *ngFor="let filter of actionTypes">
+          <span>{{filter.label}}</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="field flex is-grouped is-grouped-multiline" *ngIf="filters$ | async as filters">
+    <div class="control is-marginless" *ngFor="let filter of filters">
+      <div class="tags has-addons">
+        <div class="tag is-medium is-primary">{{filter.value | actionStatusString}}</div>
+        <a (click)="clearFilter(filter)" class="tag is-medium is-primary is-delete"></a>
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="filters flex">-->
+    <!--<div *ngIf="filters$ | async as filters" class="flex-row row-gap-10 align-center">-->
+      <!--<div class="dropdown">-->
+        <!--<button class="btn btn-default btn-sm dropdown-toggle text-muted" data-toggle="dropdown"><i class="fa fa-filter"></i> Filters</button>-->
+        <!--<ul class="dropdown-menu">-->
+          <!--<li class="dropdown-header">Status</li>-->
+          <!--<li (click)="selectFilter(filter.query)" class="clickable" *ngFor="let filter of actionStatusFilters"><a>{{filter.label}}</a></li>-->
+          <!--<li class="dropdown-header">On time</li>-->
+          <!--<li class="clickable" (click)="selectFilter(filter.query)" *ngFor="let filter of actionOntimeFilters">-->
+            <!--<a>{{filter.label}}</a>-->
+          <!--</li>-->
+          <!--<li class="dropdown-header">Types</li>-->
+          <!--<li class="clickable" (click)="selectFilter(type.query)" *ngFor="let type of actionTypes">-->
+            <!--<a>{{type.label}}</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+      <!--<div (click)="clearFilter(filter)" class="filter" *ngFor="let filter of filters ">-->
+        <!--{{filter.value | actionStatusString}} <i class="fa fa-times"></i>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <app-entity-filter [searchApi$]="searchApi" [entity]="switchView.entity"></app-entity-filter>
+  <button title="Download as CSV" class="button" (click)="downloadCsv()">
+    <span class="icon">
+      <i [ngClass]="downloadLoading ? 'fa-circle-o-notch fa-spin' : 'fa-download'" class="fa"></i>
+    </span>
+    <span>CSV</span>
+  </button>
+  <app-date-range *ngIf="dateRange" [isToday]="isToday" [default]="dateRange" (rangeChange)="setDateRange($event)"></app-date-range>
+</div>
+

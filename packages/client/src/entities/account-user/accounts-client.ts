@@ -4,15 +4,16 @@ import { AccountUserClient } from "./account-user-client";
 import { MemberShipsClient } from "./memberships-all-client";
 import * as fromRoot from "../../reducers";
 import * as fromAccounts from "../../dispatchers/accounts-dispatcher";
-import {HtApi} from "ht-api";
+import {HtApi, HtAccountUserApi} from "ht-api";
+import {htClientService} from "../../global/client";
 
 export class AccountsClient {
-  api;
+  api: HtAccountUserApi;
   store;
   accountUser;
   memberships;
   constructor() {
-    let api = new HtApi().accountUser;
+    let api = htClientService.getInstance().api.accountUser;
     this.api = api;
     this.store = ApiStoreService.getInstance();
     this.store.addReducer("accounts", fromAccount.reducer);

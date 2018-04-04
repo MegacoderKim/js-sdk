@@ -1,5 +1,5 @@
 import {Component} from '@nestjs/common';
-import {HtApi, HtRequest, htRequestService} from 'ht-api';
+import {HtApi, HtRequest} from 'ht-api';
 import fetch from 'node-fetch';
 import {PageResults$} from 'ht-data';
 import {Observable} from 'rxjs/Observable';
@@ -16,8 +16,7 @@ export class ApiService {
     request.getFetch = (url, options) => {
       return fetch(url, options).then(res => res.json());
     };
-    htRequestService.setInstance(request);
-    const api = new HtApi();
+    const api = new HtApi(request);
     // api.request.baseUrl = "https://api.hypertrack.com/api/v2/";
     this.api = api;
   };

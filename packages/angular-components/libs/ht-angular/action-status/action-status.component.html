@@ -5,8 +5,9 @@
         <div class="level-item">
           <ht-profile [url]="action.user.photo" [height]="40"></ht-profile>
         </div>
-        <div class="level-item text-title truncate --is-text-black">
-          {{action.user.name | nameCase}}
+        <div class="level-item truncate --is-text-black user-info">
+          <div class=" text-title">{{action.user.name | nameCase}}</div>
+          <div>{{action.user.display.last_updated_text}}</div>
         </div>
       </div>
       <div class="level-right" *ngIf="action.user.phone">

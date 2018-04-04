@@ -64,11 +64,56 @@ type Action {
     distance: Float
 }
 
+type GeoJson {
+    type: String,
+    coordinates: [Float]
+}
+
+type Place {
+    id: String
+    address: String,
+    location: GeoJson,
+    name: String,
+    locality: String,
+    landmark: String,
+    city: String,
+    state: String,
+    country: String,
+    zip_code: String,
+    display_text: String,
+}
+
+type PlacelineItem {
+    id: String,
+    user_id: String,
+    lookup_id: String,
+    type: String,
+    unknown_reason: String,
+    started_at: String,
+    ended_at: String
+    duration: Float,
+    distance: Int,
+    start_location: Place,
+    end_location: Place,
+    route: String,
+    location_time_series: String,
+    place: Place,
+    step_count: Int
+}
+
+type Placeline {
+    user: User,
+    actions: [Action],
+    placeline: [PlacelineItem]
+    id: String
+}
+
 type Query {
     user(id: String!): User,
     users(ordering: String, page_size: Int, status: String): Users,
     actions(ordering: String, page_size: Int, type: String, status: String): Actions,
     action(id: String): Action,
     group(id: String): Group,
-    groups(parent_id: String): Groups
+    groups(parent_id: String): Groups,
+    placeline(user_id: String, action_id: String, start_time: String, end_time: String, date: String): Placeline
 }

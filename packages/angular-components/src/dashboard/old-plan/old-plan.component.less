@@ -1,0 +1,35 @@
+@import "variables";
+:host {
+  padding-top: 50px;
+  background-color: @pay-green;
+  height: 100%;
+  color: @pay-dark;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+/deep/ .pay-btn {
+  border: 0;
+  background-color: #009B45;
+  color: rgba(255, 255, 255, 0.94);
+  border-radius: 4px;
+  padding: 15px;
+  width: 336px;
+  cursor: pointer;
+  &-loading {
+    background-color: #479b6d;
+    &:hover {
+      background-color: #479b6d;
+    }
+  }
+  &:hover {
+    background-color: #008e3f;
+    color: white;
+  }
+  &:focus {
+    outline: 0;
+  }
+}

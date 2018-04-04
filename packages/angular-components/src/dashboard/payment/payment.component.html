@@ -1,0 +1,2 @@
+  <app-payment-form *ngIf="!isCardAdded" (cardAdded)="isCardAdded = $event" [paymentType]="paymentType"></app-payment-form>
+  <app-payment-success *ngIf="isCardAdded && !addAddress"></app-payment-success>

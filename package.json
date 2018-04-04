@@ -18,9 +18,15 @@
   ],
   "author": "",
   "license": "ISC",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/js-cookie",
+      "**/codelyzer"
+    ]
+  },
   "dependencies": {
     "marked": "^0.3.9",
     "moment-mini": "^2.18.1",

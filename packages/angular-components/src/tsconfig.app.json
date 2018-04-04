@@ -10,23 +10,8 @@
     ],
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "@angular/*": [
-        "../node_modules/@angular/*"
-      ],
       "ht-angular": [
         "../libs/ht-angular/index"
-      ],
-      "rxjs/*": [
-        "../node_modules/rxjs/*"
-      ],
-      "moment-mini": [
-        "../node_modules/moment-mini/*"
-      ],
-      "underscore": [
-        "../node_modules/underscore/*"
-      ],
-      "ht-api": [
-        "../node_modules/ht-api"
       ]
     }
   },
@@ -34,5 +19,8 @@
     "test.ts",
     "**/*.spec.ts",
     "index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
+  }
 }

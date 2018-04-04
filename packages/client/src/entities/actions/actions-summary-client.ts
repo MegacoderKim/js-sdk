@@ -13,6 +13,7 @@ import {IAllowedQueryMap} from "ht-data";
 import {ActionsFilter} from "../../filters/actions-filter";
 import {map} from "rxjs/operators";
 import {DateRange} from "../../global/date-range";
+import {HtActionsApi} from "ht-api";
 
 export class ActionsSummary extends EntityListClient {
   store;
@@ -33,7 +34,7 @@ export class ActionsSummary extends EntityListClient {
   filter = new ActionsFilter();
   summaryChart$;
   dateParam: string;
-  constructor({ dateRange, store, dateParam, api }: IPageClientConfig) {
+  constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     super();
     this.api$ = query => api.summary(query);
     this.dateRange = dateRange;
@@ -65,7 +66,7 @@ export class ActionsSummary extends EntityListClient {
 
   getSummaryChart() {
     return this.data$.pipe(
-      map((summaryData) => {
+      map((summaryData: IActionsSummary) => {
         return this.filter.summaryCharts(this.filter.statusQueryArray, summaryData)
       })
     )

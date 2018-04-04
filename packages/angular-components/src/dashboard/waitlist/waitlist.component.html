@@ -1,0 +1,50 @@
+<div class="container">
+  <div id="signup" class="ht-container">
+    <div *ngIf="!joined" class="brand flex-column">
+      <img class="img" width="40px" [src]="logoImg" alt="hypertrack">
+      <div class="brand-text">Get access</div>
+    </div>
+    <form *ngIf="!joined; else hasJoined;"  [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="label" for="email">Email Address</label>
+        <input id="email" name="email" [class.error]="error && !signupForm.controls.email.valid" type="text" class="form-control" placeholder="MVP@Unicorn.com" aria-describedby="sizing-addon1"   formControlName="email" required>
+      </div>
+      <div *ngIf="!invitedAccountId" class="form-group">
+        <label class="label" for="product-url">product url</label>
+        <input [class.error]="error && !signupForm.controls.productURL.valid" type="text" id="product-url" name="product-url" class="form-control" placeholder="What are you building?" aria-describedby="sizing-addon2"  formControlName="productURL">
+      </div>
+      <div *ngIf="!loading" class="form-group">
+        <button class="form-control" type="submit" id="submit">Get in</button>
+      </div>
+      <div *ngIf="loading" class="form-group">
+        <button class="form-control" id="loging">Getting in...</button>
+      </div>
+      <div *ngIf="true" class="message">
+        {{message}}
+      </div>
+      <div class = "error-messages">
+        <span *ngIf="emailValidationMessage && signupForm.controls.email.touched && !signupForm.controls.email.valid" class="message">
+            {{emailValidationMessage}}
+        </span>
+        <span *ngIf="urlValidationMessage && signupForm.controls.productURL.touched && !signupForm.controls.productURL.valid" class="message">
+            {{urlValidationMessage}}
+        </span>
+      </div>
+    </form>
+    <ng-template #hasJoined>
+      <h3 class="text-center">Thank you for your interest!</h3>
+      <p class="text-center text-muted">You'll hear from us shorty</p>
+    </ng-template>
+    <div *ngIf="!joined" class="action flex-column">
+      <div class="login text-center">
+        <a [routerLink]="['/login']">
+          have an account? login instead
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

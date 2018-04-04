@@ -1,0 +1,63 @@
+<form  [formGroup]="signupForm" *ngIf="!isSubmitted; else submitted" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label class="label" for="email">Email Address</label>
+    <input id="email" name="email" [class.error]="error && !signupForm.get('email').valid" type="text" class="form-control" placeholder="MVP@Unicorn.com" aria-describedby="sizing-addon1"   formControlName="email" (keyup)="handleInputKey($event)" required>
+  </div>
+  <div formGroupName="matchingPassword" class="form-group">
+    <label class="label" for="password">password</label>
+    <input [class.error]="error && !signupForm.get('matchingPassword').get('password').valid" type="password" id="password" name="password" class="form-control" placeholder="Pick a password" aria-describedby="sizing-addon2"  formControlName="password" (keyup)="handleInputKey($event)" required>
+  </div>
+  <div formGroupName="matchingPassword" class="form-group" *ngIf="showFullSignup">
+    <label class="label" for="password-confm">confirm password</label>
+    <input [class.error]="error && !signupForm.get('matchingPassword').get('confirmPassword').valid" type="password" id="password-confm" name="password" class="form-control" placeholder="One more time" aria-describedby="sizing-addon2"  formControlName="confirmPassword" required>
+  </div>
+  <div *ngIf="!invitedAccountId && showFullSignup" class="form-group">
+    <label class="label" for="package-name">app package name</label>
+    <input [class.error]="error && !signupForm.get('packageName').valid" type="text" id="package-name" name="package-name" class="form-control" placeholder="com.your_company.app" aria-describedby="sizing-addon2"  formControlName="packageName">
+  </div>
+  <div *ngIf="!loading" class="form-group">
+    <button class="form-control" type="submit" id="submit">Accept and Continue</button>
+  </div>
+  <div *ngIf="loading" class="form-group">
+    <button class="form-control" id="loging">Signing up...</button>
+  </div>
+  <div *ngIf="verified" class="alert alert-success" role="alert" style="font-size: 13px;">You have successfully verified your email. Please login.</div>
+  <div *ngIf="message" class="message">
+    {{message}}
+  </div>
+  <div class = "error-messages flex-column">
+        <span *ngIf="emailValidationMessage && signupForm.get('email').touched && !signupForm.get('email').valid" class="message">
+            {{emailValidationMessage}}
+        </span>
+    <span *ngIf="passwordValidationMessage && signupForm.get('matchingPassword').get('password').touched && !signupForm.get('matchingPassword').get('password').valid" class="message">
+            {{passwordValidationMessage}}
+        </span>
+    <span *ngIf="confirmPasswordValidationMessage && signupForm.get('matchingPassword').get('confirmPassword').touched && !signupForm.get('matchingPassword').get('confirmPassword').valid" class="message">
+            {{confirmPasswordValidationMessage}}
+        </span>
+    <span *ngIf="passwordsMatchValidationMessage && signupForm.get('matchingPassword').touched && !signupForm.get('matchingPassword').valid" class="message">
+            {{passwordsMatchValidationMessage}}
+        </span>
+    <!--<span *ngIf="urlValidationMessage && signupForm.get('packageName').touched && !signupForm.get('productURL').valid" class="message">-->
+            <!--{{urlValidationMessage}}-->
+        <!--</span>-->
+  </div>
+</form>
+<div class="action flex-column" *ngIf="!invitedAccountId && !isSubmitted">
+  <div class="terms text-center">
+    By clicking on the ACCEPT & CONTINUE button, I agree to <a href="https://www.hypertrack.com/terms" target="_blank">Terms of Service</a>, and <a href="https://www.hypertrack.com/agreement" target="_blank">HyperTrack SaaS Agreement</a>
+  </div>
+  <div class="login text-center" *ngIf="toRedirect">
+    <a [routerLink]="['/login']">
+      have an account? login instead
+    </a>
+  </div>
+</div>
+<ng-template #submitted>
+  <div id="submitted" *ngIf="!showCustomVerificationMessage;">
+    <div class="text">
+      Thanks!<br> Please check your email for verification link
+    </div>
+  </div>
+
+</ng-template>

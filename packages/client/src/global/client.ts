@@ -1,35 +1,43 @@
-import {htRequestService} from "ht-api";
+import {HtApi, HtRequest} from "ht-api";
 
 export class HtClient {
-  constructor(token: string = "", request) {
-    htRequestService.setInstance(request);
+  api: HtApi;
+  constructor(request: HtRequest, token: string = "") {
+    this.api = new HtApi(request, token);
     this.token = token;
   }
 
   set token(token) {
-      htRequestService.getInstance().tokenServie.token = token
+    this.api.request.tokenServie.token = token;
   }
 
   set tempToken(token) {
-      htRequestService.getInstance().tokenServie.tempToken = token
+    this.api.request.tokenServie.tempToken = token;
   }
 }
 
-export const initClient = (token, request) => {
-  return htClientService.getInstance(token, request);
+export const initClient = (request: HtRequest, token?: string) => {
+  return htClientService.setInstance(request, token);
 };
 
-export const htClientFactory = (token, request) => {
-  return new HtClient(token, request);
+export const htClientFactory = (request: HtRequest, token?: string) => {
+  return new HtClient(request, token);
 };
 
 export const htClientService = (() => {
   var instance: HtClient;
 
   return {
-    getInstance(token = "", request) {
+    setInstance(request: HtRequest, token = "") {
+      if (instance) {
+        console.error("Client already initialized")
+      };
+      instance = htClientFactory(request, token);
+      return instance;
+    },
+    getInstance() {
       if (!instance) {
-        instance = htClientFactory(token, request);
+        console.error("Client not initialized, call initClient(request: HtRequest, token?: string)")
       }
       return instance;
     }

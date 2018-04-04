@@ -1,0 +1,11 @@
+<div *ngIf="date" class="date flex-row align-center justify-center">
+  <div [class.disabled]="disablePrevious" (click)="changeDate(date, -1)" class="action action-left"><i class="fa fa-caret-left"></i></div>
+  <div class="text-center date-text relative" (mouseenter)="isActive = true" (mouseleave)="isActive = false" id="datepick" #datepick>
+    {{date | dateString}}
+
+    <div *ngIf="isActive" class="picker">
+      <ht-date-range-picker [options]="options" (onDateChange)="changeDate($event)" [date]="isoDate"></ht-date-range-picker>
+    </div>
+  </div>
+  <div [class.disabled]="disableNext" (click)="changeDate(date, 1)" class="action action-right"><i class="fa fa-caret-right"></i></div>
+</div>

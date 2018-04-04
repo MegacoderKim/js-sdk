@@ -1,0 +1,81 @@
+<div class="card">
+  <div class="card-content is-small flex-column column-gap-4">
+    <div class="field">
+      <label class="label">Power Mode</label>
+      <div class="control">
+        <div class="select">
+          <select #s [value]="default" (change)="selectMode(s.value)">
+            <option value="realtime">Real-time (I want near real-time data at all times)</option>
+            <option value="battery">Battery saver (I am okay with a minute of latency)</option>
+          </select>
+        </div>
+      </div>
+      <p class="help">* supported on sdk versions over 0.6.7</p>
+    </div>
+
+  </div>
+</div>
+<div *ngIf="showCustom && collectionRules$ | async as form" class="custom-control">
+  <div class="is-size-3 is-centered">
+    Transmission rules
+  </div>
+  <div class="sdk-forms" *ngFor="let item of form.transmission_rules">
+    <div class="sdk-form-label">{{item.label}}</div>
+    <div class="field is-horizontal" *ngFor="let input of item.controls">
+      <div class="field-label">
+        <label class="label">{{input.key}}</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control is-expanded">
+            <input #i (input)="inputChange()" type="text" [value]="input.value" class="input">
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button class="button is-primary" [disabled]="i.value == input.value">
+              <span class="icon">
+                <i class="fa fa-check"></i>
+              </span>
+            </button>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="is-size-3 is-centered">
+    Collection rules
+  </div>
+  <div class="sdk-forms" *ngFor="let item of form.collection_rules">
+    <div class="sdk-form-label">{{item.label}}</div>
+    <div class="field is-horizontal" *ngFor="let input of item.controls">
+      <div class="field-label">
+        <label class="label">{{input.key}}</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control is-expanded">
+            <input #i type="text" (input)="inputChange()" (keydown.enter)="save(input, i.value)" [value]="input.value" class="input">
+          </p>
+        </div>
+        <div class="field">
+          <p class="control">
+            <button (click)="save(input, i.value)"
+                    [class.is-loading]="i.value != input.value && loading"
+                    class="button is-primary"
+                    [disabled]="i.value == input.value">
+              <span class="icon">
+                <i class="fa fa-check"></i>
+              </span>
+            </button>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>

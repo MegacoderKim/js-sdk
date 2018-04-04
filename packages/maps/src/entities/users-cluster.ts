@@ -1,6 +1,6 @@
 import { htUser } from "ht-data";
 import { userDivFactory } from "../helpers/user-div-factory";
-import { HtPosition } from "ht-models";
+import { HtPosition, IUser } from "ht-models";
 import {Entity, StyleFunct} from "../interfaces";
 import {
   ItemClassFactoryConfig,
@@ -70,11 +70,11 @@ export class UsersCluster {
     return userDivFactory(data);
   };
 
-  getInfoContent(data) {
+  getInfoContent(data: IUser) {
     let string = `<div>
 <strong>${data.name}</strong>
 <div>${data.display.status_text}</div>
-<div>${data.display.sub_status_text}</div>
+<div>${data.display.last_updated_text}</div>
 </div>`;
     return string;
   }

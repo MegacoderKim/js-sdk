@@ -11,7 +11,7 @@ import {Observable} from "rxjs/Observable";
 })
 export class GroupsChartContainerComponent implements OnInit {
   loading: boolean = false;
-
+  error: any;
   @Input() groupId: string;
   @Output() onGroup: EventEmitter<IGroup> = new EventEmitter();
   constructor(

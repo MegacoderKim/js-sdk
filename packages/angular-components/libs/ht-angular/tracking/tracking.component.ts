@@ -7,9 +7,10 @@ import {IAction} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {HtMapService} from "../ht/ht-map.service";
 import {TrackingMapService} from "../tracking-map/tracking-map.service";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
 @Component({
-  selector: 'app-tracking',
+  selector: 'ht-tracking',
   templateUrl: './tracking.component.html',
   styleUrls: ['./tracking.component.scss'],
   animations: [
@@ -57,7 +58,7 @@ export class TrackingComponent implements OnInit, AfterContentInit {
     );
 
     this.userPopup$ = this.actionsData$.pipe(
-      debounceTime(100), //todo fix this null elem on first render
+      debounceTime(300), // todo fix this null elem on first render
       map((data) => {
         const entities = this.trackingMapService.actionsTrace.user.entities;
         const keys = Object.keys(entities);
@@ -74,13 +75,13 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
     const completedAction$ = this.actionsData$.pipe(
       filter((data: IAction[]) => {
-        return !!data && data.length && data[0].display.show_summary;
+        return !!data && data.length && !!data[0].completed_at;
       }),
       take(1)
     );
 
     this.actionsData$.pipe(
-      filter((data: IAction[]) => !!data && data.length && !data[0].display.show_summary),
+      filter((data: IAction[]) => !!data && data.length && !data[0].completed_at),
       takeUntil(completedAction$)
     ).subscribe((action) => {
       this.loading = false;
@@ -105,6 +106,10 @@ export class TrackingComponent implements OnInit, AfterContentInit {
       })
     )
 
+  }
+
+  get error$(): ReplaySubject<boolean> {
+    return this.trackinService.error$
   }
 
   ngAfterContentInit() {

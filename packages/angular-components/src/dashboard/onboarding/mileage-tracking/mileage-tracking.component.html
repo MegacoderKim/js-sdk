@@ -1,0 +1,21 @@
+<app-onboarding [steps]="steps" (nextState)="handleNextState($event)" [stepIterationCount]="stepIterationCount">
+  <div class="reactive-container" *ngIf="showReactiveBox(currentState)">
+    <app-reactive-box [eventType]="getReactiveEventType(currentState)"> </app-reactive-box>
+  </div>
+  <div class="onboarding-content" *ngIf="showSignupBox(currentState)">
+    <app-signup-box> </app-signup-box>
+  </div>
+  
+  <div class="onboarding-content" *ngIf="showBillingBox(currentState)">
+    <app-billing-box> </app-billing-box>
+  </div>
+  <div class="platform-container" *ngIf="showPlatformPicker(currentState)">
+    <app-pick-platform [useDefaultNav]="false" [selectedPlatform]="appPlatform" (onPlatformPick)="handlePlatformPicked($event)"> </app-pick-platform>
+  </div>
+  <div class="onboarding-content" *ngIf="showMailYourDeveloperBox(currentState)">
+    <app-not-developer-box> </app-not-developer-box>
+  </div>
+  <div class="onboarding-content" *ngIf="showTestNotificationBox(currentState)">
+    <app-test-notification-box> </app-test-notification-box>
+  </div>
+</app-onboarding>

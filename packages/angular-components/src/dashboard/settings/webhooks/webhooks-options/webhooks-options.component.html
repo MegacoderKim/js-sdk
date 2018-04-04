@@ -1,0 +1,38 @@
+<div class="dropdown is-right" appDropdown>
+  <div class="dropdown-toggle">
+    <button class="button">
+      <span class="icon">
+              <i class="fa fa-cog"> </i>
+      </span>
+      <span> Customize</span>
+    </button>
+  </div>
+  <div class="dropdown-menu">
+    <div class="dropdown-content">
+      <div class="dropdown-section">
+        <div class="dropdown-header">Event types</div>
+        <a (click)="selectAllWebhookEvent($event)" class="event-item dropdown-item">
+          <span class="icon">
+            <i [ngClass]="(selectedEvents.length) ? 'fa-square-o' : 'fa-check-square-o'" class="fa "></i>
+          </span>
+          <span>All</span>
+        </a>
+        <a (click)="selectWebhookEvent(choice, $event)" class="event-item dropdown-item" *ngFor="let choice of events">
+          <i [ngClass]="(selectedEvents.indexOf(choice) <= -1) ? 'fa-square-o' : 'fa-check-square-o'" class="fa"></i>
+          <span>{{choice}}</span>
+        </a>
+      </div>
+      <!--<hr class="dropdown-divider">-->
+      <div class="dropdown-section" *ngIf="groups">
+        <div class="dropdown-header">Groups</div>
+        <a class="event-item dropdown-item">
+          <i [ngClass]="selectedGroup ? 'fa-circle-o' :  'fa-dot-circle-o'" class="fa"></i> <span>All</span>
+        </a>
+        <a class="event-item dropdown-item" *ngFor="let group of groups" (click)="selectGroup(group, $event)">
+          <i [ngClass]="selectedGroup && selectedGroup.id == group.id ? 'fa-dot-circle-o' : 'fa-circle-o'" class="fa"></i> <span>{{group.name}}</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

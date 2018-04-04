@@ -11,6 +11,7 @@ import {DateRange, dateRangeService} from "../../global/date-range";
 import {HtApi, HtGroupsApi} from "ht-api";
 import * as fromGroups from "../../reducers/groups-reducer";
 import { Page, IGroup } from "ht-models";
+import {htClientService} from "../../global/client";
 
 export class HtGroupsClient extends EntityClient {
   list;
@@ -19,7 +20,7 @@ export class HtGroupsClient extends EntityClient {
   store: Store<fromRoot.State>;
   constructor(options = {}) {
     super();
-    let api = new HtApi().groups;
+    let api = htClientService.getInstance().api.groups;
     this.api = api;
     const store = ApiStoreService.getNewInstance();
     store.addReducer("groups", fromGroups.groupsReducer);

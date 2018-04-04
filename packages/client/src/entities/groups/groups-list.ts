@@ -12,6 +12,7 @@ import { Subscription } from "rxjs/Subscription";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import { IAllowedQueryMap } from "ht-data";
 import {DateRange} from "../../global/date-range";
+import {HtGroupsApi} from "ht-api";
 
 export class GroupsList {
   name = "group";
@@ -54,7 +55,7 @@ export class GroupsList {
     return { page_size: 10, ...this.defaultQuery };
   }
 
-  constructor({ store, api }: IClientConfig) {
+  constructor({ store, api }: IClientConfig<HtGroupsApi>) {
     this.api$ = query => api.index<Page<IGroup>>(query);
     this.store = store;
     this.data$ = this.store.select(fromRoot.getGroupAll);

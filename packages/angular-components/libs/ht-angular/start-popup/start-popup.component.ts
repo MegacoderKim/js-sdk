@@ -18,7 +18,7 @@ export class StartPopupComponent implements OnInit {
   getStartName(action: IAction): string {
     const place: IPlace = action.started_place;
     if (place) {
-      return place.name;
+      return place.display_text;
     } else {
       return ""
     }

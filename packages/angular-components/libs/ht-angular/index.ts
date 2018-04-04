@@ -4,6 +4,7 @@ export {HtMapService} from "./ht/ht-map.service";
 export {HtGroupsService} from "./ht/ht-groups.service";
 export {HtAccountService} from "./ht/ht-account-users.service";
 export {HtActionsService} from "./ht/ht-actions.service";
+export {HtRequestService} from "./ht/ht-request.service";
 export * from "./ht/ht.module"
 
 export { UsersSummaryContainerModule } from "./users-summary-container/users-summary-container.module"
@@ -21,6 +22,8 @@ export {UsersMapContainerComponent} from "./users-map-container/users-map-contai
 
 export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-chart.component"
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
+
+export { UsersSummaryModule } from "./users-summary/users-summary.module"
 
 export { UsersAnalyticsListModule } from "./users-analytics-list/users-analytics-list.module"
 export { UsersAnalyticsListComponent } from "./users-analytics-list/users-analytics-list.component"

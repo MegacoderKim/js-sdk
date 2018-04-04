@@ -1,0 +1,122 @@
+<!--&lt;!&ndash;<app-users-card *ngIf="action.user" [user]="action?.user"></app-users-card>&ndash;&gt;-->
+<!--<div class="flex-column">-->
+  <!--<div class="flex-row" *ngIf="action.assigned_at">-->
+    <!--<div class="time-container">-->
+      <!--<div class="target-status text-muted">-->
+      <!--</div>-->
+      <!--<div class="timestamp">-->
+        <!--{{action.assigned_at | timeString}}-->
+      <!--</div>-->
+      <!--<div class="text-muted">-->
+        <!--{{action.assigned_at | dateString: 'short'}}-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="pipe">-->
+      <!--<div class="bar solid" ngClass=""></div>-->
+    <!--</div>-->
+    <!--<div class="flex-column flex timeline-detail">-->
+      <!--<div class="start-dot"></div>-->
+      <!--<div class="task-action">-->
+        <!--{{action.type}} assigned-->
+      <!--</div>-->
+      <!--<div class="text-sm" *ngIf="action.lookup_id">-->
+        <!--# {{action.lookup_id}}-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="flex-row" *ngIf="action.completed_at">-->
+    <!--<div class="time-container">-->
+      <!--<div class="target-status text-muted">-->
+      <!--</div>-->
+      <!--<div class="timestamp">-->
+        <!--{{action.completed_at | timeString}}-->
+      <!--</div>-->
+      <!--<div class="text-muted">-->
+        <!--{{action.completed_at | dateString: 'short'}}-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="pipe" [class.ht-faded]="hoveredTaskId">-->
+      <!--<div class="bar" ngClass=""></div>-->
+    <!--</div>-->
+    <!--<div class="flex-column flex timeline-detail">-->
+      <!--<div class="task-icon">-->
+        <!--<img [attr.src]="icons(action.type)" style="height: 27px;" alt="">-->
+      <!--</div>-->
+      <!--<div class="task-action">-->
+        <!--{{action.type}} completed-->
+      <!--</div>-->
+      <!--<div class="text-sm" [class.text-late]="">-->
+        <!--Expected by {{action.expected_at | timeString}}, {{action.expected_at | dateString: 'short'}}-->
+      <!--</div>-->
+      <!--<div class="task-detail flex-column " *ngIf="action.completed_place || action.expected_place">-->
+        <!--<p>-->
+          <!--{{action.completed_place ? action.completed_place.address : action.expected_place.address}}-->
+        <!--</p>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="flex-row" *ngIf="action.location.recorded_at && !action.completed_at">-->
+    <!--<div class="time-container">-->
+      <!--<div class="target-status text-muted">-->
+      <!--</div>-->
+      <!--<div class="timestamp">-->
+        <!--{{action.user.last_heartbeat_at | timeString}}-->
+      <!--</div>-->
+      <!--<div class="text-muted">-->
+        <!--{{action.user.last_heartbeat_at | dateString: 'short'}}-->
+      <!--</div>-->
+
+    <!--</div>-->
+    <!--<div class="pipe" [class.ht-faded]="hoveredTaskId">-->
+      <!--<div class="bar" [class.light]="action.expected_at || action.eta"></div>-->
+    <!--</div>-->
+    <!--<div class="flex-column flex timeline-detail">-->
+      <!--<div class="start-dot"></div>-->
+      <!--<div class="task-action">-->
+        <!--{{action.type}} {{action.display.status_text}}-->
+      <!--</div>-->
+      <!--<div class="text-sm">-->
+        <!--{{action.user?.display.sub_status_text}}-->
+      <!--</div>-->
+      <!--&lt;!&ndash;<a href="{{action.tracking_url}}" class="">{{action.tracking_url}}</a>&ndash;&gt;-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--<div class="flex-row" *ngIf="(action.expected_at || action.eta) && !action.display.show_summary">-->
+    <!--<div class="time-container">-->
+      <!--<div class="target-status text-muted">-->
+      <!--</div>-->
+      <!--<div class="timestamp">-->
+        <!--{{action.eta || action.expected_at | timeString}}-->
+      <!--</div>-->
+      <!--<div class="text-muted">-->
+        <!--{{action.eta || action.expected_at | dateString: 'short'}}-->
+      <!--</div>-->
+      <!--<div class="text-sm" *ngIf="!action.expected_at; else eta">-->
+        <!--Expected-->
+      <!--</div>-->
+      <!--<ng-template #eta>-->
+        <!--<span class="text-sm">Expected by {{action.expected_at | timeString}}, {{action.expected_at | dateString: 'short'}}</span>-->
+      <!--</ng-template>-->
+    <!--</div>-->
+    <!--<div class="pipe" [class.ht-faded]="hoveredTaskId">-->
+      <!--<div class="bar" ngClass=""></div>-->
+    <!--</div>-->
+    <!--<div class="flex-column flex timeline-detail">-->
+      <!--<div class="task-icon">-->
+        <!--<img [attr.src]="icons(action.type)" style="height: 27px;" alt="">-->
+      <!--</div>-->
+      <!--<div class="task-action">-->
+        <!--{{action.type}} Scheduled-->
+      <!--</div>-->
+      <!--<div class="text-sm" *ngIf="!action.eta" [class.text-late]="">-->
+        <!--In {{action.display.duration_remaining/ 60 | hmString}}-->
+      <!--</div>-->
+      <!--<div class="task-detail flex-column " *ngIf="action.completed_place || action.expected_place">-->
+        <!--<p>-->
+          <!--{{action.completed_place ? action.completed_place.address : action.expected_place.address}}-->
+        <!--</p>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+<!--</div>-->

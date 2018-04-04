@@ -1,0 +1,25 @@
+<div *ngIf="invoices$ | async as invoices" class="flex-column column-gap-10">
+  <div class="card" *ngFor="let invoice of invoices.results">
+    <div class="card-content is-small flex-row row-gap-10 align-center">
+      <div class="flex">{{invoice.start_date | dateString}} - {{invoice.end_date | dateString : 'short'}}</div>
+      <div>{{invoice.total / 100 | currency:'USD':true:'1.2-2'}}</div>
+      <div class="invoice-action flex-row row-gap-4 space-between align-center">
+        <div class="status" [class.text-red]="!invoice.is_paid">{{invoice.is_paid ? 'Paid' : 'Unpaid'}}</div>
+        <button (click)="makePayment(invoice)" *ngIf="!invoice.is_paid" class="button is-small is-primary">Pay</button>
+      </div>
+      <button (click)="download(invoice)" class="button is-small">
+        <span class="icon"><i class="fa fa-download"></i></span>
+      </button>
+    </div>
+  </div>
+  <div class="card" *ngIf="invoices.count == 0">
+    <div class="card-content is-small text-center">
+      No invoices
+    </div>
+  </div>
+</div>
+<div class="card" *ngIf="loading$ | async">
+  <div class="card-content" loading-dots>
+    Loading invoices
+  </div>
+</div>

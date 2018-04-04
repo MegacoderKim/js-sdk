@@ -1,0 +1,53 @@
+<app-timeline-user baseLink="../" [@popup] *ngIf="selectedUserSegmentId" [showPop]="selectedUserSegmentId"></app-timeline-user>
+<app-loading-data *ngIf="baseLoading.data && !items && !selectedUserSegmentId" [message]="'Users'"></app-loading-data>
+<div appScrollTop *ngIf="items" [hidden]="selectedUserSegmentId" class="flex-column column-gap-10">
+    <!--<ng-template [ngIf]="overview && items && isToday">-->
+      <!--<app-pie-chart-label [countLabel]="'USER' | pluralize:totalUsers:'S'" [totalCount]="totalUsers" [pieColor]="pieColor" [overview]="overview" (selectDatum)="setStatusFilter($event)"></app-pie-chart-label>-->
+      <!---->
+    <!--</ng-template>-->
+  <ng-container *ngIf="isToday && summary$ | async as summary">
+    <ht-users-summary
+      [selectable]="true"
+      (clearQueryKey)="clearQueryKey()"
+      (setQuery)="setQuery($event)"
+    [summary]="summary"></ht-users-summary>
+  </ng-container>
+    <div *ngIf="!isToday" class="text-center">
+        <div class="count">{{items.count}} {{'User' | pluralize:items.count}}</div>
+    </div>
+  <div class="has-new">
+    <div class="has-new-label" [@appearIn] (click)="refreshList()" *ngIf="totalUsers && currentTotal && totalUsers != currentTotal">
+      <span>{{totalUsers - currentTotal}} new {{'user' | pluralize:(totalUsers - currentTotal)}}</span>
+      <span><i class="fa fa-refresh"></i></span>
+    </div>
+  </div>
+    <div *ngIf="items">
+      <div *ngFor="let user of items.results; trackBy:indexId">
+        <app-active-user *ngIf="user" (select)="selectUser($event, user)"
+                         [selected]="selectedUserId == user.id"
+                         (mouseenter)="hoverUser(user)"
+                         (mouseleave)="hoverUser(null)"
+                         [id]="user.id"
+                         [isToday]="isToday"
+                         [user]="user"
+        ></app-active-user>
+      </div>
+    </div>
+    <div class="card" *ngIf="items?.results.length == 0 && !baseLoading.data">
+        <div class=" card-content text-center">
+            <strong><p>No Users in this date range</p><span *ngIf="!showAll" (click)="updateListQuery({show_all: true})" class="clickable text-blue">Show all</span></strong>
+        </div>
+    </div>
+    <ng-template [ngIf]="items && currentPage && items.count > 15">
+        <app-pagination [currentPage]="currentPage" [hasNext]="!!items?.next" [hasPrevious]="!!items.previous"  [totalCount]="items?.count" pageSize="15" (fetchPage)="onFetchPage($event)"> </app-pagination>
+    </ng-template>
+
+    <!--<div class="card" *ngIf="baseLoading.data">-->
+        <!--<div class=" card-content-top card-content-bottom text-center">-->
+            <!--<div loading-dots>Loading more users</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <router-outlet></router-outlet>
+</div>
+
+

@@ -1,0 +1,120 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import "style/variables";
+@import "style/placeholder";
+@import "assets/leaflet.markercluster.css";
+@import "assets/css/ionicons/ionicons";
+
+//@import "../node_modules/ht-maps/dist/styles.css";
+
+body, html {
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Source Sans Pro', sans-serif;
+
+  //background: @ht-grey-bg;
+  background: #F6F4EF;
+  display: flex;
+  flex-direction: column;
+}
+
+blockquote {
+  padding: 20px;
+}
+
+//@font-face {
+//  font-family: 'Code';
+//  src: url('fonts/code/Code Pro Black LC.otf') format('opentype'), url('fonts/code/Code Pro Black LC.otf') format('opentype');
+//  font-weight: 900;
+//  font-style: normal;
+//}
+
+//@font-face {
+//  font-family: 'Code';
+//  src: url('fonts/code/Code Pro Bold LC.otf') format('opentype'), url('fonts/code/Code Pro Bold LC.otf') format('opentype');
+//  font-weight: 700;
+//  font-style: normal;
+//}
+
+//@font-face {
+//  font-family: 'Code';
+//  src: url('./fonts/code/Code Pro LC.otf') format('opentype'), url('./fonts/code/Code Pro LC.otf') format('opentype');
+//  font-weight: 400;
+//  font-style: normal;
+//}
+//
+//@font-face {
+//  font-family: 'Code';
+//  src: url('./fonts/code/Code Pro Light LC.otf') format('opentype'), url('./fonts/code/Code Pro Light LC.otf') format('opentype');
+//  font-weight: 100;
+//  font-style: normal;
+//}
+
+
+#user-marker {
+  position: relative;
+  .pulse {
+    background: @ht-grey-5;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    animation: pulse 2s ease-out;
+    animation-iteration-count: infinite;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .pulse-noanim {
+    background: @ht-grey-5;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    transform: scale(2,2);
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .dot {
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    border-radius: 50%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.3, 0.3);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(3,3);
+    opacity: 0;
+  }
+}
+
+.ranges {
+  li.active {
+    background: @ht-grey-5;
+    border-color: @ht-grey-5;
+  }
+  li {
+    color: @ht-grey-5;
+    &:hover {
+      background: @ht-grey-5;
+      border-color: @ht-grey-5;
+    }
+  }
+}
+.daterangepicker td.active, .daterangepicker td.active:hover {
+  background: @ht-grey-5;
+}
+
+@import "style/map-item";

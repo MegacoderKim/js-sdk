@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Stack-3 64</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Stack-3-64">
+            <g id="stack3" transform="translate(-1.000000, -11.000000)">
+                <polygon id="Rectangle-341" fill="#ACFFCB" transform="translate(33.000000, 52.585786) rotate(-315.000000) translate(-33.000000, -52.585786) " points="23 42.5857864 55.7279221 29.8578644 43 62.5857864 10.2720779 75.3137085"></polygon>
+                <polygon id="Rectangle-341" fill="#4DDA82" transform="translate(33.000000, 42.585786) rotate(-315.000000) translate(-33.000000, -42.585786) " points="23 32.5857864 55.7279221 19.8578644 43 52.5857864 10.2720779 65.3137085"></polygon>
+                <polygon id="Rectangle-341" fill="#00C94B" transform="translate(33.000000, 32.727922) rotate(-315.000000) translate(-33.000000, -32.727922) " points="23 22.7279221 55.7279221 10 43 42.7279221 10.2720779 55.4558441"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

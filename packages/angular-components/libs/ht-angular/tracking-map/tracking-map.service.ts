@@ -4,7 +4,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Subscription} from "rxjs/Subscription";
 import {MapInstance} from "ht-maps";
 import {ActionTrace} from "ht-maps";
-import {IAction} from "ht-models";
+import {IAction, IActionWithPolyline} from "ht-models";
 
 @Injectable()
 export class TrackingMapService {
@@ -19,6 +19,9 @@ export class TrackingMapService {
     animate: true,
     easeLinearity: 0.2,
     // easeLinearity: 0.58,
+  };
+  summarySetBoundsOptions = {
+    paddingBottomRight: [15, 170]
   };
   setBoundsOptions =  this.defaultSetBoundsOptions;
   actionsTrace;
@@ -84,7 +87,7 @@ export class TrackingMapService {
     const userStyle = {
       radius: 24,
       color: '#9013FE',
-      markerSize: 17,
+      markerSize: 15,
     };
 
     const destination = this.actionsTrace.destination;
@@ -92,6 +95,7 @@ export class TrackingMapService {
     const start = this.actionsTrace.start;
     const user = this.actionsTrace.user;
     const pulse = this.actionsTrace.pulse;
+    const expectedPolyline  = this.actionsTrace.expectedPolyline;
     polyline.toIncludeInBounds = false;
     start.toIncludeInBounds = false;
     user.styleObj = {
@@ -115,7 +119,7 @@ export class TrackingMapService {
         iconSize: [destinationStyle.radius, destinationStyle.radius],
         className: "destination-marker"
       }
-    }
+    };
     polyline.toIncludeInBounds = false;
     polyline.styleObj = {
       default: {
@@ -132,6 +136,16 @@ export class TrackingMapService {
         // offset: point(0, -35),
         offset: [0, -5],
         closeButton: false
+      }
+    };
+    if (expectedPolyline) {
+      expectedPolyline.styleObj = {
+        default: {
+          weight: polylineStyle.weight,
+          color: polylineStyle.color,
+          opacity: 1,
+          dashArray: "5 10"
+        }
       }
     }
 
@@ -151,11 +165,12 @@ export class TrackingMapService {
     //   }
     // }
 
-    pulse.getDivContent = (data) => {
-      const pulse = data.user.availability_status == 'online' ? 'pulse' : '';
+    pulse.getDivContent = (data: IAction) => {
+      const pulse = !data.user.display.is_warning ? 'pulse' : '';
+      const color = data.user.display.is_warning ? '#FC5F5B' : userStyle.color;
       const content = `
-    <div class="box-${userStyle.radius}" style="background: ${userStyle.color}">
-  <div class="box-${userStyle.radius} ${pulse}" style="background: ${userStyle.color}; margin: auto">
+    <div class="box-${userStyle.radius}" style="background: ${color}">
+  <div class="box-${userStyle.radius} ${pulse}" style="background: ${color}; margin: auto">
 </div>
 </div> 
     `;
@@ -163,14 +178,11 @@ export class TrackingMapService {
     };
 
     user.getDivContent = (data, bearing) => {
-      const iconDiv = this.getUserIconDiv(data, bearing, userStyle.markerSize);
-      return `<div class="box-${userStyle.radius}" style="position: absolute">
-    ${iconDiv}
-</div>`
+      return this.getUserDiv(data, bearing, userStyle);
     }
 
     destination.getDivContent = (action: IAction) => {
-      if (action.display.show_summary) {
+      if (action.completed_at) {
         return `<div class="box-${destinationStyle.radius}" style="background: ${destinationStyle.liveColor}">
 <!--<div class="icon" style="font-size: 1.5rem; color: white; margin: auto">-->
         <!--<i class="ion-checkmark"></i>-->
@@ -186,16 +198,33 @@ export class TrackingMapService {
 
   }
 
-  getUserIconDiv(action, bearing, size): string {
+  getUserDiv(action: IActionWithPolyline, bearing, userStyle): string {
     const cycleClass = "ion-android-bicycle";
+    const walkClass = "ion-android-walk";
     const movingClass = "ion-android-navigate";
     const stopClass = "ion-stop";
     const errorClass = "ion-minus-circled";
-    return `<i class="ion-android-navigate" style="margin: auto; 
+
+    const activityType = action.activity.type;
+    const iconClass = activityType == 'stop' ?
+      stopClass : activityType == 'cycle' ?
+        cycleClass : activityType == 'walk' ?
+          walkClass : action.user.display.is_warning ?
+            errorClass : movingClass;
+
+    bearing = iconClass == movingClass ? bearing : 0;
+
+    const iconDiv = `<i class="${iconClass}" style="margin: auto; 
     color: white; 
-    font-size: ${size}px; 
+    font-size: ${userStyle.size}px; 
     transition: transform 0.4s;
-    transform: rotate(${bearing}deg)"></i>`
+    transform: rotate(${bearing}deg)"></i>`;
+
+    const iconContainer = `<div class="box-${userStyle.radius}" style="position: absolute">
+      ${iconDiv}
+      </div>`;
+
+    return iconContainer
   }
 
 }

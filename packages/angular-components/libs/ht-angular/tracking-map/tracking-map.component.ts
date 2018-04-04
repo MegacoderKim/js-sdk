@@ -16,12 +16,6 @@ export class TrackingMapComponent implements OnInit {
     public trackingMapService: TrackingMapService
   ) {
     this.mapInstance = this.mapService.mapInstance;
-    // let add = window.devicePixelRatio > 1 ? '@2x' : '';
-    // const url = environment.tileUrl ? `${environment.tileUrl}${add}.png?key=${environment.mapKey}` : null;
-    // url && this.mapInstance.mapUtils.setDefaultMapOptions({tileLayerUrl: url, tileLayerOptions: {
-    //     attribution:
-    //       '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    //   }});
   }
 
   get dirty$(): BehaviorSubject<boolean> {
@@ -29,8 +23,9 @@ export class TrackingMapComponent implements OnInit {
   }
 
   get setBoundsOptions() {
-    //todo fix this, not passing defaultSetOptions now
-    const options = this.showSummary ? {...this.trackingMapService.defaultSetBoundsOptions, paddingBottomRight: [15, 120]} : {...this.trackingMapService.defaultSetBoundsOptions};
+    const options = this.showSummary ?
+      {...this.trackingMapService.defaultSetBoundsOptions, ...this.trackingMapService.summarySetBoundsOptions} :
+      {...this.trackingMapService.defaultSetBoundsOptions};
     return options
   }
 

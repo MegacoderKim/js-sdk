@@ -9,10 +9,10 @@
         <div class="user-status-display" [ngClass]="user.status + '-color'">
           <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
         </div>
-        <div class="flex-row user-status">
-          <div>{{user.display.sub_status_text}}<span *ngIf="user.display.battery">&nbsp; &bull; &nbsp;</span></div>
-          <ht-battery-icon *ngIf="user.display.battery" [battery]="user.display.battery"></ht-battery-icon>
-        </div>
+        <!--<div class="flex-row user-status">-->
+          <!--<div>{{user.display.sub_status_text}}<span *ngIf="user.display.battery">&nbsp; &bull; &nbsp;</span></div>-->
+          <!--<ht-battery-icon *ngIf="user.display.battery" [battery]="user.display.battery"></ht-battery-icon>-->
+        <!--</div>-->
       </ng-template>
       <div class="flex-row" *ngIf="!user['segments'] && user['total_distance']">
         <div>{{user['total_distance'] | distanceLocale}}</div>

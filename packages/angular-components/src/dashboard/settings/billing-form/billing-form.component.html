@@ -1,0 +1,65 @@
+<form [class.popup]="isPopup" #billingForm="ngForm" (ngSubmit)="submitCard($event)" class="billing-form" id="billing-form">
+  <div class="flex-row row-gap-7 field">
+    <div style="flex-basis: 414%" class="control billing-form-row">
+      <!--label for="credit-card-number">Credit Card Number</label-->
+      <input class="input" id="credit-card-number" placeholder="Card Number" autocomplete="off" type="number" name="number" #sp [(ngModel)]="cardInfo.number" [disabled]="savingCard" required>
+    </div>
+    <div class="control billing-form-row">
+      <!--label for="credit-card-expiration-month">Expiration Month</label-->
+      <input class="input" id="credit-card-expiration-month" placeholder="MM" autocomplete="off" type="number" name="exp-month" [(ngModel)]="cardInfo.exp_month" [disabled]="savingCard" required>
+    </div>
+    <div class="control billing-form-row">
+      <!--label for="credit-card-expiration-year">Expiration Year</label-->
+      <input class="input" id="credit-card-expiration-year" placeholder="YYYY" autocomplete="off" type="number" name="exp-year" [(ngModel)]="cardInfo.exp_year" [disabled]="savingCard" required>
+    </div>
+    <div class="control billing-form-row">
+      <!--label for="credit-card-cvv">CVC/CVV</label-->
+      <input class="input" id="credit-card-cvv" placeholder="CVC/CVV" autocomplete="off" type="password" name="cvc" [(ngModel)]="cardInfo.cvc" [disabled]="savingCard" required>
+    </div>
+  </div>
+  <div class="flex-row field">
+    <div class="control billing-form-row">
+      <label for="billing-name">Full Name</label>
+      <input class="input" id="billing-name" placeholder="Full Name" required type="text" name="name" [(ngModel)]="cardInfo.name" [disabled]="savingCard">
+    </div>
+  </div>
+  <div class="flex-row field">
+    <div class="control billing-form-row">
+      <label for="billing-address-1">Billing Address</label>
+      <input class="input" id="billing-address-1" placeholder="Address Line 1" type="text" name="address_line1" [(ngModel)]="cardInfo.address_line1" [disabled]="savingCard">
+    </div>
+  </div>
+  <div class="flex-row field">
+    <div class="control billing-form-row">
+      <input class="input" id="billing-address-2" placeholder="Address Line 2" type="text" name="address_line2" [(ngModel)]="cardInfo.address_line2" [disabled]="savingCard">
+    </div>
+  </div>
+  <div class="flex-row row-gap-7 field">
+    <div class="control billing-form-row">
+      <input class="input" id="billing-city" placeholder="City" type="text" name="address_city" [(ngModel)]="cardInfo.address_city" [disabled]="savingCard">
+    </div>
+    <div class="control billing-form-row field">
+      <input class="input" id="billing-region" placeholder="State/Province" type="text" name="address_state" [(ngModel)]="cardInfo.address_state" [disabled]="savingCard">
+    </div>
+  </div>
+  <div class="flex-row row-gap-7 field">
+    <div class="control billing-form-row">
+      <input class="input" id="billing-postal-code" placeholder="ZIP/Postal Code" type="text" data-stripe="address_zip" name="address_zip" [(ngModel)]="cardInfo.address_zip" [disabled]="savingCard">
+    </div>
+    <div class="control billing-form-row">
+      <select class="input" id="billing-country" placeholder="Country" type="text" name="address_country" [(ngModel)]="cardInfo.address_country" [disabled]="savingCard" required>
+        <option value="" disabled selected>Country</option>
+        <option *ngFor="let country of countries" value={{country}}>
+          {{country}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="flex-row" style="align-items: center;">
+    <!--<button *ngIf="!isPopup" type="button" class="btn btn-default" (click)="hideBillingForm()" style="margin-right:5px;">Cancel</button>-->
+    <button type="submit" class="button is-primary" [disabled]="!billingForm.form.valid || savingCard" id="submit-button" style="margin-right:5px;">Save</button>
+    <div><i class="fa fa-circle-o-notch fa-spin" [hidden]="!savingCard"></i></div>
+  </div>
+  <div class="flex-row billing-form-errors" style="display: none;">
+  </div>
+</form>

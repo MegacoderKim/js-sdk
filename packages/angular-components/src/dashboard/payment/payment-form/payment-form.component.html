@@ -1,0 +1,99 @@
+<div class="global-payment-form-container">
+  <div class="payment-form-step step-select-plan" *ngIf="!paymentType || paymentType == 'enterprise:1'">
+    <div class="payment-form-step-title">Plans that scale with your growth</div>
+    <div class="payment-form-step-description">Select a plan that suits the scale of your business. You can change the plan at any point of time.</div>
+    <div class="section-billing-plans {{paymentType}}">
+      <div class="pricing-boxes">
+        <div class="pricing-box" [class.clickable]="plan.id !== 'free_forever:1'" (click)="selectPaymentMethod(plan.id)" *ngFor="let plan of plans">
+          <div class="pricing-box-highlight" *ngIf="plan.name=='Regular'">
+            MOST POPULAR
+          </div>
+          <div class="pricing-box-content">
+            <div class="pricing-box-name">{{plan.name}}</div>
+            <div class="pricing-box-icon">
+              <img src="{{plan.icon}}" alt="">
+            </div>
+            <div class="pricing-box-cost">
+              <div class="cost-currency-icon" *ngIf="plan.name!='Enterprise'">$</div>
+              <div class="cost-value">{{plan.cost}}</div>
+              <div class="cost-label" [ngClass]="(plan.name=='Enterprise') ? 'isHidden' : ''">Per month</div>
+            </div>
+            <div class="pricing-box-actions-count">
+              <div class="actions-label" *ngIf="plan.name!='Enterprise'">includes</div>
+              <div class="actions-label" *ngIf="plan.name=='Enterprise'">more than</div>
+              <div class="actions-value">{{plan.actionsCount}} actions</div>
+              <div class="actions-users-count">Unlimited users</div>
+            </div>
+            <div class="pricing-box-inside-cta" [class.cta]="plan.id !== 'free_forever:1'">{{plan.cta}}</div>
+          </div>
+          <div class="pricing-box-cta">{{plan.cta}}</div>
+        </div>
+      </div>
+      <div class="faq-section">
+        <div class="faq-item" *ngFor="let faq of faqs">
+          <div class="faq-item-question">{{faq.question}}</div>
+          <div class="faq-item-answer">{{faq.answer}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="payment-form-step step-billing-details" *ngIf="!!paymentType">
+    <div class="payment-form-step-title">Provide billing information</div>
+    <div class="billing-plan-selected-plan" *ngIf="!!paymentType">
+      <div class="plan-content">
+        <div class="plan-subtitle">Selected plan</div>
+        <div class="plan-title">
+          <span *ngIf="paymentType == billingPlans.freeToView">Free to view</span>
+          <span *ngIf="paymentType == billingPlans.paidActions">Pay per action</span>
+          <span *ngIf="paymentType == billingPlans.paidUsers">Pay per user</span>
+          <span *ngIf="paymentType == 'free_forever:1'">Free forever</span>
+          <span *ngIf="paymentType == 'starter:1'">Starter Plan</span>
+          <span *ngIf="paymentType == 'regular:1'">Regular Plan</span>
+        </div>
+      </div>
+      <div class="plan-change-button" (click)="selectPaymentMethod('')">Change</div>
+    </div>
+
+    <form class="form" #billingForm="ngForm" (ngSubmit)="submitCard($event)">
+      <div class="flex-column column-gap-10">
+        <div class="field">
+          <div class="form-label">Card number</div>
+          <div class="control relative">
+            <input type="text" [appCleave]="cleaveOptions" class="" id="card-number" [(ngModel)]="cardInfo.number" [disabled]="savingCard" required  autocomplete="off" placeholder="" name="card-number">
+            <div class="card-icon">
+              <i [ngClass]="'fa-cc-'+cardType" class="fa fa-2x"></i>
+            </div>
+          </div>
+
+        </div>
+        <div class="flex field">
+          <div for="card-name" class="form-label">Name on card</div>
+          <div class="control">
+            <input type="text" class="" id="card-name" placeholder="" required type="text" name="name" [(ngModel)]="cardInfo.name" [disabled]="savingCard">
+          </div>
+        </div>
+
+        <div class="flex-row row-gap-20">
+          <div class="field mini-input">
+            <div for="card-exp-month" class="form-label">Exp month</div>
+            <input type="text" [appCleave]="monthOptions" class="" id="card-exp-month" [(ngModel)]="cardInfo.exp_month" [disabled]="savingCard" autocomplete="off" maxlength="2" minlength="2" placeholder="MM" name="exp_month">
+          </div>
+          <div class="field mini-input">
+            <div for="card-exp-year" class="form-label">Exp year</div>
+            <input type="text" [appCleave]="yearOptions" class="" id="card-exp-year" autocomplete="off"  name="exp-year" [(ngModel)]="cardInfo.exp_year" [disabled]="savingCard" maxlength="4" minlength="4" required placeholder="YYYY">
+          </div>
+          <div class="field mini-input">
+            <div for="card-cvv" class="form-label">CVV</div>
+            <input type="password" class="" id="card-cvv" placeholder="" autocomplete="off" type="password" name="cvc" [(ngModel)]="cardInfo.cvc" maxlength="4" minlength="3" [disabled]="savingCard" required>
+          </div>
+        </div>
+        <div class="field" *ngIf="!loading">
+          <button [disabled]="!billingForm.form.valid || savingCard" type="submit" class="pay-btn">Upgrade now</button>
+        </div>
+        <div class="field" *ngIf="loading">
+          <button class="pay-btn pay-btn-loading is-uppercase">Upgrading ...</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

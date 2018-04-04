@@ -1,4 +1,4 @@
-import { ISegment, ITimeAwarePoint, Partial } from "ht-models";
+import { IPlaceline, ITimeAwarePoint, Partial } from "ht-models";
 import { HtPosition } from "ht-models";
 import {HtMapType} from "ht-map-wrapper";
 import {MapInstance} from "./map-utils/map-instance";
@@ -12,7 +12,7 @@ export interface IReplayHead {
   segmentPercent: number;
 }
 
-export interface IDecodedSegment extends Partial<ISegment> {
+export interface IDecodedSegment extends Partial<IPlaceline> {
   startPercent: number;
   endPercent: number;
   timeAwareArray?: ITimeAwarePoint[];
@@ -51,7 +51,7 @@ export interface Entity<T = any> {
 }
 
 export interface StyleFunct {
-  get: (type: HtMapType) => {
+  get: (type: HtMapType, data?: any) => {
     default: object;
     [key: string]: object;
   }

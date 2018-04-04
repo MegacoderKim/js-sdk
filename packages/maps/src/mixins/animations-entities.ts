@@ -1,11 +1,12 @@
 import {Constructor, Entity} from "../interfaces";
-import {IPathBearingTime} from "ht-models";
+import {IPathBearingTime, ITimeAwarePoint} from "ht-models";
 import {TimeAwareAnimation} from "time-aware-polyline";
 import {Subscription} from "rxjs/Subscription";
 
 export interface IAnimationsEntitiesBase {
   getEntity(id?): Entity<any>,
   getTimeAwarePolyline?(data): string;
+  getTimeAwarePath?(data): ITimeAwarePoint[];
   clearItem(entity): void;
   update(entity, pathBearing: IPathBearingTime): void;
   trackBy(datum): string;
@@ -40,10 +41,11 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
       const animId = entity.data.id;
       this.initSub(id, animId);
       const encodedString = this.getTimeAwarePolyline ? this.getTimeAwarePolyline(entity.data) : null;
-      if (encodedString) {
+      const timeAwarePath = this.getTimeAwarePath ? this.getTimeAwarePath(entity.data) : null;
+      if (timeAwarePath) {
+        this.animationEntities.updatePath(id, timeAwarePath)
+      } else if (encodedString) {
         this.animationEntities.update(id, encodedString)
-      } else {
-        // super.update(entity, {path, bearing})
       }
     };
 
@@ -94,6 +96,11 @@ export class AnimationsEntities {
     const entity = this.getEntity(id);
     entity.updatePolylineString(polyline);
   };
+
+  updatePath(id, timeAwarePath: ITimeAwarePoint[]) {
+    const entity = this.getEntity(id);
+    entity.update(timeAwarePath);
+  }
 
   getEntity(id: string) {
     const entity = this.enitites[id];

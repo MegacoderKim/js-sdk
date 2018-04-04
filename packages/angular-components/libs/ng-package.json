@@ -1,6 +1,24 @@
 {
   "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../ht-angular",
+  "whitelistedNonPeerDependencies": [
+    "bulma",
+    "date-fns",
+    "font-awesome",
+    "ht-api",
+    "ht-client",
+    "ht-maps",
+    "ht-data",
+    "ht-models",
+    "ht-utility",
+    "jstz",
+    "leaflet",
+    "leaflet-ant-path",
+    "leaflet.heat",
+    "leaflet.markercluster",
+    "popper.js",
+    "underscore"
+  ],
   "lib": {
     "languageLevel": [ "dom", "es2017" ],
     "entryFile": "./public_api.ts",

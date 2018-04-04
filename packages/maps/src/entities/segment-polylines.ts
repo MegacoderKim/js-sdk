@@ -1,5 +1,5 @@
 import { segmentPolylineStyles } from "../styles/segment-polyline-styles";
-import { ISegment, HtPosition } from "ht-models";
+import { IPlaceline, HtPosition } from "ht-models";
 import {
   ItemClassFactoryConfig,
   itemsFactory,
@@ -21,16 +21,16 @@ import {MapItemsMixin} from "../mixins/map-items";
 
 export class SegmentPolylines {
   styleFunct: StyleFunct = segmentPolylineStyles;
-  name = "segment polyline";
+  name = "polyline";
 
   constructor(public mapInstance: MapInstance) {}
 
-  getEncodedPath(data) {
-    return data.encoded_polyline;
+  getEncodedPath(data: IPlaceline) {
+    return data.route;
   };
 
-  getEncodedPositionTime(data: ISegment) {
-    return data.time_aware_polyline;
+  getEncodedPositionTime(data: IPlaceline) {
+    return data.location_time_series;
   }
 
   getPosition(): HtPosition {
@@ -48,7 +48,7 @@ export const SegmentPolylinesTrace = TraceMixin(ExtendBoundsMixin(PolylinesMixin
 //     return data.encoded_polyline;
 //   };
 //
-//   getEncodedPositionTime(data: ISegment) {
+//   getEncodedPositionTime(data: IPlaceline) {
 //     return data.time_aware_polyline
 //   }
 // }

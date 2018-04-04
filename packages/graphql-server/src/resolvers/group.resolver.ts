@@ -16,8 +16,7 @@ export class GroupResolver {
   @Query('group')
   async getAuthor(obj, args, context, info) {
     const { id } = args;
-    // console.log(id);
-    return await this.groupsService.api.get(id).pipe(
+    return await this.groupsService.api.get(id, context.token).pipe(
       tap((data) => {
         // console.log(data)
       })

@@ -1,0 +1,20 @@
+<div class="box-container">
+  <blockquote class="send-test-notification">
+    <p><strong>Send Notification</strong></p>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="label" for="to-user-id">User ID</label>
+        <input id="to-user-id" name="user-id" type="text" class="form-control" placeholder="d6a68c5e-f712-1234-939d-251635821234" aria-describedby="sizing-addon1" required [ngModel]="form.userId" (ngModelChange)="onInputChange($event)" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class = "error-messages flex-column">
+        <span *ngIf="showErrorMessage()" class="message">
+            {{errorMessage}}
+        </span>
+      </div>
+      <div class="form-group">
+        <button *ngIf="!showSuccessMessage" class="form-control send-button" type="submit" id="submit-to-developer" [ngClass]="loading ? 'disabled' : ''">{{loading ? 'Sending notification...': 'Send'}}</button>
+        <button *ngIf="showSuccessMessage" class="form-control success" type="button" [ngClass]="loading ? 'disabled' : ''">Notification sent</button>
+      </div>
+    </form>
+  </blockquote>
+</div>
