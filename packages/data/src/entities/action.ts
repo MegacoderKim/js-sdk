@@ -87,7 +87,7 @@ export class HtAction {
   getMarkerSeached(key: string) {
     return (action: IAction) => {
       return (
-        (action.lookup_id && action.lookup_id.indexOf(key) > -1) ||
+        (action.unique_id && action.unique_id.indexOf(key) > -1) ||
         (action.user && action.user.name.indexOf(key) > -1)
       );
     };
