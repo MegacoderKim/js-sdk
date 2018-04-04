@@ -21,6 +21,7 @@ import {debounceTime} from "rxjs/operators";
 import {AnimationMixin} from "../mixins/animation-renderer";
 import {AnimPolylineTrace} from "../entities/animation-polyline";
 import { ActionsPolylineTrace } from "../entities/actions-polyline";
+import {StopsPolyline, StopsPolylineTrace} from "../entities/stops-polyline";
 export class Placeline {
   segmentsPolylines;
   stopMarkers;
@@ -31,6 +32,7 @@ export class Placeline {
   mapInstance: MapInstance;
   actionsPolyline;
   anim = new TimeAwareAnimation();
+  stopsPolyline: StopsPolyline;
   constructor(public options: HtSegmentsTraceOptions) {
     this.mapInstance = this.options.mapInstance;
     this.stopMarkers = new StopMarkersTrace(this.mapInstance);
@@ -42,6 +44,7 @@ export class Placeline {
     this.animPolyline.setTimeAwareAnimation(this.anim);
     this.actionsPolyline = new ActionsPolylineTrace(this.mapInstance);
     this.actionsPolyline.setTimeAwareAnimation(this.anim);
+    this.stopsPolyline = new StopsPolylineTrace(this.mapInstance)
   }
 
   get map(): HtMap {
@@ -90,9 +93,17 @@ export class Placeline {
     }
     this.traceSegments(segType.tripSegment, selectedSegment);
     this.traceAction(user, selectedSegment);
+    this.traceStopsPolyline(user)
     // this.actionsPolyline.setConnector(this.userMarker.getEntity());
     // this.actionsPolyline.trace(user)
   };
+
+  traceStopsPolyline(user: IPlacelineMod) {
+    const stopsWithPolyline = user ? user.placeline.filter((placeline) => {
+      return placeline.type == 'stop' && !!placeline.route
+    }) : [];
+    this.stopsPolyline.trace(stopsWithPolyline)
+  }
 
   traceAnimPolyline(restTrip, selectedSegment) {
     if (!restTrip) {
@@ -132,6 +143,7 @@ export class Placeline {
     const data = user && !user.selectedSegment ? user.highlightedSegment : null;
     const id = data ? data.id : null;
     this.stopMarkers.highlightedId = id;
+    this.stopsPolyline.highlightedId = id;
     this.segmentsPolylines.highlightedId = id;
     this.animPolyline.highlightedId = id;
   }
