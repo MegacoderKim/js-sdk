@@ -2,6 +2,8 @@ import { HtBaseApi } from "./base";
 import { Observable } from "rxjs/Observable";
 import { IUserAnalyticsPage, Page, IActionPlaceline, IUserPlaceline, IUser, IAction, IPlaceline } from "ht-models";
 import {filter, map} from "rxjs/operators";
+import {isToday} from "date-fns";
+import {htPlaceline} from "ht-data";
 
 export class HtUsersApi extends HtBaseApi {
   name = "user";
@@ -42,31 +44,18 @@ export class HtUsersApi extends HtBaseApi {
       return this.api$(tail, actionQuery).pipe(
         filter((data: Page<IActionPlaceline>) => !!data.results.length),
         map((data: Page<IActionPlaceline>) => {
-          return this.convertActionPlacelineToUserPlaceline(data.results[0])
+          return data && data.results.length ? htPlaceline().procActionPlaceline(data.results[0]) : null;
         })
       )
     } else {
       let tail = `v2/${this.base}/${id}/placeline/`;
-      return this.api$(tail, query, {token});
+      return this.api$(tail, query, {token}).pipe(
+        map((data: IUserPlaceline) => {
+          return htPlaceline().procUsersPlaceline(data, query)
+        })
+      );
     }
 
-  }
-
-  private convertActionPlacelineToUserPlaceline(actionPlaceline: IActionPlaceline): IUserPlaceline {
-    let user = actionPlaceline.user as IUser;
-    const placeline = actionPlaceline.placeline as IPlaceline[];
-    const events = [];
-    let action = {...actionPlaceline, placeline: null} as IAction;
-    user.location = user.location || action.location;
-    user.health = user.health || action.health;
-    user.is_tracking = !!action.health && user.is_tracking;
-    return {
-      ...user,
-      actions: [action],
-      events,
-      placeline,
-      timeline_date: null
-    }
   }
 
   private actionQuery(query): object | null {

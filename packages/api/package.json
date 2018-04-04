@@ -16,10 +16,12 @@
   "devDependencies": {
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.7",
-    "rollup": "^0.55.5"
+    "rollup": "^0.55.5",
+    "ht-data": "^0.1.9"
   },
   "peerDependencies": {
     "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.7"
+    "ht-utility": "^0.1.7",
+    "ht-data": "^0.1.9"
   }
 }
