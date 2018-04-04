@@ -8,6 +8,7 @@ import {BroadcastService} from "../../core/broadcast.service";
 import {UserTraceService} from "../../users/user-trace.service";
 import {InnerMapService} from "../map.service";
 import {IReplayPlayer} from "../../trace/ht-js-map/interfaces";
+import {fromEvent} from "rxjs/observable/fromEvent";
 
 @Component({
   selector: 'app-replay',
@@ -70,8 +71,8 @@ export class ReplayComponent implements OnInit, AfterViewInit {
     timePercent$.subscribe((percent) => {
       let currentX = event.clientX;
       let timelineBounds = timeline.getBoundingClientRect();
-      let mouseUp$ = Observable.fromEvent(this.document, 'mouseup');
-      Observable.fromEvent(this.document, 'mousemove').takeUntil(mouseUp$).subscribe((e: any) => {
+      let mouseUp$ = fromEvent(this.document, 'mouseup');
+      fromEvent(this.document, 'mousemove').takeUntil(mouseUp$).subscribe((e: any) => {
         let incPercent = (e.clientX - currentX) * 100 / timelineBounds.width;
         let currentPercent = percent + incPercent;
         currentPercent = currentPercent > 100 ? 100 : currentPercent;

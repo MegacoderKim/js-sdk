@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
 import {Page} from "ht-models";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class PageService {
@@ -21,7 +22,7 @@ export class PageService {
                   return [...data['results'], ...resultsToJoin]
                 });
           } else {
-            return Observable.of(data['results']);
+            return of(data['results']);
           }
         });
   }

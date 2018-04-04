@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import * as fromQuery from "../../actions/query";
 import * as fromRoot from "../../reducers";
 import {Store} from "@ngrx/store";
+import {empty} from "rxjs/observable/empty";
 
 @Component({
   selector: 'app-entity-filter',
@@ -16,7 +17,7 @@ import {Store} from "@ngrx/store";
 })
 export class EntityFilterComponent implements OnInit {
   @Input() entity: string = "";
-  @Input() searchApi$: (object) => Observable<IPageData> = (a) => Observable.empty();
+  @Input() searchApi$: (object) => Observable<IPageData> = (a) => empty();
   @Input() small: boolean = false;
   query$: Subject<string> = new Subject();
   loading;

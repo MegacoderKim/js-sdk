@@ -11,6 +11,7 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 import {Subject} from "rxjs/Subject";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {IMember} from "ht-models";
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'app-header',
@@ -55,7 +56,7 @@ export class HeaderComponent implements OnInit {
     this.accountUser$ = this.accountUserService.getUser();
     this.account$ = this.accountUserService.getAccount();
     this.memberships$ = this.membershipsService.getMembershipsState();
-    this.filteredMemberships$ = Observable.combineLatest(
+    this.filteredMemberships$ = combineLatest(
       this.memberships$,
       this.accSeachTerm,
       (memberships: IMembership[], search: string | undefined) => {

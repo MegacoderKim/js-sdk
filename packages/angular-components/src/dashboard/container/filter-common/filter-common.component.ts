@@ -9,6 +9,8 @@ import {IsRangeToday} from "ht-utility";
 import {ActivatedRoute, Router} from "@angular/router";
 import {IRange} from "../../model/common";
 import {config} from "../../config";
+import {empty} from "rxjs/observable/empty";
+import {of} from "rxjs/observable/of";
 var download = require('../../../assets/download.js');
 
 @Component({
@@ -115,23 +117,23 @@ export class FilterCommonComponent implements OnInit {
   }
 
   getListQuery$() {
-    return Observable.empty()
+    return empty()
   }
 
   getPageQuery$() {
-    return Observable.empty()
+    return empty()
   }
 
   getOrdering$() {
-    return Observable.empty()
+    return empty()
   }
 
   getQuery$() {
-    return Observable.empty()
+    return empty()
   }
 
   getListData() {
-    return Observable.empty()
+    return empty()
   }
 
   dispatchClearQuery(key: string) {
@@ -191,7 +193,7 @@ export class FilterCommonComponent implements OnInit {
   }
 
   csvApi$(query) {
-    return Observable.of({})
+    return of({})
   }
 
 }

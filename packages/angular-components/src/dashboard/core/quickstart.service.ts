@@ -4,6 +4,7 @@ import {ExternalAnalyticsService} from "./external-analytics.service";
 import {LoggerService} from "./logger.service";
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
+import {_throw} from "rxjs/observable/throw";
 
 @Injectable()
 export class QuickstartService {
@@ -74,7 +75,7 @@ export class QuickstartService {
     let url = `app/github?fileURL=${fileUrl}&time=${newTime}`;
     return this.http.get(url).catch((error: any) => {
       console.log("Error", error);
-      return Observable.throw(error);
+      return _throw(error);
     });
     // let newTime = (new Date).getTime();
     // fileUrl = fileUrl + `#${newTime}`;

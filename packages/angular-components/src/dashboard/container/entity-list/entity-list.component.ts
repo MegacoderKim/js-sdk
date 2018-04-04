@@ -8,6 +8,7 @@ import {BroadcastService} from "../../core/broadcast.service";
 import {RangeHasToday} from "ht-utility";
 import 'rxjs/add/observable/merge';
 import {merge} from "rxjs/observable/merge";
+import {empty} from "rxjs/observable/empty";
 
 @Component({
   selector: 'app-entity-list',
@@ -191,7 +192,7 @@ export class EntityListComponent implements OnInit {
   }
 
   getDateRange() {
-    return Observable.empty()
+    return empty()
   }
 
   getQueryWithCallBack() {
@@ -201,35 +202,35 @@ export class EntityListComponent implements OnInit {
   }
 
   getQuery() {
-    return Observable.empty()
+    return empty()
   }
 
   getListDateQuery() {
-    return Observable.empty()
+    return empty()
   }
 
   getPageQuery() {
-    return Observable.empty()
+    return empty()
   }
 
   getOrdering$() {
-    return Observable.empty()
+    return empty()
   }
 
   getListApi(query) {
-    return Observable.empty()
+    return empty()
   }
 
   getSummaryApi(query) {
-    return Observable.empty()
+    return empty()
   }
 
   getGraphApi(query) {
-    return Observable.empty()
+    return empty()
   }
 
   getPageData() {
-    return Observable.empty()
+    return empty()
   }
 
   indexId(index, item){

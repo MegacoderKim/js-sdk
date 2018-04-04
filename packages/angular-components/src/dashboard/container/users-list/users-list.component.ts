@@ -9,6 +9,7 @@ import {IUserAnalyticsPage, IUserListSummary} from "ht-models";
 import * as fromQuery from "../../actions/query";
 import * as fromUser from "../../actions/user";
 import {Observable} from "rxjs/Observable";
+import {zip} from "rxjs/observable/zip";
 
 @Component({
   selector: 'app-users-list',
@@ -87,7 +88,7 @@ export class UsersListComponent extends EntityListComponent implements OnInit {
 
   firstFetch$(query) {
     // return this.getListApi(query)
-    return Observable.zip(
+    return zip(
       this.getListApi(query),
       this.getSummaryApi({...query, page: null, ordering: null})
     ).map(([pageData, summary]: [any, IUserListSummary]) => {

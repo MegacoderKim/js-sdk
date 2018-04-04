@@ -19,6 +19,8 @@ import {UserTraceService} from "../users/user-trace.service";
 import { IUserPlaceline } from "ht-models"
 import {merge} from "rxjs/observable/merge";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import {empty} from "rxjs/observable/empty";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class UserEffectsService {
@@ -49,22 +51,22 @@ export class UserEffectsService {
         this.actions$.ofType(fromUser.CLEAR_SELECTED_USER_PLACE).map(() => null)
     )
         .switchMap((action) => {
-            if(!action) return Observable.empty();
+            if(!action) return empty();
             return this.store.select(fromRoot.getQueryDateRange)
                 .switchMap((range: IRange) => {
                     // console.log(range, "fire", action);
                     if(IsRangeADay(range)) {
                         // console.log("today", action);
                         return merge(
-                            Observable.of(new fromUser.SelectUserIdAction(action.payload)),
-                            Observable.of(new fromUser.SetFilterUserPlace(() => false))
+                            of(new fromUser.SelectUserIdAction(action.payload)),
+                            of(new fromUser.SetFilterUserPlace(() => false))
                         )
                     } else {
                         // console.log("get place", action.payload);
                         return this.userService.placeList({min_recorded_at: range.start, max_recorded_at: range.end, page_size: 10000, id: action.payload}).switchMap(userPlaces => {
                             return merge(
-                                Observable.of(new fromUser.SetSelectedUserPlace(userPlaces)),
-                                Observable.of(new fromUser.ClearUserAction())
+                                of(new fromUser.SetSelectedUserPlace(userPlaces)),
+                                of(new fromUser.ClearUserAction())
                             )
                         })
                     }
@@ -142,13 +144,13 @@ export class UserEffectsService {
                     } else {
                         this.updateUserData$.next(query.toFetch);
                     }
-                    return Observable.of(null)
+                    return of(null)
                 });
 
             return getTimeline$(query)
 
         } else {
-            return Observable.of(null)
+            return of(null)
         }
     }
 

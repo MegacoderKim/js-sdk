@@ -9,6 +9,7 @@ import {Store} from "@ngrx/store";
 import * as _ from "underscore";
 import {config} from "../../config";
 import {IsRangeToday} from "ht-utility";
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Injectable()
 export class FitToMapService {
@@ -49,7 +50,7 @@ export class FitToMapService {
         return !selectedUserId
       });
 
-    let sub = Observable.combineLatest(
+    let sub = combineLatest(
       dateRange$,
       selectedUser$
     ).map(([a, b]) => a && b)

@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable";
 import {IPageData} from "../../model/common";
 import {UserService} from "../../users/user.service";
 import {ActionService} from "../../action/action.service";
+import {zip} from "rxjs/observable/zip";
 
 @Component({
   selector: 'app-search',
@@ -41,7 +42,7 @@ export class SearchComponent implements OnInit {
 
     let inputChanges = inputChangesObservuer.filter(term => !!term.length);
 
-    const fetch = (term) => Observable.zip(
+    const fetch = (term) => zip(
         this.userService.index({search: term, page_size: 3}).do((data: IPageData) => {
           this.users = data;
           this.ref.markForCheck();

@@ -6,6 +6,7 @@ import {GetAccountFromMemberships, isCurrentAccount} from "../../../utils/accoun
 import {config} from "../../config";
 import {Observable} from "rxjs/Observable";
 import {AccountUsersService} from '../../account/account-users.service';
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'app-main-redirect',
@@ -23,7 +24,7 @@ export class MainRedirectComponent implements OnInit {
 
   ngOnInit() {
     //todo fix for account
-    Observable.combineLatest(
+    combineLatest(
       this.storage.getUser(),
       this.storage.getMemberships()
     ).subscribe(([accountUser, memberships]: [IAccountUser, IMembership[]]) => {
