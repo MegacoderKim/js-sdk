@@ -2,7 +2,6 @@ import {GetDateRangeQuery} from "./time-utils";
 import * as _ from "underscore";
 import {NameCase} from "ht-utility";
 import {htAction} from "ht-data";
-import { moment } from "moment-mini"
 
 export function GetActionDateRangeQuery(query) {
   return GetDateRangeQuery(query, 'created_at');
@@ -45,9 +44,9 @@ export const GetActionSortingMap = _.map(htAction().sortings, (sort: string) => 
   }
 });
 
-export const getETATimestamp = (action) => {
-  if (action.display.duration_remaining) {
-    return moment(Date.now()).add(action.display.duration_remaining, 'seconds').toISOString();
-  }
-  return null;
-};
+// export const getETATimestamp = (action) => {
+//   if (action.display.duration_remaining) {
+//     return moment(Date.now()).add(action.display.duration_remaining, 'seconds').toISOString();
+//   }
+//   return null;
+// };

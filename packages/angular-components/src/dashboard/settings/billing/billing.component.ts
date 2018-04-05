@@ -2,12 +2,11 @@ import {Component, OnInit} from "@angular/core";
 import {IAccount, Invoice} from "ht-models";
 import {AccountUsersService} from "../../account/account-users.service";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
-import * as moment from "moment-mini"
 // import  from "frappe-charts"
 // import Chart from "../../../../node_modules/frappe-charts/dist/frappe-charts.min.esm.js"
 // import Chart from "frappe-charts"
 const Chart = require("../../../../../../node_modules/frappe-charts/dist/frappe-charts.min.cjs.js");
-
+import {format} from "date-fns";
 // import * as Chart from "../../../../node_modules/frappe-charts/dist/frappe-charts.min.esm.js"
 // import * as Chart from "frappe-charts"
 // import "../../../../node_modules/frappe-charts/dist/frappe-charts.min.iife.js"
@@ -123,9 +122,9 @@ export class BillingComponent implements OnInit {
   }
 
   private modBillingData(billingData: IBillingDatum[]) {
-    let format = billingData.length < 15 ? 'MMM DD' : "DD";
+    let dateFormat = billingData.length < 15 ? 'MMM DD' : "DD";
     let labels = billingData.map((datum: IBillingDatum) => {
-      return moment(datum.date).format(format);
+      return format(datum.date, dateFormat);
       // return new Date(datum.date).toLocaleDateString();
     });
     let paidTotal = 0;

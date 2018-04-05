@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {config} from "../../config";
-import * as moment from "moment-mini";
 // import {IDateRangePickerOptions} from "ht-angular";
 import {format, addDays} from "date-fns"
+
 @Component({
   selector: 'app-placeline-date',
   templateUrl: './placeline-date.component.html',

@@ -9,7 +9,6 @@ import {StickyDirective} from './sticky.directive';
 import {ListComponent} from "./list.component";
 import {PaginationComponent} from './pagination/pagination.component';
 import {ScrollEndDirective} from './scroll-end.directive';
-import {AnalyticsCommon} from "./analytics";
 import {TooltipContent} from "./tooltip/tooltip-content";
 import {Tooltip} from "./tooltip/tooltip.directive";
 import {SnackbarComponent} from './snackbar/snackbar.component';
@@ -33,7 +32,6 @@ import { CopyDirective } from './copy.directive';
     ListComponent,
     PaginationComponent,
     ScrollEndDirective,
-    AnalyticsCommon,
     Tooltip,
     TooltipContent,
     SnackbarComponent,
@@ -50,7 +48,6 @@ import { CopyDirective } from './copy.directive';
     StickyDirective,
     PaginationComponent,
     ScrollEndDirective,
-    AnalyticsCommon,
     Tooltip,
     TooltipContent,
     SnackbarComponent,

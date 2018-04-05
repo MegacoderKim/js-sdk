@@ -21,8 +21,7 @@ import {Store} from "@ngrx/store";
 import {UserTraceService} from "./user-trace.service";
 import {HttpClient} from "@angular/common/http";
 import {config} from "../config";
-import {startOfDay, endOfDay} from 'date-fns';
-import * as moment from "moment-mini";
+import {startOfDay, endOfDay, format} from 'date-fns';
 import {HtUsersService} from "ht-angular";
 
 @Injectable()
@@ -54,7 +53,9 @@ export class UserService {
 
   private addTimeRangeForPlaceline(query): object {
     if (!query || (query && !query.date)) return query;
-    const date = new Date(moment(query.date, 'YYYY-MM-DD').toISOString());
+    var dateArray = query.date.split("-");
+    console.log(dateArray);
+    const date = new Date(dateArray[0], +dateArray[1] - 1, dateArray[2]);
     const start = startOfDay(date).toISOString();
     const end = endOfDay(date).toISOString();
     return {...query, min_recorded_at: start, max_recorded_at: end, date: null};

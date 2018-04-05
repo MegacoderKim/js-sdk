@@ -12,7 +12,6 @@ import * as fromRoot from "../reducers";
 import * as fromQuery from "../actions/query";
 import {UserService} from "../users/user.service";
 import {Store} from "@ngrx/store";
-import * as moment from "moment-mini";
 import {IRange} from "../model/common";
 import {IsRangeADay} from "ht-utility";
 import {UserTraceService} from "../users/user-trace.service";
@@ -21,6 +20,7 @@ import {merge} from "rxjs/observable/merge";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {empty} from "rxjs/observable/empty";
 import {of} from "rxjs/observable/of";
+import {format} from "date-fns";
 
 @Injectable()
 export class UserEffectsService {
@@ -159,7 +159,7 @@ export class UserEffectsService {
             this.store.select(fromRoot.getUserState).take(1),
             this.store.select(fromRoot.getQueryDateRange).take(1),
             (userState: fromUserReducer.State, range: IRange) => {
-              let date = (range.end && !userState['action_id'] && !userState['action_lookup_id'] && !userState['action_collection_id'] && !userState.timelineQuery.date) ? moment(range.end).format('YYYY-MM-DD') : null;
+              let date = (range.end && !userState['action_id'] && !userState['action_lookup_id'] && !userState['action_collection_id'] && !userState.timelineQuery.date) ? format(range.end, 'YYYY-MM-DD') : null;
                 // console.log(userState.timelineQuery, date, "query", toFetch);
               let timelineQuery = date ? {...userState.timelineQuery, date} : userState.timelineQuery;
               toFetch = toFetch && (userState.selectedUserId || userState.timelineQuery.action_id || userState.timelineQuery.action_collection_id || userState.timelineQuery.action_unique_id);
