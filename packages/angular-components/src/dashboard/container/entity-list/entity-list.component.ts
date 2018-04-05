@@ -59,7 +59,16 @@ export class EntityListComponent implements OnInit {
             let start = currentData.query['start'];
             let end = currentData.query['end'];
             let show_all = !!currentData.query['show_all'];
-            let query = {start, end, show_all, id: currentData.ids.toString(), page_size: 50};
+            const search = currentData.query['search'];
+            const idString = currentData.ids.toString();
+            let query = {start, end, show_all, page_size: 50};
+            if (idString) {
+              query['id'] = idString
+            } else {
+              query['search'] = search;
+              query['status'] = currentData.query['status'];
+            }
+
             // console.log("update", query);
             return this.getListApi(query).map((updatedPageData: IPageData) => {
               let updatedResultsEntity = _.indexBy(updatedPageData.results, 'id');
