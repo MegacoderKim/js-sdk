@@ -23,6 +23,8 @@ import * as Cookies from "js-cookie"
 
 import {merge} from "rxjs/observable/merge";
 import {environment} from '../../environments/environment';
+import {of} from "rxjs/observable/of";
+import {zip} from "rxjs/observable/zip";
 
 @Injectable()
 export class AccountUsersService {
@@ -106,7 +108,7 @@ export class AccountUsersService {
   }
 
   isLoggedIn(): Observable<boolean> {
-    return Observable.of(!!config.token)
+    return of(!!config.token)
   }
 
   addCard(obj) {
@@ -124,7 +126,7 @@ export class AccountUsersService {
   }
 
   addAccountUser(email: string, role: string, groupId?: string): Observable<IMember> {
-    return Observable.zip(
+    return zip(
         this.getAccount().take(1),
         this.getUser().take(1)
     ).flatMap(([account, accountUser]: [IAccount, IAccountUser]) => {
@@ -200,7 +202,7 @@ export class AccountUsersService {
       let allMembers$ = this.membershipsService.all();
       if(memberships) {
         // this.store.dispatch(new fromAccountUser.UpdateMembershipsAction(memberships));
-        return merge(allMembers$, Observable.of(memberships))
+        return merge(allMembers$, of(memberships))
       } else {
         return this.membershipsService.all()
       }

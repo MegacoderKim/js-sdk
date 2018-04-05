@@ -25,6 +25,7 @@ import {InnerMapService} from "../../map-container/map.service";
 import {htUser} from "ht-data";
 import {config} from "../../config";
 import {HtUsersService} from "ht-angular";
+import {of} from "rxjs/observable/of";
 
 @Component({
   selector: 'app-live-users',
@@ -325,7 +326,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
           if(range.isToday) {
             return this.userService.getAllUserAnalytics({...query, start: range.start, end: range.end})
           } else {
-            return Observable.of(null)
+            return of(null)
           }
         }).filter((data) => !!data);
 

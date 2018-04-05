@@ -5,6 +5,8 @@ import * as _ from "underscore";
 import {BroadcastService} from "../core/broadcast.service";
 import {IPageData, IFilter} from "../model/common";
 import {merge} from "rxjs/observable/merge";
+import {empty} from "rxjs/observable/empty";
+import {of} from "rxjs/observable/of";
 
 @Component({
     template: ''
@@ -37,7 +39,7 @@ export class ListComponent {
 
         this.listData$ = this.listFilter$()
             .switchMap((query) => {
-                return this.getList$(query).catch(() => Observable.of(null))
+                return this.getList$(query).catch(() => of(null))
             }).do((data: IPageData) => {
                 if(data) {
                     if(this.fetchingNext) {
@@ -84,7 +86,7 @@ export class ListComponent {
 
     filter$(): Observable<Object> {
         //filter query observable
-        return Observable.of({})
+        return of({})
     }
 
     private toUpdate$() {
@@ -116,7 +118,7 @@ export class ListComponent {
                             let statusParam = filter.statusParam || 'status';
                             let query = {...filter.query, id: ids.toString(), page_size: list.results.length, [statusParam]: null};
                             // console.log(query);
-                            return this.getList$(query).catch(() => Observable.of(null))
+                            return this.getList$(query).catch(() => of(null))
                         })
                 });
 
@@ -125,7 +127,7 @@ export class ListComponent {
 
             } else {
                 return this.filter$().take(1).map((filter: IFilter) => filter.query).switchMap((query) => {
-                    return this.getList$(query).catch(() => Observable.of(null))
+                    return this.getList$(query).catch(() => of(null))
                 })
             }
         });
@@ -140,7 +142,7 @@ export class ListComponent {
 
     getList$(query): Observable<IPageData> {
         //get list index observable. e.g this.http.get('item')
-        return Observable.empty()
+        return empty()
     }
 
     fetchNextQuery() {
@@ -174,7 +176,7 @@ export class ListComponent {
             this.filter$().take(1)
                 .switchMap((filter: IFilter) => {
                 let query = {...filter.query, ...filter.newSetQuery(items[0]), page_size: 1};
-                return this.getList$(query).catch(() => Observable.of(null))
+                return this.getList$(query).catch(() => of(null))
             })
                 .takeUntil(this.broadcast.on('list-reset'))
                 .subscribe((newData: IPageData) => {

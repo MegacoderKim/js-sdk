@@ -15,6 +15,7 @@ import {ReplayMarkerTrace} from "../trace/replay-marker";
 // import * as L from "leaflet";
 import * as _ from "underscore";
 import {htUser} from "ht-data";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class UserTraceService {
@@ -144,7 +145,7 @@ export class UserTraceService {
       if(config.isMobile) {
         return this.store.select(fromRoot.getUiShowMapMobile).filter(show => !!show).take(1).debounceTime(1000).map(() => places)
       } else {
-        return Observable.of(places)
+        return of(places)
       }
     });
 

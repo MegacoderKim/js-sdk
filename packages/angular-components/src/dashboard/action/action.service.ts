@@ -7,6 +7,7 @@ import {GetActionDateRangeQuery} from "../../utils/actions-helpers";
 import {GetDateRangeQuery} from "ht-utility";
 import {HttpClient} from "@angular/common/http";
 import {HtActionsService} from 'ht-angular';
+import {empty} from "rxjs/observable/empty";
 
 @Injectable()
 export class ActionService {
@@ -65,7 +66,7 @@ export class ActionService {
     let userId = action.user.id; //todo check this
     if (!userId) {
       console.log("BAD TIMELINE CALL", userId, query);
-      return Observable.empty();
+      return empty();
     }
     let string = HtQuerySerialize({...query, action_id: action.id});
     return this.http.get<IUserPlaceline>(`app/users/${userId}/timeline/?${string}`)

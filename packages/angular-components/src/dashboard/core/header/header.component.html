@@ -4,26 +4,26 @@
       <span id="logo" class="auto"></span>
     </a>
     <ng-container *ngIf="entityLink$ | async as entityLink">
-      <a class="navbar-item is-nav" [class.is-active]="(currentEntity$ | async) == 'users'" [class.is]="(currentEntity$ | async) == 'users'" [routerLink]="entityLink.users">Users</a>
-      <a class="navbar-item is-nav" [class.is-active]="(currentEntity$ | async) == 'actions'" [routerLink]="entityLink.actions">Actions</a>
-      <a class="navbar-item is-nav" [routerLinkActive]="['is-active']" [routerLink]="['/analytics']">Analytics</a>
+      <a class="navbar-item is-nav is-uppercase" [class.is-active]="(currentEntity$ | async) == 'users'" [class.is]="(currentEntity$ | async) == 'users'" [routerLink]="entityLink.users">Users</a>
+      <a class="navbar-item is-nav is-uppercase" [class.is-active]="(currentEntity$ | async) == 'actions'" [routerLink]="entityLink.actions">Actions</a>
+      <a class="navbar-item is-nav is-uppercase" [routerLinkActive]="['is-active']" [routerLink]="['/analytics']">Analytics</a>
     </ng-container>
   </div>
   <div id="navbar" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item" [routerLinkActive]="['is-active']" *ngIf="!config.isDemo" [routerLink]="['/setup']">
+      <a class="navbar-item is-uppercase" [routerLinkActive]="['is-active']" *ngIf="!config.isDemo" [routerLink]="['/setup']">
         <span class="quickstart-icon"><i class="fa fa-bolt" aria-hidden="true"></i></span>Setup Guide
       </a>
     </div>
     <div class="navbar-end">
-      <a class="navbar-item upgrade" routerLink="/payment" *ngIf="account && !account.card">
+      <a class="navbar-item upgrade is-uppercase" routerLink="/payment" *ngIf="account && !account.card">
         UPGRADE
       </a>
-      <a class="navbar-item" *ngIf="config.isDemo" (click)="signup()">Signup</a>
+      <a class="navbar-item is-uppercase" *ngIf="config.isDemo" (click)="signup()">Signup</a>
       <ng-container *ngIf="!config.isDemo && !config.isReadOnly">
         <hr class="navbar-divider">
         <div class="navbar-item">
-          <div class="tags has-addons">
+          <div class="tags has-addons is-uppercase">
             <span (click)="setTokenType('production')" class="tag" [class.is-primary]="config.tokenType == 'production'">Production</span>
             <span (click)="setTokenType('test')" class="tag" [class.is-primary]="config.tokenType == 'test'">Test</span>
           </div>
@@ -61,7 +61,7 @@
 
             <a class="navbar-item navbar-item-dropdown" [class.is-active]="account?.id == member.account.id" *ngFor="let member of filteredMemberships$ | async" (click)="selectAccount(member.account)">
               <ng-container *ngIf="member.account.id != accountUser.default_account.id">
-                <span>{{getMembersName(member)}}</span>
+                <span>{{member.account.name}}</span>
               </ng-container>
             </a>
           </div>

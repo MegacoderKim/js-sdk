@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import * as jstz from "jstz";
 import {HttpClient} from "@angular/common/http";
+import {_throw} from "rxjs/observable/throw";
 
 @Injectable()
 export class OnboardingService {
@@ -24,7 +25,7 @@ export class OnboardingService {
     let url = `app/github?fileURL=${fileUrl}&time=${newTime}`;
     return this.http.get(url).catch((error: any) => {
       console.log("Error", error);
-      return Observable.throw(error);
+      return _throw(error);
     });
   }
 

@@ -5,6 +5,7 @@ import { Page, IMembership,IPageData } from "ht-models";
 import {HtRequest} from "../core/request";
 import {empty} from "rxjs/observable/empty";
 import { expand, map } from "rxjs/operators";
+import {htMemberships} from "ht-data";
 
 export class HtAccountUserApi extends HtBaseApi {
   name = "account user";
@@ -31,7 +32,11 @@ export class HtAccountUserApi extends HtBaseApi {
 
   memberships(id, query = {}, options?: object) {
     const path = `v1/${this.base}/${id}/memberships/`;
-    return this.api$(path, query, options);
+    return this.api$(path, query, options).pipe(
+      map((data: Page<IMembership>) => {
+        return htMemberships().procMembershipPage(data);
+      })
+    );
   }
 
   membershipsAll(id, query, token?: string) {

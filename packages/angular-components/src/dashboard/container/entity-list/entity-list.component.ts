@@ -8,6 +8,7 @@ import {BroadcastService} from "../../core/broadcast.service";
 import {RangeHasToday} from "ht-utility";
 import 'rxjs/add/observable/merge';
 import {merge} from "rxjs/observable/merge";
+import {empty} from "rxjs/observable/empty";
 
 @Component({
   selector: 'app-entity-list',
@@ -58,7 +59,16 @@ export class EntityListComponent implements OnInit {
             let start = currentData.query['start'];
             let end = currentData.query['end'];
             let show_all = !!currentData.query['show_all'];
-            let query = {start, end, show_all, id: currentData.ids.toString(), page_size: 50};
+            const search = currentData.query['search'];
+            const idString = currentData.ids.toString();
+            let query = {start, end, show_all, page_size: 50};
+            if (idString) {
+              query['id'] = idString
+            } else {
+              query['search'] = search;
+              query['status'] = currentData.query['status'];
+            }
+
             // console.log("update", query);
             return this.getListApi(query).map((updatedPageData: IPageData) => {
               let updatedResultsEntity = _.indexBy(updatedPageData.results, 'id');
@@ -191,7 +201,7 @@ export class EntityListComponent implements OnInit {
   }
 
   getDateRange() {
-    return Observable.empty()
+    return empty()
   }
 
   getQueryWithCallBack() {
@@ -201,35 +211,35 @@ export class EntityListComponent implements OnInit {
   }
 
   getQuery() {
-    return Observable.empty()
+    return empty()
   }
 
   getListDateQuery() {
-    return Observable.empty()
+    return empty()
   }
 
   getPageQuery() {
-    return Observable.empty()
+    return empty()
   }
 
   getOrdering$() {
-    return Observable.empty()
+    return empty()
   }
 
   getListApi(query) {
-    return Observable.empty()
+    return empty()
   }
 
   getSummaryApi(query) {
-    return Observable.empty()
+    return empty()
   }
 
   getGraphApi(query) {
-    return Observable.empty()
+    return empty()
   }
 
   getPageData() {
-    return Observable.empty()
+    return empty()
   }
 
   indexId(index, item){

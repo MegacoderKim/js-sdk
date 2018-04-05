@@ -39,7 +39,7 @@ export class UserService {
   getUserTimeLine(userId: string, query: any = {}): Observable<IUserPlaceline> {
     // if (!userId) {
     //   console.log("BAD TIMELINE CALL", userId, query);
-    //   return Observable.empty();
+    //   return empty();
     // }
     const date = query ? query.date : null;
     query = this.addTimeRangeForPlaceline(query);

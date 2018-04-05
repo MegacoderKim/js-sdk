@@ -8,6 +8,7 @@ import {SnackbarService} from "../../shared/snackbar/snackbar.service";
 import * as _ from "underscore";
 import {HttpClient} from "@angular/common/http";
 import { MembershipsService } from "../../account/memberships.service";
+import {zip} from "rxjs/observable/zip";
 
 @Component({
   selector: 'app-team',
@@ -79,7 +80,7 @@ export class TeamComponent implements OnInit {
         // this.newUserRole = '';
         emailElem.value = '';
         console.log("new member", data);
-        Observable.zip(
+        zip(
             this.accountUser$.take(1),
             this.account$.take(1)
         ).subscribe(([accountUser, account]) => {
@@ -124,7 +125,7 @@ export class TeamComponent implements OnInit {
     this.accountUserService.removeAccountUser(email).subscribe((data) => {
       this.removingIndex = -1;
       this.snackbarService.displaySuccessToast('Team member removed');
-      Observable.zip(
+      zip(
         this.accountUser$.take(1),
         this.account$.take(1)
       ).subscribe(([accountUser, account]) => {

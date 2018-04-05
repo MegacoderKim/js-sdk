@@ -13,6 +13,7 @@ import {UpdateDefaultAccount} from "../../utils/account-user-helper";
 import {SnackbarService} from "../shared/snackbar/snackbar.service";
 import * as _ from "underscore";
 import {HttpClient} from "@angular/common/http";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class AccountUserEffectsService {
@@ -99,7 +100,7 @@ export class AccountUserEffectsService {
           let headers = {'Authorization': `token ${config.adminToken}`};
             return this.http.get<IAccountUser>(`app/account_users/${accountUserId}/`, {headers}).map((user) => {
                 return new fromAccountUser.SetAccountUserAction(user)
-            }).catch(() => Observable.of(null)).filter((data) => !!data)
+            }).catch(() => of(null)).filter((data) => !!data)
         });
 
     @Effect()

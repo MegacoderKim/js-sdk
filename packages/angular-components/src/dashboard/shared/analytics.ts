@@ -6,6 +6,7 @@ import {Component} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {IRange} from "../model/common";
 import * as moment from "moment-mini";
+import {empty} from "rxjs/observable/empty";
 
 @Component({
   template: '',
@@ -150,15 +151,15 @@ export class AnalyticsCommon {
   }
 
   getData(query) {
-    return Observable.empty();
+    return empty();
   }
 
   getGraphData(query) {
-    return Observable.empty();
+    return empty();
   }
 
   getSummaryData(query) {
-    return Observable.empty();
+    return empty();
   }
 
   fillData(data) {}

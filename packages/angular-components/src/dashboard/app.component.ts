@@ -7,6 +7,7 @@ import * as CookieUtil from './utils/cookie.utils';
 import {ExternalAnalyticsService} from './core/external-analytics.service';
 import {HtClientService, HtRequestService} from 'ht-angular';
 import {environment} from "../environments/environment";
+import {interval} from "rxjs/observable/interval";
 
 @Component({
   selector: 'app-root',
@@ -64,7 +65,7 @@ export class AppComponent {
         }
       }
     });
-    Observable.interval(1000).filter(
+    interval(1000).filter(
       () => {
         return this.externalAnalyticsService.isSegmentInitialized();
       }

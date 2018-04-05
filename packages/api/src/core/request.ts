@@ -66,7 +66,7 @@ export class HtRequest {
 
     api$<T>(url: string, query, options: {isAdmin?: boolean, token?: string, pureUrl?: boolean} = {}) {
         url = this.url(url, query, options.pureUrl);
-        let headers = options.isAdmin  ? this.adminHeaderObj() : this.headerObj(options.token);
+        let headers = options.isAdmin && !options.token  ? this.adminHeaderObj() : this.headerObj(options.token);
         return this.getObservable<T>(url, {headers});
     }
 

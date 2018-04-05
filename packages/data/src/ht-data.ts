@@ -4,6 +4,7 @@ export * from "./entities/user";
 export * from "./entities/event";
 export * from "./entities/placeline";
 export * from "./entities/account-user";
+export * from "./entities/memberships";
 export * from "./rx-helpers/data-intercepter";
 export * from "./rx-helpers/and-combine";
 export * from "./rx-helpers/or-combine";
