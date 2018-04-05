@@ -8,6 +8,7 @@ import * as fromRooot from "../reducers";
 import * as fromAccountUsers from "../actions/account-user";
 import {Observable} from "rxjs/Observable";
 import {GetMemberFromMemberships} from "../../utils/account-user-helper";
+import {HtClientService} from "ht-angular";
 
 @Injectable()
 export class MembershipsService {
@@ -16,19 +17,19 @@ export class MembershipsService {
     private page: PageService,
     private storage: StorageService,
     private store: Store<fromRooot.State>,
+    private client: HtClientService
   ) {
     // this.getMembershipsState().subscribe((memberships) => {
     //   this.storage.setMemberships(memberships)
     // })
   }
 
-  all(cb?) {
+  all() {
     const userId = config.userId;
     const adminToken = config.adminToken;
-    let headers = {'Authorization': `token ${adminToken}`};
-    return this.page.all(`app/account_users/${userId}/memberships/?page_size=100`, (data) => {
-      if(cb) cb(data)
-    }, {headers})
+    return this.client.api.accountUser.membershipsAll(userId, {page_size: 100}, adminToken).map((data) => {
+      return data['results']
+    });
   }
 
   setMemberships(memberships: IMembership[]) {
