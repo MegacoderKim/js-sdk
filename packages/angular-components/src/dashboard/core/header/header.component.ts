@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
       this.accSeachTerm,
       (memberships: IMembership[], search: string | undefined) => {
         return search ? _.filter(memberships, (membership) => {
-          return this.getMembersName(membership).toLocaleLowerCase().includes(search.toLocaleLowerCase())
+          return membership.account.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
         }) : memberships;
       }
     );
@@ -82,13 +82,6 @@ export class HeaderComponent implements OnInit {
       this.account = account;
       this.accountName = account ? account.name : "";
     })
-  }
-
-  getMembersName(member: IMembership) {
-    // let matchMember
-    const matchMember: IMember = member.account.members.find((member: IMember) => member.role === 'owner');
-    // return member.account.name
-    return !matchMember || member.account.name != 'Unnamed account' ? member.account.name : matchMember.user.email;
   }
 
   isReadOnlyMembership(): boolean {
