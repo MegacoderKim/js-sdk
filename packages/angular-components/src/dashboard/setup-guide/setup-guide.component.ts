@@ -302,6 +302,9 @@ export class SetupGuideComponent implements OnInit {
     })
   }
 
+  toggleToProduction() {
+    this.accountUserService.setTokenType('production');
+  }
   /**
    *
    * @param index
