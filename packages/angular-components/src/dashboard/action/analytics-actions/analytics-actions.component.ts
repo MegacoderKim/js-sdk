@@ -75,7 +75,6 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
   ];
   activeSortColumnKey = 'created_at';
   graphData: any = null;
-  isNotPremium: boolean = false;
   timezone = config.timezone;
   constructor(
     public actionService: ActionService,
@@ -97,9 +96,6 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
     super.ngOnInit();
     this.detailListener();
     this.fillData();
-    this.accountUserService.getAccount().filter(data => !!data).take(1).subscribe((account: IAccount) => {
-      this.isNotPremium = account.tier == 'free' && config.tokenType == 'production';
-    })
   }
 
   handleSorting(key, sortOrder?) {
