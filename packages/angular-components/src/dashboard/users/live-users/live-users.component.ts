@@ -16,7 +16,7 @@ import {GetUserMarkerFilter, GetUserMarkerSeached} from "../../../utils/users";
 // import {schemeSet2} from "d3-scale-chromatic";
 import {Color} from "../../../utils/color";
 import {ActiveUserComponent} from "./active-user/active-user.component";
-import {IsRangeToday} from "../../../utils/time-utils";
+import {IsRangeToday} from "ht-utility";
 import {Observable} from "rxjs/Observable";
 import {anim} from "../../../utils/animations";
 import {UsersListComponent} from "../../container/users-list/users-list.component";
