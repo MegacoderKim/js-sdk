@@ -7,12 +7,11 @@ import * as fromRoot from "../../reducers"
 import * as fromUser from "../../actions/user"
 import {Store} from "@ngrx/store";
 import {BroadcastService} from "../../core/broadcast.service";
-import {IUserPlaceline} from "ht-models";
+import {IUserPlaceline, IAction} from "ht-models";
 import * as _ from "underscore";
 import {TaskCardIcon} from "../../asserts/task-card-marker";
 import {TimeString} from "ht-utility";
 import {HMString} from "ht-utility";
-import * as moment from "moment-mini";
 import {ContainerService} from "../../container/container.service";
 import {anim} from "../../../utils/animations";
 import {NameCase, propToString} from "ht-utility";
@@ -380,32 +379,8 @@ export class ActionPageComponent implements OnInit {
     return pendingActions.length > 0;
   }
 
-  isActionDelayed(action) {
-    switch(action.status) {
-      case 'completed':
-        if (action.completed_at && action.expected_at) {
-          return moment(action.completed_at).isAfter(action.expected_at);
-        }
-        return false;
-      case 'suspended':
-        return false;
-      case 'canceled':
-        return false;
-      case 'started':
-        if (action.expected_at) {
-          let etaTimestamp = action.eta; //todo fix action with data lib update
-          return moment(etaTimestamp).isAfter(action.expected_at);
-        }
-        return false;
-      case 'assigned':
-        if (action.expected_at) {
-          let eta = action.eta; //todo fix action with data lib update
-          return moment(eta).isAfter(action.expected_at);
-        }
-        return false;
-      default:
-        return false;
-    }
+  isActionDelayed(action: IAction) {
+    return action.display.is_late;
   }
 
   closePopup() {

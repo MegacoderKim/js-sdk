@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {IAccount, Invoice} from "ht-models";
 import {AccountUsersService} from "../../account/account-users.service";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
-import * as moment from "moment-mini"
 // import  from "frappe-charts"
 // import Chart from "../../../../node_modules/frappe-charts/dist/frappe-charts.min.esm.js"
 // import Chart from "frappe-charts"

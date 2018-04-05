@@ -54,7 +54,8 @@ export class UserService {
   private addTimeRangeForPlaceline(query): object {
     if (!query || (query && !query.date)) return query;
     var dateArray = query.date.split("-");
-    const date = new Date(dateArray[0], dateArray[1], dateArray[2]);
+    console.log(dateArray);
+    const date = new Date(dateArray[0], +dateArray[1] - 1, dateArray[2]);
     const start = startOfDay(date).toISOString();
     const end = endOfDay(date).toISOString();
     return {...query, min_recorded_at: start, max_recorded_at: end, date: null};

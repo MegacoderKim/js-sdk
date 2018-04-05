@@ -4,7 +4,6 @@ import {IUserAnalytics, IUserAnalyticsPage, IUserListSummary} from "ht-models";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "underscore";
 import {DistanceLocale, HMString} from "ht-utility";
-import * as moment from "moment-mini";
 import {ContainerService} from "../../container/container.service";
 import * as fromRoot from "../../reducers";
 import {Store} from "@ngrx/store";
@@ -294,9 +293,9 @@ export class AnalyticsUsersComponent extends UsersListComponent implements OnIni
   // }
 
   getHeartbeatDisplay(heartbeat) {
-    if (!heartbeat) return '—';
-    let duration = moment().diff(heartbeat, 'seconds');
-    return `${HMString(duration, 60)} ago`;
+    if (!heartbeat) return '—-';
+    let duration = new Date().getTime() - new Date(heartbeat).getTime();
+    return `${HMString(duration, 60*1000)} ago`;
   }
 
   getRoundedDecimal(number) {
