@@ -7488,10 +7488,6 @@ module-not-found-error@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/module-not-found-error/-/module-not-found-error-1.0.1.tgz#cf8b4ff4f29640674d6cdd02b0e3bc523c2bbdc0"
 
-moment-mini@^2.18.1, moment-mini@^2.19.4:
-  version "2.19.4"
-  resolved "https://registry.yarnpkg.com/moment-mini/-/moment-mini-2.19.4.tgz#1af472aebf97f7d219280b4d02dfc3b34359e45d"
-
 moment@2.21.0, moment@^2.21.0, moment@^2.6.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
@@ -10975,10 +10971,6 @@ tildify@^1.0.0:
   resolved "https://registry.yarnpkg.com/tildify/-/tildify-1.2.0.tgz#dcec03f55dca9b7aa3e5b04f21817eb56e63588a"
   dependencies:
     os-homedir "^1.0.0"
-
-time-aware-polyline@^0.0.2-0:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/time-aware-polyline/-/time-aware-polyline-0.0.2.tgz#defc3ca8a120abb73daf91073381a9e822363c25"
 
 time-stamp@^1.0.0:
   version "1.1.0"
