@@ -1,0 +1,111 @@
+@import "../../../assets/css/webflow/webflow.hyperstart.css";
+@import "../../../assets/css/webflow/hyperstart.webflow.css";
+
+:host {
+  .ios-step-container {
+    .demo-app-link {
+      cursor: pointer;
+    }
+    .step-label {
+      margin-top: 15px;
+      margin-bottom: 30px;
+      font-size: 18px;
+      font-weight: 300;
+      text-align: center;
+    }
+    .language-switcher-container {
+      display: flex;
+      justify-content: center;
+      .language-switcher {
+        display: flex;
+      }
+      .code-language {
+        border-right: 1px solid gray;
+        border-bottom: 1px solid gray;
+        border-top: 1px solid gray;
+        padding: 3px 9px;
+        color: gray;
+        cursor: pointer;
+        &.selected {
+          color: white;
+          background: #1ED26A;
+        }
+        &.first {
+          border-left: 1px solid gray;
+          border-top-left-radius: 3px;
+          border-bottom-left-radius: 3px;
+        }
+        &.last {
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+        }
+      }
+    }
+    .code-block-container {
+      display: flex;
+      justify-content: center;
+    }
+    .custom-block-container {
+      display: flex;
+      justify-content: center;
+      .settings-block {
+        width: 700px;
+        .settings-label {
+          margin-bottom: 12px;
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .settings-detail {
+          padding: 12px;
+          background: rgba(231, 232, 234, 0.73);
+          border-radius: 3px;
+        }
+      }
+    }
+    .image-block-container {
+      display: flex;
+      justify-content: center;
+      .image-block {
+        cursor: pointer;
+        width: 700px;
+        margin-top: 24px;
+        .image-icon-container {
+          display: flex;
+          margin-bottom: 9px;
+        }
+
+        .image-icon {
+          margin-right: 3px;
+        }
+
+        .image-label {
+          font-size: 14px;
+          letter-spacing: 0.6px;
+        }
+        .image-container {
+
+        }
+      }
+    }
+    .button-container {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      .next-button {
+        min-width: 250px;
+        color: white;
+        margin-bottom: 12px;
+      }
+    }
+    .troubleshoot-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+  }
+  .hidden {
+    display: none;
+  }
+}

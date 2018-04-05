@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="482px" height="297px" viewBox="0 0 482 297" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 29</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M98.1946602,73.6058136 L90.151861,81.6486128 L82.1090617,73.6058136 L4.14246722,73.6058136 C1.93851625,73.6058136 0.151860986,71.822805 0.151860986,69.5961736 L0.151860986,4.00963996 C0.151860986,1.79517696 1.93338421,0 4.14246722,0 L176.161255,0 C178.365206,0 180.151861,1.78300859 180.151861,4.00963996 L180.151861,69.5961736 C180.151861,71.8106366 178.370338,73.6058136 176.161255,73.6058136 L98.1946602,73.6058136 Z" id="path-1"></path>
+        <filter x="-5.6%" y="-9.8%" width="111.1%" height="124.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.690196078   0 0 0 0 0.729411765   0 0 0 0 0.77254902  0 0 0 0.600288723 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Mileage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-640.000000, -1503.000000)">
+        <g id="Group-29" transform="translate(640.000000, 1457.000000)">
+            <g id="Group-12" transform="translate(31.000000, 0.000000)">
+                <path d="M35.5130811,236.731745 C36.8464144,223.398411 44.3464144,212.065078 58.0130811,202.731745 C78.5130811,188.731745 123.449956,236.694319 112.513081,197.231745 C101.576206,157.76917 134.770451,193.354567 158.829771,161.999158 C182.889091,130.643749 214.286226,123.073867 217.242354,138.398943 C220.198482,153.724018 261.013081,179.231745 286.013081,140.231745 C311.013081,101.231745 307.819483,68.2682554 343.819483,51.2682554" id="Path-3" stroke="#7A769B" stroke-width="6" stroke-linecap="round" transform="translate(189.666282, 144.000000) rotate(22.000000) translate(-189.666282, -144.000000) "></path>
+                <g id="android-pin" transform="translate(0.000000, 143.000000)" fill="#FC5F5B">
+                    <path d="M13,0 C5.849675,0 0,5.66975893 0,12.6000804 C0,22.05 13,36 13,36 C13,36 26,22.05 26,12.6000804 C26,5.66975893 20.150325,0 13,0 L13,0 Z M13,17.1000804 C10.400325,17.1000804 8.35705,15.1196786 8.35705,12.6000804 C8.35705,10.0803214 10.4002437,8.10008036 13,8.10008036 C15.5997563,8.10008036 17.64295,10.0803214 17.64295,12.6000804 C17.64295,15.1196786 15.599675,17.1000804 13,17.1000804 L13,17.1000804 Z" id="Shape"></path>
+                </g>
+                <g id="android-pin-copy" transform="translate(351.000000, 77.273818)" fill="#00C94B">
+                    <path d="M16.5,0 C7.4245875,0 0,7.24469196 0,16.1001027 C0,28.175 16.5,46 16.5,46 C16.5,46 33,28.175 33,16.1001027 C33,7.24469196 25.5754125,0 16.5,0 L16.5,0 Z M16.5,21.8501027 C13.2004125,21.8501027 10.607025,19.3195893 10.607025,16.1001027 C10.607025,12.8804107 13.2003094,10.3501027 16.5,10.3501027 C19.7996906,10.3501027 22.392975,12.8804107 22.392975,16.1001027 C22.392975,19.3195893 19.7995875,21.8501027 16.5,21.8501027 L16.5,21.8501027 Z" id="Shape"></path>
+                </g>
+            </g>
+            <text id="5th-Avenue-Street" font-family="WorkSans-Medium, Work Sans" font-size="10" font-weight="400" fill="#250D47">
+                <tspan x="0" y="194">5th Avenue Street</tspan>
+            </text>
+            <text id="27th,-Vertex-Road" font-family="WorkSans-Medium, Work Sans" font-size="10" font-weight="400" fill="#250D47">
+                <tspan x="377" y="135">27th, Vertex Road</tspan>
+            </text>
+            <g id="Group-20" transform="translate(45.000000, 50.000000)">
+                <g id="↑">
+                    <g id="Rectangle-135">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+                <g id="Group-28" transform="translate(27.000000, 12.000000)">
+                    <g id="Group-2">
+                        <circle id="Oval-7" fill="#7CB8FF" cx="22" cy="22" r="22"></circle>
+                        <image id="icons8-scooter" x="11" y="11" width="22" height="22" xlink:href="data:image/png;base64,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"></image>
+                    </g>
+                    <g id="Group-14" transform="translate(54.000000, 6.000000)" fill="#250D47">
+                        <g id="Group-16">
+                            <text id="27.8-Kms" font-family="WorkSans-Medium, Work Sans" font-size="16" font-weight="400">
+                                <tspan x="0" y="15">27.8 Kms</tspan>
+                            </text>
+                            <text id="3h-47m" font-family="WorkSans-Light, Work Sans" font-size="12" font-weight="300">
+                                <tspan x="0" y="30">3h 47m</tspan>
+                            </text>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <path d="M333.58026,332.839815 L323.667179,342.752897 L313.754097,332.839815 L182.997831,332.839815 C180.78989,332.839815 179,331.046347 179,328.834342 L179,198.005473 C179,195.793312 180.798497,194 182.997831,194 L478.002169,194 C480.21011,194 482,195.793468 482,198.005473 L482,328.834342 C482,331.046504 480.201503,332.839815 478.002169,332.839815 L333.58026,332.839815 Z" id="Rectangle-135" fill="#250D47" transform="translate(330.500000, 268.376448) scale(1, -1) translate(-330.500000, -268.376448) "></path>
+            <g id="{-&quot;id&quot;-:-&quot;sk_54d7d1b" transform="translate(212.000000, 227.000000)" font-family="Menlo-Regular, Menlo" font-size="12" font-weight="normal">
+                <text>
+                    <tspan x="0" y="11" fill="#B2AEAB">{ </tspan>
+                    <tspan x="0" y="25" fill="#B2AEAB"></tspan>
+                    <tspan x="0" y="39" fill="#B2AEAB">	</tspan>
+                    <tspan x="28" y="39" fill="#55C097">"id"</tspan>
+                    <tspan x="56.8984375" y="39" fill="#B2AEAB"> : </tspan>
+                    <tspan x="78.5722656" y="39" fill="#55C097">"sk_54d7d1b"</tspan>
+                    <tspan x="165.267578" y="39" fill="#B2AEAB">, </tspan>
+                    <tspan x="179.716797" y="39" fill="#9F9899">//ID</tspan>
+                    <tspan x="208.615234" y="39" fill="#B2AEAB"></tspan>
+                    <tspan x="0" y="53" fill="#B2AEAB">	</tspan>
+                    <tspan x="28" y="53" fill="#55C097">"distance"</tspan>
+                    <tspan x="100.246094" y="53" fill="#B2AEAB"> : </tspan>
+                    <tspan x="121.919922" y="53" fill="#55C097">"27500"</tspan>
+                    <tspan x="172.492188" y="53" fill="#B2AEAB"> </tspan>
+                    <tspan x="179.716797" y="53" fill="#9F9899">//metres</tspan>
+                    <tspan x="237.513672" y="53" fill="#B2AEAB"></tspan>
+                    <tspan x="0" y="67" fill="#B2AEAB">	</tspan>
+                    <tspan x="28" y="67" fill="#55C097">"time"</tspan>
+                    <tspan x="71.3476562" y="67" fill="#B2AEAB"> : </tspan>
+                    <tspan x="93.0214844" y="67" fill="#55C097">"1290"</tspan>
+                    <tspan x="136.369141" y="67" fill="#B2AEAB"> </tspan>
+                    <tspan x="143.59375" y="67" fill="#9F9899">//seconds</tspan>
+                    <tspan x="208.615234" y="67" fill="#B2AEAB"></tspan>
+                    <tspan x="0" y="81" fill="#B2AEAB">}</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

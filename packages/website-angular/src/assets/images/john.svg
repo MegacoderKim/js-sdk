@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="423px" height="180px" viewBox="0 0 423 180" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Group Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-2334.000000, -1915.000000)">
+            <g id="Group-Copy" transform="translate(2334.000000, 1915.000000)">
+                <path d="M246,144 L351,144 C390.764502,144 423,111.764502 423,72 L423,72 C423,32.235498 390.764502,-7.30462051e-15 351,0 L72,0 L72,0 C32.235498,7.30462051e-15 -4.86974701e-15,32.235498 0,72 L0,72 L0,72 C4.86974701e-15,111.764502 32.235498,144 72,144 L178,144 L212,180 L246,144 Z" id="Combined-Shape" fill="#48EEA5"></path>
+                <text id="John" font-family="SFUIDisplay-Regular, SF UI Display" font-size="80" font-weight="normal" fill="#00854B">
+                    <tspan x="125.179688" y="97">John</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,157 @@
+<div class="home-page-container">
+
+  <!--TOP SECTION-->
+  <div class="top-section">
+    <div class="top-section-title"> Build movement-aware applications</div>
+    <div class="top-section-subtitle">Generate, manage and consume your users' activity and location tracking data</div>
+    <div class="top-section-cta" (click)="onCreateAccount()" >Get started for free</div>
+    <div class="top-section-cta-caption">with just 10 lines of code</div>
+    <div class="top-section-platform-icons"></div>
+  </div>
+
+  <!--PRIMITIVES SECTION-->
+  <div class="primitives-section">
+    <div class="section-title">Programmable data about your user's movement</div>
+    <div class="section-subtitle">When you start tracking users, you get their activity, location, and health. You can get them in realtime or historically with Placeline.
+    </div>
+    <div class="primitives-section-main">
+      <div class="section-items">
+        <div class="section-item"  *ngFor="let primitive of primitives; let i = index" [class.active]="i === activeIndex" [ngClass]="primitive.status" (mouseover)="setStep(i)">
+          <div class="section-item-icon">
+            <img src="{{primitive.icon}}" alt="{{primitive.text}}">
+          </div>
+          <div class="section-item-label">
+            <div class="label-title">{{primitive.label}}</div>
+            <div class="label-subtext">{{primitive.text}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-graphics">
+        <div class="section-graphic-subsection" *ngFor="let primitive of primitives; let i = index" [class.active]="i === activeIndex">
+          <div class="subsection-graphic">
+            <img src="{{primitive.graphic}}" alt="{{primitive.caption}}">
+          </div>
+          <div class="subsection-caption">{{primitive.caption}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--BUILDING BLOCKS SECTION-->
+  <div class="cp-section">
+    <div class="section-title">Available as composable building blocks</div>
+    <div class="section-content">
+      <div class="section-content-card card-data">
+        <div class="card-background"></div>
+        <a href="https://docs.hypertrack.com/api/">
+          <div class="card-main">
+          <div class="card-icon">
+            <img src="{{images.cpDataIcon}}" alt="Consume location tracking using Data endpoints">
+          </div>
+          <div class="card-title">Data</div>
+          <div class="card-description">Get data on your server through REST APIs or in your mobile app through SDK methods.</div>
+          <div class="card-icons">
+            <div class="card-icons-label">Supports :</div>
+            <div class="card-icons-platforms">
+              <img src="{{images.restLogoBlack}}" alt="">
+              <img src="{{images.appleLogoBlack}}" alt="">
+              <img src="{{images.androidLogoBlack}}" alt="">
+            </div>
+          </div>
+          <div class="card-cta">See docs →</div>
+        </div>
+        </a>
+      </div>
+      <div class="section-content-card card-visuals">
+        <div class="card-background"></div>
+        <a href="https://docs.hypertrack.com/dashboard/widgets.html">
+          <div class="card-main">
+          <div class="card-icon">
+            <img src="{{images.cpVisualIcon}}" alt="Consume location tracking using Data endpoints">
+          </div>
+          <div class="card-title">Visuals</div>
+          <div class="card-description">
+            Get beautiful maps with individual and aggregate views that integrate with your product experience and dashboards.
+          </div>
+          <div class="card-icons">
+            <div class="card-icons-label">Supports: </div>
+            <div class="card-icons-platforms">
+              <img src="{{images.javascriptLogoBlack}}" alt="">
+              <img src="{{images.androidLogoBlack}}" alt="">
+              <img src="{{images.appleLogoBlack}}" alt="">
+            </div>
+          </div>
+          <div class="card-cta">See docs →</div>
+        </div>
+        </a>
+      </div>
+      <div class="section-content-card card-events">
+        <div class="card-background"></div>
+        <a href="https://docs.hypertrack.com/events/"><div class="card-main">
+          <div class="card-icon">
+            <img src="{{images.cpEventsIcon}}" alt="Consume location tracking using Data endpoints">
+          </div>
+          <div class="card-title">Events</div>
+          <div class="card-description">Get events delivered to your server through webhooks, or directly to your Slack channel.
+          </div>
+          <div class="card-icons">
+            <div class="card-icons-label">Supports: </div>
+            <div class="card-icons-platforms">
+              <img src="{{images.webhooksLogoBlack}}" alt="">
+              <img src="{{images.slackLogoBlack}}" alt="">
+            </div>
+          </div>
+          <div class="card-cta">See docs →</div>
+        </div></a>
+      </div>
+    </div>
+
+  </div>
+
+  <!--CUSTOMERS SECTION-->
+  <div class="customers-section">
+    <div class="customer-section-stats">
+      <div class="stats-miles"><span id="livecounter-miles">24,720,261</span> Miles | <span id="livecounter-hours">29,074,593</span> Hours</div>
+      <div class="stats-tag">tracked with hypertrack so far</div>
+    </div>
+    <div class="customer-section-logos">
+      <a href="http://blog.housejoy.in/daily-delight/hypertrack-brings-power-service-expert-location-tracking-housejoy/">
+        <img class="logo1" [src]="images.housejoy" width="99">
+      </a>
+      <a href="https://www.hypertrack.com/blog/2017/03/18/hotline-integrates-hypertrack-for-their-customers/">
+        <img class="logo1" sizes="(max-width: 479px) 31vw, (max-width: 767px) 17vw, 99px" [src]="images.freshdesk" width="99">
+      </a>
+      <a href="http://pharmeasy.in/blog/using-hypertrack-to-solve-our-supply-chain-logistics-challenges/">
+        <img class="logo1" sizes="(max-width: 479px) 31vw, (max-width: 767px) 17vw, 99px" [src]="images.pharmeasy">
+      </a>
+      <a href="https://medium.com/@letsokhi/why-we-moved-our-location-stack-to-hypertrack-c849f0526216">
+        <img class="logo1 logo2" [src]="images.okhi" width="99">
+      </a>
+      <img class="logo1 logo2" sizes="(max-width: 479px) 32vw, (max-width: 767px) 17vw, 99px" [src]="images.redbus" width="99">
+      <a href="https://www.hypertrack.com/blog/2017/06/06/golang-order-tracking-roserocket/"><img class="logo1" [src]="images.roserocket" width="99"></a>
+      <a href="http://blog.holachef.com/holachef-goes-hypertrack-2/">
+        <img class="logo1 logo2" [src]="images.holachef" width="99">
+      </a>
+      <a href="https://blog.toppr.com/using-hypertrack-to-improve-productivity-of-our-field-force-d3a02de5c1d#.nhnju0h31">
+        <img class="logo1" [src]="images.toppr" width="99">
+      </a>
+    </div>
+    <div class="customer-section-testimonials">
+      <div class="testimonial-box" *ngFor="let testimonial of testimonials">
+        <div class="testimonial-background"></div>
+        <a href="{{testimonial.link}}">
+          <div class="testimonial-box-main">
+          <div class="box-country-flag">
+            <img src="{{testimonial.flag}}" alt="">
+          </div>
+          <div class="box-tag">{{testimonial.label}}</div>
+          <div class="box-title">{{testimonial.title}}</div>
+          <div class="box-description">{{testimonial.description}}</div>
+          <div class="box-cta">
+            <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+  </div>

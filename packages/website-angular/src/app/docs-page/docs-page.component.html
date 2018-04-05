@@ -1,0 +1,229 @@
+<div class="global-page-container">
+
+  <!--==================================
+  =            HEADER SECTION            =
+  ===================================-->
+  <section class="docs-header">
+    <div class="docs-header-content">
+      <div class="subtitle">
+        hypertrack documentation
+      </div>
+      <div class="main-title">Build applications with location tracking</div>
+      <div class="text">Movement tracking use cases require infrastructure in the device, cloud and maps. With HyperTrack, you can build these use cases with just a few lines of code that just work.</div>
+      <div class="docs-nav-menu">
+        <div class="docs-nav-menu-item" (click)="scrollToApiReference( 'docs-quickstart')">
+          <div class="menu-item-icon">
+            <img src="{{images.quickstartIcon}}" alt="">
+          </div>
+          <div class="menu-item-label">Quickstarts</div>
+        </div>
+        <div class="docs-nav-menu-item" (click)="scrollToApiReference( 'docs-guides')">
+          <div class="menu-item-icon">
+            <img src="{{images.guidesIcon}}" alt="">
+          </div>
+          <div class="menu-item-label">Guide</div>
+        </div>
+        <div class="docs-nav-menu-item" (click)="scrollToApiReference( 'docs-tutorials')">
+          <div class="menu-item-icon">
+            <img src="{{images.tutorialsIcon}}" alt="">
+          </div>
+          <div class="menu-item-label">Tutorials</div>
+        </div>
+        <div class="docs-nav-menu-item" (click)="scrollToApiReference( 'docs-api')">
+          <div class="menu-item-icon">
+            <img src="{{images.apiReferenceIcon}}" alt="">
+          </div>
+          <div class="menu-item-label">API</div>
+        </div>
+        <div class="docs-nav-menu-item" (click)="scrollToApiReference( 'docs-sample-apps')">
+          <div class="menu-item-icon">
+            <img src="{{images.sampleAppsIcon}}" alt="">
+          </div>
+          <div class="menu-item-label">Sample Apps</div>
+        </div>
+      </div>
+      <!--<div class="action-button" (click)="openSignupModal()">Start building</div>-->
+    </div>
+  </section>
+
+  <!--========================================
+  =            QUICKSTART SECTION            =
+  =========================================-->
+  <div class="docs-quickstart" id="docs-quickstart">
+    <div class="quickstart-text">
+      <div class="section-title">Quickstarts</div>
+      <div class="section-subtitle">Select your platform</div>
+      <div class="section-description">These 10 minute quickstarts would get you to plug the SDK in your app for your platform. </div>
+    </div>
+    <div class="quickstart-content">
+      <a class="quickstart-box" *ngFor="let platform of allPlatforms; let index = index" [href]="platform.link">
+        <div class="quickstart-box-icon">
+          <i class="fa {{platform.iconCode}}" *ngIf="platform.iconCode" aria-hidden="true"></i>
+          <img [src]="platform.iconImage" *ngIf="platform.iconImage" width="26px" />
+        </div>
+        <div class="quickstart-box-name">{{platform.name}}</div>
+        <div class="quickstart-box-subtext">{{platform.text}}</div>
+        <div class="quickstart-box-cta">GET STARTED →</div>
+      </a>
+    </div>
+  </div>
+
+  <!--=======================================
+  =            ACTIONS GUIDE                =
+  ========================================-->
+
+  <div class="docs-actions-guides" id="docs-guides">
+    <div class="docs-action-guides-content">
+      <div class="actions-guide-title">Guides</div>
+      <div class="actions-guide-text">Action is the unit of tracking with HyperTrack. It is the starting point for building your use case. This guide covers all that you need to know about actions in order to use them effectively.</div>
+    </div>
+    <div class="docs-action-guides-card">
+        <div class="guide-card">
+          <a href="/docs/guides/action">
+          <div class="card-content">
+            <div class="card-content-title">
+              Actions Guide
+            </div>
+            <div class="card-content-text">
+              Guide to building your use case using Actions
+            </div>
+            <div class="card-content-cta">
+              VIEW GUIDE →
+            </div>
+            <!-- /.card-content-cta -->
+          </div>
+          </a>
+        </div>
+        <div class="guide-card">
+          <a href="/docs/guides/events">
+          <div class="card-content">
+            <div class="card-content-title">
+              Events Guide
+            </div>
+            <div class="card-content-text">
+              Guide to building your use case using Webhooks and Events
+            </div>
+            <div class="card-content-cta">
+              VIEW GUIDE →
+            </div>
+            <!-- /.card-content-cta -->
+          </div>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+  <!--=======================================
+  =            TUTORIALS SECTION            =
+  ========================================-->
+  <div class="docs-tutorials" id="docs-tutorials">
+    <div class="tutorials-header">
+      <div class="tutorials-title">Use Case Tutorials</div>
+      <div class="tutorials-description">Get to production faster with 15-30 minute tutorials for popular use cases. Step through complete sample apps in your favorite programming languages.</div>
+    </div>
+    <div class="tutorials-filters">
+    </div>
+    <div class="tutorials-content">
+      <a class="tutorial-box" *ngFor="let tutorial of allTutorials; let index = index" [href]="tutorial.link">
+        <div class="tutorial-box-image">
+          <img [src]="tutorial.image" />
+        </div>
+        <div class="tutorial-box-content">
+          <div class="tutorial-box-title">{{tutorial.title}}</div>
+          <div class="tutorial-box-text">{{tutorial.text}}</div>
+          <div class="tutorial-box-cta">READ MORE →</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!--===========================================
+  =            API REFERENCE SECTION            =
+  ============================================-->
+  <div class="docs-api" id="docs-api">
+    <div class="api-header">
+      <div class="header-title">API Reference</div>
+      <div class="header-description">Get in-depth information about HyperTrack's REST APIs and SDKs. Authentication, parameters, response formats, and errors - find it all here.</div>
+      <a href="https://docs.hypertrack.com/"><div class="header-cta">SEE FULL API REFERENCE</div></a>
+      <a href="https://app.getpostman.com/run-collection/7a6b919d451392a81aba">
+        <div class="header-subcta">
+          <div class="subcta-logo"><img src="{{images.postmanLogo}}" alt=""></div>
+          <div class="subcta-text">Postman collection</div>
+        </div>
+      </a>
+    </div>
+    <div class="api-content">
+      <div class="api-reference-column" *ngFor="let column of apiReference">
+        <div class="reference-column-name">{{column.name}}</div>
+        <div class="reference-column-item-list">
+          <a class="reference-column-item" *ngFor="let referenceRow of column.items" [href]="referenceRow.link">
+            {{referenceRow.label}}
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--=========================================
+  =            SAMPLE APPS SECTION            =
+  ==========================================-->
+  <div class="docs-sample-apps" id="docs-sample-apps">
+    <div class="sa-header">
+      <div class="sa-title">Sample apps</div>
+      <div class="sa-description">
+        Take a look at our sample apps and their code to dive right into HyperTrack products
+      </div>
+      <a class="sa-cta" href="https://www.github.com/hypertrack/">See all sample apps →</a>
+    </div>
+    <div class="sa-content">
+      <div class="sa-item" *ngFor="let sa of sampleApps">
+        <div class="sa-item-content">
+          <div class="sa-title">{{sa.name}}</div>
+          <div class="sa-description">{{sa.description}}</div>
+        </div>
+        <div class="sa-cta">
+          <a class="sa-cta-label" *ngFor="let platform of sa.platforms" [href]="platform.link">
+            <span>{{platform.label}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--===========================================
+  =            SUPPORT BOXES SECTION            =
+  ============================================-->
+  <div class="support-box-container">
+    <div class="ht-live-box">
+      <div class="support-box-image">
+        <img src="{{images.liveScreenshot}}" alt="Get the hypertrack live go app">
+      </div>
+      <div class="support-box-content">
+        <div class="support-box-content-title">Try out HyperTrack Live app</div>
+        <div class="support-box-content-description">Looking to see what HyperTrack can do for you? Why don’t you give our app a try.</div>
+        <div class="support-box-content-cta">
+          <a class="app-store" href="https://itunes.apple.com/us/app/hypertrack-live/id1076924821?mt=8">
+            <img [src]="images.appStore" width="90px" />
+          </a>
+          <a class="google-play" href="https://play.google.com/store/apps/details?id=io.hypertrack.sendeta&hl=en">
+            <img [src]="images.googlePlay" width="105px" />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="get-slack-box">
+      <div class="support-box-image"><img src="{{images.slackImage}}" alt="Join Hypertrack on slack">
+      </div>
+      <div class="support-box-content">
+        <div class="support-box-content-title">Join us on Slack</div>
+        <div class="support-box-content-description">Use Slack at work? Join us & other hypertrack developers on our Slack channel</div>
+        <div class="support-box-content-cta">
+          <a href="http://slack.hypertrack.com">Join us on slack </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

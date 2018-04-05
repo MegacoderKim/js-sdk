@@ -1,0 +1,89 @@
+<div class="ios-step-container" *ngIf="showTabContent('install')">
+  <div class="step-label">Install our SDK </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-install-0'"
+    >
+    </app-code-block>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 1)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-install-1'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="troubleshoot-container">
+    Having issues?
+    <a href="" target="_blank" class="demo-app-link">&nbsp;&nbsp;Troubleshoot</a>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('permissions')">Next</div>
+    <div class="try-demo-app"> Taking too long?
+      <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a>
+    </div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('permissions')">
+  <div class="step-label"> Ask your users permission to access location </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('permissions', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-permissions-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('communication')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('communication')">
+  <div class="step-label"> Enable bidirectional communication between server and SDK using FCM notifications.<br /><br /> If you don’t have FCM in your app, <a href="https://dashboard.hypertrack.com/onboarding/fcm-android;step=1.0" target="_blank">follow this guide</a> for basic setup.</div>
+  
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('communication', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-communication-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="custom-block-container">
+    <div class="settings-block">
+      <div class="settings-label">
+        Dashboard > Settings
+      </div>
+      <div class="settings-detail">
+        Head over to <a href="https://console.firebase.google.com/project/" target="_blank">FCM Console</a>, select your project, and then visit <a href="https://console.firebase.google.com/project/<your_project_name>/settings/cloudmessaging/" target="_blank"> Settings > Cloud Messaging</a> to get your FCM server key. Paste this FCM key <a href="https://dashboard.hypertrack.com/settings" target="_blank">here</a>.
+      </div>
+    </div>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('tracking')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('tracking')">
+  <div class="step-label"> Create a HyperTrack user and start tracking! </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('tracking', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-tracking-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('location')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>

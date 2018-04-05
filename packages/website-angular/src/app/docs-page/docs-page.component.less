@@ -1,0 +1,907 @@
+@import "../../assets/css/webflow/webflow.css";
+@import "../../assets/css/webflow/hypertrack.webflow.css";
+@import "../../assets/css/webflow/hypertrack.webflow.dropdown.css";
+@import "../main/main.component.less";
+
+/*======================================
+=            HEADER SECTION            =
+======================================*/
+.docs-header {
+  position: relative;
+  overflow: hidden;
+  padding: 12.5rem 5% 5rem 5% ;
+  text-align: left;
+  .docs-header-content {
+    max-width: 60%;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    .subtitle {
+     .text-smallcaps-s();
+      text-align: center;
+    }
+    .main-title {
+      .text-title-h1();
+      text-align: center;
+      color: @black;
+      padding: 0.5rem 2rem;
+    }
+    .text {
+      .text-normal();
+      text-align: center;
+      color: @dark-grey;
+      padding: 0.5rem 0;
+      max-width: 80%;
+      margin: 0 auto;
+    }
+    .action-button {
+      .button( @green, white );
+      clear: both;
+      margin: @space--double auto;
+      width: 200px;
+    }
+    .docs-nav-menu {
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto;
+      padding: 2rem 5%;
+      .docs-nav-menu-item {
+        position: relative;
+        //overflow: hidden;
+        width: 18%;
+        float: left;
+        margin: 0 1%;
+        transition: 0.5s all ease-in-out;
+        cursor: pointer;
+        .menu-item-icon {
+          position: relative;
+          overflow: hidden;
+          margin: 0 auto;
+          text-align: center;
+          background: @light-purple;
+          border-radius: 6px;
+          width: 4rem;
+          height: 4rem;
+          line-height: 4rem;
+          transition: 0.4s all ease-in-out;
+          img {
+            height: 2rem;
+            display: inline;
+          }
+        }
+        .menu-item-label {
+          .text-smallcaps-s();
+          font-weight: 400;
+          color: @dark-grey;
+          margin-top: @space;
+          position: relative;
+          overflow: hidden;
+          text-align: center;
+        }
+        &:hover {
+          border-radius: 0;
+          .menu-item-icon {
+            background: darken( @light-purple, 5% );
+            transform: scale( 1.1 );
+          }
+          .menu-item-label {
+            color: @purple--dark;
+          }
+        }
+      }
+    }
+    .action-quickjump-api {
+      position: relative;
+      overflow: hidden;
+      color: @orange;
+      clear: both;
+      margin-top: 1rem;
+      float: left;
+      cursor: pointer;
+      transition: 0.4s all ease-in-out;
+      display: none;
+      .text {
+        .text-small();
+        color: @orange;
+        display: inline;
+        font-weight: 400;
+      }
+      .cta {
+        .text-smallcaps-s();
+        font-weight: 700;
+        display: inline;
+      }
+      &:hover {
+        padding: 0 0.5rem;
+        background: @orange--light;
+      }
+    }
+  }
+  @media @smartphones {
+    padding: 10rem 0 @space--4x 10%;
+    .docs-header-content {
+      max-width: 100%;
+      .subtitle,
+      .main-title,
+      .text {
+        text-align: left;
+      }
+      .main-title {
+        padding: 0;
+      }
+      .text {
+        width: 100%;
+        float: left;
+      }
+      .action-button {
+        margin: @space--4x 0;
+      }
+      .docs-nav-menu {
+        padding: 0;
+        clear: both;
+        .docs-nav-menu-item {
+          width: 30%;
+          margin: @space--4x 3% 0 0;
+          .menu-item-label {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+  }
+}
+/*=====  End of HEADER SECTION  ======*/
+
+
+
+/*==========================================
+=            QUICKSTART SECTION            =
+==========================================*/
+.docs-quickstart {
+  position: relative;
+  overflow: hidden;
+  width: 80%;
+  background: @purple;
+  border-radius: 4px;
+  padding: 3rem;
+  margin: @space--4x 10%;
+  text-align: left;
+  .quickstart-text {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 30%;
+    margin-top: 5rem;
+    .section-subtitle {
+      .text-small();
+      padding-bottom: 0.5em;
+      color: white;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-title {
+      .text-title-h3;
+      color: white;
+      padding-bottom: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-description {
+      .text-small();
+      color: white;
+      opacity: 0.5;
+    }
+  }
+  .quickstart-content {
+    position: relative;
+    overflow: hidden;
+    width: 65%;
+    float: right;
+    .quickstart-box {
+      position: relative;
+      overflow: hidden;
+      float: left;
+      width: 31%;
+      margin: 1rem 1% 1rem 1%;
+      border-radius: 4px;
+      background-color: darken( @purple, 20% );
+      padding: 1rem;
+      transition: 0.4s all ease-in-out;
+      &:hover {
+        transform: translateY( -1px );
+        background: darken( @purple, 30% );
+        cursor: pointer;
+        .quickstart-box-icon {
+          opacity: 1;
+        }
+      }
+      .quickstart-box-icon {
+        .text-title-h2();
+        margin-bottom: 0.5rem;
+        opacity: 0.4;
+        color: lighten( @purple, 40% );
+        color: white;
+        transition: 1s all ease-in-out;
+      }
+      .quickstart-box-name {
+        .text-normal();
+        font-weight: 400;
+        color: white;
+      }
+      .quickstart-box-subtext {
+        .text-small();
+        opacity: 0.5;
+        color: white;
+        height: 3em;
+      }
+      .quickstart-box-cta {
+        .text-smallcaps-s();
+        // color: white;
+        opacity: 0.7;
+        display: none;
+      }
+    }
+  }
+  @media @smartphones {
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 0;
+    background: white;
+    .quickstart-text {
+      width: 80%;
+      margin: 0 auto;
+      float: none;
+      .section-title,
+      .section-description {
+        color: black;
+      }
+    }
+    .quickstart-content {
+      width: 100%;
+      padding: 1rem 0;
+      white-space: nowrap;
+      overflow-x: scroll;
+      .quickstart-box {
+        width: 15rem;
+        margin: 0 1rem 0 0;
+        padding-top: 5rem;
+        // background-color: @blue-grey;
+        // border: 1px solid darken( @blue-grey, 10% );
+        display: inline-block;
+        float: none;
+
+        &:hover {
+          background-color: @grey;
+        }
+        &:nth-child( 1 ) {
+          margin-left: 10%;
+        }
+        .quickstart-box-icon,
+        .quickstart-box-name,
+        .quickstart-box-subtext,
+        .quickstart-box-cta {
+          // color: black;
+        }
+      }
+    }
+  }
+}
+/*=====  End of QUICKSTART SECTION  ======*/
+
+/*======================================
+=            ACTIONS GUIDES SECTION    =
+======================================*/
+
+.docs-actions-guides {
+  position: relative;
+  overflow: hidden;
+  padding: @space--4x 10%;
+  clear: both;
+  .docs-action-guides-content {
+    position: relative;
+    overflow: hidden;
+    .actions-guide-title {
+      .text-title-h2();
+      margin-top: @space--10x;
+      position: relative;
+      overflow: hidden;
+    }
+    .actions-guide-text {
+      .text-normal();
+      color: @dark-grey;
+      position: relative;
+      overflow: hidden;
+      padding-top: @space--double;
+      max-width: 50rem;
+    }
+  }
+  .docs-action-guides-card {
+    position: relative;
+    //overflow: hidden;
+    padding: @space--4x 0;
+    width: 100%;
+    a {
+      color: inherit;
+    }
+
+    .guide-card {
+      width: 30%;
+      position: relative;
+      overflow: hidden;
+      float: left;
+      margin-right: 3%;
+      padding: @space--4x;
+      transition: 0.4s all ease-in-out;
+      cursor: pointer;
+      border-radius: 4px;
+      //border: 1px solid @grey;
+      .card-content {
+        position: relative;
+        overflow: hidden;
+        z-index: 2;
+        .card-content-title {
+          .text-normal();
+          padding-bottom: @space;
+          margin-bottom: @space;
+          border-bottom: 1px solid @purple--dark;
+          color: @purple--dark;
+          font-weight: 500;
+          position: relative;
+          overflow: hidden;
+        }
+        .card-content-text {
+          .text-small();
+          padding-bottom: @space--double;
+          color: @dark-grey;
+          position: relative;
+          overflow: hidden;
+        }
+        .card-content-cta {
+          .text-smallcaps-s();
+          position: relative;
+          overflow: hidden;
+          color: @purple--dark;
+        }
+      }
+      &:first-child {
+        margin-left: -@space--4x;
+      }
+      &:hover {
+        box-shadow: 0 0 20px @shadow ;
+        transform: scale( 1.01 ) translateX(10px);
+      }
+    }
+  }
+  @media @smartphones {
+    padding: @space--double 10%;
+    .docs-action-guides-content {
+      width: 100%;
+      margin-top: @space--double;
+    }
+    .docs-action-guides-card {
+      display: none;
+    }
+  }
+}
+
+/*=====  End of ACTIONS GUIDES SECTION  ======*/
+
+/*=========================================
+=            TUTORIALS SECTION            =
+=========================================*/
+.docs-tutorials {
+  position: relative;
+  overflow: hidden;
+  padding: @space--4x 10%;
+  margin-top: @space--10x;
+  clear: both;
+  .tutorials-header {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    width: 50%;
+    .tutorials-title {
+      .text-title-h2();
+      position: relative;
+      overflow: hidden;
+    }
+    .tutorials-description {
+      .text-normal();
+      color: @dark-grey;
+      padding-top: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .tutorials-cta {
+      display: none;
+      margin-top: 1rem;
+      .text-smallcaps-s();
+      color: black;
+    }
+  }
+  .tutorials-content {
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 0;
+    width: 100%;
+    .tutorial-box {
+      width: 22.5%;
+      float: left;
+      margin-right: 2.5%;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+      background-color: white;
+      border: 1px solid darken( @blue-grey, 5% );
+      color: black;
+      transition: 0.4s all ease-in-out;
+      &:hover {
+       box-shadow : 0 0 20px 2px @shadow;
+       .tutorial-box-image {
+        img {
+          transform : scale(1.1) translate(-45%, -45%);
+        }
+       }
+       .tutorial-box-content {
+        .tutorial-box-title {
+          opacity: 1;
+        }
+       }
+      }
+      .tutorial-box-image {
+        width: 100%;
+        height: 10rem;
+        position: relative;
+        overflow: hidden;
+        img {
+          min-height: 100%;
+          min-width: 100%;
+          max-width: 150%;
+          max-height: 150%;
+          display: block;
+          position: relative;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          transition: 0.5s all ease-in-out;
+        }
+        position: relative;
+        height: 10rem;
+      }
+      .tutorial-box-content {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem;
+        .tutorial-box-title {
+          .text-normal();
+          position: relative;
+          height: 4.5em;
+          opacity: 0.6;
+        }
+        .tutorial-box-text {
+          display: none;
+          .text-small();
+          color: @dark-grey;
+        }
+        .tutorial-box-cta {
+          .text-smallcaps-s();
+          color: black;
+          margin-top: 1rem;
+          position: relative;
+        }
+
+      }
+    }
+  }
+  @media @smartphones {
+    padding: 0;
+    .tutorials-header {
+      width: 100%;
+      padding: 2rem 5% 0 10%;
+      .tutorials-cta {
+        display: block;
+        color: @green;
+      }
+    }
+    .tutorials-content {
+      white-space: nowrap;
+      overflow-x: scroll;
+      .tutorial-box {
+        display: inline-block;
+        width: 60%;
+        border-radius: 6px;
+        box-shadow: 0 0 30px @shadow;
+        float: none;
+        white-space: normal;
+        margin-left: @space--double;
+        margin-right: 0;
+        .tutorial-box-image {
+          display: block
+        }
+        .tutorial-box-content {
+          padding: @space--double;
+          .tutorial-box-title {
+            color: @black;
+            font-size: 1rem;
+          }
+          .tutorials-box-text {
+            .text-small();
+            color: @dark-grey;
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+/*=====  End of TUTORIALS SECTION  ======*/
+
+
+/*=============================================
+=            API REFERENCE SECTION            =
+=============================================*/
+.docs-api {
+  position: relative;
+  overflow: hidden;
+  padding: 7.5rem 5%;
+  background-color: @grey--light;
+  .api-header {
+    position: relative;
+    overflow: hidden;
+    width: 20%;
+    float: left;
+    .header-title {
+      .text-title-h3();
+      position: relative;
+      overflow: hidden;
+    }
+    .header-description {
+      .text-small();
+      color: @dark-grey;
+      padding-top: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .header-cta {
+      margin-top: 1rem;
+      color: black;
+      float: left;
+      .button--small(@purple, white);
+      width: 250px;
+    }
+    .header-subcta {
+      float: left;
+      margin-top: 1rem;
+      .subcta-logo {
+        height: 3rem;
+        position: relative;
+        display: inline-block;
+        padding-right: @space;
+        img {
+          height: 3rem;
+        }
+      }
+      .subcta-text {
+        .text-smallcaps-s();
+        display: inline-block;
+        color: @orange;
+        line-height: 3rem;
+        font-size: 0.7rem;
+      }
+    }
+  }
+  .api-content {
+    position: relative;
+    overflow: hidden;
+    float: right;
+    width: 70%;
+    .api-reference-column {
+      position: relative;
+      overflow: hidden;
+      width: 23%;
+      float: left;
+      margin-right: 2%;
+      .reference-column-name {
+        .text-normal();
+        font-weight: 700;
+      }
+      .reference-column-item-list {
+        position: relative;
+        overflow: hidden;
+        padding-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        .reference-column-item {
+          .text-normal();
+          padding-bottom: 0.5rem;
+          color: @dark-grey;
+          position: relative;
+          overflow: hidden;
+          &:hover {
+            color: @green;
+          }
+        }
+      }
+    }
+  }
+  @media @smartphones {
+    padding: 2rem 10%;
+    background: white;
+    border: none;
+    .api-header {
+      width: 100%;
+      .header-cta {
+      }
+    }
+    .api-content {
+      width: 100%;
+      display: none;
+      .api-reference-column {
+        width: 100%;
+      }
+    }
+  }
+
+}
+
+/*=====  End of API REFERENCE SECTION  ======*/
+
+/*===========================================
+=            SAMPLE APPS SECTION            =
+===========================================*/
+
+.docs-sample-apps {
+  position: relative;
+  overflow: hidden;
+  padding: @space--4x 10%;
+  .sa-header {
+    position: relative;
+    overflow: hidden;
+    width: 25%;
+    float: left;
+    .sa-title {
+      .text-title-h3();
+      position: relative;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .sa-description {
+      .text-normal();
+      color: @dark-grey;
+      padding-top: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .sa-cta {
+      .text-smallcaps-s();
+      position: relative;
+      overflow: hidden;
+      clear: both;
+      margin-top: 1rem;
+      color: black;
+      float: left;
+      &:hover {
+        color: @green;
+      }
+    }
+  }
+  .sa-content {
+    position: relative;
+    overflow: hidden;
+    width: 70%;
+    float: right;
+    padding: 2rem 0;
+    .sa-item {
+      width: 45%;
+      position: relative;
+      overflow: hidden;
+      float: left;
+      margin: 0 2.5% 2rem 2.5%;
+      transition: 0.4s all ease-in-out;
+      border-radius: 6px;
+      background: white;
+      border-radius: 4px;
+      border: 1px solid darken( @blue-grey, 10% );
+
+      .sa-item-content {
+        position: relative;
+        overflow: hidden;
+        padding: 2rem 2rem 1rem 2rem;
+        .sa-title {
+          .text-normal();
+          color: darken( @dark-grey, 10% );
+          font-weight: 500;
+          position: relative;
+        }
+        .sa-description {
+          .text-small();
+          position: relative;
+          overflow: hidden;
+          height: 4.5em;
+          list-style: 1.5;
+          color: @dark-grey;
+        }
+
+      }
+
+      .sa-cta {
+        .text-smallcaps-s();
+        position: relative;
+        overflow: hidden;
+        transition: 0.5s all ease-in-out;
+        .sa-cta-label {
+          display: block;
+          padding: 1rem;
+          width: 50%;
+          float: left;
+          cursor: pointer;
+          color: @dark-grey;
+          text-align: center;
+          border-top: 1px solid darken( @blue-grey, 10% );
+          &:hover {
+            background: @purple;
+            color: white;
+          }
+          &:nth-child( 2n ) {
+            border-left: 1px solid darken( @blue-grey, 10% );
+          }
+        }
+      }
+      &:hover {
+        box-shadow : 0 0 20px 1px @shadow;
+        transform : scale(1.01);
+      }
+    }
+  }
+  @media @smartphones {
+    padding: 2rem 10%;
+    .sa-header {
+      width: 100%;
+      .sa-cta {
+        color: @green;
+      }
+    }
+    .sa-content {
+      width: 100%;
+      padding: 1rem 0;
+      display: none;
+      .sa-item {
+        width: 100%;
+        .sa-title {
+          padding-bottom: 0;
+          color: black;
+        }
+      }
+    }
+  }
+
+}
+
+/*=====  End of SAMPLE APPS SECTION  ======*/
+
+
+/*===================================
+=            SUPPORT BOX            =
+===================================*/
+
+.support-box-container {
+  position: relative;
+  overflow: hidden;
+  padding: 0 10% 2rem;
+  .ht-live-box,
+  .get-slack-box {
+    width: 47.5%;
+    position: relative;
+    overflow: hidden;
+    float: left;
+    border-radius: 4px;
+    .support-box-image {
+      width: 35%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      overflow: hidden;
+      img {
+        max-width: 90%;
+        margin: 0 auto;
+        display: block;
+        position: relative;
+      }
+    }
+    .support-box-content {
+      position: relative;
+      overflow: hidden;
+      width: 60%;
+      float: right;
+      padding: 2rem 1rem;
+      .support-box-content-title {
+        .text-normal();
+        font-weight: 700;
+      }
+      .support-box-content-description {
+        .text-small();
+        opacity: 0.5;
+      }
+      .support-box-content-cta {
+        position: relative;
+        overflow: hidden;
+        width: 200px;
+        margin-top: 1rem;
+      }
+    }
+  }
+  .ht-live-box {
+    margin-right: 5%;
+    background: rgba( 122, 118, 155, 0.1 );
+    color: @purple;
+    .support-box-content {
+      .support-box-content-cta {
+        .button--small( @purple, white  );
+        display: flex;
+        width: 250px;
+        padding: 4px;
+        background: transparent;
+        &:hover {
+          background: transparent;
+          cursor: default;
+        }
+        .app-store {
+          margin-right: 24px;
+        }
+      }
+    }
+  }
+  .get-slack-box {
+    color: #dfa22f;
+    background: rgba(223, 162, 47, 0.1);
+    .support-box-content-cta {
+      a {
+        color: white;
+      }
+      .button--small( #dfa22f, white  );
+    }
+  }
+  @media @smartphones {
+    padding: 2rem 0;
+    .ht-live-box,
+    .get-slack-box {
+      width: 100%;
+      margin-bottom: 2rem;
+      padding: 0 1rem;
+      .support-box-image {
+        width: 25%;
+        display: none;
+      }
+      .support-box-content {
+        width: 100%;
+        .support-box-content-description {
+
+        }
+      }
+    }
+  }
+}
+
+/*=====  End of SUPPORT BOX  ======*/
+
+.docs-feedback-box {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  width: 50px;
+  height: 50px;
+  background-color: @green;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  box-shadow : 0 0 40px 1px lighten( @green, 30% );
+  cursor: pointer;
+}
+
+.typeform-popup-wrapper {
+  width: 500px !important;
+}
+
+

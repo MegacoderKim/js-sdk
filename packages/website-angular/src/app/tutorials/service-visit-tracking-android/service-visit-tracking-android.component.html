@@ -1,0 +1,454 @@
+<div class="splash">
+  <div class="splasher w-container">
+    <div class="claim">Build location tracking of at-home service visits in Android</div><img sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" [src]="images.stockPhoto1">
+    <div class="answer tutorial">
+      <br>Forward thinking services businesses around the world are digitally connecting freelance and inhouse service professionals with local consumers. Services like home healthcare, beauty, auto mechanic, laundry, cleaning services, handyman, pickup and delivery are booked with the tap of a button and serviced by professionals who use an app to manage the visits.
+      <br>
+      <br>Live location of such service professionals can be useful to assign jobs based on location, track the visit, measure productivity, share location with customers for a better product experience and track miles for expense management. Service aggregators around the world and across industries use HyperTrack to build live location use cases.
+      <br>
+      <br>In this tutorial, we will talk about how to build:</div>
+    <ul class="bullets">
+      <li>
+        <div class="bullet tutorial">Live visit tracking <strong>widgets</strong> that integrate with your customer service and operations dashboards</div>
+      </li>
+      <li>
+        <div class="bullet tutorial">Live visit <strong>tracking experiences</strong> that integrate with your product experience</div>
+      </li>
+      <li>
+        <div class="bullet tutorial"><strong>Location-based assignment</strong> of jobs to nearest available service professionals</div>
+      </li>
+      <li>
+        <div class="bullet tutorial"><strong>Mileage tracking</strong> for expense management and logging of routes traveled</div>
+      </li>
+    </ul>
+    <div class="answer tutorial">If you would rather watch a video, we’ve put that together as well!</div>
+    <div class="w-embed w-video" style="padding-top: 56.17021276595745%;">
+      <iframe class="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Ff0t-qAZcirA%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Df0t-qAZcirA&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Ff0t-qAZcirA%2Fhqdefault.jpg&key=c4e54deccf4d4ec997a64902e9a30300&type=text%2Fhtml&schema=youtube" scrolling="no" frameborder="0" allowfullscreen=""></iframe>
+    </div>
+  </div>
+</div>
+<div class="active">
+  <div class="dasher">
+    <div class="dashboard w-container">
+      <div class="gothamheader">PREREQUISITE</div>
+      <div class="explainer">Make sure you have plugged in the Android SDK into your service professional app</div><a class="butt slim w-button" href="https://dashboard.hypertrack.com/onboarding/sdk-android">PLUG IN THE SDK</a>
+      <div class="dashvideo" data-ix="scroll1"></div>
+    </div>
+  </div>
+  <div>
+    <div class="splasher w-container">
+      <div class="gothamheader">IMPLEMENTATION</div>
+      <div class="explainer">Follow this 6-step guide to get your use case implemented. We have implemented <span class="text-span-7"><a href="https://github.com/hypertrack/service-visit-example-android" target="_blank" class="link-7">an example app</a></span> using this tutorial. It's open-sourced - so go ahead and fork it, add to it, test it, and even use it as the base for your own thing!</div>
+      <div class="explainer"></div>
+      <div class="faqs w-clearfix">
+        <div class="faq">
+          <div class="q"><img class="arrow" [src]="images.arrow">
+            <div class="jkhkhk question">Developer Evangelist</div>
+            <div class="question">Step 1: Set user</div>
+          </div>
+          <div class="reveal">
+            <div class="answer tutorial">The very first step is to set user in your app. This could be done when the service professional logs in to the app.&nbsp;</div>
+            <div class="embedblack w-embed">
+              <pre class="prettyprint lang-java">
+    /**
+     * Call this method to attempt login. This method will create a User on HyperTrack Server
+     * and configure the SDK using this generated UserId.
+     */
+    private void attemptDriverLogin() {{ '{' }}
+        // Show Login Button loader
+        loginBtnLoader.setVisibility(View.VISIBLE);
+        // Get service professional details, if provided
+        final String name = driverNameText.getText().toString();
+        final String phoneNumber = driverPhoneNumberText.getText().toString();
+        // PhoneNumber is used as the lookup_id here but you can specify any other entity as the lookup_id.
+        final String lookupId = phoneNumber;
+        /**
+         * Create a User on HyperTrack Server here to login your driver & configure HyperTrack SDK with
+         * this generated HyperTrack UserId.
+         * OR
+         * Implement your API call for Driver Login and get back a HyperTrack UserId from your API Server
+         * to be configured in the HyperTrack SDK.
+         *
+         * @NOTE:
+         * Specify service professional name, phone number and a lookup_id denoting your service professional's internal id.
+         * PhoneNumber is used as the lookup_id here but you can specify any other entity as the lookup_id.
+         */
+        HyperTrack.createUser(name, phoneNumber, lookupId, new HyperTrackCallback() {{ '{' }}
+            @Override
+            public void onSuccess(@NonNull SuccessResponse successResponse) {{ '{' }}
+                // Hide Login Button loader
+                loginBtnLoader.setVisibility(View.GONE);
+                User user = (User) successResponse.getResponseObject();
+                // Handle createUser success here, if required
+                // HyperTrack SDK auto-configures UserId on createUser API call, so no need to call
+                // HyperTrack.setUserId() API
+                // On DriverLogin success
+                onDriverLoginSuccess();
+            }
+            @Override
+            public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+                // Hide Login Button loader
+                loginBtnLoader.setVisibility(View.GONE);
+                Toast.makeText(LoginActivity.this, R.string.login_error_msg + " " + errorResponse.getErrorMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+</pre>
+            </div>
+          </div>
+        </div>
+        <div class="faq">
+          <div class="q"><img class="arrow" [src]="images.arrow">
+            <div class="jkhkhk question">Developer Evangelist</div>
+            <div class="question">Step 2: Start tracking</div>
+          </div>
+          <div class="reveal">
+            <div class="answer tutorial">To start tracking the service professional, use the <span class="methodname">startTracking</span> method. Call this method when the service professional logs in to the app. Alternatively, you can use AlarmManager to call this method at a predefined time, say at 7am everyday.</div>
+            <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    /**
+     * Call this method when service professional has successfully logged in
+     */
+    private void onDriverLoginSuccess() {{ '{' }}
+        // To start tracking your service professional, call HyperTrack's startTracking API
+        HyperTrack.startTracking(new HyperTrackCallback() {{ '{' }}
+            @Override
+            public void onSuccess(@NonNull SuccessResponse successResponse) {{ '{' }}
+                // Hide Login Button loader
+                loginBtnLoader.setVisibility(View.GONE);
+                // Handle startTracking API response
+                SharedPreferenceStore.setDriverId(LoginActivity.this, HyperTrack.getUserId());
+                Toast.makeText(LoginActivity.this, R.string.login_success_msg, Toast.LENGTH_SHORT).show();
+                // Start Driver Session by starting MainActivity
+                TaskStackBuilder.create(LoginActivity.this)
+                        .addNextIntentWithParentStack(new Intent(LoginActivity.this, MainActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        .startActivities();
+                finish();
+            }
+            @Override
+            public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+                // Hide Login Button loader
+                loginBtnLoader.setVisibility(View.GONE);
+                Toast.makeText(LoginActivity.this, R.string.login_error_msg + " " + errorResponse.getErrorMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+</pre>
+            </div>
+            <div class="answer tutorial">Keep the SDK on throughout the day. Don’t worry about the battery - our SDK uses only 5-10 mAh per hour of tracking .</div>
+            <div class="tutorialcheck">
+              <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+                <div class="answer faqq test"><strong>Nice job!</strong> See live location of that service professional on the HyperTrack dashboard</div>
+              </a>
+            </div><img class="image" sizes="(max-width: 479px) 80vw, (max-width: 991px) 100vw, 700px" [src]="images.step1">
+            <div class="tutorialcheck">
+              <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+                <div class="answer faqq test">You can now use the nearest-N API&nbsp;to get available service professionals nearest (by time) to the expected location of service.</div>
+              </a>
+            </div>
+            <div class="dashing margin w-embed">
+              <video width="100%" height="100%" autoplay="" loop="">
+                <source src="https://fat.gfycat.com/CompetentGratefulAlpineroadguidetigerbeetle.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="faq">
+          <div class="q"><img class="arrow" [src]="images.arrow">
+            <div class="jkhkhk question">Developer Evangelist</div>
+            <div class="question">Step 3: Create &amp; assign visit action</div>
+          </div>
+          <div class="reveal">
+            <div class="answer tutorial">For every service visit that you want to track, create and assign a <strong>Visit</strong> action to the service professional. Call <span class="methodname">createAndAssignAction</span> method when you assign the service visit to a service professional. In case your workflow requires the service professional to accept a visit before confirming the visit, call the above method when the service professional taps the ACCEPT button.
+              <br>
+              <br>Most developers want to additionally track if the service professional was at the expected service location throughout the duration of providing service, and the location where the service was marked complete. To do so, create and assign a <strong>Stopover</strong> action to the service professional. Call this method at the exact same time as the above one.
+              <br>
+              <br>Use following parameters to build your Action object.</div>
+            <div class="row-5 w-row">
+              <div class="column w-col w-col-2 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Parameter</div>
+              </div>
+              <div class="column-2 w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Action #1 (Visit)</div>
+              </div>
+              <div class="column-3 w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Action #2 (Stopover)</div>
+              </div>
+            </div>
+            <div class="row-2 w-row">
+              <div class="w-col w-col-2 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">expected_place</div>
+              </div>
+              <div class="w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">The Place object where the action will be performed.</div>
+              </div>
+              <div class="w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Same as that for action #1</div>
+              </div>
+            </div>
+            <div class="row-4 w-row">
+              <div class="w-col w-col-2 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">type</div>
+              </div>
+              <div class="w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Visit</div>
+              </div>
+              <div class="w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Stopover</div>
+              </div>
+            </div>
+            <div class="row-3 w-row">
+              <div class="w-col w-col-2 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">lookup_id</div>
+              </div>
+              <div class="w-col w-col-5 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">An id that you can specify based on your internal id of that service visit. This will help you search for the service visit on HyperTrack dashboard, and get custom views for the specific service visit.</div>
+              </div>
+              <div class="w-col w-col-5 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">Same as that for action #1</div>
+              </div>
+            </div>
+            <div class="row-3 w-row">
+              <div class="w-col w-col-2 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">scheduled_at</div>
+              </div>
+              <div class="w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">The scheduled time by when the service professional is supposed to reach the customer.</div>
+              </div>
+              <div class="w-col w-col-5 w-col-medium-4 w-col-small-4 w-col-tiny-4">
+                <div class="answer table">The scheduled time by when the service professional is supposed to complete the service.</div>
+              </div>
+            </div>
+            <div class="embedblack w-embed">
+              <div class="slide w-slide">
+                <div class="testi">
+                  <a class="nolink w-inline-block" data-ix="new-interaction">
+                    <img class="popup" src="http://www.freeiconspng.com/uploads/copy-icon--3.png">
+                  </a>
+                </div>
+              </div>
+              <pre class="prettyprint lang-java">
+ /**
+     * This method creates and assigns VISIT and STOPOVER type actions to the current user on
+     * HyperTrack API Server for the current job's orderID.
+     *
+     * @param orderID Internal order_id which maps to the current job being performed
+     */
+    private void createActionsForJob(String orderID) {{ '{' }}
+        /**
+         * Construct a place object for Action's expected place
+         *
+         * @NOTE: Either the coordinates for the Service Visit's location
+         * or it's address can be used to construct the expected place for the Action
+         */
+        Place expectedPlace = new Place().setLocation(28.56217, 77.16160)
+                .setAddress("HyperTrack, Vasant Vihar")
+                .setName("HyperTrack");
+        /**
+         * Create ActionParams object specifying the Visit Action parameters including ExpectedPlace,
+         * ExpectedAt time and Lookup_id.
+         */
+        ActionParams visitTypeActionParams = new ActionParamsBuilder()
+                .setExpectedPlace(expectedPlace)
+                .setExpectedAt(new Date())
+                .setType(Action.ACTION_TYPE_VISIT)
+                .setLookupId(orderID)
+                .build();
+        /**
+         * Call createAndAssignAction to assign Visit action to the current user configured
+         * in the SDK using the ActionParams created above.
+         */
+        HyperTrack.createAndAssignAction(visitTypeActionParams, new HyperTrackCallback() {{ '{' }}
+            @Override
+            public void onSuccess(@NonNull SuccessResponse response) {{ '{' }}
+                // Handle createAndAssignAction API success here
+                Action action = (Action) response.getResponseObject();
+                SharedPreferenceStore.setVisitActionId(MainActivity.this, action.getId());
+                /**
+                 * The VISIT Action just created has the tracking url which can be shared with your customers.
+                 * This will enable the customer to live track the Service professional.
+                 *
+                 * @NOTE You can now share this tracking_url with your customers via an SMS
+                 * or via your Customer app using in-app notifications.
+                 */
+                String trackingUrl = action.getTrackingURL();
+                /**
+                 * Yay! VISIT Type Action has been successfully created and assigned to current user.
+                 * Now, we need to createAndAssignAction for STOPOVER Type Action using same
+                 * expected place and same lookup_id.
+                 */
+                assignStopoverActionForJob(action.getExpectedPlace().getId(), action.getLookupID());
+            }
+            @Override
+            public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+                if (mProgressDialog != null) {{ '{' }}
+                    mProgressDialog.dismiss();
+                }
+                Toast.makeText(MainActivity.this, "Action assigned failed: " + errorResponse.getErrorMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    /**
+     * This method creates and assigns STOPOVER type action using given expectedPlaceId and lookup_id
+     *
+     * @param expectedPlaceID  ExpectedPlace Id created on HyperTrack API Server for the VISIT type action.
+     * @param lookupID         Internal order_id which maps to the current job being performed.
+     */
+    private void assignStopoverActionForJob(String expectedPlaceID, String lookupID) {{ '{' }}
+        /**
+         * Create ActionParams object specifying the Stopover Action parameters including
+         * already created ExpectedPlaceId, ExpectedAt time and same Lookup_id as for the Visit type action.
+         */
+        ActionParams stopOverTypeActionParams = new ActionParamsBuilder()
+                .setExpectedPlaceId(expectedPlaceID)
+                .setExpectedAt(new Date())
+                .setType(Action.ACTION_TYPE_STOPOVER)
+                .setLookupId(lookupID)
+                .build();
+        /**
+         * Call createAndAssignAction to assign Stopover action to the current user configured
+         * in the SDK using the ActionParams created above.
+         */
+        HyperTrack.createAndAssignAction(stopOverTypeActionParams, new HyperTrackCallback() {{ '{' }}
+            @Override
+            public void onSuccess(@NonNull SuccessResponse response) {{ '{' }}
+                if (mProgressDialog != null) {{ '{' }}
+                    mProgressDialog.dismiss();
+                }
+                // Handle createAndAssignAction API success here
+                Action action = (Action) response.getResponseObject();
+                SharedPreferenceStore.setStopoverActionId(MainActivity.this, action.getId());
+                Toast.makeText(MainActivity.this, "Job (id = " + action.getId() + ") accepted successfully.",
+                        Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+                if (mProgressDialog != null) {{ '{' }}
+                    mProgressDialog.dismiss();
+                }
+                Toast.makeText(MainActivity.this, "Action assigned failed: " + errorResponse.getErrorMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+</pre>
+            </div>
+            <div class="tutorialcheck">
+              <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+                <div class="answer faqq test"><strong>Voila!</strong>&nbsp;You now have your live visit tracking experience. Let your end customers live track this service visit using the trck.at URL that was generated for the visit action.</div>
+              </a>
+            </div><img class="image" [src]="images.step2" width="250">
+            <div class="tutorialcheck">
+              <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+                <div class="answer faqq test">You also have a tracking widget specific to the LookUp ID that integrates with your customer service and operations dashboards. Embed this URL to see it come alive: https://dashboard.hypertrack.com/widget/actions;lookup_id=&lt;LOOKUP_ID&gt;?key=&lt;YOUR_SECRET_KEY&gt;</div>
+              </a>
+            </div>
+            <div class="image w-embed">
+              <video width="100%" height="100%" autoplay="" loop="">
+                <source src="https://fat.gfycat.com/AdorableWhiteHadrosaurus.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="faq">
+          <div class="q"><img class="arrow" [src]="images.arrow">
+            <div class="jkhkhk question">Developer Evangelist</div>
+            <div class="question">Step 4: Complete visit action</div>
+          </div>
+          <div class="reveal">
+            <div class="answer tutorial">When the service professional confirms that he/she has reached&nbsp;for the service visit (e.g., when he/she taps on START JOB button), call the <span class="methodname">completeAction</span> method for the visit action in our SDK.</div>
+            <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+// Complete action using actionId for the Visit Action that you created
+HyperTrack.completeAction(visitActionId);
+</pre>
+            </div>
+            <div class="tutorialcheck">
+              <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+                <div class="answer faqq test"><strong>Wohoo!</strong> You now have mileage tracking for this visit. Call the mileage API for the visit action to get accurate distance travelled by the service professional from the time of assignment to the time when he/she reached the service place.</div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="faq">
+          <div class="q"><img class="arrow" [src]="images.arrow">
+            <div class="jkhkhk question">Developer Evangelist</div>
+            <div class="question">Step 5: Complete stopover action</div>
+          </div>
+          <div class="reveal">
+            <div class="answer tutorial">When the service professional confirms that he/she has completed the service visit (e.g., when he/she taps on END JOB button), call the <span class="methodname">completeAction</span> method for the stopover action in our SDK.</div>
+            <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+// Complete action using actionId for the Stopover Action that you created
+HyperTrack.completeAction(stopoverActionId));
+</pre>
+            </div>
+            <div class="tutorialcheck">
+              <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+                <div class="answer faqq test"><strong>Nicely done!</strong>&nbsp;You have now logged the routes traveled by your service professionals. You can replay the entire service visit from assignment to the start and&nbsp;end of visit any time in the future.</div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="faq">
+          <div class="q"><img class="arrow" [src]="images.arrow">
+            <div class="jkhkhk question">Developer Evangelist</div>
+            <div class="question">Step 6: Stop tracking</div>
+          </div>
+          <div class="reveal">
+            <div class="answer tutorial">To stop tracking the user, use the <span class="methodname">stopTracking </span>method. Call this method when the service professional logs out of the app. Alternatively, you can use AlarmManager to call this method at a predefined time, say at 9pm everyday.</div>
+            <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+//Stop tracking a user
+HyperTrack.stopTracking();
+</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dasher">
+      <div class="dashboard w-container">
+        <div class="gothamheader">RECAP</div>
+        <div class="explainer">Yay! You just developed location tracking of at-home service visits in Android. Let’s do a recap of what all you built in the process.</div>
+        <ul class="bullets">
+          <li>
+            <div class="bullet tutorial"><strong>Live visit tracking widgets that integrate with your customer service and operations dashboards</strong>
+              <br>In your customer service dashboard, you would have a list of all live service visits. You now have a link that opens up a dashboard view for that service visit, and shows details of both the actions (visit &amp; stopover) that you created for that service visit.&nbsp;To embed the widget, use the following URL:&nbsp;<span><span><span class="text-span-3">https://dasboard.hypertrack.com/widget/actions;lookup_id=&lt;LOOKUP_ID&gt;?key=&lt;YOUR_SECRET_KEY&gt;</span></span>
+                </span>
+            </div>
+          </li>
+          <li>
+            <div class="bullet tutorial"><strong>Live visit tracking experiences that integrate with your product experience</strong>
+              <br>As soon as you create &amp; assign the visit action to your service professional, the API returns an unique <span class="text-span-4">trck.at</span> URL. Share this URL with your end customer (via text message or email) so that they can live track the service professional and know their real time ETA.
+              <br>You can also embed a native tracking experience within your end customer app by following <span><a href="https://docs.hypertrack.com/v3/tutorials/consumer/android/installing.html" class="link-5">this guide</a></span>, or customize the web tracking experience by following this guide.</div>
+          </li>
+          <li>
+            <div class="bullet tutorial"><strong>Location-based assignment of jobs to nearest available service professionals</strong>
+              <br>Use our <span><span class="text-span-5"><a href="https://docs.hypertrack.com/usecases/nearby.html" class="link-4"><span class="text-span-6">Nearest-N users API</span>
+                </a>
+                </span>
+                </span> to get service professionals who are closest (by time) to the expected location of service.</div>
+          </li>
+          <li>
+            <div class="bullet tutorial"><strong>Mileage tracking for expense management and logging of routes traveled</strong>
+              <br>Call the <span><a href="https://docs.hypertrack.com/v3/tutorials/mileage.html" class="link-3">mileage API</a></span> for the visit action to get accurate distance that was travelled by the service professional from the time of assignment to the time when he/she reached the service place. In case of customer complaints, visit HyperTrack dashboard and search for the service visit by searching for LookUp Id. Replay the entire journey of the service professional from the time of assignment to time when he/she started the job to time when he/she ended the job.</div>
+          </li>
+        </ul>
+        <div class="dashvideo" data-ix="scroll1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="footgreen greener">
+    <div class="w-container">
+      <div class="bottom"><img class="bottomtron" [src]="images.animatedGroup">
+        <div class="gothamheader" data-ix="scroll1">How simple was that</div>
+        <div class="ex2 explainer">Just a few steps and an hour, and you are now able to track live location of your service professionals.&nbsp;
+          <br>
+          <br>We are excited to see what live location feature you build in your product. Do ping us at help@hypertrack.io once you build one, and we would love to feature your app on our blog!</div>
+      </div>
+    </div>
+  </div>
+</div>

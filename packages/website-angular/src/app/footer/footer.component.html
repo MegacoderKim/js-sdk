@@ -1,0 +1,24 @@
+<div class="footer-v2">
+  <div class="footer-logo-section">
+    <div class="logo">
+      <img src="{{images.logo}}" alt="Location stack by HyperTrack">
+    </div>
+    <div class="footer-tagline">Imagine . Build . Repeat</div>
+    <div class="social-icons">
+      <a href="https://www.facebook.com/hypertrack"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+      <a href="https://twitter.com/hypertrack"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+      <a href="https://github.com/hypertrack"><i class="fa fa-github" aria-hidden="true"></i></a>
+      <a href="https://medium.com/hypertrack"><i class="fa fa-medium" aria-hidden="true"></i></a>
+    </div>
+    <a href="mailto:help@hypertrack.com"><div class="footer-get-in-touch">GET IN TOUCH</div></a>
+  </div>
+  <div class="footer-nav">
+    <div class="footer-nav-column" *ngFor="let column of footerLinks">
+      <div class="footer-nav-column-name">{{column.name}}</div>
+      <div class="footer-nav-column-item-list">
+        <a *ngFor="let referenceRow of column.items" href="{{referenceRow.link}}"><div class="footer-nav-column-item emphasize" [class.emphasize]="referenceRow.isEmphasize">
+          {{referenceRow.label}}
+        </div></a>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="70px" height="70px" viewBox="0 0 70 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>UNFILLED</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="70" height="70" rx="4"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="70" height="70" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <polygon id="path-3" points="0.0933264605 30.9792 36.9609656 30.9792 36.9609656 0.0680711111 0.0933264605 0.0680711111 0.0933264605 30.9792"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-3-Copy-7" transform="translate(-1038.000000, -4742.000000)">
+            <g id="Group-50" transform="translate(0.000000, 3756.000000)">
+                <g id="Group-27" transform="translate(0.000000, 277.000000)">
+                    <g id="Group-48" transform="translate(0.000000, 409.000000)">
+                        <g id="Group-47">
+                            <g id="Group-30">
+                                <g id="Group-23" transform="translate(170.000000, 100.000000)">
+                                    <g id="UNFILLED" transform="translate(868.000000, 200.000000)">
+                                        <g id="Group-51">
+                                            <g id="Group-20-Copy-2">
+                                                <use id="Rectangle-2" stroke="#FFFFFF" mask="url(#mask-2)" stroke-linecap="square" opacity="0.5" xlink:href="#path-1"></use>
+                                                <g id="Group-45" transform="translate(17.000000, 25.000000)">
+                                                    <path d="M36.6916667,5.75605333 L25.01289,0.0408177778 C24.9598694,0.0148088889 24.9021443,0.00273777778 24.8444192,0.00124444444 C24.8406048,0.00112 24.8369175,0 24.8331031,0 C24.691079,0 24.5496907,0.0698133333 24.4731478,0.191395556 L17.2748041,11.64016 L25.3102887,24.4203556 L36.8036838,6.14071111 C36.8888729,6.00506667 36.8371237,5.82723556 36.6916667,5.75605333" id="Fill-47" fill="#FFFFFF"></path>
+                                                    <g id="Group-52" transform="translate(0.000000, 0.068569)">
+                                                        <mask id="mask-4" fill="white">
+                                                            <use xlink:href="#path-3"></use>
+                                                        </mask>
+                                                        <g id="Clip-49"></g>
+                                                        <polyline id="Fill-48" fill="#FFFFFF" mask="url(#mask-4)" points="13.4691443 7.54743111 13.4691443 19.88336 24.6726426 25.3660089 13.4691443 7.54743111"></polyline>
+                                                        <path d="M25.6514261,25.8376533 L35.9400962,30.8725511 C36.5015808,31.1473244 36.9609656,30.86944 36.9609656,30.2549333 L36.9609656,7.85045333 L25.6514261,25.8376533" id="Fill-50" fill="#FFFFFF" mask="url(#mask-4)"></path>
+                                                        <path d="M12.231488,5.74572444 L0.773948454,0.138755556 C0.675917526,0.09072 0.582463918,0.0680711111 0.498037801,0.0680711111 C0.377756014,0.0680711111 0.276037801,0.114364444 0.204453608,0.198862222 C0.134395189,0.281493333 0.0933264605,0.40096 0.0933264605,0.550417778 L0.0933264605,24.6212089 C0.0933264605,25.03088 0.39962543,25.51584 0.773948454,25.6990222 L11.3620515,30.8805156 C11.5091615,30.9525689 11.6492784,30.9866667 11.7759175,30.9866667 C12.1326942,30.9866667 12.382921,30.7164978 12.382921,30.2630222 L12.382921,5.98565333 C12.382921,5.88410667 12.3243058,5.79114667 12.231488,5.74572444" id="Fill-51" fill="#FFFFFF" mask="url(#mask-4)"></path>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

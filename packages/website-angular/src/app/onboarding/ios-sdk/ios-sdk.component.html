@@ -1,0 +1,153 @@
+<div class="ios-step-container" *ngIf="showTabContent('install')">
+  <div class="step-label">Install our SDK with CocoaPods </div>
+  <div class="language-switcher-container">
+    <div class="language-switcher">
+      <div class="code-language first"
+           [ngClass]="codeLanguage === 'swift' ? 'selected': ''"
+           (click)="selectLanguage('swift')"> Swift </div>
+      <div class="code-language last"
+           [ngClass]="codeLanguage === 'objectivec' ? 'selected': ''"
+           (click)="selectLanguage('objectivec')"> Obj-C </div>
+    </div>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-install-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 1)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-install-1'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('permissions')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('permissions')">
+  <div class="step-label"> Ask your users permission to access location </div>
+  <div class="language-switcher-container">
+    <div class="language-switcher">
+      <div class="code-language first"
+           [ngClass]="codeLanguage === 'swift' ? 'selected': ''"
+           (click)="selectLanguage('swift')"> Swift </div>
+      <div class="code-language last"
+           [ngClass]="codeLanguage === 'objectivec' ? 'selected': ''"
+           (click)="selectLanguage('objectivec')"> Obj-C </div>
+    </div>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('permissions', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-permissions-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="image-block-container">
+    <div class="image-block" (click)="openDocsLink('ios-permissions-1')">
+      <div class="image-icon-container">
+        <div class="image-icon">
+          <img [src]="images.settingsIcon" width="20px"/>
+        </div>
+        <div class="image-label">
+          Capabilities > Background Modes
+        </div>
+      </div>
+      <div class="image-container">
+        <img [src]="images.iosBackgroundMode">
+      </div>
+    </div>
+  </div>
+  <div class="image-block-container">
+    <div class="image-block" (click)="openDocsLink('ios-permissions-2')">
+      <div class="image-icon-container">
+        <div class="image-icon">
+          <img [src]="images.settingsIcon" width="20px"/>
+        </div>
+        <div class="image-label">
+          Info
+        </div>
+      </div>
+      <div class="image-container">
+        <img [src]="images.iosInfoPermissions">
+      </div>
+    </div>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('communication')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('communication')">
+  <div class="step-label"> Enable bidirectional communication between server and SDK using APNs.<br /><br /> If you don’t have APNs in your app, <a href="https://docs.moengage.com/v1.0/docs/apns-certificate-pem-file" target="_blank">follow this guide</a> for basic setup.</div>
+  <div class="language-switcher-container">
+    <div class="language-switcher">
+      <div class="code-language first"
+           [ngClass]="codeLanguage === 'swift' ? 'selected': ''"
+           (click)="selectLanguage('swift')"> Swift </div>
+      <div class="code-language last"
+           [ngClass]="codeLanguage === 'objectivec' ? 'selected': ''"
+           (click)="selectLanguage('objectivec')"> Obj-C </div>
+    </div>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('communication', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-communication-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="custom-block-container">
+    <div class="settings-block">
+      <div class="settings-label">
+        Dashboard > Settings
+      </div>
+      <div class="settings-detail">
+        Upload your APNs development and distribution certificates (.pem files) <a href="https://dashboard.hypertrack.com/settings" target="_blank">here</a>.
+      </div>
+    </div>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('tracking')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('tracking')">
+  <div class="step-label"> Create a HyperTrack user and start tracking! </div>
+  <div class="language-switcher-container">
+    <div class="language-switcher">
+      <div class="code-language first"
+           [ngClass]="codeLanguage === 'swift' ? 'selected': ''"
+           (click)="selectLanguage('swift')"> Swift </div>
+      <div class="code-language last"
+           [ngClass]="codeLanguage === 'objectivec' ? 'selected': ''"
+           (click)="selectLanguage('objectivec')"> Obj-C </div>
+    </div>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('tracking', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-tracking-0'"
+      [troubleshootLink]="troubleshootLink"
+    >
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('location')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="code-block">
+  <div class="code-file-container">
+    <div class="code-file-icon">
+      <img [src]="images.fileIcon" width="20px"/>
+    </div>
+    <div class="code-file-name" (click)="openDocsLink(codeBlockKey)">
+      {{codeContent.fileName}}
+    </div>
+    <div class="code-file-copy-container">
+      <a class="code-file-help" [ngClass]="troubleshootLink ? '' : 'hidden'" [href]="troubleshootLink" target="_blank">
+        <img class="code-file-help-icon" [ngClass]="codeBlockKey" [src]="images.helpIcon"/>
+      </a>
+      <span class="code-file-copy" [ngClass]="codeBlockKey"> {{showCopiedMessage ? 'Copied!': 'Copy'}}</span>
+    </div>
+  </div>
+  <div class="code-main-container" (click)="openExpandedCodeBlock()">
+    <div class="code-container"
+         [innerHTML]="codeElement | safeHtml">
+    </div>
+    <div class="code-expand-icon">
+      <i class="fa fa-expand" aria-hidden="true"></i>
+    </div>
+  </div>
+</div>

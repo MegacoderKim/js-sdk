@@ -1,0 +1,57 @@
+<div class="splash">
+  <div class="splasher w-container">
+    <div class="claim">Join Us</div>
+    <div class="ex3 explainer jobb">
+      <h4> Our mission: Imagine. Build. Repeat. </h4>
+      <p>Help developers build anything they can imagine with user movement.</p>
+      <br />
+      <h4> The challenge: From location to movement.</h4>
+      <p>Developers want to upgrade from location-based services to movement-based services. HyperTrack is accelerating that move.
+      </p>
+      <p>The stack for movement looks quite different from that of location. Mobile OS and sensors provide location, activity and health data. Keeping pace with new devices and systems is hard. Striking the right balance between accuracy, battery efficiency and real-timeness is hard. Packaging the movement data into the right abstractions to integrate into the application is hard. Taming the expensive and complex world of maps to consume this data is hard. We solve these problems so developers can focus on what is core to their business.
+      </p>
+      <p>All this requires expertise and infrastructure on the device, cloud and maps. It gets complex to build a feature that uses all three stacks in real-time. It gets even harder to scale these stacks as device capabilities change every 6 months, location data blows up in size very quickly on the cloud and the cost of maps grows opaquely.
+      </p>
+      <h4> Our values: Simple. Useful. Automatic. </h4>
+      <p>Developers rely on us to absorb the complexity of the problem and keep it simple for them. Nothing gives us more pleasure than customers who find us useful. We strive to anticipate our customer needs and make it automatically available to them without them having to do a thing.
+      </p>
+      <h4> Prerequisites to join us </h4>
+      <p>You must be a <b>hands-on developer</b>. Technology is our product. And it is self-serve. So there is only one way to contribute- by writing code. We move fast and learn quickly. Each of us deploys to production twice daily on average.
+      </p>
+      <p>You must <b>obsess about our customers</b> - developers. They are using our building blocks in a larger stack with lot more considerations and complexities, to build applications for their teams, customers, users and partners. Empathy for their world is required for our existence.
+      </p>
+      <p>You must be <b>entrepreneurial</b>. Most of us have started our own companies before joining HyperTrack. We enjoy our autonomy and understand that it comes with accountability towards our internal and external customers. Each of us replies to customer support chats and phone calls, makes promises and then keeps them. We are a well-funded early-stage startup of about a dozen developers, that is creating a new category and industry. We take hard decisions, make mistakes, learn from them and try to not repeat them.
+      </p>
+      <a href="mailto:knock.knock@hypertrack.com"><div class="jobs-apply-button">Join our team</div></a>
+      <div class="job-list-title">Our current job openings</div>
+      <div class="faqs">
+        <div class="faq" *ngFor="let job of jobs; let index = index" (click)="onJobRevealToggle(index)">
+          <div class="q">
+            <img class="arrow" [src]="images.arrow" [ngClass]="job.reveal ? 'arrow-open' : 'arrow-close'" />
+            <div class="question">{{job.title}}</div>
+          </div>
+          <div class="loco">{{job.location}}</div>
+          <div class="reveal" [ngClass]="job.reveal ? 'reveal-open' : 'reveal-close'">
+            <div class="answer" [innerHTML]="job.description | safeHtml"></div>
+            <div class="response" *ngIf="job.responsibilities.length > 0">responsibilities</div>
+            <ul class="bullets" *ngIf="job.responsibilities.length > 0">
+              <li *ngFor="let responsibility of job.responsibilities">
+                <div class="bullet">
+                  {{responsibility}}
+                </div>
+              </li>
+            </ul>
+            <div class="response" *ngIf="job.requirements.length > 0">Requirements</div>
+            <ul class="bullets" *ngIf="job.requirements.length > 0">
+              <li *ngFor="let requirement of job.requirements">
+                <div class="bullet">{{requirement}}</div>
+              </li>
+            </ul>
+            <a href="mailto:knock.knock@hypertrack.com"><div class="jobs-apply-button">Join our team</div></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

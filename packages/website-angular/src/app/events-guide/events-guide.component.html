@@ -1,0 +1,488 @@
+<div class="actions-guide-container">
+  <div class="guide-body">
+    <h1><a name='header-n0' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                     aria-hidden="true"></i></span></a>Events
+      guide</h1>
+    <p>There are three primary ways to consume movement data tracked for your app users with <a
+      href='https://www.hypertrack.com/docs/guides/action'>actions</a> — data, events and visuals. In this guide, we
+      focus
+      on events.
+      HyperTrack generates the following types of events:</p>
+    <ol start=''>
+      <li>Action: Corresponds to the <em>status</em> and <em>arrival_status</em> properties of action</li>
+      <li>Tracking: Transitions in user’s tracking being active or inactive</li>
+      <li>Activity: Transitions in user’s activity</li>
+      <li>Health: Transitions in health of user’s device</li>
+      <li>Maps: Inferences and enrichments from maps
+      </li>
+    </ol>
+    <img
+      src="{{images.hero}}"
+      alt='Hypertrack SDK device health'/>
+    <h1><a name='header-n23' class='headeranchor-link '><span class="headeranchor">
+      <i class="fa fa-anchor" aria-hidden="true"></i></span></a>Object
+    </h1>
+    <figure>
+      <table>
+        <tbody>
+        <tr>
+          <th><strong>Property</strong></th>
+          <th><strong>Type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+        <tr>
+          <td>id</td>
+          <td>UUID string</td>
+          <td>Unique identifier for the event object</td>
+        </tr>
+        <tr>
+          <td>action_id</td>
+          <td>UUID string</td>
+          <td>Identifier for the action object of the event</td>
+        </tr>
+        <tr>
+          <td>user_id</td>
+          <td>UUID string</td>
+          <td>Identifier for the user object of the event</td>
+        </tr>
+        <tr>
+          <td>type</td>
+          <td>String</td>
+          <td>Type of event</td>
+        </tr>
+        <tr>
+          <td>data</td>
+          <td>JSON</td>
+          <td>JSON containing data associated with the event</td>
+        </tr>
+        <tr>
+          <td>delivered</td>
+          <td>boolean</td>
+          <td>Indicates whether the event was delivered or not</td>
+        </tr>
+        <tr>
+          <td>delivered_at</td>
+          <td>ISO datetime string</td>
+          <td>Timestamp when event was delivered</td>
+        </tr>
+        <tr>
+          <td>recorded_at</td>
+          <td>ISO datetime string</td>
+          <td>Timestamp of when the event occurred</td>
+        </tr>
+        <tr>
+          <td>created_at</td>
+          <td>ISO datetime string</td>
+          <td>Timestamp when event was created</td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <p>&nbsp;</p>
+    <h1>
+      <a name='header-n67' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                    aria-hidden="true"></i></span></a>List
+    </h1>
+    <h2>
+      <a name='header-n68' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                    aria-hidden="true"></i></span></a>Action
+    </h2>
+    <figure>
+      <table>
+        <tbody>
+        <tr>
+          <th><strong>Event type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+
+        <tr>
+          <td>action.status.created</td>
+          <td>Occurs when action is created</td>
+        </tr>
+        <tr>
+          <td>action.status.completed</td>
+          <td>Occurs when action is completed</td>
+        </tr>
+        <tr>
+          <td>action.status.autocreated*</td>
+          <td>Occurs when action is autocreated with rules</td>
+        </tr>
+        <tr>
+          <td>action.status.autocompleted*</td>
+          <td>Occurs when action is autocompleted with rules</td>
+        </tr>
+        <tr>
+          <td>action.status.canceled*</td>
+          <td>Occurs when action is canceled</td>
+        </tr>
+        <tr>
+          <td>action.status.autocanceled*</td>
+          <td>Occurs when action is autocanceled with parameter</td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <p><strong>Arrival status of actions</strong></p>
+    <figure>
+      <table>
+
+        <tbody>
+        <tr>
+          <th><strong>Event type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+
+        <tr>
+          <td>action.arrival_status.leaving_now</td>
+          <td>Occurs when tracking has started for the action</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.on_the_way</td>
+          <td>Occurs when user has moved &gt;100m from the place where tracking started</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.arriving</td>
+          <td>Occurs when user is &lt;400m from expected place</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.arrived</td>
+          <td>Occurs when user is &lt;100m from expected place</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.delayed</td>
+          <td>Occurs when user is expected to reach after the initial ETA or expected time</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.on_time</td>
+          <td>Occurs when user is back on schedule to reach within initial ETA or expected time</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.completed_at_different_place_than_expected</td>
+          <td>Occurs when the user has completed action at a place different than expected</td>
+        </tr>
+        <tr>
+          <td>action.arrival_status.moving_away</td>
+          <td>Occurs when the user is diverging from the route to get to the expected place</td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <h2>
+      <a name='header-n121' class='headeranchor-link '><span class="headeranchor">
+        <i class="fa fa-anchor" aria-hidden="true"></i></span></a>Tracking
+    </h2>
+    <figure>
+      <table>
+
+        <tbody>
+        <tr>
+          <th><strong>Event type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+
+        <tr>
+          <td>tracking.autostarted*</td>
+          <td>Occurs when first action is created and tracking of user starts automatically</td>
+        </tr>
+        <tr>
+          <td>tracking.autostopped*</td>
+          <td>Occurs when last action is completed and tracking of user stopped automatically</td>
+        </tr>
+        <tr>
+          <td>tracking.paused*</td>
+          <td>Occurs when tracking is paused for user</td>
+        </tr>
+        <tr>
+          <td>tracking.resumed*</td>
+          <td>Occurs when tracking is resumed for user</td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <h2><a name='header-n138' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                       aria-hidden="true"></i></span></a>Activity
+    </h2>
+    <figure>
+      <table>
+
+        <tbody>
+        <tr>
+          <th><strong>Event type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+
+        <tr>
+          <td>activity.walking</td>
+          <td>Occurs when the user starts walking</td>
+        </tr>
+        <tr>
+          <td>activity.running</td>
+          <td>Occurs when the user starts running</td>
+        </tr>
+        <tr>
+          <td>activity.cycling</td>
+          <td>Occurs when the user starts cycling</td>
+        </tr>
+        <tr>
+          <td>activity.driving</td>
+          <td>Occurs when the user starts driving</td>
+        </tr>
+        <tr>
+          <td>activity.stopped*</td>
+          <td>Occurs when the user stops</td>
+        </tr>
+        <tr>
+          <td>activity.train*</td>
+          <td>Occurs when the user starts a train ride</td>
+        </tr>
+        <tr>
+          <td>activity.ferry*</td>
+          <td>Occurs when the user starts a ferry ride</td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <p>&nbsp;</p>
+    <h2><a name='header-n166' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                       aria-hidden="true"></i></span></a>Device
+    </h2>
+    <figure>
+      <table>
+        <tbody>
+        <tr>
+          <th><strong>Event type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+        <tr>
+          <td>device.location.disabled</td>
+          <td>Occurs when user disables location on device</td>
+        </tr>
+        <tr>
+          <td>device.location.enabled</td>
+          <td>Occurs when user enables location on device</td>
+        </tr>
+        <tr>
+          <td>device.location.permission_denied</td>
+          <td>Occurs when user revokes location permission from the app on device</td>
+        </tr>
+        <tr>
+          <td>device.location.permission_enabled</td>
+          <td>Occurs when user grants location permission to the app on device</td>
+        </tr>
+        <tr>
+          <td>device.activity.disabled*</td>
+          <td>Occurs when user disables motion &amp; fitness on iOS device</td>
+        </tr>
+        <tr>
+          <td>device.activity.enabled*</td>
+          <td>Occurs when user enables motion &amp; fitness on iOS device</td>
+        </tr>
+        <tr>
+          <td>device.activity.permission_denied*</td>
+          <td>Occurs when user revokes motion &amp; fitness permission from the app on iOS device</td>
+        </tr>
+        <tr>
+          <td>device.activity.permission_enabled*</td>
+          <td>Occurs when user grants motion &amp; fitness permission to the app on iOS device</td>
+        </tr>
+        <tr>
+          <td>device.disconnected*</td>
+          <td>Occurs when the server stops receiving heartbeats from the device</td>
+        </tr>
+        <tr>
+          <td>device.reconnected*</td>
+          <td>Occurs when the server resumes receiving heartbeats from the device</td>
+        </tr>
+        <tr>
+          <td>device.battery.low*</td>
+          <td>Occurs when device goes to low battery mode</td>
+        </tr>
+        <tr>
+          <td>device.battery.normal*</td>
+          <td>Occurs when device goes back to normal battery mode</td>
+        </tr>
+        <tr>
+          <td>device.battery.charging*</td>
+          <td>Occurs when device battery is charging</td>
+        </tr>
+        <tr>
+          <td>device.restarted*</td>
+          <td>Occurs when device is restarted</td>
+        </tr>
+        <tr>
+          <td>device.new.ignored</td>
+          <td>Occurs when a user starts tracking on a second device while being actively tracked on the first one, and
+            system ignores the second device
+          </td>
+        </tr>
+        <tr>
+          <td>device.new.switched*</td>
+          <td>Occurs when a user starts tracking on a second device while being actively tracked on the first one, and
+            system switches to the second device
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <p>&nbsp;</p>
+    <h2><a name='header-n221' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                       aria-hidden="true"></i></span></a>Maps
+    </h2>
+    <figure>
+      <table>
+
+        <tbody>
+        <tr>
+          <th><strong>Event type</strong></th>
+          <th><strong>Description</strong></th>
+        </tr>
+        <tr>
+          <td>user.speeding*</td>
+          <td>Occurs when the user is moving at a speed that is higher than the speed limit of the road</td>
+        </tr>
+        <tr>
+          <td>user.stuck_in_traffic*</td>
+          <td>Occurs when the user is stuck in traffic</td>
+        </tr>
+        </tbody>
+      </table>
+    </figure>
+    <p>&nbsp;</p>
+    <h1>
+      <a name='header-n234' class='headeranchor-link '><span class="headeranchor">
+        <i class="fa fa-anchor" aria-hidden="true"></i></span></a>Consumption
+    </h1>
+    <h2><a name='header-n235' class='headeranchor-link '><span class="headeranchor"><i class="fa fa-anchor"
+                                                                                       aria-hidden="true"></i></span></a>Receive
+    </h2>
+    <p>Event objects can currently be received by you in real-time over two channels: Webhooks and Slack alerts.</p>
+    <h3>
+      <a name='header-n244' class='headeranchor-link '>
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>
+      Receiving events via Webhooks
+    </h3>
+    <p>
+      Set up webhook endpoints (URLs) where you would want HyperTrack to send event objects. Creating a webhoook
+      endpoint on your server is no different from creating any other route or API on your server.
+      Once you have a webhook URL, configure the same in the <a href='https://dashboard.hypertrack.com/settings/'>account
+      settings</a> section of the Dashboard. You can enter any URL you&#39;d like to have events sent to. This should be
+      a
+      dedicated endpoint on your server, coded per the instructions below. You can pick and choose the events that you
+      are
+      interested in and only those would be sent to you. </p>
+    <p>Webhook data will be sent as JSON in the POST request body. The full event details are included and can be used
+      directly after parsing the JSON into an Event object.
+      Here are some best practices when using webhooks.</p>
+    <ul>
+      <li><p>The webhook endpoint should not have any authentication. Also, if you&#39;re using Rails, Django, or
+        another
+        web framework, your site may automatically check that every POST request contains a CSRF token. If so, you may
+        need to exempt the webhooks route from CSRF protection to receive webhooks.</p></li>
+      <li><p>If you use an HTTPS URL for your webhook endpoint, ensure that your server is be correctly configured to
+        support HTTPS with a valid server certificate. We validate that the connection to your server is secure before
+        sending your webhook data.</p></li>
+      <li><p>Your endpoint should return a 2xx HTTP status code to acknowledge receipt of a webhook. Any other
+        information
+        returned in the request headers or request body is ignored. All response codes outside this range, including 3xx
+        codes, will indicate that you did not receive the webhook.</p></li>
+      <li><p>If a webhook is not successfully received for any reason, we will continue trying to send it once every 3
+        minutes up to a maximum of 3 retries. Webhooks cannot be manually retried after this time, though you can query
+        for the event to reconcile your data with any missed events.</p></li>
+      <li><p>If your webhook script performs complex logic, or makes network calls, it&#39;s possible the script would
+        timeout before we see its complete execution. For that reason, you may want to have your webhook endpoint
+        immediately acknowledge receipt by returning a 2xx HTTP status code, and then perform the rest of its
+        duties.</p>
+      </li>
+      <li><p>Webhook endpoints may occasionally receive the same event more than once. We advise you to guard against
+        duplicated event receipts by making your event processing idempotent. One way of doing this is logging the
+        events
+        you&#39;ve processed, and then not processing already-logged events.</p></li>
+      <li><p>For optimum security, you can confirm the event data with us before acting upon it. To do so:</p>
+        <ul>
+          <li>Parse the JSON data as above</li>
+          <li>Grab the received Event object ID value</li>
+          <li>Use the Event object ID in a <a href='https://docs.hypertrack.com/api/entities/event.md#retrieve-a-event'>retrieve
+            event</a> API call
+          </li>
+          <li>Take action using the returned Event object</li>
+        </ul>
+      </li>
+    </ul>
+    <h3>
+      <a name='header-n245' class='headeranchor-link '>
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>
+      Receiving events via Slack</h3>
+    <p>Receive human readable messages on a Slack channel of your choice with event details and a link to dig deeper.
+      Follow these steps:</p>
+    <ol start=''>
+      <li>Navigate to <a href='https://my.slack.com/apps/new/A0F7XDUAZ-incoming-webhooks'>https://my.slack.com/apps/new/A0F7XDUAZ-incoming-webhooks</a>.
+        You will be asked to login into your Slack team, if you aren&#39;t logged in already.
+      </li>
+      <li>Choose the channel in which you want to see alerts from HyperTrack.</li>
+      <li>
+        You will be redirected to a page with <strong>Setup Instructions</strong>. Copy the Webhook URL, and ignore rest of the instructions. The URL would look like: <a href='https://hooks.slack.com/services/T06HDJ3GF/B5EDJ6XPB/XXXXXXXXXXXXXXXXX' target='_blank'>https://hooks.slack.com/services/T06HDJ3GF/B5EDJ6XPB/XXXXXXXXXXXXXXXXX</a>
+      </li>
+      <li>
+        Go to <a href='https://dashboard.hypertrack.com/settings'>account settings</a> and click <strong>Add slack
+        alert</strong> button under Webhooks section. Paste the url you copied from Slack.
+        <img src="{{images.slackHowTo}}" alt="">
+      </li>
+    </ol>
+    <p>You can customise your alerts to be delivered only for specific events. You can also configure multiple slack
+      channels, each for different events or different user groups.
+      For eg, you can configure 3 different slack
+      channels, one each for your teams in San Francisco, San Jose and Palo Alto so that each area&#39;s team lead can
+      get alerted only about his delivery team&#39;s events.
+    </p>
+    <h2>
+      <a name='header-n299' class='headeranchor-link '>
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span>
+      </a>
+      Retrieve
+    </h2>
+    <p>Use the event id received in the webhook to retrieve the event object through an API. All events share a common
+      structure, detailed below. Data is the only property that differs in structure.
+      The data dictionary has an attribute called object and its value will be identical to what you receive from
+      querying
+      the API for that object. For example, an <em>action.created</em> event will return the same information as retrieving the
+      relevant the action would.
+    <h3><a name='header-n246' class='headeranchor-link '><span class="headeranchor">
+      <i class="fa fa-anchor" aria-hidden="true"></i></span></a>
+      HTTP Request</h3>
+    <p>
+      <code>
+        GET https://api.hypertrack.com/api/v2/events/&lt;id&gt;/
+      </code>
+    </p>
+    <h3>Sample Request</h3>
+    <p>
+      <code>
+        curl &quot;https://api.hypertrack.com/api/v2/events/e686fe05-b64d-464d-a4e5-c65e278c1bf1/&quot;
+        -H &quot;Authorization: token PUBLISHABLE_KEY&quot;
+      </code>
+    </p>
+     <h3>Sample Response</h3>
+      <pre>
+      <code>
+        {{'{'}}
+         "id":"e686fe05-b64d-464d-a4e5-c65e278c1bf1",
+         "action_id":"d0ae4912-2074-45ef-a7c0-76be58639ea9",
+         "user_id":"809c85e8-e1ea-4545-9c6a-58664190d163",
+         "type":"action.created",
+         "data":{{'{'}}
+           ...
+        {{'}'}},
+         "delivered":true,
+         "delivered_at":"2018-04-06T22:59:53.273832Z",
+         "recorded_at":"2018-04-06T22:59:44.465916Z",
+         "created_at":"2018-04-06T22:59:44.465916Z"
+       {{'}'}}
+      </code>
+      </pre>
+
+  </div>
+  <!-- /.actions-guide-container -->
+</div>
+<!-- /.guide-body -->
+
+

@@ -1,0 +1,330 @@
+<div class="splash">
+  <div class="splasher w-container">
+    <div class="claim">Build live location sharing in your Android messaging app</div>
+    <div class="dashing lls w-embed">
+      <video width="100%" height="100%" autoplay="" loop="">
+        <source src="https://fat.gfycat.com/ColorlessAnguishedAlpaca.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="answer tutorial">Billions of trips happen on the planet every day. These trips lead to people meeting each other at home, work or some place else. Friends, family and colleagues use their phones to check where the other has reached, often coordinating when and where to meet. Whether you are a messaging app or a marketplace with messaging capability, your users a likely messaging each other about this. It’s time to solve their problem better.
+      <br>
+      <br>If your users can track their Uber coming to them turn-by-turn with an accurate ETA, why not track friends, colleagues, buyers and sellers similarly! Facebook Messenger and Google Maps recently added functionality for live location sharing and Whatsapp is likely to follow soon. Now it’s your turn.
+      <br>
+      <br>Follow this tutorial and you will have live location sharing built in your product when you finish.
+      <br>
+      <br><strong>tl;dr:</strong> The tutorial will go through the basic flow of your user picking a destination, then sharing live location with other users, and then the other users sharing their live location right back. The tutorial will focus on building the feature and &nbsp;trust you with building the right UI/UX for your product :)</div>
+  </div>
+</div>
+<div class="active">
+  <div class="dasher">
+    <div class="dashboard w-container">
+      <div class="gothamheader">PREREQUISITE</div>
+      <div class="explainer">Make sure you have plugged in the Android SDK into your messaging&nbsp;app</div><a class="butt slim w-button" href="https://dashboard.hypertrack.com/onboarding/sdk-android;step=0.0">PLUG IN THE SDK</a>
+      <div class="dashvideo" data-ix="scroll1"></div>
+    </div>
+  </div>
+  <div>
+    <div class="splasher w-container">
+      <div class="gothamheader">IMPLEMENTATION</div>
+      <div class="explainer">Follow this 8-step guide to get your use case implemented. Get the source code of the example app implemented using this tutorial <span><a href="https://github.com/hypertrack/hypertrack-live-android" target="_blank" class="link-6">here on GitHub</a></span>.</div>
+      <div class="explainer"></div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 1: Create map view</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">When the user taps on the location icon while chatting with her friend, open the activity containing the map view.</div><img class="image-10" sizes="(max-width: 479px) 42vw, (max-width: 991px) 100vw, 312px" [src]="images.getHelp">
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    // Start Map Activity containing HyperTrackMapFragment on Location Icon tap
+    Intent intent = new Intent(this, MapActivity.class);
+    startActivity(intent);
+    </pre>
+          </div>
+          <div class="answer tutorial">In this view, if your user taps on “Add a destination” bar on the map view, we will trigger an interaction where she will be able to choose a place where she and her friends are going to. The interaction will allow the user to:
+            <br> -&nbsp;Search for an address
+            <br> - Choose a location by pinning on the map
+            <br> - Use current current location
+            <br> - Use one of the recent places<span class="methodname"></span>
+          </div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 2: Setup map view</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">1. Enable&nbsp;<span class="methodname">HyperTrackMapFragment</span> by adding the following fragment snippet in your Activity’s layout file</div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    // Add the fragment below in your activity's layout file
+    &lt;?xml version="1.0" encoding="utf-8"?>
+    &lt;LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        ...
+        &lt;fragment
+            android:id="@+id/htMapfragment"
+            android:name="com.hypertrack.lib.HyperTrackMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_map_new" />
+        ...
+    &lt;/LinearLayout>
+    </pre>
+          </div>
+          <div class="answer tutorial">2. Enable customizations of UI elements by creating a class extending&nbsp;<span class="methodname">HyperTrackMapAdapter</span>
+          </div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    //Extend HyperTrackMapAdapter for customizing UI elements in the map view
+    public class MyMapAdapter extends HyperTrackMapAdapter {{ '{' }}
+      ...
+      @Override
+      public boolean showPlaceSelectorView() {{ '{' }}
+        return true;
+      }
+      @Override
+      public boolean enableLiveLocationSharingView() {{ '{' }}
+        return true;
+      }
+      @Override
+      public CameraUpdate getMapFragmentInitialState(HyperTrackMapFragment
+            hyperTrackMapFragment) {{ '{' }}
+        if (SharedPreferenceManager.getLastKnownLocation() != null) {{ '{' }}
+          LatLng latLng = new LatLng(defaultLatitude, defaultLongitude);
+          return CameraUpdateFactory.newLatLngZoom(latLng, 15.0f);
+        }
+        return super.getMapFragmentInitialState(hyperTrackMapFragment);
+      }
+      ...
+    }
+    </pre>
+          </div>
+          <div class="answer tutorial">3. To get callback on various events which happen on <span class="methodname">HyperTrackMapFragment</span>, construct an instance of the class <span class="methodname">MapFragmentCallback</span>
+          </div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    private MapFragmentCallback mapFragmentCallback = new MapFragmentCallback() {{ '{' }}
+      ...
+      @Override
+      public void onExpectedPlaceSelected(Place expectedPlace) {{ '{' }}
+        super.onExpectedPlaceSelected(expectedPlace);
+        if (expectedPlace != null) {{ '{' }}
+          // Use this place to createAndAssignAction for current userId
+        }
+      }
+      ...
+    };
+    </pre>
+          </div>
+          <div class="answer tutorial">4. Instantiate <span class="methodname">HyperTrackMapFragment</span> in the <span class="methodname">onCreate</span> method of the activity in which map fragment has been included<span class="methodname"></span>
+          </div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {{ '{' }}
+      super.onCreate(savedInstanceState);
+      ...
+      // Initialize HyperTrackMapFragment in Activity’s layout file to getMapAsync
+      HyperTrackMapFragment htMapFragment = (HyperTrackMapFragment) getSupportFragmentManager().findFragmentById(R.id.htMapfragment);
+      htMapFragment.setHTMapAdapter(new MyMapAdapter(MapActivity.this));
+      htMapFragment.setMapFragmentCallback(mapFragmentCallback);
+      ...
+    }
+    </pre>
+          </div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 3: Create &amp; assign action</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">On the above fragment, add a <strong>SHARE LIVE LOCATION</strong>&nbsp;button that the user can tap to start sharing location.</div><img class="image-10" sizes="(max-width: 479px) 42vw, (max-width: 991px) 100vw, 312px" [src]="images.getHelp2">
+          <div class="answer tutorial">Once the same is tapped, create and assign a <strong>Visit</strong> action to the user.
+            <br><span class="methodname">createAndAssignAction</span> API calls&nbsp;<span class="methodname">startTracking</span> method automatically in its onSuccess method and you need not call it explicitly.
+            <br>
+            <br>The <span class="methodname">lookup_id</span> in ActionParams is a unique identifier for this location sharing session. This will be used to enable live location sharing view for all other users.
+            <br>
+            <br>For creating ActionParams, receive the <span class="methodname">expectedPlace</span> object selected by the user as indicated in Step 2.3.</div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    // Construct action params object using the Place selected by the user
+    ActionParams params = new ActionParamsBuilder()
+            .setExpectedPlace(MapActivity.this.expectedPlace)
+            .setType(Action.ACTION_TYPE_VISIT)
+            .setExpectedAt(expectedAtTimestamp)
+            .setLookupId("ACTION_LOOKUP_ID_HERE")
+            .build();
+    HyperTrack.createAndAssignAction(actionParams, new HyperTrackCallback() {{ '{' }}
+        @Override
+        public void onSuccess(@NonNull SuccessResponse response) {{ '{' }}
+            Action action = (Action) response.getResponseObject();
+            String shareMessage = action.getShareMessage();
+            // Use Action’s Share message for sharing tracking link
+            ...
+      }
+      @Override
+      public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+          // Handle createAndAssignAction error here
+          Toast.makeText(MapActivity.this, errorResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+          ...
+      }
+    });
+    </pre>
+          </div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 4: Share live location via URL</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">As soon as you assigned the above action to a user, the API would have returned a trck.at URL. Share this URL in the ongoing message. All the users in the chat would see live location of the user, alongwith ETA to the expected place.</div><img class="image-10" sizes="(max-width: 479px) 38vw, (max-width: 991px) 100vw, 31vw" [src]="images.getHelp3">
+          <div class="answer tutorial">Note that <span class="methodname">lookup_id</span> created in Step 3 has to be passed as meta-data along with the message object that will be shared between users. This will be used to enable live location sharing view for all users who tap on the shared message.</div>
+          <div class="tutorialcheck">
+            <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+              <div class="answer faqq test"><strong>Nice job!</strong>&nbsp;You just shared the live location of your first user within your messaging app.&nbsp;</div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 5: See live location in-app</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">If any of the users on the chat taps on the above message, call <span class="methodname">HyperTrack.trackActionByLookupId</span> using the <span class="methodname">lookup_id</span> key passed along with the message.</div><img class="image-10" sizes="(max-width: 479px) 42vw, (max-width: 991px) 100vw, 312px" [src]="images.getHelp4">
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    HyperTrack.trackActionByLookupId(lookupID,
+            new HyperTrackCallback() {{ '{' }}
+      @Override
+      public void onSuccess(@NonNull SuccessResponse response) {{ '{' }}
+        // Handle trackActionByLookupId API success here
+        List&lt;Action> actions = (List&lt;Action>) response.getResponseObject();
+        // Save this list of actions as a global variable to be used to
+        // enable Share Live Location button for the current user
+        MapActivity.this.actions = actions;
+        // Show Share Live Location Button to the user
+        showShareLiveLocationButton();
+        ...
+      }
+      @Override
+      public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+        // Handle trackActionByLookupId error here
+        Toast.makeText(MapActivity.this, errorResponse.getErrorMessage(),
+            Toast.LENGTH_SHORT).show();
+        ...
+      }
+    });
+    </pre>
+          </div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 6: Allow other users to share live location</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">In the above fragment, add a similar <strong>SHARE LIVE LOCATION</strong>&nbsp;button (as you did in Step 3) that any of the users on the chat can tap to start sharing live location. On tapping the button, create &amp; assign an action, start tracking, and share URL (similar to Steps 3 &amp; 4).
+            <br>
+            <br>The <span class="methodname">ActionID</span> for the Action object created needs to be saved and will be used while calling <span class="methodname">completeAction</span> API.</div><img class="image-10" sizes="(max-width: 479px) 42vw, (max-width: 991px) 100vw, 31vw" [src]="images.getHelp5">
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    shareLiveLocationButton.setOnClickListener(new View.OnClickListener() {{ '{' }}
+      @Override
+      public void onClick(View v) {{ '{' }}
+        // Check if a valid list of actions is available
+        if (MapActivity.this.actions == null || MapActivity.this.actions.isEmpty())
+          return;
+        // Construct action params object using the
+        ActionParams params = new ActionParamsBuilder()
+            .setExpectedPlaceId(MapActivity.this.actions.get(0).getExpectedPlace().getId())
+            .setType(MapActivity.this.actions.get(0).getType())
+            .setLookupId(MapActivity.this.actions.get(0).getLookupId())
+            .build();
+        HyperTrack.createAndAssignAction(actionParams, new HyperTrackCallback() {{ '{' }}
+          @Override
+          public void onSuccess(@NonNull SuccessResponse response) {{ '{' }}
+            Action action = (Action) response.getResponseObject();
+            MapActivity.this.actionID = action.getId();
+            // Use this actionID while calling completeAction API on stop sharing
+            ...
+          }
+          @Override
+          public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+            // Handle createAndAssignAction error here
+            Toast.makeText(MapActivity.this, errorResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            ...
+          }
+        });
+      }
+    });
+    </pre>
+          </div>
+          <div class="tutorialcheck">
+            <a class="nolink w-inline-block" data-ix="new-interaction"><img class="testiperson" [src]="images.checkmark">
+              <div class="answer faqq test"><strong>Nice job!</strong>&nbsp;You just built the experience to see live location of multiple users on the map.</div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="faq">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 7: Stop location sharing</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">Stop live location sharing when the users reach their expected place. When the user taps on Stop Sharing button, call <span class="methodname">completeAction</span> for the action that was assigned using the actionID saved in Step 6 above, and <span class="methodname">stopTracking</span> API.</div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    // Use actionId saved in Step 6 for the Visit Action that you created
+    HyperTrack.completeAction(MapActivity.this.actionId);
+    HyperTrack.stopTracking();
+    </pre>
+          </div>
+          <div class="answer tutorial">Note that you should replace the <strong>SHARE LIVE LOCATION</strong> button with <strong>STOP SHARING</strong> button when the user opens the trackAction fragment after sharing live location. If the user taps on <strong>STOP SHARING</strong>, call the above code snippet to complete the visit action and stop tracking.</div><img class="image-10" sizes="(max-width: 479px) 42vw, (max-width: 991px) 100vw, 312px" [src]="images.getHelp6">
+        </div>
+      </div>
+      <div class="faq last">
+        <div class="q"><img class="arrow" [src]="images.arrow">
+          <div class="jkhkhk question">Developer Evangelist</div>
+          <div class="question">Step 8: Clear map view</div>
+        </div>
+        <div class="reveal">
+          <div class="answer tutorial">Call <span class="methodname">HyperTrack.removeActions</span> to clear the map view and reset it to default state when the user taps on Stop Sharing or closes the screen.</div>
+          <div class="embedblack w-embed"><pre class="prettyprint lang-java">
+    HyperTrack.removeActions(null,  new HyperTrackCallback() {{ '{' }}
+      @Override
+      public void onSuccess(@NonNull SuccessResponse response) {{ '{' }}
+        // Handle removeActions response here
+        List&lt;Action> actionList = (List&lt;Action>) response.getResponseObject();
+        ...
+      }
+      @Override
+      public void onError(@NonNull ErrorResponse errorResponse) {{ '{' }}
+        // Handle removeActions error here
+        Toast.makeText(MainActivity.this,errorResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+        ...
+      }
+    });
+    </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="footgreen greener">
+    <div class="w-container">
+      <div class="bottom"><img class="bottomtron" [src]="images.animatedGroup">
+        <div class="gothamheader" data-ix="scroll1">How simple was that</div>
+        <div class="explainer">Yay! You just built live location sharing in your messaging app. How simple was that? Just a few steps and an hour, and you now have an end-to-end live location sharing feature in your messaging service!&nbsp;
+          <br>
+          <br>We are excited to see what live location feature you build in your app. Do ping us at help@hypertrack.io once you build one, and we would love to feature your app on our blog!</div>
+      </div>
+    </div>
+  </div>
+</div>

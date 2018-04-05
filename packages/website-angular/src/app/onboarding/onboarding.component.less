@@ -1,0 +1,33 @@
+@import "../../assets/css/webflow/webflow.hyperstart.css";
+@import "../../assets/css/webflow/hyperstart.webflow.css";
+
+:host {
+  .tab-pane {
+    position: relative;
+  }
+  .hidden {
+    display: none;
+  }
+  .onboarding-container {
+    .platform-header {
+      padding-top: 0;
+      font-size: 27px;
+      line-height: 42px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .tabs {
+      .tab {
+        &.selected {
+          display: flex;
+          align-items: center;
+          background-color: rgba(107, 86, 86, 0);
+          color: #00ce5b;
+          .tabnumber {
+            background-color: #31ce5b;
+          }
+        }
+      }
+    }
+  }
+}

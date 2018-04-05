@@ -1,0 +1,59 @@
+.hidden {
+  display: none;
+}
+.code-block {
+  width: 700px;
+  margin-top: 24px;
+  .code-file-container {
+    display: flex;
+  }
+
+  .code-file-icon {
+    margin-right: 3px;
+  }
+
+  .code-file-name {
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    cursor: pointer;
+  }
+  .code-file-copy-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 6px;
+    .code-file-copy {
+      cursor: pointer;
+      color: #4A90E2;
+      font-weight: bold;
+    }
+    .code-file-help {
+      .code-file-help-icon {
+        width: 20px;
+        margin-right: 9px;
+      }
+    }
+  }
+  .code-main-container {
+    position: relative;
+    .code-container {
+      /deep/ .code-pre-container {
+        margin-top: 4px;
+        code {
+          border-radius: 6px;
+          padding: 12px;
+        }
+      }
+    }
+    .code-expand-icon {
+      position: absolute;
+      right: 6px;
+      top: 1px;
+      color: white;
+      font-size: 12px;
+      &.hide {
+        display: none;
+      }
+    }
+  }
+}

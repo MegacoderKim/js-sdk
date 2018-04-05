@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Docs-Home-Page-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-687.000000, -513.000000)">
+        <g id="Group-22" transform="translate(668.000000, 495.000000)" fill="#250D47" fill-rule="nonzero">
+            <g id="Group" transform="translate(19.000000, 18.000000)">
+                <path d="M17.589,33 L15.409625,33 L14.922875,32.79925 L0.20075,18.07575 L0,17.589 L0,15.409625 L0.20075,14.922875 L14.92425,0.20075 L15.411,0 L17.590375,0 L18.077125,0.20075 L32.79925,14.92425 L33,15.411 L33,17.590375 L32.79925,18.077125 L18.07575,32.79925 L17.589,33 Z M15.695625,31.625 L17.30575,31.625 L31.625,17.304375 L31.625,15.69425 L17.304375,1.375 L15.69425,1.375 L1.375,15.695625 L1.375,17.30575 L15.695625,31.625 Z" id="Shape"></path>
+                <polygon id="Shape" points="17.0445703 20 16 19.0463987 20.4324058 15 16 10.9536013 17.0445703 10 22 14.522525 22 15.477475"></polygon>
+                <path d="M12.3333333,22 L11,22 L11,20.5556364 C11,16.9410909 13.696,14 17.0093333,14 L21,14 L21,15.4545455 L17.0093333,15.4545455 C14.4306667,15.4545455 12.3333333,17.7425455 12.3333333,20.5556364 L12.3333333,22 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

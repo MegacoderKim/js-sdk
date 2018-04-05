@@ -1,0 +1,137 @@
+@import "../main/main.component.less";
+/*==============================================
+=            FOOTER STYLE VERSION 2            =
+==============================================*/
+
+.footer-v2 {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding: 10rem 5%;
+  .footer-logo-section {
+    position: relative;
+    //overflow: hidden;
+    width: 25%;
+    float: left;
+    padding-right: 5%;
+    .logo {
+      position: relative;
+      overflow: hidden;
+      width: 80%;
+      transition: 7s all ease-in-out;
+      &:hover {
+        filter: hue-rotate(360deg);
+        transform: translateY( -10px );
+      }
+
+    }
+    .footer-tagline {
+      margin-top: 1rem;
+      .text-normal();
+      font-family: 'Code', sans-serif;
+      font-weight: 400;
+    }
+    .social-icons {
+      .text-normal();
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+      i {
+        color: @dark-grey;
+        padding-right: 0.5rem;
+        transition: 0.4s all ease-in-out;
+        &:hover {
+          color: @orange;
+          cursor: pointer;
+          transform: scale( 1.1 );
+        }
+      }
+    }
+  }
+  .footer-nav {
+    position: relative;
+    overflow: hidden;
+    float: right;
+    width: 75%;
+    .footer-nav-column {
+      position: relative;
+      overflow: hidden;
+      width: 31%;
+      padding: 0 1%;
+      float: left;
+      .footer-nav-column-name {
+        .text-normal();
+        font-weight: 600;
+        color: @black;
+      }
+      .footer-nav-column-item-list {
+        position: relative;
+        overflow: hidden;
+        .footer-nav-column-item {
+          .text-normal();
+          margin: 0.5rem 0;
+          color: @dark-grey;
+          cursor: pointer;
+          float: left;
+          clear: left;
+          &.emphasize {
+            padding: @space @space--double;
+            //background: darken( @light-green, 5% );
+            background: @light-green;
+            color: @green;
+            border-left: 5px solid @green;
+            //border-radius: 20px;
+          }
+          &:hover {
+            font-weight: 500;
+            opacity: 1;
+            color: @orange;
+          }
+        }
+      }
+    }
+  }
+  .footer-get-in-touch {
+    .button--small( transparent, @purple--dark, @purple--dark );
+    position: relative;
+    overflow: hidden;
+    margin-top: @space--4x;
+    width: 160px;
+  }
+  @media @smartphones {
+    padding: 5rem 5%;
+    .footer-logo-section {
+      width: 100%;
+      float: none;
+      padding: 0;
+      .logo {
+        width: 100px;
+        margin: 0 auto;
+      }
+      .footer-tagline {
+        text-align: center;
+      }
+      .social-icons {
+        text-align: center;
+      }
+      .footer-get-in-touch {
+        margin: @space--4x auto;
+      }
+    }
+    .footer-nav {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      float: none;
+      margin-top: 2rem;
+      float: left;
+      .footer-nav-column {
+        width: 100%;
+        padding: 0 1%;
+        margin: 1rem 0;
+      }
+    }
+  }
+}
+/*=====  End of FOOTER STYLE VERSION 2  ======*/

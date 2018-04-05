@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 22</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Activity" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-199.000000, -1518.000000)">
+        <g id="Group-26" transform="translate(199.000000, 1504.000000)">
+            <g id="Group-22" transform="translate(0.000000, 14.000000)">
+                <rect id="Rectangle-10" fill="#F55416" x="0" y="0" width="40" height="40" rx="10"></rect>
+                <g id="Group" transform="translate(9.600000, 8.800000)" stroke="#FFFFFF" stroke-linecap="round" stroke-width="2">
+                    <path d="M0.48,0.08 L0.48,20.88" id="Shape"></path>
+                    <path d="M20.8,20.88 L0.48,20.88" id="Shape"></path>
+                    <g transform="translate(4.000000, 3.200000)" id="Shape">
+                        <path d="M0,14 C0,14 0.72,8.72 4.32,10.32 C7.44,11.68 6.24,5.44 9.12,4.24 C12.16,3.04 12,6.32 16.24,1.76"></path>
+                        <polyline points="13.28 0.56 17.28 0.56 17.28 5.36"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="380px" viewBox="0 0 120 380" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M0,15 L120,15 L120,374.996386 C120,377.759806 117.762654,380 114.996527,380 L5.00347316,380 C2.24013124,380 0,377.763786 0,374.996386 L0,15 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-3-Copy-2" transform="translate(-817.000000, -242.000000)">
+            <g id="Group-31" transform="translate(410.000000, 239.000000)">
+                <g id="Group-18" transform="translate(407.000000, 3.000000)">
+                    <g id="Group-2">
+                        <rect id="Rectangle-7" fill="#5A6A84" x="0" y="0" width="120" height="149" rx="5"></rect>
+                        <g id="Rectangle-7">
+                            <use fill="#394456" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            <path stroke="#5A6A84" stroke-width="8" d="M4,19 L4,374.996386 C4,375.552805 4.44742812,376 5.00347316,376 L114.996527,376 C115.552183,376 116,375.551998 116,374.996386 L116,19 L4,19 Z"></path>
+                        </g>
+                        <circle id="Oval-4" fill="#394456" cx="7.5" cy="7.5" r="2.5"></circle>
+                        <circle id="Oval-4" fill="#394456" cx="14.5" cy="7.5" r="2.5"></circle>
+                        <circle id="Oval-4" fill="#394456" cx="21.5" cy="7.5" r="2.5"></circle>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

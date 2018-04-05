@@ -1,0 +1,223 @@
+@import "../main/main.component.less";
+
+.pricing-container {
+  margin-top: 10rem;
+  position: relative;
+  overflow: hidden;
+}
+.pricing-container-title {
+  .text-title-h1();
+  font-weight: 400;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  @media @smartphones {
+    text-align: left;
+    padding: 0 5%;
+  }
+}
+.pricing-container-subtitle {
+  .text-title-h4();
+  font-weight: 400;
+  color: @dark-grey;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  @media @smartphones {
+    text-align: left;
+    padding:0 5%;
+  }
+}
+.pricing-boxes {
+  position: relative;
+  overflow: hidden;
+  padding: @space--10x 5%;
+  .pricing-box {
+    width: 23%;
+    margin: 0 1%;
+    position: relative;
+    float: left;
+    border-radius: 6px;
+    cursor: pointer;
+    //overflow: hidden;
+    &.isHighlight {
+      margin-top: -2rem;
+    }
+    .pricing-box-content {
+      border-radius: 6px;
+      padding: @space--4x;
+      position: relative;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 0 30px @shadow;
+      transition: 0.4s all ease-in-out;
+      z-index: 2;
+      .pricing-box-name {
+        .text-smallcaps-s();
+        color: @dark-grey;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+      }
+      .pricing-box-icon {
+        position: relative;
+        overflow: hidden;
+        height: 6rem;
+        margin: @space--double 0;
+        text-align: center;
+        img {
+          display: inline;
+          height: 100%;
+        }
+      }
+      .pricing-box-cost {
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        .cost-currency-icon {
+          .text-normal();
+          color: @dark-grey;
+          display: inline;
+          position: relative;
+          vertical-align: middle;
+          line-height: 2.4rem;
+        }
+        .cost-value {
+          .text-title-h3;
+          display: inline;
+          font-weight: 400;
+          position: relative;
+          overflow: hidden;
+        }
+        .cost-label {
+          .text-smallcaps-s();
+          clear: both;
+          text-align: center;
+          color: @dark-grey;
+          &.isHidden {
+            visibility: hidden;
+          }
+        }
+      }
+      .pricing-box-actions-count {
+        position: relative;
+        overflow: hidden;
+        margin-top: @space--double;
+        .actions-label {
+          .text-small();
+          position: relative;
+          overflow: hidden;
+          text-align: center;
+        }
+        .actions-value {
+          .text-normal();
+          font-weight: 500;
+          text-align: center;
+          position: relative;
+        }
+        .actions-users-count {
+          .text-caption();
+          padding-top: @space;
+          text-align: center;
+          color: @dark-grey;
+        }
+      }
+      .pricing-box-inside-cta {
+        .button--small( @light-green, @green);
+        margin: @space--double auto;
+        width: 100%;
+        position: relative;
+      }
+    }
+    .pricing-box-highlight {
+      .text-caption();
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      font-weight: 400;
+      position: relative;
+      padding: @space--half 0;
+      width: 150px;
+      border-radius: 20px;
+      background: @green;
+      color: white;
+      margin: @space--double auto;
+    }
+    .pricing-box-cta {
+      z-index: 1;
+      .text-smallcaps-s();
+      position: absolute;
+      width: 80%;
+      left: 10%;
+      border-radius: 6px;
+      background: darken( @light-green, 10% );
+      color: @green;
+      text-align: center;
+      padding: 1.5rem 0 1rem 0;
+      bottom: 0;
+      transition: 0.4s all ease-in-out;
+    }
+    &:hover {
+      .pricing-box-content {
+        transform: scale(1.02);
+        .pricing-box-inside-cta {
+          background: @green;
+          color: white;
+        }
+      }
+
+    }
+    @media @smartphones {
+      width: 100%;
+      position: relative;
+      margin: 1rem 0%;
+      float: left;
+      .pricing-box-highlight {
+        display: none;
+      }
+      .pricing-box-content {
+        .pricing-box-inside-cta {
+          display: block;
+        }
+      }
+    }
+  }
+  @media @smartphones {
+    padding: @space--10x 5%;
+  }
+}
+.faq-section {
+  position: relative;
+  overflow: hidden;
+  padding: @space--double 30%;
+  .faq-section-title {
+    .text-title-h3();
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed @dark-grey;
+    font-weight: 400;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .faq-item {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: @space--4x;
+    .faq-item-question {
+      .text-normal();
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+    .faq-item-answer {
+      .text-normal();
+      opacity: 0.75;
+      font-weight: 300;
+      position: relative;
+      overflow: hidden;
+    }
+  }
+  @media @smartphones {
+    padding: @space--double 10%;
+  }
+}

@@ -1,0 +1,29 @@
+<div class="header" data-animation="default" data-collapse="medium" data-doc-height="1" data-duration="0" data-no-scroll="1">
+  <a [routerLink]="['/']" (click)="handleTopNavClick('logo')"><img class="logo" [src]="images.newLogo"></a>
+  <nav class="navmenu" [ngClass]="mobileNavOpen == true ? 'active' : ''">
+    <a class="navlink" [routerLink]="['/usecases']" (click)="handleTopNavClick('usecases')">Use Cases</a>
+    <div class="w-dropdown" data-delay="0" data-hover="1">
+      <div class="navlink w-dropdown-toggle">
+        <span>PRODUCT</span>
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+      </div>
+      <nav class="dropdown-list w-dropdown-list">
+        <a class="dropdown-link w-dropdown-link" [routerLink]="['/primitives']" (click)="handleTopNavClick('howitworks')">Building blocks</a>
+        <a class="dropdown-link w-dropdown-link" [routerLink]="['/tech']" (click)="handleTopNavClick('tech')">Technology</a>
+        <a class="dropdown-link w-dropdown-link" href="https://status.hypertrack.com" (click)="handleTopNavClick('status')">API status</a>
+        <a class="dropdown-link w-dropdown-link" data-ix="menudropdown" [routerLink]="['/faq']" (click)="handleTopNavClick('faq')">FAQs</a>
+      </nav>
+    </div>
+    <a class="navlink" [routerLink]="['/pricing']" (click)="handleTopNavClick('pricing')">PRICING</a>
+    <a class="navlink" [routerLink]="['/docs']" (click)="handleTopNavClick('docs')">docs</a>
+    <a class="navlink" href="http://www.hypertrack.com/blog" (click)="handleTopNavClick('blog')">BLOG</a>
+    <a class="navlink" href="https://dashboard.hypertrack.com/login" (click)="handleTopNavClick('login')">LOGIN</a>
+    <a class="navlink nav-button" (click)="handleTopNavClick('signup')">sign Up</a>
+    <!--<div class="close-icon" (click)="toggleMobileNav( false )"><i class="fa fa-times-circle" aria-hidden="true"></i>-->
+    <!--</div>-->
+  </nav>
+  <div (click)="toggleMobileNav()" class="menu w-nav-button w-icon-nav-menu iconic">
+    <i class="fa fa-bars" aria-hidden="true"></i>
+  </div>
+  <div class="clearfix"></div>
+</div>

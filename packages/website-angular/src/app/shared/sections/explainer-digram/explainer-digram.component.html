@@ -1,0 +1,89 @@
+<div class="exp-section">
+  <div class="explainer-header" data-ix="load1">How it works</div>
+  <div class="w-container">
+    <div class="w-row">
+      <img [src]="images.explainerUpdated" />
+      <div class="exp-flexcolum w-col w-col-3 w-col-small-small-stack hide">
+        <div class="exp-leftitem  hover-effect" data-ix="load-9" (click)="onExplainerComponentClick('sdks')">
+          <div class="exp-itemname">YOUR APP<br>+<br>hypertrack<br>sdk</div>
+          <img class="exp-leftitemimage" [src]="images.app">
+        </div>
+        <div class="exp-leftitem exp-server disable-pointer" (click)="onExplainerComponentClick('server')">
+          <div class="exp-itemname">YOUR SERVER</div>
+          <img class="exp-leftitemimage" [src]="images.server">
+        </div>
+      </div>
+      <div class="exp-flexcolum w-col w-col-2 w-col-small-small-stack hide">
+        <div class="exp-arrow" data-ix="load1"><img class="image" data-ix="load-6-non-interactive-2" [src]="images.arrow">
+          <div class="exp-arrowname">location</div>
+        </div>
+        <div class="exp-arrow" data-ix="load-6-non-interactive-3"><img class="image" [src]="images.arrow">
+          <div class="exp-arrowname">activity</div>
+        </div>
+        <div class="exp-arrow" data-ix="load-6-non-interactive-4"><img class="image" [src]="images.arrow">
+          <div class="exp-arrowname">device health</div>
+        </div>
+        <div class="exp-arrow" data-ix="load-6-non-interactive"><img class="image" [src]="images.arrow">
+          <div class="exp-arrowname">other sensors</div>
+        </div>
+        <div class="exp-2to1 hover-effect arrow-effect" data-ix="load-6" (click)="onExplainerComponentClick('actions')">
+          <div class="exp-actions exp-arrowname">ACTIONS</div>
+        </div>
+      </div>
+      <div class="exp-flexcolum w-col w-col-2 w-col-small-small-stack hide">
+        <div class="exp-cloud hover-effect" data-ix="load-6" (click)="onExplainerComponentClick('hypertrack-cloud')">
+          <img class="exp-data" data-ix="load-6-non-interactive-4" [src]="images.data">
+          <div class="exp-itemname" data-ix="load-6-non-interactive-3">data<br>filtering</div>
+        </div>
+        <div class="exp-itemname" data-ix="load-6-non-interactive">hypertrack<br>cloud</div>
+      </div>
+      <div class="exp-flexcolum w-col w-col-2 w-col-small-small-stack hide">
+        <div class="exp-arrow exp-rightarrow disable-pointer">
+          <img class="image" data-ix="load-6-non-interactive-4" [src]="images.arrow">
+          <div class="exp-arrowname">API<span class="exp-smalls">s</span></div>
+        </div>
+        <div class="exp-1to2" data-ix="load-6-non-interactive-3">
+          <div class="exp-arrowname">visualisations</div>
+        </div>
+        <div class="exp-1to2small hover-effect arrow-effect" data-ix="load-6" (click)="onExplainerComponentClick('events')">
+          <div class="exp-arrowname exp-eventsname">events</div>
+        </div>
+      </div>
+      <div class="exp-flexcolum w-col w-col-3 w-col-small-small-stack hide">
+        <div class="exp-rightitem hover-effect" data-ix="load-10" (click)="onExplainerComponentClick('apis')">
+          <div class="exp-rightitemimage"><img [src]="images.api"></div>
+          <div class="exp-rightitemname">
+            <div class="exp-itemname exp-right">programmable<br>location<br>data</div>
+          </div>
+        </div>
+        <div class="exp-rightitem hover-effect" data-ix="load-9" (click)="onExplainerComponentClick('widgets')">
+          <div class="exp-rightitemimage"><img [src]="images.dashboard"></div>
+          <div class="exp-rightitemname">
+            <div class="exp-itemname exp-right">dashboard &amp;<br>widgets</div>
+            <div class="exp-itemexplain exp-rightexplain">For your business &amp; ops teams</div>
+          </div>
+        </div>
+        <div class="exp-rightitem hover-effect" data-ix="load-8" (click)="onExplainerComponentClick('tracking-experience')">
+          <div class="exp-rightitemimage"><img [src]="images.track"></div>
+          <div class="exp-rightitemname">
+            <div class="exp-itemname exp-right">TRACKING&nbsp; EXPERIENCES
+            </div>
+            <div class="exp-itemexplain exp-rightexplain">For your customers</div>
+          </div>
+        </div>
+        <div class="exp-rightitem hover-effect" data-ix="load-7" (click)="onExplainerComponentClick('slack')">
+          <div class="exp-rightitemimage"><img [src]="images.slack"></div>
+          <div class="exp-rightitemname">
+            <div class="exp-itemname exp-right">SLACK ALERTS</div>
+          </div>
+        </div>
+        <div class="exp-rightitem hover-effect" data-ix="load-6" (click)="onExplainerComponentClick('webhooks')">
+          <div class="exp-rightitemimage"><img [src]="images.webhooks"></div>
+          <div class="exp-rightitemname">
+            <div class="exp-itemname exp-right">WEBHOOKS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

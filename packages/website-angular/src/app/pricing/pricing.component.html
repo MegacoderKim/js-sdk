@@ -1,0 +1,39 @@
+<div class="pricing-container">
+  <h1 class="pricing-container-title">Plans that scale with your growth</h1>
+  <div class="pricing-container-subtitle">Get started for free. No credit card required.</div>
+
+  <div class="pricing-boxes">
+    <div class="pricing-box" (click)="openSignup(plan)" [ngClass]="(plan.name=='Regular') ? 'isHighlight' : ''" *ngFor="let plan of plans">
+
+      <div class="pricing-box-content">
+        <div class="pricing-box-name">{{plan.name}}</div>
+        <div class="pricing-box-highlight" *ngIf="plan.name=='Regular'">
+          MOST POPULAR
+        </div>
+        <div class="pricing-box-icon">
+          <img src="{{plan.icon}}" alt="">
+        </div>
+        <div class="pricing-box-cost">
+          <div class="cost-currency-icon" *ngIf="plan.name!='Enterprise'">$</div>
+          <div class="cost-value">{{plan.cost}}</div>
+          <div class="cost-label" [ngClass]="(plan.name=='Enterprise') ? 'isHidden' : ''">Per month</div>
+        </div>
+        <div class="pricing-box-actions-count">
+          <div class="actions-label" *ngIf="plan.name!='Enterprise'">includes</div>
+          <div class="actions-label" *ngIf="plan.name=='Enterprise'">more than</div>
+          <div class="actions-value">{{plan.actionsCount}} actions</div>
+          <div class="actions-users-count">Unlimited users</div>
+        </div>
+        <div class="pricing-box-inside-cta">{{plan.cta}}</div>
+      </div>
+      <div class="pricing-box-cta">{{plan.cta}}</div>
+    </div>
+  </div>
+  <div class="faq-section">
+    <div class="faq-section-title">Frequently Asked Questions</div>
+    <div class="faq-item" *ngFor="let faq of faqs">
+      <div class="faq-item-question">{{faq.question}}</div>
+      <div class="faq-item-answer" [innerHTML] = "faq.answer | safeHtml"></div>
+    </div>
+  </div>
+</div>

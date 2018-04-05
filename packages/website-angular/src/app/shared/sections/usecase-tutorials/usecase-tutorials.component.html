@@ -1,0 +1,15 @@
+<div class="active">
+  <div>
+    <div class="splasher tutorials_list w-container">
+      <div class="gothamheader">Tutorials</div>
+      <div class="explainer">Follow one of these tutorials to build your use case</div>
+      <div class="row-6 w-row">
+        <div class="pricing w-col" [ngClass]="appType === 'app-for-work' ? 'w-col-4' : 'w-col-6'" *ngFor="let tutorial of tutorials">
+          <div class="price_card"><img class="image-2" [sizes]="tutorial.sizes" [src]="tutorial.image" width="330">
+            <div class="ex4 explainer">{{tutorial.content}}</div><a class="butt green slim w-button" [href]="tutorial.link">Get started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

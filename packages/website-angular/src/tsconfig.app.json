@@ -1,0 +1,23 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "paths": {
+      "ht-angular": [
+        "../../angular-components/libs/ht-angular/index"
+      ]
+      "ht-docs": [
+        "../../angular-components/libs/docs/index"
+      ]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true
+  }
+}

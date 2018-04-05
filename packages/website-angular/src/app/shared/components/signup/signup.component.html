@@ -1,0 +1,101 @@
+<div class="signup-component-container">
+  <div class="signup-container">
+    <div class="signup-brand-container">
+      <img alt="hypertrack" class="img" width="40px" [src]="images.logo" />
+      <div class="signup-label"> Sign Up </div>
+    </div>
+    <div class="login-option-container">
+      <div> Have an account instead?</div>
+      <a class="login-button" href="https://dashboard.hypertrack.com/login">Login</a>
+    </div>
+    <div class="signup-form-container">
+      <form [formGroup]="signupForm" (ngSubmit)="onFormSubmit()" class="signup-form">
+        <div class="form-container email-container">
+          <label class="form-input-label" for="email-input">
+            Email Address
+          </label>
+          <input class="form-input" data-name="Name" id="email-input" required maxlength="256" name="name" placeholder="MVP@Unicorn.com" autocomplete="off" [class.input-error]="!signupForm.get('email').valid && signupForm.get('email').dirty" formControlName="email"/>
+        </div>
+        <div class="form-container password-container">
+          <label class="form-input-label" for="password-input">
+            Password
+          </label>
+          <input class="form-input" data-name="Name" id="password-input" minlength="4" maxlength="256" name="password" placeholder="Pick a password" autocomplete="off" [class.input-error]="!signupForm.get('password').valid && signupForm.get('password').dirty" required type="password" formControlName="password" />
+        </div>
+        <div class="form-error" [ngClass]="errors.formError ? '' : 'hidden'"> {{errors.formError}}</div>
+        <div class="submit-button-container">
+          <button type="submit" class="submit-button">
+            <span> {{signingUp ? 'Signing up...': 'Accept and Continue'}} </span>
+          </button>
+        </div>
+        <div class="signup-response-container verification" *ngIf="verificationSent">
+          Thanks! Please check your email for verification link.
+        </div>
+        <div class="signup-response-container error" *ngIf="errors.signupError">
+          {{errors.signupError}}
+        </div>
+        <div class="terms-container">
+          By clicking on the ACCEPT & CONTINUE button, I agree to <a href="https://www.hypertrack.com/terms" target="_blank">Terms of Service</a>, and <a href="https://www.hypertrack.com/agreement" target="_blank">HyperTrack SaaS Agreement</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="ht-information-container">
+    <div class="distance-tracked-container">
+      <div class="distance-tracked"> {{metrics.miles.toLocaleString('en-US')}}</div>
+      <span> Miles </span>
+      <div class="distance-tracked-label">Tracked with HyperTrack so far</div>
+    </div>
+    <div class="customer-logo-container">
+      <div class="customer-logos">
+        <div class="customer-logo">
+          <img [src]="images.zomatoLogo" />
+        </div>
+        <div class="customer-logo">
+          <img [src]="images.housejoyLogo" />
+        </div>
+        <div class="customer-logo">
+          <img [src]="images.goibiboLogo" />
+        </div>
+        <div class="customer-logo">
+          <img [src]="images.freshdeskLogo" />
+        </div>
+        <div class="customer-logo">
+          <img [src]="images.delhiveryLogo" />
+        </div>
+        <div class="customer-logo">
+          <img [src]="images.redbusLogo" />
+        </div>
+      </div>
+      <div class="more-customer-label">
+        <span>...and many more</span>
+      </div>
+    </div>
+    <div class="customer-testimonial-container">
+      <div class="customer-testimonial">
+        <div class="testimonial-text">"HyperTrack’s phenomenal onboarding experience made it easy to pick up the building blocks and start building"</div>
+        <div class="testimonial-author-container">
+          <div class="author-profile">
+            <img alt="Alex" class="img" [src]="images.roseRocketAlex" />
+          </div>
+          <div class="author-information">
+            <div class="author-name">Alex Luksidadi</div>
+            <div class="author-designation">Tech Lead, Rose Rocket</div>
+          </div>
+        </div>
+      </div>
+      <div class="customer-testimonial">
+        <div class="testimonial-text">"Awesome product, detailed documentation, swift support and fun to integrate. Its a developer's dream to work with HyperTrack"</div>
+        <div class="testimonial-author-container">
+          <div class="author-profile">
+            <img alt="Ramogi" class="img" width="40px" [src]="images.okhiRamogi" />
+          </div>
+          <div class="author-information">
+            <div class="author-name">Ramogi Ochola</div>
+            <div class="author-designation">Android Lead, OKHi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

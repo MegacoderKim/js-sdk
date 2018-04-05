@@ -1,0 +1,770 @@
+<div class="actions-guide-container">
+  <nav class="table-of-content">
+    <div class="section"><a [routerLink]="[]" fragment="introduction">Introduction</a></div>
+    <div class="section"><a [routerLink]="[]" fragment="use-model">Use model</a></div>
+    <div class="section"><a [routerLink]="[]" fragment="create-and-complete">Creating and completing actions</a></div>
+    <div class="section"><a [routerLink]="[]" fragment="build-tracking-exp">Building the tracking experience</a></div>
+  </nav>
+  <article class="guide-body">
+    <h1>Actions guide</h1>
+    <h2>
+    <a [routerLink]="[]" fragment="introduction" appScrollTo="introduction" class="headeranchor-link">
+      <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>Introduction
+    </h2>
+    <p>Action is the unit of tracking with HyperTrack. It is the starting point for building your use case.</p>
+    <p>This guide covers all that you need to know about actions in order to use them effectively. We will also cover
+      common <a href="https://www.hypertrack.com/usecases">use cases</a> that developers have built with HyperTrack and
+      point you to quick APIs and tutorials to build them with actions.</p>
+    <p>Feel free to build anything that you can imagine with actions that we might not have imagined yet. We would love
+      to hear from you when you do.</p>
+    <h2>
+      <a [routerLink]="[]" fragment="use-model" appScrollTo="use-model" class="headeranchor-link" aria-hidden="true">
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>
+      1. Use model
+    </h2>
+    <p>As a first step, you need to decide when to create and complete an action.</p>
+    <div class="note">
+      <p>This is an important decision and we would encourage you to be thoughtful about it. We would be happy to chat
+        with you about this to help.</p>
+    </div>
+    <p>Creating actions will start tracking the movement of the user and completing the action will end it. </p>
+        <img src="https://docs.hypertrack.com/assets/single_action.png" alt="Tracking one action">
+    <p>When multiple actions are created for a user, tracking starts with the first action created and ends with the
+      last action completed. You may create as many actions as you want for a user at any point in time.</p>
+        <img src="https://docs.hypertrack.com/assets/multiple_actions.png" alt="Tracking multiple actions">
+
+    <h3>
+      <a [routerLink]="[]" fragment="ways-to-create-actions" appScrollTo="ways-to-create-actions" class="headeranchor-link" aria-hidden="true">
+        <span class="headeranchor"></span></a>
+      1.1. Ways to create actions
+    </h3>
+    <p>Actions may be created:</p>
+    <ol>
+      <li>
+         <a href="https://docs.hypertrack.com/api/entities/action.html#create-actions">When actions are assigned to the user by your system in the back-end</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/action.html#create-actions">When actions are started by the user in your app</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#at-a-set-time-optionally-with-a-recurring-schedule">At a set time, optionally with a recurring schedule</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#at-a-fixed-duration-before-it-is-expected-to-complete">At a fixed duration before it is expected to complete</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#upon-enteringexiting-a-place-optionally-from-a-list-of-places">Upon entering/exiting a place, optionally from a list of places</a>
+      </li>
+    </ol>
+    <h3>
+      <a [routerLink]="[]" fragment="ways-to-complete-actions" appScrollTo="ways-to-complete-actions" class="headeranchor-link" aria-hidden="true">
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span>
+      </a>
+      1.2. Ways to complete actions
+    </h3>
+    <p>Actions may be completed:</p>
+    <ol>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/action.html#complete-an-action">When actions are completed by the user in your app</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/action.html#complete-an-action">When actions are completed by your system in the back-end</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#immediately-upon-creation">Immediately upon creation</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#at-a-set-time">At a set time</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#at-a-fixed-duration-after-it-is-created-or-expected-to-complete">At a fixed duration after it is created or expected to complete</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/rules.html#upon-enteringexiting-a-place">Upon entering/exiting a place</a>
+      </li>
+    </ol>
+    <h3 id="action-types">
+      <a [routerLink]="[]" fragment="action-types" appScrollTo="action-types" class="headeranchor-link" aria-hidden="true">
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span>
+      </a>
+      1.3. Action types
+    </h3>
+    <p>Each action may be created with an action type picked from our list or a custom type as defined by you. Actions
+      for multiple types may be created for a user.</p>
+    <img src="{{images.actionTypes}}" alt="Create different types of actions with Hypertrack SDK">
+    <h3 id="defining-your-own-actions"><a [routerLink]="[]" fragment="defining-your-own-actions"
+                                          appScrollTo="defining-your-own-actions" class="headeranchor-link"
+                                          aria-hidden="true"><span class="headeranchor">
+      <i class="fa fa-anchor" aria-hidden="true"></i></span></a>1.4. Defining your own actions</h3>
+    <p>
+      Most developers <em>create</em> actions from the back-end or app when the respective action is created or
+      assigned to a user in their own system. They <em>complete</em> actions from the app or back-end when the
+      equivalent action is completed by the user in their own system.
+     Developers specify an <a [routerLink]="[]" fragment="expected-place-and-time">expected place</a>
+      where the action is expected to complete in order to unlock
+      <a [routerLink]="[]" fragment="additional-features">additional features</a>.
+       </p>
+
+    <p>Here are a few common use cases and how you can program them using actions.</p>
+    <table class="extend">
+      <tr>
+        <th>Use case</th>
+        <th>Create</th>
+        <th>Complete</th>
+        <th>Expected place</th>
+        <th>Action type</th>
+      </tr>
+      <tr>
+        <td>Track through the day</td>
+        <td>When user logs in, or user is created for the first time, or user starts the day, or system expects the user
+          to
+          start the day (e.g. immediately after midnight or when work hours begin)
+        </td>
+        <td>When user logs off, or user ends the day, or system expects the user to end the day (e.g. at midnight, or
+          when work hours end)
+        </td>
+        <td>None</td>
+        <td><em>track_through_the_day</em>
+
+        </td>
+      </tr>
+      <tr>
+        <td>Uber-for-X</td>
+        <td>
+          <em>pickup</em> action: when order assigned to provider
+          <br><br>
+          <em>dropoff</em>/<em>delivery</em>/<em>visit</em> action: when order assigned to provider
+        </td>
+        <td>
+          <em>pickup</em> action: when pickup is marked done by provider
+          <br><br>
+          <em>dropoff</em>/<em>delivery</em>/<em>visit</em> action: when dropoff/delivery/visit is marked done by
+          provider
+        </td>
+        <td>
+          <em>pickup</em> action: expected location of pickup
+          <br><br>
+          <em>dropoff</em>/<em>delivery</em>/<em>visit</em> action: expected location of dropoff/delivery/visit
+        </td>
+        <td>
+          <em>pickup</em>
+          <br><br><br />
+          <em>dropoff</em>/<em>delivery</em>/<em>visit</em>
+          <br /><br />
+        </td>
+      </tr>
+      <tr>
+        <td>Live location sharing</td>
+        <td>One for each friend when they start sharing location</td>
+        <td>Automatically at arrival, <a href="https://docs.hypertrack.com/api/entities/rules.html#upon-enteringexiting-a-place">using autocomplete_rule parameter</a></td>
+        <td>Meetup place</td>
+        <td><em>meetup</em></td>
+      </tr>
+      <tr>
+        <td>Milk run</td>
+        <td>When list of deliveries assigned to rider at start of day/shift</td>
+        <td>When deliveries marked done by rider</td>
+        <td>Might be unavailable for many deliveries. Add where available.</td>
+        <td><em>delivery</em></td>
+      </tr>
+      <tr>
+        <td>Safety</td>
+        <td>When user taps SOS button</td>
+        <td>When user taps SAFE button</td>
+        <td>None</td>
+        <td><em>sos</em></td>
+      </tr>
+      <tr>
+        <td>Sales</td>
+        <td>When list of visits assigned to sales exec
+          <br><br>
+          When visit created by sales exec on the fly
+        </td>
+        <td>When visit is marked done by sales exec
+          <br><br>
+          Automatically at the time of create, <a href="https://docs.hypertrack.com/api/entities/rules.html#immediately-upon-creation">using autocomplete_rule parameter</a>
+        </td>
+        <td>Might be unavailable for many visits. Add where available.</td>
+        <td><em>visit</em></td>
+      </tr>
+      <tr>
+        <td>Employees</td>
+        <td>At a set time for start of work day
+          <br><br>
+          When employee logs in
+        </td>
+        <td>At set time for end of work day
+
+          <br><br>
+          When employee logs off
+        </td>
+        <td>None</td>
+        <td><em>track_through_the_day</em></td>
+      </tr>
+    </table>
+
+    <p>HyperTrack enables you to build anything you can imagine with user movement. These are only a few examples of
+      common use models used by thousands of developers who have built with HyperTrack.</p>
+    <p>See the <a [routerLink]="[]" fragment="creating-and-completing-actions">creating and completing actions</a> section for more information about the
+      action API calls, parameters, objects and expected behavior.</p>
+
+    <h3 id="what-you-get-with-actions"><a [routerLink]="[]" fragment="what-you-get-with-actions"
+                                          appScrollTo="" class="headeranchor-link"
+                                          aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>1.5. What you get
+      with
+      actions</h3>
+    <div class="floated-image">
+      <img src="{{images.placeline}}" alt="">
+    </div>
+    <br>
+    <p>Each action gets you:</p>
+    <ul>
+      <li>
+        <a [routerLink]="[]" fragment="properties-returned-in-action-object">Live tracking URL</a> with live location, activity status and device health
+        status
+      </li>
+      <li>
+        <a [routerLink]="[]" fragment="build-the-tracking-experience">Tracking experience</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/events/">Events</a>
+      </li>
+      <li>
+        <a [routerLink]="[]" fragment="properties-returned-in-action-object">Location</a>
+      </li>
+      <li>
+        <a [routerLink]="[]" fragment="properties-returned-in-action-object">Activity</a>
+      </li>
+      <li>
+        <a [routerLink]="[]" fragment="properties-returned-in-action-object">Health</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/action.html#mileage-tracking">Distance</a>
+      </li>
+      <li>
+        <a href="https://docs.hypertrack.com/api/entities/action.html#placeline">Placeline</a>
+      </li>
+
+    </ul>
+    <p>Note that each action gives you <strong>unlimited</strong>:</p>
+    <ul>
+      <li>
+        <strong>Data tracked</strong> - time, distance, location points, number of events
+      </li>
+      <li>
+        <strong>Data consumed </strong>- as data, visuals, or events
+      </li>
+      <li>
+        <strong>Consumption channels </strong>-
+        <a href="https://www.hypertrack.com/usecases">use cases</a>,
+        <a [routerLink]="[]" fragment="what-you-get">API gets</a>,
+        <a [routerLink]="[]" fragment="build-the-tracking-experience">tracking views</a>, consuming applications,
+        <a href="https://docs.hypertrack.com/events/webhook.html">webhooks received</a>,
+        <a href="https://docs.hypertrack.com/events/slack.html">Slack alerts</a> or
+        <a href="https://docs.hypertrack.com/dashboard/members.html">team members</a> with dashboard access
+      </li>
+    </ul>
+
+    <p>The time and place for action creation and completion are <a [routerLink]="[]" fragment="properties-returned-in-action-object">available</a> in the
+      action API as well.</p>
+    <hr>
+    <div class="floated-image">
+      <img src="{{images.orderTracking}}" alt="">
+    </div>
+    <br>
+    <p><a appScrollTo="additional-features">
+      Additionally</a>, when you specify <em>expected place</em>, you <a [routerLink]="[]" fragment="additional-properties-returned-when-action-created-with-expected_place">get</a>:</p>
+    <ul>
+      <li>
+        Live tracking URL with live ETA, expected route and arrival status
+      </li>
+      <li>
+        <a appScrollTo="" class="hidden-links">Tracking experience with expected places</a>
+      </li>
+      <li>
+        <a href="" class="hidden-links">Delay events</a>
+      </li>
+      <li>
+        ETA
+      </li>
+      <li>
+        Expected route
+      </li>
+      <li>
+        Remaining distance
+      </li>
+      <li>
+        Arrival status
+      </li>
+
+      <hr>
+    </ul>
+    <div class="floated-image">
+      <img src="{{images.orderTrackingMultiple}}" alt="">
+    </div>
+    <br>
+    <p>For the purpose of computing ETAs, the system assumes that actions with expected places will be completed in the
+      order in which they were created. If different, you may <a [routerLink]="[]" fragment="default-sequence-of-actions-and-apis-to-modify">specify the expected
+        sequence</a>. ETAs for all created actions with expected place will update in real-time as the user goes about
+      completing them.</p>
+    <hr>
+    <p>For more detail on what you get with actions, see the <a [routerLink]="[]" fragment="what-you-get">what you GET section</a> and
+      <a [routerLink]="[]" fragment="build-the-tracking-experience">tracking experience section</a>.</p>
+
+    <h2 appScrollTo="create-and-complete" id="creating-and-completing-actions"><a [routerLink]="[]" fragment="creating-and-completing-actions"
+                                                                                  appScrollTo="creating-and-completing-actions" class="headeranchor-link"
+                                                                                  aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>2. Creating and
+      completing actions</h2>
+
+    <h3 id="apis-to-create-complete-and-cancel"><a [routerLink]="[]" fragment="apis-to-create-complete-and-cancel"
+                                                   appScrollTo="apis-to-create-complete-and-cancel" class="headeranchor-link"
+                                                   aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>2.1. APIs to
+      create, complete and cancel</h3>
+    <table>
+      <tr>
+        <th>API call</th>
+        <th>URL</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#create-actions">Create actions</a></td>
+        <td>actions/</td>
+        <td>Create one or more actions</td>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#complete-an-action">Complete an action</a>
+        </td>
+        <td>actions/ &lt;id&gt;/complete/</td>
+        <td>Complete an action</td>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#cancel-an-action">Cancel an action</a></td>
+        <td>actions/ &lt;id&gt;/cancel/</td>
+        <td>Cancel an action
+        </td>
+      </tr>
+    </table>
+
+    <hr>
+    <h3 id="entity-ids-and-metadata-from-your-system-when-creating-actions"><a
+      [routerLink]="[]" fragment="entity-ids-and-metadata-from-your-system-when-creating-actions"
+      appScrollTo="entity-ids-and-metadata-from-your-system-when-creating-actions" class="headeranchor-link"
+      aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>2.2. Entity IDs and metadata from your system when
+      creating
+      actions</h3>
+    <p>All parameters listed here except ID of user are OPTIONAL. See <a
+      href="https://docs.hypertrack.com/api/entities/action.html#create-actions">create actions</a> API
+      reference for the full list.</p>
+    <table>
+      <tr>
+        <th>Parameters</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>user_id or user_unique_id</td>
+        <td>String</td>
+        <td>user_id is the ID of user generated by HyperTrack and user_unique_id is the ID of user provided by you. Use
+          either one when creating action.
+        </td>
+      </tr>
+      <tr>
+        <td>unique_id</td>
+        <td>String</td>
+        <td>Unique identifier for the action in your system</td>
+      </tr>
+      <tr>
+        <td>collection_id</td>
+        <td>String</td>
+        <td>Identifier for the collection of actions in your system. See below for more detail.</td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>String</td>
+        <td>Type of action, e.g., meetup, pickup, delivery, dropoff, visit, sos, payment, stopover, task, or custom</td>
+      </tr>
+      <tr>
+        <td>metadata</td>
+        <td>JSON</td>
+        <td>Custom key-values pairs in your system that you want to associate with the action
+          E.g. Customer - John Smith
+        </td>
+      </tr>
+    </table>
+
+    <h4 id="using-collections"><a [routerLink]="[]" fragment="using-collections" appScrollTo="using-collections"
+                                  class="headeranchor-link" aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>2.2.1.
+      Using
+      collections</h4>
+    <p>Use <em>collections</em> to group actions. Examples:</p>
+    <ul>
+      <li>
+        <p>A group of friends meeting up and sharing live location with each other</p>
+      </li>
+      <li>
+        <p>An order that requires multiple actions to be tracked, such as a pickup followed by a dropoff</p>
+      </li>
+    </ul>
+
+    <h3 id="rules-to-automatically-createcomplete-actions"><a
+      [routerLink]="[]" fragment="rules-to-automatically-createcomplete-actions"
+      appScrollTo="rules-to-automatically-createcomplete-actions" class="headeranchor-link" aria-hidden="true"><span
+      class="headeranchor"></span></a>2.3. Rules to automatically create/complete actions</h3>
+    <p>You can define <a href="https://docs.hypertrack.com/api/entities/rules.html">rules to automatically create and complete actions</a> at set time(s) or place(s). Rules to create or
+      complete actions at places might be when a user arrives at or leaves from a list of places. </p>
+    <div class="note">
+      <p>When you followed the SDK integration guide, you may have set the default rule to create/complete
+        actions that track users through the day. This rule autocreates a new action everyday at midnight with type
+        <em>track_through_the_day</em> and <em>autocomplete_rule</em> parameter set to type
+        <em>timefence</em> so that it is completed at a fixed duration after it is created.</p>
+    </div>
+
+    <h3 id="pause-and-resume-tracking"><a [routerLink]="[]" fragment="pause-and-resume-tracking"
+                                          appScrollTo="pause-and-resume-tracking" class="headeranchor-link"
+                                          aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>2.4. Pause and resume
+      tracking</h3>
+    <p>To protect your user’s privacy, you may pause and resume tracking even when there are actions created for the
+      user that have not yet been completed.</p>
+    <h3>
+      <a [routerLink]="[]" fragment="expected-place-and-time" appScrollTo="expected-place-and-time" class="headeranchor-link" aria-hidden="true">
+        <span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span>
+      </a>
+      2.5. Expected place and time
+    </h3>
+    <p>These are OPTIONAL parameters. See <a href="https://docs.hypertrack.com/api/entities/action.html#create-actions">create
+      actions</a> API reference for more.</p>
+    <table>
+      <tr>
+        <th>Parameters</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>expected_place</td>
+        <td>JSON</td>
+        <td>Object of <a href="https://docs.hypertrack.com/api/entities/place.html">place</a> where the action is
+          expected to be completed. Use it to get ETA, expected route, remaining
+          miles and delay events.
+        </td>
+      </tr>
+      <tr>
+        <td>expected_at</td>
+        <td>ISO datetime string</td>
+        <td>Time at which action is scheduled to complete. Will be used to compute delays.</td>
+      </tr>
+    </table>
+
+    <h2 id="what-you-get"><a [routerLink]="[]" fragment="what-you-get" appScrollTo="what-you-get" class="headeranchor-link"
+                             aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>3. What you GET</h2>
+    <h3 id="apis-to-get-the-action-objects-and-its-properties"><a
+      [routerLink]="[]" fragment="apis-to-get-the-action-objects-and-its-properties"
+      appScrollTo="apis-to-get-the-action-objects-and-its-properties" class="headeranchor-link" aria-hidden="true"><span
+      class="headeranchor"></span></a>3.1. APIs to GET the action objects and its properties</h3>
+    <table>
+      <tr>
+        <th>API call</th>
+        <th>URL</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>Get an action</td>
+        <td>actions/ &lt;id&gt;/</td>
+        <td>Get an action object</td>
+      </tr>
+      <tr>
+        <td>Get multiple actions</td>
+        <td>actions/</td>
+        <td>Lists all actions objects. Use parameters to filter and order</td>
+      </tr>
+    </table>
+
+    <h3 id="properties-returned-in-action-object"><a [routerLink]="[]" fragment="properties-returned-in-action-object"
+                                                     appScrollTo="properties-returned-in-action-object"
+                                                     class="headeranchor-link" aria-hidden="true"><span
+      class="headeranchor"></span></a>3.2. Properties returned in action object</h3>
+    <table class="extend">
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>id</td>
+        <td>UUID String</td>
+        <td>Unique identifier for the action object created by HyperTrack when action was created</td>
+      </tr>
+      <tr>
+        <td>user</td>
+        <td>JSON</td>
+        <td>Object of user for whom action is created</td>
+      </tr>
+      <tr>
+        <td>unique_id</td>
+        <td>String</td>
+        <td>Unique identifier provided by you while creating the action</td>
+      </tr>
+      <tr>
+        <td>collection_id</td>
+        <td>String</td>
+        <td>Identifier for the collection of actions in your system provided by you while creating action.</td>
+      </tr>
+      <tr>
+        <td>metadata</td>
+        <td>JSON</td>
+        <td>Custom key-values pairs in your system that you want to associate with the action. This is provided while
+          creating action.
+        </td>
+      </tr>
+      <tr>
+        <td>type</td>
+        <td>String</td>
+        <td>Type of action</td>
+      </tr>
+      <tr>
+        <td>tracking_url</td>
+        <td>String</td>
+        <td>Live tracking URL with live location, activity status and device health status</td>
+      </tr>
+      <tr>
+        <td>location</td>
+        <td>JSON</td>
+        <td>Object with live location of action</td>
+      </tr>
+      <tr>
+        <td>activity</td>
+        <td>JSON</td>
+        <td>Object with live activity of action</td>
+      </tr>
+      <tr>
+        <td>health</td>
+        <td>JSON</td>
+        <td>Object with live device health</td>
+      </tr>
+      <tr>
+        <td>status</td>
+        <td>String</td>
+        <td>Current status of the action. See below for possible values</td>
+      </tr>
+      <tr>
+        <td>updated_at</td>
+        <td>ISO datetime string</td>
+        <td>Last time when the action object was updated by HyperTrack</td>
+      </tr>
+      <tr>
+        <td>created_at</td>
+        <td>ISO datetime string</td>
+        <td>Time when action was successfully created</td>
+      </tr>
+      <tr>
+        <td>completed_at</td>
+        <td>ISO datetime string</td>
+        <td>Time when action was successfully completed, autocompleted, canceled or autocanceled
+        </td>
+      </tr>
+      <tr>
+        <td>started_place</td>
+        <td>JSON</td>
+        <td>Object of <a href="https://docs.hypertrack.com/api/entities/place.html">place</a> where tracking started for
+          action
+        </td>
+      </tr>
+      <tr>
+        <td>completed_place</td>
+        <td>JSON</td>
+        <td>Object of <a href="https://docs.hypertrack.com/api/entities/place.html">place</a> where action was completed
+        </td>
+      </tr>
+      <tr>
+        <td>distance</td>
+        <td>Integer</td>
+        <td>Distance traveled from the previous action* completed, in meters.</td>
+      </tr>
+      <tr>
+        <td>shortest_distance</td>
+        <td>Integer</td>
+        <td>Shortest distance from the previous action*, in meters.</td>
+      </tr>
+    </table>
+    <p>* Distance of the first action will be computed from the time/place tracking started. Tracking starts when one or
+    more actions are created for the user and stops when all actions for the user are completed.</p>
+    <h4 id="status"><a [routerLink]="[]" fragment="status" appScrollTo="status" class="headeranchor-link" aria-hidden="true"><span
+      class="headeranchor"></span></a>3.2.1. Status</h4>
+    <p>The possible values for status are:</p>
+    <ul>
+      <li>
+        <p><em>created</em>: action created successfully</p>
+      </li>
+      <li>
+        <p><em>completed</em>: action completed successfully</p>
+      </li>
+      <li>
+        <p><em>autocompleted</em>: action automatically completed successfully due to autocomplete_rule parameter</p>
+      </li>
+      <li>
+        <p><em>canceled</em>: action canceled successfully</p>
+      </li>
+      <li>
+        <p><em>autocanceled</em>: action automatically canceled successfully due to autocancel_after parameter</p>
+      </li>
+    </ul>
+    <h3 id="additional-properties-returned-when-action-created-with-expected_place"><a
+      [routerLink]="[]" fragment="additional-properties-returned-when-action-created-with-expected_place"
+      appScrollTo="additional-properties-returned-when-action-created-with-expected_place" class="headeranchor-link"
+      aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>3.3. Additional properties returned when action created
+      with
+      expected_place</h3>
+    <table>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td>arrival_status</td>
+        <td>String</td>
+        <td>Current arrival status of the action. See below for possible values.</td>
+      </tr>
+      <tr>
+        <td>eta</td>
+        <td>ISO datetime string</td>
+        <td>Current ETA for user to get to expected_place on most favorable route factoring live traffic conditions</td>
+      </tr>
+      <tr>
+        <td>eta_at_creation</td>
+        <td>ISO datetime string</td>
+        <td>ETA when action was created. Use it to compare current eta with the original expectation set
+        </td>
+      </tr>
+      <tr>
+        <td>expected_route</td>
+        <td>String</td>
+        <td>Latlongs for most favorable route for user to get to expected_place factoring live traffic conditions. Also
+          the route based on which eta is computed.
+        </td>
+      </tr>
+      <tr>
+        <td>remaining_distance</td>
+        <td>Integer</td>
+        <td>Distance remaining, in meters</td>
+      </tr>
+    </table>
+
+    <h4 id="arrival-status"><a [routerLink]="[]" fragment="arrival-status" appScrollTo="arrival-status" class="headeranchor-link"
+                               aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>3.3.1. Arrival status</h4>
+    <p>The possible values for arrival_status are:</p>
+    <ul>
+      <li>
+        <p><em>leaving_now</em>: When user has moved &lt;100 meter from the place where tracking started</p>
+      </li>
+      <li>
+        <p><em>on_the_way</em>: When user has moved &gt;100 meter from the place where tracking started</p>
+      </li>
+      <li>
+        <p><em>arriving</em>: When user is &lt;400 meter from expected_place</p>
+      </li>
+      <li>
+        <p><em>arrived</em>: When user is &lt;100 meter from expected_place</p>
+      </li>
+    </ul>
+    <h3 id="default-sequence-of-actions-and-apis-to-modify"><a
+      [routerLink]="[]" fragment="default-sequence-of-actions-and-apis-to-modify"
+      appScrollTo="default-sequence-of-actions-and-apis-to-modify" class="headeranchor-link" aria-hidden="true"><span
+      class="headeranchor"></span></a>3.4. Default sequence of actions and APIs to modify</h3>
+    <p>In case of multiple actions with <em>expected_place</em> created for a user, arrival_status, eta and other properties are
+      computed for all actions with an expected_place. By default, the system expects actions to complete in the
+      sequence they are created. The default sequence may be modified using the follow API calls. Note that actions with
+      no expected_place are excluded from this computation and as such, do not have the additional properties that come
+      with expected_place. </p>
+    <table>
+      <tr>
+        <th>API call</th>
+        <th>Method</th>
+        <th>URL</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#update-sequence-of-actions">Get sequence of
+          actions with expected_place</a></td>
+        <td>GET</td>
+        <td>users/ &lt;id&gt;/sequence_actions/</td>
+        <td>Get the sequence in which actions with expected_place are expected to be completed. By default, they are
+          expected to complete in the order they were created
+        </td>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#update-sequence-of-actions">Update sequence of
+          actions with expected_place</a></td>
+        <td>POST</td>
+        <td>users/ &lt;id&gt;/sequence_actions/</td>
+        <td>Update the sequence in which actions with expected_place are expected to be completed. Use this to get
+          better tracking experience, ETA, expected route, remaining miles and delay alerts for each action
+        </td>
+      </tr>
+    </table>
+
+    <h3 id="apis-to-get-data-for-common-use-cases"><a [routerLink]="[]" fragment="apis-to-get-data-for-common-use-cases"
+                                                      appScrollTo="apis-to-get-data-for-common-use-cases"
+                                                      class="headeranchor-link" aria-hidden="true"><span
+      class="headeranchor"></span></a>3.5. APIs to GET data for common use cases</h3>
+    <table class="extend">
+      <tr>
+        <th>API</th>
+        <th>URL</th>
+        <th>Description</th>
+        <th>Use cases</th>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#mileage-tracking">Mileage tracking</a></td>
+        <td>actions/ &lt;id&gt;/mileage/</td>
+        <td>Get mileage for each action based on chosen parameters. By default, mileage is computed from the previous
+          action completed.
+        </td>
+        <td>Mileage tracking</td>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#placeline">Placeline</a></td>
+        <td>actions/placeline/</td>
+        <td>Gets placeline and location_time_series for action</td>
+        <td>Order tracking
+          Customer support
+          Operations monitoring
+        </td>
+      </tr>
+      <tr>
+        <td><a href="https://docs.hypertrack.com/api/entities/action.html#events">Events</a></td>
+        <td>actions/ &lt;id&gt;/events/</td>
+        <td>Get events for action</td>
+        <td>Order tracking
+          Customer support
+          Operations monitoring
+        </td>
+      </tr>
+    </table>
+
+    <h2 id="build-the-tracking-experience"><a [routerLink]="[]" fragment="build-the-tracking-experience"
+                                              appScrollTo="build-the-tracking-experience" class="headeranchor-link"
+                                              aria-hidden="true"><span class="headeranchor"><i class="fa fa-anchor" aria-hidden="true"></i></span></a>4. Build the
+      tracking experience</h2>
+    <p>There are multiple ways to build a live movement tracking experience for actions that are not yet completed.</p>
+    <ul>
+      <li>
+        <p>Track via a web URL using the the unique trck.at tracking URL that is returned in the response object of the
+          Action. This is a public URL that may be shared with customers or anyone you want.</p>
+      </li>
+      <li>
+        <p>Track via your HyperTrack <a href="https://dashboard.hypertrack.com/actions">dashboard</a> or <a
+          href="https://docs.hypertrack.com/dashboard/widgets.html">embed these views</a>
+          into your own dashboard.</p>
+      </li>
+      <li>
+        <p>Track via your native <a href="https://docs.hypertrack.com/usecases/livetracking/android/installing.html">Android</a>,
+          <a href="https://docs.hypertrack.com/usecases/livetracking/ios/installing.html">iOS</a> or <a
+            href="https://docs.hypertrack.com/js-sdk/">JS
+            web</a> app</p>
+      </li>
+    </ul>
+    <p>Follow the tutorial <a appScrollTo="" class="hidden-links">here</a> to build live tracking experience.</p>
+    <p>We are excited to see what you build with actions. Please hit us up if you want to share
+      your story with fellow developers.</p>
+  </article>
+</div>

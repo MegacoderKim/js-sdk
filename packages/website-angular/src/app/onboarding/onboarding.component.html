@@ -1,0 +1,83 @@
+<div class="ob-container w-container onboarding-container">
+  <div class="ob-tabs w-tabs tabs" data-duration-in="300" data-duration-out="100">
+    <div class="ob-tabs-menu w-tab-menu" tab-menu>
+      <div class="platform-header" *ngIf="!tabs || tabs.length < 1">What platform are you building on?</div>
+      <a class="ob-tab w-inline-block w-tab-link tab" *ngFor="let tab of tabs" [ngClass]="selectedTab.type === tab.type? 'selected' : ''" (click)="onTabSelect(tab)">
+        <div class="tabnumber">{{tab.tabNumber}}</div>
+        <div class="tabtext"><span><span>{{tab.label}}</span></span>
+        </div>
+      </a>
+    </div>
+    <div class="w-tab-content">
+      <div class="ob-platforms w-row" *ngIf="!selectedPlatform">
+        <div class="ob-platformcol w-col w-col-4">
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('test-app')">
+            <img class="ob-platformlogo" data-ix="cardhover" [src]="images.hypertrackLogo" />
+            <div class="div-block">
+              <div class="ob-platformname">Try with test app</div>
+              <img class="ob-quickstart" [src]="images.quickstartIcon" />
+            </div>
+            <div class="ob-codecountblock"><span class="ob-codecount">3</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">0</span> lines of code</div>
+          </div>
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('react-native')">
+            <img class="ob-platformlogo" [src]="images.reactLogo" />
+            <div class="ob-platformname">React Native</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">9</span> lines of code</div>
+          </div>
+        </div>
+        <div class="ob-platformcol w-col w-col-4">
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('ios')">
+            <img class="ob-platformlogo" [src]="images.iosLogo" />
+            <div class="ob-platformname">iOS</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">9</span> lines of code</div>
+          </div>
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('xamarin')">
+            <img class="ob-platformlogo" [src]="images.xamarinLogo" />
+            <div class="ob-platformname">Xamarin</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">12</span> lines of code</div>
+          </div>
+        </div>
+        <div class="ob-platformcol w-col w-col-4">
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('android')">
+            <img class="ob-platformlogo" [src]="images.androidLogo" />
+            <div class="ob-platformname">Android</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">12</span> lines of code</div>
+          </div>
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('cordova')">
+            <img class="ob-platformlogo" [src]="images.cordovaLogo" />
+            <div class="ob-platformname">Cordova</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">7</span> lines of code</div>
+          </div>
+        </div>
+      </div>
+      <app-ios-sdk *ngIf="selectedPlatform === 'ios'" [currentSelectedTab]="selectedTab.type" [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-ios-sdk>
+      <app-android-sdk *ngIf="selectedPlatform === 'android'" [currentSelectedTab]="selectedTab.type" [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-android-sdk>
+      <app-react-native-sdk *ngIf="selectedPlatform === 'react-native'" [currentSelectedTab]="selectedTab.type" [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-react-native-sdk>
+      <app-live-onboarding *ngIf="selectedPlatform === 'test-app'" [currentSelectedTab]="selectedTab.type" [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)"> </app-live-onboarding>
+      <div class="tab-pane" *ngIf="selectedTab.type === 'location'">
+        <div class="ob-placelinediv">
+          <div class="ob-header">{{content.locationHeader}}</div>
+          <div class="ob-placetext">{{content.locationSubHeader}}</div>
+          <div class="ob-waiting">
+            <img class="obloader" [src]="images.miniLoader" />
+            <div class="ob-waitingheader w-clearfix">
+              <div class="ob-waitingtext">{{content.dashboardInformation}}</div>
+              <div class="ob-minibutton">
+                <div class="text-block" (click)="onSwitchTab('install')">{{selectedPlatform === 'test-app' ? 'Download app' : 'Integrate SDK'}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="ob-placeline w-embed w-iframe">
+            <iframe [src]="placeLineUrl | safeUrl" height="350" width="100%" frameborder="0"> </iframe>
+          </div>
+        </div>
+        <div class="ob-buttonholder w-clearfix signup-container">
+          <div class="ob-button obthickbutton" (click)="openDashboardSignupPage()">Create an account</div>
+          <div class="ob-placetext ob-small">To store and visualize more sessions on HyperTrack</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-iframe-modal [pageSrc]="modalIframeSrc"></app-iframe-modal>
+<app-expanded-code-modal [codeContent]="codeModalContent" [publishableKey]="getPublishableKey()"></app-expanded-code-modal>

@@ -1,0 +1,66 @@
+<div class="ios-step-container" *ngIf="showTabContent('install')">
+  <div class="step-label">Install our SDK </div>
+  <div class="language-switcher-container">
+    <div class="language-switcher">
+      <div class="code-language first"
+           [ngClass]="codeLanguage === 'android' ? 'selected': ''"
+           (click)="selectLanguage('android')"> Android </div>
+      <div class="code-language last"
+           [ngClass]="codeLanguage === 'ios' ? 'selected': ''"
+           (click)="selectLanguage('ios')"> iOS</div>
+    </div>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'react-native-install-0'">
+    </app-code-block>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 1)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'react-native-install-1'">
+    </app-code-block>
+  </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('install', 2)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'react-native-install-2'">
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('permissions')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('permissions')">
+  <div class="step-label"> Ask your users permission to access location </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('permissions', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-permissions-0'">
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('tracking')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>
+<div class="ios-step-container" *ngIf="showTabContent('tracking')">
+  <div class="step-label"> Create a HyperTrack user and start tracking! </div>
+  <div class="code-block-container">
+    <app-code-block
+      [codeContent]="createCodeContent('tracking', 0)"
+      [publishableKey]="getPublishableKey()"
+      [codeBlockKey]="'ios-tracking-0'">
+    </app-code-block>
+  </div>
+  <div class="button-container">
+    <div class="ob-button obthickbutton next-button" (click)="onNextStep('location')">Next</div>
+    <div class="try-demo-app"> Taking too long? <a (click)="onUseDemoApp()" class="demo-app-link">Use our demo app instead</a></div>
+  </div>
+</div>

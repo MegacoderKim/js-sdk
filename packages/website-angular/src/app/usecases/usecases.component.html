@@ -1,0 +1,90 @@
+<div class="uc-page-container">
+
+  <!--PAGE HEADER-->
+  <div class="uc-page-container-header">
+    <div class="uc-page-container-title">
+      <h1 class="main-title">See what you can build with hypertrack</h1>
+    </div>
+    <div class="uc-header-nav">
+      <div class="uc-header-nav-item item-layout-{{navItem.layout}}" (click)="scrollToTarget( navItem.id )" *ngFor="let navItem of navigation">
+        <div class="nav-title">{{navItem.title}}</div>
+        <div class="nav-image">
+          <img src="{{navItem.image}}" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="uc-main-cta" (click)="openSignupModal()">Start building for free</div>
+  </div>
+
+  <div class="uc-page-section {{contentItem.identifier}}" id="{{contentItem.identifier}}" *ngFor="let contentItem of content">
+    <div class="uc-section-graphic">
+      <!--<div class="marvel-device iphone8 silver">-->
+        <!--<div class="top-bar"></div>-->
+        <!--<div class="sleep"></div>-->
+        <!--<div class="volume"></div>-->
+        <!--<div class="camera"></div>-->
+        <!--<div class="sensor"></div>-->
+        <!--<div class="speaker"></div>-->
+        <!--<div class="screen">-->
+          <!--<video autoplay src="https://s3.amazonaws.com/hypertrack-docs/iOS+tracking+experience.mp4"></video>-->
+        <!--</div>-->
+        <!--<div class="home"></div>-->
+        <!--<div class="bottom-bar"></div>-->
+      <!--</div>-->
+      <img src="{{contentItem.image}}" alt="">
+    </div>
+    <div class="uc-section-content">
+      <div class="section-content-title">{{contentItem.title}}</div>
+      <div class="section-content-description">{{contentItem.description}}</div>
+      <div class="section-content-cta" (click)="openSignupModal()">Get started</div>
+
+      <!--Show testimonial if it's available-->
+      <div class="section-content-testimonial" *ngIf="!!contentItem.testimonial">
+        <div class="testimonial-image">
+          <img src="{{contentItem.testimonial.logo}}" alt="{{contentItem.testimonial.title}}">
+        </div>
+        <div class="testimonial-content">
+          <div class="testimonial-text">
+            {{contentItem.testimonial.title}}
+          </div>
+          <div class="testimonial-cta">
+            <a href="{{contentItem.testimonial.link}}" target="_blank">{{contentItem.testimonial.cta}}</a>
+          </div>
+        </div>
+      </div>
+
+      <!--Show app showcase if it's available-->
+      <div class="section-content-app-showcase" *ngIf="!!contentItem.appShowcase">
+        <div class="app-icon">
+          <img src="{{contentItem.appShowcase.logo}}" alt="{{contentItem.appShowcase.title}}">
+        </div>
+        <div class="app-showcase-content">
+          <div class="app-showcase-title">{{contentItem.appShowcase.title}}</div>
+          <div class="app-showcase-description">{{contentItem.appShowcase.description}}</div>
+          <div class="app-showcase-download-buttons">
+            <div class="button-playstore download-button">
+              <a href="https://play.google.com/store/apps/details?id=io.hypertrack.sendeta&hl=en"><img src="{{images.playStoreButton}}" alt=""></a>
+            </div>
+            <div class="button-playstore download-button">
+              <a href="https://itunes.apple.com/us/app/hypertrack-live/id1076924821?mt=8"><img src="{{images.appStoreButton}}" alt=""></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Show blog post content if it's available-->
+      <div class="section-content-blog" *ngIf="!!contentItem.blog">
+        <div class="title">{{contentItem.blog.title}}</div>
+        <div class="description">{{contentItem.blog.description}}</div>
+        <a href="{{contentItem.blog.link}}"><div class="cta">{{contentItem.blog.cta}}</div></a>
+      </div>
+
+      <!--Show CTA Message if it's available-->
+      <div class="section-content-ctaMessage" *ngIf="!!contentItem.ctaMessage">
+        <a href="{{contentItem.ctaMessage.link}}" target="_blank"><div class="message">{{contentItem.ctaMessage.message}}</div></a>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="splash">
+  <div class="splash-header">Build awesome applications with location tracking</div>
+  <div class="splash-sub">Accurate locations with near-zero battery, offered through building blocks that make them useful and beautiful</div>
+  <div class="splash-featureset w-container">
+    <div class="sp-borderbutt" (click)="openHyperTrackVideo()"><img class="image" [src]="images.playButton">
+      <div class="sp-borderbutton">Watch a video</div>
+    </div>
+  </div>
+  <div class="inline-popup" *ngIf="showVideoPopup">
+    <div class="video-container">
+      <iframe id="ytplayer" type="text/html" width="800px" height="450px"
+              src="https://www.youtube.com/embed/5R8oaWzFOyI?autoplay=1"
+              frameborder="0"></iframe>
+    </div>
+  </div>
+</div>
+<!--<div class="full-popup" *ngIf="showVideoPopup" (click)="closeVideoPopup()">-->
+  <!--<div class="video-container">-->
+    <!--<iframe id="ytplayer2" type="text/html" width="100%" height="70%"-->
+            <!--src="https://www.youtube.com/embed/5R8oaWzFOyI?autoplay=1"-->
+            <!--frameborder="0"></iframe>-->
+  <!--</div>-->
+<!--</div>-->

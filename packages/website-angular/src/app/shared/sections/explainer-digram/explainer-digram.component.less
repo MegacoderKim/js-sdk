@@ -1,0 +1,38 @@
+@import "../../../../assets/css/webflow/webflow.explainer.css";
+@import "../../../../assets/css/webflow/explainer.webflow.css";
+
+.hide {
+  display: none;
+}
+
+.explainer-header {
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+}
+.explainer-section {
+  display: flex;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 75px;
+  justify-content: center;
+}
+
+.disable-pointer {
+  pointer-events: none;
+}
+
+.hover-effect {
+  transition: color 0.2s ease 0s, opacity 200ms, transform 200ms !important;
+  opacity: 1 !important;
+  transform: translateX(0px) translateY(0px) !important;
+  &:hover {
+    transform: translateX(0px) translateY(-2px) !important;
+    color: #30d679 !important;
+    &.arrow-effect {
+      color: #ffffff !important;
+    }
+  }
+}

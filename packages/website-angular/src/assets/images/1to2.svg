@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="178px" height="105px" viewBox="0 0 178 105" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-3-Copy-2" transform="translate(-956.000000, -363.000000)">
+            <g id="Group-31" transform="translate(410.000000, 239.000000)">
+                <g id="Group-28" transform="translate(547.000000, 1.000000)">
+                    <g id="tag-hor---arrow-1-copy-3" transform="translate(0.000000, 123.000000)">
+                        <g id="Group-5">
+                            <path d="M1,53 L151.520763,53" id="Line" stroke="#FFFFFF"></path>
+                            <path d="M172,4 L162,4 C156.477153,4 152,8.48397118 152,13.9926994 L152,91.0073006 C152,96.5261161 156.475938,101 162,101 L172,101" id="Path-4" stroke="#FFFFFF"></path>
+                            <circle id="Oval" stroke="#FFFFFF" fill="#394456" cx="2.5" cy="53.5" r="2.5"></circle>
+                            <polygon id="Triangle" fill="#FFFFFF" points="172 8 172 0 177 4"></polygon>
+                            <polygon id="Triangle" fill="#FFFFFF" points="172 105 172 97 177 101"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

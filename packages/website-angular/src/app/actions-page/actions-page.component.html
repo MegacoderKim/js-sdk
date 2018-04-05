@@ -1,0 +1,46 @@
+<div class="splash">
+  <div class="splasher w-container">
+    <div class="claim">Actions</div>
+  </div>
+</div>
+<div class="numberone whitesection">
+  <div class="w-container workcontainer">
+    <div class="centerflex"><img class="action4 plugsdk" sizes="(max-width: 479px) 80vw, 300px" [src]="images.actionTypes">
+      <div>
+        <div class="action1 leftpush topsdk">What are Actions?</div>
+        <div class="action2 leftpush">Key actions performed by users in your app may be posted as actions in the HyperTrack API. For instance, apps for work want to track pickups, deliveries and appointments; and apps for consumers want to track meetups, visits and payments. Post these as actions. As such, actions can be anything you want to track with HyperTrack.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bluesection">
+  <div class="w-container workcontainer">
+    <div class="leftflex">
+      <div>
+        <div class="absleft action1 leftpush">How to use Actions?</div>
+        <div class="absleft action2 leftpush">For actions that you wish to track, call <span class="actioncode">createAction</span> when they are created in your system, <span class="actioncode">assignAction</span> when they are assigned to the user and <span class="actioncode">completeAction</span> when they are completed by the user. You may create, assign or complete in the same API call or separately. These API calls can be made from the app or backend in your favorite language.</div>
+      </div><img class="action3 placeline" sizes="(max-width: 479px) 90vw, 341.25px" [src]="images.actionMethods">
+    </div>
+  </div>
+</div>
+<div class="whitesection">
+  <div class="w-container workcontainer">
+    <div class="centerflex"><img class="actionlist" sizes="(max-width: 479px) 100vw, 327.453125px" [src]="images.placeline">
+      <div>
+        <div class="action1 leftpush topsdk">Why use Actions?</div>
+        <div class="action2 leftpush">Annotate your user's Placeline with Actions as they happen. Programmatically query for the place where an action was completed, distance travelled for it, and so on. Get actionable real-time alerts for an action when user is delayed for an action, has completed it far away and many more.&nbsp;<br><br>Actions become your core building blocks for building live location features in your app. We have packaged frequently built features as use cases. As such, you can build a variety of features using actions, including features we have not imagined yet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bluesection">
+  <div class="w-container workcontainer">
+    <div class="leftflex">
+      <div>
+        <div class="absleft action1 leftpush">How are Actions priced?</div>
+        <div class="absleft action2 leftpush">We bill you 4 cents for every action you assign to your user. You get unlimited events (via webhooks), access to all APIs, embeddable dashboard views and tracking experiences for these actions at no additional cost.</div>
+      </div><img class="action3 placeline" sizes="(max-width: 479px) 90vw, 267.796875px" [src]="images.actionPrice">
+    </div>
+  </div>
+</div>
+<app-reinvent-wheel [appType]="'actions'"></app-reinvent-wheel>

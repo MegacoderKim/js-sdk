@@ -1,0 +1,17 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg width="132px" height="181px" viewBox="0 0 132 181" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Artboard-3-Copy-7" transform="translate(-580.000000, -3830.000000)" stroke-width="7">
+            <g id="Group-50" transform="translate(0.000000, 3756.000000)">
+                <g id="Group" transform="translate(584.000000, 78.000000)">
+                    <path id="Path-3" stroke="#FF85E0" d="M8.1738833,30.1866902L8.1738833,56.6770884L0.470350018,65.1643483L11.7449572,76.0117188L19.4622837,69.3447027L36.8321306,84.1997428L36.8321306,155.22932L53.390934,173.388005L82.2695055,173.388005" class="ixlJDNxw_0"></path>
+                    <path id="Path-4" stroke="#FFFFFF" d="M120.329604,0.198932927L86.5057821,36.382622L68.3711234,36.382622L68.3711234,52.4439174L37.0624779,84.0462081L19.5229961,68.9416921L10.4677348,76.8271723L10.4677348,123.246798L54.123031,123.246798L106.257724,72.9061547L124.412407,72.9061547" class="ixlJDNxw_1"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+<style>.ixlJDNxw_0{stroke-dasharray:212 214;stroke-dashoffset:213;animation:ixlJDNxw_draw_0 2900ms ease-in-out 0ms infinite,ixlJDNxw_fade 2900ms linear 0ms infinite;}.ixlJDNxw_1{stroke-dasharray:345 347;stroke-dashoffset:346;animation:ixlJDNxw_draw_1 2900ms ease-in-out 0ms infinite,ixlJDNxw_fade 2900ms linear 0ms infinite;}@keyframes ixlJDNxw_draw{100%{stroke-dashoffset:0;}}@keyframes ixlJDNxw_fade{0%{stroke-opacity:1;}96.55172413793103%{stroke-opacity:1;}100%{stroke-opacity:0;}}@keyframes ixlJDNxw_draw_0{10.344827586206897%{stroke-dashoffset: 213}79.3103448275862%{ stroke-dashoffset: 0;}100%{ stroke-dashoffset: 0;}}@keyframes ixlJDNxw_draw_1{10.344827586206897%{stroke-dashoffset: 346}79.3103448275862%{ stroke-dashoffset: 0;}100%{ stroke-dashoffset: 0;}}</style></svg>

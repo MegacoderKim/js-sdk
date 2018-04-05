@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 21</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Activity" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-199.000000, -1410.000000)">
+        <g id="Group-27" transform="translate(199.000000, 1398.000000)">
+            <g id="Group-21" transform="translate(0.000000, 12.000000)">
+                <path d="M40,20 C40,25.5294118 38,30.2352941 34.1176471,34.1176471 C30.2352941,38 25.5294118,40 20,40 C14.4705882,40 9.76470588,38 5.88235294,34.1176471 C2,30.2352941 0,25.5294118 0,20 C0,14.4705882 2,9.76470588 5.88235294,5.88235294 C9.76470588,2 14.4705882,0 20,0 C25.5294118,0 30.2352941,2 34.1176471,5.88235294 C38.1176471,9.76470588 40,14.4705882 40,20 Z" id="Shape" fill="#F6CF00"></path>
+                <path d="M19.2941176,8 L19.2941176,18.2352941 C19.2941176,19.7647059 20.5882353,21.0588235 22.1176471,21.0588235 L30.4705882,21.0588235 L19.2941176,8 Z" id="Path" fill="#7A769B"></path>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,59 @@
+@import "../../assets/css/webflow/webflow.css";
+@import "../../assets/css/webflow/hypertrack.webflow.css";
+@import "../../assets/css/webflow/hypertrack.webflow.dropdown.css";
+@import "../main/main.component.less";
+
+.jobs-apply-button {
+  .button( @purple--dark, white );
+  width: 200px;
+  position: relative;
+  overflow: hidden;
+  margin: 1rem 0;
+  float: left;
+}
+
+.job-list-title {
+  .text-title-h3();
+  float: left;
+  margin-top: @space--10x;
+  clear: both;
+  color: @purple--dark;
+  position: relative;
+  overflow: hidden;
+}
+
+.explainer {
+  text-align: left !important;
+  p {
+    text-align:justify;
+  }
+}
+.arrow-close {
+  transform-style: preserve-3d;
+  transition: transform 200ms;
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+}
+
+.arrow-open {
+  transform-style: preserve-3d;
+  transition: transform 200ms;
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(90deg);
+}
+
+.reveal-close {
+  display: none;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.reveal-open {
+  display: block;
+  opacity: 1; transition:
+  opacity 200ms;
+}
+
+h4 {
+  margin-top: 3rem;
+  position: relative;
+  color: @purple--dark;
+}

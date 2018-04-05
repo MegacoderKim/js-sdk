@@ -1,0 +1,5 @@
+<app-modal [blocking]='false' [modalId]="modalId" [modalType]="'onboarding'">
+  <div class="video-container">
+    <video [src]="videoSrc | safeUrl" controls="controls" loop="loop"></video>
+  </div>
+</app-modal>
