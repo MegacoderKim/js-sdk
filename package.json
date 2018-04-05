@@ -25,6 +25,7 @@
     "nohoist": [
       "**/js-cookie",
       "**/tslint",
+      "**/@angular/language-service",
       "**/codelyzer"
     ]
   },

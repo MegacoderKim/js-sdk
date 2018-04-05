@@ -45,12 +45,13 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "@angular/animations": "^5.2.0",
+    "@angular/animations": "5.2.9",
     "@angular/cdk": "^5.1.0",
-    "@angular/common": "^5.2.0",
-    "rxjs": "^5.5.6"
+    "@angular/common": "5.2.9",
+    "rxjs": "^5.5.8"
   },
   "dependencies": {
+    "@angular/language-service": "^5.2.9",
     "bulma": "^0.6.2",
     "date-fns": "^1.29.0",
     "font-awesome": "^4.7.0",
@@ -69,18 +70,18 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "@angular/animations": "^5.2.0",
+    "@angular/animations": "5.2.9",
     "@angular/cdk": "^5.1.0",
-    "@angular/cli": "^1.7.2",
-    "@angular/common": "^5.2.0",
-    "@angular/compiler": "^5.2.0",
-    "@angular/compiler-cli": "^5.2.0",
-    "@angular/core": "^5.2.0",
-    "@angular/forms": "^5.2.7",
-    "@angular/language-service": "^5.2.0",
-    "@angular/platform-browser": "^5.2.0",
-    "@angular/platform-browser-dynamic": "^5.2.0",
-    "@angular/router": "^5.2.0",
+    "@angular/cli": "1.7.3",
+    "@angular/common": "5.2.9",
+    "@angular/compiler": "5.2.9",
+    "@angular/compiler-cli": "5.2.9",
+    "@angular/core": "5.2.9",
+    "@angular/forms": "5.2.9",
+    "@angular/language-service": "5.2.9",
+    "@angular/platform-browser": "5.2.9",
+    "@angular/platform-browser-dynamic": "5.2.9",
+    "@angular/router": "5.2.9",
     "@ngrx/effects": "^5.2.0",
     "@ngrx/store": "^5.2.0",
     "@storybook/addon-actions": "^3.4.0",
@@ -163,7 +164,7 @@
     "rollup-plugin-typescript": "^0.8.1",
     "rollup-plugin-uglify": "^2.0.1",
     "run-sequence": "^2.1.0",
-    "rxjs": "^5.5.6",
+    "rxjs": "^5.5.8",
     "s3": "^4.4.0",
     "sass-loader": "6.0.6",
     "smoothscroll-polyfill": "^0.4.3",
@@ -172,9 +173,9 @@
     "to-string-loader": "1.1.5",
     "ts-node": "~3.2.0",
     "tslint": "~5.9.1",
-    "typescript": "^2.6.1",
+    "typescript": "2.6.2",
     "web-animations-js": "^2.3.1",
     "webpack-bundle-analyzer": "^2.9.1",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.25"
   }
 }

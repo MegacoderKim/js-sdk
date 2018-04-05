@@ -1,0 +1,36 @@
+{
+  "name": "ht-docs",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hypertrack/ht-angular"
+  },
+  "author": {
+    "name": "Gaurav Mukherjee",
+    "email": "gaurav.mukherjee3@gmail.com"
+  },
+  "keywords": [
+    "angular",
+    "hypertrack",
+    "visualization",
+    "javascript",
+    "typescript"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hypertrack/ht-angular/issues"
+  },
+  "private": false,
+  "peerDependencies": {
+    "@angular/animations": "^5.2.0",
+    "@angular/cdk": "^5.1.0",
+    "@angular/common": "^5.2.0",
+    "rxjs": "^5.5.6"
+  },
+  "dependencies": {
+    "bulma": "^0.6.2",
+    "date-fns": "^1.29.0",
+    "font-awesome": "^4.7.0",
+    "underscore": "^1.8.3"
+  }
+}
