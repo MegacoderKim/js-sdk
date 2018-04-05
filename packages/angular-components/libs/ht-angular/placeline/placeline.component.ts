@@ -79,7 +79,9 @@ export class PlacelineComponent implements OnInit {
     if (placeline.length === 0) return [];
     const actions = this.userPlaceline.actions;
     this.actionMap = {};
-    const {currentActions, expActions} = this.currentExpActions(actions);
+    const lastSeg = this.lastSeg(placeline);
+    const lastSegTime = lastSeg ? lastSeg.time : null;
+    const {currentActions, expActions} = this.currentExpActions(actions, lastSegTime);
     const allEvents = this.userPlaceline.events;
 
 
@@ -112,7 +114,6 @@ export class PlacelineComponent implements OnInit {
       return {activitySegments, events, lastSeg};
     }, {activitySegments: [], events: allEvents, lastSeg: null});
 
-    const lastSeg = this.lastSeg(placeline);
     // activitySegments.push(lastSeg);
     // return activitySegments
 
@@ -135,7 +136,8 @@ export class PlacelineComponent implements OnInit {
           let actionSegment = this.createActionSegment(actionEvent, activityClass, acc.lastSeg);
           actionSegments.push(actionSegment);
           return true
-        } else {
+        } else if (lastSeg && lastSeg.time && actionEvent.actionTime > lastSeg.time) {
+          return true
         }
         return false
       });
@@ -217,19 +219,19 @@ export class PlacelineComponent implements OnInit {
     return Math.round(timeStamp - timeStamp % 60000)
   }
 
-  private currentExpActions(actions: IAction[]) {
+  private currentExpActions(actions: IAction[], lastSegTime?: string) {
     return _.reduce(actions, (acc, action: IAction) => {
       let expActions: any[] = [];
       this.actionMap = this.setActionMap(action);
-      const assign = {
-        actionText: `${this.actionType(action)} created`,
-        actionTime: action.created_at,
-        actionD: NameCase(action.type[0]) + this.actionMap[action.id],
-        action_id: action.id,
-        actionLookupId: action.unique_id,
-        ...action
-      };
-      let currentActions = (assign.actionTime) ? [...acc.currentActions, assign] : acc.currentActions;
+      // const assign = {
+      //   actionText: `${this.actionType(action)} created`,
+      //   actionTime: action.created_at,
+      //   actionD: NameCase(action.type[0]) + this.actionMap[action.id],
+      //   action_id: action.id,
+      //   actionLookupId: action.unique_id,
+      //   ...action
+      // };
+      let currentActions = acc.currentActions;
       if (action.completed_at) {
         const end = {
           actionText: `${this.actionType(action)} ${action.status}`,
@@ -243,7 +245,15 @@ export class PlacelineComponent implements OnInit {
           actionLookupId: action.unique_id,
           ...action
         };
-        currentActions = [...currentActions, end];
+        if (lastSegTime && lastSegTime < action.completed_at) {
+          /*
+          for case when action completed after placeline time range, will show completed action card with doted line
+           */
+          expActions.push(end)
+        } else {
+          currentActions = [...currentActions, end];
+        }
+
       } else {
         const end = {
           actionText: `${this.actionType(action)} scheduled`,

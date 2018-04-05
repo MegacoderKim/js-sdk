@@ -198,7 +198,7 @@ export class TimelineUserComponent implements OnInit {
   //
   //
   private isBeforeToday(time): boolean {
-    return time ? isToday(time) : false;
+    return time ? !isToday(time) : false;
   }
   //
   // trackSegment(index, segment) {
