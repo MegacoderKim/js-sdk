@@ -209,7 +209,6 @@ export class SetupGuideComponent implements OnInit {
     .subscribe((account) => {
         this.currentPlanId = account['billing_plan'];
         this.currentPlanId = this.currentPlanId || 'free_forever:1';
-        this.currentPlanId = 'free_forever:1';
         this.findPlanObject( this.currentPlanId );
         this.isCardAdded = !!(account['card']);
     });
