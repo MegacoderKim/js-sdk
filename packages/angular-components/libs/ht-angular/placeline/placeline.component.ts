@@ -28,6 +28,7 @@ export class PlacelineComponent implements OnInit {
   hardSelectedActivity: string | null = "";
   // icons = TaskCardIcon;
   actionMap = {};
+  @Input() showCreatedCard: boolean = false;
   constructor(private ref: ChangeDetectorRef) {
 
   }
@@ -223,15 +224,15 @@ export class PlacelineComponent implements OnInit {
     return _.reduce(actions, (acc, action: IAction) => {
       let expActions: any[] = [];
       this.actionMap = this.setActionMap(action);
-      // const assign = {
-      //   actionText: `${this.actionType(action)} created`,
-      //   actionTime: action.created_at,
-      //   actionD: NameCase(action.type[0]) + this.actionMap[action.id],
-      //   action_id: action.id,
-      //   actionLookupId: action.unique_id,
-      //   ...action
-      // };
-      let currentActions = acc.currentActions;
+      const assign = {
+        actionText: `${this.actionType(action)} created`,
+        actionTime: action.created_at,
+        actionD: NameCase(action.type[0]) + this.actionMap[action.id],
+        action_id: action.id,
+        actionLookupId: action.unique_id,
+        ...action
+      };
+      let currentActions = (assign.actionTime && this.showCreatedCard) ? [...acc.currentActions, assign] : acc.currentActions;
       if (action.completed_at) {
         const end = {
           actionText: `${this.actionType(action)} ${action.status}`,
