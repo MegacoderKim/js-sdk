@@ -1,4 +1,4 @@
-import { storiesOf } from '@storybook/angular';
+import { storiesOf, moduleMetadata } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { action } from '@storybook/addon-actions';
 
@@ -13,6 +13,9 @@ import {DateRangeMap} from "ht-data";
 import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { UserPopupModule } from "../libs/ht-angular/user-popup/user-popup.module"
+/*
+* Custom webpack config breaks less
+*/
 import "!style-loader!css-loader!sass-loader!../src/assets/css/ionicons/ionicons.css"
 import "!style-loader!css-loader!sass-loader!../libs/styles/placeholder.scss"
 import "!style-loader!css-loader!sass-loader!../libs/styles/hypertrack-theme.scss"
@@ -168,7 +171,42 @@ storiesOf('Infobox', module).add('Destination ongoing', () => ({
   }
 }))
 
-storiesOf("User popup", module).add('Live', () => {
+const trackAction = {
+  type: 'task',
+  distance: 3000,
+  duration: 3000,
+  started_at: new Date(new Date().getTime() - 30000).toISOString(),
+  completed_at: new Date(new Date().getTime() - 30000).toISOString(),
+  place: {
+    display_text: "Kormangala"
+  },
+  health: {
+    battery_percentage: 45
+  },
+  activity: {
+    duration: 1000,
+    steps: 30,
+    type: "stop"
+  },
+  user: {
+    name: "Sunil",
+    display: {
+      status_text: "Walking"
+    }
+  },
+  started_place: {
+    name: "Kormangala"
+  }
+};
+
+storiesOf("User popup", module)
+.addDecorator(
+  moduleMetadata({
+    imports: [UserPopupModule, SharedModule]
+  })
+)
+.add('Live', () => {
+
   return {
     template: `
     <div class="flex-row">
@@ -176,34 +214,37 @@ storiesOf("User popup", module).add('Live', () => {
     </div>`,
     props: {
       action: {
-        type: 'task',
-        distance: 3000,
-        duration: 3000,
-        started_at: new Date(new Date().getTime() - 30000).toISOString(),
-        completed_at: new Date(new Date().getTime() - 30000).toISOString(),
+        ...trackAction
+      },
+    }
+  }
+})
+.add("Without address", () => {
+  return {
+    template: `
+    <div class="flex-row">
+      <ht-user-popup [action]="action"></ht-user-popup>
+    </div>`,
+    props: {
+      action: {
+        ...trackAction,
         place: {
-          display_text: "Kormangala"
-        },
-        health: {
-          battery_percentage: 45
-        },
-        activity: {
-          duration: 1000,
-          steps: 30
-        },
-        user: {
-          name: "Sunil",
-          display: {
-            status_text: "Driving"
-          }
-        },
-        started_place: {
-          name: "Kormangala"
+          display_text: null
         }
       },
-    },
-    moduleMetadata: {
-      imports: [UserPopupModule, SharedModule]
+    }
+  }
+})
+.add("Error", () => {
+  return {
+    template: `
+    <div class="flex-row">
+      <ht-user-popup [action]="action"></ht-user-popup>
+    </div>`,
+    props: {
+      action: {
+        ...trackAction
+      },
     }
   }
 })
