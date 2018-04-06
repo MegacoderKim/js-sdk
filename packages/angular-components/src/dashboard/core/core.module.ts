@@ -36,6 +36,7 @@ import {LoggerService} from "./logger.service";
 import {ModalService} from "./modal.service";
 import {config} from "../config";
 import {HtModule} from "ht-angular";
+import { environment } from "../../environments/environment";
 
 @NgModule({
   imports: [
@@ -44,7 +45,7 @@ import {HtModule} from "ht-angular";
     HtModule.forRoot({
       token: config.token,
       mapType: 'leaflet',
-      // baseUrl: "https://staging-api.hypertrack.com/api/"
+      baseUrl: environment.baseUrl
     }),
     StoreModule.forRoot(reducers, {metaReducers}),
     EffectsModule.forRoot([

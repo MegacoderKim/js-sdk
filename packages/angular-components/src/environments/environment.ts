@@ -8,6 +8,7 @@ export const environment = {
   isDeployed: false,
   tileUrl: "",
   mapKey: "",
+  baseUrl: "",
   tokenName: 'ht-token-prod',
   domain: "localhost",
   bk: [],
