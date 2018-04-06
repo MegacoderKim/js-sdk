@@ -6,6 +6,7 @@
   "apps": [
     {
       "root": "src",
+      "name": "dash",
       "outDir": "dist",
       "assets": [
         "assets",
@@ -48,6 +49,7 @@
     },
     {
       "root": "src",
+      "name": "demo",
       "outDir": "dist",
       "assets": [
         "assets",
@@ -81,6 +83,7 @@
     },
     {
       "root": "src",
+      "name": "track",
       "outDir": "dist",
       "appRoot": "ht-tracking",
       "assets": [
@@ -117,7 +120,6 @@
       "root": "libs",
       "outDir": "build",
       "appRoot": "elements-module",
-      "name": "lib",
       "assets": [
         "assets",
         "favicon.ico"
