@@ -13,11 +13,10 @@ import {DateRangeMap} from "ht-data";
 import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { UserPopupModule } from "../libs/ht-angular/user-popup/user-popup.module"
-import "../src/assets/css/ionicons/ionicons.css"
-import "../libs/styles/placeholder.scss"
-import "../libs/styles/hypertrack-theme.scss"
-import "../libs/styles/placeholder-tracking.scss"
-require("../libs/styles/placeholder.scss")
+import "!style-loader!css-loader!sass-loader!../src/assets/css/ionicons/ionicons.css"
+import "!style-loader!css-loader!sass-loader!../libs/styles/placeholder.scss"
+import "!style-loader!css-loader!sass-loader!../libs/styles/hypertrack-theme.scss"
+import "!style-loader!css-loader!sass-loader!../libs/styles/placeholder-tracking.scss"
 
 storiesOf('Date range picker', module).add('Basic', () => ({
   template: `
