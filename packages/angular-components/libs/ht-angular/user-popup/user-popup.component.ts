@@ -26,11 +26,6 @@ export class UserPopupComponent implements OnInit, OnChanges {
 
   }
 
-  getStatus(action: IAction): string {
-    const suffix = action.user.display.is_warning ? "" : " on";
-    return action.user.display.status_text + suffix;
-  }
-
   ngOnChanges() {
     switch (this.action.activity.type) {
       case "stop": {
