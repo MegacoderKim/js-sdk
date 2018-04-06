@@ -32,7 +32,7 @@ export class UserPopupComponent implements OnInit, OnChanges {
       const duration = HMString(this.action.activity.duration, 60);
       this.activityData = {
         title: "For",
-        body: "" + duration,
+        body: "" + (duration || '--'),
         showSubtext: true
       };
     } else {
