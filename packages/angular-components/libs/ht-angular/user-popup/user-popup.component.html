@@ -8,22 +8,30 @@
     <div class="flex-row row-gap-4 align-center">
       <div class="flex-column column-gap-7">
         <div class="flex-column">
-          <div [ngClass]="action.place && action.place.display_text ? 'is-size-7 is-uppercase' : 'is-size-6'" class="">{{action.user.display.status_text}} </div>
+          <div *ngIf="action.user.display.is_warning" class="is-size-7 is-uppercase">Last seen</div>
+          <div *ngIf="!action.user.display.is_warning" [ngClass]="action.place && action.place.display_text ? 'is-size-7 is-uppercase' : 'is-size-6'" class="">{{action.user.display.status_text}} </div>
           <span *ngIf="action.place && action.place.display_text" class="is-size-7">{{action.place?.display_text}}</span>
         </div>
-        <div class="flex-row row-gap-10" *ngIf="opened">
-          <div class="flex-column" *ngIf="activityData">
+        <ng-container *ngIf="opened">
+          <!-- <div class="flex-column" *ngIf="activityData && action.user.display.is_warning">
             <div class="is-uppercase is-size-7">{{activityData.title}}</div>
             <div>{{activityData.body}}</div>
-          </div>
-          <div class="flex-column">
-            <div class="is-uppercase is-size-7"></div>
+          </div> -->
+          <div class="flex-row row-gap-10 wrap">
+            <div class="flex-column" *ngIf="activityData">
+              <div class="is-uppercase is-size-7">{{activityData.title}}</div>
+              <div>{{activityData.body}}</div>
+            </div>
             <div class="flex-column">
-              <ht-battery-icon class="is-size-6" [showNumber]="false" [layout]="'column'" [reverse]="true" [battery]="action.health.battery_percentage" [iconType]="'ionicon'"></ht-battery-icon>
-              <div>{{action.health.battery_percentage}}%</div>
+              <div class="is-uppercase is-size-7"></div>
+              <div class="flex-column">
+                <ht-battery-icon class="is-size-6" [showNumber]="false" [layout]="'column'" [reverse]="true" [battery]="action.health.battery_percentage"
+                  [iconType]="'ionicon'"></ht-battery-icon>
+                <div>{{action.health.battery_percentage}}%</div>
+              </div>
             </div>
           </div>
-        </div>
+        </ng-container>
       </div>
       <span class="icon" *ngIf="!opened">
         <i class="ion-chevron-right"></i>

@@ -28,7 +28,13 @@ export class UserPopupComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     const activity = this.action.activity.type;
-    if (activity === 'stop' || activity === 'walk') {
+    if (this.action.user.display.is_warning) {
+      this.activityData = {
+        title: "Reason",
+        body: this.action.user.display.status_text,
+        showSubtext: true
+      };
+    } else if (activity === 'stop' || activity === 'walk') {
       const duration = HMString(this.action.activity.duration, 60);
       this.activityData = {
         title: "For",

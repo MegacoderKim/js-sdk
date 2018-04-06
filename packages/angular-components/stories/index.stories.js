@@ -243,7 +243,16 @@ storiesOf("User popup", module)
     </div>`,
     props: {
       action: {
-        ...trackAction
+        ...trackAction,
+        user: {
+          ...trackAction.user,
+          display: {
+            ...trackAction.user,
+            is_warning: true,
+            warning_since_text: "32 min ago",
+            status_text: "Location disabled"
+          }
+        }
       },
     }
   }
