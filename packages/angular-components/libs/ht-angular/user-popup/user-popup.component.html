@@ -4,12 +4,12 @@
   </div>
 </div>
 <div class="card" [class.is-warning]="action.user.display.is_warning" (click)="openCard()">
-  <div class="card-content is-popup">
+  <div class="card-content is-popup has-text-weight-semibold">
     <div class="flex-row row-gap-4 align-center">
       <div class="flex-column column-gap-7">
         <div class="flex-column">
           <div [ngClass]="action.place && action.place.display_text ? 'is-size-7 is-uppercase' : 'is-size-6'" class="">{{action.user.display.status_text}} </div>
-          <span *ngIf="action.place && action.place.display_text" class="">{{action.place?.display_text}}</span>
+          <span *ngIf="action.place && action.place.display_text" class="is-size-7">{{action.place?.display_text}}</span>
         </div>
         <div class="flex-row row-gap-10" *ngIf="opened">
           <div class="flex-column" *ngIf="activityData">
