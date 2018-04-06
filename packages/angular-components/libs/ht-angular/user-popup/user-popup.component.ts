@@ -27,27 +27,16 @@ export class UserPopupComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    switch (this.action.activity.type) {
-      case "stop": {
-        const duration = HMString(this.action.activity.duration, 60);
-        this.activityData = {
-          title: "Been here",
-          body: "" + duration,
-          showSubtext: true
-        };
-        break;
+    const activity = this.action.activity.type;
+    if (activity === 'stop' || activity === 'walk') {
+      const duration = HMString(this.action.activity.duration, 60);
+      this.activityData = {
+        title: "For",
+        body: "" + duration,
+        showSubtext: true
       };
-      case "walk": {
-        this.activityData = {
-          title: "steps covered",
-          body: "" + this.action.activity.steps,
-          showSubtext: false
-        };
-        break;
-      };
-      default: {
-        this.activityData = null;
-      }
+    } else {
+      this.activityData = null;
     }
   }
 
