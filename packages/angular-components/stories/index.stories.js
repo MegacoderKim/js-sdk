@@ -1,6 +1,7 @@
 import { storiesOf, moduleMetadata } from '@storybook/angular';
 import { withNotes } from '@storybook/addon-notes';
 import { action } from '@storybook/addon-actions';
+import { CommonModule } from '@angular/common';
 
 import { DateRangePickerModule} from "../libs/ht-angular/date-range-picker/date-range-picker.module"
 import {PaginationModule} from "../libs/ht-angular/pagination/pagination.module"
@@ -66,6 +67,43 @@ storiesOf('Pagination', module).add('Basic', () => ({
   }
 }));
 
+const trackAction = {
+  type: 'task',
+  distance: 3000,
+  duration: 3000,
+  created_at: new Date(new Date().getTime() - 30000).toISOString(),
+  completed_at: new Date(new Date().getTime() - 30000).toISOString(),
+  place: {
+    display_text: "Kormangala"
+  },
+  health: {
+    battery_percentage: 45
+  },
+  expected_place: {
+    display_text: "HSR Layout"
+  },
+  activity: {
+    duration: 1000,
+    steps: 30,
+    type: "stop"
+  },
+  user: {
+    name: "Sunil",
+    display: {
+      status_text: "Walking"
+    }
+  },
+  started_place: {
+    name: "Kormangala"
+  }
+};
+
+const liveAction = {
+  ...trackAction,
+  eta: new Date(new Date().getTime() + 30000).toISOString(),
+  completed_at: null
+}
+
 storiesOf('Action summary', module).add('Basic', () => ({
   template: `
     <app-action-summary [action]="action"></app-action-summary>
@@ -105,26 +143,20 @@ storiesOf('Action status', module).add('Basic', () => ({
   }
 }));
 
-storiesOf('Infobox', module).add('Destination ongoing', () => ({
+storiesOf('Infobox', module)
+  .addDecorator(
+    moduleMetadata({
+    imports: [DestinationPopupModule, SharedModule, StartPopupModule, CommonModule]
+    })
+  )
+  .add('Destination ongoing', () => ({
   template: `
     <ht-destination-popup [action]="action"></ht-destination-popup>
   `,
   props: {
     action: {
-      type: 'task',
-      distance: 3000,
-      duration: 3000,
-      eta: new Date(new Date().getTime() + 30000).toISOString(),
-      user: {
-        name: "Sunil"
-      },
-      expected_place: {
-        name: "Kormangala"
-      }
+      ...liveAction
     },
-  },
-  moduleMetadata: {
-    imports: [DestinationPopupModule, SharedModule]
   }
 })).add('Destination completed', () => ({
   template: `
@@ -143,9 +175,6 @@ storiesOf('Infobox', module).add('Destination ongoing', () => ({
         name: "Kormangala"
       }
     },
-  },
-  moduleMetadata: {
-    imports: [DestinationPopupModule, SharedModule]
   }
 })).add('Start', () => ({
   template: `
@@ -165,39 +194,10 @@ storiesOf('Infobox', module).add('Destination ongoing', () => ({
         name: "Kormangala"
       }
     },
-  },
-  moduleMetadata: {
-    imports: [StartPopupModule, SharedModule]
   }
 }))
 
-const trackAction = {
-  type: 'task',
-  distance: 3000,
-  duration: 3000,
-  started_at: new Date(new Date().getTime() - 30000).toISOString(),
-  completed_at: new Date(new Date().getTime() - 30000).toISOString(),
-  place: {
-    display_text: "Kormangala"
-  },
-  health: {
-    battery_percentage: 45
-  },
-  activity: {
-    duration: 1000,
-    steps: 30,
-    type: "stop"
-  },
-  user: {
-    name: "Sunil",
-    display: {
-      status_text: "Walking"
-    }
-  },
-  started_place: {
-    name: "Kormangala"
-  }
-};
+
 
 storiesOf("User popup", module)
 .addDecorator(
