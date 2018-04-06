@@ -8,6 +8,7 @@ import {Observable} from "rxjs/Observable";
 import {HtMapService} from "../ht/ht-map.service";
 import {TrackingMapService} from "../tracking-map/tracking-map.service";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import { TrackingConfigService, ITrackingConfig } from './tracking-config.service';
 
 @Component({
   selector: 'ht-tracking',
@@ -23,6 +24,7 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 })
 export class TrackingComponent implements OnInit, AfterContentInit {
   @Input() shortCode;
+  @Input() config: Partial<ITrackingConfig> = {};
   init: boolean = false;
   actionsData$: Observable<IAction[]>;
   popups$;
@@ -33,11 +35,13 @@ export class TrackingComponent implements OnInit, AfterContentInit {
   constructor(
     private trackinService: TrackingService,
     public mapService: HtMapService,
-    public trackingMapService: TrackingMapService
+    public trackingMapService: TrackingMapService,
+    public trackingConfig: TrackingConfigService
   ) {
   }
 
   ngOnInit() {
+    this.trackingConfig.set(this.config);
     this.trackinService.initShortCode(this.shortCode);
     // this.actionSummaryComponent = new ComponentPortal(this.trackinService.actionSummaryComponent);
     // console.log(this.actionSummaryComponent);
@@ -124,3 +128,4 @@ export class TrackingComponent implements OnInit, AfterContentInit {
 
 
 }
+

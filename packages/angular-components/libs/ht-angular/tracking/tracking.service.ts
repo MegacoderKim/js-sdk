@@ -10,6 +10,7 @@ import {empty} from "rxjs/observable/empty";
 import {Observable} from "rxjs/Observable";
 import {PageResults$} from "ht-data";
 import { indexBy} from "ht-utility";
+import { TrackingConfigService } from './tracking-config.service';
 
 @Injectable()
 export class TrackingService {
@@ -19,7 +20,10 @@ export class TrackingService {
   actions$: ReplaySubject<IAction[]> = new ReplaySubject();
   error$: ReplaySubject<any | null> = new ReplaySubject<any|null>();
   pollDuration: number = 2000;
-  constructor(private actionsClient: HtActionsService) {
+  constructor(
+    private actionsClient: HtActionsService,
+    private config: TrackingConfigService
+  ) {
   }
 
 
@@ -56,32 +60,6 @@ export class TrackingService {
       }),
     ).subscribe(this.actions$);
 
-    // const track$ = this.fetchActionsWithTimeAwarePath(query);
-    //
-    // track$.pipe(
-    //   tap((data) => {
-    //     //loading done
-    //   }),
-    //   expand((data: IActionWithPolyline[]) => {
-    //     if (data && !this.getActiveAction(data)) {
-    //       return empty()
-    //     } else {
-    //       return timer(this.pollDuration).pipe(
-    //         concatMap((_) => {
-    //           return this.fetchActionsWithTimeAwarePath(query, data)
-    //         })
-    //       )
-    //     }
-    //   }),
-    //   filter(data => {
-    //     if (data) this.handleOnError(null);
-    //     return !!data
-    //   }),
-    //   // map((actions: IAction[]) => actions.map(action => ({...action, display: {show_summary: false}}))),
-    //   tap((data: IAction[]) => {
-    //     this.handleOnUpdate(data);
-    //   }),
-    // ).subscribe(this.actions$);
   }
 
 
@@ -92,56 +70,6 @@ export class TrackingService {
       return !action.completed_at;
     })
   };
-
-  // private fetchActions$(query: object): Observable<IAction[]> {
-  //   return this.actionsClient.api.index(query).pipe(
-  //     PageResults$,
-  //     catchError((err) => {
-  //       console.log("err", err);
-  //       this.handleOnError(err);
-  //       return of(null)
-  //     })
-  //   )
-  // };
-
-  // private fetchActionPolyline$(action): Observable<IActionPolyline> {
-  //   return this.actionsClient.api.polyline(action.id)
-  // }
-
-  // private fetchActionsWithActivePolyline$(query: object, currentActions?: IActionWithPolyline[]) {
-  //   return this.fetchActions$(query).pipe(
-  //     concatMap((actions: IActionWithPolyline[]) => {
-  //       if (actions) {
-  //         actions = currentActions ? this.mergeUpdatedActions(actions, currentActions) : actions;
-  //         const activeAction = this.getActiveAction(currentActions || actions);
-  //         if (!activeAction || (activeAction && !activeAction.location_time_series)) {
-  //           return this.fetchActionPolyline$(actions[actions.length - 1]).pipe(
-  //             map((actionPolyline) => {
-  //               return this.mergeActiveActionPolyline(actionPolyline, actions)
-  //             })
-  //           )
-  //         } else {
-  //           return of(actions)
-  //         }
-  //       } else {
-  //         return of(actions)
-  //       }
-  //
-  //     })
-  //   )
-  // };
-
-  // private fetchActionsWithTimeAwarePath(query: object, currentActions?: IActionWithPolyline[]) {
-  //   return this.fetchActionsWithActivePolyline$(query, currentActions).pipe(
-  //     map(actions => {
-  //       return actions ? this.fillTimeAwarePathofActions(actions) : actions
-  //     })
-  //   )
-  // }
-
-  // private fillTimeAwarePathofActions(actions: IActionWithPolyline[]) {
-  //   return actions.map((action) => this.fillTimeAwarePath(action))
-  // }
 
   private fillTimeAwarePath(action: IAction): IActionMod {
     const timeAwarePath = action.location_time_series ?
@@ -160,33 +88,6 @@ export class TrackingService {
     }
     return {...action, timeAwarePath}
   }
-
-  // private mergeActiveActionPolyline(actonPolyline, actions: IAction[]) {
-  //   return actions.map((action) => {
-  //     return action.id === actonPolyline.id ? this.mergeActionAndPolyline(action, actonPolyline) : action
-  //   })
-  // }
-
-  // private mergeActionAndPolyline(action, actionPolyline: IActionPolyline) {
-  //   actionPolyline = actionPolyline || action;
-  //   const timeAwarePath = actionPolyline.location_time_series ?
-  //     new TimeAwareEncoder().decodeTimeAwarePolyline(actionPolyline.location_time_series) :
-  //     action.timeAwarePath ?
-  //       action.timeAwarePath : [];
-  //
-  //
-  //   return {...action, ...actionPolyline, timeAwarePath}
-  // }
-
-  // private mergeUpdatedActions(updatedActions, currentActions) {
-  //
-  //   const currentActionsObject = indexBy(currentActions);
-  //   return updatedActions.map((action: IActionWithPolyline) => {
-  //     const currentAction: IActionWithPolyline = currentActionsObject[action.id];
-  //     const location_time_series = action.location_time_series || currentAction.location_time_series;
-  //     return {...currentActionsObject[action.id], ...action, location_time_series, timeAwarePath: currentAction.timeAwarePath}
-  //   })
-  // }
 
   handleOnReady(actions: IAction[]) {
     console.log('On Actions ready', actions);
@@ -236,114 +137,5 @@ export class TrackingService {
     //   window.location.href = androidIntent;
     // }
   };
-
-
-  // fetchTime: number | null = null;
-  // private fetchUpdatedActions$(shortCode, data, activeAction) {
-  //   var currentActionsObject = data.reduce((acc, action) => {
-  //     return {[action.id]: action, ...acc}
-  //   }, {});
-  //   const currentTime = new Date().getTime();
-  //   let index$ = this.actionsClient.api.index({short_code: shortCode})
-  //   if (!this.fetchTime || this.fetchTime - currentTime < 100000) {
-  //     this.fetchTime = currentTime;
-  //     return index$.pipe(
-  //       map((newActions: Page<any>) => {
-  //         return newActions.results.map((action) => {
-  //           return this.updateActionWithPolyline(currentActionsObject[action.id], action)
-  //         })
-  //       })
-  //     )
-  //   } else {
-  //     this.fetchTime = currentTime;
-  //     return this.firstActions$(shortCode, activeAction)
-  //     // index$ = index$.pipe(
-  //     //   concatMap((actions) => {
-  //     //     con
-  //     //   })
-  //     // )
-  //   }
-  //
-  // };
-
-  // private firstActions$(shortCode, activeAction?) {
-  //   let index$ = this.actionsClient.api.index({short_code: shortCode});
-  //   return index$.pipe(
-  //     concatMap((actionsPage: Page<IAction>) => {
-  //       activeAction = activeAction || this.getActiveAction(actionsPage.results);
-  //       return this.actionsClient.api.polyline(activeAction.id).pipe(
-  //         map((actionPolyline: IActionPolyline) => {
-  //           return this.mergeActiveActionPolyline(actionPolyline, actionsPage.results)
-  //         })
-  //       );
-  //
-  //
-  //
-  //     })
-  //   )
-  // }
-
-  // currentActiveAction: string | null = null;
-
-  // private fetchActiveAction$(activeAction, allActions, shortCode: string) {
-  //   if (!this.currentActiveAction || this.currentActiveAction == activeAction.id) {
-  //     this.currentActiveAction = activeAction.id;
-  //     return this.fetchFreshPolyline$(activeAction, allActions, shortCode)
-  //   } else {
-  //     this.currentActiveAction = activeAction.id;
-  //     return this.fetchStalePolyline$(activeAction, allActions, shortCode)
-  //   }
-  // };
-
-  // private fetchFreshPolyline$(activeAction, allActions, shortCode: string) {
-  //   return this.actionsClient.api.get(activeAction.id).pipe(
-  //     map((updatedActiveAction) => {
-  //       return this.updateActiveActionInActions(updatedActiveAction, allActions)
-  //     })
-  //   )
-  // }
-
-  // private fetchStalePolyline$(activeAction, allActions, shortCode: string) {
-  //   this.actionsClient.api.polyline(activeAction.id).pipe(
-  //     concatMap((updatedActionPolyline: IActionPolyline) => {
-  //       return this.actionsClient.api.get(activeAction.id).pipe(
-  //         map(action => {
-  //           return this.mergeActionAndPolyline(action, updatedActionPolyline)
-  //         })
-  //       )
-  //     }),
-  //     map((updatedActiveAction) => {
-  //       return this.updateActiveActionInActions(updatedActiveAction, allActions)
-  //     })
-  //   )
-  // }
-
-
-  // private updateActiveActionInActions(updatedActiveAction, allActions) {
-  //   return allActions.map((action) => {
-  //     return this.updateActionWithPolyline(updatedActiveAction, action)
-  //   })
-  // }
-
-  // private updateActionWithPolyline(updatedActiveAction, actionWithPolyline) {
-  //   const timeAwarePath = actionWithPolyline.timeAwarePath || [];
-  //   const lastPoint = timeAwarePath[timeAwarePath.length -1];
-  //   const lastRecordedAt = lastPoint ? lastPoint[2] : null;
-  //   const newRecordedAt = updatedActiveAction.user.last_location.recorded_at;
-  //   const newLocation = updatedActiveAction.user.last_location.geojson.coordinates;
-  //   const newPoint = newLocation ? [newLocation[1], newLocation[0], newRecordedAt] : null;
-  //   if (!newLocation && !lastPoint) return actionWithPolyline;
-  //
-  //   if (!lastRecordedAt || newRecordedAt > lastRecordedAt) {
-  //     // console.log("adding");
-  //     return {
-  //       ...actionWithPolyline,
-  //       timeAwarePath: actionWithPolyline.timeAwarePath ?
-  //         [...actionWithPolyline.timeAwarePath, newPoint] : [newPoint]
-  //     }
-  //   } else {
-  //     return {...actionWithPolyline, timeAwarePath: [newPoint]}
-  //   }
-  // };
 
 }
