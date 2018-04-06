@@ -32,7 +32,7 @@ export class ActionMap {
       this.pulse = new ActionUserTrace(mapInstance);
       this.pulse.setTimeAwareAnimationEntity(this.anim);
     }
-    if (!options.hideExpected) {
+    if (!options.hideExpectedPolyline) {
       this.expectedPolyline = new ActionsExpectedPolylineTrace(this.mapInstance)
     }
     // this.user.setTimeAwareAnimation(this.anim);
@@ -60,7 +60,8 @@ export class ActionMap {
 
 export interface IActionTraceOptions {
   hasPulse?: boolean,
-  hideExpected?: boolean
+  hideExpectedPolyline?: boolean,
+  hideTrailingPolyline?: boolean
 }
 
 export const ActionTrace = ActionMap;

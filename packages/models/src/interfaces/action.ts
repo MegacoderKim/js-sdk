@@ -49,7 +49,7 @@ export interface IAction {
     type: string,
     distance: number,
     duration: number,
-    step_count: number,
+    steps: number,
     started_at: string
   };
   health: null | {

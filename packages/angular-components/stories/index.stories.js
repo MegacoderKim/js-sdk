@@ -12,9 +12,12 @@ import {SharedModule} from "../libs/ht-angular/shared/shared.module"
 import {DateRangeMap} from "ht-data";
 import {object, date, boolean, number} from '@storybook/addon-knobs/angular';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-
+import { UserPopupModule } from "../libs/ht-angular/user-popup/user-popup.module"
 import "../src/assets/css/ionicons/ionicons.css"
+import "../libs/styles/placeholder.scss"
+import "../libs/styles/hypertrack-theme.scss"
 import "../libs/styles/placeholder-tracking.scss"
+require("../libs/styles/placeholder.scss")
 
 storiesOf('Date range picker', module).add('Basic', () => ({
   template: `
@@ -165,4 +168,44 @@ storiesOf('Infobox', module).add('Destination ongoing', () => ({
     imports: [StartPopupModule, SharedModule]
   }
 }))
+
+storiesOf("User popup", module).add('Live', () => {
+  return {
+    template: `
+    <div class="flex-row">
+      <ht-user-popup [action]="action"></ht-user-popup>
+    </div>`,
+    props: {
+      action: {
+        type: 'task',
+        distance: 3000,
+        duration: 3000,
+        started_at: new Date(new Date().getTime() - 30000).toISOString(),
+        completed_at: new Date(new Date().getTime() - 30000).toISOString(),
+        place: {
+          display_text: "Kormangala"
+        },
+        health: {
+          battery_percentage: 45
+        },
+        activity: {
+          duration: 1000,
+          steps: 30
+        },
+        user: {
+          name: "Sunil",
+          display: {
+            status_text: "Driving"
+          }
+        },
+        started_place: {
+          name: "Kormangala"
+        }
+      },
+    },
+    moduleMetadata: {
+      imports: [UserPopupModule, SharedModule]
+    }
+  }
+})
 

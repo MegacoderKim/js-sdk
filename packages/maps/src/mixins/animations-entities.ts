@@ -55,7 +55,6 @@ export function AnimationsEntitiesMixin<TBase extends Constructor<IAnimationsEnt
       if (sub) {
 
       } else {
-        if (this['name'] == "action user") console.log("id sub craete sub");
         const newsub = this.animationEntities
           .getEntity(animId)
           .updateEvent

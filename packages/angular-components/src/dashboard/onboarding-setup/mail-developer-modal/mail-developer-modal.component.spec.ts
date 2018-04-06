@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IframeModalComponent } from './mail-developer-modal.component';
+import { MailDeveloperModalComponent } from './mail-developer-modal.component';
 
 describe('IframeModalComponent', () => {
-  let component: IframeModalComponent;
-  let fixture: ComponentFixture<IframeModalComponent>;
+  let component: MailDeveloperModalComponent;
+  let fixture: ComponentFixture<MailDeveloperModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IframeModalComponent ]
+      declarations: [MailDeveloperModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IframeModalComponent);
+    fixture = TestBed.createComponent(MailDeveloperModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

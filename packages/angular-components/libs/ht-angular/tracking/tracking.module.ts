@@ -10,6 +10,7 @@ import {ActionStatusModule} from "../action-status/action-status.module";
 import {StartPopupModule} from "../start-popup/start-popup.module";
 import {TrackingMapModule} from "../tracking-map/tracking-map.module";
 import {InfoboxModule} from "../infobox/infobox.module";
+import { TrackingConfigService } from './tracking-config.service';
 
 @NgModule({
   imports: [
@@ -24,6 +25,9 @@ import {InfoboxModule} from "../infobox/infobox.module";
   ],
   declarations: [TrackingComponent],
   exports: [TrackingComponent],
-  providers: [TrackingService],
+  providers: [
+    TrackingService,
+    TrackingConfigService
+  ],
 })
 export class TrackingModule { }

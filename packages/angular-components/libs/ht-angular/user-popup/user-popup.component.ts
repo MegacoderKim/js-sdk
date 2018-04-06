@@ -26,11 +26,6 @@ export class UserPopupComponent implements OnInit, OnChanges {
 
   }
 
-  getStatus(action: IAction): string {
-    const suffix = action.user.display.is_warning ? "" : " on";
-    return action.user.display.status_text + suffix;
-  }
-
   ngOnChanges() {
     switch (this.action.activity.type) {
       case "stop": {
@@ -45,7 +40,7 @@ export class UserPopupComponent implements OnInit, OnChanges {
       case "walk": {
         this.activityData = {
           title: "steps covered",
-          body: "" + this.action.activity.step_count,
+          body: "" + this.action.activity.steps,
           showSubtext: false
         };
         break;

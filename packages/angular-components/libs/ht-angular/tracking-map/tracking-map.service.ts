@@ -5,6 +5,7 @@ import {Subscription} from "rxjs/Subscription";
 import {MapInstance} from "ht-maps";
 import {ActionTrace} from "ht-maps";
 import {IAction, IActionWithPolyline} from "ht-models";
+import { TrackingConfigService } from '../tracking/tracking-config.service';
 
 @Injectable()
 export class TrackingMapService {
@@ -30,16 +31,19 @@ export class TrackingMapService {
   popups$;
   userPopup$;
   startPopup$;
-  constructor(public mapService: HtMapService) {
+  constructor(
+    public mapService: HtMapService,
+    private config: TrackingConfigService
+  ) {
     this.mapInstance = this.mapService.mapInstance;
 
   }
 
   resetCleanMap(action) {
-    if(!this.dirty$.getValue()) {
+    if (!this.dirty$.getValue()) {
       this.mapService.resetBounds()
     }
-    if(!this.checkDirtySub) {
+    if (!this.checkDirtySub) {
       this.checkDirtySub = this.mapInstance.onEvent$('click mousedown dragstart')
         .subscribe(data => {
           this.dirty$.next(true);
@@ -49,13 +53,19 @@ export class TrackingMapService {
 
   setData$(actionsData$) {
     const mapInstance = this.mapService.mapInstance;
-    if(!this.actionsTrace) this.actionsTrace = new ActionTrace(mapInstance, {hasPulse: true});
+    if (!this.actionsTrace) this.actionsTrace = new ActionTrace(mapInstance, 
+      {
+        hasPulse: true,
+        hideExpectedPolyline: this.config.hideExpectedPolyline,
+        hideTrailingPolyline: this.config.hideTrailingPolyline
+      }
+    );
     this.setStyle();
     this.actionsTrace.setData$(actionsData$);
   }
 
   resetMap() {
-    if(!this.actionCompleted) this.dirty$.next(false);
+    if (!this.actionCompleted) this.dirty$.next(false);
   }
 
   onComplete(action) {

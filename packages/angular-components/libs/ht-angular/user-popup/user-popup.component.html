@@ -7,7 +7,7 @@
   <div class="card-content is-popup">
     <div *ngIf="!opened" class="is-size-7 flex-row row-gap-4">
       <div class="flex-column">
-        <div class=" has-text-weight-bold is-uppercase">{{getStatus(action)}} </div>
+        <div class=" has-text-weight-bold is-uppercase">{{action.user.display.status_text}} </div>
         <span class=" has-text-weight-bold">{{action.place?.display_text | dot}}</span>
         <span *ngIf="activityData && activityData.showSubtext">{{activityData.title}} for {{activityData.body}}</span>
       </div>
@@ -18,7 +18,7 @@
     <ng-container *ngIf="opened">
       <div class="flex-column column-gap-4">
         <div>
-          <div class="is-uppercase has-text-weight-bold is-size-7">{{getStatus(action)}}</div>
+          <div class="is-uppercase has-text-weight-bold is-size-7">{{action.user.display.status_text}}</div>
           <div class="has-text-weight-bold is-size-7">{{action.place?.display_text | dot}}</div>
         </div>
         <div *ngIf="activityData">

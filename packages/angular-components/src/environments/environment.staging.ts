@@ -5,6 +5,7 @@ export const environment = {
   tokenName: 'ht-token-staging',
   isDeployed: false,
   domain: "staging.hypertrack.com",
+  baseUrl: "https://staging-api.hypertrack.com/api/",
   // domain: "localhost",
   bk: [],
   tileUrl: "",
