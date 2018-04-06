@@ -81,7 +81,7 @@ export class PlacelineComponent implements OnInit {
     const actions = this.userPlaceline.actions;
     this.actionMap = {};
     const lastSeg = this.lastSeg(placeline);
-    const lastSegTime = lastSeg ? lastSeg.time : null;
+    const lastSegTime = lastSeg ? lastSeg['time'] : null;
     const {currentActions, expActions} = this.currentExpActions(actions, lastSegTime);
     const allEvents = this.userPlaceline.events;
 
@@ -91,7 +91,7 @@ export class PlacelineComponent implements OnInit {
       const activityText = this.getActivityText(segment);
       const activityClass = this.getActivityClass(segment);
       const placeAddress = this.getActivityPlaceAddress(segment);
-      const lastSeg = segment;
+      const lastSegment = segment;
       const gapSegment = this.getGapSegment(segment, acc.lastSeg);
       // let lastSeg = _.last(acc.activitySegments);
       const currentActivitySegment: {
@@ -110,9 +110,9 @@ export class PlacelineComponent implements OnInit {
         return false
       });
       // console.log(gapSegment, "gap");
-      let activitySegments =  [...acc.activitySegments, ...gapSegment, currentActivitySegment];
+      const currentActivitySegments =  [...acc.activitySegments, ...gapSegment, currentActivitySegment];
       // let activitySegments =  [...acc.activitySegments, currentActivitySegment];
-      return {activitySegments, events, lastSeg};
+      return { activitySegments: currentActivitySegments, events, lastSeg: lastSegment};
     }, {activitySegments: [], events: allEvents, lastSeg: null});
 
     // activitySegments.push(lastSeg);
@@ -121,38 +121,37 @@ export class PlacelineComponent implements OnInit {
 
     let {actionSegments, actionEvents} = _.reduce([...activitySegments, lastSeg], (acc, segment, i, placelineM) => {
       activitySegments = acc.activitySegments;
-      let lastSeg = segment;
+      let lastSegment = segment;
       let activityClass = acc.lastSeg ? acc.lastSeg.activityClass : 'no-info';
       let actionSegments = acc.actionSegments;
       let actionEvents = _.reject(acc.actionEvents, (actionEvent) => {
         let actionMin = this.getMinute(actionEvent.actionTime);
         let segTime = this.getMinute(segment.time);
-        if(actionMin == segTime && !segment.ended && !segment.actionText) {
+        if (actionMin == segTime && !segment.ended && !segment.actionText) {
           // if(actionEvent.actionTime == segment.time) {
           let actionSegment = this.createActionSegment(actionEvent, activityClass, acc.lastSeg);
           segment = {...actionSegment, ...segment};
           return true
-        } else if(actionEvent.actionTime <= segment.time) {
+        } else if (actionEvent.actionTime <= segment.time) {
           // console.log("np match");
           let actionSegment = this.createActionSegment(actionEvent, activityClass, acc.lastSeg);
           actionSegments.push(actionSegment);
           return true
-        } else if (lastSeg && lastSeg.time && actionEvent.actionTime > lastSeg.time) {
+        } else if (lastSeg && lastSeg['time'] && actionEvent.actionTime > lastSeg['time']) {
           return true
         }
         return false
       });
-      if(segment.ended && !segment.actionText) {
-      } else if(segment.ended) {
+      if (segment.ended && !segment.actionText) {
+      } else if (segment.ended) {
         activitySegments.push({...segment, ended: false, type: segment.type});
       } else {
         activitySegments.push({...segment, type: segment.type});
       }
       // activitySegments.push(segment);
-      return {activitySegments, actionEvents, lastSeg, actionSegments}
+      return {activitySegments, actionEvents, lastSeg: lastSegment, actionSegments}
     }, {activitySegments: [], actionEvents: currentActions, lastSeg: null, actionSegments: []});
     // activitySegments.pop();
-
     let unsortedCurrentSegment = [...activitySegments, ...actionSegments];
     let currentSegment = _.sortBy(unsortedCurrentSegment, (segment) => {
       return segment.time
@@ -164,7 +163,7 @@ export class PlacelineComponent implements OnInit {
       return this.createActionSegment(actionEvent, 'no-info')
     });
     let expActionSegments = _.map(expActions, (actionEvent, i, expEvents) => {
-      if(actionEvents.length === 0) {
+      if (actionEvents.length === 0) {
         lastSeg['activityBorder'] = 'line-border';
       }
       const activityClass = i < expEvents.length - 2 ? 'line' : '';
@@ -294,12 +293,12 @@ export class PlacelineComponent implements OnInit {
 
   private lastSeg(placelines: IPlaceline[]) {
     let lastSeg: IPlaceline = _.last(placelines);
-    if(!lastSeg) return {};
+    if (!lastSeg) return {};
     // let last = {time: lastSeg['last_heartbeat_at']};
     let pipeClass = "";
     let time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration)).toISOString();
     let isLive = this.userPlaceline.is_tracking;
-    if(!isLive) {
+    if (!isLive) {
       time = new Date(new Date(lastSeg.started_at).getTime() + (1000 * lastSeg.duration)).toISOString()
     } else {
       // isLive = true;
@@ -336,7 +335,7 @@ export class PlacelineComponent implements OnInit {
   private getActivityText(segment: IPlaceline) {
     if (segment.type === 'stop') {
       return segment.place && segment.place.display_text ? segment.place.display_text : 'Stop';
-    } else if(segment.unknown_reason) {
+    } else if (segment.unknown_reason) {
       return this.getLocationVoidText(segment)
     } else {
       return NameCase(segment.type)
@@ -462,7 +461,7 @@ export class PlacelineComponent implements OnInit {
     return {...actionMap}
   }
 
-  indexId(index, item){
+  indexId(index, item) {
     return item.id
   }
 
