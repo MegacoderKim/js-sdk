@@ -23,7 +23,7 @@
       <div class="bar" *ngIf="!last" [class.big]="(selectedActivity == segment.id && segment.activityBorder && !selectedSegmentId) || selectedSegmentId === segment.id" [class.solid]="segment.activityBorder" [ngClass]="segment.activityBorder"></div>
     </div>
     <div class="flex-column flex timeline-detail">
-      <div class="activity-dot segment-dot" [class.activity-dot-ended]="segment.actionEnded" *ngIf="segment.actionD"><div class="auto">{{segment.actionD}} </div></div>
+      <div class="activity-dot segment-dot" [class.activity-dot-ended]="showCreatedCard && segment.actionEnded" *ngIf="segment.actionD"><div class="auto">{{segment.actionD}} </div></div>
       <div *ngIf="segment.isLive" [ngClass]="segment.activityBg" class="segment-dot"><div *ngIf="segment.isLive" [ngClass]="segment.activityBg" class="is-live" [class.is-pulse]="segment.type == 'stop' || segment.type === 'trip'"></div></div>
       <div *ngIf="!segment.isLive && !segment.actionD" class="a-dot" [ngClass]="segment.activityBorder"></div>
       <div class="flex-column column-gap-10">
