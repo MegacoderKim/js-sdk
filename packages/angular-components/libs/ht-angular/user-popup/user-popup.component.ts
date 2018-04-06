@@ -45,7 +45,7 @@ export class UserPopupComponent implements OnInit, OnChanges {
       case "walk": {
         this.activityData = {
           title: "steps covered",
-          body: "" + this.action.activity.step_count,
+          body: "" + this.action.activity.steps,
           showSubtext: false
         };
         break;
