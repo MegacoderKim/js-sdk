@@ -102,6 +102,7 @@
     "amazing-time-picker": "^1.5.3",
     "angular-async-local-storage": "^3.1.1",
     "autoprefixer": "7.1.5",
+    "babel-core": "^6.26.0",
     "classlist.js": "^1.1.20150312",
     "cleave.js": "^1.2.1",
     "clipboard": "^2.0.0",
