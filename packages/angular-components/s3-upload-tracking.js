@@ -5,8 +5,8 @@ var s3 = require('s3');
 
 http.globalAgent.maxSockets = https.globalAgent.maxSockets = 20;
 
-var Bucket = 'v2.trck.at';
-// var Bucket = 'tracking-url';
+// var Bucket = 'v2.trck.at';
+var Bucket = 'tracking-url';
 var client = s3.createClient({
   s3Options: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,

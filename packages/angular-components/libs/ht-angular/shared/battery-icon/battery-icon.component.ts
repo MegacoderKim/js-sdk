@@ -10,6 +10,7 @@ export class BatteryIconComponent implements OnInit {
   @Input() battery: number = 0;
   @Input() layout: 'column' | 'row' = 'row';
   @Input() reverse: boolean = false;
+  @Input() showNumber: boolean = true;
   @Input() iconType: 'fa' | 'ionicon' = 'fa';
   constructor() { }
 

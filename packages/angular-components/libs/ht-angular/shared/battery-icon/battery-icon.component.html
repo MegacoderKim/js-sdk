@@ -1,6 +1,6 @@
-<div *ngIf="battery" [ngClass]="layout == 'column' ? 'flex-column column-gap-4 justify-center' : 'flex-row row-gap-4 align-center'" class="">
+<div *ngIf="battery" [ngClass]="layout == 'column' ? 'flex-column justify-center' : 'flex-row row-gap-4 align-center'" class="">
   <i class="fa" *ngIf="reverse" [ngClass]="batteryClass(battery)"></i>
-  <div>
+  <div *ngIf="showNumber">
     {{battery}}%
   </div>
   <i class="fa" *ngIf="!reverse" [ngClass]="batteryClass(battery)"></i>
