@@ -3,7 +3,7 @@ export const codeContent = [
 repositories {
     maven { url 'http://hypertrack-android-sdk.s3-website-us-west-2.amazonaws.com/' }
 }
-compile('com.hypertrack:android:0.6.24@aar') {
+compile('com.hypertrack:android:0.7.0@aar') {
     transitive = true;
 }`
 ];
@@ -106,27 +106,47 @@ export const trackingStep = [
     fileURL: 'https://raw.githubusercontent.com/hypertrack/android-sdk-onboarding/master/app/src/main/java/com/hypertrack/androidsdkonboarding/LoginActivity.java',
     lines: [
       {
-        start: 119,
-        end: 130
+        start: 151,
+        end: 176
       },
       {
-        start: 134,
-        end: 152
-      },
-      {
-        start: 155,
-        end: 186
+        start: 182,
+        end: 206
       }
     ],
-    code: `HyperTrack.getOrCreateUser(name, phoneNumber, lookupId,
-      new HyperTrackCallback() {
-        @Override
-        public void onSuccess(@NonNull SuccessResponse successResponse) {
-          HyperTrack.startMockTracking()
-        },
-        ...
-      }
-)        
+    code: `HyperTrack.getOrCreateUser(userParams, new HyperTrackCallback() {
+            @Override
+            public void onSuccess(@NonNull SuccessResponse successResponse) {
+                User user = (User) successResponse.getResponseObject();
+                onUserLoginSuccess();
+            }
+
+            @Override
+            public void onError(@NonNull ErrorResponse errorResponse) {
+              
+                Toast.makeText(LoginActivity.this, R.string.login_error_msg + " " +
+                        errorResponse.getErrorMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+ 
+private void onUserLoginSuccess() {
+      ActionParamsBuilder actionParamsBuilder = new ActionParamsBuilder();
+        actionParamsBuilder.setType(Action.TYPE_VISIT).
+setExpectedPlace(new Place().setAddress("HyperTrack").setCountry("India"));
+        HyperTrack.createAndAssignAction(actionParamsBuilder.build(), new HyperTrackCallback() {
+            @Override
+            public void onSuccess(@NonNull SuccessResponse response) {
+                Action action = (Action) response.getResponseObject();
+                saveAction(action);
+                Log.d(TAG, "onSuccess:  Action Created");
+            }
+
+            @Override
+            public void onError(@NonNull ErrorResponse errorResponse) {
+                Log.e(TAG, "onError:  Action Creation Failed: " + errorResponse.getErrorMessage());
+            }
+        });
+    }        
 `,
     language: 'java'
   }
