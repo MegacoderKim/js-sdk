@@ -1,4 +1,4 @@
-import { IAction, IActionMap, IActionHeat, HtPosition } from "ht-models";
+import { IAction, IActionMap, IActionHeat, HtPosition, IUserAnalytics } from "ht-models";
 import _ from "underscore";
 import { IActionPositions } from "../interfaces";
 import { GetDateRangeQuery } from "ht-utility";
@@ -184,6 +184,25 @@ export class HtAction {
       let placeArray = Array(place.num_actions).fill(placeLatlng);
       return [...acc, ...placeArray]
     }, []);
+  }
+
+  getMarkerSearched(key: string) {
+    key = key.toLowerCase();
+    const searchKeys = [
+      (action: IAction) => action.user.name,
+      (action: IAction) => action.unique_id
+    ]
+    return (action: IAction) => {
+      return searchKeys.reduce((match, selector) => {
+        const value = selector(action);
+        if (!value) return false
+        return value.toLowerCase().includes(key) || match
+      }, false);
+      // if (!action.user.name) return false;
+      // let name = action.user.name.toLowerCase();
+      // key = key.toLowerCase();
+      // return name.includes(key);
+    };
   }
 }
 
