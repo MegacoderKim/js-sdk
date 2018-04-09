@@ -5,8 +5,9 @@ import {ApiType, QueryLabel} from "ht-client";
 import {listwithSelectedId$, listWithItem$} from "ht-data";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
-import {Color} from "ht-utility";
+import {Color, IsRangeToday} from "ht-utility";
 import {distinctUntilChanged, map} from "rxjs/operators";
+import {merge} from "rxjs/observable/merge";
 
 @Component({
   selector: 'ht-users-container',
@@ -25,6 +26,8 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   loadingUserDataId$;
   loadingUsers$;
   @Input() hasMap: boolean = false;
+  @Input() userId: string;
+  @Input() query: object;
   @Input() showStatusSummary: boolean = true;
   @Input() showActiveSummary: boolean = true;
   @Input() apiType: ApiType = ApiType.analytics;
@@ -46,6 +49,8 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       color: Color.red
     },
   ];
+  mapLoading$: Observable<boolean>;
+  showMapLoading: boolean = false;
   constructor(
     private userService: HtUsersService,
     private mapService: HtMapService
@@ -94,7 +99,84 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       }),
       distinctUntilChanged(),
       // startWith(true)
-    )
+    );
+
+    if (this.userId){
+      this.userService.placeline.setId(this.userId);
+      this.userService.list.setId(this.userId || null)
+    }
+    if (this.query) {
+      this.userService.list.setQuery(this.query);
+    }
+    if (this.hasMap) this.bindMapData()
+  };
+
+  bindMapData() {
+    this.userService.dateRange.data$.subscribe((range) => {
+      const isToday = IsRangeToday(range);
+      if (isToday) {
+        this.hideHeatmap();
+        this.showCluster()
+      } else {
+        this.hideCluster();
+        this.showHeatmap();
+      }
+    });
+    this.userService.listAll.setActive();
+    this.mapService.usersCluster.setPageData$(this.userService.listAll.data$, {
+      hide$: this.userService.placeline.id$
+    });
+    this.mapService.usersHeatmap.setPageData$(
+      this.userService.heatmap.data$,
+      {
+        hide$: this.userService.placeline.id$
+      }
+    );
+
+    // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
+    // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
+    this.mapService.placeline.setCompoundData$(this.userService.placeline.data$, {
+      roots: ['placeline', 'actions'],
+      highlighted$: this.userService.placeline.segmentSelectedId$,
+      filter$: this.userService.placeline.segmentResetId$,
+      resetMap$: this.userService.placeline.segmentResetId$
+    });
+
+    const loading$1 = this.userService.placeline.loading$
+      .pipe(
+        map((data) => !!data && this.showMapLoading),
+        distinctUntilChanged()
+      );
+
+    const loading$2 = this.userService.listAll.loading$
+      .pipe(
+        map((data) => !!data),
+        distinctUntilChanged()
+      );
+
+    const loadingHeat$ = this.userService.heatmap.loading$;
+
+    const mapLoading$: Observable<boolean> = merge(loading$1, loading$2, loadingHeat$).pipe(
+      map(data => !!data)
+    );
+    this.mapService.mapInstance.loading$ = mapLoading$
+  };
+
+  private showCluster() {
+    this.userService.listAll.setActive()
+  }
+
+  private hideCluster() {
+    this.userService.listAll.clearData();
+    this.userService.listAll.setActive(false)
+  }
+
+  private showHeatmap() {
+    this.userService.heatmap.setActive()
+  }
+
+  private hideHeatmap() {
+    this.userService.heatmap.clearData()
   }
 
   get queryMap() {
@@ -184,7 +266,13 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
     this.hoverUser(null)
   }
 
+  clearMapData() {
+    this.userService.listAll.clearData();
+    this.mapService.usersCluster.trace([])
+  }
+
   ngOnDestroy() {
+    if (this.hasMap) this.clearMapData();
     this.userService.list.clearData();
     this.userService.list.setId(null)
   }
