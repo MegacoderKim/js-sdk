@@ -50,7 +50,9 @@ export class MapInstance {
     this.map$.next(map);
   }
   inValidateSize() {
-    this.mapUtils.invalidateSize(this.map);
+    setTimeout(() => {
+      this.mapUtils.invalidateSize(this.map);
+    }, 100)
   }
   // getMap() {
   //   this.map$.take(1).subscribe(map => {

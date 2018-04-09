@@ -136,7 +136,7 @@ export class HtMapClass {
   }
 
   inValidateSize() {
-    this.mapInstance.mapUtils.invalidateSize(this.map);
+    this.mapInstance.inValidateSize();
   }
 
   addEntities(entities) {
