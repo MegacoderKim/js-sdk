@@ -17,3 +17,17 @@ export const GetUrlParam = (name: string, url?) => {
   if (!results[2]) return "";
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 };
+
+export const getMergedParams = (params, currentParams = {}) => {
+  currentParams = {...currentParams};
+  if (!params) return currentParams;
+  const keys = Object.keys(params);
+  return keys.reduce((query, key) => {
+    if (!!params[key]) {
+      query[key] = params[key]
+    } else {
+      delete  query[key]
+    }
+    return query
+  },currentParams)
+}
