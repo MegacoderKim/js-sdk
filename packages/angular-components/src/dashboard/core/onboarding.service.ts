@@ -18,12 +18,12 @@ export class OnboardingService {
   getGithubFile(fileUrl: string = '') {
     const newTime = (new Date).getTime();
     fileUrl = fileUrl + `#${newTime}`;
-    return this.http.get(fileUrl, {headers: {'X-Header': 'true'}});
+    return this.http.get(fileUrl, {headers: {'X-Noheader': 'true'}, responseType : "text"});
   }
   getOnboardingContent(fileUrl: string = '') {
     const newTime = (new Date).getTime();
     fileUrl = fileUrl + `#${newTime}`;
-    return this.http.get(fileUrl, {headers: {'X-Header': 'true'}});
+    return this.http.get(fileUrl, {headers: {'X-NoHeader': 'true'}, responseType : "text"});
   }
 }
 

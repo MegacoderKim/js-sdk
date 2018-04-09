@@ -31,6 +31,9 @@ export class CodeBlockComponent implements OnInit {
   fetchAndUpdateCode() {
     if (!this.codeContent || !this.codeContent.fileURL) return;
     this.onboardingService.getGithubFile(this.codeContent.fileURL).filter(data => !!data).subscribe((fileData) => {
+      console.log(typeof fileData);
+      // fileData = JSON.parse( fileData );
+      // console.log(fileData);
       let snippets = this.createCodeSnippetsWithData(fileData, this.codeContent.lines);
       this.codeSnippets = snippets;
       this.isCodeUpdated = true;
@@ -75,7 +78,7 @@ export class CodeBlockComponent implements OnInit {
       newLines.push({
         start: 1,
         end: (fileDataByLine.length),
-        type: 'spaced'
+        type: 'copy'
       });
     } else {
       for (let i = 0; i < lines.length; i++) {
@@ -85,26 +88,26 @@ export class CodeBlockComponent implements OnInit {
             newLines.push({
               start: 1,
               end: start - 1,
-              type: 'spaced'
+              type: 'copy'
             });
           }
-          newLines.push({...line, type: 'copy'});
+          newLines.push({...line, type: 'spaced'});
         } else {
           if (start !== lines[i - 1].end + 1) {
             newLines.push({
               start: lines[i - 1].end + 1,
               end: start - 1,
-              type: 'spaced'
+              type: 'copy'
             });
           }
-          newLines.push({...line, type: 'copy'});
+          newLines.push({...line, type: 'spaced'});
         }
       }
       if (fileDataByLine.length !== newLines[newLines.length - 1].end) {
         newLines.push({
           start: newLines[newLines.length - 1].end + 1,
           end: fileDataByLine.length,
-          type: 'spaced'
+          type: 'copy'
         });
       }
     }

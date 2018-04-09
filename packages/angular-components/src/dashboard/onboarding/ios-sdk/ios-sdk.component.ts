@@ -8,7 +8,7 @@ import {iosOnboardingContent} from "../content/ios-onboarding.content";
   styleUrls: ['./ios-sdk.component.less']
 })
 export class IosSdkComponent implements OnInit {
-  onboardingContent = [];
+  onboardingContent: any = [];
   onboardingFileURL = 'https://raw.githubusercontent.com/hypertrack/ios-sdk-onboarding-objc/master/onboardingContent.js';
   isContentLoaded = false;
   codeLanguage: string = 'swift';
@@ -29,6 +29,7 @@ export class IosSdkComponent implements OnInit {
 
   fetchAndUpdateContent() {
     this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData) => {
+      fileData = JSON.parse( fileData );
       this.onboardingContent = fileData;
       // this.onboardingContent = iosOnboardingContent;
       console.log( this.onboardingContent );

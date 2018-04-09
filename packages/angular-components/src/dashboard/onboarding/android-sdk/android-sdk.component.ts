@@ -12,7 +12,7 @@ import {OnboardingService} from "../../core/onboarding.service";
   styleUrls: ['./android-sdk.component.less']
 })
 export class AndroidSdkComponent implements OnInit {
-  onboardingContent = [];
+  onboardingContent: any = [];
   onboardingFileURL = 'https://raw.githubusercontent.com/hypertrack/android-sdk-onboarding/master/onboarding-content.js';
   currentStepIndex = 0;
   isContentLoaded = false;
@@ -37,7 +37,8 @@ export class AndroidSdkComponent implements OnInit {
    * Get the onboarding content from GitHub file.
    */
   fetchAndUpdateContent() {
-    this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData) => {
+    this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData: any[]) => {
+      fileData = JSON.parse( fileData );
       this.onboardingContent = fileData;
       // this.onboardingContent = androidOnboardingContent; //Use this when developing locally
       this.isContentLoaded = true;

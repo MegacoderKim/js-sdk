@@ -1,13 +1,15 @@
 @import '../main/main.component.less';
-.ob-tabs ::ng-deep {
+.ob-container ::ng-deep {
+  position: relative;
+  min-width: 100%;
   .quickstart-header {
     position: relative;
     overflow: hidden;
-    margin-top: @space--10x;
-    padding-top: @space--4x;
+    margin-top: @space--double;
+    //padding-top: @space--4x;
     .title {
       .text-title-h3();
-      text-align: center;
+      //text-align: center;
       position: relative;
     }
     .quickstart-head-nav {
@@ -29,7 +31,7 @@
       position: relative;
       overflow: hidden;
       margin: @space--double auto;
-      text-align: center;
+      //text-align: center;
       .quickstart-progress-step {
         position: relative;
         transition: 0.4s all ease-in-out;
@@ -38,10 +40,10 @@
         .label--active,
         .label--completed,
         .label--inactive {
-          .text-caption;
-          padding: @space @space--double;
-          text-align: center;
-          margin: 0 @space;
+          .text-small;
+          padding: @space @space--double @space 0;
+          //text-align: center;
+          margin: 0 @space--double 0 0;
           display: none;
         }
         .label--active {
@@ -199,7 +201,218 @@
       line-height: 4rem;
     }
   }
-
-
-
+}
+.section-plugin-sdk-invite-dev {
+  position: relative;
+  overflow: hidden;
+  clear: both;
+  margin-top: @space--4x;
+  .invite-dev-description {
+    .text-normal();
+    position: relative;
+    max-width: 600px;
+    padding: 1rem 0 0 0;
+    color: @dark-grey;
+  }
+  .invite-dev-cta {
+    position: relative;
+    overflow: hidden;
+    .text-normal();
+    color: @purple;
+    font-weight: 600;
+    cursor: pointer;
+    &:hover {
+      color: @green;
+    }
+  }
+}
+.section-plugin-sdk-platforms {
+  position: relative;
+  //overflow: hidden;
+  padding: @space--4x 0;
+  max-width: 700px;
+  .platform-section-title {
+    .text-normal();
+    font-weight: 500;
+    position: relative;
+  }
+  .platform-item {
+    position: relative;
+    overflow: hidden;
+    width: 18%;
+    margin-right: 2%;
+    float: left;
+    padding: 1rem 1rem 1rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.4s all ease-in-out;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px 1px @shadow;
+    background: white;
+    .platform-icon {
+      display: block;
+      position: relative;
+      overflow: hidden;
+      width: 5rem;
+      height: 5rem;
+      line-height: 5rem;
+      text-align: center;
+      border-radius: 10px;
+      background: @green;
+      margin: 1rem auto;
+      transition: 0.5s all ease-in-out;
+      &.android {
+        background: @color-android;
+      }
+      &.ios {
+        background: @color-apple;
+      }
+      &.react-native {
+        background: @color-react;
+      }
+      &.cordova {
+        background: @color-cordova;
+      }
+      &.xamarin {
+        background: @color-xamarin;
+      }
+      img {
+        display: inline;
+        vertical-align: middle;
+        max-width: 60%;
+      }
+    }
+    .platform-name {
+      .text-small();
+      color: @dark-grey;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      font-weight: 600;
+    }
+    .platform-lines {
+      position: relative;
+      overflow: hidden;
+      display: none;
+      .text-small();
+      color: @dark-grey;
+    }
+    &:hover {
+      box-shadow: 0 16px 32px 0 rgba(10,16,34,.2), 0 0 0 transparent;
+      transform: translateY( -5px );
+      //.platform-icon {
+      //  transform: translateY( -10px );
+      //}
+    }
+  }
+  .clearfix {
+    position: relative;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    clear: both;
+  }
+}
+.sg-selected-platform-label {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 @space--double 0;
+  float: left;
+  width: 100%;
+  clear: both;
+  .platform-icon {
+    display: inline-block;
+    float: left;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 10px;
+    line-height: 4rem;
+    text-align: center;
+    background: @purple;
+    img {
+      height: 2rem;
+      max-height: 2rem;
+      display: inline;
+      color: white;
+      vertical-align: middle;
+    }
+  }
+  .platform-content {
+    position: relative;
+    overflow: hidden;
+    float: left;
+    padding-left: @space--double;
+    padding-right: @space--4x;
+    margin-top: @space;
+    .platform-label {
+      .text-smallcaps-s();
+      color: @dark-grey;
+      position: relative;
+      overflow: hidden;
+    }
+    .platform-name {
+      .text-title-h3();
+      position: relative;
+      clear: both;
+    }
+  }
+  .platform-cta {
+    .text-normal();
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    i {
+      display: inline-block;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      vertical-align: middle;
+      padding-right: @space;
+      padding-left: @space;
+      transition: 0.4s all ease-in-out;
+    }
+    .platform-cta-text {
+      .text-smallcaps-s();
+      display: inline-block;
+    }
+    &:hover {
+      color: @green;
+      font-weight: 500;
+      i {
+        padding-left: 0;
+        //transform: translateX(-2px);
+      }
+    }
+  }
+  &.step-final{
+    display: block;
+  }
+}
+.onboarding-container {
+  position: relative;
+  //overflow: hidden;
+  clear: both;
+}
+.section-plugin-sdk-title {
+  .text-title-h2();
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  color: @purple--dark;
+}
+.section-plugin-sdk-description {
+  .text-normal();
+  max-width: 500px;
+  color: @dark-grey;
+  padding-top: @space;
+  position: relative;
+  overflow: hidden;
+}
+.step-label-title {
+  position: relative;
+  overflow: hidden;
+  .text-normal();
+  color: @black;
+  font-weight: 500;
+  margin-top: @space--4x;
+  margin-bottom: @space--double;
 }

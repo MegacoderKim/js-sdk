@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ExternalAnalyticsService} from "../core/external-analytics.service";
+import {ModalService} from "../core/modal.service";
 
 @Component({
   selector: 'app-onboarding',
@@ -27,24 +28,103 @@ export class OnboardingComponent implements OnInit {
     label: "Platform",
     type: 'platform'
   };
-  tabs = [];
-  content = {
-    locationHeader: "Placeline",
-    locationSubHeader: "Our app will show your location and activity here",
-    dashboardInformation: "Waiting for your location..."
-  };
+  platformIcon = '';
+  platforms = [
+    {
+      "name" : "Android",
+      "identifier" : "android",
+      "lines" : "5 lines of code",
+      "icon" : require( '../../assets/image/platforms/android-white.svg')
+    },{
+      "name" : "iOS",
+      "identifier" : "ios",
+      "lines" : "10 lines of code",
+      "icon" : require( '../../assets/image/platforms/ios-white.svg')
+    },{
+      "name" : "React native",
+      "identifier" : "react-native",
+      "lines" : "5 lines of code",
+      "icon" : require( '../../assets/image/platforms/react-white.svg')
+    },{
+      "name" : "Cordova",
+      "identifier" : "cordova",
+      "lines" : "5 lines of code",
+      "icon" : require( '../../assets/image/platforms/cordova-white.svg')
+    },{
+      "name" : "Xamarin",
+      "identifier" : "xamarin",
+      "lines" : "5 lines of code",
+      "icon" : require( '../../assets/image/platforms/xamarin-white.svg')
+    }
+  ];
   selectedPlatform: string;
-  selectedTab = this.platformTab;
+  isPlatformPickActive: boolean = true;
   @Input() hasDefaultPlatform: string = '';
 
-  constructor(private externalAnalyticsService: ExternalAnalyticsService) {
+  constructor(
+    private externalAnalyticsService: ExternalAnalyticsService,
+    private modalService: ModalService,
+  ) {
   }
+
+  onPlatformPickerStepClick() {
+    this.isPlatformPickActive = true;
+    this.selectedPlatform = '';
+  }
+  /**
+   * Opens up the modal to invite a developer to the project
+   */
+  openDeveloperMailModal() {
+    this.modalService.open('mailDeveloperModal');
+  }
+
 
   ngOnInit() {
   }
 
   onPlatformSelect(platform) {
+    this.isPlatformPickActive = false;
     this.selectedPlatform = platform;
-    this.selectedTab = this.platformTab;
+    this.externalAnalyticsService.logSegmentIdentify( {
+      platform: platform,
+      onboardingStep : '2'
+    });
+    this.externalAnalyticsService.logSegmentEvent( 'platform picked', 'interaction', 'onboarding' ,{
+      platform: platform
+    });
+    switch (platform) {
+      case 'ios':
+        this.platformIcon = this.images.iosLogo;
+        break;
+      case 'android':
+        this.platformIcon = this.images.androidLogo;
+        break;
+      default:
+        this.openExternalOnboardingURL(platform);
+    }
+  }
+
+  openExternalOnboardingURL(platform) {
+    let redirectURL = '';
+    switch (platform) {
+      case 'ios':
+        redirectURL = "https://dashboard.hypertrack.com/onboarding/sdk-ios";
+        break;
+      case 'android':
+        redirectURL = "https://dashboard.hypertrack.com/onboarding/sdk-android";
+        break;
+      case 'react-native':
+        redirectURL = "https://docs.hypertrack.com/sdks/reactnative/setup.html";
+        break;
+      case 'cordova':
+        redirectURL = "https://docs.hypertrack.com/sdks/cordova/setup.html";
+        break;
+      case 'xamarin':
+        redirectURL = "https://docs.hypertrack.com/sdks/xamarin/setup.html";
+        break;
+    }
+    if (redirectURL) {
+      window.location.href = redirectURL;
+    }
   }
 }

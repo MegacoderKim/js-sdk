@@ -1,49 +1,49 @@
-<div class="onboarding-container">
-  <div class="ob-tabs">
-    <div class="w-tab-content">
-      <div class="ob-platforms w-row" *ngIf="!selectedPlatform">
-        <div class="ob-platformcol w-col w-col-4">
-          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('test-app')">
-            <img class="ob-platformlogo" data-ix="cardhover" [src]="images.hypertrackLogo" />
-            <div class="div-block">
-              <div class="ob-platformname">Try with test app</div>
-              <img class="ob-quickstart" [src]="images.quickstartIcon" />
-            </div>
-            <div class="ob-codecountblock"><span class="ob-codecount">3</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">0</span> lines of code</div>
-          </div>
-          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('react-native')">
-            <img class="ob-platformlogo" [src]="images.reactLogo" />
-            <div class="ob-platformname">React Native</div>
-            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">9</span> lines of code</div>
-          </div>
-        </div>
-        <div class="ob-platformcol w-col w-col-4">
-          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('ios')">
-            <img class="ob-platformlogo" [src]="images.iosLogo" />
-            <div class="ob-platformname">iOS</div>
-            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">9</span> lines of code</div>
-          </div>
-          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('xamarin')">
-            <img class="ob-platformlogo" [src]="images.xamarinLogo" />
-            <div class="ob-platformname">Xamarin</div>
-            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">12</span> lines of code</div>
-          </div>
-        </div>
-        <div class="ob-platformcol w-col w-col-4">
-          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('android')">
-            <img class="ob-platformlogo" [src]="images.androidLogo" />
-            <div class="ob-platformname">Android</div>
-            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">12</span> lines of code</div>
-          </div>
-          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('cordova')">
-            <img class="ob-platformlogo" [src]="images.cordovaLogo" />
-            <div class="ob-platformname">Cordova</div>
-            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">7</span> lines of code</div>
-          </div>
+      <div class="section-plugin-sdk-title" *ngIf="isPlatformPickActive">Plugin the SDK into your app</div>
+      <!-- /.section-plugin-sdk-title -->
+      <div class="section-plugin-sdk-description" *ngIf="isPlatformPickActive">
+        Follow one of these quickstarts to see live location of your users on a map. These 10 minute quickstarts would get you to plug the SDK in your app for your platform.
+      </div>
+      <!--SHOW BOX FOR SELECTED PLATFORM-->
+      <div class="sg-selected-platform-label" *ngIf="!isPlatformPickActive">
+        <!--<div class="platform-icon">-->
+          <!--<img src="{{platformIcon}}" alt="">-->
+        <!--</div>-->
+        <!--<div class="platform-content">-->
+          <!--<div class="platform-label">Selected platform</div>-->
+          <!--<div class="platform-name">{{selectedPlatform}}</div>-->
+        <!--</div>-->
+        <div class="platform-cta" (click)="onPlatformPickerStepClick()" >
+          <i class="ion-android-arrow-back"></i>
+          <!-- /.ion-android-arrow-back -->
+          <div class="platform-cta-text">CHANGE PLATFORM</div>
+          <!-- /.platform-cta-text -->
+          <!-- /.ion-log-out -->
         </div>
       </div>
+      <div class="ob-container w-container onboarding-container">
+        <div class="sg-step-container step-first" *ngIf="isPlatformPickActive">
+          <div class="step-label">
+            <div class="step-label-title">What platform are you building on ?</div>
+          </div>
+          <div class="step-content">
+            <!-- /.platform-section-title -->
+            <div class="section-plugin-sdk-platforms">
+              <div class="platform-item" *ngFor="let platform of platforms;" (click)="onPlatformSelect(platform.identifier)">
+                <div class="platform-icon {{platform.identifier}}">
+                  <img src="{{platform.icon}}" alt="">
+                </div>
+                <div class="platform-name">{{platform.name}}</div>
+                <div class="platform-lines">{{platform.lines}}</div>
+              </div>
+              <div class="clearfix"></div>
+              <!-- /.clearfix -->
+            </div>
+            <div class="section-plugin-sdk-invite-dev">
+              <div class="invite-dev-description">Not a developer? Request your mobile app developer to plug in the SDK.</div>
+              <div class="invite-dev-cta" (click)="openDeveloperMailModal()">Send this to your developer →</div>
+            </div>
+          </div>
+        </div>
       <app-ios-sdk *ngIf="selectedPlatform === 'ios'"  [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-ios-sdk>
       <app-android-sdk *ngIf="selectedPlatform === 'android'"  [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-android-sdk>
     </div>
-  </div>
-</div>

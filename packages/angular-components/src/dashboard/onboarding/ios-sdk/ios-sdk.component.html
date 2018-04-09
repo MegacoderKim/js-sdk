@@ -14,7 +14,7 @@
     <div class="quickstart-progress-step {{step.status}}" *ngFor="let step of onboardingContent; let i = index" >
       <div class="quickstart-progress-step-label label--active" (click)="onNextStep(i)">{{step.name}}</div>
       <div class="quickstart-progress-step-label label--completed" (click)="onNextStep(i)">
-        <i class="fa fa-check" aria-hidden="true"></i>{{step.name}}
+        <div class="step-icon"><i class="fa fa-check" aria-hidden="true"></i></div>{{step.name}}
       </div>
       <div class="quickstart-progress-step-label label--inactive" (click)="onNextStep(i)">{{step.name}}</div>
     </div>
