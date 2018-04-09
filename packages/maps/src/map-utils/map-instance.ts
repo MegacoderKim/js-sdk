@@ -21,6 +21,7 @@ export class MapInstance {
   setBoundsOptions;
   moveEvent;
   resetBoundsTimeout;
+  loading$: Observable<boolean>;
   constructor() {
     this.map$.subscribe(map => {
       this.map = map;
