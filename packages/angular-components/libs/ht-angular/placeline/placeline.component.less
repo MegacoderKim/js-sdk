@@ -128,10 +128,15 @@
     flex:1;
   }
   .big {
-    outline: 2px solid;
+    width: 5px !important;
+  }
+  .big.stop-border {
+    width: 16px !important;
   }
   .solid {
-    border-right: 3px solid @ht-grey-4;
+    width: 3px;
+    background: @ht-grey-4;
+    //border-right: 3px solid @ht-grey-4;
   }
   .line {
     border-right: 3px dotted @ht-grey-4 ;
@@ -144,7 +149,7 @@
     border-right: 3px dashed fade(@ht-grey-4, 40%);
   }
   .fade {
-    border-right: 3px solid fade(@ht-grey-4, 14%);
+    border-right: 3px solid fade(@ht-grey-3, 14%);
   }
 }
 .timeline-detail {
@@ -303,7 +308,7 @@
 }
 .trip {
   color: @ht-blue;
-  border-color: @trip !important;
+  background: @trip !important;
 }
 .stop {
   color: @stop;
@@ -311,7 +316,7 @@
 }
 .no-info {
   color: @stop;
-  border-color: @no-info !important;
+  background: @no-info !important;
 }
 //.start-dot {
 //  width: 25px;
@@ -411,19 +416,21 @@
   }
 }
 .trip-border {
-  border-color: @trip !important;
+  background: @trip !important;
   outline-color: @trip !important;
 }
 .stop-border {
-  border-color: @stop !important;
+  background: @stop !important;
   outline-color: @stop !important;
+  width: 12px !important;
+  border-radius: 6px;
 }
 .no-info-border {
-  border-color: @no-info !important;
+  background: @no-info !important;
   outline-color: @no-info !important;
 }
 .warning-border {
-  border-color: @warning !important;
+  background: @warning !important;
   outline-color: @warning !important;
 }
 .trip-bg {

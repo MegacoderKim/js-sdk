@@ -25,7 +25,7 @@
     <div class="flex-column flex timeline-detail">
       <div class="activity-dot segment-dot" [class.activity-dot-ended]="showCreatedCard && segment.actionEnded" *ngIf="segment.actionD"><div class="auto">{{segment.actionD}} </div></div>
       <div *ngIf="segment.isLive" [ngClass]="segment.activityBg" class="segment-dot"><div *ngIf="segment.isLive" [ngClass]="segment.activityBg" class="is-live" [class.is-pulse]="segment.type == 'stop' || segment.type === 'trip'"></div></div>
-      <div *ngIf="!segment.isLive && !segment.actionD" class="a-dot" [ngClass]="segment.activityBorder"></div>
+      <!--<div *ngIf="!segment.isLive && !segment.actionD" class="a-dot" [ngClass]="segment.activityBorder"></div>-->
       <div class="flex-column column-gap-10">
         <div (mouseenter)="selectAction(segment.action_id)" (mouseleave)="selectAction(null)" class="action-card" *ngIf="segment.actionText">
           <div class="flex-column column-gap-4">
