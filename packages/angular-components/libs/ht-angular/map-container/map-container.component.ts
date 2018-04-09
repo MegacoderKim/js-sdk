@@ -32,7 +32,7 @@ export class MapContainerComponent implements OnInit, AfterContentInit, OnDestro
     // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
     // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
     this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
-      roots: ['segments', 'actions'],
+      roots: ['placeline', 'actions'],
       highlighted$: this.userClientService.placeline.segmentSelectedId$,
       filter$: this.userClientService.placeline.segmentResetId$,
       resetMap$: this.userClientService.placeline.segmentResetId$
