@@ -21,6 +21,7 @@ import {InnerMapService} from "../../map-container/map.service";
 import {of} from "rxjs/observable/of";
 import {timer} from "rxjs/observable/timer";
 import {catchError, filter, map, switchMap} from "rxjs/operators";
+import {HtUsersService} from "ht-angular";
 
 @Component({
   selector: 'app-action-page',
@@ -56,7 +57,8 @@ export class ActionPageComponent implements OnInit {
       private broadcast: BroadcastService,
       private router: Router,
       private containerService: ContainerService,
-      private mapService: InnerMapService
+      private mapService: InnerMapService,
+      private htUsersService: HtUsersService
   ) { }
 
   ngOnInit() {
@@ -64,7 +66,8 @@ export class ActionPageComponent implements OnInit {
     if(!this.showPop) this.mapService.showMapSwitch = true;
     this.selectedPartialSegmentId$ = this.store.select(fromRoot.getUserSelectedPartialSegmentId);
 
-    this.users$ = this.store.select(fromRoot.getUserData);
+    this.users$ = this.htUsersService.placeline.data$;
+    // this.users$ = this.store.select(fromRoot.getUserData);
 
     let param$ = this.route.params;
 
@@ -74,7 +77,8 @@ export class ActionPageComponent implements OnInit {
       });
 
     let sub2 = placelineParams$.subscribe((query) => {
-        this.store.dispatch(new fromUser.SelectTimelineQueryAction(query));
+      this.htUsersService.placeline.setQuery(query);
+        // this.store.dispatch(new fromUser.SelectTimelineQueryAction(query));
       // this.store.dispatch(new fromUser.SelectUserIdAction(userId))
       });
 
@@ -102,7 +106,7 @@ export class ActionPageComponent implements OnInit {
     this.store.dispatch(new fromUser.ClearPartialSegmentAction())
     this.containerService.setDetailView(false);
     _.each(this.subs, sub => sub.unsubscribe());
-    if(!this.showPop || this.forceClose) this.store.dispatch(new fromUser.ClearUserAction())
+    if(!this.showPop || this.forceClose) this.htUsersService.placeline.clearData()
   }
 
   openLookupIdPage(lookupId) {

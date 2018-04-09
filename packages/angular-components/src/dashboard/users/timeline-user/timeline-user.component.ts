@@ -18,6 +18,7 @@ import {config} from "../../config";
 import {LinkBaseUrl} from "../../../utils/base-url";
 import {InnerMapService} from "../../map-container/map.service";
 import {isToday} from "date-fns"
+import {HtUsersService} from "ht-angular";
 declare let $: any;
 
 @Component({
@@ -67,6 +68,7 @@ export class TimelineUserComponent implements OnInit {
   constructor(
       private route: ActivatedRoute,
       private userService: UserService,
+      private htUserService: HtUsersService,
       private actionService: ActionService,
       private store: Store<fromRoot.State>,
       private router: Router,
@@ -86,7 +88,8 @@ export class TimelineUserComponent implements OnInit {
       this.actionId = params['action_id'];
       this.actionLookupId = params['action_unique_id'] || params['action_lookup_id'];
       this.actionCollectionId = params['action_collection_id'];
-      this.store.dispatch(new fromUser.SelectTimelineQueryAction({date: this.timeLineDay, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId}));
+      this.htUserService.placeline.setQuery({date: this.timeLineDay, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId})
+      // this.store.dispatch(new fromUser.SelectTimelineQueryAction({date: this.timeLineDay, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId}));
       this.notToday = this.isBeforeToday(this.timeLineDay);
       let id = params[this.paramsKey];
       if(id) {
@@ -98,7 +101,8 @@ export class TimelineUserComponent implements OnInit {
       this.id = id;
     });
 
-    this.userData$ = this.store.select(fromRoot.getUserData).filter(data => !!data);
+    // this.userData$ = this.store.select(fromRoot.getUserData).filter(data => !!data);
+    this.userData$ = this.htUserService.placeline.data$.filter(data => !!data);
 
     let sub2 = this.userData$.subscribe((timeLine: IUserPlaceline) => {
       // console.log("timel", timeLine);
@@ -139,7 +143,8 @@ export class TimelineUserComponent implements OnInit {
   }
 
   updateUserTimeLine(userId) {
-    this.store.dispatch(new fromUser.SelectUserIdAction(userId));
+    this.htUserService.placeline.setId(userId)
+    // this.store.dispatch(new fromUser.SelectUserIdAction(userId));
   }
 
   handleMouseOver(id: string) {
