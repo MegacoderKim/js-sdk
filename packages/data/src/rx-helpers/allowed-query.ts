@@ -43,9 +43,7 @@ export const AllowedQueryMap = (allowedQueryMaps?: IAllowedQueryMap[]) => {
           filter((obj: {value: any, oldValue: any}) => {
             if (obj.oldValue == "_no_val") {
               return true
-            } else if(!obj.oldValue || !obj.value) {
-              return false
-            } else if(obj.oldValue == obj.value) {
+            } else if(obj.oldValue === obj.value) {
               return false //distinct unntil changed
             } else if(queryMap.filter) {
               return queryMap.filter(obj.value, obj.oldValue)
