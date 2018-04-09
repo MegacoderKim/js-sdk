@@ -14,7 +14,7 @@ export const dataWithSelectedId$ = (
   return combineLatest(data$, id$, (data, id) => {
     if (!data && keys.length) return data;
     const allItems = keys.reduce((items, key) => {
-      return [...items, ...data[key]]
+      return data[key] ? [...items, ...data[key]] : items
     }, []);
     let selected = allItems.find((item) => {
       return item.id === id;
