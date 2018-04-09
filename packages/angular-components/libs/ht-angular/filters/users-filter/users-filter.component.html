@@ -1,4 +1,4 @@
-<div class="filter-container flex-column" [@filter]="showFilter$ | async">
+<div class="filter-container flex-column">
   <ht-entity-search (onSearchQuery)="onQuery($event)" *ngIf="options.showSearch"></ht-entity-search>
   <div class="dropdown" htDropdown *ngIf="options.showSorting">
     <button type="button" class="button dropdown-trigger flex-row row-gap-4">
@@ -22,6 +22,7 @@
     </button>
     <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-content">
+        <a class="dropdown-item" (click)="onQuery({show_all: true})">Show all</a>
         <a class="dropdown-item" (click)="setStatus(filter.values.toString(), $event)" *ngFor="let filter of statusFiltes">{{filter.label}}</a>
       </div>
 
@@ -38,6 +39,13 @@
   <ht-date-range *ngIf="options.showDatePicker" [isRight]="true"></ht-date-range>
   <div class="loading-bar" *ngIf="loading$ | async">
     <ht-loading-bar></ht-loading-bar>
+  </div>
+</div>
+<div class="card-overlay card-content level" [@filter]="(showFilter$ | async)">
+
+  <div (click)="closeUser()"
+       class="card-content-mid is-size-7 is-text-centered flex-row align-center">
+    <span class="delete-container"> <a class="delete is-medium"></a></span>
   </div>
 </div>
 

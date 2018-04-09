@@ -71,7 +71,7 @@ export class UsersFilterComponent implements OnInit {
     this.sortingLabels = this.usersClient.filterClass.sortingQueryLabel;
     this.ordering$ = this.usersClient.ordering$;
     this.showFilter$ = this.usersClient.list.id$.pipe(
-      map((id) => !id ? 'show' : 'hide')
+      map((id) => !id ? 'hide' : 'show')
     );
   }
 
@@ -85,6 +85,11 @@ export class UsersFilterComponent implements OnInit {
 
   setStatus(key, event) {
     this.onQuery({status: key})
+  }
+
+  closeUser() {
+    this.usersClient.placeline.setId(null);
+    this.usersClient.list.setId(null)
   }
 
   setOrdering(key) {
