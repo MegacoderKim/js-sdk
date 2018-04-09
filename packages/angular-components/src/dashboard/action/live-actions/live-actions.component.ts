@@ -4,7 +4,7 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {IFilter, IRange} from "../../model/common";
 import {ActionService} from "../action.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {IAction, IActionHeatPage, IActionMap, IActionPage} from "ht-models";
+import {IAction, IActionHeatPage, IActionMap, IActionPage, IActionsSummary} from "ht-models";
 import * as _ from "underscore";
 import * as fromAction from "../../actions/action";
 import * as fromUser from "../../actions/user";
@@ -23,7 +23,8 @@ import {Page} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {config} from "../../config";
 import {startOfToday} from 'date-fns';
-import {HtActionsService} from "ht-angular";
+import {HtActionsService, HtUsersService} from "ht-angular";
+import {distinctUntilChanged, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-live-actions',
@@ -154,7 +155,9 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
       public store: Store<fromRoot.State>,
       private containerService: ContainerService,
       private mapService: InnerMapService,
-      private actionsService: HtActionsService
+      private actionsService: HtActionsService,
+      private htUsersService: HtUsersService,
+      private htActionsService: HtActionsService
   ) {
     super(route, broadcast, store, actionService);
     this.summary$ = this.actionsService.summary.summaryChart$;
@@ -170,52 +173,17 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
   }
 
   setQuery(query) {
-    this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
+    this.actionService.updateQuery(query)
   }
 
   clearStatusQuery() {
-    this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction('status'))
-  }
-
-  onListDateQueryChange(query) {
-    let status = query.status;
-    let search = query.search;
-    let userMarkerFilters = [];
-    if(status) {
-      userMarkerFilters.push(htAction().getMarkerFilter(status))
-    } else if(search) {
-      userMarkerFilters.push(htAction().getMarkerSeached(search), htAction().getMarkerFilter(status));
-    }
-    let userMarkerFilter = (this.selectedActionId) ? (user) => false : (user) => {
-      return _.reduce(userMarkerFilters, (acc, filter: (user) => boolean) => {
-        return acc && filter(user)
-      }, true)
-    };
-    if(status || search) this.updateActionMap(query);
-    this.store.dispatch(new fromAction.SetActionsMapFilterAction(userMarkerFilter));
-    super.onListDateQueryChange(query)
+    this.actionService.clearQueryKey('status')
+    // this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction('status'))
   }
 
   onQueryChange(query) {
     this.unselectAction();
     super.onQueryChange(query)
-  }
-
-  updateActionMap(query) {
-    let actionPlace$ = (query) => this.store.select(fromRoot.getQueryDateRange)
-        .take(1)
-        .switchMap((range: IRange) => {
-          return this.actionService.getAll({...query, start: range.start, end: range.end})
-        });
-
-    let sub = actionPlace$(query).subscribe((actions: IActionMap[]) => {
-      let filteredAction = _.filter(actions, (action: IActionMap) => {
-        return htAction().isValidMarker(action)
-      });
-      this.store.dispatch(new fromAction.AddFilterActionsMapAction(filteredAction));
-    });
-
-    this.subs.push(sub)
   }
 
   selectActionId(id) {
@@ -228,10 +196,12 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
     if(select) {
       this.broadcast.emit('hover-action', null);
       this.selectedActionId = action.id;
-      this.store.dispatch(new fromUser.ClearUserAction());
+      this.htUsersService.placeline.clearData();
+      // this.store.dispatch(new fromUser.ClearUserAction());
       if(action.user) {
         this.mapService.preserveBounds();
-        this.store.dispatch(new fromUser.SelectUserActionAction({actionId: action.id, userId: action.user.id}));
+        this.htUsersService.placeline.setQuery({action_id: action.id});
+        // this.store.dispatch(new fromUser.SelectUserActionAction({actionId: action.id, userId: action.user.id}));
         // this.store.dispatch(new fromUi.LoadingMapUiAction(true))
       } else {
         this.router.navigate(['./', {id: action.id}], {relativeTo: this.route})
@@ -246,7 +216,8 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
     this.selectedActionId = null;
     this.mapService.setPreservedBounds();
     // this.store.dispatch(new fromAction.SetActionFilterHeatmap(() => true));
-    this.store.dispatch(new fromUser.ClearUserAction());
+    this.htUsersService.placeline.clearData();
+    // this.store.dispatch(new fromUser.ClearUserAction());
     // let query = this.route.snapshot.queryParams;
     // let actionFilter = htAction().getMarkerFilter(query['status']);
     // this.store.dispatch(new fromAction.SetActionsMapFilterAction(actionFilter));
@@ -273,23 +244,45 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
       }
     };
 
-    let actionMap$ = this.getListDateQuery().switchMap((query) => {
-      this.isToday = IsRangeToday(query);
-      if(this.isToday) {
-        this.store.dispatch(new fromAction.ClearActionHeatmap());
-        return this.actionService.getAll(query, actionMarkerCb)
+    this.getListDateQuery().pipe(
+      map((query) => IsRangeToday(query)),
+      distinctUntilChanged()
+    ).subscribe((isToday) => {
+      this.isToday = isToday;
+      if (isToday) {
+        this.htActionsService.listAll.setActive();
+        // this.htActionsService.listAll.setQuery(query);
+        this.htActionsService.heatmap.clearData();
       } else {
-        this.store.dispatch(new fromAction.ClearActionHeatmap());
-        this.store.dispatch(new fromAction.ClearActionsMapAction());
-        return this.actionService.getHeatmap(query, actionHeatCb)
+        this.htActionsService.listAll.clearData();
+        this.htActionsService.heatmap.setActive();
+        // this.htActionsService.heatmap.setQuery(query);
       }
-    });
 
-    let sub = actionMap$.subscribe((actions: IAction[]) => {
-      this.store.dispatch(new fromUi.LoadingMapUiAction(false));
-    });
+    })
+    // let actionMap$ = this.getListDateQuery().subscribe((query) => {
+    //   this.isToday = IsRangeToday(query);
+    //   if(this.isToday) {
+    //     // this.store.dispatch(new fromAction.ClearActionHeatmap());
+    //     // this.htActionsService.listAll.setActive();
+    //     // this.htActionsService.listAll.setQuery(query);
+    //     // this.htActionsService.heatmap.clearData();
+    //     // return this.actionService.getAll(query, actionMarkerCb)
+    //   } else {
+    //     // this.htActionsService.listAll.clearData();
+    //     // this.htActionsService.heatmap.setActive();
+    //     // this.htActionsService.heatmap.setQuery(query);
+    //     // this.store.dispatch(new fromAction.ClearActionHeatmap());
+    //     // this.store.dispatch(new fromAction.ClearActionsMapAction());
+    //     // return this.actionService.getHeatmap(query, actionHeatCb)
+    //   }
+    // });
 
-    this.subs.push(sub)
+    // let sub = actionMap$.subscribe((actions: IAction[]) => {
+    //   this.store.dispatch(new fromUi.LoadingMapUiAction(false));
+    // });
+    //
+    // this.subs.push(sub)
 
   }
 
@@ -307,7 +300,7 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
       this.items = data;
     });
 
-    let sub2 = this.store.select(fromRoot.getActionSummary).subscribe((data) => {
+    let sub2 = this.store.select(fromRoot.getActionSummary).subscribe((data: IActionsSummary) => {
       this.actionsService.summary.setData(data)
     });
 
@@ -348,8 +341,8 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
     });
     if(!selectedCard) {
       this.selectedActionId = null;
-
-      this.store.dispatch(new fromUser.ClearUserAction());
+      this.htUsersService.placeline.clearData();
+      // this.store.dispatch(new fromUser.ClearUserAction());
       let query = this.route.snapshot.queryParams;
       let actionFilter = htAction().getMarkerFilter(query['status']);
       this.store.dispatch(new fromAction.SetActionsMapFilterAction(actionFilter));
@@ -359,9 +352,12 @@ export class LiveActionsComponent extends ActionsListComponent implements OnInit
 
   ngOnDestroy() {
     this.broadcast.emit('hover-action', null);
-    this.store.dispatch(new fromUser.ClearUserAction());
-    this.store.dispatch(new fromAction.ClearActionsMapAction());
-    this.store.dispatch(new fromAction.ClearActionHeatmap());
+    this.htUsersService.placeline.clearData();
+    // this.store.dispatch(new fromUser.ClearUserAction());
+    this.htActionsService.listAll.clearData();
+    this.htActionsService.heatmap.clearData();
+    // this.store.dispatch(new fromAction.ClearActionsMapAction());
+    // this.store.dispatch(new fromAction.ClearActionHeatmap());
     // this.store.dispatch(new fromAction.SetActionFilterHeatmap(() => true));
     this.mapService.clearPreserved();
     this.containerService.setEntity('actions');

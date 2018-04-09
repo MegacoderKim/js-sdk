@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from "@angular/core";
 import {UserService} from "../user.service";
-import {IPlaceHeatPage, IUser, IUserAnalytics, IUserAnalyticsPage, IUserListSummary} from "ht-models";
+import {IPlaceHeatPage, IUser, IUserAnalytics, IUserAnalyticsPage, IUserListSummary, AllData} from "ht-models";
 import * as fromRoot from "../../reducers";
 import * as fromUser from "../../actions/user";
 import * as fromUi from "../../actions/ui";
@@ -148,25 +148,27 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
 
   private openUserCard(user: IUser | {id: string}) {
     this.broadcast.emit('hover-user', null);
-    this.store.dispatch(new fromUser.SetUsersMapFilterAction((userMap: IUserAnalytics) => false));
+    // this.store.dispatch(new fromUser.SetUsersMapFilterAction((userMap: IUserAnalytics) => false));
     // if(!this.isSingleDay) this.store.dispatch(new fromUser.SetFilterUserPlace((userMap: IUserAnalytics) => true));
     this.selectedUserId = user.id;
-    this.store.dispatch(new fromUser.ClearUserAction());
+    // this.store.dispatch(new fromUser.ClearUserAction());
     // this.store.dispatch(new fromUser.SetFilterUserPlace(() => false));
-    this.store.dispatch(new fromUser.SelectUserIdPlaceAction(user.id));
+    this.htUsersService.placeline.setId(user.id);
+    // this.store.dispatch(new fromUser.SelectUserIdPlaceAction(user.id));
     // this.store.dispatch(new fromUi.LoadingMapUiAction(true));
     this.mapService.preserveBounds()
   }
 
   private closeUserCard() {
     this.selectedUserId = null;
-    this.store.dispatch(new fromUser.ClearUserAction());
+    this.htUsersService.placeline.clearData();
+    // this.store.dispatch(new fromUser.ClearUserAction());
     this.store.dispatch(new fromUser.ClearSelectedUserPlace());
     // this.selectedUser$.next(null);
     let query = this.route.snapshot.queryParams;
     // this.store.dispatch(new fromUser.SetFilterUserPlace(() => true));
     let userMarkerFilter = query.status ? GetUserMarkerFilter(query.status) : () => true ;
-    this.store.dispatch(new fromUser.SetUsersMapFilterAction(userMarkerFilter));
+    // this.store.dispatch(new fromUser.SetUsersMapFilterAction(userMarkerFilter));
     this.mapService.setPreservedBounds()
   }
 
@@ -176,12 +178,11 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
 
   setStatusFilter(overview: StatusOverview) {
     let query = {status: overview.keys.toString()};
-    this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
+    this.setQuery(query)
   }
 
   setQuery(query) {
-    console.log("quer");
-    this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
+    this.userService.setQuery(query)
   }
 
   clearQueryKey() {
@@ -222,9 +223,11 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new fromUser.ClearUserAction());
+    this.htUsersService.placeline.clearData();
+    // this.store.dispatch(new fromUser.ClearUserAction());
     this.store.dispatch(new fromUser.ClearUsersMapAction());
-    this.store.dispatch(new fromUser.ClearUserPlace());
+    this.htUsersService.heatmap.clearData();
+    // this.store.dispatch(new fromUser.ClearUserPlace());
     this.store.dispatch(new fromUser.ClearSelectedUserPlace());
     this.fitToMapService.clear();
     this.mapService.clearPreserved();
@@ -256,15 +259,17 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
     //
     //   return {...page, ...date, isToday: null}
     // });
-
     let sub = this.getDateRange()
       .switchMap(() => this.getQuery().take(1))
-      .switchMap((query: object) => {
+      .subscribe((query: object) => {
       this.isToday = IsRangeToday(query);
+        this.htUsersService.list.setQuery(query);
       if(this.isToday) {
         this.store.dispatch(new fromUser.ClearUserPlace());
         this.mapRefreshTimestamp = new Date().toISOString();
-        return this.userService.getAllUserAnalytics({...query, show_all: null, ordering: '-created_at'}, userAnalyticsCb)
+        this.htUsersService.listAll.setActive();
+        this.htUsersService.heatmap.clearData();
+        // return this.userService.getAllUserAnalytics({...query, show_all: null, ordering: '-created_at'}, userAnalyticsCb)
           // .expand((users) => {
           //   // console.log(users, "aal");
           //   // min_last_heartbeat_at: start
@@ -272,13 +277,12 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
           // })
         // return this.userService.getAllUserAnalytics(query, userAnalyticsCb)
       } else {
-        this.store.dispatch(new fromUser.ClearUsersMapAction());
-        return this.userService.placeList(query, userPlaceCb)
+        this.htUsersService.heatmap.setActive();
+        this.htUsersService.listAll.clearData();
+        // this.store.dispatch(new fromUser.ClearUsersMapAction());
+        // return this.userService.placeList(query, userPlaceCb)
       }
-    }).subscribe(() => {
-      this.store.dispatch(new fromUi.LoadingMapUiAction(false));
-      this.mapDataReady = true;
-    });
+    })
 
     this.subs.push(sub)
   }
@@ -343,7 +347,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
   selectDetailedUser(id) {
     // this.store.dispatch(new fromUser.SetFilterUserPlace(() => false));
     this.selectedUserId = id;
-    this.store.dispatch(new fromUser.SetUsersMapFilterAction(() => false));
+    // this.store.dispatch(new fromUser.SetUsersMapFilterAction(() => false));
     this.broadcast.emit('scroll-top')
   }
 
@@ -406,6 +410,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
     });
     if(!selectedCard) {
       this.selectedUserId = null;
+      this.htUsersService.placeline.clearData();
       this.store.dispatch(new fromUser.ClearUserAction());
       // this.selectedUser$.next(null);
       let query = this.route.snapshot.queryParams;

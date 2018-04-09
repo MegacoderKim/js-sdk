@@ -83,7 +83,7 @@ export class UsersListComponent extends EntityListComponent implements OnInit {
   }
 
   updateListQuery(query) {
-    this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
+    this.userService.setQuery(query)
   }
 
   firstFetch$(query) {

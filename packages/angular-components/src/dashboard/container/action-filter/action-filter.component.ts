@@ -61,11 +61,11 @@ export class ActionFilterComponent extends FilterCommonComponent implements OnIn
   }
 
   dispatchUpdateQuery(query) {
-    this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
+    this.actionService.updateQuery(query)
   }
 
   dispatchClearQuery(key) {
-    this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction(key))
+    this.actionService.clearQueryKey(key)
   }
 
   dispatchPageQuery(query) {
@@ -73,12 +73,12 @@ export class ActionFilterComponent extends FilterCommonComponent implements OnIn
   }
 
   selectFilter(query) {
-    this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
+    this.actionService.updateQuery(query)
   }
 
   clearFilter(filter) {
     console.log(filter);
-    this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction(filter.key))
+    this.dispatchClearQuery(filter.key)
   }
 
   searchApi(query) {

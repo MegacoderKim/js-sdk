@@ -137,17 +137,17 @@ export class UserEffectsService {
 
     fetchTimeline(query): Observable<IUserPlaceline | null> {
         if(query.toFetch) {
-            let getTimeline$ = (query) => this.userService.getUserTimeLine(query.userId, query.timelineQuery)
-                .catch((err) => {
-                    if(err.status == 404) {
-                        this.broadcast.emit('user-not-found')
-                    } else {
-                        this.updateUserData$.next(query.toFetch);
-                    }
-                    return of(null)
-                });
-
-            return getTimeline$(query)
+          // let getTimeline$ = (query) => this.userService.getUserTimeLine(query.userId, query.timelineQuery)
+          //       .catch((err) => {
+          //           if(err.status == 404) {
+          //               this.broadcast.emit('user-not-found')
+          //           } else {
+          //               this.updateUserData$.next(query.toFetch);
+          //           }
+          //           return of(null)
+          //       });
+          return of(null)
+            // return getTimeline$(query)
 
         } else {
             return of(null)

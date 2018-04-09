@@ -68,10 +68,11 @@ export class EntityFilterComponent implements OnInit {
   setSearch(el) {
     let term = el.value;
     el.value = '';
+    const query = {search: term};
     if(this.entity && this.entity == 'users') {
-      this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction({search: term}));
+      this.userService.setQuery(query);
     } else {
-      this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction({search: term}));
+      this.actionService.updateQuery(query)
     }
     // this.router.navigate(['/'], {queryParams: {search: term}, relativeTo: this.route})
 
