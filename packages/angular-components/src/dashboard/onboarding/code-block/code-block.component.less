@@ -1,0 +1,194 @@
+@import '../../main/main.component.less';
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono');
+
+
+.code-block-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: @space--double;
+}
+.code-label {
+  .text-normal();
+  max-width: 90%;
+  margin: 0 auto;
+  padding-bottom: @space--double;
+  position: relative;
+  overflow: hidden;
+}
+.code-file-name {
+  .text-normal();
+  position: relative;
+  overflow: hidden;
+  font-family: 'Fira Mono', monospace;
+  padding: @space @space--double;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background: darken( @grey--light, 5% );
+  color: @purple--dark;
+  border: 1px solid @black;
+  border-bottom: none;
+  float: left;
+}
+.code-block {
+  position: relative;
+  background: white;
+  border: 1px solid @black;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: @space--4x;
+  width: 100%;
+  float: left;
+}
+.clearfix {
+  position: relative;
+  display: block;
+  clear: both;
+}
+.code-section {
+  position: relative;
+  //overflow: hidden;
+  float: left;
+  clear: both;
+  width: 100%;
+  transition: 0.4s all ease-in-out;
+  pre {
+    .text-small();
+    overflow-x: scroll;
+    transition: 0.4s all ease-in-out;
+    width: 100%;
+    font-family: 'Fira Mono', monospace;
+    position: relative;
+    code {
+      font-family: 'Fira Mono', monospace;
+      //font-weight: 700;
+    }
+    .hljs {
+      padding: 0;
+    }
+  }
+  .copy-element {
+    .text-caption();
+    position: absolute;
+    width: auto;
+    border-radius: 4px;
+    padding: @space;
+    background: white;
+    color: @black;
+    box-shadow: 0 0 20px @shadow;
+    text-align: center;
+    transition: 0.2s all ease-in-out;
+    right: @space--double;
+    top: @space--double;
+    opacity: 0;
+    transform: scale(0);
+    cursor: pointer;
+    .text {
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .copied-text {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: none;
+    }
+    &:hover {
+      color: @magenta;
+    }
+    &.isCopied {
+      .text {
+        display: none;
+      }
+      .copied-text {
+        display: inline-block;
+      }
+    }
+  }
+  &.spaced {
+    pre {
+      overflow: hidden;
+      max-height: 0;
+      font-weight: 300;
+    }
+  }
+  &.spaced-expanded {
+    padding-left: @space;
+    margin-left: -@space;
+    background: @grey--light;
+    pre {
+      max-height: 100rem;
+      .hljs {
+        background: transparent;
+      }
+      code {
+      }
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .expand-element {
+      position: absolute;
+      left: -1rem;
+      border-radius: 50%;
+      box-shadow: 0 0 30px @shadow;
+      background: white;
+      top: 45%;
+      z-index: 2;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      border: none;
+      span, i {
+        height: 2rem;
+        width: 2rem;
+        line-height: 2rem;
+        padding: 0;
+        color: @black;
+      }
+    }
+
+  }
+  &.copy {
+    &:hover {
+      background: lighten( @yellow--light, 2% );
+      .copy-element {
+        opacity: 1;
+        transform: scale(1);
+      }
+      pre {
+        .hljs {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
+.expand-element {
+  .text-caption();
+  cursor: pointer;
+  float: left;
+  clear: both;
+  position: relative;
+  margin: @space 0;
+  border-radius: 2px;
+  transition: 0.4s all ease-in-out;
+  border: 1px solid @grey--light;
+  background: @grey--light;
+  span, i {
+    padding: 0 @space--double;
+    color: @black;
+  }
+  &:hover {
+    background: @grey--light;
+  }
+}
+a {
+  color: inherit;
+}
+pre {
+  float: left;
+  clear: both;
+  margin: 0;
+}

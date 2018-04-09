@@ -1,6 +1,0 @@
-export const slackAlerts = [
-`
-Now that you have live location of your users, you can get real-time Slack alerts about events that happen in the life of the user. There are events which get generated when business runs as usual (called expected events) like user has stopped, user is driving, user is walking, and those that violate your guidelines (unexpected events) like user has logged off your app, or has disabled location.\n \n You can choose which events you want to receive. Just follow these steps to get a Webhook URL from Slack and then paste the URL in the box shown below on <a href="https://dashboard.hypertrack.com/settings" target="_blank"> dashboard </a>. \n 1. Login into your Slack team account \n 2. Choose the channel in which you want to see alerts from HyperTrack. Create a new one if you want. \n 3. You will be redirected to a page with Setup Instructions. Ignore the instructions. Just copy the Webhook URL. It looks like &nbsp;https://hooks.slack.com/services/T06HDJ3GF/B5EDJ6XPB/XXXXXXXXXXXXXXXXX <br /> <br />
-  <div class="markdown-content-image"><img style="height: 60px" class="slack-alert-dashboard" src="https://s3.amazonaws.com/dashboard-v3-assets/SlackAlertDashboard.png" alt="Dashboard slack alert" /> </div>
-`
-];

@@ -1,0 +1,48 @@
+@import '../../main/main.component.less';
+.track-action-picker {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  .tap-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid darken( @grey--light, 5% );
+    margin: 0 @space--6x @space--double @space--6x;
+    padding: @space--4x;
+    a {
+      color: black;
+      border-bottom: 1px dashed @black;
+    }
+    .selector-label {
+      .text-normal();
+      position: relative;
+      overflow: hidden;
+      font-weight: 500;
+      padding-bottom: @space;
+    }
+    .tap-item-content {
+      .text-normal();
+      position: relative;
+      overflow: hidden;
+      opacity: 0.6;
+      font-weight: 300;
+      .tap-item-dashboard-url {
+        color: @magenta;
+        float: left;
+        clear: both;
+        display: block;
+        padding: @space;
+        background: @grey--light;
+      }
+    }
+    .tap-cta {
+      .button--small(transparent, @black, @black );
+      float: left;
+      margin-top: @space--4x;
+      position: relative;
+      overflow: hidden;
+      clear: both;
+    }
+  }
+}

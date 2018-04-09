@@ -1,0 +1,49 @@
+<div class="onboarding-container">
+  <div class="ob-tabs">
+    <div class="w-tab-content">
+      <div class="ob-platforms w-row" *ngIf="!selectedPlatform">
+        <div class="ob-platformcol w-col w-col-4">
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('test-app')">
+            <img class="ob-platformlogo" data-ix="cardhover" [src]="images.hypertrackLogo" />
+            <div class="div-block">
+              <div class="ob-platformname">Try with test app</div>
+              <img class="ob-quickstart" [src]="images.quickstartIcon" />
+            </div>
+            <div class="ob-codecountblock"><span class="ob-codecount">3</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">0</span> lines of code</div>
+          </div>
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('react-native')">
+            <img class="ob-platformlogo" [src]="images.reactLogo" />
+            <div class="ob-platformname">React Native</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">9</span> lines of code</div>
+          </div>
+        </div>
+        <div class="ob-platformcol w-col w-col-4">
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('ios')">
+            <img class="ob-platformlogo" [src]="images.iosLogo" />
+            <div class="ob-platformname">iOS</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">9</span> lines of code</div>
+          </div>
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('xamarin')">
+            <img class="ob-platformlogo" [src]="images.xamarinLogo" />
+            <div class="ob-platformname">Xamarin</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">12</span> lines of code</div>
+          </div>
+        </div>
+        <div class="ob-platformcol w-col w-col-4">
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('android')">
+            <img class="ob-platformlogo" [src]="images.androidLogo" />
+            <div class="ob-platformname">Android</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">12</span> lines of code</div>
+          </div>
+          <div class="ob-platformcard" data-ix="cardhover" (click)="onPlatformSelect('cordova')">
+            <img class="ob-platformlogo" [src]="images.cordovaLogo" />
+            <div class="ob-platformname">Cordova</div>
+            <div class="ob-codecountblock"><span class="ob-codecount">5</span> steps <span class="ob-divider">|</span> <span class="ob-codecount">7</span> lines of code</div>
+          </div>
+        </div>
+      </div>
+      <app-ios-sdk *ngIf="selectedPlatform === 'ios'"  [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-ios-sdk>
+      <app-android-sdk *ngIf="selectedPlatform === 'android'"  [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-android-sdk>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,205 @@
+@import '../main/main.component.less';
+.ob-tabs ::ng-deep {
+  .quickstart-header {
+    position: relative;
+    overflow: hidden;
+    margin-top: @space--10x;
+    padding-top: @space--4x;
+    .title {
+      .text-title-h3();
+      text-align: center;
+      position: relative;
+    }
+    .quickstart-head-nav {
+      position: relative;
+      overflow: hidden;
+      display: none;
+      .nav-item {
+        display: inline-block;
+        padding-right: 1rem;
+        .nav-icon {
+          display: inline-block;
+        }
+        .nav-text {
+          display: inline-block;
+        }
+      }
+    }
+    .progress-step-container {
+      position: relative;
+      overflow: hidden;
+      margin: @space--double auto;
+      text-align: center;
+      .quickstart-progress-step {
+        position: relative;
+        transition: 0.4s all ease-in-out;
+        display: inline-block;
+        cursor: pointer;
+        .label--active,
+        .label--completed,
+        .label--inactive {
+          .text-caption;
+          padding: @space @space--double;
+          text-align: center;
+          margin: 0 @space;
+          display: none;
+        }
+        .label--active {
+          //background: @black;
+          color: @black;
+          font-weight: 500;
+          border-bottom: 1px solid @black;
+        }
+        .label--inactive {
+          color: @dark-grey;
+          &:hover {
+            border-bottom: 1px solid @dark-grey;
+          }
+        }
+        .label--completed {
+          color: @green;
+          &:hover {
+            border-bottom: 1px solid @green;
+          }
+        }
+        &.label-completed {
+        }
+        .step-icon {
+          display: inline-block;
+          width: 2em;
+          height: 2em;
+          line-height: 2em;
+          text-align: center;
+          border-radius: 50%;
+          background: @light-green;
+          color: @green;
+        }
+        &.incomplete {
+          .label--inactive {
+            display: block;
+          }
+        }
+        &.active {
+          .label--active {
+            display: block;
+          }
+        }
+        &.completed {
+          //background: @light-green;
+          //border-radius: 50%;
+          //position: relative;
+          ////overflow: hidden;
+          //border: 1px solid @green;
+          .label--completed {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+  .step-next-button {
+    .button(@magenta, white );
+    width: 100px;
+    position: relative;
+    overflow: hidden;
+    margin-top: @space--4x;
+  }
+  .quickstart-step {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    .step-header {
+      .text-normal();
+      color: @purple--dark;
+      position: relative;
+      overflow: hidden;
+      font-weight: 600;
+      max-width: 700px;
+      margin: 0 auto;
+      padding-bottom: @space;
+    }
+    .quickstart-substep {
+      position: relative;
+      margin-bottom: @space--8x;
+      &:first-child {
+        padding-top: @space--4x;
+      }
+      .step-title {
+        .text-normal();
+        max-width: 700px;
+        margin: 0 auto;
+        padding-bottom: @space;
+        font-weight: 500;
+      }
+      .step-label {
+        .step-serial {
+          display: inline-block;
+          background: @purple--dark;
+          border-radius: 50%;
+          width: 2em;
+          height: 2em;
+          line-height: 2em;
+          color: white;
+          text-align: center;
+          vertical-align: middle;
+        }
+        .text-normal();
+        position: relative;
+        overflow: hidden;
+        max-width: 700px;
+        margin: 0 auto;
+        font-weight: 300;
+        color: lighten( @black,30% );
+        padding-bottom: @space--6x;
+      }
+    }
+  }
+  .quickstart-contact {
+    position: relative;
+    overflow: hidden;
+    width: 600px;
+    background: @grey--light;
+    border:1px solid darken( @grey--light, 10% );
+    border-radius: 6px;
+    margin: 0 auto;
+    padding: @space--4x;
+    margin-top: @space--6x;
+    cursor: pointer;
+    .contact-profile-picture {
+      float: left;
+      width: 4rem;
+      height: 4rem;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      img {
+        max-width: 100%;
+      }
+    }
+    .contact-content {
+      .text-small();
+      width: 70%;
+      float: left;
+      position: relative;
+      overflow: hidden;
+      padding-left: @space--double;
+      .content-title {
+        font-weight: 500;
+      }
+      .content-description {
+        font-weight: 300;
+      }
+    }
+    .contact-cta {
+      width: 10%;
+      color: @dark-grey;
+      float: right;
+      text-align: center;
+      line-height: 4rem;
+    }
+  }
+
+
+
+}

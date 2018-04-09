@@ -1,0 +1,9 @@
+<div class="track-action-picker">
+  <div class="tap-item" *ngFor="let card of content.cards">
+    <div class="tap-item-selector">
+      <div class="selector-label">{{card.title}}</div>
+    </div>
+    <div class="tap-item-content" [innerHTML]="card.text | safeHtml"></div>
+    <div class="tap-cta">{{card.cta.text}}</div>
+  </div>
+</div>

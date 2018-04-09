@@ -1,0 +1,62 @@
+<div class="step-action-picker">
+  <div class="step-label">{{content.label}}</div>
+  <div class="step-action-picker-title">Pick one of the following actions that you want to first create.</div>
+  <div class="action-picker-list">
+    <div class="list-item" [ngClass]="(actionCase==0)? 'expanded' : ''" *ngIf="content.actionSwitchList[0] as listItem" >
+      <div class="item-selector" (click)="switchAction(0)">
+        <div class="item-icon">
+          <img src="{{images.deliveryIcon}}" alt="{{listItem.title}}">
+        </div>
+        <div class="item-label">
+          <div class="item-content-title">{{listItem.title}}</div>
+          <div class="item-content-description">{{listItem.description}}</div>
+        </div>
+        <div class="item-cta"><i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
+      </div>
+      <!-- /.item-selector -->
+
+      <div class="item-content">
+        <app-code-block [codeContent]="listItem.content"></app-code-block>
+      </div>
+      <!-- /.item-content -->
+    </div>
+    <div class="list-item" [ngClass]="(actionCase==1)? 'expanded' : ''" *ngIf="content.actionSwitchList[1] as listItem" >
+      <div class="item-selector" (click)="switchAction(1)">
+        <div class="item-icon">
+          <img src="{{images.visitIcon}}" alt="{{listItem.title}}">
+        </div>
+        <div class="item-label">
+          <div class="item-content-title">{{listItem.title}}</div>
+          <div class="item-content-description">{{listItem.description}}</div>
+        </div>
+        <div class="item-cta"><i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
+      </div>
+      <!-- /.item-selector -->
+
+      <div class="item-content" *ngIf="actionCase === 1">
+        <app-code-block [codeContent]="listItem.content"></app-code-block>
+      </div>
+      <!-- /.item-content -->
+    </div>
+    <div class="list-item" [ngClass]="(actionCase==2)? 'expanded' : ''" *ngIf="content.actionSwitchList[2] as listItem" >
+      <div class="item-selector" (click)="switchAction(2)">
+        <div class="item-icon">
+          <img src="{{images.ttdIcon}}" alt="{{listItem.title}}">
+        </div>
+        <div class="item-label">
+          <div class="item-content-title">{{listItem.title}}</div>
+          <div class="item-content-description">{{listItem.description}}</div>
+        </div>
+        <div class="item-cta"><i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
+      </div>
+      <!-- /.item-selector -->
+      <div class="item-content" *ngIf="actionCase === 2">
+        add content for time picker here
+      </div>
+      <!-- /.item-content -->
+    </div>
+  </div>
+</div>
