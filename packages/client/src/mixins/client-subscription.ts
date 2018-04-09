@@ -9,6 +9,7 @@ export interface IClientBase {
   setLoading(loading: boolean | string): void;
   getData$(data): any;
   setData(data): void;
+  validQueryData?(data: any[]): boolean;
 }
 
 export function clientSubMixin<TBase extends Constructor<IClientBase>>(
@@ -27,11 +28,13 @@ export function clientSubMixin<TBase extends Constructor<IClientBase>>(
         this.dataSub = this.getApiParams$()
           .pipe(
             switchMap(data => {
-              if (data && data[0]) {
+              const validApi =  this.validQueryData && data ? this.validQueryData(data) : data && data[0];
+              if (validApi) {
                 let loading = typeof data[0] === "string" ? data[0] : true;
                 this.setLoading(loading);
                 return this.getData$(data);
               } else {
+                this.setLoading(false);
                 return empty();
               }
             })
