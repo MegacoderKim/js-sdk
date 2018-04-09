@@ -24,6 +24,9 @@ import {config} from "../config";
 import {startOfDay, endOfDay, format} from 'date-fns';
 import {HtUsersService} from "ht-angular";
 import * as fromQuery from "../actions/query";
+import {getMergedParams} from "ht-utility";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class UserService {
@@ -160,5 +163,27 @@ export class UserService {
 
   getValueString(status: string): string {
     return GetUserStatusString(status)
+  };
+
+  getQueryFromRoute(route) {
+    let query = {
+      'status': route['status'],
+      'show_all': !!route['show_all'],
+      'ordering': route['ordering'],
+      'search': route['search']
+    };
+    return getMergedParams(query)
+  };
+
+  getQueryForRoute(): Observable<object> {
+    let query$ = combineLatest(
+      this.htUsersService.placeline.id$,
+      this.htUsersService.list.query$
+    ).pipe(
+      map(([id, query]) => {
+        return getMergedParams({...query, id})
+      })
+    );
+    return  query$
   }
 }
