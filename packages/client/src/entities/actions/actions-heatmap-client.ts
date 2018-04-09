@@ -11,9 +11,11 @@ import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
 import {DateRange} from "../../global/date-range";
 import {HtActionsApi} from "ht-api";
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 
 export class ActionsHeatmap {
-  query$: Observable<object> = of({});
+  queryBehaviour$ = new BehaviorSubject({});
+  query$ = this.queryBehaviour$.asObservable();
   api$: (query) => Observable<Page<IActionHeat>>;
   loadingState$ = new BehaviorSubject(false);
   loading$ = this.loadingState$.asObservable();
@@ -33,6 +35,10 @@ export class ActionsHeatmap {
 
   setActive(active = true) {
     this.active$.next(active)
+  }
+
+  setQuery(query = {}) {
+    this.queryBehaviour$.next(query)
   }
 
   getDefaultQuery() {
@@ -57,6 +63,10 @@ export class ActionsHeatmap {
     this.dataState$.next(data)
   }
 
+  clearData() {
+    this.setActive(false);
+    this.setData(null);
+  }
 }
 
 export const ActionsHeatmapClient = listAllClientSubMixin(
