@@ -15,7 +15,9 @@ export class UsersMapComponent implements OnInit {
     private router: Router,
     private userService: UserService,
   ) { }
+  selectUser() {
 
+  }
   ngOnInit() {
     this.userId = this.route.snapshot.params['id'];
     this.query = this.userService.getQueryFromRoute(this.route.snapshot.params);
