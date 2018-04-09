@@ -22,6 +22,7 @@ import { ButtonComponent } from './button/button.component';
 import { LoadingBarComponent } from './loading-bar/loading-bar.component';
 import { DropdownDirective } from './dropdown/dropdown.directive';
 import { TimeToComponent } from './time-to/time-to.component';
+import { AutoHeightComponent } from './auto-height/auto-height.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { TimeToComponent } from './time-to/time-to.component';
     LoadingBarComponent,
     DropdownDirective,
     TimeToComponent,
+    AutoHeightComponent,
   ],
   exports: [
     ProfileComponent,
@@ -72,6 +74,7 @@ import { TimeToComponent } from './time-to/time-to.component';
     LoadingBarComponent,
     DropdownDirective,
     TimeToComponent,
+    AutoHeightComponent,
   ]
 })
 export class SharedModule { }
