@@ -36,17 +36,20 @@
 @light-green : lighten( #e1f8ea, 5% );
 @purple : #7a769b;
 @light-purple : #f5f7f9;
-@purple--dark : #250D47;
 @orange : #FC5F5B;
+@black : #3c3c3c;
+@purple--dark : #250D47;
+@magenta : #9013FE;
 
 /*----------  Global greys and blacks  ----------*/
 @grey : #cccccc;
-@dark-grey : #92A5AE;
+@dark-grey : #9AABB8;
 @black : #353535;
 @blue-grey : #F6F9FC;
 @shadow : rgba(0, 0, 0, 0.07);
 @blue-grey2 : #d4dbe3;
 @offwhite : #F6F4EF;
+@grey--light: #F8F9FA;
 
 //*----------  Platform Colors  ----------*/
 @color-android : #A4C639;
@@ -63,7 +66,19 @@
 @orange--light : #FEEDE7;
 @yellow--light : #FFFBE6;
 
+
 /*=====  End of COLORS  ======*/
+
+/*Global spacing modules*/
+@space--half : 0.25rem;
+@space : 0.5rem;
+@space--double: 1rem;
+@space--4x : 2rem;
+@space--6x : 3rem;
+@space--8x : 4rem;
+@space--10x : 5rem;
+//*End of global spacing modules*/
+
 
 /*==========================================
 =            Global text styles            =
@@ -148,14 +163,6 @@
 
 /*=====  End of Global text styles  ======*/
 
-/*Global spacing modules*/
-@space--half : 0.25rem;
-@space : 0.5rem;
-@space--double: 1rem;
-@space--4x : 2rem;
-@space--10x : 5rem;
-//*End of global spacing modules*/
-
 /*======================================
 =            Global modules            =
 ======================================*/
@@ -186,7 +193,7 @@
   text-align: center;
   color: @font;
   background: @background;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 0.5rem 1rem;
   transition: 0.4s all ease-in-out;
   border: 1px solid @borderColor;
@@ -204,13 +211,9 @@
   margin: 0 auto;
 }
 
-.emphasis--black {
- color: @black;
-}
-
 @smartphones: ~"only screen and (max-width: 479px)";
+@small-desktop : ~"only screen and (max-width: 1100px) and (min-width: 480px)";
 @tablet : ~"only screen and (max-width: 767px) and (min-width: 480px)";
 
 
 /*=====  End of Global modules  ======*/
-

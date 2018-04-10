@@ -25,7 +25,7 @@ import {ContainerService} from "../container/container.service";
 import {SocketsService} from "../sockets.service";
 import {FitToMapService} from "../container/user-filter/fit-to-map.service";
 import {SignupService} from "../signup/signup.service";
-import {OnboardingService} from "../onboarding/onboarding.service";
+import {OnboardingService} from "./onboarding.service";
 import {AgreementService} from "../agreement/agreement.service";
 import {LoadingEffectsService} from "../effects/loading-effects.service";
 import { ContainerGuardGuard } from '../guards/container-guard.guard';

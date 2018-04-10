@@ -1,0 +1,32 @@
+<div class="quickstart-header">
+  <div class="title">Integrate iOS SDK</div>
+  <div class="language-switcher">
+    <div class="language-item" (click)="selectLanguage('objectivec')" [ngClass]="(codeLanguage=='objectivec')? 'active' : '' ">Objective C</div>
+    <div class="language-item" (click)="selectLanguage('swift')" [ngClass]="(codeLanguage=='swift')? 'active' : '' ">Swift</div>
+  </div>
+  <!-- /.language-switcher -->
+  <div class="progress-step-container">
+    <div class="quickstart-progress-step {{step.status}}" *ngFor="let step of onboardingContent; let i = index" >
+      <div class="quickstart-progress-step-label label--active" (click)="onNextStep(i)">{{step.name}}</div>
+      <div class="quickstart-progress-step-label label--completed" (click)="onNextStep(i)">
+        <div class="step-icon"><i class="fa fa-check" aria-hidden="true"></i></div>{{step.name}}
+      </div>
+      <div class="quickstart-progress-step-label label--inactive" (click)="onNextStep(i)">{{step.name}}</div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="isContentLoaded">
+  <div class="quickstart-step" *ngFor="let step of onboardingContent; let stepIndex = index" >
+    <ng-container *ngIf="showTabContent(stepIndex)">
+      <div class="quickstart-substep" *ngFor="let substep of step.content">
+        <app-code-block [codeContent]="(substep[codeLanguage])" *ngIf="substep.type === 'code-block'"></app-code-block>
+        <app-action-picker [content] = "(substep)" *ngIf="substep.type === 'action-picker'"></app-action-picker>
+        <app-track-options [content]="(substep)" *ngIf="substep.type === 'track-options'"></app-track-options>
+        <app-video-block [content]="(substep)" *ngIf="substep.type === 'video-block'"></app-video-block>
+      </div>
+      <div class="step-next-button" (click)="onNextStep(( stepIndex+1 ))">Next</div>
+    </ng-container>
+  </div>
+</ng-container>
+

@@ -6,7 +6,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {InnerSharedModule} from "../shared/shared.module";
 import { SignupFormComponent } from './signup-form/signup-form.component';
 import {SignupService} from "./signup.service";
-import {OnboardingService} from "../onboarding/onboarding.service";
+import {OnboardingService} from "../core/onboarding.service";
 import {SharedModule} from "ht-angular";
 
 @NgModule({

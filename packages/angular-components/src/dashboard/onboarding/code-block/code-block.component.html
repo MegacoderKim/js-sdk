@@ -1,0 +1,23 @@
+<div class="code-block-container">
+  <div class="code-label" *ngIf="codeContent.label">
+    <div class="step-serial">{{codeContent.serial}}</div>
+    {{codeContent.label}}
+  </div>
+  <!-- /.code-label -->
+  <div class="code-file-name">{{codeContent.fileName}}</div>
+  <div class="code-block">
+    <div class="code-section {{snippet.type}}" *ngFor="let snippet of codeSnippets; let blockNumber = index">
+      <pre><code class="{{codeContent.language}}" appCodeBlock>{{snippet.content}}</code></pre>
+      <div class="expand-element" *ngIf = "snippet.type == 'spaced' || snippet.type=='spaced-expanded'">
+        <span *ngIf="snippet.type=='spaced'" (click)="snippet.type = 'spaced-expanded'">...</span>
+        <i class="fa fa-times" *ngIf="snippet.type=='spaced-expanded'" (click)="snippet.type = 'spaced'"></i>
+      </div>
+      <div class="copy-element" *ngIf="snippet.type==='copy'" appClipboard="{{snippet.content}}">
+
+        <div class="text"><i class="fa fa-clone" aria-hidden="true"></i> COPY</div>
+        <div class="copied-text"><i class="fa fa-check" aria-hidden="true"></i> COPIED</div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

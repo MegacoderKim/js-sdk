@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {OnboardingService} from "../onboarding/onboarding.service";
 import {config} from '../config';
+import {OnboardingService} from "../core/onboarding.service";
 
 @Injectable()
 export class SignupService {
@@ -11,9 +11,6 @@ export class SignupService {
 
   getSignupReferral() {
     let referrer = config.htReferrerURL || window.document.referrer || 'Direct URL';
-    if (this.onBoardingService.currentReferrer) {
-      referrer = `${this.onBoardingService.currentReferrer} -> ${referrer}`;
-    }
     return `${referrer}`;
   }
 

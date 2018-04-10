@@ -7,18 +7,13 @@
   position: relative;
   //overflow: hidden;
   padding: 5rem 2% 0 2%;
-  margin: 2rem 7.5% 0 7.5%;
   background: white;
-  width: 85%;
+  width: 100%;
   //overflow-y: scroll;
-  border-radius: 4px;
-  border: 1px solid darken( @offwhite, 10% );
   .sg-container-inner {
     position: relative;
     overflow: hidden;
-    max-width: 1200px;
     margin: 0 auto;
-
   }
 }
 
@@ -30,6 +25,11 @@
   overflow: hidden;
   float: left;
   width: 25%;
+  background: @grey--light;
+  padding: @space--4x;
+  border-radius: 4px;
+  border: 1px solid darken( @grey--light, 10% );
+
   .ps-item {
     position: relative;
     overflow: hidden;
@@ -148,8 +148,8 @@
 }
 .sg-section {
   position: relative;
-  overflow: hidden;
-  padding: 1rem 3rem 1rem 0;
+  //overflow: hidden;
+  padding: 0 @space--4x;
   clear: both;
   .sg-section-title {
     .text-title-h2();
@@ -305,7 +305,6 @@
 .sg-section-plugin-sdk {
   position: relative;
   // overflow: hidden;
-  padding: 1rem;
 }
 
 /*=====  End of Section Plugin SDK  ======*/
@@ -335,6 +334,8 @@
         transition: 0.4s all ease-in-out;
         cursor: pointer;
         border-radius: 4px;
+        box-shadow: 0 1px 1px 1px @shadow;
+        background: white;
         //border: 1px solid @grey;
         .card-content {
           position: relative;
@@ -354,6 +355,7 @@
             .text-small();
             padding-bottom: @space--double;
             color: @dark-grey;
+            height: 5rem;
             position: relative;
             overflow: hidden;
           }
@@ -364,12 +366,8 @@
             color: @purple--dark;
           }
         }
-        &:first-child {
-          margin-left: -@space--4x;
-        }
         &:hover {
-          box-shadow: 0 0 20px @shadow ;
-          transform: scale( 1.01 ) translateX(10px);
+          box-shadow: 0 16px 32px 0 rgba(10,16,34,.2), 0 0 0 transparent;
         }
       }
     }

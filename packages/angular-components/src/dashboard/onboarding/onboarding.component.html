@@ -1,0 +1,49 @@
+      <div class="section-plugin-sdk-title" *ngIf="isPlatformPickActive">Plugin the SDK into your app</div>
+      <!-- /.section-plugin-sdk-title -->
+      <div class="section-plugin-sdk-description" *ngIf="isPlatformPickActive">
+        Follow one of these quickstarts to see live location of your users on a map. These 10 minute quickstarts would get you to plug the SDK in your app for your platform.
+      </div>
+      <!--SHOW BOX FOR SELECTED PLATFORM-->
+      <div class="sg-selected-platform-label" *ngIf="!isPlatformPickActive">
+        <!--<div class="platform-icon">-->
+          <!--<img src="{{platformIcon}}" alt="">-->
+        <!--</div>-->
+        <!--<div class="platform-content">-->
+          <!--<div class="platform-label">Selected platform</div>-->
+          <!--<div class="platform-name">{{selectedPlatform}}</div>-->
+        <!--</div>-->
+        <div class="platform-cta" (click)="onPlatformPickerStepClick()" >
+          <i class="ion-android-arrow-back"></i>
+          <!-- /.ion-android-arrow-back -->
+          <div class="platform-cta-text">CHANGE PLATFORM</div>
+          <!-- /.platform-cta-text -->
+          <!-- /.ion-log-out -->
+        </div>
+      </div>
+      <div class="ob-container w-container onboarding-container">
+        <div class="sg-step-container step-first" *ngIf="isPlatformPickActive">
+          <div class="step-label">
+            <div class="step-label-title">What platform are you building on ?</div>
+          </div>
+          <div class="step-content">
+            <!-- /.platform-section-title -->
+            <div class="section-plugin-sdk-platforms">
+              <div class="platform-item" *ngFor="let platform of platforms;" (click)="onPlatformSelect(platform.identifier)">
+                <div class="platform-icon {{platform.identifier}}">
+                  <img src="{{platform.icon}}" alt="">
+                </div>
+                <div class="platform-name">{{platform.name}}</div>
+                <div class="platform-lines">{{platform.lines}}</div>
+              </div>
+              <div class="clearfix"></div>
+              <!-- /.clearfix -->
+            </div>
+            <div class="section-plugin-sdk-invite-dev">
+              <div class="invite-dev-description">Not a developer? Request your mobile app developer to plug in the SDK.</div>
+              <div class="invite-dev-cta" (click)="openDeveloperMailModal()">Send this to your developer →</div>
+            </div>
+          </div>
+        </div>
+      <app-ios-sdk *ngIf="selectedPlatform === 'ios'"></app-ios-sdk>
+      <app-android-sdk *ngIf="selectedPlatform === 'android'"></app-android-sdk>
+    </div>
