@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IUserAnalytics, IUserPlaceline, Page} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {ApiType, QueryLabel} from "ht-client";
-import {listwithSelectedId$, listWithItem$} from "ht-data";
+import {listwithSelectedId$, listWithItem$, CombineLoadings$} from "ht-data";
 import {HtMapService} from "../ht/ht-map.service";
 import {HtUsersService} from "../ht/ht-users.service";
 import {Color, IsRangeToday} from "ht-utility";
@@ -156,8 +156,11 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
 
     const loadingHeat$ = this.userService.heatmap.loading$;
 
-    const mapLoading$: Observable<boolean> = merge(loading$1, loading$2, loadingHeat$).pipe(
-      map(data => !!data)
+    const mapLoading$: Observable<boolean> = CombineLoadings$(loading$1, loading$2, loadingHeat$).pipe(
+      map(data => {
+        console.log("data", data);
+        return !!data
+      })
     );
     this.mapService.mapInstance.loading$ = mapLoading$
   };
