@@ -37,9 +37,7 @@
     </div>
   </div>
   <ht-date-range *ngIf="options.showDatePicker" [isRight]="true"></ht-date-range>
-  <div class="loading-bar" *ngIf="loading$ | async">
-    <ht-loading-bar></ht-loading-bar>
-  </div>
+
 </div>
 <div class="card-overlay is-small card-content flex-row row-gap-20" [@filter]="(showFilter$ | async)">
 
@@ -51,5 +49,7 @@
     <ng-content></ng-content>
   </div>
 </div>
-
+<div class="loading-bar" *ngIf="loading$ | async">
+  <ht-loading-bar></ht-loading-bar>
+</div>
 
