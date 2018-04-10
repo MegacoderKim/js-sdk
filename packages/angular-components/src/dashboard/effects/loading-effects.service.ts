@@ -22,8 +22,8 @@ export class LoadingEffectsService {
       fromQuery.CHANGE_DATE_RANGE,
       fromQuery.UPDATE_DATE_RANGE,
 
-      fromQuery.CHANGE_VIEW,
-      fromQuery.CHANGE_ENTITY,
+      // fromQuery.CHANGE_VIEW,
+      // fromQuery.CHANGE_ENTITY,
 
       fromQuery.UPDATE_ACTION_LIST_QUERY,
       fromQuery.SET_ACTION_LIST_QUERY,
