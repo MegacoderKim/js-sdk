@@ -47,6 +47,7 @@ export { PaginationModule } from "./pagination/pagination.module"
 export { PaginationComponent } from "./pagination/pagination.component"
 export {PlacelineContainerModule} from "./placeline-container/placeline-container.module";
 export {PlacelineContainerComponent} from "./placeline-container/placeline-container.component";
+export {PlacelineDateModule} from "./placeline-date/placeline-date.module";
 export {PlacelineModule} from "./placeline/placeline.module";
 export {PlacelineComponent} from "./placeline/placeline.component";
 export {PlacelineMapContainerModule} from "./placeline-map-container/placeline-map-container.module";

@@ -158,7 +158,6 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
 
     const mapLoading$: Observable<boolean> = CombineLoadings$(loading$1, loading$2, loadingHeat$).pipe(
       map(data => {
-        console.log("data", data);
         return !!data
       })
     );
