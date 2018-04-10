@@ -1,8 +1,10 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import {fromEvent} from "rxjs/observable/fromEvent";
-import {IReplayPlayer, ReplayTrace} from "ht-maps";
+import {IReplayPlayer, ReplayTrace, IReplayHead} from "ht-maps";
+import {IDecodedSegment} from "ht-models";
 import {HtMapService} from "../ht/ht-map.service";
+import {map, take, takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'ht-replay',
@@ -26,8 +28,8 @@ export class ReplayComponent implements OnInit {
 
     this.head$ = this.replayTrace.timelineSegment.head$;
     this.player$ = this.replayTrace.timelineSegment.player$;
-    this.speed$ = this.player$.map(player => player.speed);
-    this.isPlaying$ = this.player$.map((player: IReplayPlayer) => player.isPlaying);
+    this.speed$ = this.player$.pipe(map((player: IReplayPlayer) => player.speed));
+    this.isPlaying$ = this.player$.pipe(map((player: IReplayPlayer) => player.isPlaying));
 
   }
 
@@ -36,7 +38,7 @@ export class ReplayComponent implements OnInit {
     // this.broadcast.emit('reset-map')
   }
 
-  get segments() {
+  get segments(): IDecodedSegment[] {
     return this.replayTrace.timelineSegment.segments;
   }
 
@@ -50,14 +52,20 @@ export class ReplayComponent implements OnInit {
   }
 
   startDrag(event, timeline) {
-    let timePercent$ = this.head$.take(1).map(head => {
-      return head && head.timePercent ? head.timePercent : 0;
-    });
+    let timePercent$ = this.head$.pipe(
+      take(1),
+      map((head: IReplayHead) => {
+        return head && head.timePercent ? head.timePercent : 0;
+      })
+    );
     timePercent$.subscribe((percent) => {
       let currentX = event.clientX;
       let timelineBounds = timeline.getBoundingClientRect();
       let mouseUp$ = fromEvent(this.document, 'mouseup');
-      fromEvent(this.document, 'mousemove').takeUntil(mouseUp$).subscribe((e: any) => {
+      fromEvent(this.document, 'mousemove').pipe(
+        takeUntil(mouseUp$)
+      )
+        .subscribe((e: any) => {
         let incPercent = (e.clientX - currentX) * 100 / timelineBounds.width;
         let currentPercent = percent + incPercent;
         currentPercent = currentPercent > 100 ? 100 : currentPercent;
