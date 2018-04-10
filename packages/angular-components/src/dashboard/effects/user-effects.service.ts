@@ -21,6 +21,7 @@ import {combineLatest} from "rxjs/observable/combineLatest";
 import {empty} from "rxjs/observable/empty";
 import {of} from "rxjs/observable/of";
 import {format} from "date-fns";
+import {HtUsersService} from "ht-angular";
 
 @Injectable()
 export class UserEffectsService {
@@ -31,10 +32,17 @@ export class UserEffectsService {
         private actions$: Actions,
         private broadcast: BroadcastService,
         private userService: UserService,
+        private htUsersService: HtUsersService,
         private store: Store<fromRoot.State>,
         private userTraceService: UserTraceService
     ) {
-
+      this.htUsersService.placeline.data$.subscribe((user) => {
+        if (user) {
+          this.userTraceService.segmentsTrace.updateTimeline(user)
+        } else {
+          this.userTraceService.segmentsTrace.clearTimeline()
+        }
+      })
     }
 
     @Effect({ dispatch: false })
