@@ -6,7 +6,7 @@ import {MapInstance} from "./map-utils/map-instance";
 export interface IReplayHead {
   timePercent: number;
   currentTime: string;
-  currentPosition: number[];
+  currentPosition: HtPosition;
   bearing: number;
   currentSegment: IDecodedSegment; //this needs to be fixed
   segmentPercent: number;
@@ -31,7 +31,7 @@ export interface IReplayStats {
   duration: number;
   distance: number;
   timeAwarePolylineArray?: ITimeAwarePoint[];
-  segments: IDecodedSegment[];
+  placeline: IDecodedSegment[];
 }
 
 export interface IReplayPlayer {
