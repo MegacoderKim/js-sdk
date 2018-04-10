@@ -183,9 +183,13 @@ export class HtPlaceline {
       const maxRecorded = query['max_recorded_at'];
       const today = maxRecorded ? isToday(new Date(maxRecorded)) : true;
       user.is_tracking = user.is_tracking && today;
+      user.min_recorded_at = query['min_recorded_at'];
+      user.max_recorded_at = query['max_recorded_at'];
       return user;
-    } else {
+    } else if(user) {
       user.placeline = this.procPlaceline(user.placeline);
+      return user
+    } else {
       return user
     }
   };
