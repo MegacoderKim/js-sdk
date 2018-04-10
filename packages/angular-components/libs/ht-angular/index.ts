@@ -63,7 +63,9 @@ export {DateRangePickerModule} from "./date-range-picker/date-range-picker.modul
 export {DateRangePickerComponent, IDateRangePickerOptions, IDateStyle} from "./date-range-picker/date-range-picker.component";
 export {DateRangeComponent} from "./filters/date-range/date-range.component";
 
-export {TrackingModule} from "./tracking/tracking.module"
+export {TrackingModule} from "./tracking/tracking.module";
+
+export {ReplayModule} from "./replay/replay.module"
 
 
 
