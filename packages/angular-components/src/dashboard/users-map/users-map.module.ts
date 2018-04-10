@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UsersMapRoutingModule } from './users-map-routing.module';
 import { UsersMapComponent } from './users-map.component';
 import {ContainerModule, UsersContainerModule, UsersFilterModule} from "ht-angular";
+import {ReplayModule} from "../map-container/replay/replay.module";
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import {ContainerModule, UsersContainerModule, UsersFilterModule} from "ht-angul
     UsersMapRoutingModule,
     ContainerModule,
     UsersContainerModule,
-    UsersFilterModule
+    UsersFilterModule,
+    ReplayModule,
   ],
   declarations: [UsersMapComponent]
 })
