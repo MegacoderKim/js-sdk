@@ -17,7 +17,7 @@ import {anim} from "../../../utils/animations";
 import {config} from "../../config";
 import {LinkBaseUrl} from "../../../utils/base-url";
 import {InnerMapService} from "../../map-container/map.service";
-import {isToday} from "date-fns"
+import {isToday, startOfDay, endOfDay} from "date-fns"
 import {HtUsersService} from "ht-angular";
 declare let $: any;
 
@@ -88,7 +88,9 @@ export class TimelineUserComponent implements OnInit {
       this.actionId = params['action_id'];
       this.actionLookupId = params['action_unique_id'] || params['action_lookup_id'];
       this.actionCollectionId = params['action_collection_id'];
-      this.htUserService.placeline.setQuery({date: this.timeLineDay, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId})
+      const timelineQuery = this.timeLineDay ?
+        {min_recorded_at: startOfDay(this.timeLineDay).toISOString(), max_recorded_at: endOfDay(this.timeLineDay).toISOString()} : {}
+      this.htUserService.placeline.setQuery({...timelineQuery, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId})
       // this.store.dispatch(new fromUser.SelectTimelineQueryAction({date: this.timeLineDay, action_id: this.actionId, action_unique_id: this.actionLookupId, action_collection_id: this.actionCollectionId}));
       this.notToday = this.isBeforeToday(this.timeLineDay);
       let id = params[this.paramsKey];
