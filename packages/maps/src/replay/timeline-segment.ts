@@ -1,7 +1,7 @@
 import {TimelineReplay} from "./timeline-replay";
 import * as _ from 'underscore';
-import {IDecodedSegment, IReplayHead} from "../interfaces";
-import {IUserPlaceline, IPlaceline} from "ht-models";
+import { IReplayHead} from "../interfaces";
+import {IUserPlaceline, IPlaceline, IDecodedSegment} from "ht-models";
 
 export class TimelineSegment extends TimelineReplay {
   segments: IDecodedSegment[];
