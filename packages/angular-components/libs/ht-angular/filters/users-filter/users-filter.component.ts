@@ -92,8 +92,9 @@ export class UsersFilterComponent implements OnInit {
     this.usersClient.list.setId(null)
   }
 
-  setOrdering(key) {
-    this.onQuery({ordering: key})
+  setOrdering(key, sign: 0 | 1 = 1) {
+    let ordering = sign ? key : '-'+key;
+    this.onQuery({ordering})
   }
 
 }
