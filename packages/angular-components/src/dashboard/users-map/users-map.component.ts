@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
-import {HtUsersService} from "ht-angular";
+import {HtMapService, HtUsersService} from "ht-angular";
+import {ContainerService} from "../container/container.service";
 
 @Component({
   selector: 'app-users-map',
@@ -18,12 +19,16 @@ export class UsersMapComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     public userTraceService: UserTraceService,
-    public htUsersService: HtUsersService
+    public htUsersService: HtUsersService,
+    private mapService: HtMapService,
+    private containerService: ContainerService
   ) { }
   selectUser() {
 
   }
   ngOnInit() {
+    this.containerService.setEntity('users');
+    this.containerService.setView('list');
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
       .map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
@@ -35,6 +40,12 @@ export class UsersMapComponent implements OnInit {
       this.router.navigate([query], {relativeTo: this.route})
     })
 
+  }
+
+  closeUser() {
+    this.htUsersService.placeline.setId(null);
+    this.htUsersService.list.setId(null);
+    this.mapService.resetBounds();
   }
 
 }
