@@ -1,0 +1,55 @@
+@import "variables";
+
+.date-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.picker {
+  position: absolute;
+  //top: 0;
+  left: -10px;
+  //left: 0;
+  padding-top: 10px;
+}
+ht-date-range-picker {
+  background: whitesmoke;
+  display: flex;
+  box-shadow: 0 0 2px grey;
+
+}
+.date {
+  background-color: #fff;
+  border: 1px solid $ht-grey-border;
+  .action {
+    display: flex;
+    padding: 7px 14px;
+    cursor: pointer;
+    height: 100%;
+    .fa {
+      margin:auto;
+    }
+    &-left {
+      border-right: 1px solid $ht-grey-border;
+    }
+    &-right {
+      border-left: 1px solid $ht-grey-border;
+    }
+    &:hover {
+      background: $ht-grey-1;
+    }
+  }
+  .disabled {
+    color: $ht-grey-2;
+    cursor: not-allowed;
+  }
+  .date-text {
+    padding: 4px 5px;
+    flex: 1;
+    min-width: 134px;
+    cursor: pointer;
+    &:hover {
+      background: $ht-grey-1;
+    }
+  }
+}
