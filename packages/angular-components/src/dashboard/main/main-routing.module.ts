@@ -6,7 +6,7 @@ import {ContainerGuardGuard} from "../guards/container-guard.guard";
 
 export const mainRoutes: Routes = [
   { path: 'invite-users', loadChildren: "../ht-live/invite/invite.module#InviteModule"},
-  { path: 'payment-old-plan', loadChildren: "../old-plan/old-plan.module#OldPlanModule"},
+  { path: '23442xdv', loadChildren: "../old-plan/old-plan.module#OldPlanModule"},
   {path: 'payment', loadChildren: "../payment/payment.module#PaymentModule"},
   {path: 'setup', loadChildren: "../setup-guide/setup-guide.module#SetupGuideModule"},
   // {path: 'onboarding-setup', loadChildren: "../onboarding-setup/onboarding-setup.module#OnboardingSetupModule"},

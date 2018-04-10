@@ -37,7 +37,7 @@
     </div>
   </div>
   <div class="card">
-    <div class="card-content flex-row row-gap-20" *ngIf="account.billing_plan != plans.regular && account.billing_plan != plans.starter">
+    <div class="card-content flex-row row-gap-20" *ngIf="account.billing_plan == plans.freeForever">
       <div class="plan-name has-text-weight-bold">
         Free Forever
       </div>
