@@ -47,8 +47,9 @@ export class FilterCommonComponent implements OnInit {
     this.entity$ = this.store.select(fromRoot.getQueryEntity);
     this.switchViewLink$ = this.entity$.share().map(entity => {
       let base = config.isWidget ? '/widget' : '/';
+      const map = entity === 'users' ? [base, entity, 'map'] : [base, 'map', entity]
       return {
-        map: [base, 'map', entity],
+        map: map,
         list: [base, 'list', entity],
         entity: entity
       }
