@@ -14,13 +14,13 @@ import { IAllowedQueryMap } from "ht-data";
 import {DateRange} from "../../global/date-range";
 import {filter, map} from "rxjs/operators";
 import {DefaultUsersFilter} from "../../filters/users-filter";
-import {IActionsSummary} from "../../../../models";
+import {IActionsSummary} from "ht-models";
 
 export class UsersSummary extends EntityListClient {
   name = "users summary";
   defaultQuery = { page_size: null };
   updateStrategy = "live";
-  allowedQueryKeys = ["show_all", "search"];
+  // allowedQueryKeys = ["show_all", "search"];
   data$: Observable<IUserListSummary>;
   loading$: Observable<boolean>;
   store;
