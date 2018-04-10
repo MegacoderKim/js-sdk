@@ -12,12 +12,12 @@ import {HtUsersService} from "ht-angular";
 export class UsersMapComponent implements OnInit {
   userId: string | null = null;
   query: object;
-  showReplay$
+  showReplay$;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private userTraceService: UserTraceService,
+    public userTraceService: UserTraceService,
     public htUsersService: HtUsersService
   ) { }
   selectUser() {
