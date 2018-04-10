@@ -1,10 +1,11 @@
 <div class="filter-container flex-column">
+  <ng-content select=".start"></ng-content>
   <ht-entity-search (onSearchQuery)="onQuery($event)" *ngIf="options.showSearch"></ht-entity-search>
   <div class="dropdown" htDropdown *ngIf="ordering$ | async as ordering">
     <button type="button" class="button dropdown-trigger flex-row row-gap-4">
       <span>Sorting</span>
       <span>: {{ordering.string}}</span>
-      <i [ngClass]="ordering.sign ? 'fa-arrow-up' : 'fa-arrow-down'" class="fa"></i>
+      <i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i>
       <!--<span *ngIf="ordering$ | async as ordering"></span>-->
       <!--<i class="fa fa-filter"></i>-->
     </button>
@@ -66,11 +67,8 @@
 </div>
 <div class="card-overlay is-small card-content flex-row row-gap-20" [@filter]="(showFilter$ | async)">
 
-  <div (click)="closeUser()"
-       class="card-content-mid is-size-7 is-text-centered flex-row align-center">
-    <span class="delete-container"> <a class="delete is-medium"></a></span>
-  </div>
-  <div class="flex flex-row">
+
+  <div class="flex flex-row row-gap-10">
     <ng-content></ng-content>
   </div>
 </div>
