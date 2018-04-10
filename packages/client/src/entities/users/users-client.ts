@@ -47,6 +47,7 @@ export class HtUsersClient extends EntityClient {
   api: HtUsersApi;
   key$;
   showAll: boolean = false;
+  dateRange: DateRange
   constructor(public options: IUsersClientConfig) {
     super();
     let api = htClientService.getInstance().api.users;
@@ -59,6 +60,7 @@ export class HtUsersClient extends EntityClient {
     store.addReducer("segments", fromSegments.segmentsReducer);
     this.store = store;
     let dateRange = this.options.dateRange;
+    this.dateRange = dateRange;
     let dateParam = 'recorded_at';
     this.analytics = new UsersAnalyticsClient({ dateRange, store, dateParam, api });
     this.placeline = new UsersPlacelineClient({ store, api });
@@ -85,7 +87,6 @@ export class HtUsersClient extends EntityClient {
   }
 
   setShowAll(showAll: boolean = true) {
-    this.showAll = showAll;
     this.list.setQuery({ show_all: true });
   }
 
@@ -166,6 +167,7 @@ export class HtUsersClient extends EntityClient {
     return this.list.getApiQuery$().pipe(
       filter(data => !!data),
       map(query => {
+        console.log(query, "query");
         let ordering = query ? query["ordering"] : null;
         let orderingMod = this.getOrderingMod(ordering);
         return {
@@ -220,7 +222,14 @@ export class HtUsersClient extends EntityClient {
     this.list.query$.pipe(filter(data => !!data)).subscribe(query => {
       this.setListAllFilter(query);
     });
-
+    this.list.query$.pipe(
+      map(query => {
+        return query ? query['show_all'] : query;
+      }),
+      distinctUntilChanged()
+    ).subscribe((showAll) => {
+      this.showAll = showAll;
+    });
     // this.listAll.active$.pipe(filter(data => !!data)).flatMap(() => {
     //   return this.listStatusChart$()
     // })
