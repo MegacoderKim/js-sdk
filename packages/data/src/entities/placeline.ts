@@ -10,7 +10,7 @@ import { htEvent } from "./event";
 import { NameCase, GetMinute } from "ht-utility";
 import _ from "underscore";
 import { CommonFunctions } from "../common";
-import {isToday} from "date-fns";
+import {isToday, format} from "date-fns";
 
 export class HtPlaceline {
   constructor(public userData?: IUserPlaceline) {}
@@ -183,6 +183,7 @@ export class HtPlaceline {
       const maxRecorded = query['max_recorded_at'];
       const today = maxRecorded ? isToday(new Date(maxRecorded)) : true;
       user.is_tracking = user.is_tracking && today;
+      user.timeline_date = query['min_recorded_at'] ? format(query['min_recorded_at'], "YYYY-MM-DD") : user.timeline_date;
       user.min_recorded_at = query['min_recorded_at'];
       user.max_recorded_at = query['max_recorded_at'];
       return user;
