@@ -44,6 +44,6 @@
             </div>
           </div>
         </div>
-      <app-ios-sdk *ngIf="selectedPlatform === 'ios'"  [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-ios-sdk>
-      <app-android-sdk *ngIf="selectedPlatform === 'android'"  [leadResponse]="leadResponse" (switchSelectedTab)="onSwitchTab($event)" (switchSelectedPlatform)="onSwitchPlatform($event)"></app-android-sdk>
+      <app-ios-sdk *ngIf="selectedPlatform === 'ios'"></app-ios-sdk>
+      <app-android-sdk *ngIf="selectedPlatform === 'android'"></app-android-sdk>
     </div>

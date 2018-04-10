@@ -37,7 +37,7 @@ export class AndroidSdkComponent implements OnInit {
    * Get the onboarding content from GitHub file.
    */
   fetchAndUpdateContent() {
-    this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData: any[]) => {
+    this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData: string) => {
       fileData = JSON.parse( fileData );
       this.onboardingContent = fileData;
       // this.onboardingContent = androidOnboardingContent; //Use this when developing locally

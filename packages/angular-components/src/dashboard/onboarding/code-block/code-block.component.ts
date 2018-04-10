@@ -9,7 +9,7 @@ import {InnerSharedModule} from "../../shared/shared.module";
   templateUrl: './code-block.component.html',
   styleUrls: ['./code-block.component.less']
 })
-export class CodeBlockComponent implements OnInit {
+export class CodeBlockComponent implements OnInit, OnChanges {
   isCodeUpdated: boolean = false;
   @Input() codeContent;
   @Input() troubleshootLink: string;
@@ -25,13 +25,16 @@ export class CodeBlockComponent implements OnInit {
     this.fetchAndUpdateCode();
   }
 
+  ngOnChanges() {
+    this.fetchAndUpdateCode();
+  }
+
   /**
    * Main driver function to fetch file from GitHub and update the code
    */
   fetchAndUpdateCode() {
     if (!this.codeContent || !this.codeContent.fileURL) return;
     this.onboardingService.getGithubFile(this.codeContent.fileURL).filter(data => !!data).subscribe((fileData) => {
-      console.log(typeof fileData);
       // fileData = JSON.parse( fileData );
       // console.log(fileData);
       let snippets = this.createCodeSnippetsWithData(fileData, this.codeContent.lines);

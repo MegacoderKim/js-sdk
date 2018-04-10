@@ -32,7 +32,6 @@ export class IosSdkComponent implements OnInit {
       fileData = JSON.parse( fileData );
       this.onboardingContent = fileData;
       // this.onboardingContent = iosOnboardingContent;
-      console.log( this.onboardingContent );
       this.isContentLoaded = true;
     });
   }
@@ -71,7 +70,6 @@ export class IosSdkComponent implements OnInit {
     this.onboardingContent[this.currentStepIndex].status = 'active';
 
   }
-
 
   getPublishableKey() {
     if (!this.leadResponse) return null;

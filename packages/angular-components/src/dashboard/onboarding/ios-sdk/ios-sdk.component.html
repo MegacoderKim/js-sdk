@@ -1,15 +1,10 @@
 <div class="quickstart-header">
   <div class="title">Integrate iOS SDK</div>
-  <nav class="quickstart-head-nav">
-    <div class="nav-item">
-      <div class="nav-icon"><i class="ion-iphone"></i></div>
-      <div class="nav-text">Download sample app</div>
-    </div>
-    <div class="nav-item">
-      <div class="nav-icon"><i class="ion-social-octocat"></i></div>
-      <div class="nav-text">See it on GitHub</div>
-    </div>
-  </nav>
+  <div class="language-switcher">
+    <div class="language-item" (click)="selectLanguage('objectivec')" [ngClass]="(codeLanguage=='objectivec')? 'active' : '' ">Objective C</div>
+    <div class="language-item" (click)="selectLanguage('swift')" [ngClass]="(codeLanguage=='swift')? 'active' : '' ">Swift</div>
+  </div>
+  <!-- /.language-switcher -->
   <div class="progress-step-container">
     <div class="quickstart-progress-step {{step.status}}" *ngFor="let step of onboardingContent; let i = index" >
       <div class="quickstart-progress-step-label label--active" (click)="onNextStep(i)">{{step.name}}</div>

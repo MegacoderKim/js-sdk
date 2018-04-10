@@ -6,11 +6,37 @@
     position: relative;
     overflow: hidden;
     margin-top: @space--double;
+    max-width: 1000px;
     //padding-top: @space--4x;
     .title {
       .text-title-h3();
       //text-align: center;
       position: relative;
+      float: left;
+    }
+    .language-switcher {
+      float: right;
+      position: relative;
+      overflow: hidden;
+      .language-item {
+        .text-smallcaps-s();
+        color: @black;
+        display: inline-block;
+        padding-left: @space;
+        padding-bottom: @space;
+        cursor: pointer;
+        opacity: 0.5;
+        font-weight: 500;
+        &.active {
+          color: @magenta;
+          font-weight: 700;
+          opacity: 1;
+        }
+        &:first-child {
+          padding-right: @space;
+          border-right: 1px solid @black;
+        }
+      }
     }
     .quickstart-head-nav {
       position: relative;
@@ -31,6 +57,8 @@
       position: relative;
       overflow: hidden;
       margin: @space--double auto;
+      float: left;
+      clear: both;
       //text-align: center;
       .quickstart-progress-step {
         position: relative;
@@ -107,8 +135,7 @@
     margin-top: @space--4x;
   }
   .quickstart-step {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 1000px;
     position: relative;
     overflow: hidden;
     .step-header {
@@ -130,7 +157,7 @@
       .step-title {
         .text-normal();
         max-width: 700px;
-        margin: 0 auto;
+        //margin: 0 auto;
         padding-bottom: @space;
         font-weight: 500;
       }
@@ -150,8 +177,8 @@
         position: relative;
         overflow: hidden;
         max-width: 700px;
-        margin: 0 auto;
-        font-weight: 300;
+        //margin: 0 auto;
+        //font-weight: 300;
         color: lighten( @black,30% );
         padding-bottom: @space--6x;
       }
