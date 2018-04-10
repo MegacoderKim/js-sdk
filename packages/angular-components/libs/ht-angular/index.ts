@@ -10,6 +10,8 @@ export * from "./ht/ht.module"
 export { UsersSummaryContainerModule } from "./users-summary-container/users-summary-container.module"
 export { UsersSummaryContainerComponent } from "./users-summary-container/users-summary-container.component"
 
+export {ContainerModule} from "./container/container.module";
+
 export {UserCardModule} from "./user-card/user-card.module";
 export {UserCardComponent} from "./user-card/user-card.component";
 export {UsersComponent} from "./users/users.component";
@@ -24,6 +26,7 @@ export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
 
 export { UsersSummaryModule } from "./users-summary/users-summary.module"
+export { UsersFilterModule } from "./filters/users-filter/users-filter.module"
 
 export { UsersAnalyticsListModule } from "./users-analytics-list/users-analytics-list.module"
 export { UsersAnalyticsListComponent } from "./users-analytics-list/users-analytics-list.component"
