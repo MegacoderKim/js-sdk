@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
+import {HtUsersService} from "ht-angular";
 
 @Component({
   selector: 'app-users-map',
@@ -16,7 +17,8 @@ export class UsersMapComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private userTraceService: UserTraceService
+    private userTraceService: UserTraceService,
+    public htUsersService: HtUsersService
   ) { }
   selectUser() {
 

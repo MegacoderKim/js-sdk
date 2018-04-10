@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UsersMapRoutingModule } from './users-map-routing.module';
 import { UsersMapComponent } from './users-map.component';
-import {ContainerModule, UsersContainerModule, UsersFilterModule} from "ht-angular";
-import {ReplayModule} from "../map-container/replay/replay.module";
+import {ContainerModule, UsersContainerModule, UsersFilterModule, ReplayModule, PlacelineDateModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -14,6 +13,7 @@ import {ReplayModule} from "../map-container/replay/replay.module";
     UsersContainerModule,
     UsersFilterModule,
     ReplayModule,
+    PlacelineDateModule
   ],
   declarations: [UsersMapComponent]
 })
