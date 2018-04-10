@@ -17,6 +17,8 @@ import {SafeHtmlPipe} from "../pipes/safe-html.pipe";
 import {SignupContainerComponent} from './signup-container/signup-container.component';
 import {LoginContainerComponent} from './login-container/login-container.component';
 import { CopyDirective } from './copy.directive';
+import {CodeBlockDirective} from "./code-block.directive";
+import {ClipboardDirective} from "./copy-block.directive";
 
 @NgModule({
   imports: [
@@ -40,6 +42,9 @@ import { CopyDirective } from './copy.directive';
     SignupContainerComponent,
     LoginContainerComponent,
     CopyDirective,
+    CodeBlockDirective,
+    CopyDirective,
+    ClipboardDirective
   ],
   exports: [
     DropdownDirective,
@@ -56,6 +61,8 @@ import { CopyDirective } from './copy.directive';
     SignupContainerComponent,
     LoginContainerComponent,
     CopyDirective,
+    CodeBlockDirective,
+    ClipboardDirective
   ],
   entryComponents: [
     TooltipContent

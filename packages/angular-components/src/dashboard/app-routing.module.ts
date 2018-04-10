@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'signup/:accountId', loadChildren: "./signup/signup.module#SignupModule"},
   { path: 'widget', loadChildren: "./widget/widget.module#WidgetModule"},
   { path: 'verify/:userId/verify_email/:verificationCode', loadChildren: "./verification/verification.module#VerificationModule"},
-  { path: 'onboarding', loadChildren: "./onboarding-setup/onboarding-setup.module#OnboardingSetupModule"},
+  { path: 'onboarding', loadChildren: "./onboarding/onboarding.module#OnboardingModule"},
   {path: 'saas-agreement', loadChildren: "./saas-agreement/saas-agreement.module#SaasAgreementModule"},
   { path: 'debug', loadChildren: "./staff/staff.module#StaffModule", canActivate: [AuthGuardService]},
   { path: '', loadChildren: "./main/main.module#MainModule", canActivate: [AuthGuardService]},

@@ -1,0 +1,33 @@
+@import '../../main/main.component.less';
+.video-explain-block {
+  position: relative;
+  width: 100%;
+  float: left;
+  clear: both;
+  margin-bottom: @space--6x;
+  //overflow: hidden;
+  .ve-content {
+    .text-normal();
+    color: @black;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .ve-cta {
+    .button--small( transparent, @black, @black );
+    width: 200px;
+    margin-top: @space--double;
+    position: relative;
+    overflow: hidden;
+  }
+  .ve-video {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 0 30px @shadow;
+    margin: @space--double;
+    video {
+      width: 100%;
+    }
+  }
+}
