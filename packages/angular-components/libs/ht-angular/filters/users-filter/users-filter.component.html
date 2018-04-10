@@ -42,11 +42,14 @@
   </div>
 </div>
 <div class="card-overlay card-content level" [@filter]="(showFilter$ | async)">
-
-  <div (click)="closeUser()"
-       class="card-content-mid is-size-7 is-text-centered flex-row align-center">
-    <span class="delete-container"> <a class="delete is-medium"></a></span>
+  <div class="flex-row">
+    <div (click)="closeUser()"
+         class="card-content-mid is-size-7 is-text-centered flex-row align-center">
+      <span class="delete-container"> <a class="delete is-medium"></a></span>
+    </div>
+    <ng-content></ng-content>
   </div>
+
 </div>
 
 
