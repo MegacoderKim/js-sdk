@@ -1,11 +1,12 @@
-<div class="flex-column column-gap-10" *ngIf="userData$ | async as userData; else loading">
+<div class="flex-column column-gap-10" *ngIf="userData$ | async as userData">
   <ht-user-card *ngIf="showUserCard" [user]="userData"></ht-user-card>
-  <ht-placeline
-    [selectedSegmentId]="selectedSegmentId$ | async"
-    (selectedSegment)="onSelectSegmentId($event)"
-    (highlightedSegmentId)="onHighlightSegment($event)"
-    [userPlaceline]="userData"></ht-placeline>
+  <ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></ht-loading-dots>
+  <ng-template #placeline>
+    <ht-placeline
+      [selectedSegmentId]="selectedSegmentId$ | async"
+      (selectedSegment)="onSelectSegmentId($event)"
+      (highlightedSegmentId)="onHighlightSegment($event)"
+      [userPlaceline]="userData"></ht-placeline>
+  </ng-template>
+
 </div>
-<ng-template #loading>
-  <ht-loading-dots class="text-1 text-center flex-row"></ht-loading-dots>
-</ng-template>

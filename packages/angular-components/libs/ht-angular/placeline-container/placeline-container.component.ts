@@ -24,13 +24,14 @@ export class PlacelineContainerComponent implements OnInit, OnDestroy {
   @Input() showUserCard: boolean = true;
   userData$;
   selectedSegmentId$;
+  loading$
   constructor(
     private userClientService: HtUsersService,
   ) { }
 
   ngOnInit() {
     this.selectedSegmentId$ = this.userClientService.placeline.segmentResetId$;
-
+    this.loading$ = this.userClientService.placeline.loading$;
     this.userData$ = this.userClientService.placeline.data$;
 
     if (this.userId) {
