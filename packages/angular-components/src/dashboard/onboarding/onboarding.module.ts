@@ -9,12 +9,14 @@ import { ActionPickerComponent } from './action-picker/action-picker.component';
 import { TrackOptionsComponent } from './track-options/track-options.component';
 import { CodeBlockComponent } from './code-block/code-block.component';
 import {InnerSharedModule} from "../shared/shared.module";
+import {TtdModule} from "../settings/ttd/ttd.module";
 
 @NgModule({
   imports: [
     CommonModule,
     OnboardingRoutingModule,
-    InnerSharedModule
+    InnerSharedModule,
+    TtdModule
   ],
   declarations: [
     OnboardingComponent,

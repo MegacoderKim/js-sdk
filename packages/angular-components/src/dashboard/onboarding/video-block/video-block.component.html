@@ -1,6 +1,8 @@
 <div class="video-explain-block">
-  <div class="ve-content" [innerHTML]="content.content | safeHtml"></div>
-  <div class="ve-video">
+      <div class="ve-content" [innerHTML]="content.content | safeHtml"></div>
+      <a href="{{content.cta.href}}" *ngIf="!!content.cta"><div class="ve-cta">{{content.cta.text}}</div></a>
+      <!-- /.ve-cta -->
+      <div class="ve-video" *ngIf="!!content.url">
     <video src="{{content.url}}" controls="controls" loop="loop"></video>
   </div>
 </div>
