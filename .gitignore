@@ -54,6 +54,7 @@ node_modules
 /packages/**/dist/
 /packages/**/build/
 /packages/ht-angular
+/packages/ht-angular.tgz
 
 /packages/**/src/environments/environment.release.ts
 /packages/**/src/environments/environment.local.ts
