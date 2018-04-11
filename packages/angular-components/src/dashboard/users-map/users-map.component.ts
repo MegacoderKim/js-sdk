@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
 import {HtMapService, HtUsersService} from "ht-angular";
 import {ContainerService} from "../container/container.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import * as fromRoot from "../reducers";
+import {Store} from "@ngrx/store";
+import {Subscription} from "rxjs/Subscription";
+import * as fromUser from "../actions/user";
 
 @Component({
   selector: 'app-users-map',
@@ -24,7 +28,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
       ])])
   ]
 })
-export class UsersMapComponent implements OnInit {
+export class UsersMapComponent implements OnInit, OnDestroy {
   userId: string | null = null;
   query: object;
   showReplay$;
@@ -52,7 +56,7 @@ export class UsersMapComponent implements OnInit {
 
     this.userService.getQueryForRoute().subscribe((query) => {
       this.router.navigate([query], {relativeTo: this.route})
-    })
+    });
 
   }
 
@@ -60,6 +64,10 @@ export class UsersMapComponent implements OnInit {
     this.htUsersService.placeline.setId(null);
     this.htUsersService.list.setId(null);
     this.mapService.resetBounds();
+  }
+
+  ngOnDestroy() {
+    // if (this.sub) this.sub.unsubscribe();
   }
 
 }

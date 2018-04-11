@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ElementRef, EventEmitter, Output, HostBinding } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, EventEmitter, Output, HostBinding, HostListener } from '@angular/core';
 import {HtMapService} from "../../ht/ht-map.service";
 
 @Component({
@@ -15,12 +15,20 @@ export class AutoHeightComponent implements OnInit, AfterViewInit {
     private mapService: HtMapService
   ) { };
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.setHeight()
+  }
+
   ngOnInit() {
 
   }
 
   ngAfterViewInit() {
-    console.log("init", this.elementRef.nativeElement.getBoundingClientRect().top);
+    this.setHeight()
+  };
+
+  setHeight() {
     const windowHeight = window.innerHeight;
     const top = this.elementRef.nativeElement.getBoundingClientRect().top;
     const height = windowHeight - top;
