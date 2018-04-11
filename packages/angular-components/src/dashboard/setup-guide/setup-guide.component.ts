@@ -79,7 +79,7 @@ const plans = [{
   "name": "Starter",
   "icon": require('../../assets/images/pricing/illustration-starter.svg'),
   "cost": "599",
-  "actionsCount": "10,000",
+  "actionsCount": "15,000",
   "cta": "Upgrade",
   "id": "starter:1"
 }, {
