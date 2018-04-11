@@ -8,11 +8,25 @@ import {HtUsersService} from "../ht/ht-users.service";
 import {Color, IsRangeToday} from "ht-utility";
 import {distinctUntilChanged, map} from "rxjs/operators";
 import {merge} from "rxjs/observable/merge";
+import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'ht-users-container',
   templateUrl: './users-container.component.html',
-  styleUrls: ['./users-container.component.less']
+  styleUrls: ['./users-container.component.less'],
+  animations: [
+    trigger('appear', [
+        transition(':enter', [
+          style({transform: 'translateY(400px)', opacity: 0}),
+          animate('0.3s' + ' ease-out')
+        ]),
+        transition(':leave', [
+          style({transform: 'translateY(0px)', opacity: 1}),
+          animate('0.3s' + ' ease-in', style({transform: 'translateY(400px)', opacity: 0}))
+        ])
+      ]
+    ),
+  ]
 })
 export class UsersContainerComponent implements OnInit, OnDestroy {
   @Input() hasPlaceline = true;
