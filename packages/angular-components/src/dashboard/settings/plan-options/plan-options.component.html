@@ -72,7 +72,7 @@
         <div class="has-text-weight-bold">
           $599 per month
         </div>
-        <div>Includes 10,000 actions, unlimited users</div>
+        <div>Includes 15,000 actions, unlimited users</div>
       </div>
       <div class="" *ngIf="account.billing_plan != plans.starter; else currentStarter">
         <button class="button is-medium" (click)="choosePlan(plans.starter)" *ngIf="account.billing_plan == plans.regular; else upgrade">
