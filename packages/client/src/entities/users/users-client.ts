@@ -78,7 +78,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   getLoading$(): Observable<boolean> {
-    return CombineLoadings$(this.list.loading$, this.summary.loading$);
+    return CombineLoadings$(this.list.loading$, this.summary.loading$, this.placeline.loading$);
   }
 
   set statusQueryArray(data: QueryLabel[]) {
