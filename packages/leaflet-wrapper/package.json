@@ -17,6 +17,7 @@
     "prepack": "npm run lib"
   },
   "author": "",
+  "sideEffects": false,
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^8.0.4",

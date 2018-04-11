@@ -14,6 +14,7 @@
     "wbuild": "webpack -w --config webpack.config.bundle.js",
     "prepack": "npm run lib"
   },
+  "sideEffects": false,
   "author": "",
   "license": "ISC",
   "dependencies": {
