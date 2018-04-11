@@ -22,6 +22,12 @@ import {Observable} from "rxjs/Observable";
       ])
       ]
     ),
+    trigger('appear', [
+      transition(':enter', [
+        style({transform: 'translateX(-100px)', height: 0, opacity: 0}),
+        animate('0.3s' + ' ease-out')
+      ])
+    ]),
     trigger('image', [
       // transition(':enter', [
       //   query(':self', [
@@ -59,11 +65,11 @@ import {Observable} from "rxjs/Observable";
     ]),
     trigger('cardStack', [
       transition('* => *', [
-        query('.card:enter', [
+        query('.user:enter', [
           style({transform: 'translateX(-100px)', height: 0, opacity: 0}),
           animate('0.3s' + ' ease-out')
         ], {optional: true}),
-        query('.card:leave', [
+        query('.user:leave', [
           style({transform: 'translateX(0px)', height: '*', opacity: 1}),
           animate('0.3s' + ' ease-in', style({transform: 'translateX(-100px)', height: 0, opacity: 0}))
         ], {optional: true})
