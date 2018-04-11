@@ -4,6 +4,7 @@
   "whitelistedNonPeerDependencies": [
     "bulma",
     "date-fns",
+    "frappe-charts",
     "font-awesome",
     "ht-api",
     "ht-client",
