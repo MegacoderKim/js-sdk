@@ -4,11 +4,25 @@ import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
 import {HtMapService, HtUsersService} from "ht-angular";
 import {ContainerService} from "../container/container.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-users-map',
   templateUrl: './users-map.component.html',
-  styleUrls: ['./users-map.component.scss']
+  styleUrls: ['./users-map.component.scss'],
+  animations: [
+    trigger('filter', [
+      // state('hide', style({
+      //   display: 'none'
+      // })),
+      transition(':enter', [
+        style({transform: 'translateY(-300px)', opacity: 1}),
+        animate('0.3s' + ' ease-out')
+      ]),
+      transition(':leave', [
+        animate('0.3s' + ' ease-in', style({transform: 'translateY(-300px)', opacity: 1}))
+      ])])
+  ]
 })
 export class UsersMapComponent implements OnInit {
   userId: string | null = null;
