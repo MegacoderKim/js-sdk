@@ -17,6 +17,7 @@
   },
   "author": "",
   "license": "ISC",
+  "sideEffects": false,
   "devDependencies": {
     "ht-models": "^0.0.19",
     "ht-utility": "^0.1.7",

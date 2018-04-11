@@ -13,6 +13,7 @@
     "prepack": "npm run lib",
     "test": "istanbul cover _mocha"
   },
+  "sideEffects": false,
   "author": "",
   "license": "ISC",
   "devDependencies": {

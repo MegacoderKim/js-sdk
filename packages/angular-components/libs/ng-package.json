@@ -17,6 +17,7 @@
     "leaflet.heat",
     "leaflet.markercluster",
     "popper.js",
+    "time-aware-polyline",
     "underscore"
   ],
   "lib": {
