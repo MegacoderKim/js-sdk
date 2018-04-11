@@ -167,7 +167,6 @@ export class HtUsersClient extends EntityClient {
     return this.list.getApiQuery$().pipe(
       filter(data => !!data),
       map(query => {
-        console.log(query, "query");
         let ordering = query ? query["ordering"] : null;
         let orderingMod = this.getOrderingMod(ordering);
         return {
