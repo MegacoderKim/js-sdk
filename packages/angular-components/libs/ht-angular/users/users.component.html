@@ -1,17 +1,14 @@
 <div class="card-stack" *ngIf="users" [@cardStack]="users.length">
-  <ht-user-card
-    [@sort]="i"
-    class="flex-row card card-clickable is-marginless"
-    [class.card-selected]="selectedUserDataId == user.id"
-    (mouseenter)="hover(user.id)"
-    (mouseleave)="hover(null)"
-    (click)="selectUser(user)"
-    [user]="user" *ngFor="let user of users; let i = index; trackBy:indexId">
-    <div *ngIf="selectedUserId" class="card-content-mid card-action flex-row align-center">
-      <a class="delete is-medium"></a>
-    </div>
-    <ht-loading-dots
-      *ngIf="user.id === loadingUserDataId && !selectedUserId" class="card-content-mid text-1 card-action flex-row align-center">
-    </ht-loading-dots>
-  </ht-user-card>
+  <ng-container *ngFor="let user of users; let i = index; trackBy:indexId">
+    <ht-user-card
+      [@sort]="i"
+      class="user"
+      [class.card-selected]="selectedUserDataId == user.id"
+      (mouseenter)="hover(user.id)"
+      (mouseleave)="hover(null)"
+      (click)="selectUser(user)"
+      [user]="user">
+    </ht-user-card>
+  </ng-container>
+
 </div>

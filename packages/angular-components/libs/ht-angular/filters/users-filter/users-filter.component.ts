@@ -20,7 +20,16 @@ import {Observable} from "rxjs/Observable";
         animate('0.3s' + ' ease-out')
       ]),
       transition('show => hide', [
-        animate('0.3s' + ' ease-in', style({transform: 'translateX(-100px)', height: 0}))
+        animate('0.3s' + ' ease-in', style({transform: 'translateY(-300px)', height: 0}))
+      ])]),
+    trigger('main', [
+
+      transition('show => hide', [
+        style({transform: 'translateY(00px)'}),
+        animate('0.3s' + ' ease-out')
+      ]),
+      transition('hide => show', [
+        animate('0.3s' + ' ease-in', style({transform: 'translateY(0px)', height: 0}))
       ])])
   ]
 })
@@ -57,12 +66,12 @@ export class UsersFilterComponent implements OnInit {
 
     setTimeout(() => {
       this.query$ = this.usersClient.queryLabel$;
-      this.loading$ = this.usersClient.list.loading$
-        .pipe(
-          skip(1),
-          map(data => !!data),
-          distinctUntilChanged(),
-        );
+      this.loading$ = this.usersClient.getLoading$()
+        // .pipe(
+        //   skip(1),
+        //   map(data => !!data),
+        //   distinctUntilChanged(),
+        // );
       this.cd.detectChanges();
     });
 
@@ -71,7 +80,7 @@ export class UsersFilterComponent implements OnInit {
     this.sortingLabels = this.usersClient.filterClass.sortingQueryLabel;
     this.ordering$ = this.usersClient.ordering$;
     this.showFilter$ = this.usersClient.list.id$.pipe(
-      map((id) => !id ? 'show' : 'hide')
+      map((id) => !id ? 'hide' : 'show')
     );
   }
 
@@ -87,8 +96,14 @@ export class UsersFilterComponent implements OnInit {
     this.onQuery({status: key})
   }
 
-  setOrdering(key) {
-    this.onQuery({ordering: key})
+  closeUser() {
+    this.usersClient.placeline.setId(null);
+    this.usersClient.list.setId(null)
+  }
+
+  setOrdering(key, sign: 0 | 1 = 1) {
+    let ordering = sign ? key : '-'+key;
+    this.onQuery({ordering})
   }
 
 }

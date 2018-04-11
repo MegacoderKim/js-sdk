@@ -13,8 +13,9 @@ import {config} from "../config";
 import {FitToMapService} from "../container/user-filter/fit-to-map.service";
 import {UserTraceService} from "../users/user-trace.service";
 import {IUserPlaceline, IPlaceline} from "ht-models";
-import {HtMapService} from "ht-angular";
+import {HtMapService, HtUsersService} from "ht-angular";
 import {take} from "rxjs/operators";
+import { orCombine } from 'ht-data';
 
 @Component({
   selector: 'app-map-container',
@@ -49,7 +50,8 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
       private broadcast: BroadcastService,
       public fitToMapService: FitToMapService,
       private userTraceService: UserTraceService,
-      private htMapService: HtMapService
+      private htMapService: HtMapService,
+      private htUsersService: HtUsersService
   ) {
     this.mapService.setMapShow();
     this.isMobile = config.isMobile;
@@ -122,7 +124,12 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
     //   }
     // });
 
-    this.showLoading$ = this.store.select(fromRoot.getUiLoadingMap).distinctUntilChanged();
+    this.showLoading$ = orCombine(
+      // this.store.select(fromRoot.getUiLoadingMap).distinctUntilChanged(),
+      this.htUsersService.placeline.loading$,
+      this.htUsersService.heatmap.loading$,
+      this.htUsersService.listAll.loading$,
+    );
 
     this.showHeatmap$ = this.store.select(fromRoot.getUserPlaceList).map(data => data.length).distinctUntilChanged();
 

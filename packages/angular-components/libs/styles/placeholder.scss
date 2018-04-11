@@ -447,6 +447,14 @@ $card-selected-2: #edeff1;
   padding: 10px 10px;
 }
 
+.card.is-clickable {
+  cursor: pointer;
+  &:hover {
+    background-color: #efefef;
+  }
+
+}
+
 .modal {
   z-index: 402;
 }

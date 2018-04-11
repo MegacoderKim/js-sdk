@@ -19,7 +19,8 @@ import {of} from "rxjs/observable/of";
 export interface ICompoundsDataObservableBase {
   trace: (data, map?) => any;
   isValidMapItems?: (data) => boolean;
-  mapInstance: MapInstance
+  mapInstance: MapInstance,
+  toResetMap?: (newData, oldData) => boolean
   // getPosition: (data) => HtPosition;
 }
 
@@ -108,8 +109,14 @@ export function CompoundDataObservableMixin<
       let userData$ = this._initData$();
 
       function isNewItem(newItem, old) {
-        if (!old && newItem) return true;
-        if (newItem && old) return !old && !!newItem;
+        if (this.toResetMap) return this.toResetMap(newItem, old);
+        if (newItem && old) {
+          return newItem.id !== old.id || (newItem.timeline_date !== old.timeline_date)
+        } else if (!old && newItem) {
+          return true
+        } else {
+          return false
+        };
       }
 
       let newPlaceline$ = userData$.pipe(

@@ -1,28 +1,15 @@
 import { IPlaceline, ITimeAwarePoint, Partial } from "ht-models";
-import { HtPosition } from "ht-models";
+import { HtPosition, IDecodedSegment } from "ht-models";
 import {HtMapType} from "ht-map-wrapper";
 import {MapInstance} from "./map-utils/map-instance";
 
 export interface IReplayHead {
   timePercent: number;
   currentTime: string;
-  currentPosition: number[];
+  currentPosition: HtPosition;
   bearing: number;
   currentSegment: IDecodedSegment; //this needs to be fixed
   segmentPercent: number;
-}
-
-export interface IDecodedSegment extends Partial<IPlaceline> {
-  startPercent: number;
-  endPercent: number;
-  timeAwareArray?: ITimeAwarePoint[];
-  start?: number;
-  end?: number;
-  bearing?: number;
-  position?: number[];
-  durationSeg: number;
-  pstart?: string;
-  pend?: string;
 }
 
 export interface IReplayStats {
@@ -31,7 +18,7 @@ export interface IReplayStats {
   duration: number;
   distance: number;
   timeAwarePolylineArray?: ITimeAwarePoint[];
-  segments: IDecodedSegment[];
+  placeline: IDecodedSegment[];
 }
 
 export interface IReplayPlayer {

@@ -9,7 +9,7 @@ import {SegmentsTrace} from "../trace/segment-trace";
 import * as fromUser from "../actions/user";
 import {InnerMapService} from "../map-container/map.service";
 import {Observable} from "rxjs/Observable";
-import {HtMapService} from "ht-angular";
+import {HtMapService, HtUsersService} from "ht-angular";
 import {StopsHeatmapTrace} from "ht-maps";
 import {ReplayMarkerTrace} from "../trace/replay-marker";
 // import * as L from "leaflet";
@@ -31,7 +31,8 @@ export class UserTraceService {
       private router: Router,
       private route: ActivatedRoute,
       private htMapService: HtMapService,
-      private mapService: InnerMapService
+      private mapService: InnerMapService,
+      private htUsersService: HtUsersService
   ) {
     this.replayMarker = new ReplayMarkerTrace(this.htMapService.mapInstance);
     this.usersCluster = this.htMapService.usersCluster;
@@ -75,7 +76,7 @@ export class UserTraceService {
     // });
 
     this.placeline.setCompoundData$(
-      this.store.select(fromRoot.getCurrentUserData),
+      this.htUsersService.placeline.data$,
       {
         roots: ['placeline', 'actions'],
         highlighted$: this.store.select(fromRoot.getUserSelectedSegment).map((data => {
@@ -115,9 +116,10 @@ export class UserTraceService {
     // });
 
     this.usersCluster.setPageData$(
-      this.store.select(fromRoot.getUserMapList)
-        .pluck('validUsers')
-        .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"}))
+      this.htUsersService.listAll.data$,
+      {
+        hide$: this.htUsersService.placeline.id$
+      }
     );
 
     this.usersCluster.onClick = (data) => {
@@ -141,7 +143,8 @@ export class UserTraceService {
       this.usersCluster.setPopup(userId)
     });
 
-    let places$ = this.store.select(fromRoot.getUserPlaceList).switchMap((places) => {
+    let places$ = this.htUsersService.heatmap.dataArray$.switchMap((places) => {
+      places = places ? places.filter(data => !!data.place__location): places;
       if(config.isMobile) {
         return this.store.select(fromRoot.getUiShowMapMobile).filter(show => !!show).take(1).debounceTime(1000).map(() => places)
       } else {
@@ -150,7 +153,7 @@ export class UserTraceService {
     });
 
     this.userPlaces.setData$(places$, {
-      hide$: this.store.select(fromRoot.getUserSelectedUserId)
+      hide$: this.htUsersService.placeline.id$
     });
 
   }

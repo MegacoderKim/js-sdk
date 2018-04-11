@@ -210,6 +210,8 @@ export interface IUserPlaceline extends IUser {
   placeline: IPlaceline[],
   actions: IAction[],
   events: IEvent[],
+  min_recorded_at?: string,
+  max_recorded_at?: string,
   timeline_date: string | null
 }
 

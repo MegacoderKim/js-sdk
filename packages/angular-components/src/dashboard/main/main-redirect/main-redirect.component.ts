@@ -33,7 +33,7 @@ export class MainRedirectComponent implements OnInit {
           accountUser.default_account : GetAccountFromMemberships(memberships, config.token, config.tokenType);
         let defaultView = config.isMobile ? 'map' : 'list';
         if(!account) {
-          this.accountService.logout()
+          // this.accountService.logout()
         }
         if(account.card) {
           this.router.navigate(['/', defaultView, 'actions'], {relativeTo: this.route})

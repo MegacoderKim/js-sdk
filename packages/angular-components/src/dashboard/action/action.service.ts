@@ -8,6 +8,11 @@ import {GetDateRangeQuery} from "ht-utility";
 import {HttpClient} from "@angular/common/http";
 import {HtActionsService} from 'ht-angular';
 import {empty} from "rxjs/observable/empty";
+import * as fromQuery from "../actions/query";
+import * as fromRoot from "../reducers";
+import * as fromUser from "../actions/user";
+import * as fromAction from "../actions/action";
+import {Store} from "@ngrx/store";
 
 @Injectable()
 export class ActionService {
@@ -15,7 +20,9 @@ export class ActionService {
   constructor(
       private http: HttpClient,
       private page: PageService,
-      private client: HtActionsService
+      private client: HtActionsService,
+      private store: Store<fromRoot.State>,
+      private htActionsService: HtActionsService
   ) { }
 
   indexOnDate(query) {
@@ -24,21 +31,34 @@ export class ActionService {
     // return this.http.get(`app/actions/?${string}`)
   }
 
+  updateQuery(query) {
+    this.htActionsService.list.setQuery(query);
+    this.htActionsService.listAll.setQuery(query);
+    this.htActionsService.heatmap.setQuery(query);
+    // this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
+  }
+  clearQueryKey(key) {
+    this.htActionsService.listAll.clearQueryKey(key)
+    // this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction(key))
+  }
+
+
+
   index(query) {
       let string = HtQuerySerialize({page_size: 15, ...query});
     return this.http.get(`app/actions/?${string}`)
   }
 
-  getAll(query = {}, callback?) {
-    const queryWithDate = GetActionDateRangeQuery({page_size: 15, ...query, ordering: null});
-    // let string = HtQuerySerialize(queryWithDate);
-    // let url = `app/actions/?${string}`;
-    const index$ = this.client.api.index(queryWithDate);
-    return this.client.api.allPages(index$).do((data) => {
-      if (callback) callback(data)
-    })
-    // return this.page.all(url, callback)
-  }
+  // getAll(query = {}, callback?) {
+  //   const queryWithDate = GetActionDateRangeQuery({page_size: 15, ...query, ordering: null});
+  //   // let string = HtQuerySerialize(queryWithDate);
+  //   // let url = `app/actions/?${string}`;
+  //   const index$ = this.client.api.index(queryWithDate);
+  //   return this.client.api.allPages(index$).do((data) => {
+  //     if (callback) callback(data)
+  //   })
+  //   // return this.page.all(url, callback)
+  // }
 
   graph(query) {
     let string = HtQuerySerialize(GetActionDateRangeQuery({...query, ordering: null}));

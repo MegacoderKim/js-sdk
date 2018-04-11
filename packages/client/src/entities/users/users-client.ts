@@ -1,4 +1,4 @@
-import { UsersPlacelineClient } from "./users-placeline-client";
+import {UsersPlaceline, UsersPlacelineClient} from "./users-placeline-client";
 import { IDateRange, QueryLabel } from "../../interfaces";
 import {
   AllData,
@@ -8,11 +8,11 @@ import {
   IUserListSummary,
   Partial
 } from "ht-models";
-import { UsersAnalyticsClient } from "./users-analytics-client";
+import {UsersAnalytics, UsersAnalyticsClient} from "./users-analytics-client";
 import { Observable } from "rxjs/Observable";
 import * as _ from "underscore";
 import { EntityClient } from "../../base/entity-client";
-import { UsersAnalyticsListAllClient } from "./users-analytics-markers";
+import {UsersAnalyticsListAll, UsersAnalyticsListAllClient} from "./users-analytics-markers";
 import { htUser } from "ht-data";
 import { DefaultUsersFilter } from "../../filters/users-filter";
 import * as fromRoot from "../../reducers";
@@ -29,24 +29,25 @@ import {DateRange, dateRangeService} from "../../global/date-range";
 import * as fromUsers from "../../reducers/user-reducer";
 import * as fromSegments from "../../reducers/segments-reducer";
 import {CombineLoadings$, DateRangeMap} from "ht-data";
-import { UsersHeatmapClient } from "./users-heatmap-client";
+import {UsersHeatmap, UsersHeatmapClient} from "./users-heatmap-client";
 import {HtApi, HtUsersApi} from "ht-api";
 import {htClientService} from "../../global/client";
 
 export class HtUsersClient extends EntityClient {
-  analytics;
-  placeline;
-  analyticsAll;
+  analytics: UsersAnalytics;
+  placeline: UsersPlaceline;
+  analyticsAll: UsersAnalyticsListAll;
   filterClass: DefaultUsersFilter = new DefaultUsersFilter();
-  list;
+  list: UsersAnalytics;
   summary;
   listAll;
-  heatmap;
+  heatmap: UsersHeatmap;
   _statusQueryArray: QueryLabel[];
   store;
   api: HtUsersApi;
   key$;
   showAll: boolean = false;
+  dateRange: DateRange
   constructor(public options: IUsersClientConfig) {
     super();
     let api = htClientService.getInstance().api.users;
@@ -59,6 +60,7 @@ export class HtUsersClient extends EntityClient {
     store.addReducer("segments", fromSegments.segmentsReducer);
     this.store = store;
     let dateRange = this.options.dateRange;
+    this.dateRange = dateRange;
     let dateParam = 'recorded_at';
     this.analytics = new UsersAnalyticsClient({ dateRange, store, dateParam, api });
     this.placeline = new UsersPlacelineClient({ store, api });
@@ -76,7 +78,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   getLoading$(): Observable<boolean> {
-    return CombineLoadings$(this.list.loading$, this.summary.loading$);
+    return CombineLoadings$(this.list.loading$, this.summary.loading$, this.placeline.loading$);
   }
 
   set statusQueryArray(data: QueryLabel[]) {
@@ -85,7 +87,6 @@ export class HtUsersClient extends EntityClient {
   }
 
   setShowAll(showAll: boolean = true) {
-    this.showAll = showAll;
     this.list.setQuery({ show_all: true });
   }
 
@@ -152,7 +153,7 @@ export class HtUsersClient extends EntityClient {
   }
 
   get queryLabel$() {
-    let query$ = this.list.getBaseQuery$().pipe(filter(data => !!data));
+    let query$ = this.list.getApiQuery$().pipe(filter(data => !!data));
     return query$.pipe(
       map(query => {
         // console.log("cl", query);
@@ -220,7 +221,14 @@ export class HtUsersClient extends EntityClient {
     this.list.query$.pipe(filter(data => !!data)).subscribe(query => {
       this.setListAllFilter(query);
     });
-
+    this.list.query$.pipe(
+      map(query => {
+        return query ? query['show_all'] : query;
+      }),
+      distinctUntilChanged()
+    ).subscribe((showAll) => {
+      this.showAll = showAll;
+    });
     // this.listAll.active$.pipe(filter(data => !!data)).flatMap(() => {
     //   return this.listStatusChart$()
     // })
@@ -232,6 +240,7 @@ export class HtUsersClient extends EntityClient {
     //     return this.getListAllUpdateQuery$(statusOverview, query)
     //   })//todo finish this
 
+    // todo include placeline query with id for action_id, action_unique_id case
     this.placeline.id$
       .pipe(
         scan(

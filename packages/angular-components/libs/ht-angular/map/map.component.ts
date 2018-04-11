@@ -64,14 +64,14 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   resetMap() {
     this.mapInstance.resetBounds(this.setBoundsOptions);
-    this.onMapReset.next(true)
+    this.onMapReset.next(true);
   }
 
   ngAfterViewInit() {
     const el = this.mapElem.nativeElement;
     this.mapInstance.renderMap(el, this.options);
     this.onReady.next(this.mapInstance.map);
-    if (this.resetCta && this.reset) this.resetCta.createEmbeddedView(this.reset)
+    if (this.resetCta && this.reset) this.resetCta.createEmbeddedView(this.reset);
     // window['ht-map'] = this.mapService.map;
     // this.mapService.resetBounds()
   }

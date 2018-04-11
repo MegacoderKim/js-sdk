@@ -10,6 +10,8 @@ export * from "./ht/ht.module"
 export { UsersSummaryContainerModule } from "./users-summary-container/users-summary-container.module"
 export { UsersSummaryContainerComponent } from "./users-summary-container/users-summary-container.component"
 
+export {ContainerModule} from "./container/container.module";
+
 export {UserCardModule} from "./user-card/user-card.module";
 export {UserCardComponent} from "./user-card/user-card.component";
 export {UsersComponent} from "./users/users.component";
@@ -24,6 +26,7 @@ export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
 
 export { UsersSummaryModule } from "./users-summary/users-summary.module"
+export { UsersFilterModule } from "./filters/users-filter/users-filter.module"
 
 export { UsersAnalyticsListModule } from "./users-analytics-list/users-analytics-list.module"
 export { UsersAnalyticsListComponent } from "./users-analytics-list/users-analytics-list.component"
@@ -44,6 +47,7 @@ export { PaginationModule } from "./pagination/pagination.module"
 export { PaginationComponent } from "./pagination/pagination.component"
 export {PlacelineContainerModule} from "./placeline-container/placeline-container.module";
 export {PlacelineContainerComponent} from "./placeline-container/placeline-container.component";
+export {PlacelineDateModule} from "./placeline-date/placeline-date.module";
 export {PlacelineModule} from "./placeline/placeline.module";
 export {PlacelineComponent} from "./placeline/placeline.component";
 export {PlacelineMapContainerModule} from "./placeline-map-container/placeline-map-container.module";
@@ -60,7 +64,9 @@ export {DateRangePickerModule} from "./date-range-picker/date-range-picker.modul
 export {DateRangePickerComponent, IDateRangePickerOptions, IDateStyle} from "./date-range-picker/date-range-picker.component";
 export {DateRangeComponent} from "./filters/date-range/date-range.component";
 
-export {TrackingModule} from "./tracking/tracking.module"
+export {TrackingModule} from "./tracking/tracking.module";
+
+export {ReplayModule} from "./replay/replay.module"
 
 
 

@@ -23,6 +23,10 @@ import {HttpClient} from "@angular/common/http";
 import {config} from "../config";
 import {startOfDay, endOfDay, format} from 'date-fns';
 import {HtUsersService} from "ht-angular";
+import * as fromQuery from "../actions/query";
+import {getMergedParams} from "ht-utility";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class UserService {
@@ -32,24 +36,35 @@ export class UserService {
       private store: Store<fromRoot.State>,
       private userTrace: UserTraceService,
       private page: PageService,
-      private client: HtUsersService
+      private client: HtUsersService,
+      private htUsersService: HtUsersService
   ) { }
 
-  getUserTimeLine(userId: string, query: any = {}): Observable<IUserPlaceline> {
-    // if (!userId) {
-    //   console.log("BAD TIMELINE CALL", userId, query);
-    //   return empty();
-    // }
-    const date = query ? query.date : null;
-    query = this.addTimeRangeForPlaceline(query);
-    let string = HtQuerySerialize(query);
-    const v = config.placelinev2 ? '_v2' : '';
-    return this.client.api.placeline(userId, query).map((data: IUserPlaceline) => {
-      return date ? {...data, timeline_date: date} : data;
-    })
+  // getUserTimeLine(userId: string, query: any = {}): Observable<IUserPlaceline> {
+  //   // if (!userId) {
+  //   //   console.log("BAD TIMELINE CALL", userId, query);
+  //   //   return empty();
+  //   // }
+  //   // const date = query ? query.date : null;
+  //   // query = this.addTimeRangeForPlaceline(query);
+  //   // let string = HtQuerySerialize(query);
+  //   // const v = config.placelinev2 ? '_v2' : '';
+  //   // return this.client.api.placeline(userId, query).map((data: IUserPlaceline) => {
+  //   //   return date ? {...data, timeline_date: date} : data;
+  //   // })
+  //
+  //   // return this.http.get(`app/users/${userId}/placeline${v}/?${string}`).map((res) => res.json());
+  // };
 
-    // return this.http.get(`app/users/${userId}/placeline${v}/?${string}`).map((res) => res.json());
-  };
+  setQuery(query) {
+    this.htUsersService.list.setQuery(query);
+    this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
+  }
+
+  clearQuerykey(key) {
+    this.htUsersService.list.clearQueryKey(key);
+    this.store.dispatch(new fromQuery.ClearUserQueryKeyQueryAction(key))
+  }
 
   private addTimeRangeForPlaceline(query): object {
     if (!query || (query && !query.date)) return query;
@@ -148,5 +163,27 @@ export class UserService {
 
   getValueString(status: string): string {
     return GetUserStatusString(status)
+  };
+
+  getQueryFromRoute(route) {
+    let query = {
+      'status': route['status'],
+      'show_all': !!route['show_all'],
+      'ordering': route['ordering'],
+      'search': route['search']
+    };
+    return getMergedParams(query)
+  };
+
+  getQueryForRoute(): Observable<object> {
+    let query$ = combineLatest(
+      this.htUsersService.placeline.id$,
+      this.htUsersService.list.query$
+    ).pipe(
+      map(([id, query]) => {
+        return getMergedParams({...query, id})
+      })
+    );
+    return  query$
   }
 }

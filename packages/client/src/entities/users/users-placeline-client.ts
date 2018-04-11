@@ -65,9 +65,14 @@ export class UsersPlaceline extends EntityItemClient {
     // ]);
   }
 
+  validQueryData([id, query]): boolean {
+    return !!id || query.action_id || query.action_unique_id
+  }
+
   clearData() {
     this.setData(null);
     this.setQuery({});
+    this.setId(null)
   }
 }
 

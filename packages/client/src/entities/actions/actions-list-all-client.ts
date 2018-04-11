@@ -11,6 +11,10 @@ import {IAction, AllData, Page} from "ht-models";
 import {IPageClientConfig} from "../../interfaces";
 import {DateRange} from "../../global/date-range";
 import {HtActionsApi} from "ht-api";
+import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
+import {getAnalyticsAll, getMarkerDataMap} from "../../reducers/user-reducer";
+import {combineLatest} from "rxjs/observable/combineLatest";
+import {map} from "rxjs/operators";
 
 export class ActionsIndexAll extends EntityAllItemsClient {
   dataBehaviour$: BehaviorSubject<AllData<IAction> | null> = new BehaviorSubject(null);
@@ -22,6 +26,8 @@ export class ActionsIndexAll extends EntityAllItemsClient {
   dataSub: Subscription;
   dataEntities$;
   dateParam: string;
+  filterBehviour$: BehaviorSubject<(action: any) => any | null> = new BehaviorSubject(null);
+  filter$ = this.filterBehviour$.asObservable();
   constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     super();
     this.api$ = (query) => api.allPages(api.index(query));
@@ -29,6 +35,15 @@ export class ActionsIndexAll extends EntityAllItemsClient {
     this.dateParam = dateParam;
     this.query$ = new BehaviorSubject(this.getDefaultQuery());
     this.active$ = this.activeBehaviour$.asObservable();
+    // this.data$ = combineLatest(
+    //   this.dataBehaviour$.asObservable(),
+    //   this.filter$
+    // ).pipe(
+    //   map(([allData, filterFun]) => {
+    //     console.log("alldata", allData);
+    //     return filterFun && allData ? filterFun(allData) : allData
+    //   })
+    // )
   }
 
   setActive(isActive: boolean = true) {
@@ -51,7 +66,20 @@ export class ActionsIndexAll extends EntityAllItemsClient {
   }
 
   setLoading(loading) {
+    this.loadingBehaviour$.next(loading);
+  }
+  clearQueryKey(key: string) {
+    let query = {...this.query$.getValue()};
+    delete query[key];
+    this.query$.next(query);
+  }
+  setDataMap(mapFunc) {
+    this.filterBehviour$.next(mapFunc)
+  }
 
+  clearData() {
+    this.setActive(false);
+    this.setData(null);
   }
 };
 

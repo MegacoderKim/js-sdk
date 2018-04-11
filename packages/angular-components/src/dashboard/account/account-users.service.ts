@@ -194,8 +194,11 @@ export class AccountUsersService {
           this.store.dispatch(new fromAccountUser.SetAccountUserAction(accountUser))
         }
         this.store.dispatch(new fromAccountUser.GetAccountUserAction(config.userId));
-      } else {
+      } else if (!config.token && !config.userId) {
         this.logout()
+      } else {
+        // if (raven) raven
+        this.hydrateAccountUser()
       }
     });
     this.storage.getMemberships().filter(data => !config.isDemo).switchMap((memberships) => {

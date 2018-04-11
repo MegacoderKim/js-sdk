@@ -55,6 +55,11 @@ export class UsersHeatmap {
   addData(data) {
     this.dataState$.next(data)
   }
+
+  clearData() {
+    this.setActive(false);
+    this.setData(null);
+  }
 };
 
 export const UsersHeatmapClient = listAllClientSubMixin(

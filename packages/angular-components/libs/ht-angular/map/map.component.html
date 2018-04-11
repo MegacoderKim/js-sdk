@@ -1,6 +1,6 @@
 <div #map style="width: 100%; height: 100%;"></div>
 <div class="map-label map-label-bottom">
-  <ht-loading-dots *ngIf="loading" class="text-1"></ht-loading-dots>
+  <ht-loading-dots *ngIf="loading || (mapInstance.loading$ | async)" class="is-size-1"></ht-loading-dots>
 </div>
 <div class="map-label map-label-top">
   <div (click)="resetMap()" [hidden]="!showReset">

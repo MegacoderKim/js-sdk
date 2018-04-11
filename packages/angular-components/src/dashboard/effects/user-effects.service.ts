@@ -21,6 +21,7 @@ import {combineLatest} from "rxjs/observable/combineLatest";
 import {empty} from "rxjs/observable/empty";
 import {of} from "rxjs/observable/of";
 import {format} from "date-fns";
+import {HtUsersService} from "ht-angular";
 
 @Injectable()
 export class UserEffectsService {
@@ -31,10 +32,17 @@ export class UserEffectsService {
         private actions$: Actions,
         private broadcast: BroadcastService,
         private userService: UserService,
+        private htUsersService: HtUsersService,
         private store: Store<fromRoot.State>,
         private userTraceService: UserTraceService
     ) {
-
+      this.htUsersService.placeline.data$.subscribe((user) => {
+        if (user) {
+          this.userTraceService.segmentsTrace.updateTimeline(user)
+        } else {
+          this.userTraceService.segmentsTrace.clearTimeline()
+        }
+      })
     }
 
     @Effect({ dispatch: false })
@@ -137,17 +145,17 @@ export class UserEffectsService {
 
     fetchTimeline(query): Observable<IUserPlaceline | null> {
         if(query.toFetch) {
-            let getTimeline$ = (query) => this.userService.getUserTimeLine(query.userId, query.timelineQuery)
-                .catch((err) => {
-                    if(err.status == 404) {
-                        this.broadcast.emit('user-not-found')
-                    } else {
-                        this.updateUserData$.next(query.toFetch);
-                    }
-                    return of(null)
-                });
-
-            return getTimeline$(query)
+          // let getTimeline$ = (query) => this.userService.getUserTimeLine(query.userId, query.timelineQuery)
+          //       .catch((err) => {
+          //           if(err.status == 404) {
+          //               this.broadcast.emit('user-not-found')
+          //           } else {
+          //               this.updateUserData$.next(query.toFetch);
+          //           }
+          //           return of(null)
+          //       });
+          return of(null)
+            // return getTimeline$(query)
 
         } else {
             return of(null)

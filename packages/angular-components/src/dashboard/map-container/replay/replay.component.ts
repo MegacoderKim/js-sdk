@@ -27,9 +27,9 @@ export class ReplayComponent implements OnInit, AfterViewInit {
   player$;
   isPlaying$;
   constructor(
-     private store: Store<fromRoot.State>,
+     // private store: Store<fromRoot.State>,
      // public timelineReplay: TimelineReplay,
-     public userService: UserTraceService,
+     // public userService: UserTraceService,
      private broadcast: BroadcastService,
      private userTraceService: UserTraceService,
      private mapService: InnerMapService,
@@ -52,7 +52,7 @@ export class ReplayComponent implements OnInit, AfterViewInit {
   }
 
   get segments() {
-    return this.userService.segmentsTrace.timelineSegment.segments;
+    return this.userTraceService.segmentsTrace.timelineSegment.segments;
   }
 
   jumpToTimePercent (e, timeline) {

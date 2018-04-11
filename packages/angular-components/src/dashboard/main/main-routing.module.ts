@@ -12,6 +12,7 @@ export const mainRoutes: Routes = [
   // {path: 'onboarding-setup', loadChildren: "../onboarding-setup/onboarding-setup.module#OnboardingSetupModule"},
   { path: 'blocked', loadChildren: "../block/block.module#BlockModule"},
   { path: 'analytics', loadChildren: "../analytics/analytics.module#AnalyticsModule"},
+  { path: 'users', loadChildren: "../users-map/users-map.module#UsersMapModule"},
   {path: '', loadChildren: "../settings/settings.module#SettingsModule"},
   {path: '', loadChildren: "../container/container.module#ContainerModule", canActivate: [ContainerGuardGuard]},
 ];

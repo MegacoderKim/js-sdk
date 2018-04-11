@@ -67,15 +67,15 @@ export class UserFilterComponent extends FilterCommonComponent implements OnInit
   }
 
   dispatchUpdateQuery(query) {
-    this.store.dispatch(new fromQuery.UpdateUserListQueryQueryAction(query))
+    this.userService.setQuery(query)
   }
 
   dispatchClearQuery(key) {
     if(key == 'show_all') {
-      this.showAll(false)
+      this.showAll(false);
       return true
     }
-    this.store.dispatch(new fromQuery.ClearUserQueryKeyQueryAction(key))
+    this.userService.clearQuerykey(key);
   }
 
   dispatchPageQuery(query) {

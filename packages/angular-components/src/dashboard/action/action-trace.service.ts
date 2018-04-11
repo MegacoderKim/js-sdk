@@ -6,7 +6,7 @@ import {IActionHeat, IActionMap} from "ht-models";
 import {ActionsHeatmapTrace} from "ht-maps";
 import {Router} from "@angular/router";
 import {config} from "../config";
-import {HtMapService} from "ht-angular";
+import {HtMapService, HtUsersService, HtActionsService} from "ht-angular";
 import {filter} from "rxjs/operators";
 import * as _ from "underscore";
 
@@ -18,7 +18,9 @@ export class ActionTraceService {
       private store: Store<fromRoot.State>,
       private broadcast: BroadcastService,
       private router: Router,
-      private htMapService: HtMapService
+      private htMapService: HtMapService,
+      private htUsersService: HtUsersService,
+      private htActionsService: HtActionsService
   ) {
     this.initListeners();
     this.initCluster();
@@ -31,17 +33,16 @@ export class ActionTraceService {
       this.selectAction(data.data)
     };
     this.actionsCluster.setPageData$(
-      this.store.select(fromRoot.getActionMapList)
-        .map((data: any[]) => ({results: data, count: data ? data.length : 0, previous: "__"})),
+      this.htActionsService.listAll.data$,
       {
-        hide$: this.store.select(fromRoot.getUserSelectedUserId)
+        hide$: this.htUsersService.placeline.data$
       }
     )
-  }
+  };
 
   private initHeatmap() {
     this.actionsHeat = this.htMapService.actionsHeatmap;
-    this.actionsHeat.setData$(this.store.select(fromRoot.getActionFilteredHeat), {
+    this.actionsHeat.setPageData$(this.htActionsService.heatmap.data$, {
       hide$: this.store.select(fromRoot.getUserSelectedUserId)
     })
   };

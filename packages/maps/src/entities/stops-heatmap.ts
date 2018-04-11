@@ -35,17 +35,22 @@ export class StopsHeatmap {
       }
     }
   };
-  mapInstance: MapInstance
+  mapInstance: MapInstance;
   constructor(mapInstance: MapInstance) {
     this.mapInstance = mapInstance
   }
 
   getPosition(item: IPlaceHeat): HtPosition {
-    return {
-      lat: item.place__location[1],
-      lng: item.place__location[0],
-      weight: item.intensity
+    if (item.place__location) {
+      return {
+        lat: item.place__location[1],
+        lng: item.place__location[0],
+        weight: item.intensity
+      }
+    } else {
+      return null
     }
+
   }
 
 };

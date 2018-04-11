@@ -42,3 +42,5 @@ export * from "./mixins/map-items";
 //compounds entities
 export * from "./compound-entities/placeline-trace";
 export * from "./compound-entities/action-trace";
+
+export * from "./replay/replay-trace";

@@ -2,7 +2,7 @@ import { HtBaseApi } from "./base";
 import { Observable } from "rxjs/Observable";
 import { IUserAnalyticsPage, Page, IActionPlaceline, IUserPlaceline, IUser, IAction, IPlaceline } from "ht-models";
 import {filter, map} from "rxjs/operators";
-import {isToday} from "date-fns";
+import {isToday, startOfToday, endOfToday} from "date-fns";
 import {htPlaceline} from "ht-data";
 
 export class HtUsersApi extends HtBaseApi {
@@ -49,6 +49,7 @@ export class HtUsersApi extends HtBaseApi {
       )
     } else {
       let tail = `v2/${this.base}/${id}/placeline/`;
+      query = this.fillPlacelineQuery(query);
       return this.api$(tail, query, {token}).pipe(
         map((data: IUserPlaceline) => {
           return htPlaceline().procUsersPlaceline(data, query)
@@ -56,6 +57,18 @@ export class HtUsersApi extends HtBaseApi {
       );
     }
 
+  };
+
+  private fillPlacelineQuery(query: object): object {
+    if (!query['min_recorded_at'] || !query['max_recorded_at']) {
+      return  {
+        min_recorded_at: startOfToday().toISOString(),
+        max_recorded_at: endOfToday().toISOString(),
+        ...query,
+      }
+    } else {
+      return query
+    }
   }
 
   private actionQuery(query): object | null {
