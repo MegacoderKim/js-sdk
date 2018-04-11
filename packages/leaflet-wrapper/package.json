@@ -1,6 +1,6 @@
 {
   "name": "ht-leaflet-wrapper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "hypertrack maps",
   "main": "dist/ht-leaflet-wrapper_browser.js",
   "module": "dist/ht-leaflet-wrapper.es5.js",
@@ -25,7 +25,7 @@
     "ht-models": "^0.1.0",
     "ht-utility": "^0.2.0",
     "rollup": "^0.53.1",
-    "time-aware-polyline": "^0.1.0",
+    "time-aware-polyline": "^0.2.0",
     "underscore": "^1.8.x"
   },
   "dependencies": {
