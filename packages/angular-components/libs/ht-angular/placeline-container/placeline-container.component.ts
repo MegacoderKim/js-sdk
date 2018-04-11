@@ -1,23 +1,24 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HtUsersService} from "../ht/ht-users.service";
 import {htPlaceline} from "ht-data";
+import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'ht-placeline-container',
   templateUrl: './placeline-container.component.html',
   styleUrls: ['./placeline-container.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
-  // animations: [
-  //   trigger('slide', [
-  //     transition(':enter', [
-  //       style({transform: 'translateY(100px)'}),
-  //       animate('0.3s' + ' ease-out')
-  //     ]),
-  //     transition(':leave', [
-  //       animate('0.3s' + ' ease-in', style({transform: 'translateY(100px)'}))
-  //     ])
-  //   ])
-  // ]
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('slide', [
+      transition(':enter', [
+        style({transform: 'translateY(100px)'}),
+        animate('0.3s' + ' ease-out')
+      ]),
+      transition(':leave', [
+        animate('0.3s' + ' ease-in', style({transform: 'translateY(100px)'}))
+      ])
+    ])
+  ]
 })
 export class PlacelineContainerComponent implements OnInit, OnDestroy {
   @Input() userId: string | null;
