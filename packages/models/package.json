@@ -1,6 +1,6 @@
 {
   "name": "ht-models",
-  "version": "0.0.19",
+  "version": "0.1.0",
   "description": "hypertrack models",
   "main": "dist/ht-models.js",
   "module": "dist/ht-models.js",

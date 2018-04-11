@@ -1,6 +1,6 @@
 {
   "name": "ht-map-wrapper",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "hypertrack map wrapper interface",
   "main": "dist/ht-map-wrapper.js",
   "module": "dist/ht-map-wrapper.js",
@@ -18,8 +18,8 @@
   "false": {},
   "sideEffects": false,
   "devDependencies": {
-    "ht-models": "^0.0.19",
     "@types/googlemaps": "^3.30.8",
-    "@types/leaflet": "^1.2.6"
+    "@types/leaflet": "^1.2.6",
+    "ht-models": "^0.1.0"
   }
 }

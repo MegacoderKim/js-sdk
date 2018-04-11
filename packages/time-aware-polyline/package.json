@@ -1,6 +1,6 @@
 {
   "name": "time-aware-polyline",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "time aware polyline hypertrack decode encode",
   "main": "dist/time-aware-polyline_browser.js",
   "module": "dist/time-aware-polyline.es5.js",
@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ht-models": "^0.0.19",
+    "ht-models": "^0.1.0",
     "istanbul": "^0.4.5",
     "rollup": "^0.53.3"
   }

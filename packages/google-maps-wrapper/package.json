@@ -1,6 +1,6 @@
 {
   "name": "ht-google-maps-wrapper",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "hypertrack maps",
   "main": "dist/ht-google-maps-wrapper_browser.js",
   "module": "dist/ht-google-maps-wrapper.es5.js",
@@ -21,13 +21,13 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^8.0.4",
-    "ht-models": "^0.0.19",
+    "ht-models": "^0.1.0",
     "rollup": "^0.53.1",
     "underscore": "^1.8.x"
   },
   "dependencies": {
     "@types/googlemaps": "^3.26.14",
-    "ht-map-wrapper": "^0.0.1"
+    "ht-map-wrapper": "^0.1.0"
   },
   "peerDependencies": {
     "ht-models": "^0.0.19"

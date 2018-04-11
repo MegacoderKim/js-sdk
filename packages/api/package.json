@@ -1,6 +1,6 @@
 {
   "name": "ht-api",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "HyperTrack apis",
   "main": "dist/ht-api_browser.js",
   "module": "dist/ht-api.es5.js",
@@ -15,14 +15,14 @@
   "license": "ISC",
   "sideEffects": false,
   "devDependencies": {
-    "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.7",
-    "rollup": "^0.55.5",
-    "ht-data": "^0.1.9"
+    "ht-data": "^0.2.0",
+    "ht-models": "^0.1.0",
+    "ht-utility": "^0.2.0",
+    "rollup": "^0.55.5"
   },
   "peerDependencies": {
+    "ht-data": "^0.1.9",
     "ht-models": "^0.0.19",
-    "ht-utility": "^0.1.7",
-    "ht-data": "^0.1.9"
+    "ht-utility": "^0.1.7"
   }
 }
