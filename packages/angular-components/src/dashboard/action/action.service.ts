@@ -35,11 +35,11 @@ export class ActionService {
     this.htActionsService.list.setQuery(query);
     this.htActionsService.listAll.setQuery(query);
     this.htActionsService.heatmap.setQuery(query);
-    // this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
+    this.store.dispatch(new fromQuery.UpdateActionListQueryQueryAction(query))
   }
   clearQueryKey(key) {
     this.htActionsService.listAll.clearQueryKey(key)
-    // this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction(key))
+    this.store.dispatch(new fromQuery.ClearActionQueryKeyQueryAction(key))
   }
 
 

@@ -36,7 +36,7 @@
     "dist": "rimraf dist && gulp build",
     "package-sanitize": "node ./scripts/package-sanitize.js",
     "lib": "npm run package-sanitize && ng-packagr -p ./libs/ng-package.json && npm run copy:styles",
-    "release": "ng build --prod && NODE_ENV='production' node s3-upload.js",
+    "release:demo": "ng build --prod && NODE_ENV='production' node s3-upload.js",
     "release:track": "scripts/build-track.sh",
     "copy:styles": "copyfiles -u 2 libs/styles/**/* ../ht-angular/src/styles",
     "doc": "typedoc -f --out doc libs/ht-angular",
