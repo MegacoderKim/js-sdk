@@ -64,7 +64,7 @@ export class ActionPageComponent implements OnInit {
   ngOnInit() {
     this.containerService.setDetailView(true);
     if(!this.showPop) this.mapService.showMapSwitch = true;
-    this.selectedPartialSegmentId$ = this.store.select(fromRoot.getUserSelectedPartialSegmentId);
+    this.selectedPartialSegmentId$ = this.htUsersService.placeline.segmentResetId$;
 
     this.users$ = this.htUsersService.placeline.data$;
     // this.users$ = this.store.select(fromRoot.getUserData);
@@ -225,15 +225,11 @@ export class ActionPageComponent implements OnInit {
   }
 
   handleTimelineMouseOver(id) {
-    if (!id) {
-      this.handleTimelineMouseOut();
-    } else {
-      this.store.dispatch(new fromUser.SelectSegmentAction(id));
-    }
+    this.htUsersService.placeline.setSegmentSelectedId(id);
   }
 
-  handleTimelineMouseOut() {
-    this.store.dispatch(new fromUser.ClearSegmentAction());
+  selectSegment(id) {
+    this.htUsersService.placeline.setSegmentResetMapId(id);
   }
 
   selectAction(actionId: string) {

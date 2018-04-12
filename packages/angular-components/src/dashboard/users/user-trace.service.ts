@@ -79,11 +79,9 @@ export class UserTraceService {
       this.htUsersService.placeline.data$,
       {
         roots: ['placeline', 'actions'],
-        highlighted$: this.store.select(fromRoot.getUserSelectedSegment).map((data => {
-          return data ? data.id : null
-        })),
-        filter$: this.store.select(fromRoot.getUserSelectedPartialSegmentId),
-        resetMap$: this.store.select(fromRoot.getUserSelectedPartialSegmentId)
+        highlighted$: this.htUsersService.placeline.segmentSelectedId$,
+        filter$: this.htUsersService.placeline.segmentResetId$,
+        resetMap$: this.htUsersService.placeline.segmentResetId$
       }
     );
 

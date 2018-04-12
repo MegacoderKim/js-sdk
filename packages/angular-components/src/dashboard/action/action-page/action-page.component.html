@@ -20,6 +20,7 @@
             [selectedSegmentId]="selectedPartialSegmentId$ | async"
             (hoveredAction)="selectAction($event)"
             (highlightedSegmentId)="handleTimelineMouseOver($event)"
+            (selectedSegment)="selectSegment($event)"
             [userPlaceline]="user"></ht-placeline>
 
   </div>

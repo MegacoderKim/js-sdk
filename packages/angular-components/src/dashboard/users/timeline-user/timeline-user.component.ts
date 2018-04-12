@@ -81,7 +81,7 @@ export class TimelineUserComponent implements OnInit {
   ngOnInit() {
     this.containerService.setDetailView(true);
     if(!this.showPop) this.mapService.showMapSwitch = true;
-    this.selectedPartialSegmentId$ = this.store.select(fromRoot.getUserSelectedPartialSegmentId);
+    this.selectedPartialSegmentId$ = this.htUserService.placeline.segmentResetId$;
     let sub = this.route.params.subscribe((params) => {
       this.loading.timeline = true;
       this.timeLineDay = params['day'];
@@ -150,11 +150,12 @@ export class TimelineUserComponent implements OnInit {
   }
 
   handleMouseOver(id: string) {
-    if (!id) {
-      this.handleMouseOut();
-    } else {
-      this.store.dispatch(new fromUser.SelectSegmentAction(id));
-    }
+    this.htUserService.placeline.setSegmentSelectedId(id)
+    // if (!id) {
+    //   this.handleMouseOut();
+    // } else {
+    //   this.store.dispatch(new fromUser.SelectSegmentAction(id));
+    // }
 
   }
 
@@ -172,11 +173,12 @@ export class TimelineUserComponent implements OnInit {
   }
 
   selectPartialSegment(partialSegment) {
-    if(partialSegment) {
-      this.store.dispatch(new fromUser.SelectPartialSegmentAction(partialSegment))
-    } else {
-      this.store.dispatch(new fromUser.ClearPartialSegmentAction())
-    }
+    this.htUserService.placeline.setSegmentResetMapId(partialSegment)
+    // if(partialSegment) {
+    //   this.store.dispatch(new fromUser.SelectPartialSegmentAction(partialSegment))
+    // } else {
+    //   this.store.dispatch(new fromUser.ClearPartialSegmentAction())
+    // }
   }
 
   // changeDateTimeLine(date: string, offset: number) {
