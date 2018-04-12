@@ -40,9 +40,9 @@ import {config} from "./config";
 // require('leaflet.vectorgrid');
 // require('vector-tile');
 // require('pbf');
-var $ = require('jquery');
-if(window) window['$'] = $;
-if(global) global['jQuery'] = require('jquery');
+// var $ = require('jquery');
+// if(window) window['$'] = $;
+// if(global) global['jQuery'] = require('jquery');
 // import * as $ from "jquery"
 // import * as jQuery from "jquery"
 // require('bootstrap');

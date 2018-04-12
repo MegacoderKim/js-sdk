@@ -53,8 +53,8 @@
   "dependencies": {
     "bulma": "^0.6.2",
     "date-fns": "^1.29.0",
-    "frappe-charts": "0.0.8",
     "font-awesome": "^4.7.0",
+    "frappe-charts": "0.0.8",
     "ht-api": "^0.1.0",
     "ht-client": "^0.2.0",
     "ht-data": "^0.2.0",
@@ -135,7 +135,6 @@
     "html-loader": "0.5.1",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
-    "jquery": "^3.3.1",
     "js-cookie": "^2.2.0",
     "karma": "~1.7.0",
     "karma-chrome-launcher": "~2.1.1",

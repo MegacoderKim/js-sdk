@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Output, EventEmitter, Input } from '@angular/core';
 import { AmazingTimePickerService } from 'amazing-time-picker';
 import {HtActionsService} from "ht-angular";
 import {Page} from "ht-models";
@@ -14,7 +14,7 @@ export class TtdComponent implements OnInit {
   start: string = '00:00';
   end: string = '23:59';
   isDirtry: boolean = false;
-  rules: any[] = [];
+  rules: any[] = []; 
   @Output() onDelete = new EventEmitter<any>();
   @Output() onAdd = new EventEmitter<any>();
   loading: boolean = false;

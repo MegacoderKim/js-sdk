@@ -254,7 +254,6 @@ export class SignupFormComponent implements OnInit {
         if(this.toRedirect) {
           // location.href = '/app/verify/' + data.id
         } else {
-          // $("#sign-up").modal('hide');
           this.broadcast.emit('signup-form-submit');
           // this.snackbarService.displaySuccessToast('Please check you email for verification link')
         }

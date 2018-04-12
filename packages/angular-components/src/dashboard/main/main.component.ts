@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {AccountUsersService} from "../account/account-users.service";
 import {IAccount, IAccountUser, IMembership} from "ht-models";
 import {Router} from "@angular/router";
-import * as _ from "underscore";
 import {config} from "../config";
 
-declare const $: any;
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
