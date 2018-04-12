@@ -33,6 +33,9 @@ export class PlacelineComponent implements OnInit {
 
   }
 
+  /*
+  On click
+   */
   selectInUserData(segment: IPlaceline, event?) {
     if (segment && (segment.location_time_series || segment.place)) {
       const id = segment.id;
@@ -62,6 +65,9 @@ export class PlacelineComponent implements OnInit {
     this.ref.detectChanges()
   }
 
+  /*
+  On hover
+   */
   highlightActivity(activityId) {
     if (this.selectedSegmentId) return false;
     this.highlightedSegmentId.next(activityId);
