@@ -107,9 +107,9 @@ export function CompoundDataObservableMixin<
 
     _initDataObserver() {
       let userData$ = this._initData$();
-
+      const toResetMap = this.toResetMap;
       function isNewItem(newItem, old) {
-        if (this.toResetMap) return this.toResetMap(newItem, old);
+        if (toResetMap) return toResetMap(newItem, old);
         if (newItem && old) {
           return newItem.id !== old.id || (newItem.timeline_date !== old.timeline_date)
         } else if (!old && newItem) {
