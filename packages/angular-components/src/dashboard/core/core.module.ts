@@ -45,7 +45,7 @@ import { environment } from "../../environments/environment";
     HtModule.forRoot({
       token: config.token,
       mapType: 'leaflet',
-      baseUrl: environment.baseUrl
+      baseUrl: 'app/'
     }),
     StoreModule.forRoot(reducers, {metaReducers}),
     EffectsModule.forRoot([
