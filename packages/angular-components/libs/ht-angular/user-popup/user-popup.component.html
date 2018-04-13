@@ -18,11 +18,11 @@
             <div>{{activityData.body}}</div>
           </div> -->
           <div class="flex-row row-gap-10 wrap">
-            <div class="flex-column" *ngIf="activityData">
+            <div class="flex-column flex" *ngIf="activityData">
               <div class="is-uppercase is-size-7">{{activityData.title}}</div>
               <div>{{activityData.body}}</div>
             </div>
-            <div class="flex-column">
+            <div class="flex-column flex">
               <div class="is-uppercase is-size-7"></div>
               <div class="flex-column">
                 <ht-battery-icon class="is-size-6" [showNumber]="false" [layout]="'column'" [reverse]="true" [battery]="action.health.battery_percentage"
