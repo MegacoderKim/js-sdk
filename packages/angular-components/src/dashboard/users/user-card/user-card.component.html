@@ -6,13 +6,16 @@
         <div class="user-name flex-row">
           {{user.name | nameCase | dot: 'Unknown user'}}
         </div>
-        <div class="user-status-display">
-          <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
-        </div>
-        <div class="flex-row text-muted user-status" *ngIf="user.health">
-          <div>{{user.display.last_updated_text}}<span *ngIf="user.health.battery_percentage">&nbsp; &bull; &nbsp;</span></div>
-          <ht-battery-icon *ngIf="user.health.battery_percentage" [battery]="user.health.battery_percentage"></ht-battery-icon>
-        </div>
+        <ng-container *ngIf="user.is_tracking">
+          <div class="user-status-display">
+            <div [class.text-warning]="user.display.is_warning">{{user.display.status_text}}</div>
+          </div>
+          <div class="flex-row text-muted user-status" *ngIf="user.health">
+            <div>{{user.display.last_updated_text}}<span *ngIf="user.health.battery_percentage">&nbsp; &bull; &nbsp;</span></div>
+            <ht-battery-icon *ngIf="user.health.battery_percentage" [battery]="user.health.battery_percentage"></ht-battery-icon>
+          </div>
+        </ng-container>
+
       </div>
     </div>
   </div>
