@@ -57,6 +57,7 @@ export class UsersHeatmap {
   }
 
   clearData() {
+    this.setLoading(false);
     this.setActive(false);
     this.setData(null);
   }

@@ -103,6 +103,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   clearData() {
     this.setActive(false);
     let nullData = { results: [], next: "no_next", count: 0, previous: "" };
+    this.setLoading(false);
     this.setData(nullData);
   }
 

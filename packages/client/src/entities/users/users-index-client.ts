@@ -100,6 +100,7 @@ export class UsersAnalytics extends EntityListClient {
   clearData() {
     this.setData(null);
     this.setActive(false);
+    this.setLoading(false);
     this.setQuery({});
   }
 

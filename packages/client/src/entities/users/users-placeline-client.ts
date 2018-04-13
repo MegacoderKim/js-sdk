@@ -71,6 +71,7 @@ export class UsersPlaceline extends EntityItemClient {
 
   clearData() {
     this.setData(null);
+    this.setLoading(false);
     this.setQuery({});
     this.setId(null)
   }

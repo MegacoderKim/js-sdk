@@ -50,6 +50,8 @@ export class UsersSummary extends EntityListClient {
   setQuery(query) {}
 
   clearData() {
+    this.setLoading(false);
+    this.setActive(false);
     this.setData(null);
   }
 
