@@ -1,10 +1,11 @@
 import {Component, Input, OnInit, ViewChild, AfterViewInit, AfterContentInit} from '@angular/core';
 import {PopperContent} from "../popper/popper-content";
 import {HtMapService} from "../ht/ht-map.service";
-import {debounceTime, tap, map, switchMap, take, takeUntil, throttle, throttleTime} from "rxjs/operators";
+import {debounceTime, tap, map, switchMap, take, takeUntil, throttle, throttleTime, sampleTime} from "rxjs/operators";
 import {merge} from "rxjs/observable/merge";
 import {animate, style, transition, trigger, state} from '@angular/animations';
 import {empty} from "rxjs/observable/empty";
+import {of} from "rxjs/observable/of";
 
 @Component({
   selector: 'ht-infobox',
@@ -32,7 +33,7 @@ export class InfoboxComponent implements OnInit, AfterViewInit, AfterContentInit
     id: string,
     onUpdate?: any;
   };
-  idle: boolean = true;
+  idle: boolean = false;
   constructor(private mapService: HtMapService) { }
 
   ngOnInit() {
@@ -45,50 +46,57 @@ export class InfoboxComponent implements OnInit, AfterViewInit, AfterContentInit
     const mapmoveEnd$ = mapUtils.onEvent$(thismap, 'moveend');
     const mapmoveStart$ = mapUtils.onEvent$(thismap, 'movestart');
     const moveEnd$ = mapUtils.onEvent$(thismap, 'mouseup mouseout dragend');
-    const move$ = mapUtils.onEvent$(thismap, 'move');
-    const moveStart$ = mapUtils.onEvent$(thismap, 'click mousedown dragstart');
+    const move$ = mapUtils.onEvent$(thismap, 'move zoomlevelschange');
+    const moveStart$ = mapUtils.onEvent$(thismap, 'click tap mousedown dragstart');
     const load$ = mapUtils.onEvent$(thismap, 'load');
     merge(
       moveStart$.pipe(
-        throttleTime(100),
+        throttleTime(15),
         map(() => true)
       ),
       moveEnd$.pipe(
-        debounceTime(100),
+        debounceTime(15),
         map(() => false)
       ),
       load$.pipe(
-        debounceTime(100),
+        // debounceTime(15),
         map(() => false)
       )
     )
-    //   .pipe(
-    //   tap((move) => {
-    //     // console.log("move", move ? "start" : "end");
-    //     if (move) {
-    //       this.idle = false
-    //     } else {
-    //       this.idle = true;
-    //       if (this.popper) this.popper.scheduleUpdate();
-    //     };
-    //   }),
-    //   switchMap((move) => {
-    //     console.log("move", move ? "start" : "end", move);
-    //     if (move) {
-    //       return empty()
-    //     } else {
-    //       return move$
-    //     }
-    //   })
-    // )
-    //   .subscribe((move) => {
-    //     // console.log("move", move ? "start" : "end", move);
-    //     if (move) {
-    //       this.idle = false
-    //     } else {
-    //       this.idle = true;
-    //     }
-    // });
+      .pipe(
+      tap((move) => {
+        // console.log("move", move ? "start" : "end");
+        if (move) {
+          if (this.popper) this.popper.scheduleUpdate();
+          this.idle = true
+        } else {
+          this.idle = false;
+          // if (this.popper) this.popper.scheduleUpdate();
+        };
+      }),
+      switchMap((move) => {
+        // console.log("swt", move);
+        // console.log("move", move ? "start" : "end", move);
+        if (!move) {
+          return empty()
+        } else {
+          if (this.popper) this.popper.scheduleUpdate();
+          return move$.pipe(
+            sampleTime(15)
+          )
+        }
+      })
+    )
+      .subscribe((move) => {
+        if (this.popper) this.popper.scheduleUpdate();
+        // console.log("mope");
+        // console.log("move", move ? "start" : "end", move);
+        // if (move) {
+        //   this.idle = true
+        // } else {
+        //   this.idle = false;
+        // }
+    });
 
     // move$.pipe(
     //   switchMap(() => move$),
@@ -100,14 +108,14 @@ export class InfoboxComponent implements OnInit, AfterViewInit, AfterContentInit
 
 
 
-    mapUtils.onEvent$(thismap, 'move').pipe(
-      throttleTime(15)
-    )
-      .subscribe(() => {
-      this.popper.scheduleUpdate();
-    });
+    // mapUtils.onEvent$(thismap, 'move').pipe(
+    //   throttleTime(15)
+    // )
+    //   .subscribe(() => {
+    //   this.popper.scheduleUpdate();
+    // });
     if (this.item.onUpdate) this.item.onUpdate.subscribe((entity) => {
-      this.popper.scheduleUpdate();
+      // this.popper.scheduleUpdate();
     })
   };
 

@@ -1,4 +1,4 @@
-<popper-content [referenceObject]="item.elem" (click)="onClick($event)">
+<popper-content [class.no-event]="!idle" [referenceObject]="item.elem" (click)="onClick($event)">
   <div [@fade]="idle ? 'show' :  'hide'">
     <ng-content></ng-content>
   </div>
