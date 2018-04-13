@@ -78,7 +78,7 @@ import {PopperService} from "./popper.service";
 export class PopperContent implements OnDestroy {
 
   popperOptions: PopperContentOptions = <PopperContentOptions>{
-    disableAnimation: false,
+    disableAnimation: true,
     disableDefaultStyling: false,
     placement: Placements.AutoTop,
     boundariesElement: '',
