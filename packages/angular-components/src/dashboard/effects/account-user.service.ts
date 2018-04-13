@@ -42,7 +42,7 @@ export class AccountUserEffectsService {
             return action.payload.data;
         }).switchMap((updatedAccount: PartialAccount) => {
             let patch$ = this.accountUserService.getAccount().take(1).switchMap((account: IAccount) => {
-              return this.http.patch(`app/accounts/${account.id}/`, updatedAccount)
+              return this.http.patch(`app/v1/accounts/${account.id}/`, updatedAccount)
             });
             return patch$
         }).map((account: IAccount) => {
@@ -63,7 +63,7 @@ export class AccountUserEffectsService {
                 'Authorization': 'token ' + token,
                 'Content-Type': 'application/json'
               };
-              return this.http.patch(`app/subaccounts/${subAccount.id}/`, newSubAccount, {headers: headers})
+              return this.http.patch(`app/v1/subaccounts/${subAccount.id}/`, newSubAccount, {headers: headers})
             });
             return patch$
         }).switchMap((updatedSubAccount: ISubAccount) => {
@@ -98,7 +98,7 @@ export class AccountUserEffectsService {
         .switchMap((action: fromAccountUser.GetAccountUserAction) => {
             let accountUserId = action.payload;
           let headers = {'Authorization': `token ${config.adminToken}`};
-            return this.http.get<IAccountUser>(`app/account_users/${accountUserId}/`, {headers}).map((user) => {
+            return this.http.get<IAccountUser>(`app/v1/account_users/${accountUserId}/`, {headers}).map((user) => {
                 return new fromAccountUser.SetAccountUserAction(user)
             }).catch(() => of(null)).filter((data) => !!data)
         });

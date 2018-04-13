@@ -26,7 +26,7 @@ export class SocketsService {
   }
 
   join( accountId: string) {
-    this.socket = io(this.getSocketURL(), {path: "/app/socket.io"});
+    this.socket = io(this.getSocketURL(), {path: "/app/v1/socket.io"});
     this.socket.on('connect', () => {
       console.log("Connected", this.socket.id);
     });

@@ -31,7 +31,7 @@ export class VerificationComponent implements OnInit {
 
   private verify(obj: { user_id: any; verification_id: any }) {
     let options = AuthLessReqOptions();
-    this.http.post(`app/verify_email/`, obj, options).subscribe((user: IAccountUser) => {
+    this.http.post(`app/v1/verify_email/`, obj, options).subscribe((user: IAccountUser) => {
       this.accountUserService.setUser(user, () => {
         this.handleRedirect(user);
       });

@@ -104,7 +104,7 @@ export class AccountUsersService {
   }
 
   login(user, options = {}): Observable<IAccountUser> {
-    return this.http.post<IAccountUser>('app/login/', user, options);
+    return this.http.post<IAccountUser>('app/v1/login/', user, options);
   }
 
   isLoggedIn(): Observable<boolean> {
@@ -112,7 +112,7 @@ export class AccountUsersService {
   }
 
   addCard(obj) {
-    return this.http.post('app/cards/', obj)
+    return this.http.post('app/v1/cards/', obj)
   }
 
   setTokenType(type: 'production' | 'test') {
@@ -132,7 +132,7 @@ export class AccountUsersService {
     ).flatMap(([account, accountUser]: [IAccount, IAccountUser]) => {
       let obj: {email: string, role: string, invited_by?: string, group_id?: string} = {email, role, invited_by: accountUser.email};
       if(groupId) obj = {...obj, group_id: groupId};
-      return this.http.post<IMember>(`app/accounts/${account.id}/add_account_user/`, obj)
+      return this.http.post<IMember>(`app/v1/accounts/${account.id}/add_account_user/`, obj)
     })
   }
 
@@ -141,7 +141,7 @@ export class AccountUsersService {
       'Authorization': 'token ' + config.adminToken,
       'Content-Type': 'application/json'
     };
-    return this.http.post(`app/account_users/${id}/change_password/`, JSON.stringify(accountUser), {headers})
+    return this.http.post(`app/v1/account_users/${id}/change_password/`, JSON.stringify(accountUser), {headers})
   }
 
   private setCookiesAccountUser(accountUser: IAccountUser, accountId?) {
@@ -217,14 +217,14 @@ export class AccountUsersService {
 
   hydrateAccountUser() {
     let options = this.getAdminReqOpt();
-    this.http.get<IAccountUser>(`app/account_users/${config.userId}/`, options)
+    this.http.get<IAccountUser>(`app/v1/account_users/${config.userId}/`, options)
       .subscribe((accountUser) => {
       this.store.dispatch(new fromAccountUser.SetAccountUserAction(accountUser))
     })
   }
 
   getAccountDataFromServer(accountId) {
-    let uri = `app/accounts/${accountId}/`;
+    let uri = `app/v1/accounts/${accountId}/`;
     let options = this.getAdminReqOpt();
     return this.http.get(uri, options)
   }
@@ -266,7 +266,7 @@ export class AccountUsersService {
   patchAccountUser(currentAccountUser: Partial<IAccountUser>) {
     let options = this.getAdminReqOpt();
     let patch$ = this.getUser().take(1).switchMap((accountUser: IAccountUser) => {
-      return this.http.patch<IAccountUser>(`app/account_users/${accountUser.id}/`, currentAccountUser, options)
+      return this.http.patch<IAccountUser>(`app/v1/account_users/${accountUser.id}/`, currentAccountUser, options)
     });
     return patch$;
   }
@@ -293,12 +293,12 @@ export class AccountUsersService {
   }
 
   billingSummary() {
-    return this.http.get(`app/billing/summary/`).map(res => _.values(res))
+    return this.http.get(`app/v1/billing/summary/`).map(res => _.values(res))
   }
 
   resendInvite(email: string) {
     return this.getAccount().take(1).switchMap((account: IAccount) => {
-      return this.http.post(`app/accounts/${account.id}/resend_invite/`, {email})
+      return this.http.post(`app/v1/accounts/${account.id}/resend_invite/`, {email})
     })
   }
 
@@ -312,41 +312,41 @@ export class AccountUsersService {
   }
 
   getEventChoices() {
-    return this.http.get(`app/events/choices/`)
+    return this.http.get(`app/v1/events/choices/`)
   }
 
   addWebhook(obj: { type: string; url: any; has_allowed_all: boolean; allowed_events: string[] }) {
-      return this.http.post<IWebhook>(`app/webhooks/`, obj)
+      return this.http.post<IWebhook>(`app/v1/webhooks/`, obj)
   }
 
   getWebhooks() {
-      return this.http.get<Page<IWebhook>>(`app/webhooks/?page_size=10000`)
+      return this.http.get<Page<IWebhook>>(`app/v1/webhooks/?page_size=10000`)
   }
 
   deleteWebhook(webhookId: string) {
-      return this.http.delete(`app/webhooks/${webhookId}/`)
+      return this.http.delete(`app/v1/webhooks/${webhookId}/`)
   }
 
   getGroups(query: object) {
     let string = HtQuerySerialize(query);
-    return this.http.get<Page<any>>(`app/groups/?${string}`)
+    return this.http.get<Page<any>>(`app/v1/groups/?${string}`)
   }
 
   removeAccountUser(email: string) {
     return this.getAccount().take(1).switchMap((account: IAccount) => {
-      return this.http.post(`app/accounts/${account.id}/remove_account_user/`, {email})
+      return this.http.post(`app/v1/accounts/${account.id}/remove_account_user/`, {email})
     })
   }
 
   getInvoices(query = {}) {
     return this.getAccount().take(1).switchMap((account: IAccount) => {
       let string = HtQuerySerialize(query);
-      return this.http.get<Page<IInvoices>>(`app/invoices/?ordering=-end_date&${string}`)
+      return this.http.get<Page<IInvoices>>(`app/v1/invoices/?ordering=-end_date&${string}`)
     })
   }
 
   makePayment(invoiceId: string) {
-    return this.http.post(`app/invoices/${invoiceId}/make_payment/`, {})
+    return this.http.post(`app/v1/invoices/${invoiceId}/make_payment/`, {})
   }
 
   downloadInvoice(invoiceId: string) {
@@ -355,11 +355,11 @@ export class AccountUsersService {
   }
 
   testWebhook(webhookId: string, eventType: string) {
-    return this.http.post(`app/webhooks/${webhookId}/fire_sample_webhook/?event_type=${eventType}`, {})
+    return this.http.post(`app/v1/webhooks/${webhookId}/fire_sample_webhook/?event_type=${eventType}`, {})
   }
 
   rollKey(subAccountId: string, scope: "publishable" | "secret", username: string) {
-    return this.http.post(`app/subaccounts/${subAccountId}/initiate_key_roll/`, {scope, username})
+    return this.http.post(`app/v1/subaccounts/${subAccountId}/initiate_key_roll/`, {scope, username})
   }
 
   confirmRollKey(token_id: string) {
@@ -370,13 +370,13 @@ export class AccountUsersService {
       return subAccount.id
     }).take(1)
       .switchMap((subAccountId: string) => {
-        return this.http.post(`app/subaccounts/${subAccountId}/confirm_key_roll/`, {token_id})
+        return this.http.post(`app/v1/subaccounts/${subAccountId}/confirm_key_roll/`, {token_id})
       })
   };
 
   setBillingPlan(plan) {
     this.getAccount().take(1).pluck('id').subscribe((id: string) => {
-      this.http.post(`app/accounts/${id}/change_plan/`, {plan}).subscribe((account: IAccount) => {
+      this.http.post(`app/v1/accounts/${id}/change_plan/`, {plan}).subscribe((account: IAccount) => {
         this.store.dispatch(new fromAccountUser.PatchAccountAction(account))
       })
     })

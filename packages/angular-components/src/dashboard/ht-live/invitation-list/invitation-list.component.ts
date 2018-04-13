@@ -39,7 +39,7 @@ export class InvitationListComponent implements OnInit {
   }
 
   private fetchUserInvites() {
-    return this.http.get<Page<IUserInvites>>('app/user_invites/')
+    return this.http.get<Page<IUserInvites>>('app/v1/user_invites/')
   }
 
   setOpenInvitation(open: boolean) {
@@ -49,7 +49,7 @@ export class InvitationListComponent implements OnInit {
 
   removeInvite(id, i: number) {
     this.removeLoadingIndex = i;
-    this.http.delete(`app/user_invites/${id}/`).subscribe(data => {
+    this.http.delete(`app/v1/user_invites/${id}/`).subscribe(data => {
       console.log(data);
       this.getInvites();
       this.snackbarService.displaySuccessToast('Invitaion was deleted')

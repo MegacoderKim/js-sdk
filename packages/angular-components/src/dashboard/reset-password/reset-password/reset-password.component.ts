@@ -79,7 +79,7 @@ export class ResetPasswordComponent implements OnInit {
       let params = this.route.snapshot.params;
       let new_password = this.resetPassword.value.matchingPassword.password;
       let options = AuthLessReqOptions();
-      this.http.post(`app/auth/password/reset/confirm/`, {...params, new_password}, options).subscribe(data => {
+      this.http.post(`app/v1/auth/password/reset/confirm/`, {...params, new_password}, options).subscribe(data => {
         this.loading = false;
         this.router.navigate(['/login', {reset: true}])
       }, err => {

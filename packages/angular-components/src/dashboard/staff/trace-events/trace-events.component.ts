@@ -103,7 +103,7 @@ export class TraceEventsComponent {
       let string = HtQuerySerialize(query);
       // console.log(this.isoStart, "iso view child");
       // return Observable.of([])
-      return this.page.all(`app/sdk_data/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
+      return this.page.all(`app/v1/sdk_data/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
     }).map((events: ISdkEvent[]) => {
       return this.eventTraceService.processEvents(events)
     })
@@ -232,14 +232,14 @@ export class TraceEventsComponent {
 
   private fetchActionPolyline(query: any) {
     let id = query['action_id'];
-    this.http.get(`app/actions/${id}/polyline/`, this.adminReqOpt()).subscribe((polylines: IDebugPolylines) => {
+    this.http.get(`app/v1/actions/${id}/polyline/`, this.adminReqOpt()).subscribe((polylines: IDebugPolylines) => {
       this.setDebugPolyline(polylines)
     })
   }
 
   private fetchTripPolyline(query: any) {
     let id = query['activity_id'] || query['trip_id'];
-    this.http.get(`app/trips/${id}/polyline/`).subscribe((polylines: IDebugPolylines) => {
+    this.http.get(`app/v1/trips/${id}/polyline/`).subscribe((polylines: IDebugPolylines) => {
       this.setDebugPolyline(polylines)
     })
   }

@@ -35,7 +35,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.error = null;
       let obj = {email: this.resetPassword.value.email};
       let options = AuthLessReqOptions();
-      this.http.post("app/auth/password/reset/", obj, options)
+      this.http.post("app/v1/auth/password/reset/", obj, options)
           .subscribe(response => {
             this.message = "Reset password mail has been sent";
             // console.log(response);

@@ -19,7 +19,7 @@ export class SdkControlComponent implements OnInit {
   constructor(private http: HttpClient, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.fetch.switchMap(() => this.http.get<ISdkControls>(`app/sdk_config/config/`))
+    this.fetch.switchMap(() => this.http.get<ISdkControls>(`app/v1/sdk_config/config/`))
       .do((sdkControl) => {
         this.default = this.checkMode(sdkControl)
       })
@@ -52,7 +52,7 @@ export class SdkControlComponent implements OnInit {
   };
 
   post(obj) {
-    this.http.patch<ISdkControls>(`app/sdk_config/config/`, obj).subscribe((data) => {
+    this.http.patch<ISdkControls>(`app/v1/sdk_config/config/`, obj).subscribe((data) => {
       this.sdkRules$.next(obj);
     })
   }
