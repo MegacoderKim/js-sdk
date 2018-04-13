@@ -13,6 +13,6 @@ export class EventService {
 
     index(query: any): Observable<IEventPage> {
       let string   = HtQuerySerialize(query);
-      return this.http.get<IEventPage>(`app/events?${string}`)
+      return this.http.get<IEventPage>(`app/v1/events?${string}`)
     }
 }

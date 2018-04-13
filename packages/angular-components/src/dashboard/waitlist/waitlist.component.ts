@@ -71,7 +71,7 @@ export class WaitlistComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     this.error = null;
-    let url = 'app/waitlist/';
+    let url = 'app/v1/waitlist/';
     var user = {
       email: this.signupForm.value.email,
       product_url: this.signupForm.value.productURL,

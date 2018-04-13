@@ -196,7 +196,7 @@ export class SignupFormComponent implements OnInit {
       this.loading = false;
       this.error = true;
     } else if(this.signupForm.valid) {
-      let url = 'app/signup/';
+      let url = 'app/v1/signup/';
       let timezone =  jstz.determine();
       let user: {
         email: string,
@@ -224,7 +224,7 @@ export class SignupFormComponent implements OnInit {
       };
       user = this.toRedirect ? user : {...user, redirect_url: location.href};
       if ( this.invitedAccountId ) {
-        url = "app/accounts/accept_invite/";
+        url = "app/v1/accounts/accept_invite/";
         user = {...user, account_id: this.invitedAccountId, email: this.route.snapshot.params['email']}
       }
       if (this.testAccountId) {

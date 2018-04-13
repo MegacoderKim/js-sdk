@@ -148,7 +148,7 @@ export class TeamComponent implements OnInit {
   }
 
   private fetchGroup() {
-    this.http.get<Page<any>>(`app/groups/?page_size=100`).subscribe((groupPage) => {
+    this.http.get<Page<any>>(`app/v1/groups/?page_size=100`).subscribe((groupPage) => {
       this.groups = groupPage.results;
     })
   }

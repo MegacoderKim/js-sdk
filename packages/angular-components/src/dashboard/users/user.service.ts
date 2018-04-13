@@ -102,12 +102,12 @@ export class UserService {
   }
 
   device(id) {
-    return this.http.get(`app/users/${id}/device/`)
+    return this.http.get(`app/v1/users/${id}/device/`)
   }
 
   overview(query: object = {}) {
     let string = HtQuerySerialize(query);
-    return this.http.get(`app/users/overview/?${string}`)
+    return this.http.get(`app/v1/users/overview/?${string}`)
   }
 
   index(query = {}): Observable<Page<IUser>> {
@@ -128,7 +128,7 @@ export class UserService {
 
   mapList(query = {}, callback?: (userMapPage: IUserMapPage) => any): Observable<IUserMap[]> {
     let string = HtQuerySerialize({page_size: 50, ...query});
-    let url = `app/users/map_list/?${string}`;
+    let url = `app/v1/users/map_list/?${string}`;
     return this.page.all(url, callback)
   }
 

@@ -9,7 +9,7 @@ export class AgreementService {
   ) { }
 
   sendSAASAgreementAcceptance(accountId, data) {
-    let url = `app/accounts/${accountId}/accept_agreement/`;
+    let url = `app/v1/accounts/${accountId}/accept_agreement/`;
     return this.http.post(url, data, {observe: 'response'});
   }
 

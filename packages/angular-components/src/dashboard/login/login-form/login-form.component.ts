@@ -67,7 +67,7 @@ export class LoginFormComponent implements OnInit {
     this.message = null;
     if(this.invitedAccountId) {
       let obj = {email: this.user.username, account_id: this.invitedAccountId};
-      this.http.post("app/accounts/accept_invite/", obj)
+      this.http.post("app/v1/accounts/accept_invite/", obj)
         .subscribe(response => {
           // console.log(response);
           this.login(this.invitedAccountId);

@@ -46,7 +46,7 @@ export class ActionService {
 
   index(query) {
       let string = HtQuerySerialize({page_size: 15, ...query});
-    return this.http.get(`app/actions/?${string}`)
+    return this.http.get(`app/v1/actions/?${string}`)
   }
 
   // getAll(query = {}, callback?) {
@@ -62,7 +62,7 @@ export class ActionService {
 
   graph(query) {
     let string = HtQuerySerialize(GetActionDateRangeQuery({...query, ordering: null}));
-    return this.http.get(`app/actions/graph/?${string}`)
+    return this.http.get(`app/v1/actions/graph/?${string}`)
   }
 
   overview(query = {}) {
@@ -78,7 +78,7 @@ export class ActionService {
 
   mapList(query = {}, callback?: (userMapPage: IActionMapPage) => any): Observable<IActionMap[]> {
     let string = HtQuerySerialize({page_size: 50, ...query});
-    let url = `app/actions/map_list/?${string}`;
+    let url = `app/v1/actions/map_list/?${string}`;
     return this.page.all(url, callback)
   }
 
@@ -89,12 +89,12 @@ export class ActionService {
       return empty();
     }
     let string = HtQuerySerialize({...query, action_id: action.id});
-    return this.http.get<IUserPlaceline>(`app/users/${userId}/timeline/?${string}`)
+    return this.http.get<IUserPlaceline>(`app/v1/users/${userId}/timeline/?${string}`)
   }
 
   getHeatmap(query, callback?) {
     let string = HtQuerySerialize(GetDateRangeQuery(query, 'completed_at'));
-    return this.page.all(`app/actions/heatmap/?page_size=200&${string}`, callback)
+    return this.page.all(`app/v1/actions/heatmap/?page_size=200&${string}`, callback)
   }
 
   summary(query) {
