@@ -83,7 +83,7 @@ export const itemsFactory = ({
   styleFunct,
   styleObj
 }: ItemClassFactoryConfig) => {
-  var base = itemsBaseFactory({ renderConfig, typeConfig, styleFunct: styleFunct });
+  var base = itemsBaseFactory({ renderConfig, typeConfig, styleFunct: styleFunct, styleObj });
 
   function getStyleFunct(styleObj: StyleObj): StyleFunct {
     return {
