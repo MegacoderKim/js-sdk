@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IAction, IPlace} from "ht-models";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'ht-destination-popup',
@@ -9,6 +10,7 @@ import {IAction, IPlace} from "ht-models";
 })
 export class DestinationPopupComponent implements OnInit {
   @Input() action: IAction;
+  @Input() idle$: Observable<boolean>;
   isOpended: boolean = false;
   constructor() { }
 
