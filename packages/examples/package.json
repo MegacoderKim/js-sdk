@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "font-awesome": "^4.7.0",
     "date-fns": "^1.29.0",
+    "font-awesome": "^4.7.0",
     "ht-api": "^0.1.0",
     "ht-client": "^0.2.0",
     "ht-data": "^0.2.0",
@@ -21,10 +21,9 @@
     "leaflet": "^1.2.0",
     "leaflet.heat": "^0.2.0",
     "leaflet.markercluster": "^1.2.0",
-    "rxjs": "^5.5.5",
+    "rxjs": "^5.5.9",
     "time-aware-polyline": "^0.2.0",
     "underscore": "^1.8.3",
-    "rxjs": "^5.5.9",
     "whatwg-fetch": "^2.0.3"
   }
 }
