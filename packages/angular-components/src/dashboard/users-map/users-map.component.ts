@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
 import {HtMapService, HtUsersService} from "ht-angular";
 import {ContainerService} from "../container/container.service";
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import * as fromRoot from "../reducers";
-import {Store} from "@ngrx/store";
-import {Subscription} from "rxjs/Subscription";
-import * as fromUser from "../actions/user";
+// import * as fromRoot from "../reducers";
+// import {Store} from "@ngrx/store";
+// import {Subscription} from "rxjs/Subscription";
+// import * as fromUser from "../actions/user";
+import {DebuggerService} from "../core/debugger.service";
 
 @Component({
   selector: 'app-users-map',
@@ -39,12 +40,21 @@ export class UsersMapComponent implements OnInit, OnDestroy {
     public userTraceService: UserTraceService,
     public htUsersService: HtUsersService,
     private mapService: HtMapService,
-    private containerService: ContainerService
+    private containerService: ContainerService,
+    private debuggerService: DebuggerService
   ) { }
+
+  @HostListener('dblclick', ['$event'])
+  openDebugger(e) {
+    console.log(e,  "debug");
+    this.debuggerService.open()
+  }
+
   selectUser() {
 
   }
   ngOnInit() {
+    this.debuggerService.open();
     this.containerService.setEntity('users');
     this.containerService.setView('list');
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()

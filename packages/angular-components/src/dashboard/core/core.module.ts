@@ -37,6 +37,7 @@ import {ModalService} from "./modal.service";
 import {config} from "../config";
 import {HtModule} from "ht-angular";
 import { environment } from "../../environments/environment";
+import { DebuggerService } from './debugger.service';
 
 @NgModule({
   imports: [
@@ -81,7 +82,8 @@ import { environment } from "../../environments/environment";
     QuickstartService,
     LoggerService,
     ModalService,
-    MembershipsService
+    MembershipsService,
+    DebuggerService
   ],
   declarations: []
 })
