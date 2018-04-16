@@ -1,9 +1,10 @@
-import {filter, take} from "rxjs/operators";
+import {debounceTime, filter, map, take, throttleTime} from "rxjs/operators";
 import {HtBounds, HtMap, HtMapType, MapUtils} from "ht-map-wrapper";
 import {ReplaySubject} from "rxjs/ReplaySubject";
 import {mapTypeService} from "../global/map-type";
 import {fromEventPattern} from "rxjs/observable/fromEventPattern";
 import {Observable} from "rxjs/Observable";
+import {merge} from "rxjs/observable/merge";
 
 export class MapInstance {
   // mapUtils: MapUtils = null;
@@ -54,6 +55,32 @@ export class MapInstance {
     setTimeout(() => {
       this.mapUtils.invalidateSize(this.map);
     }, 100)
+  };
+
+  getInteraction$(): Observable<boolean> {
+    // todo move this to mapUtils for each mapType
+    const mapUtils = this.mapUtils;
+    const thismap = this.map;
+    const mapmoveEnd$ = mapUtils.onEvent$(thismap, 'moveend');
+    const mapmoveStart$ = mapUtils.onEvent$(thismap, 'movestart');
+    const moveEnd$ = mapUtils.onEvent$(thismap, 'mouseup mouseout dragend');
+    const move$ = mapUtils.onEvent$(thismap, 'move zoomlevelschange');
+    const moveStart$ = mapUtils.onEvent$(thismap, 'click tap mousedown dragstart');
+    const load$ = mapUtils.onEvent$(thismap, 'load');
+    return merge(
+      moveStart$.pipe(
+        throttleTime(15),
+        map(() => true)
+      ),
+      moveEnd$.pipe(
+        debounceTime(15),
+        map(() => false)
+      ),
+      load$.pipe(
+        // debounceTime(15),
+        map(() => false)
+      )
+    )
   }
   // getMap() {
   //   this.map$.take(1).subscribe(map => {

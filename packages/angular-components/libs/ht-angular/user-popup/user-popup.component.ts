@@ -3,8 +3,10 @@ import {AsyncPipe} from '@angular/common';
 import { IAction } from "ht-models";
 import {HMString} from "ht-utility";
 import {Observable} from "rxjs/Observable";
-import {map} from "rxjs/operators";
+import {map, share} from "rxjs/operators";
 import {animate, style, transition, trigger, state} from '@angular/animations';
+import {TrackingMapService} from "../tracking-map/tracking-map.service";
+import {of} from "rxjs/observable/of";
 
 @Component({
   selector: 'ht-user-popup',
@@ -28,6 +30,8 @@ import {animate, style, transition, trigger, state} from '@angular/animations';
 export class UserPopupComponent implements OnInit, OnChanges {
   @Input() action: IAction;
   @Input() idle$: Observable<boolean>;
+  interact$: Observable<boolean> = of(false);
+  showState$: Observable<string> = of('show');
   // @HostBinding('@fade') get slideIn() {
   //   return new AsyncPipe(this.ref).transform(this.idle$.pipe(map(data => data ? 'hide' : 'show')))
   // }
@@ -41,10 +45,19 @@ export class UserPopupComponent implements OnInit, OnChanges {
     body: "",
     showSubtext: false
   };
-  constructor(public ref: ChangeDetectorRef) { }
+  constructor(
+    public ref: ChangeDetectorRef,
+    private trackingMapService: TrackingMapService
+  ) { }
 
   ngOnInit() {
-
+    this.interact$ = this.trackingMapService.mapService.mapInstance.getInteraction$()
+    this.showState$ = this.interact$.pipe(
+      share(),
+      map((interact) => {
+        return interact ? 'show' : 'hide'
+      })
+    )
   }
 
   ngOnChanges() {
