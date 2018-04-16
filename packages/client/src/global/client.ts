@@ -2,7 +2,8 @@ import {HtApi, HtRequest} from "ht-api";
 
 export class HtClient {
   api: HtApi;
-  constructor(request: HtRequest, token: string = "") {
+  constructor({request, token}: HtClientOptions = {}) {
+    request = request || new HtRequest(token);
     this.api = new HtApi(request, token);
     this.token = token;
   }
@@ -14,25 +15,30 @@ export class HtClient {
   set tempToken(token) {
     this.api.request.tokenServie.tempToken = token;
   }
-}
-
-export const initClient = (request: HtRequest, token?: string) => {
-  return htClientService.setInstance(request, token);
 };
 
-export const htClientFactory = (request: HtRequest, token?: string) => {
-  return new HtClient(request, token);
+export interface HtClientOptions {
+  request?: HtRequest,
+  token?: string
+}
+
+export const initClient = (options: HtClientOptions = {}) => {
+  return htClientService.setInstance(options);
+};
+
+export const htClientFactory = (options: HtClientOptions = {}) => {
+  return new HtClient(options);
 };
 
 export const htClientService = (() => {
   var instance: HtClient;
 
   return {
-    setInstance(request: HtRequest, token = "") {
+    setInstance(options: HtClientOptions = {}) {
       if (instance) {
         console.error("Client already initialized")
       };
-      instance = htClientFactory(request, token);
+      instance = htClientFactory(options);
       return instance;
     },
     getInstance() {

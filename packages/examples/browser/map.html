@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>HyperTrack map</title>
+    <script src="https://unpkg.com/rxjs@5.5.5/bundles/Rx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.29.0/date_fns.min.js"></script>
+    <script src="../../../node_modules/whatwg-fetch/fetch.js"></script>
+    <script src="../../../node_modules/underscore/underscore-min.js"></script>
+    <script src="../../../node_modules/ht-utility/dist/ht-utility_browser.js"></script>
+    <script src="../../../node_modules/ht-data/dist/ht-data_browser.js"></script>
+    <script src="../../../node_modules/time-aware-polyline/dist/time-aware-polyline_browser.js"></script>
+    <script src="../../../node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="../../../node_modules/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="../../../node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script src="../../../node_modules/ht-leaflet-wrapper/dist/ht-leaflet-wrapper_browser.js"></script>
+    <script src="../../../node_modules/ht-maps/dist/ht-maps_browser.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <link rel="stylesheet" href="../../../node_modules/ht-maps/dist/styles.css">
+    <link rel="stylesheet" href="../../../node_modules/leaflet/dist/leaflet.css">
+
+    <style>
+        #map {
+            height: 400px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(0.3, 0.3);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: scale(3,3);
+                opacity: 0;
+            }
+        }
+        .pulse {
+            background: #52616A;
+             border-radius: 50%;
+             height: 50px;
+             width: 50px;
+            -webkit-animation: pulse 2s ease-out;
+            animation: pulse 2s ease-out;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+             position: absolute;
+             top: 0px;
+             z-index: -1;
+             opacity: 1;
+             pointer-events: none;
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../../node_modules/font-awesome/css/font-awesome.css">
+
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    var mapClass = new htMaps.HtMapClass('leaflet');
+
+    mapClass.initMap(document.getElementById('map'));
+    const mapUtils = mapClass.mapInstance.mapUtils;
+    var map = mapClass.map;
+    setTimeout(function() {
+        r = mapUtils.getDivMarker();
+        mapUtils.setDivContent(r, '<div class="pulse"></div>');
+        // r.setContent('<div class="pulse"></div>');
+        r.setLatLng(map.getCenter());
+        r.addTo(map)
+    }, 1000)
+
+</script>
+
+</body>

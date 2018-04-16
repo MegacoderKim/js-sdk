@@ -23,7 +23,7 @@ export function requestServiceFactory(http, token, baseUrl) {
 }
 
 export function clientServiceFactory(request: HtRequest, token) {
-  const client = htClientService.setInstance(request, token);
+  const client = htClientService.setInstance({request, token});
   return client
 }
 
