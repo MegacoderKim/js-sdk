@@ -4,7 +4,7 @@ import {Store} from "@ngrx/store";
 import * as fromRoot from "../reducers";
 import {HtUsersService} from "ht-angular";
 import {combineLatest} from "rxjs/observable/combineLatest";
-import {map} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 import {config} from "../config";
 
 @Injectable()
@@ -19,17 +19,20 @@ export class DebuggerService {
   }
 
   open() {
+    if (!config.isStaff) return false;
     combineLatest(
       this.htUsersClient.placeline.setSegmentResetMapId,
       this.htUsersClient.placeline.setSegmentSelectedId,
       this.htUsersClient.placeline.id$,
       this.htUsersClient.placeline.query$
     ).pipe(
-      map((a) =>{
-        return a
-      })
-    ).subscribe((query) => {
-      console.log(query);
+      take(1),
+    ).subscribe((a) => {
+      // let [resetSegmentId, selectedSegmentId, placelineId, placelineQuery] = a
+      // console.log(resetSegmentId, selectedSegmentId, placelineId, placelineQuery)
+      // const query = this.getDebugUrlQuery(resetSegmentId, selectedSegmentId, placelineId, placelineQuery)
+
+      console.log(a);
       // if(!config.isStaff) return false;
       // let user_id = this.timeLine.id;
       // if(this.timeLine.placeline.length) {
@@ -48,5 +51,20 @@ export class DebuggerService {
       //   // this.router.navigate(['/debug', 'events', {user_id, min_recorded_at: min, max_recorded_at: max}])
       // };
     })
+  };
+
+  private getDebugUrlQuery(resetSegmentId, selectedSegmentId, placelineId, placelineQuery) {
+    const activityId = resetSegmentId || selectedSegmentId;
+    return {
+      ...(activityId ? { activity_id: activityId} : {}),
+      ...(placelineId ? { user_id: placelineId} : {})
+    }
+  };
+
+  private getDebugQueryFromPlacelineQuery(placelineQuery) {
+    let query = {};
+    if (placelineQuery['min_recorded_at']) query['min_recorded_at'] = placelineQuery['min_recorded_at']
+    if (placelineQuery['max_recorded_at']) query['max_recorded_at'] = placelineQuery['max_recorded_at'];
+    return query
   }
 }
