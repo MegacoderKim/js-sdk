@@ -6,13 +6,15 @@ import {MapModule} from "../map/map.module";
 import {UsersContainerModule} from "../users-container/users-container.module";
 import {MapContainerModule} from "../map-container/map-container.module";
 import {UsersFilterModule} from "../filters/users-filter/users-filter.module";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   imports: [
     CommonModule,
     UsersContainerModule,
     MapContainerModule,
-    UsersFilterModule
+    UsersFilterModule,
+    SharedModule
   ],
   declarations: [UsersMapContainerComponent],
   exports: [UsersMapContainerComponent]
