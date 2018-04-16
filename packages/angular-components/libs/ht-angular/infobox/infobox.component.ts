@@ -33,7 +33,7 @@ export class InfoboxComponent implements OnInit, AfterViewInit, AfterContentInit
     id: string,
     onUpdate?: any;
   };
-  idle: boolean = false;
+  idle: boolean = true;
   constructor(private mapService: HtMapService) { }
 
   ngOnInit() {
@@ -67,12 +67,12 @@ export class InfoboxComponent implements OnInit, AfterViewInit, AfterContentInit
       tap((move) => {
         // console.log("move", move ? "start" : "end");
         if (move) {
-          if (this.popper) this.popper.scheduleUpdate();
-          this.idle = true
+          this.idle = false
         } else {
-          this.idle = false;
+          this.idle = true;
           // if (this.popper) this.popper.scheduleUpdate();
         };
+        if (this.popper) this.popper.scheduleUpdate();
       }),
       switchMap((move) => {
         // console.log("swt", move);
@@ -108,12 +108,12 @@ export class InfoboxComponent implements OnInit, AfterViewInit, AfterContentInit
 
 
 
-    // mapUtils.onEvent$(thismap, 'move').pipe(
-    //   throttleTime(15)
-    // )
-    //   .subscribe(() => {
-    //   this.popper.scheduleUpdate();
-    // });
+    mapUtils.onEvent$(thismap, 'move').pipe(
+      throttleTime(15)
+    )
+      .subscribe(() => {
+      this.popper.scheduleUpdate();
+    });
     if (this.item.onUpdate) this.item.onUpdate.subscribe((entity) => {
       // this.popper.scheduleUpdate();
     })
