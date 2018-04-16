@@ -274,6 +274,7 @@ const globals = {
   'ht-data': 'htData',
   'ht-map-wrapper': "htMapWrapper",
   'ht-leaflet-wrapper': 'htLeafletWrapper',
+  'ht-google-maps-wrapper': 'htGoogleMapsWrapper',
   'moment-mini': 'moment',
   'ht-models': 'htModels',
   'leaflet': 'L',
