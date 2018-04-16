@@ -56,7 +56,6 @@ export class UsersMapComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
-    this.debuggerService.open();
     this.containerService.setEntity('users');
     this.containerService.setView('list');
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
