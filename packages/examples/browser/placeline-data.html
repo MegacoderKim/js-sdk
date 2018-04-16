@@ -4,16 +4,14 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>HyperTrack client</title>
-    <script src="../node_modules/whatwg-fetch/fetch.js"></script>
-    <script src="../node_modules/rxjs/bundles/Rx.js"></script>
-    <script src="../node_modules/moment-mini/moment.min.js"></script>
-    <script src="../node_modules/underscore/underscore-min.js"></script>
-    <script src="../node_modules/ht-utility/dist/ht-utility_browser.js"></script>
-    <!--<script src="../node_modules/ht-js-data/dist/ht-data.js"></script>-->
-    <!--<script src="../node_modules/ht-js-client/dist/ht-client.js"></script>-->
-    <!--<script src="../node_modules/ht-client/dist/ht-client_browser.js"></script>-->
-    <script src="../../packages/client/dist/ht-client_browser.js"></script>
-    <!--<script src="../node_modules/ht-js-fetch-client/dist/index.js"></script>-->
+    <script src="https://unpkg.com/rxjs@5.5.5/bundles/Rx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.29.0/date_fns.min.js"></script>
+    <script src="../../../node_modules/whatwg-fetch/fetch.js"></script>
+    <script src="../../../node_modules/underscore/underscore-min.js"></script>
+    <script src="../../../node_modules/ht-utility/dist/ht-utility_browser.js"></script>
+    <script src="../../../node_modules/ht-data/dist/ht-data_browser.js"></script>
+    <script src="../../../node_modules/ht-api/dist/ht-api_browser.js"></script>
+    <script src="../../../node_modules/ht-client/dist/ht-client_browser.js"></script>
     <style>
         html, body {
             height: 100%;
@@ -32,7 +30,7 @@
     var userId2 = "96f73c51-da20-44ef-b533-abdcfbe199dd";
 
 
-    var client = new htClient.initClient(token);
+    var client = new htClient.initClient({token: token});
 
     var users = htClient.usersClientFactory();
     var users2 = htClient.usersClientFactory();
@@ -40,11 +38,9 @@
     users.placeline.pollDuration = 4000;
     users.placeline.setQuery({date: "2017-11-06"});
 
-//    console.log(users.placeline);
     users.placeline.setId(userId);
 
     users.placeline.data$.subscribe(function (userData) {
-//        var segments = userData.segments;
         if(userData) {
             var d = getStopDuration(userData);
             console.log(getTripDistance(userData));
@@ -66,7 +62,7 @@
     }
 
     function getTypeProp(placeline, type, prop) {
-        var segments = placeline.segments;
+        var segments = placeline.placeline;
         return segments.reduce(function (duration, segment) {
             console.log(segment[prop]);
             return duration + (segment.type == type && segment[prop] ? segment[prop] : 0);
