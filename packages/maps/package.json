@@ -1,6 +1,6 @@
 {
   "name": "ht-maps",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "hypertrack maps",
   "main": "dist/ht-maps_browser.js",
   "module": "dist/ht-maps.es5.js",

@@ -1,6 +1,6 @@
 {
   "name": "ng-components",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/hypertrack/ht-angular"
@@ -56,9 +56,9 @@
     "font-awesome": "^4.7.0",
     "frappe-charts": "0.0.8",
     "ht-api": "^0.1.0",
-    "ht-client": "^0.2.0",
+    "ht-client": "^0.2.1",
     "ht-data": "^0.2.0",
-    "ht-maps": "^0.2.1",
+    "ht-maps": "^0.2.2",
     "ht-models": "^0.1.0",
     "ht-utility": "^0.2.0",
     "jstz": "^2.0.0",
