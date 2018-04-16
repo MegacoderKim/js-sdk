@@ -10,6 +10,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 // import {Subscription} from "rxjs/Subscription";
 // import * as fromUser from "../actions/user";
 import {DebuggerService} from "../core/debugger.service";
+import {config} from "../config";
 
 @Component({
   selector: 'app-users-map',
@@ -33,6 +34,7 @@ export class UsersMapComponent implements OnInit, OnDestroy {
   userId: string | null = null;
   query: object;
   showReplay$;
+  baseUrl = config.isWidget ? '/widget' : '/';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
