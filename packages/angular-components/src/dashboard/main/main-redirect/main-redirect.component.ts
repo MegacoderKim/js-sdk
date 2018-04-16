@@ -23,16 +23,17 @@ export class MainRedirectComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //todo fix for account
+    // todo fix for account
     combineLatest(
       this.storage.getUser(),
       this.storage.getMemberships()
     ).subscribe(([accountUser, memberships]: [IAccountUser, IMembership[]]) => {
-      if(accountUser) {
-        let account = isCurrentAccount(accountUser.default_account, config.token, config.tokenType) ?
-          accountUser.default_account : GetAccountFromMemberships(memberships, config.token, config.tokenType);
+      if (accountUser) {
+        let account = isCurrentAccount(accountUser.default_account, config.token, config.tokenType) || !memberships ?
+          accountUser.default_account : 
+          GetAccountFromMemberships(memberships, config.token, config.tokenType) || accountUser.default_account;
         let defaultView = config.isMobile ? 'map' : 'list';
-        if(!account) {
+        if (!account) {
           // this.accountService.logout()
         }
         if(account.card) {
