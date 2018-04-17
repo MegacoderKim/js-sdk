@@ -10,6 +10,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {config} from "../../config";
 import {HttpClient} from "@angular/common/http";
 import {ISdkEvent, GetEventColor} from "../interfaces";
+import {format} from "date-fns";
 
 @Component({
   selector: 'app-trace-events',
@@ -19,6 +20,8 @@ import {ISdkEvent, GetEventColor} from "../interfaces";
 export class TraceEventsComponent {
   @ViewChild('isoStart') isoStart;
   @ViewChild('isoEnd') isoEnd;
+  @ViewChild('dateStart') dateStart;
+  @ViewChild('dateEnd') dateEnd;
   @ViewChild('primary') input;
   inputQuery = {};
   events: string[];
@@ -164,20 +167,29 @@ export class TraceEventsComponent {
       this.fetchTripPolyline(query)
     }
     if(this.primaryQueryType == 'user_id') {
-      let start;
-      let end;
-      if(this.showISO) {
-        start = this.isoStart.nativeElement.value;
-        end = this.isoEnd.nativeElement.value;
-      } else {
-        start = this.noISODateStart;
-        end = this.noISODateEnd;
-      }
-      if(!(start && end)) return null;
-      return {...query, min_recorded_at: start, max_recorded_at: end}
+      let startEnd = this.getStartEnd();
+      return {...query, min_recorded_at: startEnd.start, max_recorded_at: startEnd.end}
     } else {
       return query
     }
+  };
+
+  getStartEnd(): {start: string, end: string} | null {
+    let start;
+    let end;
+    if(this.showISO) {
+      start = this.isoStart.nativeElement.value;
+      end = this.isoEnd.nativeElement.value;
+    } else {
+      const startString = this.dateStart.nativeElement.value;
+      const endString = this.dateEnd.nativeElement.value;
+      const startTimeStamps = startString.split(',')
+      const endTimeStamps = endString.split(',')
+      start = new Date(+startTimeStamps[0], +startTimeStamps[1] - 1, +startTimeStamps[2], +startTimeStamps[3], +startTimeStamps[4]).toISOString();
+      end = new Date(+endTimeStamps[0], +endTimeStamps[1] - 1, +endTimeStamps[2], +endTimeStamps[3], +endTimeStamps[4]).toISOString();
+    }
+    if(!(start && end)) return null;
+    return {start, end}
   }
 
   selectEvents(events: string[]) {
@@ -270,12 +282,16 @@ export class TraceEventsComponent {
     //
     // }
     if(params['min_recorded_at'] && params['max_recorded_at']) {
-      setTimeout(() => {
-        this.showISO = true;
-      });
-
+      // setTimeout(() => {
+      //   this.showISO = true;
+      // });
+      const startString = params.min_recorded_at;
+      const endString = params.max_recorded_at;
       this.isoStart.nativeElement.value = params.min_recorded_at;
       this.isoEnd.nativeElement.value = params.max_recorded_at;
+      this.dateStart.nativeElement.value = format(startString, 'YYYY,MM,DD,HH,MM');
+      this.dateEnd.nativeElement.value = format(endString, 'YYYY,MM,DD,HH,MM')
+      //todo fill dateStart and end
     }
     let queryType = _.find(this.primaryQueryTypes, (type) => {
       return !!params[type]
