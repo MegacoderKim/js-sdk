@@ -42,9 +42,18 @@
         <!--&lt;!&ndash;<input class="form-control" #isoEnd type="text" placeholder="ISO end">&ndash;&gt;-->
         <!--</div>-->
         <!--</div>-->
-        <div class="control is-expanded" [hidden]="showISO">
-          <input type="text" class="input" name="daterange" placeholder="USE ISO (WIP)">
+        <div [hidden]="showISO">
+          <div class="field is-grouped">
+            <div class="control is-expanded">
+              <input class="input" #dateStart type="text" placeholder="YYYY,MM,DD,HH,MM">
+            </div>
+            <div class="control is-expanded">
+              <input class="input" #dateEnd type="text" placeholder="YYYY,MM,DD,HH,MM">
+            </div>
+          </div>
+          <p class="has-text-weight-bold">format: YYYY,MM,DD,HH,MM example: 2018,02,21,14,00</p>
         </div>
+
       </div>
       <div class="field is-grouped">
         <div class="control">
