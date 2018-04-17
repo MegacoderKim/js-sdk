@@ -34,6 +34,7 @@ import {Observable} from "rxjs/Observable";
   ]
 })
 export class UsersFilterComponent implements OnInit {
+  @Input() isMobile: boolean;
   query$: Observable<object | null> = of(null);
   loading$: Observable<boolean> = of(false);
   statusFiltes;

@@ -35,6 +35,7 @@ export class UsersMapComponent implements OnInit, OnDestroy {
   query: object;
   showReplay$;
   baseUrl = config.isWidget ? '/widget' : '/';
+  isMobile = config.isMobile;
   constructor(
     private route: ActivatedRoute,
     private router: Router,

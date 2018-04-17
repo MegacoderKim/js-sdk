@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ht-list-container',
@@ -6,8 +6,6 @@ import { Component, OnInit, HostBinding } from '@angular/core';
   styleUrls: ['./list-container.component.scss']
 })
 export class ListContainerComponent implements OnInit {
-  @HostBinding('style.width.px')
-  width = 400;
   constructor() { }
 
   ngOnInit() {

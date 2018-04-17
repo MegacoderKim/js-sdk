@@ -1,4 +1,4 @@
-<div class="filter-container flex-column">
+<div class="filter-container flex-column" *ngIf="!isMobile; else mobile">
   <ng-content select=".start"></ng-content>
   <ht-entity-search (onSearchQuery)="onQuery($event)" *ngIf="options.showSearch"></ht-entity-search>
   <div class="dropdown" htDropdown *ngIf="ordering$ | async as ordering">
@@ -65,6 +65,81 @@
   <ht-date-range *ngIf="options.showDatePicker" [isRight]="true"></ht-date-range>
 
 </div>
+<ng-template #mobile>
+  <div class="mobile-tab flex-row row-gap-10 show-xs">
+    <div class="dropdown">
+      <div class="dropdown-toggle">
+        <button class="button">
+            <span class="icon">
+              <i class="fa fa-filter"></i>
+            </span>
+        </button>
+      </div>
+      <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+        <div class="dropdown-content">
+          <a class="dropdown-item" (click)="onQuery({show_all: true})">Show all</a>
+          <hr class="dropdown-divider">
+          <a class="dropdown-item" (click)="setStatus(filter.values.toString(), $event)" *ngFor="let filter of statusFiltes">{{filter.label}}</a>
+        </div>
+
+      </div>
+    </div>
+    <div [class.disabled]="showMobileMap$ | async" class="dropdown disabled" *ngIf="ordering$ | async as ordering">
+      <button class="button dropdown-toggle flex-row row-gap-7 align-center"><i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i></button>
+      <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+        <div class="dropdown-content sorting-menu">
+          <div class="dropdown-item sort-header sort-items text-muted">
+            <div class="sort-item flex flex-row space-between">
+              <span>ORDERING</span>
+              <span>DESC</span>
+            </div>
+            <div class="text-center"  style="flex-basis: 40px">ASC</div>
+          </div>
+          <div class="dropdown-item" *ngFor="let sorting of sortingLabels">
+            <div class="level">
+              <div class="level-left">
+                <span class="level-item">{{sorting.label}}</span>
+              </div>
+              <div class="level-right">
+                <button [class.is-primary]="ordering.string == sorting.label && !ordering?.sign" class="button is-small level-item" (click)="setOrdering(sorting.value, 0)">
+                <span class="icon">
+                  <i class="fa fa-sort-amount-desc"></i>
+                </span>
+                </button>
+                <button [class.is-primary]="ordering.type == sorting.key && ordering.sign" class="button is-small level-item" (click)="setOrdering(sorting.value)">
+                <span class="icon">
+                  <i class="fa fa-sort-amount-asc"></i>
+                </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--<a class="dropdown-item" (click)="setOrdering(sort.value)" *ngFor="let sort of sortingLabels">{{sort.label}}</a>-->
+        </div>
+      </div>
+    </div>
+    <button class="button" (click)="showSearch = true">
+      <i class="fa fa-search"></i>
+    </button>
+    <div class="flex-row flex align-center row-gap-10" *ngIf="showSearch">
+      <button class="delete" (click)="showSearch = false"></button>
+      <ht-entity-search (onSearchQuery)="onQuery($event)" *ngIf="options.showSearch"></ht-entity-search>
+    </div>
+
+    <div class="flex-row align-center">
+      <!--<app-map-switch></app-map-switch>-->
+
+    </div>
+  </div>
+  <div class="mobile-tab flex-row show-xs" *ngIf="showFilter && mobileFilters$ | async as filters">
+    <div class="flex-row row-gap-10 align-center">
+      <div (click)="clearFilter(filter)" class="filter" *ngFor="let query of query$ | async">
+        {{query.label}} <i class="fa fa-times"></i>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
 <div class="card-overlay is-small card-content flex-row row-gap-20" [@filter]="(showFilter$ | async)">
 
 

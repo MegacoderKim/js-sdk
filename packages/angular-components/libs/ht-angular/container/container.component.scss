@@ -1,4 +1,7 @@
-//:host {
-//  display: flex;
-//  flex-direction: row;
-//}
+@import "../../styles/variables";
+
+.is-fullwidth-mobile {
+  @media #{$smartphones} {
+    width: 100% !important;
+  }
+}
