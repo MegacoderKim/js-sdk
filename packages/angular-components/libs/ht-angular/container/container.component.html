@@ -1,6 +1,6 @@
 <div htAutoHeight class="flex-row">
-  <ht-list-container>
+  <ht-list-container class="is-fullwidth-mobile" [style.width.px]="sidebarWidth">
     <ng-content></ng-content>
   </ht-list-container>
-  <ht-map class="flex"></ht-map>
+  <ht-map class="flex" [class.hide-xs]="!showMapOnly"></ht-map>
 </div>
