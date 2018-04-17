@@ -3,6 +3,9 @@ import "rxjs/add/observable/timer";
 import {BroadcastService} from "../../core/broadcast.service";
 import {OnboardingService} from "../../core/onboarding.service";
 import {InnerSharedModule} from "../../shared/shared.module";
+import {AccountUsersService} from "../../account/account-users.service";
+import {take} from "rxjs/operators";
+import {ISubAccount} from "ht-models";
 
 @Component({
   selector: 'app-code-block',
@@ -18,7 +21,8 @@ export class CodeBlockComponent implements OnInit, OnChanges {
   codeSnippets;
   constructor(
     private broadcastService: BroadcastService,
-    private onboardingService: OnboardingService
+    private onboardingService: OnboardingService,
+    private accountsService: AccountUsersService
   ) { }
 
   ngOnInit() {
@@ -62,7 +66,7 @@ export class CodeBlockComponent implements OnInit, OnChanges {
       }
       snippets.push({
         type: range.type,
-        content: content
+        content: this.updateKeysInCode(content)
       });
     });
     return snippets;
@@ -124,8 +128,19 @@ export class CodeBlockComponent implements OnInit, OnChanges {
    * @returns {string}
    */
   updateKeysInCode(code: string, language?: string): string {
-    if (!this.publishableKey) return code;
-    let pkValue = `"${this.publishableKey}"`;
+    let pk = "";
+    this.accountsService.getSubAccount().pipe(
+      take(1)
+    ).subscribe((data: ISubAccount) => {
+      if (data) {
+        const publicToken = data.tokens.find((token) => {
+          return token.scope == 'publishable'
+        });
+        pk = publicToken.key
+      }
+    });
+    if (!pk) return code;
+    let pkValue = `"${pk}"`;
     let pkValueWithoutQuotes = `${pkValue}`;
     if (pkValue) {
       return code
