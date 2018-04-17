@@ -41,10 +41,10 @@ $hyper-grey-light: #F7F7F7;
 $light-white: rgba(255, 255, 255, 0.51);
 $light-blue: #B9D3E4;
 
-//$smartphones: #{"only screen and (max-width: 479px)"};
-//$tablets: #{"only screen and (min-width: 768px) and (max-width: 959px)"};
-//$desktop: #{"only screen and (min-width: 991px)"};
-//$non-desktop: #{"only screen and (max-width: 990px)"};
+$smartphones: "only screen and (max-width: 479px)";
+$tablets: "only screen and (min-width: 768px) and (max-width: 959px)";
+$desktop: "only screen and (min-width: 991px)";
+$non-desktop: "only screen and (max-width: 990px)";
 
 //bootstrap
 $brand-primary: $ht-blue;
