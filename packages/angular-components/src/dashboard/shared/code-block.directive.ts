@@ -1,5 +1,5 @@
 import {AfterViewInit, Directive, ElementRef} from '@angular/core';
-const HighlightJS = require('../../assets/highlight/highlight.pack.js');
+declare const hljs :any;
 
 @Directive({
   selector: '[appCodeBlock]'
@@ -11,7 +11,7 @@ export class CodeBlockDirective implements AfterViewInit {
   ) { }
 
   ngAfterViewInit() {
-    HighlightJS.highlightBlock(this.elem.nativeElement);
+    hljs.highlightBlock(this.elem.nativeElement);
   }
 
 }
