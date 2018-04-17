@@ -11,6 +11,8 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 // import * as fromUser from "../actions/user";
 import {DebuggerService} from "../core/debugger.service";
 import {config} from "../config";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {getMergedParams} from "../../../../utils/src/url-helps";
 
 @Component({
   selector: 'app-users-map',
@@ -36,6 +38,7 @@ export class UsersMapComponent implements OnInit, OnDestroy {
   showReplay$;
   baseUrl = config.isWidget ? '/widget' : '/';
   isMobile = config.isMobile;
+  view$: BehaviorSubject<string | null> = new BehaviorSubject<string|null>(this.isMobile ? 'list' : null);
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -63,13 +66,26 @@ export class UsersMapComponent implements OnInit, OnDestroy {
       .map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
       });
+    // this.setView();
+    const view = this.route.snapshot.params['view'];
+    if (view) {
+      this.view$.next(view)
+    }
     this.userId = this.route.snapshot.params['id'];
     this.query = this.userService.getQueryFromRoute(this.route.snapshot.params);
 
     this.userService.getQueryForRoute().subscribe((query) => {
+      query = getMergedParams({...query, view});
       this.router.navigate([query], {relativeTo: this.route})
     });
 
+  }
+
+  setView() {
+    const view = this.route.snapshot.params['view'];
+    if (view) {
+      this.view$.next(view)
+    }
   }
 
   closeUser() {

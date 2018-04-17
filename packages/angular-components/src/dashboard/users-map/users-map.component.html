@@ -28,6 +28,6 @@
     <ht-replay class="flex" [@filter] *ngIf="showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
   </ht-users-filter>
 </div>
-<ht-container [hasMap]="true">
+<ht-container [view]="view$ | async">
   <ht-users-container [userId]="userId" [query]="query" [hasMap]="true"></ht-users-container>
 </ht-container>
