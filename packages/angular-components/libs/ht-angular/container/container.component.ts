@@ -8,7 +8,11 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 })
 export class ContainerComponent implements OnInit {
   @Input() hasMap: boolean = false;
-  @Input() showMapOnly: boolean = false;
+  @Input() view: string | null = null;
+  @Input()
+  set showMapOnly(value: boolean) {
+    if (value) this.view = 'map';
+  };
   @Input() sidebarWidth: number = 400;
   constructor(
   ) { }
@@ -17,4 +21,4 @@ export class ContainerComponent implements OnInit {
   }
 
 
-}
+};
