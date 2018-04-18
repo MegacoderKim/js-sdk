@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UsersMapRoutingModule } from './users-map-routing.module';
 import { UsersMapComponent } from './users-map.component';
 import {ContainerModule, UsersContainerModule, UsersFilterModule, ReplayModule, PlacelineDateModule} from "ht-angular";
+import {MapSwitchModule} from "../map-container/map-switch/map-switch.module";
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import {ContainerModule, UsersContainerModule, UsersFilterModule, ReplayModule, 
     UsersContainerModule,
     UsersFilterModule,
     ReplayModule,
-    PlacelineDateModule
+    PlacelineDateModule,
+    MapSwitchModule
   ],
   declarations: [UsersMapComponent]
 })
