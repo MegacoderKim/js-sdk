@@ -285,7 +285,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
 
   clearMapData() {
     this.userService.listAll.clearData();
-    this.mapService.usersCluster.trace([])
+    this.userService.heatmap.clearData();
   }
 
   ngOnDestroy() {
