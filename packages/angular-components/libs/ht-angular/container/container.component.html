@@ -2,5 +2,5 @@
   <ht-list-container *ngIf="view != 'map'" [class.is-fullwidth]="view == 'list'" class="is-fullwidth-mobile" [style.width.px]="sidebarWidth">
     <ng-content></ng-content>
   </ht-list-container>
-  <ht-map class="flex" *ngIf="view != 'list'" [class.hide-xs]="!showMapOnly"></ht-map>
+  <ht-map class="flex" *ngIf="view != 'list'" [class.hide-xs]="view !== 'map'"></ht-map>
 </div>
