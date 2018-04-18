@@ -41,6 +41,7 @@ export class UsersFilterComponent implements OnInit {
   sortingLabels;
   ordering$;
   showFilter$;
+  showSearch: boolean = false;
   _options = {
     showSearch: true,
     showFilter: true,
