@@ -1,4 +1,4 @@
-<div class="dropdown is-active" [class.is-right]="isRight" *ngIf="dateRange$ | async as dateRange">
+<div class="dropdown is-active" [class.is-right]="options.isRight" *ngIf="dateRange$ | async as dateRange">
   <button type="button dropdown-trigger" class="button flex-row row-gap-4">
     <span *ngIf="!isMobile">{{dateRange}}</span>
     <span class="icon">
@@ -10,7 +10,7 @@
   <div class="dropdown-menu dropdown-menu-right is-boxed" *ngIf="isActive" [@calender-appear]>
     <div class="dropdown-content" role="menu" aria-labelledby="dropdown-keyboard-access">
       <div class="dropdown-item">
-        <ht-date-range-picker [options]="datePickerOptions" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService.data$ | async"></ht-date-range-picker>
+        <ht-date-range-picker [options]="options" (onRangeChange)="setDateRange($event)" [dateRange]="dateRangeService.data$ | async"></ht-date-range-picker>
       </div>
     </div>
   </div>

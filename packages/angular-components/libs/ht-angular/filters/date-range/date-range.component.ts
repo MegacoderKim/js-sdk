@@ -8,6 +8,7 @@ import {DateRangeMap, isSameDateRange, DateRangeLabelMap} from "ht-data";
 import {of} from "rxjs/observable/of";
 import {map} from "rxjs/operators";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {IDateRangePickerOptions} from "../../date-range-picker/date-range-picker.component";
 
 @Component({
   selector: 'ht-date-range',
@@ -41,10 +42,10 @@ import {animate, style, transition, trigger} from "@angular/animations";
 })
 export class DateRangeComponent implements OnInit {
   @Input() dateRangeService: DateRange = dateRangeService.getInstance();
-  @Input() isRight: boolean = false;
+  // @Input() isRight: boolean = false;
   @Input() isMobile: boolean = false;
-  @Input() showSingleDay: boolean = true;
-  @Input() options: object = {};
+  // @Input() showSingleDay: boolean = true;
+  @Input() options: IDateRangePickerOptions = {};
   dateRange$;
   dateRangeOptions$;
   customDates$;
@@ -58,24 +59,19 @@ export class DateRangeComponent implements OnInit {
   close() {
     this.isActive = false;
   }
-  datePickerOptions;
   constructor(
     private elRef:ElementRef,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    this.datePickerOptions = {
-      ...this.options,
-      showSingleDay: this.showSingleDay,
-      isRight: this.isRight,
-    };
+    this.options.hideCalender = this.options.hideCalender || this.isMobile;
     this.dateRange$ = this.dateRangeService.display$;
     // this.customDates$ = of(this.customDates);
     this.dateRangeOptions$ = this.dateRangeService.data$.pipe(
       map((dateRange: IDateRange) => {
         return this.customDates.filter(customRange => {
-          return this.showSingleDay ? true : !customRange.isSingleDay;
+          return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
         }).map((customRange) => {
           return isSameDateRange(customRange.range, dateRange) ? {...customRange, isActive: true} : {...customRange}
         })
