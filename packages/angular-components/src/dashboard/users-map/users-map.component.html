@@ -1,6 +1,6 @@
 <div class="card" style="z-index: 1001">
   <ht-users-filter [isMobile]="isMobile" class="card-content flex-row">
-    <div class="start">
+    <div class="start" *ngIf="!isMobile">
       <div class="field has-addons">
         <p class="control">
           <a class="button" [routerLink]="[baseUrl, 'list', 'users']">
@@ -25,7 +25,10 @@
       <span class="delete-container icon"> <i class="fa fa-arrow-circle-left fa-3x"></i></span>
     </div>
     <ht-placeline-date class="auto" [placelineClient]="htUsersService.placeline"></ht-placeline-date>
-    <ht-replay class="flex" [@filter] *ngIf="showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
+    <ht-replay class="flex" [@filter] *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
+    <div class="mobile-end relative">
+      <app-map-switch style="top: -5px;"></app-map-switch>
+    </div>
   </ht-users-filter>
 </div>
 <ht-container [view]="view$ | async">

@@ -13,6 +13,9 @@ import {DebuggerService} from "../core/debugger.service";
 import {config} from "../config";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getMergedParams} from "../../../../utils/src/url-helps";
+import * as fromRoot from "../reducers";
+import {Store} from "@ngrx/store";
+import {filter, map} from "rxjs/operators";
 
 @Component({
   selector: 'app-users-map',
@@ -37,12 +40,13 @@ export class UsersMapComponent implements OnInit, OnDestroy {
   query: object;
   showReplay$;
   baseUrl = config.isWidget ? '/widget' : '/';
-  isMobile = config.isMobile;
+  isMobile = config.isMobile || true;
   view$: BehaviorSubject<string | null> = new BehaviorSubject<string|null>(this.isMobile ? 'list' : null);
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
+    private store: Store<fromRoot.State>,
     public userTraceService: UserTraceService,
     public htUsersService: HtUsersService,
     private mapService: HtMapService,
@@ -60,6 +64,10 @@ export class UsersMapComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
+    this.store.select(fromRoot.getUiShowMapMobile).pipe(
+      filter((_) => !!this.isMobile),
+      map((isMap) => isMap ? 'map' : 'list')
+    ).subscribe(this.view$);
     this.containerService.setEntity('users');
     this.containerService.setView('list');
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
