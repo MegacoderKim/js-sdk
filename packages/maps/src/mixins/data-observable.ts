@@ -40,11 +40,16 @@ export function DataObservableMixin<
     _procData$() {
       return (source$: Observable<Page<any>>) => {
         return source$.pipe(
-          filter(data => !!data),
+          // filter(data => !!data),
           map(pageData => {
-            let isNew = pageData && pageData.count && !pageData.previous;
-            let results = pageData ? pageData.results : [];
-            return this.getMarkersArray(results, isNew);
+            if (pageData) {
+              let isNew = pageData && pageData.count && !pageData.previous;
+              let results = pageData ? pageData.results : [];
+              return this.getMarkersArray(results, isNew);
+            } else {
+              return {valid: [], invalid: [], isNew: false}
+            }
+
           })
         );
       };
