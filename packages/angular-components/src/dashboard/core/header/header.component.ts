@@ -67,7 +67,7 @@ export class HeaderComponent implements OnInit {
     );
     this.entityLink$ = this.store.select(fromRoot.getQueryView).map(state => {
       return {
-        users: ['/' + state, 'users'],
+        users: ['/' + 'list', 'users'],
         actions: ['/' + state, 'actions']
       }
     });
