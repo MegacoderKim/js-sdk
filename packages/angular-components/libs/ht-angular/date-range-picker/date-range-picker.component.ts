@@ -6,20 +6,21 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {
   addDays, addMonths, addWeeks, endOfDay, format, isBefore, isFuture, isSameDay, isSameMonth, isToday, isWithinRange,
   startOfMonth,
-  startOfWeek
+  startOfWeek, differenceInDays
 } from "date-fns";
 import {distinctUntilChanged, map, take} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 import {IDateRange} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
-import {DateRangeLabelMap, isSameDateRange} from "ht-data";
-import {dateRangeDisplay} from "ht-utility";
+import {DateRangeLabelMap, isSameDateRange, dateRangeDisplay} from "ht-data";
 
 export interface IDateRangePickerOptions {
   hideSingleDay?: boolean,
   isRight?: boolean,
   datePicker?: boolean
-  hideCalender?: boolean
+  hideCalender?: boolean,
+  maxDays?: number
+  customDateRanges?: string[]
 }
 
 export interface IDay {
@@ -50,6 +51,7 @@ export interface IDay {
 export class DateRangePickerComponent implements OnInit, OnChanges {
   @Input() dateRange: IDateRange;
   @Input() date: string;
+  // @Input() customDateRanges: string[] | null = null;
   @Input() options: IDateRangePickerOptions = {};
   @Output() onRangeChange: EventEmitter<IDateRange> = new EventEmitter<IDateRange>();
   @Output() onDateChange: EventEmitter<string> = new EventEmitter<string>();
@@ -70,17 +72,22 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   month$: Observable<{display: string}>;
   currentDateStyle$: Observable<IDateStyle>;
   display: string;
-  customDates = DateRangeLabelMap;
   customDates$: any[];
   constructor() {
     let monthStart = startOfMonth(new Date());
     this.currentMonthStart$ = new BehaviorSubject<Date>(monthStart);
-
-
   };
 
   ngOnInit() {
 
+  };
+
+  get customDates() {
+    return DateRangeLabelMap.filter(customRange => {
+      let singleDataPass = !this.options.hideSingleDay ? true : !customRange.isSingleDay;
+      let allowedDateRange = this.options.customDateRanges ? this.options.customDateRanges.includes(customRange['key']) : true;
+      return singleDataPass && allowedDateRange
+    });
   }
 
   ngOnChanges() {
@@ -92,9 +99,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
   }
 
   initDateRange(range: IDateRange) {
-    this.customDates$ = this.customDates.filter(customRange => {
-      return !this.options.hideSingleDay ? true : !customRange.isSingleDay;
-    }).map((customRange) => {
+    this.customDates$ = this.customDates.map((customRange) => {
       return isSameDateRange(customRange.range, range) ? {...customRange, isActive: true} : {...customRange}
     });
 
@@ -190,6 +195,15 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
     if (selectedRange.start) {
       isStart = isSameDay(selectedRange.start, date)
     }
+    let isInvalid = isFuture(date);
+    if (this.options.maxDays) {
+      let selected = this.selectedDate$.getValue();
+      if (selected) {
+        const withinMaxDay = this.isWithinMaxDays(date.toISOString(), selected);
+        isInvalid = isInvalid || !withinMaxDay;
+      }
+    }
+
     // if(dateStyle.hoveredDate) {
     //   isHovered = this.isHovered(date, dateStyle.selectedDates[0], dateStyle.hoveredDate)
     // }
@@ -206,7 +220,7 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
       isEnd,
       isStart,
       isHovered,
-      isInvalid: isFuture(date)
+      isInvalid
     }
   };
 
@@ -263,22 +277,30 @@ export class DateRangePickerComponent implements OnInit, OnChanges {
 
   setDateFromDayRange(date: IDay, dateStyle: IDateStyle) {
     let range = {end: dateStyle.selectedRange.end || date.timeStamp, start: dateStyle.selectedRange.start || date.timeStamp};
+    const isWithinMaxDay = this.isWithinMaxDays(range.start, range.end);
     // console.log(range, "range");
     this.selectedDate$.next(null);
     this.hoveredDate.next(null);
-    this.setDateRange(range);
+    if (isWithinMaxDay) this.setDateRange(range);
   }
 
   hoverDate(date: IDay | null) {
     let timeStamp = date ? new Date(date.date).toISOString() : null;
     if (timeStamp) {
       let selected = this.selectedDate$.getValue();
-      if (selected) this.hoveredDate.next(timeStamp)
+      const isWithinMaxDays = this.isWithinMaxDays(selected, timeStamp);
+      if (selected && isWithinMaxDays) {
+        this.hoveredDate.next(timeStamp)
+      }
     } else {
       this.hoveredDate.next(timeStamp)
     }
 
   };
+
+  private isWithinMaxDays(selected, hovered) {
+    return this.options.maxDays ? Math.abs(differenceInDays(selected, hovered)) <= this.options.maxDays : true;
+  }
 
   indexBy(a: any, v: IDay) {
     return v.timeStamp;
