@@ -52,7 +52,13 @@ export class UsersFilterComponent implements OnInit {
   @Input() usersClient;
   @Input() set options(options) {
     this._options = {...options, ...this._options}
-  }
+  };
+  datePickerOptions = {
+    maxDays: 7,
+    customDateRanges: ['today', 'yesterday', 'last_7_days'],
+    isRight: true,
+    hideCalender: this.isMobile,
+  };
   constructor(
     @Optional() private usersClientService: HtUsersService,
     private cd: ChangeDetectorRef

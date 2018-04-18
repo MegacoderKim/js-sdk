@@ -64,7 +64,7 @@
       </div>
     </div>
   </div>
-  <ht-date-range *ngIf="options.showDatePicker && !isMobile" [isMobile]="isMobile" [isRight]="true"></ht-date-range>
+  <ht-date-range [options]="datePickerOptions" *ngIf="options.showDatePicker && !isMobile" [isMobile]="isMobile" [isRight]="true"></ht-date-range>
 
 </div>
 <ng-template #mobile>
