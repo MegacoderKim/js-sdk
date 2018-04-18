@@ -2,8 +2,7 @@ import { IDateRange } from "../interfaces";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
-import {DateRangeMap} from "ht-data";
-import { dateRangeDisplay } from "ht-utility"
+import {DateRangeMap, dateRangeDisplay} from "ht-data";
 
 export const defaultDateRange = {...DateRangeMap.today};
 
