@@ -40,7 +40,7 @@ export class UsersMapComponent implements OnInit, OnDestroy {
   query: object;
   showReplay$;
   baseUrl = config.isWidget ? '/widget' : '/';
-  isMobile = config.isMobile || true;
+  isMobile = config.isMobile;
   view$: BehaviorSubject<string | null> = new BehaviorSubject<string|null>(this.isMobile ? 'list' : null);
   constructor(
     private route: ActivatedRoute,
