@@ -51,30 +51,35 @@ export const DateRangeMap = {
 export const DateRangeLabelMap = [
   {
     label: "Today",
+    key: 'today',
     range: DateRangeMap.today,
     isSingleDay: true,
     hasToday: true
   },
   {
     label: "Yesterday",
+    key: 'yesterday',
     range: DateRangeMap.yesterday,
     isSingleDay: true,
     hasToday: false
   },
   {
     label: "Last 7 days",
+    key: 'last_7_days',
     range: DateRangeMap.last_7_days,
     isSingleDay: false,
     hasToday: true
   },
   {
     label: "This month",
+    key: 'this_month',
     range: DateRangeMap.this_month,
     isSingleDay: false,
     hasToday: true
   },
   {
     label: "Last 30 days",
+    key: 'last_30_days',
     range: DateRangeMap.last_30_days,
     isSingleDay: false,
     hasToday: true
