@@ -55,7 +55,9 @@ export class DateRangeComponent implements OnInit {
     this.isActive = false;
   }
   options = {
-    isRight: true
+    isRight: true,
+    maxDays: 7,
+    customDateRanges: ['today', 'yesterday', 'last_7_days']
   };
   constructor(
     private ref: ChangeDetectorRef,
