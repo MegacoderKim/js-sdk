@@ -42,6 +42,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
 export class DateRangeComponent implements OnInit {
   @Input() dateRangeService: DateRange = dateRangeService.getInstance();
   @Input() isRight: boolean = false;
+  @Input() isMobile: boolean = false;
   @Input() showSingleDay: boolean = true;
   dateRange$;
   // todo add all date range
