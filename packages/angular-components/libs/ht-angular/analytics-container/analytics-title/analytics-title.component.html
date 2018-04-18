@@ -7,7 +7,7 @@
   <div class="level-right">
     <ng-content></ng-content>
     <div class="level-item" *ngIf="!hideDatePicker">
-      <ht-date-range [isRight]="true" [dateRangeService]="dateRangeService"></ht-date-range>
+      <ht-date-range [options]="{isRight: true}" [dateRangeService]="dateRangeService"></ht-date-range>
     </div>
   </div>
 </div>
