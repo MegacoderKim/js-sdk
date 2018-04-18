@@ -44,8 +44,8 @@ export class DateRangeComponent implements OnInit {
   @Input() isRight: boolean = false;
   @Input() isMobile: boolean = false;
   @Input() showSingleDay: boolean = true;
+  @Input() options: object = {};
   dateRange$;
-  // todo add all date range
   dateRangeOptions$;
   customDates$;
   customDates = DateRangeLabelMap;
@@ -58,12 +58,18 @@ export class DateRangeComponent implements OnInit {
   close() {
     this.isActive = false;
   }
+  datePickerOptions;
   constructor(
     private elRef:ElementRef,
     private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    this.datePickerOptions = {
+      ...this.options,
+      showSingleDay: this.showSingleDay,
+      isRight: this.isRight,
+    };
     this.dateRange$ = this.dateRangeService.display$;
     // this.customDates$ = of(this.customDates);
     this.dateRangeOptions$ = this.dateRangeService.data$.pipe(
