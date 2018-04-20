@@ -49,9 +49,17 @@ export class LeafletMapUtilsClass implements MapUtils {
   }
 
   setMap(item, map: Map) {
-    if (((item && !item.getElement) || (item && !item.getElement())) && map.getContainer().offsetWidth) {
-      item.addTo(map);
+    if (item && map) {
+      if (item.getElement && item.getElement()) {
+      } else if (map.getContainer().offsetWidth) {
+        item.addTo(map);
+      }
     }
+    // if (item.getElement && item.getElement())
+    // console.log(item && item.getElement && item.getElement() && item.getElement().offsetWidth, map.getContainer().offsetWidth, ((item && !item.getElement) || (item && !item.getElement())));
+    // if (((item && !item.getElement) || (item && !item.getElement())) && map.getContainer().offsetWidth) {
+    //   item.addTo(map);
+    // }
   };
 
   setKey(key) {
