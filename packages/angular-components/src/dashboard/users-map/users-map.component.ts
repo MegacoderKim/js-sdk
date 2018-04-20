@@ -15,7 +15,8 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {getMergedParams} from "../../../../utils/src/url-helps";
 import * as fromRoot from "../reducers";
 import {Store} from "@ngrx/store";
-import {filter, map} from "rxjs/operators";
+import {filter, map, switchMap} from "rxjs/operators";
+import * as fromUi from "../actions/ui"
 
 @Component({
   selector: 'app-users-map',
@@ -87,6 +88,25 @@ export class UsersMapComponent implements OnInit, OnDestroy {
       this.router.navigate([query], {relativeTo: this.route})
     });
 
+    if (this.isMobile) {
+      this.htUsersService.placeline.segmentResetId$.pipe(
+        filter(segmentId => !!segmentId),
+        map((segmentId) => {
+          const view = this.view$.getValue();
+          this.showMap();
+          return view == 'list' ? 'map' : view
+        })
+      ).subscribe(this.view$)
+    }
+
+  };
+
+  showMap(show: boolean = true) {
+    this.store.dispatch(new fromUi.UpdateMapMobileShowAction(show))
+  };
+
+  showList() {
+    this.store.dispatch(new fromUi.UpdateMapMobileShowAction(false))
   }
 
   setView() {
@@ -100,6 +120,10 @@ export class UsersMapComponent implements OnInit, OnDestroy {
     this.htUsersService.placeline.setId(null);
     this.htUsersService.list.setId(null);
     this.mapService.resetBounds();
+    if (this.isMobile) {
+      this.showList();
+      this.view$.next('list')
+    }
   }
 
   ngOnDestroy() {
