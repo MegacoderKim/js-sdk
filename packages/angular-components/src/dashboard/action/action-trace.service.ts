@@ -12,39 +12,20 @@ import * as _ from "underscore";
 
 @Injectable()
 export class ActionTraceService {
-  actionsCluster;
-  actionsHeat;
   constructor(
       private store: Store<fromRoot.State>,
       private broadcast: BroadcastService,
       private router: Router,
       private htMapService: HtMapService,
-      private htUsersService: HtUsersService,
-      private htActionsService: HtActionsService
   ) {
     this.initListeners();
-    this.initCluster();
-    this.initHeatmap();
+    this.setCluserClick();
   }
 
-  private initCluster() {
-    this.actionsCluster = this.htMapService.actionsCluster;
-    this.actionsCluster.onClick = (data) => {
+  private setCluserClick() {
+    this.htMapService.actionsCluster.onClick = (data) => {
       this.selectAction(data.data)
     };
-    this.actionsCluster.setPageData$(
-      this.htActionsService.listAll.data$,
-      {
-        hide$: this.htUsersService.placeline.data$
-      }
-    )
-  };
-
-  private initHeatmap() {
-    this.actionsHeat = this.htMapService.actionsHeatmap;
-    this.actionsHeat.setPageData$(this.htActionsService.heatmap.data$, {
-      hide$: this.store.select(fromRoot.getUserSelectedUserId)
-    })
   };
 
   get map(): L.Map {
@@ -52,18 +33,8 @@ export class ActionTraceService {
   }
 
   private initListeners() {
-    // this.broadcast.on('map-init').subscribe((data: L.Map) => {
-    //   this.map = data;
-    //   // this.map.addLayer(this.actionsCluster.markerCluster);
-    // });
-
-
-    // this.broadcast.on('reset-map').debounceTime(200).subscribe(() => {
-    //   this.resetBounds()
-    // });
-
     this.broadcast.on('hover-action').subscribe((actionId: string | null) => {
-      this.actionsCluster.setPopup(actionId)
+      this.htMapService.actionsCluster.setPopup(actionId)
     });
 
   }
@@ -71,18 +42,4 @@ export class ActionTraceService {
   selectAction(action) {
     this.router.navigate(['/actions', {id: action.id}])
   }
-
-
-  private resetBounds() {
-    // if(!config.toReset) return false;
-    // let bounds = this.htMapService.mapInstance.getItemsSetBounds([this.actionsCluster,this.actionsHeat]);
-    // // this.actionsHeat.extendBounds(bounds);
-    // if(bounds.isValid()) this.map.fitBounds(bounds, {
-    //   animate: true,
-    //   duration: 1.3,
-    //   easeLinearity: 0.2,
-    //   paddingTopLeft: [15, 15],
-    //   paddingBottomRight: [15, 15]
-    // });
-  };
 }
