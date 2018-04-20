@@ -39,7 +39,8 @@ export class MainRedirectComponent implements OnInit {
         if(account.card) {
           this.router.navigate(['/', defaultView, 'actions'], {relativeTo: this.route})
         } else {
-          this.router.navigate(['/', 'users', defaultView], {relativeTo: this.route})
+          const url = defaultView == 'map' ? ['/', 'users', defaultView] : ['/', defaultView, 'users'];
+          this.router.navigate(url, {relativeTo: this.route})
         }
       } else if(config.isDemo) {
         this.router.navigate(['/', 'users', 'map'], {relativeTo: this.route})
