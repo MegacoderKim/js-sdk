@@ -15,6 +15,7 @@ import {MapInstance} from "../map-utils/map-instance";
 import {take} from "rxjs/operator/take";
 import {skip, skipUntil} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
+import {IMarkersArray} from "./data-observable";
 
 export interface ICompoundsDataObservableBase {
   trace: (data, map?) => any;
@@ -92,8 +93,32 @@ export function CompoundDataObservableMixin<
     }
 
     _initData$() {
-      let userData$ = this.data$.pipe(
-        filter(data => !!this.mapInstance.map),
+
+      let mapData$ = this.data$;
+      let render$ = combineLatest(
+        mapData$,
+        this.mapInstance.map$
+      ).pipe(
+        map(([mapData, map]) => {
+          return map ? mapData : null;
+        })
+      );
+      // function isNewId (newItem, old) {
+      //   if(!old && newItem) return true;
+      //   if(newItem && old) return  newItem.id !== old.id
+      // }
+      // function isNewList(newList, old) {
+      //   if(!old && newList) return true;
+      //   if(newList && old) return !newList.next && newList.count
+      // }
+      // let sub = render$.subscribe(({ valid, invalid, isNew }) => {
+      //   this.trace(valid);
+      //   if (isNew) this.mapInstance.resetBounds();
+      // });
+      // this.dataSub = sub;
+
+      // here
+      let userData$ = render$.pipe(
         scan(
           (acc: { user: any; oldUser: any }, data: object) => {
             const oldUser = acc.user;

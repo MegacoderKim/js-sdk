@@ -5,6 +5,7 @@ import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
 
 export interface ITraceBase {
+  name?: string;
   getItem: (data) => any;
   onMouseLeave?: (trace) => void;
   onClick?: (trace) => void;
