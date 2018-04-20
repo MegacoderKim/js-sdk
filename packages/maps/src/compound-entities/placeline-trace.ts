@@ -52,47 +52,58 @@ export class Placeline {
   }
 
   trace(user: IPlacelineMod, map?) {
-    const selectedSegment = user ? user.selectedSegment : null;
-    this.setHighlightId(user);
-    let userSegments = user && user.placeline ? user.placeline : [];
-    let segType = this.getSegmentTypes(userSegments);
-    let lastSegment = segType.lastSegment;
-    let restTrips = segType.tripSegment.pop();
-    this.traceStops(segType.stopSegment, selectedSegment, lastSegment);
-    if (lastSegment) {
-      var string = this.getTimeAwarePolyline(lastSegment);
-      if(string) {
-        //todo infer toNotTraceItem from animMixin trace
-        this.userMarker.toNotTraceItem = true;
-        this.animPolyline.toNotTraceItem = true;
-        this.actionsPolyline.toNotTraceItem = true;
-        // this.animPolyline.trace(restTrips);
-        this.anim.updatePolylineString(string);
-      } else {
-        this.animPolyline.toNotTraceItem = false;
-        this.userMarker.toNotTraceItem = false;
-        this.actionsPolyline.toNotTraceItem = false;
-        // if (!selectedSegment) this.animPolyline.trace(restTrips);
-        this.anim.clear();
-      }
-      if (this.userMarker.isValidMapItems(user)) {
-        this.userMarker.trace(user);
-      } else {
-        this.userMarker.clear()
-      }
+    if (user) {
+      const selectedSegment = user ? user.selectedSegment : null;
+      this.setHighlightId(user);
+      let userSegments = user && user.placeline ? user.placeline : [];
+      let segType = this.getSegmentTypes(userSegments);
+      let lastSegment = segType.lastSegment;
+      let restTrips = segType.tripSegment.pop();
+      this.traceStops(segType.stopSegment, selectedSegment, lastSegment);
+      if (lastSegment) {
+        var string = this.getTimeAwarePolyline(lastSegment);
+        if(string) {
+          //todo infer toNotTraceItem from animMixin trace
+          this.userMarker.toNotTraceItem = true;
+          this.animPolyline.toNotTraceItem = true;
+          this.actionsPolyline.toNotTraceItem = true;
+          // this.animPolyline.trace(restTrips);
+          this.anim.updatePolylineString(string);
+        } else {
+          this.animPolyline.toNotTraceItem = false;
+          this.userMarker.toNotTraceItem = false;
+          this.actionsPolyline.toNotTraceItem = false;
+          // if (!selectedSegment) this.animPolyline.trace(restTrips);
+          this.anim.clear();
+        }
+        if (this.userMarker.isValidMapItems(user)) {
+          this.userMarker.trace(user);
+        } else {
+          this.userMarker.clear()
+        }
 
-      this.traceAnimPolyline(restTrips, selectedSegment);
-      this.actionsPolyline.setConnector(this.userMarker.getEntity());
-      this.actionsPolyline.trace(user)
+        this.traceAnimPolyline(restTrips, selectedSegment);
+        this.actionsPolyline.setConnector(this.userMarker.getEntity());
+        this.actionsPolyline.trace(user)
+      } else {
+        this.anim.clear();
+        this.userMarker.clear();
+        this.animPolyline.clear();
+        this.actionsPolyline.clear();
+
+      }
+      this.traceSegments(segType.tripSegment, selectedSegment);
+      this.traceAction(user, selectedSegment);
     } else {
-      this.anim.clear();
       this.userMarker.clear();
       this.animPolyline.clear();
       this.actionsPolyline.clear();
-
+      this.userMarker.clear();
+      this.stopMarkers.clear();
+      this.actionMarkers.clear();
+      this.segmentsPolylines.clear();
+      this.anim.clear();
     }
-    this.traceSegments(segType.tripSegment, selectedSegment);
-    this.traceAction(user, selectedSegment);
     this.traceStopsPolyline(user)
     // this.actionsPolyline.setConnector(this.userMarker.getEntity());
     // this.actionsPolyline.trace(user)
