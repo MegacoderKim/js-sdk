@@ -25,6 +25,7 @@ import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-entities";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ActionUser {
   name = "action user";

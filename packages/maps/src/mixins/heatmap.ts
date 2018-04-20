@@ -26,20 +26,19 @@ export function HeatmapMixin<TBase extends Constructor<IHeatmapBase>>(
     trace(items: any[], map?) {
       this.entities = items.map(item => ({item}));
       this.map = map || this.mapInstance.map;
-      if (this.map) {
-        if(items) {
-          let latLngs = items.reduce((acc, item) => {
-            let position = this.getPosition(item);
-            return position ? [...acc, position] : acc;
-          }, []);
-          this.mapInstance.mapUtils.updateHeatMapLatlng(latLngs, this.heatmap);
-          this.mapInstance.mapUtils.setMap(this.heatmap, this.map)
-        } else {
-          this.clear()
+      if(items && items.length) {
+        if (!this.map) {
+          console.warn("Map is not initialized");
+          return false;
         }
+        let latLngs = items.reduce((acc, item) => {
+          let position = this.getPosition(item);
+          return position ? [...acc, position] : acc;
+        }, []);
+        this.mapInstance.mapUtils.updateHeatMapLatlng(latLngs, this.heatmap);
+        this.mapInstance.mapUtils.setMap(this.heatmap, this.map)
       } else {
-        console.warn("Map is not initialized");
-        return false;
+        this.clear()
       }
     }
 

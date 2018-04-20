@@ -43,11 +43,17 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const el = this.mapElem.nativeElement;
-    this.mapInstance.renderMap(el, this.options);
-    this.onReady.next(this.mapInstance.map);
+    setTimeout(() => {
+      this.mapInstance.renderMap(el, this.options);
+      this.onReady.next(this.mapInstance.map);
+    }, 10);
     if (this.resetCta && this.reset) this.resetCta.createEmbeddedView(this.reset);
     // window['ht-map'] = this.mapService.map;
     // this.mapService.resetBounds()
+  };
+
+  ngOnDestroy() {
+    this.mapInstance.map$.next(null)
   }
 
 }

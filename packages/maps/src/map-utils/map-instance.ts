@@ -97,10 +97,14 @@ export class MapInstance {
     if (!this.clusters.includes(cluster)) {
       this.clusters.push(cluster);
       this.map$.pipe(
-        filter(data => !!data)
+        // filter(data => !!data)
       )
         .subscribe((map: HtMap) => {
-          cluster.cluster = this.mapUtils.getMarkerCluster(map);
+          if (map) {
+            cluster.cluster = this.mapUtils.getMarkerCluster(map);
+          } else if(cluster.cluster) {
+            this.mapUtils.removeClusterMarkers(cluster.cluster)
+          }
         });
     }
   }

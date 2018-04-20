@@ -8,7 +8,7 @@ import {UserTraceService} from "../users/user-trace.service";
 import {ActionTraceService} from "../action/action-trace.service";
 import {ActivatedRoute} from "@angular/router";
 import {config} from "../config";
-import {HtMapService} from "ht-angular";
+import {HtActionsService, HtMapService, HtUsersService} from "ht-angular";
 // import {control, Control, DomUtil, Map} from "leaflet";
 // import * as L from "leaflet";
 
@@ -24,7 +24,9 @@ export class InnerMapService {
       private broadcast: BroadcastService,
       private route: ActivatedRoute,
       private actionTrace: ActionTraceService,
-      private htMapService: HtMapService
+      private htMapService: HtMapService,
+      private htUsersService: HtUsersService,
+      private htActionsService: HtActionsService
   ) {
     this.setMapStyle();
     this.broadcast.on('reset-map').debounceTime(50).subscribe((toFly: boolean) => {
@@ -32,6 +34,42 @@ export class InnerMapService {
         this.htMapService.resetBounds()
       }
     });
+    this.setMapEffects()
+  };
+
+  setMapEffects() {
+    //placeline
+    this.htMapService.placeline.setCompoundData$(
+      this.htUsersService.placeline.data$,
+      {
+        roots: ['placeline', 'actions'],
+        highlighted$: this.htUsersService.placeline.segmentSelectedId$,
+        filter$: this.htUsersService.placeline.segmentResetId$,
+        resetMap$: this.htUsersService.placeline.segmentResetId$
+      }
+    );
+    //users cluseter
+    this.htMapService.usersCluster.setPageData$(
+      this.htUsersService.listAll.data$,
+      {
+        hide$: this.htUsersService.placeline.id$
+      }
+    );
+    //users places
+    this.htMapService.usersHeatmap.setData$(this.htUsersService.heatmap.data$, {
+      hide$: this.htUsersService.placeline.id$
+    });
+    //actions cluster
+    this.htMapService.actionsCluster.setPageData$(
+      this.htActionsService.listAll.data$,
+      {
+        hide$: this.htUsersService.placeline.data$
+      }
+    )
+    //actions heatmap
+    this.htMapService.actionsHeatmap.setPageData$(this.htActionsService.heatmap.data$, {
+      hide$: this.store.select(fromRoot.getUserSelectedUserId)
+    })
   }
 
   setMapStyle() {

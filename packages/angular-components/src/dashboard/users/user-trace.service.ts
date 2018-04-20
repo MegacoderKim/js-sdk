@@ -21,8 +21,6 @@ import {of} from "rxjs/observable/of";
 export class UserTraceService {
   segmentsTrace = new SegmentsTrace;
   usersCluster;
-  userPlaces;
-  placeline;
   replayMarker;
   // map: L.Map;
   constructor(
@@ -32,12 +30,9 @@ export class UserTraceService {
       private route: ActivatedRoute,
       private htMapService: HtMapService,
       private mapService: InnerMapService,
-      private htUsersService: HtUsersService
   ) {
     this.replayMarker = new ReplayMarkerTrace(this.htMapService.mapInstance);
     this.usersCluster = this.htMapService.usersCluster;
-    this.userPlaces = this.htMapService.usersHeatmap;
-    this.placeline = this.htMapService.placeline;
     this.initListeners();
   }
 
@@ -60,65 +55,11 @@ export class UserTraceService {
   private initListeners() {
     this.segmentsTrace.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
       this.setReplayHead(head)
-    })
-    // this.segmentsTrace.setSegmentPlayCallback((segmentId) => {
-    //   this.broadcast.emit('replay-segment', segmentId);
-    // });
-
-    // this.broadcast.on('map-init').subscribe((data: L.Map) => {
-    //   this.map = data;
-    //   // this.map.addLayer(this.usersCluster.markerCluster);
-    //   // this.map.addLayer(this.userPlaces.markerCluster);
-    // });
-
-    // this.broadcast.on('reset-map').debounceTime(50).subscribe((toFly: boolean) => {
-    //   this.resetBounds(toFly)
-    // });
-
-    this.placeline.setCompoundData$(
-      this.htUsersService.placeline.data$,
-      {
-        roots: ['placeline', 'actions'],
-        highlighted$: this.htUsersService.placeline.segmentSelectedId$,
-        filter$: this.htUsersService.placeline.segmentResetId$,
-        resetMap$: this.htUsersService.placeline.segmentResetId$
-      }
-    );
-
-    // this.store.select(fromRoot.getCurrentUserData).subscribe((user: IUserPlaceline) => {
-    //   this.renderSegments(user);
-    // });
+    });
 
     this.store.select(fromRoot.getReplayHeadState).subscribe((head) => {
       this.setReplayHead(head)
     });
-
-    // this.store.select(fromRoot.getUserSelectedSegment).scan((acc, segment) => {
-    //   return {
-    //     newSegment: segment,
-    //     oldSegment: acc.newSegment
-    //   }
-    // }, {oldSegment: null, newSegment: null}).subscribe(data => {
-    //   if(data.oldSegment) {
-    //     let segment = data.oldSegment;
-    //     // this.segmentsTrace.unselectSegment(segment);
-    //   }
-    //   if(data.newSegment) {
-    //     let segment = data.newSegment;
-    //     // this.segmentsTrace.selectSegment(segment);
-    //   }
-    // });
-
-    // this.store.select(fromRoot.getUserSelectedEventId).subscribe((eventId: string) => {
-    //   console.log(eventId, "selected event");
-    // });
-
-    this.usersCluster.setPageData$(
-      this.htUsersService.listAll.data$,
-      {
-        hide$: this.htUsersService.placeline.id$
-      }
-    );
 
     this.usersCluster.onClick = (data) => {
       let userMap = data.data;
@@ -131,66 +72,11 @@ export class UserTraceService {
         })
     };
 
-    // this.store.select(fromRoot.getUserSelectedActionId).subscribe((actionId: string) => {
-    //   // console.log("select action", actionId);
-    //   // this.segmentsTrace.selectAction(actionId)
-    // });
-
     this.broadcast.on('hover-user').subscribe((user: IUserAnalytics) => {
       let userId = user ? user.id : null;
       this.usersCluster.setPopup(userId)
     });
 
-    let places$ = this.htUsersService.heatmap.dataArray$.switchMap((places) => {
-      places = places ? places.filter(data => !!data.place__location): places;
-      if(config.isMobile) {
-        return this.store.select(fromRoot.getUiShowMapMobile).filter(show => !!show).take(1).debounceTime(1000).map(() => places)
-      } else {
-        return of(places)
-      }
-    });
-
-    this.userPlaces.setData$(places$, {
-      hide$: this.htUsersService.placeline.id$
-    });
-
-  }
-
-  //helpers
-
-  private renderSegments(user: IUserPlaceline) {
-    // console.log(user);
-    // this.segmentsTrace.trace(user, this.map);
-  }
-
-  private resetBounds(fly: boolean = false) {
-    // if(!config.toReset) return false;
-    //
-    // // let bounds = L.latLngBounds([]);
-    // let bounds = this.htMapService.mapInstance.getItemsSetBounds([this.usersCluster,this.userPlaces]);
-    // this.segmentsTrace.extendBounds(bounds);
-    //
-    // if(bounds.isValid() && this.map) {
-    //   if(fly && !config.isMobile) {
-    //     this.map.flyToBounds(bounds, {
-    //       animate: true,
-    //       duration: 1,
-    //       easeLinearity: 0.58,
-    //       padding: [60, 60],
-    //     });
-    //   } else {
-    //     this.map.fitBounds(bounds, {
-    //       animate: true,
-    //       duration: 1.3,
-    //       easeLinearity: 0.2,
-    //       padding: [60, 60],
-    //     });
-    //   }
-    //
-    // } else if(this.map) {
-    //   this.segmentsTrace.focusUserMarker(this.map);
-    //   // this.map.setView(userPosition, 14)
-    // }
   }
 
 }

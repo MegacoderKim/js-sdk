@@ -12,6 +12,8 @@ import { HtPosition } from "ht-models";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { AllData, Page } from "ht-models";
 import {MapInstance} from "../map-utils/map-instance";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {tap} from "rxjs/operators";
 
 export interface IMarkersArray {
   valid: any[];
@@ -32,9 +34,18 @@ export function DataObservableMixin<
     dataPageSource$: Observable<Page<any>>;
     dataArraySource$: Observable<any[]>;
     data$: Observable<IMarkersArray>;
-
+    traceData$: BehaviorSubject<any[]>;
     constructor(...args: any[]) {
       super(...args);
+    }
+
+    _trace(data: any[] = [], map?) {
+      if (!this.traceData$) {
+        this.traceData$ = new BehaviorSubject<any[]>(data)
+      } else {
+        this.traceData$.next(data)
+      }
+      this.setData$(this.traceData$)
     }
 
     _procData$() {
@@ -47,7 +58,7 @@ export function DataObservableMixin<
               let results = pageData ? pageData.results : [];
               return this.getMarkersArray(results, isNew);
             } else {
-              return {valid: [], invalid: [], isNew: false}
+              return this.emptyRenderData()
             }
 
           })
@@ -134,13 +145,14 @@ export function DataObservableMixin<
     // };
 
     _initDataObserver() {
-      let mapData$ = this.data$.pipe(filter(data => !!this.mapInstance.map));
+      let mapData$ = this.data$;
       let render$ = combineLatest(
         mapData$,
-        this.mapInstance.map$.pipe(
-          filter(data => !!data)
-        ),
-        (mapData, map) => mapData
+        this.mapInstance.map$
+      ).pipe(
+        map(([mapData, map]) => {
+          return map ? mapData : this.emptyRenderData();
+        })
       );
       // function isNewId (newItem, old) {
       //   if(!old && newItem) return true;
@@ -155,6 +167,10 @@ export function DataObservableMixin<
         if (isNew) this.mapInstance.resetBounds();
       });
       this.dataSub = sub;
+    }
+
+    emptyRenderData (): IMarkersArray {
+      return {valid: [], invalid: [], isNew: false}
     }
 
     clear() {

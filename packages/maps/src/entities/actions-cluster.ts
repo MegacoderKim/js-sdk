@@ -19,8 +19,10 @@ import {IPathBearingTime} from "ht-models";
 declare const RichMarkerPosition: any;
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ActionsCluster {
+  name = "action cluster";
   styleFunct: StyleFunct = {
     get(type) {
       switch (type) {

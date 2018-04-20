@@ -12,6 +12,7 @@ import {MapInstance} from "../map-utils/map-instance";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ActionsHeatmap {
   styleFunct: StyleFunct = {
@@ -35,6 +36,7 @@ export class ActionsHeatmap {
       }
     }
   };
+  name = "action heatmap";
 
   constructor(public mapInstance: MapInstance) {}
 

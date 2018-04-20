@@ -138,24 +138,24 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       }
     });
     this.userService.listAll.setActive();
-    this.mapService.usersCluster.setPageData$(this.userService.listAll.data$, {
-      hide$: this.userService.placeline.id$
-    });
-    this.mapService.usersHeatmap.setPageData$(
-      this.userService.heatmap.data$,
-      {
-        hide$: this.userService.placeline.id$
-      }
-    );
+    // this.mapService.usersCluster.setPageData$(this.userService.listAll.data$, {
+    //   hide$: this.userService.placeline.id$
+    // });
+    // this.mapService.usersHeatmap.setPageData$(
+    //   this.userService.heatmap.data$,
+    //   {
+    //     hide$: this.userService.placeline.id$
+    //   }
+    // );
 
     // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
     // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
-    this.mapService.placeline.setCompoundData$(this.userService.placeline.data$, {
-      roots: ['placeline', 'actions'],
-      highlighted$: this.userService.placeline.segmentSelectedId$,
-      filter$: this.userService.placeline.segmentResetId$,
-      resetMap$: this.userService.placeline.segmentResetId$
-    });
+    // this.mapService.placeline.setCompoundData$(this.userService.placeline.data$, {
+    //   roots: ['placeline', 'actions'],
+    //   highlighted$: this.userService.placeline.segmentSelectedId$,
+    //   filter$: this.userService.placeline.segmentResetId$,
+    //   resetMap$: this.userService.placeline.segmentResetId$
+    // });
 
     const loading$1 = this.userService.placeline.loading$
       .pipe(
