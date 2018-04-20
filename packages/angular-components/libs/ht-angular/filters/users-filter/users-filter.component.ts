@@ -1,9 +1,10 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, Optional} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HtUsersService} from "../../ht/ht-users.service";
-import {distinctUntilChanged, map, skip} from "rxjs/operators";
+import {distinctUntilChanged, map, share, skip} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
+import {HtUsersClient} from "ht-client";
 
 @Component({
   selector: 'ht-users-filter',
@@ -49,7 +50,7 @@ export class UsersFilterComponent implements OnInit {
     showDatePicker: true,
     showQueries: true
   };
-  @Input() usersClient;
+  @Input() usersClient: HtUsersClient;
   @Input() set options(options) {
     this._options = {...options, ...this._options}
   };
@@ -59,6 +60,7 @@ export class UsersFilterComponent implements OnInit {
     isRight: true,
     hideCalender: this.isMobile,
   };
+  selectedUser$;
   constructor(
     @Optional() private usersClientService: HtUsersService,
     private cd: ChangeDetectorRef
@@ -71,7 +73,7 @@ export class UsersFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.selectedUser$ = this.usersClient.placeline.id$;
     setTimeout(() => {
       this.query$ = this.usersClient.queryLabel$;
       this.loading$ = this.usersClient.getLoading$()
@@ -87,7 +89,8 @@ export class UsersFilterComponent implements OnInit {
     this.statusFiltes = this.usersClient.filterClass.statusQueryArray;
     this.sortingLabels = this.usersClient.filterClass.sortingQueryLabel;
     this.ordering$ = this.usersClient.ordering$;
-    this.showFilter$ = this.usersClient.list.id$.pipe(
+    this.showFilter$ = this.selectedUser$.pipe(
+      share(),
       map((id) => !id ? 'hide' : 'show')
     );
   }
