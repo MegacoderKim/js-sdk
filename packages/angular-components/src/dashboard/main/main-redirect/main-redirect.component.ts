@@ -30,7 +30,7 @@ export class MainRedirectComponent implements OnInit {
     ).subscribe(([accountUser, memberships]: [IAccountUser, IMembership[]]) => {
       if (accountUser) {
         let account = isCurrentAccount(accountUser.default_account, config.token, config.tokenType) || !memberships ?
-          accountUser.default_account : 
+          accountUser.default_account :
           GetAccountFromMemberships(memberships, config.token, config.tokenType) || accountUser.default_account;
         let defaultView = config.isMobile ? 'map' : 'list';
         if (!account) {
@@ -39,10 +39,10 @@ export class MainRedirectComponent implements OnInit {
         if(account.card) {
           this.router.navigate(['/', defaultView, 'actions'], {relativeTo: this.route})
         } else {
-          this.router.navigate(['/', defaultView, 'users'], {relativeTo: this.route})
+          this.router.navigate(['/', 'users', defaultView], {relativeTo: this.route})
         }
       } else if(config.isDemo) {
-        this.router.navigate(['/', 'map', 'users'], {relativeTo: this.route})
+        this.router.navigate(['/', 'users', 'map'], {relativeTo: this.route})
       } else {
         console.log('logginput');
         this.router.navigate(['/', 'login'])
