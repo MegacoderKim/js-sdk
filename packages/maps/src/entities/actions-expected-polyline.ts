@@ -22,6 +22,7 @@ import {IAction} from "ht-models";
 import {DataObservableMixin, IMarkersArray, SetDataConfig} from "../mixins/data-observable";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ActionsExpectedPolyline {
   lineSymbol = {

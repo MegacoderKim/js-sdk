@@ -16,6 +16,7 @@ import {AnimationsEntities, AnimationsEntitiesMixin} from "../mixins/animations-
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 import {HtBounds} from "ht-map-wrapper";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ActionsDataPolyline {
   name = "Actions data polyline"

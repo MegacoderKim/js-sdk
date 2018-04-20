@@ -11,6 +11,7 @@ import {ExtendBoundsMixin} from "../mixins/extend-bounds";
 import {IPathBearingTime} from "ht-models";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class StopsHeatmap {
   name = "stop heatmap";

@@ -18,6 +18,7 @@ import {Color} from "ht-utility";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
 import {HtBounds} from "ht-map-wrapper";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class ActionsPolyline extends SegmentPolylines {
   lineSymbol = {

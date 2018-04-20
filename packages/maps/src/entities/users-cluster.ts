@@ -24,6 +24,7 @@ import {Subscription} from "rxjs/Subscription";
 import {HtBounds} from "ht-map-wrapper";
 import {HtCustomEvent, IEventSub} from "ht-utility";
 import {MapItemsMixin} from "../mixins/map-items";
+import {BehaviorSubject} from "rxjs/BehaviorSubject";
 
 export class UsersCluster {
   name = "users cluster";

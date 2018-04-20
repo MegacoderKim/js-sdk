@@ -9,6 +9,7 @@ import {IEventSub, HtCustomEvent, Color} from "ht-utility";
 import { IPathBearingTime, HtPosition, IPlaceline} from "ht-models";
 
 export class StopsPolyline {
+  name = "stop polyline";
   highlightedId: string;
   styleFunct: StyleFunct = {
     get(type) {
