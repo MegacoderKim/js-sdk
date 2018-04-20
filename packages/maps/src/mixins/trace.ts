@@ -38,13 +38,11 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
 
     trace(data: any[] | null, map?) {
       map = map || this.mapInstance.map;
-      let mapUtils = this.mapInstance.mapUtils;
-      if (!map) {
-        console.warn("Map is not initialized");
-        return false;
-      }
       if (data && data.length) {
-        // if(this.cluster) this.clearAllClusters(data);
+        if (!map) {
+          console.warn("Map is not initialized");
+          return false;
+        }
         data.forEach( datum => {
           let id = this.trackBy(datum);
           let entity = this.entities[id];
@@ -57,11 +55,9 @@ export function TraceMixin<TBase extends Constructor<ITraceBase>>(Base: TBase) {
           }
           if (item) this.setStyle(entity);
           if (!this.toNotTraceItem) this.traceItem(datum);
-          // if (!this.toNotSetMap) mapUtils.setMap(item, map);
         });
         if (this.traceEffect) this.traceEffect();
       } else {
-        // console.log("remove all", this);
         this.removeAll(this.entities);
       }
       this.bustOldItem();
