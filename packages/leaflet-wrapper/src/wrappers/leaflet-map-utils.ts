@@ -51,7 +51,7 @@ export class LeafletMapUtilsClass implements MapUtils {
   setMap(item, map: Map) {
     if (item && map) {
       if (item.getElement && item.getElement()) {
-      } else if (map.getContainer().offsetWidth) {
+      } else if (map.getContainer() && map.getContainer().offsetWidth && map.getContainer().offsetHeight) {
         item.addTo(map);
       }
     }
