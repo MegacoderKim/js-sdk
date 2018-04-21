@@ -68,7 +68,8 @@ export {TrackingModule} from "./tracking/tracking.module";
 
 export {ReplayModule} from "./replay/replay.module"
 
-
+export { ClientTableModule } from "./common/client-table/client-table.module"
+export * from "./common/interfaces";
 
 
 
