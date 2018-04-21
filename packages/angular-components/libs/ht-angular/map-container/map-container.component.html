@@ -1,7 +1,6 @@
-<ht-map [loading]="loading$ | async"></ht-map>
-<!--<div class="map-label map-label-bottom">-->
-  <!--<ht-loading-dots *ngIf="loading$ | async" class="text-1"></ht-loading-dots>-->
-<!--</div>-->
-<!--<div class="map-label map-label-top">-->
-  <!--<button class="button is-primary" (click)="resetMap()">Fit in view</button>-->
-<!--</div>-->
+<div htAutoHeight class="flex-row">
+  <ht-list-container *ngIf="view != 'map'" [class.is-fullwidth]="view == 'list'" class="is-fullwidth-mobile" [style.width.px]="sidebarWidth">
+    <ng-content></ng-content>
+  </ht-list-container>
+  <ht-map class="flex" *ngIf="view != 'list'" [class.hide-xs]="!view"></ht-map>
+</div>

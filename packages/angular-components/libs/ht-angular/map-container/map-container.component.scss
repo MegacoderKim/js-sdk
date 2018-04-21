@@ -1,0 +1,10 @@
+@import "../../styles/variables";
+
+.is-fullwidth-mobile {
+  @media #{$smartphones} {
+    width: 100% !important;
+  }
+}
+.is-fullwidth {
+  width: 100% !important;
+}
