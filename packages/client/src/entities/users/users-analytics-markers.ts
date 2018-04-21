@@ -56,6 +56,9 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
     );
     // this.id$ = this.store.select(fromRoot.getQueryUserId);
     this.loading$ = this.store.select(fromRoot.getUsersAnalyticsAllLoading);
+    this.dateRange.data$.subscribe((_) => {
+      this.setData(null)
+    })
     // this.dataArray$ = this.data$.pipe(PageResults$);
     // this.init()
   }
@@ -80,6 +83,7 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   }
 
   setData(data: Page<IUserAnalytics>) {
+    console.log("set", data);
     data = data || { results: [], next: "no_next", count: 0, previous: "" };
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data));
   }
@@ -100,11 +104,11 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
     return htUser(marker).isValidMarker();
   }
 
-  clearData() {
+  clearData(clearData: boolean = false) {
     this.setActive(false);
     let nullData = { results: [], next: "no_next", count: 0, previous: "" };
     this.setLoading(false);
-    this.setData(nullData);
+    clearData && this.setData(nullData); // todo check if reset is happening
   }
 
   destroy() {

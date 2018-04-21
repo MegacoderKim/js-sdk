@@ -49,10 +49,10 @@ export class UsersSummary extends EntityListClient {
   }
   setQuery(query) {}
 
-  clearData() {
+  clearData(clearData: boolean = false) {
     this.setLoading(false);
     this.setActive(false);
-    this.setData(null);
+    clearData && this.setData(null);
   }
 
   constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtUsersApi>) {

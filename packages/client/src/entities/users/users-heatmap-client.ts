@@ -56,10 +56,10 @@ export class UsersHeatmap {
     this.dataState$.next(data)
   }
 
-  clearData() {
+  clearData(clearData: boolean = false) {
     this.setLoading(false);
     this.setActive(false);
-    this.setData(null);
+    clearData &&  this.setData(null);
   }
 };
 

@@ -97,11 +97,11 @@ export class UsersAnalytics extends EntityListClient {
     this.store.dispatch(new fromUsersDispatcher.SetUsersListId(userId));
   }
 
-  clearData() {
-    this.setData(null);
+  clearData(clearData: boolean = false) {
+    clearData && this.setData(null);
     this.setActive(false);
     this.setLoading(false);
-    this.setQuery({});
+    // this.setQuery({});
   }
 
   destroy() {
