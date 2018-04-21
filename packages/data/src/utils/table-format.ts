@@ -82,64 +82,96 @@ export const actionTableFormat = {
 };
 
 export const userTableFormat = {
+  "photo": {
+    label: "",
+    key: "",
+    isPic: true,
+    selector(user) {
+      return user.photo
+    }
+  },
+  "name": {
+    label: "Name",
+    key: "name",
+    selector(user) {
+      return NameCase(user.name)
+    }
+  },
   "stop_duration": {
     label: "Stop Duration",
+    key: "stop_duration",
     selector(user: IUserAnalytics) {
       return HMString(user.stop_duration, 60)
     }
   },
   "last_heartbeat_at": {
     label: "Last updated at",
+    key: "last_heartbeat_at",
     selector(user: IUserAnalytics) {
       return dateTimeString(user.last_heartbeat_at)
     }
   },
   "last_battery": {
     label: "Last battery",
+    key: "health__battery_status",
     selector(user: IUser) {
       return user.health.battery_status + " %"
     }
   },
   "total_duration": {
     label: "Duration tracked",
+    key: "total_duration",
     selector(user: IUserAnalytics) {
       return HMString(user.total_duration, 60)
     }
   },
   "num_places" : {
     label: "Number of stops",
+    key: "num_places",
     selector(user: IUserAnalytics) {
       return user.num_places
     }
   },
   "location_disabled_duration": {
     label: "Location disabled duration",
+    key: "location_disabled_duration",
     selector(user: IUserAnalytics) {
       return HMString(user.location_disabled_duration, 60)
     }
   },
   "total_distance": {
     label: "Total distance",
+    key: "total_distance",
     selector(user: IUserAnalytics) {
       return DistanceLocale(user.total_distance)
     }
   },
   "num_trips": {
     label: "Number of trips",
+    key: "num_trips",
     selector(user: IUserAnalytics) {
       return user.num_trips
     }
   },
   "network_offline_duration": {
     label: "Network offline duration",
+    key: "network_offline_duration",
     selector(user: IUserAnalytics) {
       return HMString(user.network_offline_duration, 60)
     }
   },
   "num_actions": {
     label: "Number of actions",
+    key: "num_actions",
     selector(user: IUserAnalytics) {
       return user.num_actions
+    }
+  },
+  "status": {
+    label: "Current status",
+    key: "status",
+    selector(user: IUserAnalytics) {
+      return user.display.status_text
     }
   }
 };
