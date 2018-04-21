@@ -120,7 +120,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       this.userService.placeline.setId(this.userId);
       this.userService.list.setId(this.userId || null)
     }
-    if (this.query) {
+    if (this.query && Object.keys(this.query).length) {
       this.userService.list.setQuery(this.query);
     }
     if (this.hasMap) this.bindMapData()
