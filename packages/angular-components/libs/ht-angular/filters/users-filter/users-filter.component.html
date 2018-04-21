@@ -66,7 +66,10 @@
           </div>
         </div>
       </div>
-      <ht-date-range [options]="datePickerOptions" *ngIf="options.showDatePicker && !isMobile"></ht-date-range>
+      <div class="flex-row row-gap-10 align-center">
+        <ht-date-range [options]="datePickerOptions" *ngIf="options.showDatePicker && !isMobile"></ht-date-range>
+        <ng-content></ng-content>
+      </div>
 
     </div>
     <ng-template #mobile>
@@ -155,20 +158,20 @@
       </div>
 
     </ng-template>
-    <div class="card-overlay is-small card-content flex-row row-gap-20" [@filter]="(showFilter$ | async)">
 
-
-      <div class="flex flex-row row-gap-10">
-        <ng-content></ng-content>
-      </div>
-    </div>
-    <div class="loading-bar" *ngIf="loading$ | async">
-      <ht-loading-bar></ht-loading-bar>
+    <!--selected state-->
+    <div class="card-overlay is-small card-content flex-row row-gap-20 align-center" [@filter]="(showFilter$ | async)">
+      <ng-content select=".select-start"></ng-content>
+      <ht-placeline-date [placelineClient]="usersClientService.placeline"></ht-placeline-date>
+      <ng-content select=".select-end"></ng-content>
     </div>
 
 
   </div>
+  <ht-loading-bar *ngIf="loading$ | async"></ht-loading-bar>
+
 </div>
+<!--query for mobile-->
 <div class="card" *ngIf="isMobile && options.showQueries && !(selectedUser$ | async) && query$ | async as queries">
   <div class="flex flex-row row-gap-4 card-content is-small" *ngIf="queries.length">
     <div class="" *ngFor="let query of queries">
