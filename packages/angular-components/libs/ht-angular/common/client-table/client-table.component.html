@@ -1,0 +1,25 @@
+<table class="table is-striped is-hoverable is-fullwidth">
+  <thead>
+  <tr>
+    <th class="clickable" *ngFor="let item of tableFormat" (click)="setOrdering(item.key)">
+      <span>{{item.label}}</span>
+      <span class="icon" *ngIf="item.key == ordering">
+        <i class="fa" [ngClass]="sign ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+      </span>
+    </th>
+  </tr>
+  </thead>
+  <tbody *ngIf="data">
+  <ng-container *ngFor="let item of data.results; let i = index; trackBy:indexId">
+    <tr (click)="selectData(item)" class="clickable" [@shuffle]="i">
+      <td *ngFor="let tableItem of tableFormat; trackBy:indexLabel">
+        <ng-template #pic>
+          <ht-profile [url]="tableItem.selector(item)"></ht-profile>
+        </ng-template>
+        <span *ngIf="!tableItem.isPic; else pic">{{tableItem.selector(item)}}</span>
+      </td>
+    </tr>
+  </ng-container>
+
+  </tbody>
+</table>

@@ -1,0 +1,42 @@
+table {
+  border: 1px solid #E9E9E9;
+  thead {
+    tr {
+      background: #F7F7F7;
+      th {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        //width: 13.3333%;
+        &.name-column {
+          //width: 20%;
+        }
+        .column-header {
+          display: flex;
+          span.column-label {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666666;
+            line-height: 18px;
+            padding-right: 2px;
+          }
+          span.fa-stack {
+            display: flex;
+            align-items: center;
+            width: 1.5em;
+            font-size: 12px;
+            color: #CCCCCC;
+            i {
+              top: 0;
+            }
+            &.sort {
+              padding-right: 2px;
+              padding-top: 2px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
