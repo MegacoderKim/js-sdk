@@ -1,1 +1,45 @@
-<ht-users-container></ht-users-container>
+<ht-users-filter>
+  <div class="start" *ngIf="!isMobile">
+    <div class="field has-addons">
+      <p class="control">
+        <a class="button is-primary">
+      <span class="icon is-small">
+        <i class="fa fa-list"></i>
+      </span>
+          <span>List</span>
+        </a>
+      </p>
+      <p class="control">
+        <a class="button" [routerLink]="[baseUrl, 'users', 'map']">
+      <span class="icon is-small">
+        <i class="fa fa-map-o"></i>
+      </span>
+          <span>Map</span>
+        </a>
+      </p>
+    </div>
+  </div>
+  <div (click)="closeUser()"
+       class="card-content-mid is-size-7 is-text-centered flex-row align-center select-start">
+    <span class="delete-container icon"> <i class="fa fa-arrow-circle-left fa-3x"></i></span>
+  </div>
+  <ht-replay class="flex select-end" [@filter] *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
+  <app-csv-download [client]="htUsersService.list" api="v2/users/analytics/" filename="users.csv"></app-csv-download>
+</ht-users-filter>
+
+<div htAutoHeight *ngIf="selectedUserId$ | async">
+  <ht-placeline-map-container></ht-placeline-map-container>
+</div>
+<div class="container" *ngIf="!(selectedUserId$ | async)">
+  <ht-client-table
+    [tableFormat]="tableFormat"
+    [loading]="!!(loading$ | async)"
+    [query]="query$ | async"
+    (setQuery)="setQuery($event)"
+    (onSelectData)="selectUser($event)"
+    [data]="data$ | async"></ht-client-table>
+  <div *ngIf="data$ | async as data">
+    <ht-pagination [pageDate]="data" [pageSize]="10" (fetchPage)="setPage($event)"></ht-pagination>
+
+  </div>
+</div>

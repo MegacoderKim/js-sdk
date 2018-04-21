@@ -3,13 +3,20 @@ import { CommonModule } from '@angular/common';
 
 import { UsersListRoutingModule } from './users-list-routing.module';
 import { UsersListComponent } from './users-list.component';
-import {UsersContainerModule} from "ht-angular";
+import {ClientTableModule, UsersFilterModule, PlacelineMapContainerModule, SharedModule, PaginationModule, ReplayModule} from "ht-angular";
+import {CsvDownloadModule} from "../shared/csv-download/csv-download.module";
 
 @NgModule({
   imports: [
     CommonModule,
     UsersListRoutingModule,
-    UsersContainerModule,
+    ClientTableModule,
+    UsersFilterModule,
+    PlacelineMapContainerModule,
+    SharedModule,
+    PaginationModule,
+    ReplayModule,
+    CsvDownloadModule
   ],
   declarations: [UsersListComponent]
 })
