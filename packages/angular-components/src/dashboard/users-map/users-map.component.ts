@@ -65,12 +65,17 @@ export class UsersMapComponent implements OnInit, OnDestroy {
 
   }
   ngOnInit() {
+    /**
+     * subscribe local view to store showMap
+     */
     this.store.select(fromRoot.getUiShowMapMobile).pipe(
       filter((_) => !!this.isMobile),
       map((isMap) => isMap ? 'map' : 'list')
     ).subscribe(this.view$);
+
     this.containerService.setEntity('users');
-    this.containerService.setView('list');
+    this.containerService.setView('map');
+
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
       .map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1

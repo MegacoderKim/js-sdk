@@ -2,7 +2,7 @@
   <div class="start" *ngIf="!isMobile">
     <div class="field has-addons">
       <p class="control">
-        <a class="button" [routerLink]="[baseUrl, 'list', 'users']">
+        <a class="button" [routerLink]="[baseUrl, 'users', 'list']">
       <span class="icon is-small">
         <i class="fa fa-list"></i>
       </span>
@@ -20,14 +20,15 @@
     </div>
   </div>
   <div (click)="closeUser()"
-       class="card-content-mid is-size-7 is-text-centered flex-row align-center">
+       class="card-content-mid is-size-7 is-text-centered flex-row align-center select-start">
     <span class="delete-container icon"> <i class="fa fa-arrow-circle-left fa-3x"></i></span>
   </div>
-  <ht-placeline-date class="auto" [placelineClient]="htUsersService.placeline"></ht-placeline-date>
-  <ht-replay class="flex" [@filter] *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
+  <!--<ht-placeline-date class="auto" [placelineClient]="htUsersService.placeline"></ht-placeline-date>-->
+  <ht-replay class="flex select-end" [@filter] *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
   <div class="mobile-end relative">
     <app-map-switch style="top: -5px;"></app-map-switch>
   </div>
+  <app-csv-download [client]="htUsersService.list" api="v2/users/analytics/" filename="users.csv"></app-csv-download>
 </ht-users-filter>
 <ht-container [view]="view$ | async">
   <ht-users-container [userId]="userId" [query]="query" [hasMap]="true"></ht-users-container>

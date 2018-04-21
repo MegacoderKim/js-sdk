@@ -5,6 +5,7 @@ import { UsersMapRoutingModule } from './users-map-routing.module';
 import { UsersMapComponent } from './users-map.component';
 import {ContainerModule, UsersContainerModule, UsersFilterModule, ReplayModule, PlacelineDateModule} from "ht-angular";
 import {MapSwitchModule} from "../map-container/map-switch/map-switch.module";
+import {CsvDownloadModule} from "../shared/csv-download/csv-download.module";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {MapSwitchModule} from "../map-container/map-switch/map-switch.module";
     UsersFilterModule,
     ReplayModule,
     PlacelineDateModule,
-    MapSwitchModule
+    MapSwitchModule,
+    CsvDownloadModule
   ],
   declarations: [UsersMapComponent]
 })
