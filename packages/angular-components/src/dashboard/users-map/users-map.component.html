@@ -30,6 +30,5 @@
   </div>
   <app-csv-download [client]="htUsersService.list" api="v2/users/analytics/" filename="users.csv"></app-csv-download>
 </ht-users-filter>
-<ht-container [view]="view$ | async">
-  <ht-users-container [userId]="userId" [query]="query" [hasMap]="true"></ht-users-container>
-</ht-container>
+<ht-users-map-container [view]="view$ | async" [userId]="userId" [query]="query"></ht-users-map-container>
+
