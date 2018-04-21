@@ -7,6 +7,7 @@ import {UsersContainerModule} from "../users-container/users-container.module";
 import {MapContainerModule} from "../map-container/map-container.module";
 import {UsersFilterModule} from "../filters/users-filter/users-filter.module";
 import {SharedModule} from "../shared/shared.module";
+import {ContainerModule} from "../container/container.module";
 
 @NgModule({
   imports: [
@@ -14,7 +15,9 @@ import {SharedModule} from "../shared/shared.module";
     UsersContainerModule,
     MapContainerModule,
     UsersFilterModule,
-    SharedModule
+    SharedModule,
+    MapContainerModule,
+    ContainerModule
   ],
   declarations: [UsersMapContainerComponent],
   exports: [UsersMapContainerComponent]

@@ -9,14 +9,12 @@ import {HtUsersService} from "../ht/ht-users.service";
   styleUrls: ['./users-map-container.component.less']
 })
 export class UsersMapContainerComponent implements OnInit {
-  @Input() hasPlaceline: boolean = true;
   @Input() sidebarWidth: number;
-  @Input() apiType: ApiType = ApiType.analytics;
-  @Input() showFilter: boolean = true;
-  @Input() showSidebar: boolean = true;
-  @Input() showAll: boolean = false;
+  @Input() view: string | null = null;
+  @Input() query: object = {};
+  @Input() userId: string | null = null;
   constructor(
-    private userClientService: HtUsersService
+
   ) {
 
   }
@@ -30,7 +28,7 @@ export class UsersMapContainerComponent implements OnInit {
   // }
 
   ngOnInit() {
-    this.userClientService.listAll.setActive();
+    // this.userClientService.listAll.setActive();
   }
 
 }

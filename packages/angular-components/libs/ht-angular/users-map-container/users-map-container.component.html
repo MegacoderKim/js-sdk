@@ -1,17 +1,20 @@
-<div class="ht-container" htAutoHeight>
-  <div class="card">
-    <ht-users-filter class="card-content" *ngIf="showFilter"></ht-users-filter>
-  </div>
-  <div class="flex-row flex">
-    <div class="bar" *ngIf="showSidebar" [style.width.px]="sidebarWidth || 400">
-      <ht-users-container
-        [apiType]="apiType"
-        [hasPlaceline]="hasPlaceline"
-        [showAll]="showAll"
-        [hasMap]="true"></ht-users-container>
-    </div>
-    <div class="flex">
-      <ht-map-container [showLoading]="false"></ht-map-container>
-    </div>
-  </div>
-</div>
+<!--<div class="ht-container" htAutoHeight>-->
+  <!--<div class="card">-->
+    <!--<ht-users-filter class="card-content" *ngIf="showFilter"></ht-users-filter>-->
+  <!--</div>-->
+  <!--<div class="flex-row flex">-->
+    <!--<div class="bar" *ngIf="showSidebar" [style.width.px]="sidebarWidth || 400">-->
+      <!--<ht-users-container-->
+        <!--[apiType]="apiType"-->
+        <!--[hasPlaceline]="hasPlaceline"-->
+        <!--[showAll]="showAll"-->
+        <!--[hasMap]="true"></ht-users-container>-->
+    <!--</div>-->
+    <!--<div class="flex">-->
+      <!--<ht-map-container [showLoading]="false"></ht-map-container>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+<ht-map-container [view]="view">
+  <ht-users-container [userId]="userId" [query]="query" [hasMap]="true"></ht-users-container>
+</ht-map-container>
