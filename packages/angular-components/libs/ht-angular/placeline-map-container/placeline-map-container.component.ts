@@ -19,7 +19,7 @@ export class PlacelineMapContainerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userClientService.placeline.setId(this.userId);
+    if (this.userId) this.userClientService.placeline.setId(this.userId);
     // this.userData$ = this.userClientService.getUserData().do((userData: IUserData) => {
     //   if (userData) {
     //     this.mapService.tracePlaceline(userData);
