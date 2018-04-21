@@ -24,4 +24,22 @@ export const cardStackFn = function (className) {
       ], {optional: true})
     ])
   ])
+};
+
+export const overlay = entryLeaveTransition('overlay', {top: '100%'}, '0.2s');
+
+export const bottomAppear = entryLeaveTransition('bottomAppear', {transform: "translateY(120%)"}, '0.3s');
+
+export const fadeAppear = entryLeaveTransition('fadeAppear', {opacity: 0}, '0.3s');
+
+export function entryLeaveTransition(name: string, entryStyle: {[key: string]: string | number}, duration: string = '0.4s') {
+  return trigger(name, [
+    transition(':enter', [
+      style(entryStyle),
+      animate(duration + ' ease-out')
+    ]),
+    transition(':leave', [
+      animate(duration + ' ease-in', style(entryStyle))
+    ])
+  ]);
 }

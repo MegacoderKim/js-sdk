@@ -8,11 +8,16 @@ import {IUserAnalytics, Page} from "ht-models";
 import {userTableFormat} from "ht-data";
 import {config} from "../config";
 import {ContainerService} from "../container/container.service";
+import {bottomAppear, fadeAppear} from "ht-angular";
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.less']
+  styleUrls: ['./users-list.component.less'],
+  animations: [
+    bottomAppear,
+    fadeAppear
+  ]
 })
 export class UsersListComponent implements OnInit {
   data$: Observable<Page<IUserAnalytics>>;
