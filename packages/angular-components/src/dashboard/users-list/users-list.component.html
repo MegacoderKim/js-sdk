@@ -37,7 +37,10 @@
       [query]="query$ | async"
       (setQuery)="setQuery($event)"
       (onSelectData)="selectUser($event)"
-      [data]="data$ | async"></ht-client-table>
+      [data]="data$ | async">
+      <ht-loading-data class="is-size-4 loading-state"></ht-loading-data>
+      <div class="is-size-1 zero-state auto card-content has-text-centered">No data</div>
+    </ht-client-table>
     <div *ngIf="data$ | async as data">
       <ht-pagination [pageDate]="data" [pageSize]="10" (fetchPage)="setPage($event)"></ht-pagination>
 

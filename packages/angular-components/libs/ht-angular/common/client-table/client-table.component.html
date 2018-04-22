@@ -23,3 +23,10 @@
 
   </tbody>
 </table>
+<!--<ht-loading-data *ngIf="loading && !data" class="is-size-4 loading-state"></ht-loading-data>-->
+<ng-container *ngIf="data && data.results.length == 0">
+  <ng-content select=".zero-state"></ng-content>
+</ng-container>
+<ng-container *ngIf="loading && !data">
+  <ng-content select=".loading-state"></ng-content>
+</ng-container>
