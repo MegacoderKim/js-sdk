@@ -162,7 +162,7 @@
     <!--selected state-->
     <div class="card-overlay is-small card-content flex-row row-gap-20 align-center" [@filter]="(showFilter$ | async)">
       <ng-content select=".select-start"></ng-content>
-      <ht-placeline-date [placelineClient]="usersClientService.placeline"></ht-placeline-date>
+      <ht-placeline-date [placelineClient]="usersClient.placeline"></ht-placeline-date>
       <ng-content select=".select-end"></ng-content>
     </div>
 
