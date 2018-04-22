@@ -26,7 +26,7 @@
   <ht-replay class="flex select-end" *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
   <app-csv-download [client]="htUsersService.list" api="v2/users/analytics/" filename="users.csv"></app-csv-download>
 </ht-users-filter>
-<div htAutoHeight>
+<div htAutoHeight class="relative">
   <div class="placeline-container" [@bottomAppear] *ngIf="selectedUserId$ | async">
     <ht-placeline-map-container></ht-placeline-map-container>
   </div>
