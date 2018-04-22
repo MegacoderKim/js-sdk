@@ -29,7 +29,7 @@ export class AutoHeightComponent implements OnInit, AfterViewInit {
   };
 
   setHeight() {
-    console.log("set");
+    // console.log("set");
     const windowHeight = window.innerHeight;
     const top = this.elementRef.nativeElement.getBoundingClientRect().top;
     const height = windowHeight - top;
