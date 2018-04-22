@@ -8,7 +8,7 @@ import {Component, OnInit, Input, ChangeDetectionStrategy} from '@angular/core';
 })
 export class LoadingDataComponent implements OnInit {
   @Input() size: number;
-  @Input() message: string = "";
+  @Input() message: string = "Loading";
   @Input() customMessage: string;
   constructor() { }
 
