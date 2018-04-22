@@ -13,6 +13,7 @@ export const mainRoutes: Routes = [
   { path: 'blocked', loadChildren: "../block/block.module#BlockModule"},
   { path: 'analytics', loadChildren: "../analytics/analytics.module#AnalyticsModule"},
   { path: 'users', loadChildren: "../users-map/users-map.module#UsersMapModule"},
+  { path: 'users', loadChildren: "../users-list/users-list.module#UsersListModule"},
   {path: '', loadChildren: "../settings/settings.module#SettingsModule"},
   {path: '', loadChildren: "../container/container.module#ContainerModule", canActivate: [ContainerGuardGuard]},
 ];

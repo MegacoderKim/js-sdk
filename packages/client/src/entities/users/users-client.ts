@@ -21,7 +21,7 @@ import { DateRangeToQuery$ } from "ht-data";
 import { ApiStoreService } from "../../global/store-provider";
 import { filter } from "rxjs/operators/filter";
 import { scan } from "rxjs/operators/scan";
-import {pluck, flatMap, map, distinctUntilChanged, share} from "rxjs/operators";
+import {pluck, flatMap, map, distinctUntilChanged, share, take} from "rxjs/operators";
 import { combineLatest } from "rxjs/observable/combineLatest";
 import { of } from "rxjs/observable/of";
 import { empty } from "rxjs/observable/empty";
@@ -218,6 +218,27 @@ export class HtUsersClient extends EntityClient {
   }
 
   private initEffects() {
+
+    /**
+     * set show all if no results
+     */
+    this.list.data$.pipe(
+      filter((data) => !!data && data.results.length == 0),
+      flatMap((noresults) => {
+        return this.list.getApiQuery$().pipe(
+          take(1),
+          filter((query) => {
+            return ['status', 'search', 'show_all'].reduce((pass, param) => {
+              return pass && !query[param];
+            }, true)
+          })
+        )
+      })
+    ).subscribe((_) => {
+      // console.log("set show all");
+      this.list.setQuery({show_all: true})
+    });
+
     this.list.query$.pipe(filter(data => !!data)).subscribe(query => {
       this.setListAllFilter(query);
     });

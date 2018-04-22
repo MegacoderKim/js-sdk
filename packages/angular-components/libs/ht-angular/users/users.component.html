@@ -1,7 +1,7 @@
 <div class="card-stack" *ngIf="users" [@cardStack]="users.length">
   <ng-container *ngFor="let user of users; let i = index; trackBy:indexId">
     <ht-user-card
-      [@sort]="i"
+      [@shuffle]="i"
       class="user"
       [class.card-selected]="selectedUserDataId == user.id"
       (mouseenter)="hover(user.id)"

@@ -13,54 +13,20 @@ import { merge } from 'rxjs/observable/merge';
 @Component({
   selector: 'ht-map-container',
   templateUrl: './map-container.component.html',
-  styleUrls: ['./map-container.component.less']
+  styleUrls: ['./map-container.component.scss']
 })
-export class MapContainerComponent implements OnInit, AfterContentInit, OnDestroy {
-  @Input() showLoading: boolean = true;
-  subs = [];
-  loading$;
+export class MapContainerComponent implements OnInit {
+  @Input() hasMap: boolean = false;
+  @Input() view: string | null = null;
+  @Input()
+  set showMapOnly(value: boolean) {
+    if (value) this.view = 'map';
+  };
+  @Input() sidebarWidth: number = 400;
   constructor(
-    private userClientService: HtUsersService,
-    private mapService: HtMapService
   ) { }
 
   ngOnInit() {
-    this.mapService.usersCluster.setPageData$(this.userClientService.listAll.data$, {
-      hide$: this.userClientService.placeline.id$
-    });
-
-    // this.mapService.placeline.userMarker = new User(this.mapService.mapInstance);
-    // this.mapService.placeline.userMarker.setTimeAwareAnimation(this.mapService.placeline.anim);
-    this.mapService.placeline.setCompoundData$(this.userClientService.placeline.data$, {
-      roots: ['placeline', 'actions'],
-      highlighted$: this.userClientService.placeline.segmentSelectedId$,
-      filter$: this.userClientService.placeline.segmentResetId$,
-      resetMap$: this.userClientService.placeline.segmentResetId$
-    });
-
-    const loading$1 = this.userClientService.placeline.loading$
-      .pipe(
-        map((data) => !!data && this.showLoading),
-        distinctUntilChanged()
-      );
-
-    const loading$2 = this.userClientService.listAll.loading$
-      .pipe(
-        map((data) => !!data),
-        distinctUntilChanged()
-      );
-
-    this.loading$ = merge(loading$1, loading$2);
-
-  }
-
-  ngAfterContentInit() {
-
-  }
-
-  ngOnDestroy() {
-    this.userClientService.listAll.clearData();
-    this.mapService.usersCluster.trace([])
   }
 
 }

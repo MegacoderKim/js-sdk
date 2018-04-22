@@ -9,6 +9,7 @@ import {Color, IsRangeToday} from "ht-utility";
 import {distinctUntilChanged, map} from "rxjs/operators";
 import {merge} from "rxjs/observable/merge";
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Component({
   selector: 'ht-users-container',
@@ -39,6 +40,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   loadingUserId$;
   loadingUserDataId$;
   loadingUsers$;
+  loading$;
   // todo infer has map from mapInstance
   @Input() hasMap: boolean = false;
   @Input() userId: string;
@@ -99,6 +101,15 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
 
     this.loadingUsers$ = this.userService.getLoading$();
 
+    this.loading$ = combineLatest(
+      this.loadingUsers$,
+      this.userService.list.data$
+    ).pipe(
+      map(([loading, data]) => {
+        console.log("lo", loading, data);
+        return loading && !data
+      })
+    );
     this.loadingUserDataId$ = this.userService.placeline.loading$
       .pipe(
         map(data => !!data),
@@ -120,7 +131,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       this.userService.placeline.setId(this.userId);
       this.userService.list.setId(this.userId || null)
     }
-    if (this.query) {
+    if (this.query && Object.keys(this.query).length) {
       this.userService.list.setQuery(this.query);
     }
     if (this.hasMap) this.bindMapData()
