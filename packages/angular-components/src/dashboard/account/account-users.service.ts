@@ -25,6 +25,7 @@ import {merge} from "rxjs/observable/merge";
 import {environment} from '../../environments/environment';
 import {of} from "rxjs/observable/of";
 import {zip} from "rxjs/observable/zip";
+import {filter, flatMap, map, pluck, switchMap, take, tap} from "rxjs/operators";
 
 @Injectable()
 export class AccountUsersService {
@@ -67,14 +68,16 @@ export class AccountUsersService {
   }
 
   getUser(): Observable<IAccountUser> {
-    return this.store.select(fromRooot.getAccountUserCurrent).do((accountUser => {
-      if(accountUser) this.storage.setUser(accountUser)
-    }))
+    return this.store.select(fromRooot.getAccountUserCurrent).pipe(
+      tap((accountUser => {
+        if(accountUser) this.storage.setUser(accountUser)
+      }))
+    )
   }
 
   getAccount(): Observable<IAccount> {
     return this.store.select(fromRooot.getCurrentAccount)
-      .filter((data) => !!data);
+      .pipe(filter((data) => !!data));
 
   }
 
@@ -83,11 +86,14 @@ export class AccountUsersService {
   }
 
   getSubAccount(type: string = config.tokenType): Observable<ISubAccount> {
-    return this.getAccount().filter(data => !!data).map((account: IAccount) => {
-      return _.find(account.sub_accounts, (subAccount: ISubAccount) => {
-        return subAccount.type == type;
+    return this.getAccount().pipe(
+      filter(data => !!data),
+      map((account: IAccount) => {
+        return _.find(account.sub_accounts, (subAccount: ISubAccount) => {
+          return subAccount.type == type;
+        })
       })
-    })
+    )
   }
 
   updateAccountUser(accountUser: IAccountUser) {
@@ -127,13 +133,15 @@ export class AccountUsersService {
 
   addAccountUser(email: string, role: string, groupId?: string): Observable<IMember> {
     return zip(
-        this.getAccount().take(1),
-        this.getUser().take(1)
-    ).flatMap(([account, accountUser]: [IAccount, IAccountUser]) => {
-      let obj: {email: string, role: string, invited_by?: string, group_id?: string} = {email, role, invited_by: accountUser.email};
-      if(groupId) obj = {...obj, group_id: groupId};
-      return this.http.post<IMember>(`app/v1/accounts/${account.id}/add_account_user/`, obj)
-    })
+        this.getAccount().pipe(take(1)),
+        this.getUser().pipe(take(1))
+    ).pipe(
+      flatMap(([account, accountUser]: [IAccount, IAccountUser]) => {
+        let obj: {email: string, role: string, invited_by?: string, group_id?: string} = {email, role, invited_by: accountUser.email};
+        if(groupId) obj = {...obj, group_id: groupId};
+        return this.http.post<IMember>(`app/v1/accounts/${account.id}/add_account_user/`, obj)
+      })
+    )
   }
 
   changePassword(id: string, accountUser) {
@@ -201,15 +209,18 @@ export class AccountUsersService {
         this.hydrateAccountUser()
       }
     });
-    this.storage.getMemberships().filter(data => !config.isDemo).switchMap((memberships) => {
-      let allMembers$ = this.membershipsService.all();
-      if(memberships) {
-        // this.store.dispatch(new fromAccountUser.UpdateMembershipsAction(memberships));
-        return merge(allMembers$, of(memberships))
-      } else {
-        return this.membershipsService.all()
-      }
-    }).subscribe((data: IMembership[]) => {
+    this.storage.getMemberships().pipe(
+      filter(data => !config.isDemo),
+      switchMap((memberships) => {
+        let allMembers$ = this.membershipsService.all();
+        if(memberships) {
+          // this.store.dispatch(new fromAccountUser.UpdateMembershipsAction(memberships));
+          return merge(allMembers$, of(memberships))
+        } else {
+          return this.membershipsService.all()
+        }
+      })
+    ).subscribe((data: IMembership[]) => {
       this.membershipsService.setMemberships(data)
     })
   };
@@ -265,9 +276,12 @@ export class AccountUsersService {
 
   patchAccountUser(currentAccountUser: Partial<IAccountUser>) {
     let options = this.getAdminReqOpt();
-    let patch$ = this.getUser().take(1).switchMap((accountUser: IAccountUser) => {
-      return this.http.patch<IAccountUser>(`app/v1/account_users/${accountUser.id}/`, currentAccountUser, options)
-    });
+    let patch$ = this.getUser().pipe(
+      take(1),
+      switchMap((accountUser: IAccountUser) => {
+        return this.http.patch<IAccountUser>(`app/v1/account_users/${accountUser.id}/`, currentAccountUser, options)
+      })
+    );
     return patch$;
   }
 
@@ -280,16 +294,19 @@ export class AccountUsersService {
   }
 
   getUpdatedAccountOfSubAccount(updatedSubAccount: ISubAccount): Observable<IAccount> {
-    return this.getAccount().take(1).map((account: IAccount) => {
-      let sub_accounts = _.map(account.sub_accounts, (subAccount: ISubAccount) => {
-        if(subAccount.id == updatedSubAccount.id) {
-          return updatedSubAccount
-        } else {
-          return subAccount
-        }
-      });
-      return {...account, sub_accounts}
-    })
+    return this.getAccount().pipe(
+      take(1),
+      map((account: IAccount) => {
+        let sub_accounts = _.map(account.sub_accounts, (subAccount: ISubAccount) => {
+          if(subAccount.id == updatedSubAccount.id) {
+            return updatedSubAccount
+          } else {
+            return subAccount
+          }
+        });
+        return {...account, sub_accounts}
+      })
+    )
   }
 
   billingSummary() {
@@ -297,9 +314,12 @@ export class AccountUsersService {
   }
 
   resendInvite(email: string) {
-    return this.getAccount().take(1).switchMap((account: IAccount) => {
-      return this.http.post(`app/v1/accounts/${account.id}/resend_invite/`, {email})
-    })
+    return this.getAccount().pipe(
+      take(1),
+      switchMap((account: IAccount) => {
+        return this.http.post(`app/v1/accounts/${account.id}/resend_invite/`, {email})
+      })
+    )
   }
 
   private getAdminReqOpt() {
@@ -333,16 +353,22 @@ export class AccountUsersService {
   }
 
   removeAccountUser(email: string) {
-    return this.getAccount().take(1).switchMap((account: IAccount) => {
-      return this.http.post(`app/v1/accounts/${account.id}/remove_account_user/`, {email})
-    })
+    return this.getAccount().pipe(
+      take(1),
+      switchMap((account: IAccount) => {
+        return this.http.post(`app/v1/accounts/${account.id}/remove_account_user/`, {email})
+      })
+    )
   }
 
   getInvoices(query = {}) {
-    return this.getAccount().take(1).switchMap((account: IAccount) => {
-      let string = HtQuerySerialize(query);
-      return this.http.get<Page<IInvoices>>(`app/v1/invoices/?ordering=-end_date&${string}`)
-    })
+    return this.getAccount().pipe(
+      take(1),
+      switchMap((account: IAccount) => {
+        let string = HtQuerySerialize(query);
+        return this.http.get<Page<IInvoices>>(`app/v1/invoices/?ordering=-end_date&${string}`)
+      })
+    )
   }
 
   makePayment(invoiceId: string) {
@@ -363,19 +389,21 @@ export class AccountUsersService {
   }
 
   confirmRollKey(token_id: string) {
-    this.getUser().take(1).subscribe((user) => {
+    this.getUser().pipe(take(1)).subscribe((user) => {
       console.log("user", user);
     })
     return this.getSubAccount().map((subAccount) => {
       return subAccount.id
-    }).take(1)
-      .switchMap((subAccountId: string) => {
-        return this.http.post(`app/v1/subaccounts/${subAccountId}/confirm_key_roll/`, {token_id})
-      })
+    }).pipe(
+      take(1),
+      switchMap((subAccountId: string) => {
+          return this.http.post(`app/v1/subaccounts/${subAccountId}/confirm_key_roll/`, {token_id})
+        })
+    )
   };
 
   setBillingPlan(plan) {
-    this.getAccount().take(1).pluck('id').subscribe((id: string) => {
+    this.getAccount().pipe(take(1), pluck('id')).subscribe((id: string) => {
       this.http.post(`app/v1/accounts/${id}/change_plan/`, {plan}).subscribe((account: IAccount) => {
         this.store.dispatch(new fromAccountUser.PatchAccountAction(account))
       })

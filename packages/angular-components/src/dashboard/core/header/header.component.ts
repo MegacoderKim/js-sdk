@@ -12,6 +12,7 @@ import {Subject} from "rxjs/Subject";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {IMember} from "ht-models";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import {map, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-header',
@@ -59,11 +60,13 @@ export class HeaderComponent implements OnInit {
     this.filteredMemberships$ = combineLatest(
       this.memberships$,
       this.accSeachTerm,
-      (memberships: IMembership[], search: string | undefined) => {
+
+    ).pipe(
+      map(([memberships, search]: [IMembership[], string | undefined]) => {
         return search ? _.filter(memberships, (membership) => {
           return membership.account.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
         }) : memberships;
-      }
+      })
     );
     this.entityLink$ = this.store.select(fromRoot.getQueryView).map(state => {
       return {
@@ -111,13 +114,13 @@ export class HeaderComponent implements OnInit {
   }
 
   selectAccount(account: IAccount) {
-    this.accountUser$.take(1).subscribe((accountUser: IAccountUser) => {
+    this.accountUser$.pipe(take(1)).subscribe((accountUser: IAccountUser) => {
       this.accountUserService.setAccount(account, accountUser);
     });
   }
 
   selectDefaultAccount() {
-    this.accountUser$.take(1).subscribe((accountUser: IAccountUser) => {
+    this.accountUser$.pipe(take(1)).subscribe((accountUser: IAccountUser) => {
       this.accountUserService.setAccount(accountUser.default_account, accountUser)
     })
   }

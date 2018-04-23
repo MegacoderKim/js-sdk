@@ -9,6 +9,7 @@ import * as _ from "underscore";
 import {HttpClient} from "@angular/common/http";
 import { MembershipsService } from "../../account/memberships.service";
 import {zip} from "rxjs/observable/zip";
+import {filter, take, withLatestFrom} from "rxjs/operators";
 
 @Component({
   selector: 'app-team',
@@ -33,17 +34,19 @@ export class TeamComponent implements OnInit {
   ngOnInit() {
     this.account$ = this.accountUserService.getAccount();
     this.membershipsService.getMembershipsState()
-    .filter(data => !!data)
-    .take(1)
-    .withLatestFrom(
-      this.account$.filter(data => !!data),
-      (memberships, account) => {
-        const accountId = account.id;
-        const member = memberships.find((member) => {
-          return member.account.id == accountId
-        });
-        return member.role == 'read_only';
-      }
+    .pipe(
+      filter(data => !!data),
+      take(1),
+      withLatestFrom(
+          this.account$.filter(data => !!data),
+          (memberships, account) => {
+            const accountId = account.id;
+            const member = memberships.find((member) => {
+              return member.account.id == accountId
+            });
+            return member.role == 'read_only';
+          }
+        )
     )
     .subscribe((data) => {
       this.isReadonly = data;
@@ -81,8 +84,8 @@ export class TeamComponent implements OnInit {
         emailElem.value = '';
         console.log("new member", data);
         zip(
-            this.accountUser$.take(1),
-            this.account$.take(1)
+            this.accountUser$.pipe(take(1)),
+            this.account$.pipe(take(1))
         ).subscribe(([accountUser, account]) => {
           let newAccount = {...account, members: [...account.members, data]};
           let newAccountUser = UpdateDefaultAccount(accountUser, newAccount, config);
@@ -126,8 +129,8 @@ export class TeamComponent implements OnInit {
       this.removingIndex = -1;
       this.snackbarService.displaySuccessToast('Team member removed');
       zip(
-        this.accountUser$.take(1),
-        this.account$.take(1)
+        this.accountUser$.pipe(take(1)),
+        this.account$.pipe(take(1))
       ).subscribe(([accountUser, account]) => {
         let members = _.reject(account.members, (member: IMember) => {
           return member.user.email == email;

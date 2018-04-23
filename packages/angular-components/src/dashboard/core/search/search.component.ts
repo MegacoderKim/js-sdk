@@ -5,6 +5,7 @@ import {IPageData} from "../../model/common";
 import {UserService} from "../../users/user.service";
 import {ActionService} from "../../action/action.service";
 import {zip} from "rxjs/observable/zip";
+import {debounceTime, switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'app-search',
@@ -29,7 +30,7 @@ export class SearchComponent implements OnInit {
   ngAfterViewInit() {
 
     let inputChangesObservuer = this.term
-        .debounceTime(400);
+        .pipe(debounceTime(400));
 
     inputChangesObservuer.subscribe(term => {
       if(term.length) {
@@ -53,7 +54,7 @@ export class SearchComponent implements OnInit {
         })
     )
 
-    inputChanges.switchMap(term => fetch(term))
+    inputChanges.pipe(switchMap(term => fetch(term)))
         .subscribe(() => {
         this.loading = false;
       });

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {distinctUntilChanged, filter, map} from "rxjs/operators";
 
 @Injectable()
 export class BroadcastService {
@@ -16,16 +17,18 @@ export class BroadcastService {
   }
 
   on<T>(key: any): Observable<T> {
-    return this._eventBus.asObservable()
-        .filter(event => event.key === key)
-        .map(event => <T>event.data);
+    return this._eventBus.asObservable().pipe(
+      filter(event => event.key === key),
+      map(event => <T>event.data)
+    );
   }
 
   onScrollEnd(): Observable<boolean> {
-    return this.on('scroll-end')
-        .distinctUntilChanged()
-        .filter(scrollEnd => !!scrollEnd)
-      .map(data => !!data)
+    return this.on('scroll-end').pipe(
+      distinctUntilChanged(),
+      filter(scrollEnd => !!scrollEnd),
+      map(data => !!data)
+    )
   }
 
   onRangeChange(): Observable<boolean> {

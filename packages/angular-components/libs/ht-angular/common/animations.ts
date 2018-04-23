@@ -11,7 +11,7 @@ export const shuffle = trigger('shuffle', [
 ]);
 
 
-export const cardStackFn = function (className) {
+export function cardStackFn (className) {
   return trigger('cardStack', [
     transition('* => *', [
       query(`.${className}:enter`, [

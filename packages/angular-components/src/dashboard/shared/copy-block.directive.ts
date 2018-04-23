@@ -1,5 +1,6 @@
 import {Directive, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy, Renderer2} from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {take} from "rxjs/operators";
 let Clipboard = require('clipboard');
 
 @Directive({
@@ -36,7 +37,7 @@ export class ClipboardDirective implements OnInit, OnDestroy {
       this.timerSub.unsubscribe();
     }
     this.timerSub = Observable.timer(2000)
-      .take(1)
+      .pipe(take(1))
       .subscribe(() => {
         this.renderer.removeClass( this.eltRef.nativeElement, 'isCopied');
       });

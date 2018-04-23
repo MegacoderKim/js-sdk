@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as fromRoot from "../../reducers";
 import {Store} from "@ngrx/store";
+import {take} from "rxjs/operators";
 
 @Injectable()
 export class SnackbarService {
@@ -56,13 +57,13 @@ export class SnackbarService {
   }
 
   hideLoadingToastMobile(): void {
-    this.store.select(fromRoot.getUiShowMapMobile).take(1).subscribe((show) => {
+    this.store.select(fromRoot.getUiShowMapMobile).pipe(take(1)).subscribe((show) => {
       if(show) this.hideLoadingToast()
     });
   }
 
   hideLoadingToastList(): void {
-    this.store.select(fromRoot.getUiShowMapMobile).take(1).subscribe((show) => {
+    this.store.select(fromRoot.getUiShowMapMobile).pipe(take(1)).subscribe((show) => {
       if(!show) this.hideLoadingToast()
     });
   }

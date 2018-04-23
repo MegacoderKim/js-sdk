@@ -5,6 +5,7 @@ import {Page} from "ht-models";
 import {IInvoices} from "../../../models/invoices";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {filter, switchMap, tap} from "rxjs/operators";
 var download = require('../../../assets/download.js');
 
 @Component({
@@ -23,9 +24,13 @@ export class InvoicesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.invoices$ = this.loading$.filter((data) => !!data).switchMap(() => this.accountUsersService.getInvoices({page_size: 50})).do((data) => {
-      this.loading$.next(false)
-    })
+    this.invoices$ = this.loading$.pipe(
+      filter((data) => !!data),
+      switchMap(() => this.accountUsersService.getInvoices({page_size: 50})),
+      tap((data) => {
+        this.loading$.next(false)
+      })
+    )
   }
 
   makePayment(invoice: IInvoices) {

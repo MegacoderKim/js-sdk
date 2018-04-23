@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import "rxjs/add/operator/map";
+// import "rxjs/add/operator/map";
 import {AccountUsersService} from "../account/account-users.service";
 
 @Component({

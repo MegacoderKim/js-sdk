@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
-import "rxjs/add/operator/switchMap";
-import "rxjs/add/operator/do";
+// import "rxjs/add/operator/switchMap";
+// import "rxjs/add/operator/do";
 import {Actions, Effect} from "@ngrx/effects";
 import {BroadcastService} from "../core/broadcast.service";
 import * as fromUser from "../actions/user";
@@ -22,6 +22,8 @@ import {empty} from "rxjs/observable/empty";
 import {of} from "rxjs/observable/of";
 import {format} from "date-fns";
 import {HtUsersService} from "ht-angular";
+import {debounceTime, filter, map, switchMap, take, tap} from "rxjs/operators";
+import {IPlaceHeat} from "ht-models";
 
 @Injectable()
 export class UserEffectsService {
@@ -47,40 +49,45 @@ export class UserEffectsService {
 
     @Effect({ dispatch: false })
     updateUser$: Observable<any>  = this.actions$
-        .ofType(fromUser.UPDATE_USERS_MAP, fromUser.SET_USER_FILTER, fromUser.SET_FILTER_USER_PLACE, fromUser.SET_USER_PLACE, fromUser.ADD_FILTER_USERS_MAP, fromUser.SET_SELECTED_USER_PLACE)
-        .do(() => {
-            this.broadcast.emit('reset-map')
-        });
+        .ofType(fromUser.UPDATE_USERS_MAP, fromUser.SET_USER_FILTER, fromUser.SET_FILTER_USER_PLACE, fromUser.SET_USER_PLACE, fromUser.ADD_FILTER_USERS_MAP, fromUser.SET_SELECTED_USER_PLACE).pipe(
+        tap(() => {
+          this.broadcast.emit('reset-map')
+        })
+      );
 
     @Effect()
     fetchUserPlaces$: Observable<any>  = merge(
         this.actions$
             .ofType(fromUser.SELECT_USER_ID_PLACE),
         this.actions$.ofType(fromUser.CLEAR_SELECTED_USER_PLACE).map(() => null)
-    )
-        .switchMap((action) => {
-            if(!action) return empty();
-            return this.store.select(fromRoot.getQueryDateRange)
-                .switchMap((range: IRange) => {
-                    // console.log(range, "fire", action);
-                    if(IsRangeADay(range)) {
-                        // console.log("today", action);
-                        return merge(
-                            of(new fromUser.SelectUserIdAction(action.payload)),
-                            of(new fromUser.SetFilterUserPlace(() => false))
-                        )
-                    } else {
-                        // console.log("get place", action.payload);
-                        return this.userService.placeList({min_recorded_at: range.start, max_recorded_at: range.end, page_size: 10000, id: action.payload}).switchMap(userPlaces => {
-                            return merge(
-                                of(new fromUser.SetSelectedUserPlace(userPlaces)),
-                                of(new fromUser.ClearUserAction())
-                            )
-                        })
-                    }
-
+    ).pipe(
+      switchMap((action) => {
+        if(!action) return empty();
+        return this.store.select(fromRoot.getQueryDateRange).pipe(
+          switchMap((range: IRange) => {
+            // console.log(range, "fire", action);
+            if(IsRangeADay(range)) {
+              // console.log("today", action);
+              return merge(
+                of(new fromUser.SelectUserIdAction(action.payload)),
+                of(new fromUser.SetFilterUserPlace(() => false))
+              )
+            } else {
+              // console.log("get place", action.payload);
+              return this.userService.placeList({min_recorded_at: range.start, max_recorded_at: range.end, page_size: 10000, id: action.payload}).pipe(
+                switchMap((userPlaces: IPlaceHeat[]) => {
+                  return merge(
+                    of(new fromUser.SetSelectedUserPlace(userPlaces)),
+                    of(new fromUser.ClearUserAction())
+                  )
                 })
-        });
+              )
+            }
+
+          })
+        )
+      })
+    )
 
     // @Effect({ dispatch: false })
     // updateSegment$: Observable<any>  = this.actions$
@@ -91,27 +98,31 @@ export class UserEffectsService {
 
     @Effect()
     selectUser$: Observable<any>  = merge(
-        this.actions$.ofType(fromUser.SELECT_USER_ID, fromUser.SELECT_TIMELINE_QUERY, fromUser.SELECT_USER_ACTION).map(() => true),
-        this.updateUserData$.debounceTime(10000),
-        this.actions$.ofType(fromUser.CLEAR_USER).map(() => false)
-    )
-        .switchMap((toFetch) => this.getTimelineQuery(toFetch))
-        .switchMap((query) => this.fetchTimeline(query))
-        .filter(data => {
-            return !!data
-        })
-        .switchMap((userSegment: IUserPlaceline) => {
-            this.updateUserData$.next(true);
-          // this.timelinePolyline.update(userSegment.placeline, userSegment.last_heartbeat_at);
-          this.userTraceService.segmentsTrace.updateTimeline(userSegment);
-            return this.store.select(fromRoot.getUserData).take(1).map((currentUserData: IUserPlaceline) => {
-                if(currentUserData && currentUserData.placeline.length) {
-                    return new fromUser.UpdateUserDataAction(userSegment);
-                } else {
-                    return new fromUser.SelectUserDataAction(userSegment);
-                }
-            })
-        });
+        this.actions$.ofType(fromUser.SELECT_USER_ID, fromUser.SELECT_TIMELINE_QUERY, fromUser.SELECT_USER_ACTION).pipe(map(() => true)),
+        this.updateUserData$.pipe(debounceTime(10000)),
+        this.actions$.ofType(fromUser.CLEAR_USER).pipe(map(() => false))
+    ).pipe(
+      switchMap((toFetch) => this.getTimelineQuery(toFetch)),
+      switchMap((query) => this.fetchTimeline(query)),
+      filter(data => {
+        return !!data
+      }),
+      switchMap((userSegment: IUserPlaceline) => {
+        this.updateUserData$.next(true);
+        // this.timelinePolyline.update(userSegment.placeline, userSegment.last_heartbeat_at);
+        this.userTraceService.segmentsTrace.updateTimeline(userSegment);
+        return this.store.select(fromRoot.getUserData).pipe(
+          take(1),
+          map((currentUserData: IUserPlaceline) => {
+            if(currentUserData && currentUserData.placeline.length) {
+              return new fromUser.UpdateUserDataAction(userSegment);
+            } else {
+              return new fromUser.SelectUserDataAction(userSegment);
+            }
+          })
+        )
+      })
+    );
         // .map((userSegment: IUserPlaceline) => {
         //
         //     this.store.select(fromRoot.getUserData).take(1).subscribe((userData) => {
@@ -123,17 +134,20 @@ export class UserEffectsService {
 
     @Effect({ dispatch: false })
     resetMapUserDataSet$: Observable<any>  = this.actions$
-        .ofType(fromUser.SELECT_USER_DATA)
-        .do(() => {
-            this.broadcast.emit('reset-map')
-        });
+        .ofType(fromUser.SELECT_USER_DATA).pipe(
+        tap(() => {
+          this.broadcast.emit('reset-map')
+        })
+      );
+
 
     @Effect({ dispatch: false })
     resetMapPartialUserDataSet$: Observable<any>  = this.actions$
-        .ofType(fromUser.SELECT_PARTIAL_SEGMENT, fromUser.CLEAR_PARTIAL_SEGMENT)
-        .do(() => {
-            this.broadcast.emit('reset-map', true)
-        });
+        .ofType(fromUser.SELECT_PARTIAL_SEGMENT, fromUser.CLEAR_PARTIAL_SEGMENT).pipe(
+        tap(() => {
+          this.broadcast.emit('reset-map', true)
+        })
+      );
 
     // @Effect()
     // clearUser$: Observable<any> = this.actions$
@@ -164,20 +178,22 @@ export class UserEffectsService {
 
     getTimelineQuery(toFetch) {
         let queryTimeline$ = combineLatest(
-            this.store.select(fromRoot.getUserState).take(1),
-            this.store.select(fromRoot.getQueryDateRange).take(1),
-            (userState: fromUserReducer.State, range: IRange) => {
-              let date = (range.end && !userState['action_id'] && !userState['action_lookup_id'] && !userState['action_collection_id'] && !userState.timelineQuery.date) ? format(range.end, 'YYYY-MM-DD') : null;
-                // console.log(userState.timelineQuery, date, "query", toFetch);
-              let timelineQuery = date ? {...userState.timelineQuery, date} : userState.timelineQuery;
-              toFetch = toFetch && (userState.selectedUserId || userState.timelineQuery.action_id || userState.timelineQuery.action_collection_id || userState.timelineQuery.action_unique_id);
-              // console.log("to fetch", toFetch, userState.timelineQuery);
-              return {
-                    userId: userState.selectedUserId,
-                    timelineQuery,
-                    toFetch: toFetch
-                }
+            this.store.select(fromRoot.getUserState).pipe(take(1)),
+            this.store.select(fromRoot.getQueryDateRange).pipe(take(1)),
+
+        ).pipe(
+          map(([userState, range]: [fromUserReducer.State, IRange]) => {
+            let date = (range.end && !userState['action_id'] && !userState['action_lookup_id'] && !userState['action_collection_id'] && !userState.timelineQuery.date) ? format(range.end, 'YYYY-MM-DD') : null;
+            // console.log(userState.timelineQuery, date, "query", toFetch);
+            let timelineQuery = date ? {...userState.timelineQuery, date} : userState.timelineQuery;
+            toFetch = toFetch && (userState.selectedUserId || userState.timelineQuery.action_id || userState.timelineQuery.action_collection_id || userState.timelineQuery.action_unique_id);
+            // console.log("to fetch", toFetch, userState.timelineQuery);
+            return {
+              userId: userState.selectedUserId,
+              timelineQuery,
+              toFetch: toFetch
             }
+          })
         );
         return queryTimeline$
     }

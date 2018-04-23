@@ -5,6 +5,7 @@ import {IAccountUser} from 'ht-models';
 import {Observable} from 'rxjs/Observable';
 import * as CookieUtil from '../utils/cookie.utils';
 import {config} from '../config';
+import {filter, take} from "rxjs/operators";
 
 @Injectable()
 export class ExternalAnalyticsService {
@@ -60,7 +61,7 @@ export class ExternalAnalyticsService {
 
   getUser() {
     let accountUser;
-    this.accountsService.getUser().filter(data => !!data).take(1).subscribe((user) => {
+    this.accountsService.getUser().pipe(filter(data => !!data), take(1)).subscribe((user) => {
       accountUser = {...user};
       accountUser.name = accountUser.first_name + accountUser.last_name;
       const token = config ? config.token : 'UNKNOWN_TOKEN';

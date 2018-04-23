@@ -13,6 +13,7 @@ import * as _ from "underscore";
 import {IActionMap} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {zip} from "rxjs/observable/zip";
+import {filter, map, share, skip} from "rxjs/operators";
 
 @Component({
   selector: 'app-actions-list',
@@ -91,10 +92,12 @@ export class ActionsListComponent extends EntityListComponent implements OnInit 
     return zip(
       this.getListApi(query),
       this.getSummaryApi({...query, page: null, ordering: null})
-    ).map(([pageData, summary]) => {
-      this.updateSummaryData(summary);
-      return pageData
-    });
+    ).pipe(
+      map(([pageData, summary]) => {
+        this.updateSummaryData(summary);
+        return pageData
+      })
+    );
   }
 
   detailListener() {
@@ -107,7 +110,8 @@ export class ActionsListComponent extends EntityListComponent implements OnInit 
       return {id, lookupId}
     });
 
-    let hasPopup = params$.filter((param) => param['id'] || param['lookup_id']).subscribe(({id, lookupId}) => {
+    let hasPopup = params$.pipe(filter((param) => param['id'] || param['lookup_id']))
+      .subscribe(({id, lookupId}) => {
       if(id) {
         this.selectActionId(id)
       } else if(lookupId) {
@@ -118,10 +122,11 @@ export class ActionsListComponent extends EntityListComponent implements OnInit 
 
     let skipNumber = params['id'] || params['lookup_id'] ? 0 : 1;
 
-    let hasNoPopup = params$
-      .filter((param) => !(param['id'] || param['lookup_id']))
-      .share()
-      .skip(skipNumber)
+    let hasNoPopup = params$.pipe(
+      filter((param) => !(param['id'] || param['lookup_id'])),
+      share(),
+      skip(skipNumber)
+    )
       .subscribe(() => {
         this.unselectAction()
       });

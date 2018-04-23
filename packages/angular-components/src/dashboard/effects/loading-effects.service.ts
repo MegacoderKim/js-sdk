@@ -7,6 +7,7 @@ import * as fromUser from "../actions/user";
 import * as fromAction from "../actions/action";
 import * as fromUi from "../actions/ui";
 import {config} from "../config";
+import {map, tap} from "rxjs/operators";
 
 @Injectable()
 export class LoadingEffectsService {
@@ -35,10 +36,11 @@ export class LoadingEffectsService {
       fromQuery.UPDATE_USER_PAGE_QUERY,
       fromQuery.CLEAR_USER_PAGE_QUERY_KEY,
       fromQuery.CLEAR_USER_QUERY_KEY
-    )
-    .do(() => {
-      this.snackbarService.displayLoadingToast()
-    });
+    ).pipe(
+      tap(() => {
+        this.snackbarService.displayLoadingToast()
+      })
+    );
 
   @Effect({ dispatch: false })
   clearLoadingUserPage$: Observable<any> = this.actions$
@@ -48,10 +50,11 @@ export class LoadingEffectsService {
       fromUser.SELECT_USER_ACTION,
 
       fromAction.SET_PAGE_DATA,
-    )
-    .do(() => {
-      this.snackbarService.hideLoadingToast()
-    });
+    ).pipe(
+      tap(() => {
+        this.snackbarService.hideLoadingToast()
+      })
+    );
 
 
   // @Effect({ dispatch: false })
@@ -84,10 +87,11 @@ export class LoadingEffectsService {
       fromQuery.UPDATE_DATE_RANGE,
       fromQuery.CHANGE_DATE_RANGE,
       // fromUser.SELECT_TIMELINE_QUERY,
-    )
-    .map((action) => {
-      return new fromUi.LoadingMapUiAction(true)
-    });
+    ).pipe(
+      map((action) => {
+        return new fromUi.LoadingMapUiAction(true)
+      })
+    );
 
   @Effect()
   unloadingMap$: Observable<any> = this.actions$
@@ -103,10 +107,11 @@ export class LoadingEffectsService {
       // fromAction.UPDATE_ACTION_HEATMAP,
       // fromAction.SET_ACTION_HEATMAP,
       // fromAction.UPDATE_ACTION_MAP,
-    )
-    .map(action => {
-      return new fromUi.LoadingMapUiAction(false)
-    });
+    ).pipe(
+      map((action) => {
+        return new fromUi.LoadingMapUiAction(false)
+      })
+    );
 
 
 

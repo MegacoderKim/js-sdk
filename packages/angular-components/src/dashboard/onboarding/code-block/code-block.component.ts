@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit} from '@angular/core';
-import "rxjs/add/observable/timer";
+// import "rxjs/add/observable/timer";
 import {BroadcastService} from "../../core/broadcast.service";
 import {OnboardingService} from "../../core/onboarding.service";
 import {InnerSharedModule} from "../../shared/shared.module";

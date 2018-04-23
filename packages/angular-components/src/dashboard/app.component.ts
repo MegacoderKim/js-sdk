@@ -8,6 +8,7 @@ import {ExternalAnalyticsService} from './core/external-analytics.service';
 import {HtClientService, HtRequestService} from 'ht-angular';
 import {environment} from "../environments/environment";
 import {interval} from "rxjs/observable/interval";
+import {filter, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-root',
@@ -65,11 +66,14 @@ export class AppComponent {
         }
       }
     });
-    interval(1000).filter(
-      () => {
-        return this.externalAnalyticsService.isSegmentInitialized();
-      }
-    ).take(1).subscribe(() => {
+    interval(1000).pipe(
+      filter(
+        () => {
+          return this.externalAnalyticsService.isSegmentInitialized();
+        }
+      ),
+      take(1)
+    ).subscribe(() => {
       this.externalAnalyticsService.logSegmentIdentify();
     });
   }

@@ -9,6 +9,7 @@ import { environment } from "../../environments/environment";
 import { Location } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { ExternalAnalyticsService } from '../core/external-analytics.service';
+import {filter, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-payment',
@@ -30,7 +31,7 @@ export class PaymentComponent implements OnInit {
   ngOnInit() {
     this.externalAnalyticsService.logSegmentEvent('visited payment', 'interaction', 'payment');
     this.paymentType = this.route.snapshot.params['type'];
-    this.accountUserService.getAccount().filter(data => !!data).take(1)
+    this.accountUserService.getAccount().pipe(filter(data => !!data),take(1))
       .subscribe((account) => {
         this.currentpaymentType = account['billing_plan'];
       });

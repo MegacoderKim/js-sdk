@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {filter, map, switchMap, tap, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-sdk-control',
@@ -19,18 +20,22 @@ export class SdkControlComponent implements OnInit {
   constructor(private http: HttpClient, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.fetch.switchMap(() => this.http.get<ISdkControls>(`app/v1/sdk_config/config/`))
-      .do((sdkControl) => {
-        this.default = this.checkMode(sdkControl)
-      })
+    this.fetch.pipe(
+      switchMap(() => this.http.get<ISdkControls>(`app/v1/sdk_config/config/`)),
+      tap((sdkControl) => {
+          this.default = this.checkMode(sdkControl)
+        })
+    )
       .subscribe(this.sdkRules$);
 
     this.fetch.next();
-    this.collectionRules$ = this.sdkRules$.filter(data => !!data)
-      .map((sdkControl) => {
-      this.loading = false;
-      return {...predicateForm.get(sdkControl, 'collection_rules'), ...predicateForm.get(sdkControl, 'transmission_rules')}
-    })
+    this.collectionRules$ = this.sdkRules$.pipe(
+      filter(data => !!data),
+      map((sdkControl) => {
+          this.loading = false;
+          return {...predicateForm.get(sdkControl, 'collection_rules'), ...predicateForm.get(sdkControl, 'transmission_rules')}
+        })
+    )
   }
 
   inputChange() {
@@ -40,7 +45,7 @@ export class SdkControlComponent implements OnInit {
 
   save(control, value) {
     this.loading= true;
-    this.sdkRules$.take(1).subscribe((sdkRules) => {
+    this.sdkRules$.pipe(take(1)).subscribe((sdkRules) => {
       let modsdkRules = {...sdkRules};
       control.chain.reduce((acc, prop, i) => {
         const isLast = control.chain.length  - 1  == i;

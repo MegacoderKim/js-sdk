@@ -1,17 +1,18 @@
 import * as _ from 'underscore';
 import {Observable} from "rxjs/Observable";
-import "rxjs/add/observable/timer";
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/take';
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/share";
-import "rxjs/add/operator/takeUntil";
+// import "rxjs/add/observable/timer";
+// import 'rxjs/add/operator/switchMap';
+// import 'rxjs/add/operator/filter';
+// import 'rxjs/add/operator/take';
+// import "rxjs/add/operator/map";
+// import "rxjs/add/operator/share";
+// import "rxjs/add/operator/takeUntil";
 import {IReplayHead, IReplayPlayer, IReplayStats} from "./interfaces";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {ITimeAwarePoint, ITimelineEvent, HtPosition} from "ht-models";
 import {timer} from "rxjs/observable/timer";
 import {TimeAwareEncoder} from "time-aware-polyline";
+import {filter, map, share, switchMap, take, takeUntil} from "rxjs/operators";
 // import {polyline, latLngBounds} from "leaflet";
 
 export class TimelineReplay extends TimeAwareEncoder {
@@ -82,11 +83,11 @@ export class TimelineReplay extends TimeAwareEncoder {
   }
 
   getReplayStats() {
-    return this.stats$.share()
+    return this.stats$.pipe(share())
   }
 
   getReplayHead() {
-    return this.head$.share()
+    return this.head$.pipe(share())
   }
 
   currentTimeEffects(time) {
@@ -197,9 +198,14 @@ export class TimelineReplay extends TimeAwareEncoder {
   play() {
     this.setPlayer({isStopped: false, isPlaying: true});
 
-    this.playerSub = timer(0, this.frameInterval).switchMap(() => this.head$.take(1))
-      .map((head) => this.getNextTimePercent(head))
-      .takeUntil(this.player$.filter(player => !player.isPlaying).take(1))
+    this.playerSub = timer(0, this.frameInterval).pipe(
+      switchMap(() => this.head$.pipe(take(1))),
+      map((head) => this.getNextTimePercent(head)),
+      takeUntil(this.player$.pipe(
+          filter(player => !player.isPlaying),
+          take(1))
+        )
+    )
       .subscribe((timePercent) => {
         this.goToTimePercent(timePercent)
       });

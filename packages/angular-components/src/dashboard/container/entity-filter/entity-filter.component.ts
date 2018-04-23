@@ -9,6 +9,7 @@ import * as fromQuery from "../../actions/query";
 import * as fromRoot from "../../reducers";
 import {Store} from "@ngrx/store";
 import {empty} from "rxjs/observable/empty";
+import {debounceTime, switchMap, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-entity-filter',
@@ -40,17 +41,19 @@ export class EntityFilterComponent implements OnInit {
   }
 
   private watchChange() {
-    this.query$.debounceTime(400)
-        .do(term => {
+    this.query$.pipe(
+      debounceTime(400),
+      tap(term => {
           if(term.length > 1) {
             // this.showResults = true;
           } else {
             this.clearData()
           }
-        })
-        .switchMap(term => {
+        }),
+      switchMap(term => {
           return this.searchApi({search: term, page_size: 3})
         })
+    )
         .subscribe(searchData => {
           console.log(searchData, "data");
           this.results = searchData;
