@@ -8,8 +8,8 @@ export interface IReplayHead {
   currentTime: string;
   currentPosition: HtPosition;
   bearing: number;
-  currentSegment: IDecodedSegment; //this needs to be fixed
-  segmentPercent: number;
+  currentSegment?: IDecodedSegment; //this needs to be fixed
+  segmentPercent?: number;
 }
 
 export interface IReplayStats {
