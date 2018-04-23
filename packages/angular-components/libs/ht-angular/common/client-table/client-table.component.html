@@ -16,7 +16,7 @@
         <ng-template #pic>
           <ht-profile [url]="tableItem.selector(item)"></ht-profile>
         </ng-template>
-        <span *ngIf="!tableItem.isPic; else pic">{{tableItem.selector(item)}}</span>
+        <span *ngIf="!tableItem.isPic; else pic">{{tableItem.selector(item) | dot:'--'}}</span>
       </td>
     </tr>
   </ng-container>
