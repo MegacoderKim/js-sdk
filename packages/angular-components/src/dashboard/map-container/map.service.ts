@@ -9,6 +9,7 @@ import {ActionTraceService} from "../action/action-trace.service";
 import {ActivatedRoute} from "@angular/router";
 import {config} from "../config";
 import {HtActionsService, HtMapService, HtUsersService} from "ht-angular";
+import {debounceTime} from "rxjs/operators";
 // import {control, Control, DomUtil, Map} from "leaflet";
 // import * as L from "leaflet";
 
@@ -29,7 +30,7 @@ export class InnerMapService {
       private htActionsService: HtActionsService
   ) {
     this.setMapStyle();
-    this.broadcast.on('reset-map').debounceTime(50).subscribe((toFly: boolean) => {
+    this.broadcast.on('reset-map').pipe(debounceTime(50)).subscribe((toFly: boolean) => {
       if (this.map) {
         this.htMapService.resetBounds()
       }

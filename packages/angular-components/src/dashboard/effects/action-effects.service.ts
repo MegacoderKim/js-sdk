@@ -8,6 +8,7 @@ import * as fromQuery from "../actions/query";
 import * as fromRoot from "../reducers";
 import {UserService} from "../users/user.service";
 import {Store} from "@ngrx/store";
+import {tap} from "rxjs/operators";
 
 @Injectable()
 export class ActionEffectsService {
@@ -21,10 +22,11 @@ export class ActionEffectsService {
 
     @Effect({ dispatch: false })
     updateUser$: Observable<any>  = this.actions$
-        .ofType(fromAction.UPDATE_ACTION_MAP, fromAction.SET_ACTION_FILTER, fromAction.SET_ACTION_HEATMAP)
-        .do(() => {
-            this.broadcast.emit('reset-map')
-        });
+        .ofType(fromAction.UPDATE_ACTION_MAP, fromAction.SET_ACTION_FILTER, fromAction.SET_ACTION_HEATMAP)  .pipe(
+        tap(() => {
+          this.broadcast.emit('reset-map')
+        })
+      );
 
 
     // @Effect()

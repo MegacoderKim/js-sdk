@@ -5,6 +5,7 @@ import * as _ from "underscore";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
 import {HttpClient} from "@angular/common/http";
 import {Page} from "ht-models";
+import {map, startWith, switchMap} from "rxjs/operators";
 @Component({
   selector: 'app-invitation-list',
   templateUrl: './invitation-list.component.html',
@@ -29,13 +30,17 @@ export class InvitationListComponent implements OnInit {
   }
 
   private initListener() {
-    this.invitations$ = this.getInvite.startWith(true).switchMap(() => this.fetchUserInvites()).map((data) => {
-      let accepted = _.filter(data.results, (invite: IUserInvites) => {
-        return invite.status == 'accepted'
-      }).length;
-      this.removeLoadingIndex = -1;
-      return {...data, accepted}
-    })
+    this.invitations$ = this.getInvite.pipe(
+      startWith(true),
+      switchMap(() => this.fetchUserInvites()),
+      map((data) => {
+        let accepted = _.filter(data.results, (invite: IUserInvites) => {
+          return invite.status == 'accepted'
+        }).length;
+        this.removeLoadingIndex = -1;
+        return {...data, accepted}
+      })
+    )
   }
 
   private fetchUserInvites() {

@@ -7,8 +7,10 @@ import {Observable} from "rxjs/Observable";
 import {BroadcastService} from "../../core/broadcast.service";
 import {UserTraceService} from "../../users/user-trace.service";
 import {InnerMapService} from "../map.service";
-import {IReplayPlayer} from "ht-maps";
+// import {IReplayPlayer} from "../../trace/ht-js-map/interfaces";
 import {fromEvent} from "rxjs/observable/fromEvent";
+import {map, take, takeUntil} from "rxjs/operators";
+import {IReplayHead, IReplayPlayer} from "ht-maps";
 
 @Component({
   selector: 'app-replay',
@@ -41,8 +43,8 @@ export class ReplayComponent implements OnInit, AfterViewInit {
 
     this.head$ = this.userTraceService.segmentsTrace.timelineSegment.head$;
     this.player$ = this.userTraceService.segmentsTrace.timelineSegment.player$;
-    this.speed$ = this.player$.map(player => player.speed);
-    this.isPlaying$ = this.player$.map((player: IReplayPlayer) => player.isPlaying);
+    this.speed$ = this.player$.pipe(map((player: IReplayPlayer) => player.speed));
+    this.isPlaying$ = this.player$.pipe(map((player: IReplayPlayer) => player.isPlaying));
 
   }
 
@@ -65,14 +67,16 @@ export class ReplayComponent implements OnInit, AfterViewInit {
   }
 
   startDrag(event, timeline) {
-    let timePercent$ = this.head$.take(1).map(head => {
+    let timePercent$ = this.head$.pipe(
+      take(1),
+      map((head: IReplayHead) => {
       return head && head.timePercent ? head.timePercent : 0;
-    });
+    }));
     timePercent$.subscribe((percent) => {
       let currentX = event.clientX;
       let timelineBounds = timeline.getBoundingClientRect();
       let mouseUp$ = fromEvent(this.document, 'mouseup');
-      fromEvent(this.document, 'mousemove').takeUntil(mouseUp$).subscribe((e: any) => {
+      fromEvent(this.document, 'mousemove').pipe(takeUntil(mouseUp$)).subscribe((e: any) => {
         let incPercent = (e.clientX - currentX) * 100 / timelineBounds.width;
         let currentPercent = percent + incPercent;
         currentPercent = currentPercent > 100 ? 100 : currentPercent;

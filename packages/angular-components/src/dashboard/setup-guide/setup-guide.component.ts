@@ -8,6 +8,7 @@ import {ExternalAnalyticsService} from '../core/external-analytics.service';
 import {config} from '../config';
 import {timer} from "rxjs/observable/timer";
 import {ActivatedRoute} from '@angular/router';
+import {filter, take} from "rxjs/operators";
 
 let ClipboardJS = require('clipboard');
 
@@ -180,7 +181,7 @@ export class SetupGuideComponent implements OnInit {
               private externalAnalyticsService: ExternalAnalyticsService,
               private route: ActivatedRoute) {
     let subAccountTest$ = this.accountUserService.getSubAccount('test');
-    subAccountTest$.take(1).subscribe((subAccount: ISubAccount) => {
+    subAccountTest$.pipe(take(1)).subscribe((subAccount: ISubAccount) => {
       if (subAccount && subAccount.tokens) {
         let pkToken = subAccount.tokens.find((token) => token.scope === 'publishable');
         this.pkValue.test = pkToken ? pkToken.key : null;
@@ -189,7 +190,7 @@ export class SetupGuideComponent implements OnInit {
       }
     });
     let subAccountProd$ = this.accountUserService.getSubAccount('production');
-    subAccountProd$.take(1).subscribe((subAccount: ISubAccount) => {
+    subAccountProd$.pipe(take(1)).subscribe((subAccount: ISubAccount) => {
       if (subAccount && subAccount.tokens) {
         let pkToken = subAccount.tokens.find((token) => token.scope === 'publishable');
         this.pkValue.prod = pkToken ? pkToken.key : null;
@@ -200,7 +201,7 @@ export class SetupGuideComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accountUserService.getAccount().filter(data => !!data).take(1)
+    this.accountUserService.getAccount().pipe(filter(data => !!data), take(1))
       .subscribe((account) => {
         this.currentPlanId = account['billing_plan'];
         this.currentPlanId = this.currentPlanId || 'free_forever:1';
@@ -252,7 +253,7 @@ export class SetupGuideComponent implements OnInit {
       this.timerSub.unsubscribe();
     }
     this.timerSub = timer(1000)
-      .take(1)
+      .pipe(take(1))
       .subscribe(() => {
         this.copyStates[key] = false;
       });

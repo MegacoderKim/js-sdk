@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AsyncLocalStorage} from "angular-async-local-storage";
 import {IAccountUser, IMembership} from "ht-models";
+import {switchMap} from "rxjs/operators";
 
 @Injectable()
 export class StorageService {
@@ -30,9 +31,11 @@ export class StorageService {
   }
 
   clearUser(cb?) {
-    this.storage.removeItem('accountUser').switchMap(() => {
-      return this.storage.removeItem('memberships')
-    }).subscribe(() => {
+    this.storage.removeItem('accountUser').pipe(
+      switchMap(() => {
+        return this.storage.removeItem('memberships')
+      })
+    ).subscribe(() => {
       if(cb) cb()
     })
   }

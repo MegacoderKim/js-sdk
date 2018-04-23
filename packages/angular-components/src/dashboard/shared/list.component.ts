@@ -7,6 +7,7 @@ import {IPageData, IFilter} from "../model/common";
 import {merge} from "rxjs/observable/merge";
 import {empty} from "rxjs/observable/empty";
 import {of} from "rxjs/observable/of";
+import {catchError, debounceTime, filter, map, switchMap, take, takeUntil, tap, throttleTime} from "rxjs/operators";
 
 @Component({
     template: ''
@@ -37,32 +38,34 @@ export class ListComponent {
 
     private initCommonListeners() {
 
-        this.listData$ = this.listFilter$()
-            .switchMap((query) => {
-                return this.getList$(query).catch(() => of(null))
-            }).do((data: IPageData) => {
-                if(data) {
-                    if(this.fetchingNext) {
-                        let results = [...this.listData.results, ...data.results];
-                        this.listData = {...data, results: results}
-                    } else {
-                        this.listData = data;
-                    }
-                    console.log(this.listData);
-                    this.baseLoading.data = false;
-                    this.baseLoading.new = false;
-                    this.baseLoading.page = false;
-                    this.fetchingNext = false;
-                    this.broadcast.emit('list-update');
-                    // if(this.hasData) {
-                    //     this.updateList(data);
-                    //     this.checkNew(this.listData.results)
-                    // } else {
-                    //     this.hasData = true;
-                    // }
-                }
+        this.listData$ = this.listFilter$().pipe(
+          switchMap((query) => {
+            return this.getList$(query).pipe(catchError(() => of(null)))
+          }),
+          tap((data: IPageData) => {
+            if(data) {
+              if(this.fetchingNext) {
+                let results = [...this.listData.results, ...data.results];
+                this.listData = {...data, results: results}
+              } else {
+                this.listData = data;
+              }
+              console.log(this.listData);
+              this.baseLoading.data = false;
+              this.baseLoading.new = false;
+              this.baseLoading.page = false;
+              this.fetchingNext = false;
+              this.broadcast.emit('list-update');
+              // if(this.hasData) {
+              //     this.updateList(data);
+              //     this.checkNew(this.listData.results)
+              // } else {
+              //     this.hasData = true;
+              // }
+            }
 
-        });
+          })
+        );
 
         this.fillUpdate()
 
@@ -74,12 +77,17 @@ export class ListComponent {
         // );
         return merge(
             // this.regularUpdate$().filter(() => !this.fetchingNext),
-            this.fetchNextFilter().do((filter) => {
+            this.fetchNextFilter().pipe(
+              tap((filter) => {
                 this.fetchingNext = true;
                 console.log("next", filter);
-            }),
+              })
+            ),
             this.resetUpdate$(),
-            this.filter$().map((filter: IFilter) => filter.query).do(() => this.resetListState()),
+            this.filter$().pipe(
+              map((filter: IFilter) => filter.query),
+              tap(() => this.resetListState())
+            ),
             // this.fillUpdate$()
         )
     }
@@ -90,54 +98,69 @@ export class ListComponent {
     }
 
     private toUpdate$() {
-        return this.broadcast.on('list-update').debounceTime(10000)
+        return this.broadcast.on('list-update').pipe(debounceTime(10000))
     }
 
     private regularUpdate$() {
-        return this.toUpdate$()
-            // .takeUntil(this.broadcast.on('list-reset'))
-            .do(() =>{
-                // console.log("got emit");
-                this.updateList();
-                this.checkNew(this.listData.results);
-            }).switchMap(() => {
+        return this.toUpdate$().pipe(
+          tap(() =>{
+            // console.log("got emit");
+            this.updateList();
+            this.checkNew(this.listData.results);
+          }),
+          switchMap(() => {
             let list = this.listData;
             if(list && list.results && list.results.length > 0) {
-                let idsArray = list.results.reduce((acc: string[][], item) => {
-                    let currentLength = _.last(acc).length;
-                    if(currentLength > 14) {
-                        return [...acc, [item.id]]
-                    } else {
-                        let last = [...acc.pop(), item.id];
-                        return [...acc, last]
-                    }
-                }, [[]]);
-                let callArray$ = idsArray.map((ids) => {
-                    return this.filter$().take(1)
-                        .switchMap((filter: IFilter) => {
-                            let statusParam = filter.statusParam || 'status';
-                            let query = {...filter.query, id: ids.toString(), page_size: list.results.length, [statusParam]: null};
-                            // console.log(query);
-                            return this.getList$(query).catch(() => of(null))
-                        })
-                });
+              let idsArray = list.results.reduce((acc: string[][], item) => {
+                let currentLength = _.last(acc).length;
+                if(currentLength > 14) {
+                  return [...acc, [item.id]]
+                } else {
+                  let last = [...acc.pop(), item.id];
+                  return [...acc, last]
+                }
+              }, [[]]);
+              let callArray$ = idsArray.map((ids) => {
+                return this.filter$().pipe(
+                  take(1),
+                  switchMap((filter: IFilter) => {
+                    let statusParam = filter.statusParam || 'status';
+                    let query = {...filter.query, id: ids.toString(), page_size: list.results.length, [statusParam]: null};
+                    // console.log(query);
+                    return this.getList$(query).pipe(
+                     catchError(() => of(null))
+                    )
+                  })
+                )
+              });
 
-                // console.log(idsArray, "array");
-                return merge(...callArray$)
+              // console.log(idsArray, "array");
+              return merge(...callArray$)
 
             } else {
-                return this.filter$().take(1).map((filter: IFilter) => filter.query).switchMap((query) => {
-                    return this.getList$(query).catch(() => of(null))
+              return this.filter$().pipe(
+                take(1),
+                map((filter: IFilter) => filter.query),
+                switchMap((query) => {
+                  return this.getList$(query).pipe(
+                    catchError(() => of(null))
+                  )
                 })
+              )
             }
-        });
+          })
+        )
+            // .takeUntil(this.broadcast.on('list-reset'))
+
 
     }
 
     private resetUpdate$() {
-        return this.broadcast.on('list-reset').switchMap(() => {
-            return this.filter$().take(1).map((filter: IFilter) => filter.query)
-        });
+        return this.broadcast.on('list-reset').pipe(
+          switchMap(() => {
+            return this.filter$().pipe(take(1), map((filter: IFilter) => filter.query))
+          })
+        );
     }
 
     getList$(query): Observable<IPageData> {
@@ -151,19 +174,28 @@ export class ListComponent {
     }
 
     private fetchNextFilter() {
-        return this.broadcast.onScrollEnd().throttleTime(500).filter(() => !!this.listData)
-            .switchMap(() => {
-                this.baseLoading.page = true;
-                let lastItem = this.lastItem();
-                if(!lastItem) {
-                    return this.filter$().take(1).map((filter: IFilter) => filter.query);
-                } else {
-                    return this.filter$().take(1).map((filter: IFilter) => {
-                        return {...filter.query, ...filter.nextSetQuery(lastItem)}
-                    })
-                }
+        return this.broadcast.onScrollEnd().pipe(
+          throttleTime(500),
+          filter(() => !!this.listData),
+          switchMap(() => {
+              this.baseLoading.page = true;
+              let lastItem = this.lastItem();
+              if(!lastItem) {
+                return this.filter$().pipe(
+                  take(1),
+                  map((filter: IFilter) => filter.query)
+                );
+              } else {
+                return this.filter$().pipe(
+                  take(1),
+                  map((filter: IFilter) => {
+                    return {...filter.query, ...filter.nextSetQuery(lastItem)}
+                  })
+                )
+              }
 
             })
+        )
 
     }
 
@@ -173,12 +205,16 @@ export class ListComponent {
 
     private checkNew(items: any[]) {
         if(items && items.length) {
-            this.filter$().take(1)
-                .switchMap((filter: IFilter) => {
-                let query = {...filter.query, ...filter.newSetQuery(items[0]), page_size: 1};
-                return this.getList$(query).catch(() => of(null))
-            })
-                .takeUntil(this.broadcast.on('list-reset'))
+            this.filter$().pipe(
+              take(1),
+              switchMap((filter: IFilter) => {
+                  let query = {...filter.query, ...filter.newSetQuery(items[0]), page_size: 1};
+                  return this.getList$(query).pipe(
+                    catchError(() => of(null))
+                  )
+                }),
+              takeUntil(this.broadcast.on('list-reset'))
+            )
                 .subscribe((newData: IPageData) => {
                 if(newData) this.newData = newData.count;
                 this.broadcast.emit('list-update')
@@ -214,9 +250,11 @@ export class ListComponent {
     }
 
     private fillUpdate() {
-        let sub = this.regularUpdate$()
-            .takeUntil(this.broadcast.on('list-reset'))
-            .filter(data => !!data).subscribe((data: IPageData) => {
+        let sub = this.regularUpdate$().pipe(
+          takeUntil(this.broadcast.on('list-reset')),
+          filter(data => !!data)
+        )
+          .subscribe((data: IPageData) => {
                 this.baseLoading.new = false;
                 if(this.listData && this.listData.results.length) {
                     let updateResults = _.indexBy(data.results, 'id');

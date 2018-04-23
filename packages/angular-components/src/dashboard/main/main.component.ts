@@ -3,6 +3,7 @@ import {AccountUsersService} from "../account/account-users.service";
 import {IAccount, IAccountUser, IMembership} from "ht-models";
 import {Router} from "@angular/router";
 import {config} from "../config";
+import {filter, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-main',
@@ -18,9 +19,12 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     let isStaff = config.isStaff;
-    this.accountUserService.getAccount().filter(data => !!data).take(1).subscribe((account: IAccount) => {
+    this.accountUserService.getAccount().pipe(
+      filter(data => !!data),
+      take(1)
+    ).subscribe((account: IAccount) => {
       this.accountUserService.getAccountDataFromServer(account.id).subscribe((account: IAccount) => {
-        this.accountUserService.getUser().take(1).subscribe((accountUser: IAccountUser) => {
+        this.accountUserService.getUser().pipe(take(1)).subscribe((accountUser: IAccountUser) => {
           if (!account.is_agreement_signed && this.canSignAgreement(accountUser, account) && !isStaff) {
             let url = location.href;
             this.accountUserService.updateAccountWithoutPatch(account);

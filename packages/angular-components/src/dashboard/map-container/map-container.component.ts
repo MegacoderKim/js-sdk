@@ -14,7 +14,7 @@ import {FitToMapService} from "../container/user-filter/fit-to-map.service";
 import {UserTraceService} from "../users/user-trace.service";
 import {IUserPlaceline, IPlaceline} from "ht-models";
 import {HtMapService, HtUsersService} from "ht-angular";
-import {take} from "rxjs/operators";
+import {distinctUntilChanged, map, pluck, take, tap} from "rxjs/operators";
 import { orCombine } from 'ht-data';
 
 @Component({
@@ -76,11 +76,14 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
 
   ngOnInit() {
 
-    this.showMapMobile$ = this.store.select(fromRoot.getUiShowMapMobile).distinctUntilChanged().do((showMobileMap) => {
-      if(config.isMobile && showMobileMap) {
-        this.mapService.resetSize()
-      }
-    });
+    this.showMapMobile$ = this.store.select(fromRoot.getUiShowMapMobile).pipe(
+      distinctUntilChanged(),
+      tap((showMobileMap) => {
+        if(config.isMobile && showMobileMap) {
+          this.mapService.resetSize()
+        }
+      })
+    );
 
     this.userData$ = this.store.select(fromRoot.getUserData);
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
@@ -109,9 +112,11 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
     });
 
     this.invalidUsers$ = this.store.select(fromRoot.getUserMapList)
-      .pluck('invalidUsers')
-      .map((users: any[]) => users.length)
-      .distinctUntilChanged();
+      .pipe(
+        pluck('invalidUsers'),
+        map((users: any[]) => users.length),
+        distinctUntilChanged()
+      );
 
     this.hasPartialSegment$ = this.store.select(fromRoot.getUserSelectedPartialSegments).map((data) => !!data)
     // this.showReplay$ = this.store.select(fromRoot.getReplayStatsState).share().map(stats => {
@@ -131,9 +136,15 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
       this.htUsersService.listAll.loading$,
     );
 
-    this.showHeatmap$ = this.store.select(fromRoot.getUserPlaceList).map(data => data.length).distinctUntilChanged();
+    this.showHeatmap$ = this.store.select(fromRoot.getUserPlaceList).pipe(
+      map(data => data.length),
+      distinctUntilChanged()
+    );
 
-    this.hasSelectedUserPlaces$ = this.store.select(fromRoot.getSelectedUserPlaces).map(entity => _.values(entity).length).distinctUntilChanged();
+    this.hasSelectedUserPlaces$ = this.store.select(fromRoot.getSelectedUserPlaces).pipe(
+      map(entity => _.values(entity).length),
+      distinctUntilChanged()
+    );
   }
 
   closeSelected() {

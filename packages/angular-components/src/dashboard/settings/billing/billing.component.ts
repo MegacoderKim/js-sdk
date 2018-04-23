@@ -7,6 +7,7 @@ import {SnackbarService} from "../../shared/snackbar/snackbar.service";
 // import Chart from "frappe-charts"
 const Chart = require("../../../../../../node_modules/frappe-charts/dist/frappe-charts.min.cjs.js");
 import {format} from "date-fns";
+import {take} from "rxjs/operators";
 // import * as Chart from "../../../../node_modules/frappe-charts/dist/frappe-charts.min.esm.js"
 // import * as Chart from "frappe-charts"
 // import "../../../../node_modules/frappe-charts/dist/frappe-charts.min.iife.js"
@@ -46,7 +47,7 @@ export class BillingComponent implements OnInit {
 
 
   update(obj) {
-    this.account$.take(1).subscribe((account: IAccount) => {
+    this.account$.pipe(take(1)).subscribe((account: IAccount) => {
       this.accountUserService.updateAccountWithoutPatch({...account, ...obj})
     })
   }

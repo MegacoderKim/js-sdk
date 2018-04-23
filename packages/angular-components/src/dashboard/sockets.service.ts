@@ -3,6 +3,7 @@ import {Subject} from "rxjs/Subject";
 import * as _ from 'underscore';
 import {AccountUsersService} from "./account/account-users.service";
 import {ISubAccount} from "ht-models";
+import {filter, map, take} from "rxjs/operators";
 var io = require('socket.io-client');
 
 @Injectable()
@@ -14,7 +15,7 @@ export class SocketsService {
   constructor(
     private accountService: AccountUsersService
   ) {
-    this.accountService.getSubAccount().filter((data) => !!data).take(1).subscribe((subAccount: ISubAccount) => {
+    this.accountService.getSubAccount().pipe(filter((data) => !!data), take(1)).subscribe((subAccount: ISubAccount) => {
       console.log("Sub account id", subAccount.id);
       this.subAccountId = subAccount.id;
       this.join(this.subAccountId);
@@ -51,16 +52,18 @@ export class SocketsService {
 
   on(eventType: string) {
     return this.event$
-      .filter((eventBus: EventBus) => {
-        console.log("Event bus", eventBus);
-        return !!eventBus
-      })
-      .filter((eventBus: EventBus) => {
-        return (eventBus.type == eventType);
-      })
-      .map((eventBus: EventBus) => {
-        return eventBus;
-      });
+      .pipe(
+        filter((eventBus: EventBus) => {
+          console.log("Event bus", eventBus);
+          return !!eventBus
+        }),
+        filter((eventBus: EventBus) => {
+            return (eventBus.type == eventType);
+          }),
+        map((eventBus: EventBus) => {
+            return eventBus;
+          })
+      );
   }
 }
 

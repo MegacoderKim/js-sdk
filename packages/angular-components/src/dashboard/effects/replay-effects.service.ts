@@ -9,6 +9,7 @@ import {IPlaceline, IUserPlaceline} from "ht-models";
 import {Store} from "@ngrx/store";
 import {UserTraceService} from "../users/user-trace.service";
 import {timer} from "rxjs/observable/timer";
+import {map, switchMap, take, takeUntil} from "rxjs/operators";
 import {IReplayHead} from "ht-maps";
 
 @Injectable()
@@ -24,75 +25,82 @@ export class ReplayEffectsService {
 
   @Effect()
   startReplay: Observable<any>  = this.actions$
-      .ofType(fromUser.SELECT_USER_DATA)
-      .map((action: fromUser.SelectUserDataAction) => action.payload)
-      .map((userTimeline: IUserPlaceline) => {
-        // this.timelineReplay.update(userTimeline.placeline, userTimeline.last_heartbeat_at);
-        // this.timelinePolyline.update(userTimeline.placeline);
-        // console.log(this.timelineReplay.stats);
-        // console.log(this.getStats(userTimeline.placeline));
-        let stats =  this.userTraceService.segmentsTrace.stats;
-        return new fromReplay.StartReplayAction(stats)
-      });
+      .ofType(fromUser.SELECT_USER_DATA).pipe(
+      map((action: fromUser.SelectUserDataAction) => action.payload),
+      map((userTimeline: IUserPlaceline) => {
+          // this.timelineReplay.update(userTimeline.placeline, userTimeline.last_heartbeat_at);
+          // this.timelinePolyline.update(userTimeline.placeline);
+          // console.log(this.timelineReplay.stats);
+          // console.log(this.getStats(userTimeline.placeline));
+          let stats =  this.userTraceService.segmentsTrace.stats;
+          return new fromReplay.StartReplayAction(stats)
+        })
+    );
 
   @Effect()
   updateReplay: Observable<any> = this.actions$
-      .ofType(fromUser.UPDATE_USER_DATA)
-      .map((action: fromUser.UpdateUserDataAction) => action.payload)
-      .map((userTimeline: IUserPlaceline) => {
+      .ofType(fromUser.UPDATE_USER_DATA).pipe(
+      map((action: fromUser.UpdateUserDataAction) => action.payload),
+      map((userTimeline: IUserPlaceline) => {
         // this.timelineReplay.update(userTimeline.placeline, userTimeline.last_heartbeat_at);
         // this.timelinePolyline.update(userTimeline.placeline);
         let stats =  this.userTraceService.segmentsTrace.stats;
         return new fromReplay.UpdateReplayAction(stats)
-      });
+      })
+    );
 
   @Effect()
   startTick: Observable<any> = this.actions$
-      .ofType(fromReplay.START_TICK)
-      .switchMap(() => {
-        return timer(0, 50).takeUntil(this.actions$.ofType(fromReplay.PAUSE_TICK, fromReplay.CLEAR_REPLAY, fromReplay.JUMP_TO_TIME, fromReplay.STOP_REPLAY));
-      })
-
-      .map(() => new fromReplay.NextTickAction());
+      .ofType(fromReplay.START_TICK).pipe(
+      switchMap(() => {
+        return timer(0, 50).pipe(takeUntil(this.actions$.ofType(fromReplay.PAUSE_TICK, fromReplay.CLEAR_REPLAY, fromReplay.JUMP_TO_TIME, fromReplay.STOP_REPLAY)));
+      }),
+      map(() => new fromReplay.NextTickAction())
+    );
 
   @Effect()
   nextTick: Observable<any> = this.actions$
-      .ofType(fromReplay.NEXT_TICK)
-      .switchMap(() => this.store.select(fromRoot.getReplayState).take(1))
-      .map((state: fromReplayReducer.State) => {
-        let head = this.getNextHead(state);
-        if(head.timePercent > 100) {
-          return new fromReplay.JumpToTimeAction(0);
-        } else {
-          return new fromReplay.SetCurrentHeadAction(head)
-        }
+      .ofType(fromReplay.NEXT_TICK).pipe(
+      switchMap(() => this.store.select(fromRoot.getReplayState).pipe(take(1))),
+      map((state: fromReplayReducer.State) => {
+          let head = this.getNextHead(state);
+          if(head.timePercent > 100) {
+            return new fromReplay.JumpToTimeAction(0);
+          } else {
+            return new fromReplay.SetCurrentHeadAction(head)
+          }
 
-      });
+        })
+    );
 
   @Effect()
   jumpToTime: Observable<any> = this.actions$
-      .ofType(fromReplay.JUMP_TO_TIME)
-      .switchMap((action: fromReplay.JumpToTimeAction) => {
-        return this.store.select(fromRoot.getReplayState).take(1)
-            .map((state: fromReplayReducer.State) => {
-                // let head = {...this.getNextHead(state), timePercent: +action.payload};
-                if(+action.payload > 100) {
-                    return new fromReplay.PauseTickAction();
-                } else {
-                  let head = this.getHead(+action.payload);
-                    return new fromReplay.SetCurrentHeadAction(head)
-                }
+      .ofType(fromReplay.JUMP_TO_TIME).pipe(
+      switchMap((action: fromReplay.JumpToTimeAction) => {
+        return this.store.select(fromRoot.getReplayState).pipe(
+          take(1),
+          map((state: fromReplayReducer.State) => {
+            // let head = {...this.getNextHead(state), timePercent: +action.payload};
+            if(+action.payload > 100) {
+              return new fromReplay.PauseTickAction();
+            } else {
+              let head = this.getHead(+action.payload);
+              return new fromReplay.SetCurrentHeadAction(head)
+            }
 
-            });
-      });
+          })
+        )
+      })
+    );
 
   @Effect()
   clearReplay: Observable<any> =  this.actions$
-      .ofType(fromUser.CLEAR_USER)
-      .map(() => {
+      .ofType(fromUser.CLEAR_USER).pipe(
+      map(() => {
         this.userTraceService.segmentsTrace.clearTimeline();
         return new fromReplay.ClearReplayAction()
-      });
+      })
+    );
 
 
 

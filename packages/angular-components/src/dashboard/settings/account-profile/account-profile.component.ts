@@ -3,6 +3,7 @@ import {AccountUsersService} from "../../account/account-users.service";
 import {Observable} from "rxjs/Observable";
 import {IAccountUser} from "ht-models";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-account-profile',
@@ -39,7 +40,7 @@ export class AccountProfileComponent implements OnInit {
     $event.target.disabled = true;
     var obj = {"old_password": oldPassword.value, "new_password": newPassword.value}
     if (newPassword.value == confirmedPassword.value) {
-      this.accountUserService.getUser().take(1).subscribe((accountUser: IAccountUser) => {
+      this.accountUserService.getUser().pipe(take(1)).subscribe((accountUser: IAccountUser) => {
         this.accountUserService.changePassword(accountUser.id, obj).subscribe(() => {
           $event.target.disabled = false;
           this.showModal = false;

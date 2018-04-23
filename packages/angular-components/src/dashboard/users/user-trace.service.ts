@@ -14,7 +14,7 @@ import {ReplayMarkerTrace} from "../trace/replay-marker";
 // import * as L from "leaflet";
 import * as _ from "underscore";
 import {htUser} from "ht-data";
-import {of} from "rxjs/observable/of";
+import {filter} from "rxjs/operators";
 
 @Injectable()
 export class UserTraceService {
@@ -52,7 +52,9 @@ export class UserTraceService {
 
 
   private initListeners() {
-    this.segmentsTrace.timelineSegment.head$.filter(() => !!this.map).subscribe((head) => {
+    this.segmentsTrace.timelineSegment.head$.pipe(
+      filter(() => !!this.map)
+    ).subscribe((head) => {
       this.setReplayHead(head)
     });
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { IAccount, PartialAccount } from 'ht-models';
 import { SnackbarService } from '../../shared/snackbar/snackbar.service';
 import { Router } from '@angular/router';
+import {take} from "rxjs/operators";
 
 @Component({
   selector: 'app-plan-options',
@@ -34,7 +35,7 @@ export class PlanOptionsComponent implements OnInit {
   }
 
   choosePlan(planType) {
-    this.accountUserService.getAccount().take(1).subscribe((account) => {
+    this.accountUserService.getAccount().pipe(take(1)).subscribe((account) => {
       if (account.card) {
     this.accountUserService.setBillingPlan(planType);
       } else {

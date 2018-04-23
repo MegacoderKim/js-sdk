@@ -11,6 +11,7 @@ import {IRange} from "../../model/common";
 import {config} from "../../config";
 import {empty} from "rxjs/observable/empty";
 import {of} from "rxjs/observable/of";
+import {distinctUntilChanged, flatMap, map, share, take} from "rxjs/operators";
 var download = require('../../../assets/download.js');
 
 @Component({
@@ -45,16 +46,19 @@ export class FilterCommonComponent implements OnInit {
   ngOnInit() {
     this.initSubs();
     this.entity$ = this.store.select(fromRoot.getQueryEntity);
-    this.switchViewLink$ = this.entity$.share().map(entity => {
-      let base = config.isWidget ? '/widget' : '/';
-      return {
-        map: [base, 'map', entity],
-        list: [base, 'list', entity],
-        entity: entity
-      }
-    });
+    this.switchViewLink$ = this.entity$.pipe(
+      share(),
+      map(entity => {
+        let base = config.isWidget ? '/widget' : '/';
+        return {
+          map: [base, 'map', entity],
+          list: [base, 'list', entity],
+          entity: entity
+        }
+      })
+    );
     this.showMobileMap$ = this.store.select(fromRoot.getUiShowMapMobile);
-    this.loading$ = this.store.select(fromRoot.getQueryLoading).distinctUntilChanged()
+    this.loading$ = this.store.select(fromRoot.getQueryLoading).pipe(distinctUntilChanged())
 
   }
 
@@ -72,9 +76,11 @@ export class FilterCommonComponent implements OnInit {
       return query;
     });
 
-    this.mobileFilters$ = this.filters$.map(filters => {
-      return filters && filters.length ? filters : null
-    });
+    this.mobileFilters$ = this.filters$.pipe(
+      map((filters: any[]) => {
+        return filters && filters.length ? filters : null
+      })
+    );
 
     this.ordering$ = this.getOrdering$();
     let queryParam = this.route.snapshot.queryParams;
@@ -180,7 +186,7 @@ export class FilterCommonComponent implements OnInit {
 
   downloadCsv() {
     this.downloadLoading = true;
-    this.getQuery$().take(1).flatMap((query: any) => this.csvApi$(query)).subscribe((data) => {
+    this.getQuery$().pipe(take(1), flatMap((query: any) => this.csvApi$(query))).subscribe((data) => {
       this.downloadLoading = false;
       download(data, this.fileName(), "text/csv")
     })

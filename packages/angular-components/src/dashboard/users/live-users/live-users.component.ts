@@ -26,6 +26,7 @@ import {htUser} from "ht-data";
 import {config} from "../../config";
 import {HtUsersService} from "ht-angular";
 import {of} from "rxjs/observable/of";
+import {filter, switchMap, take} from "rxjs/operators";
 
 @Component({
   selector: 'app-live-users',
@@ -260,7 +261,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
     //   return {...page, ...date, isToday: null}
     // });
     let sub = this.getDateRange()
-      .switchMap(() => this.getQuery().take(1))
+      .pipe(switchMap(() => this.getQuery().pipe(take(1))))
       .subscribe((query: object) => {
       this.isToday = IsRangeToday(query);
         this.htUsersService.list.setQuery(query);
@@ -317,7 +318,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
 
 
   onQueryChange(query) {
-    this.store.select(fromRoot.getUserData).take(1).subscribe((userData) => {
+    this.store.select(fromRoot.getUserData).pipe(take(1)).subscribe((userData) => {
       if(userData) this.closeUserCard();
     });
     super.onQueryChange(query)
@@ -325,14 +326,17 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
 
   private updateUserMap(query) {
     let userPlace$ = (query) => this.store.select(fromRoot.getQueryDateRange)
-        .take(1)
-        .switchMap((range: IRange) => {
-          if(range.isToday) {
-            return this.userService.getAllUserAnalytics({...query, start: range.start, end: range.end})
-          } else {
-            return of(null)
-          }
-        }).filter((data) => !!data);
+        .pipe(
+          take(1),
+          switchMap((range: IRange) => {
+              if(range.isToday) {
+                return this.userService.getAllUserAnalytics({...query, start: range.start, end: range.end})
+              } else {
+                return of(null)
+              }
+            }),
+          filter((data) => !!data)
+        );
 
     let sub = userPlace$(query).subscribe((usersMaps: IUserAnalytics[]) => {
       // let usersMap = _.filter(usersMapa, (userMap: IUserAnalytics) => {
@@ -421,7 +425,7 @@ export class LiveUsersComponent extends UsersListComponent implements OnInit {
   }
 
   refreshList() {
-    this.getPageQuery().take(1).subscribe((query) => {
+    this.getPageQuery().pipe(take(1)).subscribe((query) => {
       this.updatePageQuery(query)
       // this.store.dispatch(new fromQuery.Update(range))
     })

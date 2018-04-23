@@ -10,6 +10,7 @@ import {IsValidUrl} from "../../../utils/validations";
 import {config} from "../../config";
 import {IToken} from "ht-models";
 import {HttpClient} from "@angular/common/http";
+import {map, switchMap, take, withLatestFrom} from "rxjs/operators";
 
 @Component({
   selector: 'app-user-account',
@@ -75,7 +76,7 @@ export class UserAccountComponent implements OnInit {
     formData.append(field, input.files[0], input.files[0].name);
     // let headers = new Headers({'Authorization': 'token '+config.token,});
     // console.log(formData);
-    this.accountUserService.getSubAccount().take(1).subscribe((subAccount: ISubAccount) => {
+    this.accountUserService.getSubAccount().pipe(take(1)).subscribe((subAccount: ISubAccount) => {
       var xhr = new XMLHttpRequest();
       xhr.open("PATCH", `https://api.hypertrack.com/api/v1/subaccounts/${subAccount.id}/`);
       xhr.setRequestHeader("Authorization", 'token '+config.token);
@@ -155,14 +156,16 @@ export class UserAccountComponent implements OnInit {
   rollKey(token: IToken) {
     console.log(token);
     this.snackbarService.displayLoadingToast();
-    this.accountUserService.getSubAccount().take(1)
-      .withLatestFrom(this.accountUserService.getUser())
-      .map(([subAccount, accountUser]: [ISubAccount, IAccountUser]) => {
-        return {subAccountId: subAccount.id, email: accountUser.email}
-      })
-      .switchMap(({subAccountId, email}) => {
-      return this.accountUserService.rollKey(subAccountId, token.scope, email)
-    }).subscribe((data) => {
+    this.accountUserService.getSubAccount().pipe(
+      take(1),
+      withLatestFrom(this.accountUserService.getUser()),
+      map(([subAccount, accountUser]: [ISubAccount, IAccountUser]) => {
+          return {subAccountId: subAccount.id, email: accountUser.email}
+        }),
+      switchMap(({subAccountId, email}) => {
+          return this.accountUserService.rollKey(subAccountId, token.scope, email)
+        })
+    ).subscribe((data) => {
       console.log(data);
       this.snackbarService.hideLoadingToast();
       this.snackbarService.displaySuccessToast("Check your email to confirm key roll")

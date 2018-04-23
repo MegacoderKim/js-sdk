@@ -10,6 +10,7 @@ import * as fromQuery from "../../actions/query";
 import * as fromUser from "../../actions/user";
 import {Observable} from "rxjs/Observable";
 import {zip} from "rxjs/observable/zip";
+import {distinctUntilChanged, filter, map, pluck, share, skip, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-users-list',
@@ -30,8 +31,11 @@ export class UsersListComponent extends EntityListComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.initDetailListner()
-    let sub = this.getQuery().map((query) => !!query['show_all'] || !!query['last_location__bbox']).distinctUntilChanged().subscribe((showAll) => {
+    this.initDetailListner();
+    let sub = this.getQuery().pipe(
+      map((query) => !!query['show_all'] || !!query['last_location__bbox']),
+      distinctUntilChanged()
+    ).subscribe((showAll) => {
       this.showAll = showAll;
       this.setShowAll(showAll);
     });
@@ -91,23 +95,29 @@ export class UsersListComponent extends EntityListComponent implements OnInit {
     return zip(
       this.getListApi(query),
       this.getSummaryApi({...query, page: null, ordering: null})
-    ).map(([pageData, summary]: [any, IUserListSummary]) => {
-      this.updateSummaryData(summary);
-      return pageData
-    });
+    ).pipe(
+      map(([pageData, summary]: [any, IUserListSummary]) => {
+        this.updateSummaryData(summary);
+        return pageData
+      })
+    );
   }
 
   initDetailListner() {
-    let id$ = this.route.params.pluck('id').do((id: string | null) => {
-      this.selectedUserSegmentId = id;
-    });
-    let hasId = id$.filter(data => !!data).subscribe((id: string) => {
+    let id$ = this.route.params.pipe(
+      pluck('id'),
+      tap((id: string | null) => {
+        this.selectedUserSegmentId = id;
+      })
+    );
+    let hasId = id$.pipe(filter(data => !!data)).subscribe((id: string) => {
       this.selectDetailedUser(id)
     });
 
     let skipNumber = this.route.snapshot.params['id'] ? 0 : 1;
 
-    let hasNoId = id$.share().filter(data => !data).skip(skipNumber).subscribe((id: null) => {
+    let hasNoId = id$.pipe(share(), filter(data => !data), skip(skipNumber))
+      .subscribe((id: null) => {
       this.unselectDetailedUser(id)
     });
 

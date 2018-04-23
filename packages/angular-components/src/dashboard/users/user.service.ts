@@ -26,7 +26,7 @@ import {HtUsersService} from "ht-angular";
 import * as fromQuery from "../actions/query";
 import {getMergedParams} from "ht-utility";
 import {combineLatest} from "rxjs/observable/combineLatest";
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 
 @Injectable()
 export class UserService {
@@ -83,10 +83,12 @@ export class UserService {
   getAllUserAnalytics(query = {}, callback?) {
     let string = HtQuerySerialize({page_size: 100, ...GetUserDateRangeQuery(query)});
     const analytics$ = this.client.api.analytics({page_size: 100, ...GetUserDateRangeQuery(query)});
-    return this.client.api.allPages(analytics$).do((data: Page<IUser>) => {
-      data.next = null;
-      if (callback) callback(data)
-    })
+    return this.client.api.allPages(analytics$).pipe(
+      tap((data: Page<IUser>) => {
+        data.next = null;
+        if (callback) callback(data)
+      })
+    )
     // return this.client.api.analytics({page_size: 100, ...GetUserDateRangeQuery(query)}).do((data: Page<IUser>) => {
     //   data.next = null;
     //   if (callback) callback(data)
@@ -121,9 +123,11 @@ export class UserService {
     let string = HtQuerySerialize({page_size: 200, ...query});
     // let url = `app/users/heatmap/?${string}`;
     const heat$ = this.client.api.heatmap({page_size: 200, ...query});
-    return this.client.api.allPages(heat$).do((data) => {
-      if (callback) callback(data)
-    })
+    return this.client.api.allPages(heat$).pipe(
+      tap((data) => {
+        if (callback) callback(data)
+      })
+    )
   }
 
   mapList(query = {}, callback?: (userMapPage: IUserMapPage) => any): Observable<IUserMap[]> {

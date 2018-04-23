@@ -11,6 +11,7 @@ import {config} from "../../config";
 import {HttpClient} from "@angular/common/http";
 import {ISdkEvent, GetEventColor} from "../interfaces";
 import {format} from "date-fns";
+import {debounceTime, filter, map, pluck, switchMap, withLatestFrom} from "rxjs/operators";
 
 @Component({
   selector: 'app-trace-events',
@@ -82,45 +83,56 @@ export class TraceEventsComponent {
   }
 
   ngOnInit() {
-    this.userId$ = this.route.params.pluck('user_id');
-    let sub = this.broadcast.on('reset-map').debounceTime(200).subscribe(() => {
+    this.userId$ = this.route.params.pipe(pluck('user_id'));
+    let sub = this.broadcast.on('reset-map').pipe(debounceTime(200)).subscribe(() => {
       this.eventTraceService.setBounds();
     });
 
-    let query$ = this.primaryQuery.filter(query => !!_.values(query)[0]).map(query => {
-      this.clear();
-      return this.getPrimaryQuery(query)
-    }).filter(data => !!data).withLatestFrom(this.eventsFilter.map((events) => {
-      return {type: events.toString()}
-    })).map(([primaryQuery, eventQuery]) => {
-      console.log(primaryQuery, eventQuery, "mid quer");
-      return {...eventQuery, ...primaryQuery}
-    });
+    let query$ = this.primaryQuery.pipe(
+      filter(query => !!_.values(query)[0]),
+      map(query => {
+          this.clear();
+          return this.getPrimaryQuery(query)
+        }),
+      filter(data => !!data),
+      withLatestFrom(this.eventsFilter.pipe(
+          map((events) => {
+            return {type: events.toString()}
+          })
+        )),
+      map(([primaryQuery, eventQuery]) => {
+          console.log(primaryQuery, eventQuery, "mid quer");
+          return {...eventQuery, ...primaryQuery}
+        })
+    );
 
-    let sub2 = query$.switchMap((query) => {
-      console.log("final", query);
-      setTimeout(() => {
-        this.loading = true;
+    let sub2 = query$.pipe(
+      switchMap((query) => {
+        console.log("final", query);
+        setTimeout(() => {
+          this.loading = true;
+        })
+        this.fillRoute({...query});
+        let string = HtQuerySerialize(query);
+        // console.log(this.isoStart, "iso view child");
+        // return Observable.of([])
+        return this.page.all(`app/v1/sdk_data/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
+      }),
+      map((events: ISdkEvent[]) => {
+        return this.eventTraceService.processEvents(events)
       })
-      this.fillRoute({...query});
-      let string = HtQuerySerialize(query);
-      // console.log(this.isoStart, "iso view child");
-      // return Observable.of([])
-      return this.page.all(`app/v1/sdk_data/?ordering=recorded_at&${string}`, () => {}, this.adminReqOpt())
-    }).map((events: ISdkEvent[]) => {
-      return this.eventTraceService.processEvents(events)
-    })
+    )
       .subscribe((events: ISdkEvent[]) => {
-      this.loading = false;
-      this.currentEvents = events;
-      this.filteredEvents = events;
-      this.renderEvents(events);
-      setTimeout(() => {
-        this.eventTraceService.setBounds();
-      }, 10)
-    });
+        this.loading = false;
+        this.currentEvents = events;
+        this.filteredEvents = events;
+        this.renderEvents(events);
+        setTimeout(() => {
+          this.eventTraceService.setBounds();
+        }, 10)
+      });
 
-    let sub3 = this.eventsFilter.filter(() => !!this.currentEvents).subscribe((events: string[]) => {
+    let sub3 = this.eventsFilter.pipe(filter(() => !!this.currentEvents)).subscribe((events: string[]) => {
       this.filteredEvents = this.getFilteredEvents(this.currentEvents);
       this.renderEvents(this.filteredEvents)
     });
