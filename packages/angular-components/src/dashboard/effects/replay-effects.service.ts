@@ -9,7 +9,7 @@ import {IPlaceline, IUserPlaceline} from "ht-models";
 import {Store} from "@ngrx/store";
 import {UserTraceService} from "../users/user-trace.service";
 import {timer} from "rxjs/observable/timer";
-import {IReplayHead} from "../trace/ht-js-map/interfaces";
+import {IReplayHead} from "ht-maps";
 
 @Injectable()
 export class ReplayEffectsService {

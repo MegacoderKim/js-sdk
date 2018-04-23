@@ -5,12 +5,11 @@ import {IPlaceHeat, IUserAnalytics, IUserPlaceline, IUserMap, IUser} from "ht-mo
 import {BroadcastService} from "../core/broadcast.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {config} from "../config";
-import {SegmentsTrace} from "../trace/segment-trace";
 import * as fromUser from "../actions/user";
 import {InnerMapService} from "../map-container/map.service";
 import {Observable} from "rxjs/Observable";
 import {HtMapService, HtUsersService} from "ht-angular";
-import {StopsHeatmapTrace} from "ht-maps";
+import {StopsHeatmapTrace, ReplayTrace} from "ht-maps";
 import {ReplayMarkerTrace} from "../trace/replay-marker";
 // import * as L from "leaflet";
 import * as _ from "underscore";
@@ -19,7 +18,7 @@ import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class UserTraceService {
-  segmentsTrace = new SegmentsTrace;
+  segmentsTrace = new ReplayTrace();
   usersCluster;
   replayMarker;
   // map: L.Map;

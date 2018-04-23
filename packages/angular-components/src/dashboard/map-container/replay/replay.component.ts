@@ -7,7 +7,7 @@ import {Observable} from "rxjs/Observable";
 import {BroadcastService} from "../../core/broadcast.service";
 import {UserTraceService} from "../../users/user-trace.service";
 import {InnerMapService} from "../map.service";
-import {IReplayPlayer} from "../../trace/ht-js-map/interfaces";
+import {IReplayPlayer} from "ht-maps";
 import {fromEvent} from "rxjs/observable/fromEvent";
 
 @Component({

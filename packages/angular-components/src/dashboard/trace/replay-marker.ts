@@ -1,6 +1,6 @@
 import {SingleItemMixin, TraceMixin, MapItemsMixin, StyleMixin, CircleMixin, MarkersMixin, CurrentUser, PopupMixin} from "ht-maps";
 import {HtPosition} from "ht-models";
-import {IReplayHead} from "./ht-js-map/interfaces";
+import {IReplayHead} from "ht-maps";
 import {Color, TimeString, NameCase} from "ht-utility";
 
 export class ReplayMarker extends CurrentUser{
