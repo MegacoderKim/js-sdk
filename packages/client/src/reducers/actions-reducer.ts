@@ -12,9 +12,10 @@ export interface State {
   summaryLoading: boolean
   summaryQuery: object,
 
-  graph: IActionStatusGraph | null,
+  graph: IActionStatusGraph[] | null,
   graphLoading: boolean,
-  graphQuery: object
+  graphQuery: object,
+  graphActive: boolean
 };
 
 export const initialState: State = {
@@ -30,7 +31,8 @@ export const initialState: State = {
 
   graph: null,
   graphLoading: false,
-  graphQuery: {}
+  graphQuery: {},
+  graphActive: false
 };
 
 export function actionsReducer(
@@ -94,6 +96,9 @@ export function actionsReducer(
       const graphQuery = {...state.graphQuery, ...action.payload};
       return {...state, graphQuery}
     }
+    case ActionsDispatcher.SET_ACTIONS_GRAPH_ACTIVE: {
+      return {...state, graphActive: action.payload}
+    }
     default: {
       return state;
     }
@@ -113,3 +118,4 @@ export const getSummaryLoading = (state: State) => state.summaryLoading;
 export const getGraph = (state: State) => state.graph;
 export const getGraphQuery = (state: State) => state.graphQuery;
 export const getGraphLoading = (state: State) => state.graphLoading;
+export const getGraphActive = (state: State) => state.graphActive;

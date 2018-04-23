@@ -3,8 +3,6 @@ import {listQueryMixin} from "../../mixins/entity-query";
 import {listAllClientSubMixin} from "../../mixins/list-all-client-sub";
 import {getAllPageDataMixin, getQueryDataMixin} from "../../mixins/get-data";
 import {clientSubMixin} from "../../mixins/client-subscription";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {of} from "rxjs/observable/of";
 import {Observable} from "rxjs/Observable";
 import {IActionStatusGraph} from "ht-models";
 import {IAllowedQueryMap} from "ht-data";
@@ -12,29 +10,40 @@ import {Subscription} from "rxjs/Subscription";
 import {IPageClientConfig} from "../../interfaces";
 import {HtActionsApi} from "ht-api";
 import {DateRange} from "../../global/date-range";
+import * as fromAction from "../../dispatchers/actions-dispatcher"
+import * as fromRoot from "../../reducers";
 
 export class ActionsGraph {
-  query$: Observable<object> = of({});
-  dataBehaviour$: BehaviorSubject<IActionStatusGraph[] | null> = new BehaviorSubject(null);
-  data$ = this.dataBehaviour$.asObservable();
-  activeBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  active$ = this.activeBehaviour$.asObservable();
-  loadingBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  loading$ = this.loadingBehaviour$.asObservable();
+  query$: Observable<object>;
+  data$: Observable<IActionStatusGraph[] | null>;
+  active$: Observable<boolean>;
+  loading$: Observable<boolean>;
   api$: (query) => Observable<IActionStatusGraph[]>;
   updateStrategy = "once";
   pollDuration = 10000;
     dateRange: DateRange;
   dataSub: Subscription;
   dateParam: string;
+  store;
   constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
+    this.store = store;
+    this.query$ = store.select(fromRoot.getActionsGraphQuery) as Observable<
+      object | null
+      >;
+    this.active$ = this.store(fromRoot.getActionsGraphActive);
+    this.loading$ = store.select(fromRoot.getActionsGraphLoading);
+    this.data$ = store.select(fromRoot.getActionsGraph);
     this.api$ = (query) => api.graph(query);
     this.dateRange = dateRange;
     this.dateParam = dateParam;
   }
 
   setActive(active: boolean = true) {
-    this.activeBehaviour$.next(active)
+    this.store.dispatch(new fromAction.SetGraphActive(active));
+  }
+
+  setQuery() {
+
   }
 
   getDefaultQuery() {
@@ -42,7 +51,7 @@ export class ActionsGraph {
   };
 
   setData(data) {
-    this.dataBehaviour$.next(data)
+    this.store.dispatch(new fromAction.SetGraph(data));
   }
 
   firstDataEffect() {
@@ -50,7 +59,7 @@ export class ActionsGraph {
   }
 
   setLoading(loading: boolean | string = true) {
-    this.loadingBehaviour$.next(!!loading)
+    this.store.dispatch(new fromAction.SetGraphLoading(!!loading));
   }
 
   clearData() {

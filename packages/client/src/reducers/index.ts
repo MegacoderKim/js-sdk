@@ -264,6 +264,11 @@ export const getActionsGraphLoading = createSelector(
   fromActions.getGraphLoading
 );
 
+export const getActionsGraphActive = createSelector(
+  getActionsState,
+  fromActions.getGraphActive
+);
+
 export const getActionsGraphQuery = createSelector(
   getActionsState,
   fromActions.getGraphQuery

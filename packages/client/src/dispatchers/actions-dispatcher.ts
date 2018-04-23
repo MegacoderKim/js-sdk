@@ -17,6 +17,7 @@ export const SET_ACTIONS_GRAPH = "[ACTIONS] set actions graph";
 export const SET_ACTIONS_GRAPH_QUERY = "[ACTIONS] set actions graph query";
 export const ADD_ACTIONS_GRAPH_QUERY = "[ACTIONS] add actions graph query";
 export const SET_ACTIONS_GRAPH_LOADING = "[ACTIONS] set actions graph loading";
+export const SET_ACTIONS_GRAPH_ACTIVE = "[ACTIONS] set actions graph active";
 
 /*
 Summary
@@ -65,7 +66,7 @@ export class SetListLoading implements Action {
 
 export class SetGraph implements Action {
   readonly type = SET_ACTIONS_GRAPH;
-  constructor(public payload: IActionStatusGraph) {}
+  constructor(public payload: IActionStatusGraph[] | null) {}
 }
 
 export class SetGraphQuery implements Action {
@@ -75,6 +76,11 @@ export class SetGraphQuery implements Action {
 
 export class SetGraphLoading implements Action {
   readonly type = SET_ACTIONS_GRAPH_LOADING;
+  constructor(public payload: boolean = true) {}
+}
+
+export class SetGraphActive implements Action {
+  readonly type = SET_ACTIONS_GRAPH_ACTIVE;
   constructor(public payload: boolean = true) {}
 }
 
@@ -117,6 +123,7 @@ export type All = SetList
   | SetGraphLoading
   | SetGraphQuery
   | AddGraphQuery
+  | SetGraphActive
   | SetSummary
   | SetSummaryActive
   | SetSummaryLoading
