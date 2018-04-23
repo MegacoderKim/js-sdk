@@ -1,5 +1,4 @@
-import { Component, OnInit, HostBinding, ElementRef, AfterViewInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, HostBinding, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'ht-loading-bar',
@@ -13,12 +12,11 @@ export class LoadingBarComponent implements OnInit, AfterViewInit {
   //   return this.sanitize.bypassSecurityTrustStyle(`{bottom: ${this.height}px}`)
   // }
   height: number = 2;
-  constructor(private sanitize: DomSanitizer, private elem: ElementRef) {
+  constructor() {
     this.bo = `${this.height}px`;
   }
 
   ngAfterViewInit() {
-    console.log(this.elem.nativeElement.bottom);
   }
 
   ngOnInit() {

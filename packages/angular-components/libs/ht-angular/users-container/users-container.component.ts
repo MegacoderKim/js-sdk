@@ -106,7 +106,6 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
       this.userService.list.data$
     ).pipe(
       map(([loading, data]) => {
-        console.log("lo", loading, data);
         return loading && !data
       })
     );

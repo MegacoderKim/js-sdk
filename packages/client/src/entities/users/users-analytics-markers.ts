@@ -83,7 +83,6 @@ export class UsersAnalyticsListAll extends EntityAllItemsClient {
   }
 
   setData(data: Page<IUserAnalytics>) {
-    console.log("set", data);
     data = data || { results: [], next: "no_next", count: 0, previous: "" };
     this.store.dispatch(new fromUsersDispatcher.SetUsersAnalyticsAll(data));
   }
