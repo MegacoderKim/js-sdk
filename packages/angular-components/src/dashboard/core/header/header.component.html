@@ -1,6 +1,6 @@
 <nav class="navbar">
   <div class="navbar-brand">
-    <a [routerLink]="[config.isMobile ? '/map' : '/list', 'users']" queryParamsHandling="preserve" class="navbar-item navbar-logo">
+    <a [routerLink]="['/users', config.isMobile ? '/map' : '/list']" queryParamsHandling="preserve" class="navbar-item navbar-logo">
       <span id="logo" class="auto"></span>
     </a>
     <ng-container *ngIf="entityLink$ | async as entityLink">
