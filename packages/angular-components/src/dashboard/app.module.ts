@@ -28,7 +28,8 @@ import {InnerSharedModule} from "./shared/shared.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {GetToken} from "../utils/get-token";
 import {config} from "./config";
-
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 // import * as L from "leaflet";
 // import {mapTypeService} from "ht-maps";
 // require('leaflet');
