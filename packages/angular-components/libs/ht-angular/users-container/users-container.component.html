@@ -28,7 +28,7 @@
     <!--&lt;!&ndash;<ht-user-card [user]="userData"></ht-user-card>&ndash;&gt;-->
     <!--<ht-placeline [userData]="userData"></ht-placeline>-->
   <!--</div>-->
-  <ht-loading-dots *ngIf="loading$ | async" class="is-size-1 has-text-centered card-content"></ht-loading-dots>
+  <div ht-loading-dots *ngIf="loading$ | async" class="is-size-1 has-text-centered card-content"></div>
   <!--<div class="loading-box" *ngIf="loadingUsers$ | async"></div>-->
   <ng-container *ngIf="usersPage$ | async as usersPage">
     <ht-pagination (fetchPage)="fetchPage($event)" [pageDate]="usersPage"></ht-pagination>

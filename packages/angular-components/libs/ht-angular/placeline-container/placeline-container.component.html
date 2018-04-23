@@ -1,7 +1,7 @@
 <div class="flex-column column-gap-10" [@slide] *ngIf="userData$ | async as userData">
   <ht-user-card *ngIf="showUserCard" [user]="userData"></ht-user-card>
   <ht-user-device class="card-content" [userId]="userData.id"></ht-user-device>
-  <ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></ht-loading-dots>
+  <div ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></div>
   <ng-template #placeline>
     <ht-placeline
       [selectedSegmentId]="selectedSegmentId$ | async"

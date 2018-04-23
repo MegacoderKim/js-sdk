@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
-  selector: 'ht-loading-dots',
+  selector: '[ht-loading-dots]',
   templateUrl: './loading-dots.component.html',
   styleUrls: ['./loading-dots.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
