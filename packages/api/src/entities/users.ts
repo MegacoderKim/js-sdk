@@ -1,6 +1,6 @@
 import { HtBaseApi } from "./base";
 import { Observable } from "rxjs/Observable";
-import { IUserAnalyticsPage, Page, IActionPlaceline, IUserPlaceline, IUser, IAction, IPlaceline } from "ht-models";
+import { IUserAnalyticsPage, Page, IActionPlaceline, IUserPlaceline, IUser, IAction, IPlaceline, IUserDevice } from "ht-models";
 import {filter, map} from "rxjs/operators";
 import {isToday, startOfToday, endOfToday} from "date-fns";
 import {htPlaceline} from "ht-data";
@@ -35,6 +35,11 @@ export class HtUsersApi extends HtBaseApi {
   analytics(query, token?: string): Observable<IUserAnalyticsPage> {
     let path = `v2/${this.base}/analytics/`;
     return this.api$<IUserAnalyticsPage>(path, query, {token});
+  }
+
+  device(id, token?: string): Observable<IUserDevice> {
+    let path = `v1/${this.base}/${id}/device/`;
+    return this.api$(path, {}, {token});
   }
 
   placeline(id: string | null, query = {}, token?: string): Observable<IUserPlaceline> {
