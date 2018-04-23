@@ -107,9 +107,11 @@ export class AccountUserEffectsService {
         .pipe(
           switchMap((action: fromAccountUser.UpdateAccountUserAction) => {
             let accountUser = {...action.payload.data};
-            return this.accountUserService.patchAccountUser(action.payload.data).map((user) => {
-              return new fromAccountUser.SetAccountUserAction(user)
-            })
+            return this.accountUserService.patchAccountUser(action.payload.data).pipe(
+              map((user) => {
+                return new fromAccountUser.SetAccountUserAction(user)
+              })
+            )
           })
         );
 
@@ -119,9 +121,10 @@ export class AccountUserEffectsService {
         switchMap((action: fromAccountUser.GetAccountUserAction) => {
           let accountUserId = action.payload;
           let headers = {'Authorization': `token ${config.adminToken}`};
-          return this.http.get<IAccountUser>(`app/v1/account_users/${accountUserId}/`, {headers}).map((user) => {
-            return new fromAccountUser.SetAccountUserAction(user)
-          }).pipe(
+          return this.http.get<IAccountUser>(`app/v1/account_users/${accountUserId}/`, {headers}).pipe(
+            map((user) => {
+              return new fromAccountUser.SetAccountUserAction(user)
+            }),
             catchError(() => of(null)),
             filter((data) => !!data)
           )

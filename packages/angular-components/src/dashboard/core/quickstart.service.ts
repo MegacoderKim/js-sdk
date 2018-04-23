@@ -5,6 +5,7 @@ import {LoggerService} from "./logger.service";
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
 import {_throw} from "rxjs/observable/throw";
+import {catchError, filter} from "rxjs/operators";
 
 @Injectable()
 export class QuickstartService {
@@ -66,17 +67,19 @@ export class QuickstartService {
       ...amplitudePayload,
       platform: platform
     };
-    return this.http.post<IWebsiteLeadResponse>(url, body, options).filter(data => !!data);
+    return this.http.post<IWebsiteLeadResponse>(url, body, options).pipe(filter(data => !!data));
   }
 
   getGithubFile(fileUrl: string = '') {
     let newTime = (new Date).getTime();
     fileUrl = fileUrl + `#${newTime}`;
     let url = `app/github?fileURL=${fileUrl}&time=${newTime}`;
-    return this.http.get(url).catch((error: any) => {
-      console.log("Error", error);
-      return _throw(error);
-    });
+    return this.http.get(url).pipe(
+      catchError((error: any) => {
+          console.log("Error", error);
+          return _throw(error);
+        })
+    );
     // let newTime = (new Date).getTime();
     // fileUrl = fileUrl + `#${newTime}`;
     // let options = new RequestOptions({responseType: ResponseContentType.Text});

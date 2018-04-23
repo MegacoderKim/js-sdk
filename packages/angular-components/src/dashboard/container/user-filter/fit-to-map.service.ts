@@ -10,6 +10,7 @@ import * as _ from "underscore";
 import {config} from "../../config";
 import {IsRangeToday} from "ht-utility";
 import {combineLatest} from "rxjs/observable/combineLatest";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class FitToMapService {
@@ -38,22 +39,24 @@ export class FitToMapService {
 
   init() {
 
-    let dateRange$ = this.store.select(fromRoot.getQueryDateRange)
-      .map(range => {
+    let dateRange$ = this.store.select(fromRoot.getQueryDateRange).pipe(
+      map(range => {
         let isToday = IsRangeToday(range);
         this.isToday = isToday;
         return isToday
-      });
+      })
+    );
 
-    let selectedUser$ = this.store.select(fromRoot.getUserSelectedUserId)
-      .map(selectedUserId => {
+    let selectedUser$ = this.store.select(fromRoot.getUserSelectedUserId).pipe(
+      map(selectedUserId => {
         return !selectedUserId
-      });
+      })
+    );
 
     let sub = combineLatest(
       dateRange$,
       selectedUser$
-    ).map(([a, b]) => a && b)
+    ).pipe(map(([a, b]) => a && b))
       .subscribe((toShow) => {
         if(toShow) {
         // this.disableResetBoundsTemp();

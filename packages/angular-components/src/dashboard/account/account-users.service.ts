@@ -310,7 +310,7 @@ export class AccountUsersService {
   }
 
   billingSummary() {
-    return this.http.get(`app/v1/billing/summary/`).map(res => _.values(res))
+    return this.http.get(`app/v1/billing/summary/`).pipe(map(res => _.values(res)))
   }
 
   resendInvite(email: string) {
@@ -392,9 +392,10 @@ export class AccountUsersService {
     this.getUser().pipe(take(1)).subscribe((user) => {
       console.log("user", user);
     })
-    return this.getSubAccount().map((subAccount) => {
-      return subAccount.id
-    }).pipe(
+    return this.getSubAccount().pipe(
+      map((subAccount) => {
+        return subAccount.id
+      }),
       take(1),
       switchMap((subAccountId: string) => {
           return this.http.post(`app/v1/subaccounts/${subAccountId}/confirm_key_roll/`, {token_id})

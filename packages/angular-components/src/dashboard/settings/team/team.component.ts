@@ -9,7 +9,7 @@ import * as _ from "underscore";
 import {HttpClient} from "@angular/common/http";
 import { MembershipsService } from "../../account/memberships.service";
 import {zip} from "rxjs/observable/zip";
-import {filter, take, withLatestFrom} from "rxjs/operators";
+import {filter, map, take, withLatestFrom} from "rxjs/operators";
 
 @Component({
   selector: 'app-team',
@@ -38,15 +38,15 @@ export class TeamComponent implements OnInit {
       filter(data => !!data),
       take(1),
       withLatestFrom(
-          this.account$.filter(data => !!data),
-          (memberships, account) => {
-            const accountId = account.id;
-            const member = memberships.find((member) => {
-              return member.account.id == accountId
-            });
-            return member.role == 'read_only';
-          }
-        )
+          this.account$.pipe(filter(data => !!data))
+        ),
+      map(([memberships, account]) => {
+        const accountId = account.id;
+        const member = memberships.find((member) => {
+          return member.account.id == accountId
+        });
+        return member.role == 'read_only';
+      })
     )
     .subscribe((data) => {
       this.isReadonly = data;

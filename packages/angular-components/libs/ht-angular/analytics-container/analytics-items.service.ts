@@ -98,12 +98,14 @@ export class AnalyticsItemsService {
       this.tags$ = combineLatest(
         this.allTags$,
         this.selectedTags$,
-        (allTags, selectedTags) => {
+
+      ).pipe(
+        map(([allTags, selectedTags]) => {
           return allTags.map(tag => {
             const isActive = selectedTags.includes(tag);
             return {key: tag, isActive}
           })
-        }
+        })
       );
     }
 

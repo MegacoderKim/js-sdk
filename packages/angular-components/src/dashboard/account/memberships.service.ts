@@ -9,6 +9,7 @@ import * as fromAccountUsers from "../actions/account-user";
 import {Observable} from "rxjs/Observable";
 import {GetMemberFromMemberships} from "../../utils/account-user-helper";
 import {HtClientService} from "ht-angular";
+import {map, filter} from "rxjs/operators";
 
 @Injectable()
 export class MembershipsService {
@@ -27,9 +28,11 @@ export class MembershipsService {
   all() {
     const userId = config.userId;
     const adminToken = config.adminToken;
-    return this.client.api.accountUser.membershipsAll(userId, {page_size: 100}, adminToken).map((data) => {
-      return data['results']
-    });
+    return this.client.api.accountUser.membershipsAll(userId, {page_size: 100}, adminToken).pipe(
+      map((data) => {
+        return data['results']
+      })
+    );
   }
 
   setMemberships(memberships: IMembership[]) {
@@ -42,14 +45,16 @@ export class MembershipsService {
   }
 
   getMembershipsState() {
-    return this.store.select(fromRooot.getAccountMemberships).filter(data => !!data)
+    return this.store.select(fromRooot.getAccountMemberships).pipe(filter(data => !!data))
   }
 
   getCurrentMember(): Observable<IMembership> {
-    return this.getMembershipsState().map((memberships) => {
-      let member = GetMemberFromMemberships(memberships, config.token, config.tokenType);
-      return member
-    })
+    return this.getMembershipsState().pipe(
+      map((memberships) => {
+        let member = GetMemberFromMemberships(memberships, config.token, config.tokenType);
+        return member
+      })
+    )
   }
 
 }

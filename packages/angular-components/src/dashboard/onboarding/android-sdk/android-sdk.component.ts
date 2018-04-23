@@ -5,6 +5,7 @@ import {andObservables, forEach} from "@angular/router/src/utils/collection";
 import {androidOnboardingContent} from "../content/android-onboarding.content";
 import {ExternalAnalyticsService} from "../../core/external-analytics.service";
 import {OnboardingService} from "../../core/onboarding.service";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-android-sdk',
@@ -37,7 +38,7 @@ export class AndroidSdkComponent implements OnInit {
    * Get the onboarding content from GitHub file.
    */
   fetchAndUpdateContent() {
-    this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData: string) => {
+    this.onboardingService.getOnboardingContent(this.onboardingFileURL).pipe(filter(data => !!data)).subscribe((fileData: string) => {
       fileData = JSON.parse( fileData );
       this.onboardingContent = fileData;
       // this.onboardingContent = androidOnboardingContent; //Use this when developing locally

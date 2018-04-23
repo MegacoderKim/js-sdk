@@ -63,18 +63,20 @@ export class FilterCommonComponent implements OnInit {
   }
 
   initSubs() {
-    this.filters$ = this.getListQuery$().map((obj: object) => {
-      let keys = _.keys(obj);
-      let query = _.reduce(keys, (acc, key: string) => {
-        if(this.isValidFilter(key, obj)) {
-          let value = this.getCustomFilterValue(key, obj);
-          return [...acc, {key, value}]
-        } else {
-          return acc
-        }
-      }, []);
-      return query;
-    });
+    this.filters$ = this.getListQuery$().pipe(
+      map((obj: object) => {
+        let keys = _.keys(obj);
+        let query = _.reduce(keys, (acc, key: string) => {
+          if(this.isValidFilter(key, obj)) {
+            let value = this.getCustomFilterValue(key, obj);
+            return [...acc, {key, value}]
+          } else {
+            return acc
+          }
+        }, []);
+        return query;
+      })
+    );
 
     this.mobileFilters$ = this.filters$.pipe(
       map((filters: any[]) => {

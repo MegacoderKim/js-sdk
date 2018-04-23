@@ -102,13 +102,15 @@ export class ActionsListComponent extends EntityListComponent implements OnInit 
 
   detailListener() {
     this.store.dispatch(new fromUi.LoadingMapUiAction(true));
-    let params$ = this.route.params.map(params => {
-      let id = params['id'];
-      let lookupId = params['lookup_id'];
-      this.detailActionId = id;
-      this.detailLookupId = lookupId;
-      return {id, lookupId}
-    });
+    let params$ = this.route.params.pipe(
+      map(params => {
+        let id = params['id'];
+        let lookupId = params['lookup_id'];
+        this.detailActionId = id;
+        this.detailLookupId = lookupId;
+        return {id, lookupId}
+      })
+    );
 
     let hasPopup = params$.pipe(filter((param) => param['id'] || param['lookup_id']))
       .subscribe(({id, lookupId}) => {

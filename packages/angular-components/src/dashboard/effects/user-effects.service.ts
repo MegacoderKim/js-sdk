@@ -59,7 +59,7 @@ export class UserEffectsService {
     fetchUserPlaces$: Observable<any>  = merge(
         this.actions$
             .ofType(fromUser.SELECT_USER_ID_PLACE),
-        this.actions$.ofType(fromUser.CLEAR_SELECTED_USER_PLACE).map(() => null)
+        this.actions$.ofType(fromUser.CLEAR_SELECTED_USER_PLACE).pipe(map(() => null))
     ).pipe(
       switchMap((action) => {
         if(!action) return empty();

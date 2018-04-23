@@ -71,10 +71,11 @@ export class ActionPageComponent implements OnInit {
 
     let param$ = this.route.params;
 
-    let placelineParams$ = param$
-      .map((param) => {
+    let placelineParams$ = param$.pipe(
+      map((param) => {
         return this.getPlacelineParam(param)
-      });
+      })
+    );
 
     let sub2 = placelineParams$.subscribe((query) => {
       this.htUsersService.placeline.setQuery(query);

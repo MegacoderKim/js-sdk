@@ -5,7 +5,7 @@ import {IPageData} from "../../model/common";
 import {UserService} from "../../users/user.service";
 import {ActionService} from "../../action/action.service";
 import {zip} from "rxjs/observable/zip";
-import {debounceTime, switchMap} from "rxjs/operators";
+import {debounceTime, filter, switchMap, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-search',
@@ -41,17 +41,21 @@ export class SearchComponent implements OnInit {
       this.ref.markForCheck();
     });
 
-    let inputChanges = inputChangesObservuer.filter(term => !!term.length);
+    let inputChanges = inputChangesObservuer.pipe(filter(term => !!term.length));
 
     const fetch = (term) => zip(
-        this.userService.index({search: term, page_size: 3}).do((data: IPageData) => {
-          this.users = data;
-          this.ref.markForCheck();
-        }),
-        this.actionService.indexOnDate({lookup_id: term, page_size: 3}).do((data: IPageData) => {
-          this.actions = data;
-          this.ref.markForCheck();
-        })
+        this.userService.index({search: term, page_size: 3}).pipe(
+          tap((data: IPageData) => {
+            this.users = data;
+            this.ref.markForCheck();
+          })
+        ),
+        this.actionService.indexOnDate({lookup_id: term, page_size: 3}).pipe(
+          tap((data: IPageData) => {
+            this.actions = data;
+            this.ref.markForCheck();
+          })
+        )
     )
 
     inputChanges.pipe(switchMap(term => fetch(term)))

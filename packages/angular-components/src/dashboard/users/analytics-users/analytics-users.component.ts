@@ -12,6 +12,7 @@ import * as fromUser from "../../actions/user";
 import {anim} from "../../../utils/animations";
 import {UsersListComponent} from "../../container/users-list/users-list.component";
 import {config} from '../../config';
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-analytics-users',
@@ -209,7 +210,7 @@ export class AnalyticsUsersComponent extends UsersListComponent implements OnIni
 
     });
 
-    let sub2 = this.store.select(fromRoot.getUserSummary).filter(data => !!data).subscribe((data: IUserListSummary) => {
+    let sub2 = this.store.select(fromRoot.getUserSummary).pipe(filter(data => !!data)).subscribe((data: IUserListSummary) => {
       this.summary = data;
       if (data) {
         this.userSummaryResult = this.formattedSummaryResultData(data, data.num_users);

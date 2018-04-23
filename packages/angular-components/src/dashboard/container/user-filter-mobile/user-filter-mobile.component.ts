@@ -7,6 +7,7 @@ import {UserFilterComponent} from "../user-filter/user-filter.component";
 import {anim} from "../../../utils/animations";
 import {FitToMapService} from "../user-filter/fit-to-map.service";
 import {HttpClient} from "@angular/common/http";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-user-filter-mobile',
@@ -36,9 +37,11 @@ export class UserFilterMobileComponent extends UserFilterComponent implements On
   }
 
   get mobileFilter$() {
-    return this.filters$.map(filters => {
-      return filters && filters.length ? filters : null
-    })
+    return this.filters$.pipe(
+      map((filters: any[]) => {
+        return filters && filters.length ? filters : null
+      })
+    )
   }
 
   goBack() {

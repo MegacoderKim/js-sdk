@@ -14,6 +14,7 @@ import {IAccount, IAction} from "ht-models";
 import {ActionsListComponent} from "../../container/actions-list/actions-list.component";
 import {config} from "../../config";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-analytics-actions',
@@ -136,7 +137,7 @@ export class AnalyticsActionsComponent extends ActionsListComponent implements O
   }
 
   private fillData() {
-    let sub = this.getPageData().filter(data => !!data).subscribe(data => {
+    let sub = this.getPageData().pipe(filter(data => !!data)).subscribe(data => {
       this.items = data;
       this.actionsData = data;
       this.dataResult = data;

@@ -9,6 +9,7 @@ import {userTableFormat} from "ht-data";
 import {config} from "../config";
 import {ContainerService} from "../container/container.service";
 import {bottomAppear, fadeAppear} from "ht-angular";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-users-list',
@@ -60,10 +61,11 @@ export class UsersListComponent implements OnInit {
     this.query$ = this.htUsersService.list.getApiQuery$();
     this.selectedUserId$ = this.htUsersService.placeline.id$;
 
-    this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
-      .map((stats) => {
+    this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats().pipe(
+      map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
-      });
+      })
+    );
 
     this.setInitialQuery();
     this.userService.getQueryForRoute().subscribe((query) => {

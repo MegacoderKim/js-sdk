@@ -6,6 +6,7 @@ import {ActionService} from "../../action/action.service";
 import {ActionFilterComponent} from "../action-filter/action-filter.component";
 import {anim} from "../../../utils/animations";
 import {HttpClient} from "@angular/common/http";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-action-filter-mobile',
@@ -33,9 +34,11 @@ export class ActionFilterMobileComponent extends ActionFilterComponent implement
   }
 
   get mobileFilter$() {
-    return this.filters$.map(filters => {
-      return filters && filters.length ? filters : null
-    })
+    return this.filters$.pipe(
+      map((filters: any[]) => {
+        return filters && filters.length ? filters : null
+      })
+    )
   }
 
   goBack() {

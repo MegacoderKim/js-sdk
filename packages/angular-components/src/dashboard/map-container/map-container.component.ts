@@ -86,10 +86,11 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
     );
 
     this.userData$ = this.store.select(fromRoot.getUserData);
-    this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
-      .map((stats) => {
+    this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats().pipe(
+      map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
-      });
+      })
+    );
 
     if(this.route.snapshot.queryParams['view'] == 'map') {
       this.store.dispatch(new fromUi.UpdateMapMobileShowAction(true))
@@ -99,17 +100,19 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
       this.disableSidebarScroll = true;
     }
 
-    this.showNoSegment$ = this.store.select(fromRoot.getUserData).map((userData: IUserPlaceline) => {
-      if(userData) {
-        let tripStopSegment = _.filter(userData.placeline, (segment: IPlaceline) => {
-          return segment.type == 'trip' || segment.type == 'stop'
-        });
-        return (userData.actions.length == 0 && tripStopSegment.length == 0)
-      } else {
-        return false;
-      }
-      // return userData ? (userData.actions.length == 0 && userData.placeline.length == 0) : false;
-    });
+    this.showNoSegment$ = this.store.select(fromRoot.getUserData).pipe(
+      map((userData: IUserPlaceline) => {
+        if(userData) {
+          let tripStopSegment = _.filter(userData.placeline, (segment: IPlaceline) => {
+            return segment.type == 'trip' || segment.type == 'stop'
+          });
+          return (userData.actions.length == 0 && tripStopSegment.length == 0)
+        } else {
+          return false;
+        }
+        // return userData ? (userData.actions.length == 0 && userData.placeline.length == 0) : false;
+      })
+    );
 
     this.invalidUsers$ = this.store.select(fromRoot.getUserMapList)
       .pipe(
@@ -118,7 +121,7 @@ export class MapContainerComponent implements OnInit, AfterViewInit, AfterConten
         distinctUntilChanged()
       );
 
-    this.hasPartialSegment$ = this.store.select(fromRoot.getUserSelectedPartialSegments).map((data) => !!data)
+    this.hasPartialSegment$ = this.store.select(fromRoot.getUserSelectedPartialSegments).pipe(map((data) => !!data))
     // this.showReplay$ = this.store.select(fromRoot.getReplayStatsState).share().map(stats => {
     //   return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
     // }).distinctUntilChanged().do(() => {

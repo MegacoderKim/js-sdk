@@ -68,12 +68,14 @@ export class HeaderComponent implements OnInit {
         }) : memberships;
       })
     );
-    this.entityLink$ = this.store.select(fromRoot.getQueryView).map(state => {
-      return {
-        users: ['/users', state],
-        actions: ['/' + state, 'actions']
-      }
-    });
+    this.entityLink$ = this.store.select(fromRoot.getQueryView).pipe(
+      map(state => {
+        return {
+          users: ['/users', state],
+          actions: ['/' + state, 'actions']
+        }
+      })
+    );
     this.memberships$.subscribe((memberships) => {
       this.memberships = memberships;
     });

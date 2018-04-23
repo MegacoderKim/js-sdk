@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Router, NavigationEnd, ActivatedRoute} from "@angular/router";
 import {config} from "../../config";
+import {filter} from "rxjs/operators";
 
 @Component({
   selector: 'app-sidenav',
@@ -19,7 +20,7 @@ export class SidenavComponent implements OnInit {
 
   ngOnInit() {
     this.isDemo = config.isDemo;
-    this.router.events.filter(e => e instanceof NavigationEnd).subscribe(data => {
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(data => {
         // console.log(data);
         this.initShow()
       });

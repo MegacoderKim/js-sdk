@@ -5,7 +5,7 @@ import {Page} from "ht-models";
 import {IInvoices} from "../../../models/invoices";
 import {SnackbarService} from "../../shared/snackbar/snackbar.service";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {filter, switchMap, tap} from "rxjs/operators";
+import {filter, map, switchMap, tap} from "rxjs/operators";
 var download = require('../../../assets/download.js');
 
 @Component({
@@ -47,11 +47,13 @@ export class InvoicesComponent implements OnInit {
   }
 
   download(invoice: IInvoices) {
-    this.accountUsersService.downloadInvoice(invoice.id).map((res) => {
-      // console.log(res, "res");
-      return res
-      // return res
-    })
+    this.accountUsersService.downloadInvoice(invoice.id).pipe(
+      map((res) => {
+        // console.log(res, "res");
+        return res
+        // return res
+      })
+    )
       .subscribe((data) => {
         // console.log(data);
         // console.log(data.type, "data", data);

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {CanLoad, CanActivate, Router} from "@angular/router";
 import {AccountUsersService} from "../account/account-users.service";
 import {Observable} from "rxjs/Observable";
+import {tap} from "rxjs/operators";
 
 @Injectable()
 export class AuthGuardService implements CanLoad, CanActivate{
@@ -17,9 +18,11 @@ export class AuthGuardService implements CanLoad, CanActivate{
   }
 
   isLoggedIn(): boolean | Observable<boolean> {
-    return this.accountUserService.isLoggedIn().do((isLoggedIn) => {
-      let url = location.href;
-      if(!isLoggedIn) this.router.navigate(['/login'], {queryParams: {next: url}, queryParamsHandling: 'merge'})
-    })
+    return this.accountUserService.isLoggedIn().pipe(
+      tap((isLoggedIn) => {
+        let url = location.href;
+        if(!isLoggedIn) this.router.navigate(['/login'], {queryParams: {next: url}, queryParamsHandling: 'merge'})
+      })
+    )
   }
 }

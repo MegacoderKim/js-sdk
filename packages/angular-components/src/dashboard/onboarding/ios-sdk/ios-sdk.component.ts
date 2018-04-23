@@ -2,6 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import {ExternalAnalyticsService} from "../../core/external-analytics.service";
 import {OnboardingService} from "../../core/onboarding.service";
 import {iosOnboardingContent} from "../content/ios-onboarding.content";
+import {filter} from "rxjs/operators";
 @Component({
   selector: 'app-ios-sdk',
   templateUrl: './ios-sdk.component.html',
@@ -28,7 +29,7 @@ export class IosSdkComponent implements OnInit {
   }
 
   fetchAndUpdateContent() {
-    this.onboardingService.getOnboardingContent(this.onboardingFileURL).filter(data => !!data).subscribe((fileData) => {
+    this.onboardingService.getOnboardingContent(this.onboardingFileURL).pipe(filter(data => !!data)).subscribe((fileData) => {
       fileData = JSON.parse( fileData );
       this.onboardingContent = fileData;
       // this.onboardingContent = iosOnboardingContent;

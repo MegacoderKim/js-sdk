@@ -76,10 +76,11 @@ export class UsersMapComponent implements OnInit, OnDestroy {
     this.containerService.setEntity('users');
     this.containerService.setView('map');
 
-    this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats()
-      .map((stats) => {
+    this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats().pipe(
+      map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
-      });
+      })
+    );
     // this.setView();
     const view = this.route.snapshot.params['view'];
     if (view) {

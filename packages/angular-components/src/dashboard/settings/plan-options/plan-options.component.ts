@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { IAccount, PartialAccount } from 'ht-models';
 import { SnackbarService } from '../../shared/snackbar/snackbar.service';
 import { Router } from '@angular/router';
-import {take} from "rxjs/operators";
+import {take, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-plan-options',
@@ -29,9 +29,11 @@ export class PlanOptionsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.account$ = this.accountUserService.getAccount().do((_) => {
-      this.snackbarService.hideLoadingToast()
-    });
+    this.account$ = this.accountUserService.getAccount().pipe(
+      tap((_) => {
+        this.snackbarService.hideLoadingToast()
+      })
+    );
   }
 
   choosePlan(planType) {

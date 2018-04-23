@@ -4,7 +4,7 @@ import {BroadcastService} from "../../core/broadcast.service";
 import {OnboardingService} from "../../core/onboarding.service";
 import {InnerSharedModule} from "../../shared/shared.module";
 import {AccountUsersService} from "../../account/account-users.service";
-import {take} from "rxjs/operators";
+import {filter, take} from "rxjs/operators";
 import {ISubAccount} from "ht-models";
 
 @Component({
@@ -38,7 +38,7 @@ export class CodeBlockComponent implements OnInit, OnChanges {
    */
   fetchAndUpdateCode() {
     if (!this.codeContent || !this.codeContent.fileURL) return;
-    this.onboardingService.getGithubFile(this.codeContent.fileURL).filter(data => !!data).subscribe((fileData) => {
+    this.onboardingService.getGithubFile(this.codeContent.fileURL).pipe(filter(data => !!data)).subscribe((fileData) => {
       // fileData = JSON.parse( fileData );
       // console.log(fileData);
       let snippets = this.createCodeSnippetsWithData(fileData, this.codeContent.lines);

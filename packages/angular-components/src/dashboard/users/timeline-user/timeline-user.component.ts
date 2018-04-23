@@ -19,6 +19,7 @@ import {LinkBaseUrl} from "../../../utils/base-url";
 import {InnerMapService} from "../../map-container/map.service";
 import {isToday, startOfDay, endOfDay} from "date-fns"
 import {HtUsersService} from "ht-angular";
+import {filter} from "rxjs/operators";
 declare let $: any;
 
 @Component({
@@ -104,7 +105,7 @@ export class TimelineUserComponent implements OnInit {
     });
 
     // this.userData$ = this.store.select(fromRoot.getUserData).filter(data => !!data);
-    this.userData$ = this.htUserService.placeline.data$.filter(data => !!data);
+    this.userData$ = this.htUserService.placeline.data$.pipe(filter(data => !!data));
 
     let sub2 = this.userData$.subscribe((timeLine: IUserPlaceline) => {
       // console.log("timel", timeLine);
