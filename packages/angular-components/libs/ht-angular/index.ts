@@ -25,6 +25,8 @@ export {UsersMapContainerComponent} from "./users-map-container/users-map-contai
 export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-chart.component"
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
 
+export { UserDeviceModule } from "./user-device/user-device.module"
+
 export { UsersSummaryModule } from "./users-summary/users-summary.module"
 export { UsersFilterModule } from "./filters/users-filter/users-filter.module"
 
