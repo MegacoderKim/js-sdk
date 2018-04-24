@@ -21,6 +21,7 @@ export class ActionsFiltersComponent implements OnInit {
   statusFiltes;
   sortingLabels;
   loading$;
+  selectedId$;
   constructor(
     private actionsService: HtActionsService,
     private usersService: HtUsersService
@@ -36,6 +37,7 @@ export class ActionsFiltersComponent implements OnInit {
       this.actionsService.summary.loading$,
       this.usersService.placeline.loading$
     );
+    this.selectedId$ = this.usersService.placeline.actionId$;
   }
 
   onQuery(query) {

@@ -67,6 +67,12 @@
     <ht-date-range [options]="datePickerOptions" *ngIf="!isMobile"></ht-date-range>
     <ng-content select=".end"></ng-content>
   </div>
+  <div class="card-overlay card-content flex-row row-gap-10 align-center" *ngIf="selectedId$ | async">
+    <div style="width: 340px;">
+      <ng-content select=".selected-start"></ng-content>
+    </div>
+    <ng-content select=".selected-end"></ng-content>
+  </div>
   <ht-loading-bar *ngIf="loading$ | async"></ht-loading-bar>
 
 </div>
