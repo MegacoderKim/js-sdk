@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {actionTableFormat} from "ht-data";
 import {HtActionsService} from "ht-angular";
 import {config} from "../../config";
+import {ContainerService} from "../../container/container.service";
 
 @Component({
   selector: 'app-actions-table',
@@ -25,11 +26,17 @@ export class ActionsTableComponent implements OnInit {
   data$;
   isMobile = config.isMobile;
   baseUrl = config.isWidget ? '/widget' : '/';
+  client;
   constructor(
+    private containerService: ContainerService,
     private actionsService: HtActionsService
   ) { }
 
   ngOnInit() {
+    this.containerService.setEntity('actions');
+    this.containerService.setView('list');
+
+    this.client = this.actionsService.list;
     this.loading$ = this.actionsService.list.loading$;
     this.query$ = this.actionsService.list.getApiQuery$();
     this.data$ = this.actionsService.list.data$;

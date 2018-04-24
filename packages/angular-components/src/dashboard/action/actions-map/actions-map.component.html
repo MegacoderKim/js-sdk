@@ -19,6 +19,9 @@
       </p>
     </div>
   </div>
+  <div class="end">
+    <app-csv-download [client]="client" api="v2/actions/" filename="actions.csv"></app-csv-download>
+  </div>
 </ht-actions-filters>
 <ht-map-container>
   <ht-actions-summary-container class="card-content is-small"></ht-actions-summary-container>

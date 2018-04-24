@@ -19,6 +19,9 @@
       </p>
     </div>
   </div>
+  <div class="end">
+    <app-csv-download [client]="client" api="v2/actions/" filename="actions.csv"></app-csv-download>
+  </div>
 </ht-actions-filters>
 <div class="container">
   <ht-client-table

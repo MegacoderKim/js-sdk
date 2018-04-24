@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HtActionsService} from "ht-angular";
 import {config} from "../../config";
+import {ContainerService} from "../../container/container.service";
 
 @Component({
   selector: 'app-actions-map',
@@ -14,10 +15,14 @@ export class ActionsMapComponent implements OnInit {
   baseUrl = config.isWidget ? '/widget' : '/';
   isMobile = config.isMobile;
   constructor(
+    private containerService: ContainerService,
     private actionsService: HtActionsService
   ) { }
 
   ngOnInit() {
+    this.containerService.setEntity('actions');
+    this.containerService.setView('map');
+
     this.loading$ = this.actionsService.list.loading$;
     this.query$ = this.actionsService.list.getApiQuery$();
     this.data$ = this.actionsService.list.data$;
