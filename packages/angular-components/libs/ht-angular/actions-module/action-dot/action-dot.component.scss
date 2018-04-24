@@ -13,5 +13,8 @@ $size: 13px;
 }
 .is-late {
   border-color: $ht-red;
+}
+.is-late.filled {
   background: $ht-red;
+
 }
