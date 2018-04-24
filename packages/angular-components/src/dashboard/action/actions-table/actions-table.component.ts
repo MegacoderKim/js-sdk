@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {actionTableFormat} from "ht-data";
 import {HtActionsService} from "ht-angular";
+import {config} from "../../config";
 
 @Component({
   selector: 'app-actions-table',
@@ -22,6 +23,8 @@ export class ActionsTableComponent implements OnInit {
   loading$;
   query$;
   data$;
+  isMobile = config.isMobile;
+  baseUrl = config.isWidget ? '/widget' : '/';
   constructor(
     private actionsService: HtActionsService
   ) { }

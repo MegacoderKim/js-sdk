@@ -1,3 +1,25 @@
+<ht-actions-filters>
+  <div class="start" *ngIf="!isMobile">
+    <div class="field has-addons">
+      <p class="control">
+        <a class="button is-primary">
+      <span class="icon is-small">
+        <i class="fa fa-list"></i>
+      </span>
+          <span>List</span>
+        </a>
+      </p>
+      <p class="control">
+        <a class="button" [routerLink]="[baseUrl, 'actions', 'map']">
+      <span class="icon is-small">
+        <i class="fa fa-map-o"></i>
+      </span>
+          <span>Map</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</ht-actions-filters>
 <div class="container">
   <ht-client-table
     [tableFormat]="tableFormat"

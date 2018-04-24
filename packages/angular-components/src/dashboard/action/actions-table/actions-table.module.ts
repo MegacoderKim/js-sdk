@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ActionsTableRoutingModule } from './actions-table-routing.module';
 import { ActionsTableComponent } from './actions-table.component';
-import {ClientTableModule, PaginationModule, SharedModule} from "ht-angular";
+import {ClientTableModule, PaginationModule, SharedModule, ActionsFiltersModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -11,7 +11,8 @@ import {ClientTableModule, PaginationModule, SharedModule} from "ht-angular";
     ActionsTableRoutingModule,
     ClientTableModule,
     PaginationModule,
-    SharedModule
+    SharedModule,
+    ActionsFiltersModule
   ],
   declarations: [ActionsTableComponent]
 })
