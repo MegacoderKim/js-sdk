@@ -22,6 +22,13 @@
   <div class="end">
     <app-csv-download [client]="client" api="v2/actions/" filename="actions.csv"></app-csv-download>
   </div>
+  <div (click)="closeUser()"
+       class="is-size-7 is-text-centered flex-row align-center selected-start">
+    <span class="delete-container icon"> <i class="fa fa-arrow-circle-left fa-3x"></i></span>
+  </div>
+  <div class="selected-end flex">
+    <ht-replay *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
+  </div>
 </ht-actions-filters>
 <div class="relative">
   <div htAutoHeight>
