@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {HtUsersService} from "../../ht/ht-users.service";
 import {bottomAppear} from "../../common/animations";
 
@@ -10,7 +10,7 @@ import {bottomAppear} from "../../common/animations";
     bottomAppear
   ]
 })
-export class ActionsPlacelineContainerComponent implements OnInit {
+export class ActionsPlacelineContainerComponent implements OnInit, OnDestroy {
   data$;
   loading$;
   selectedSegmentId$;
@@ -32,6 +32,10 @@ export class ActionsPlacelineContainerComponent implements OnInit {
 
   onSelectSegmentId(segmentId: string | null) {
     this.usersService.placeline.setSegmentResetMapId(segmentId);
+  }
+
+  ngOnDestroy() {
+    this.usersService.placeline.clearData()
   }
 
 }
