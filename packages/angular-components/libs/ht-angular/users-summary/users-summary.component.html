@@ -1,4 +1,4 @@
-<div class="flex-column justify-center label-container has-text-grey">
+<div class="flex-column justify-center label-container has-text-grey" *ngIf="summary">
   <div *ngIf="!hideTotal" class="count text-center">{{summary.totalUsers}} {{label | pluralize: summary.totalUsers}}</div>
 
   <div class="flex-row" *ngIf="summary.totalUsers">
