@@ -42,7 +42,9 @@
       </div>
     </div>
     <div class="placeline-container" [@bottomAppear] *ngIf="selectedActionId$ | async">
-      <ht-map-container></ht-map-container>
+      <ht-map-container>
+        <ht-actions-placeline-container></ht-actions-placeline-container>
+      </ht-map-container>
       <!--<ht-placeline-map-container></ht-placeline-map-container>-->
     </div>
   </div>

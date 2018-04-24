@@ -3,8 +3,7 @@ import {actionTableFormat} from "ht-data";
 import {HtActionsService} from "ht-angular";
 import {config} from "../../config";
 import {ContainerService} from "../../container/container.service";
-import {bottomAppear} from "ht-angular";
-import {fadeAppear, HtUsersService} from "../../../../libs/ht-angular";
+import {bottomAppear, fadeAppear, HtUsersService} from "ht-angular";
 
 @Component({
   selector: 'app-actions-table',
