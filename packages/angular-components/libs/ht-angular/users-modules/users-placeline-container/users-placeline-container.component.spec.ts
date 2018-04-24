@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlacelineContainerComponent } from './placeline-container.component';
+import { UsersPlacelineContainerComponent } from './placeline-container.component';
 
 describe('PlacelineContainerComponent', () => {
-  let component: PlacelineContainerComponent;
-  let fixture: ComponentFixture<PlacelineContainerComponent>;
+  let component: UsersPlacelineContainerComponent;
+  let fixture: ComponentFixture<UsersPlacelineContainerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlacelineContainerComponent ]
+      declarations: [ UsersPlacelineContainerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlacelineContainerComponent);
+    fixture = TestBed.createComponent(UsersPlacelineContainerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

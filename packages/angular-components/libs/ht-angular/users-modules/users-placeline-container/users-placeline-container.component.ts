@@ -1,12 +1,12 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {HtUsersService} from "../ht/ht-users.service";
+import {HtUsersService} from "../../ht/ht-users.service";
 import {htPlaceline} from "ht-data";
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
-  selector: 'ht-placeline-container',
-  templateUrl: './placeline-container.component.html',
-  styleUrls: ['./placeline-container.component.less'],
+  selector: 'ht-users-placeline-container',
+  templateUrl: './users-placeline-container.component.html',
+  styleUrls: ['./users-placeline-container.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('slide', [
@@ -20,7 +20,7 @@ import {animate, keyframes, query, stagger, state, style, transition, trigger} f
     ])
   ]
 })
-export class PlacelineContainerComponent implements OnInit, OnDestroy {
+export class UsersPlacelineContainerComponent implements OnInit, OnDestroy {
   @Input() userId: string | null;
   @Input() showUserCard: boolean = true;
   userData$;
