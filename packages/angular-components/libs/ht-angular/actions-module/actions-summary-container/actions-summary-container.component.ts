@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {HtActionsService} from "ht-angular";
+import {HtActionsService} from "../../ht/ht-actions.service";
 
 @Component({
   selector: 'ht-actions-summary-container',
