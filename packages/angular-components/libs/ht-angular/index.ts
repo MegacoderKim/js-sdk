@@ -55,6 +55,8 @@ export {PlacelineComponent} from "./placeline/placeline.component";
 export {PlacelineMapContainerModule} from "./placeline-map-container/placeline-map-container.module";
 export {PlacelineMapContainerComponent} from "./placeline-map-container/placeline-map-container.component";
 
+export { ActionCardModule } from "./actions-module/action-card/action-card.module";
+export { ActionDotModule } from "./actions-module/action-dot/action-dot.module";
 export { ActionsStatusGraphModule } from "./actions-status-graph/actions-status-graph.module"
 export { ActionsStatusGraphComponent } from "./actions-status-graph/actions-status-graph.component"
 export { UserTableModule } from "./user-table/user-table.module"

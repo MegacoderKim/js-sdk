@@ -3,7 +3,7 @@
   <tr>
     <th class="clickable" *ngFor="let item of tableFormat" (click)="setOrdering(item.key)">
       <span>{{item.label}}</span>
-      <span class="icon" *ngIf="item.key == ordering">
+      <span class="icon" *ngIf="item.key == ordering && item.key">
         <i class="fa" [ngClass]="sign ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
       </span>
     </th>
@@ -13,10 +13,9 @@
   <ng-container *ngFor="let item of data.results; let i = index; trackBy:indexId">
     <tr (click)="selectData(item)" class="clickable" [@shuffle]="i">
       <td *ngFor="let tableItem of tableFormat; trackBy:indexLabel">
-        <ng-template #pic>
-          <ht-profile [url]="tableItem.selector(item)"></ht-profile>
-        </ng-template>
-        <span *ngIf="!tableItem.isPic; else pic">{{tableItem.selector(item) | dot:'--'}}</span>
+        <ht-profile *ngIf="tableItem.isPic" [url]="tableItem.selector(item)"></ht-profile>
+        <ht-action-dot *ngIf="tableItem.isDot" [action]="item"></ht-action-dot>
+        <span *ngIf="!tableItem.isPic && !tableItem.isDot">{{tableItem.selector(item) | dot:'--'}}</span>
       </td>
     </tr>
   </ng-container>
