@@ -1,0 +1,7 @@
+<ht-map-container>
+  <div *ngIf="data$ | async as data">
+    <ng-container *ngFor="let action of data.results">
+      <ht-action-card [action]="action"></ht-action-card>
+    </ng-container>
+  </div>
+</ht-map-container>
