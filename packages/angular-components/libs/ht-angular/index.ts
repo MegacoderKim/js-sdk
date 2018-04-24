@@ -47,18 +47,19 @@ export {MapContainerComponent} from "./map-container/map-container.component";
 export {SharedModule} from "./shared/shared.module";
 export { PaginationModule } from "./pagination/pagination.module"
 export { PaginationComponent } from "./pagination/pagination.component"
-export {PlacelineContainerModule} from "./placeline-container/placeline-container.module";
-export {PlacelineContainerComponent} from "./placeline-container/placeline-container.component";
+export {UsersPlacelineContainerModule} from "./users-modules/users-placeline-container/users-placeline-container.module";
+export {UsersPlacelineContainerComponent} from "./users-modules/users-placeline-container/users-placeline-container.component";
 export {PlacelineDateModule} from "./placeline-date/placeline-date.module";
 export {PlacelineModule} from "./placeline/placeline.module";
 export {PlacelineComponent} from "./placeline/placeline.component";
 export {PlacelineMapContainerModule} from "./placeline-map-container/placeline-map-container.module";
 export {PlacelineMapContainerComponent} from "./placeline-map-container/placeline-map-container.component";
 
-export { ActionCardModule } from "./actions-module/action-card/action-card.module";
-export { ActionDotModule } from "./actions-module/action-dot/action-dot.module";
-export { ActionsFiltersModule } from "./actions-module/actions-filters/actions-filters.module";
-export { ActionsSummaryContainerModule } from "./actions-module/actions-summary-container/actions-summary-container.module";
+export { ActionCardModule } from "./actions-modules/action-card/action-card.module";
+export { ActionDotModule } from "./actions-modules/action-dot/action-dot.module";
+export { ActionsPlacelineContainerModule } from "./actions-modules/actions-placeline-container/actions-placeline-container.module";
+export { ActionsFiltersModule } from "./actions-modules/actions-filters/actions-filters.module";
+export { ActionsSummaryContainerModule } from "./actions-modules/actions-summary-container/actions-summary-container.module";
 export { ActionsStatusGraphModule } from "./actions-status-graph/actions-status-graph.module"
 export { ActionsStatusGraphComponent } from "./actions-status-graph/actions-status-graph.component"
 export { UserTableModule } from "./user-table/user-table.module"

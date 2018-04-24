@@ -23,7 +23,7 @@
     (onSelectUser)="selectUserCard($event)"
     [showExtraBtn]="hasPlaceline"
     [users]="users$ | async"></ht-users>
-  <ht-placeline-container [showUserCard]="false" *ngIf="(selectedUserId$ | async)"></ht-placeline-container>
+  <ht-users-placeline-container [showUserCard]="false" *ngIf="(selectedUserId$ | async)"></ht-users-placeline-container>
   <!--<div *ngIf="(selectedUserId$ | async) && user$ | async as userData">-->
     <!--&lt;!&ndash;<ht-user-card [user]="userData"></ht-user-card>&ndash;&gt;-->
     <!--<ht-placeline [userData]="userData"></ht-placeline>-->
