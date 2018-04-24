@@ -12,7 +12,7 @@
 
           <!--<div class="text-muted">{{action.display?.sub_status_text}}</div>-->
           <div class="flex-row wrap">
-            <div *ngIf="action.distance">{{action.distance | distanceLocale: timezone}}<span *ngIf="action.duration">&nbsp; &bull; &nbsp; </span></div>
+            <div *ngIf="action.distance">{{action.distance | distanceLocale}}<span *ngIf="action.duration">&nbsp; &bull; &nbsp; </span></div>
             <div *ngIf="action.duration">{{action.duration / 60 | hmString}}</div>
           </div>
         </div>
