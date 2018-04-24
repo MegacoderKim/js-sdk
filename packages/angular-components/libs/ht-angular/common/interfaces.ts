@@ -3,6 +3,7 @@ export interface TableFormat {
   selector: (data: any) => string | number,
   key: string,
   clickAction?: (data: any) => void
-  isPic: boolean
+  isPic?: boolean,
+  isDot?: boolean
 }
 
