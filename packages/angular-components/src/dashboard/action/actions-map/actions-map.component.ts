@@ -14,6 +14,7 @@ export class ActionsMapComponent implements OnInit {
   data$;
   baseUrl = config.isWidget ? '/widget' : '/';
   isMobile = config.isMobile;
+  client;
   constructor(
     private containerService: ContainerService,
     private actionsService: HtActionsService
@@ -23,6 +24,7 @@ export class ActionsMapComponent implements OnInit {
     this.containerService.setEntity('actions');
     this.containerService.setView('map');
 
+    this.client = this.actionsService.list;
     this.loading$ = this.actionsService.list.loading$;
     this.query$ = this.actionsService.list.getApiQuery$();
     this.data$ = this.actionsService.list.data$;
