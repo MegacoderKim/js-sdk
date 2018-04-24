@@ -23,19 +23,28 @@
     <app-csv-download [client]="client" api="v2/actions/" filename="actions.csv"></app-csv-download>
   </div>
 </ht-actions-filters>
-<div class="container">
-  <ht-client-table
-    [tableFormat]="tableFormat"
-    [loading]="!!(loading$ | async)"
-    [query]="query$ | async"
-    (setQuery)="setQuery($event)"
-    (onSelectData)="selectAction($event)"
-    [data]="data$ | async">
-    <ht-loading-data class="is-size-4 loading-state"></ht-loading-data>
-    <div class="is-size-1 zero-state auto card-content has-text-centered">No data</div>
-  </ht-client-table>
-  <div *ngIf="data$ | async as data">
-    <ht-pagination [pageDate]="data" [pageSize]="10" (fetchPage)="setPage($event)"></ht-pagination>
+<div class="relative">
+  <div htAutoHeight>
+    <div class="container" [@fadeAppear] *ngIf="!(selectedActionId$ | async)">
+      <ht-client-table
+        [tableFormat]="tableFormat"
+        [loading]="!!(loading$ | async)"
+        [query]="query$ | async"
+        (setQuery)="setQuery($event)"
+        (onSelectData)="selectAction($event)"
+        [data]="data$ | async">
+        <ht-loading-data class="is-size-4 loading-state"></ht-loading-data>
+        <div class="is-size-1 zero-state auto card-content has-text-centered">No data</div>
+      </ht-client-table>
+      <div *ngIf="data$ | async as data">
+        <ht-pagination [pageDate]="data" [pageSize]="10" (fetchPage)="setPage($event)"></ht-pagination>
 
+      </div>
+    </div>
+    <div class="placeline-container" [@bottomAppear] *ngIf="selectedActionId$ | async">
+      <ht-map-container></ht-map-container>
+      <!--<ht-placeline-map-container></ht-placeline-map-container>-->
+    </div>
   </div>
 </div>
+

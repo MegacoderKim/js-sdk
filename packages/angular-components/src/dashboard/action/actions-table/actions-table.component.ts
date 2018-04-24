@@ -3,11 +3,17 @@ import {actionTableFormat} from "ht-data";
 import {HtActionsService} from "ht-angular";
 import {config} from "../../config";
 import {ContainerService} from "../../container/container.service";
+import {bottomAppear} from "ht-angular";
+import {fadeAppear, HtUsersService} from "../../../../libs/ht-angular";
 
 @Component({
   selector: 'app-actions-table',
   templateUrl: './actions-table.component.html',
-  styleUrls: ['./actions-table.component.scss']
+  styleUrls: ['./actions-table.component.scss'],
+  animations: [
+    bottomAppear,
+    fadeAppear
+  ]
 })
 export class ActionsTableComponent implements OnInit {
   tableFormat = [
@@ -27,9 +33,11 @@ export class ActionsTableComponent implements OnInit {
   isMobile = config.isMobile;
   baseUrl = config.isWidget ? '/widget' : '/';
   client;
+  selectedActionId$;
   constructor(
     private containerService: ContainerService,
-    private actionsService: HtActionsService
+    private actionsService: HtActionsService,
+    private usersService: HtUsersService
   ) { }
 
   ngOnInit() {
@@ -40,7 +48,8 @@ export class ActionsTableComponent implements OnInit {
     this.loading$ = this.actionsService.list.loading$;
     this.query$ = this.actionsService.list.getApiQuery$();
     this.data$ = this.actionsService.list.data$;
-    this.actionsService.list.setActive()
+    this.actionsService.list.setActive();
+    this.selectedActionId$ = this.usersService.placeline.actionId$;
   }
 
   setQuery(query) {
@@ -52,7 +61,7 @@ export class ActionsTableComponent implements OnInit {
   }
 
   selectAction(action) {
-
+    this.usersService.placeline.setQuery({action_id: action.id})
   }
 
 }
