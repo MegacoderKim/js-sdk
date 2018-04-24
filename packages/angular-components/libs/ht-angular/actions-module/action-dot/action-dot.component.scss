@@ -1,0 +1,17 @@
+@import "../../../styles/variables";
+
+$size: 14px;
+.dot {
+  height: $size;
+  width: $size;
+  border: 3px solid;
+  border-radius: 50%;
+  border-color: $ht-green;
+}
+.fill-dot {
+  background: $ht-green;
+}
+.is-late {
+  border-color: $ht-red;
+  background: $ht-red;
+}
