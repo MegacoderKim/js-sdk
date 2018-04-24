@@ -1,0 +1,11 @@
+<div class="flex-column column-gap-10" [@bottomAppear] *ngIf="data$ | async as userData">
+  <div ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></div>
+  <ng-template #placeline>
+    <ht-placeline
+      [selectedSegmentId]="selectedSegmentId$ | async"
+      (selectedSegment)="onSelectSegmentId($event)"
+      (highlightedSegmentId)="onHighlightSegment($event)"
+      [userPlaceline]="userData"></ht-placeline>
+  </ng-template>
+
+</div>
