@@ -1,5 +1,7 @@
 import * as ActionsDispatcher from "../dispatchers/actions-dispatcher";
-import { IAction, IActionHeatPage, IActionStatusGraph, Page, IActionsSummary } from "ht-models";
+import { IAction, IActionHeatPage, IActionStatusGraph, Page, IActionsSummary, AllData } from "ht-models";
+import { createSelector, MemoizedSelector } from "../store/selector";
+import * as _ from "underscore";
 
 export interface State {
   list: Page<IAction> | null,
@@ -7,6 +9,10 @@ export interface State {
   listQuery: object,
   listActive: string | boolean,
 
+  listAll: AllData<IAction> | null,
+  listAllLoading: boolean,
+  listAllActive: boolean | string,
+  listAllDataMap?: (data) => any,
   summary: IActionsSummary | null,
   summaryActive: boolean | string,
   summaryLoading: boolean
@@ -23,6 +29,10 @@ export const initialState: State = {
   listLoading: false,
   listQuery: {},
   listActive: false,
+
+  listAll: null,
+  listAllLoading: false,
+  listAllActive: false,
 
   summary: null,
   summaryActive: false,
@@ -52,12 +62,49 @@ export function actionsReducer(
     case ActionsDispatcher.SET_ACTIONS_LIST_QUERY: {
       return { ...state, listQuery: action.payload };
     }
+    case ActionsDispatcher.CLEAR_ACTION_QUERY_KEY: {
+      let listQuery = { ...state.listQuery };
+      if (listQuery) delete listQuery[action.payload];
+      return { ...state, listQuery: listQuery };
+    }
     case ActionsDispatcher.ADD_ACTIONS_LIST_QUERY: {
       const listQuery = {...state.listQuery, ...action.payload};
       return { ...state, listQuery };
     }
     case ActionsDispatcher.SET_ACTIONS_LIST_LOADING: {
       return { ...state, listLoading: action.payload };
+    }
+    /*
+    List all
+     */
+    case ActionsDispatcher.SET_ACTIONS_LIST_ALL: {
+      const listAllPage = action.payload;
+      if (listAllPage) {
+        return {
+          ...state,
+          listAll: {
+            count: listAllPage.count,
+            next: listAllPage.next,
+            previous: listAllPage.previous,
+            resultsEntity: _.indexBy(listAllPage.results, 'id')
+          }
+        }
+      } else {
+        return {
+          ...state,
+          listAll: null
+        }
+      }
+
+    }
+    case ActionsDispatcher.SET_ACTIONS_LIST_ALL_ACTIVE: {
+      return {...state, listAllActive: action.payload}
+    }
+    case ActionsDispatcher.SET_ACTIONS_LIST_ALL_LOADING: {
+      return {...state, listAllLoading: action.payload}
+    }
+    case ActionsDispatcher.SET_ACTIONS_LIST_ALL_DATA_MAP: {
+      return { ...state, listAllDataMap: action.payload };
     }
     /*
     Summary
@@ -109,6 +156,14 @@ export const getList = (state: State) => state.list;
 export const getListLoading = (state: State) => state.listLoading;
 export const getListActive = (state: State) => state.listActive;
 export const getListQuery = (state: State) => state.listQuery;
+
+export const getListAll = (state: State) => state.listAll;
+export const getListAllLoading = (state: State) => state.listAllLoading;
+export const getListAllActive = (state: State) => state.listAllActive;
+export const getListAllDataMap = (state: State) => state.listAllDataMap;
+export const getListAllFiltered = createSelector(getListAll, getListAllDataMap, (listAll, dataMap) => {
+  return dataMap && listAll ? dataMap(listAll) : listAll;
+});
 
 export const getSummary = (state: State) => state.summary;
 export const getSummaryActive = (state: State) => state.summaryActive;

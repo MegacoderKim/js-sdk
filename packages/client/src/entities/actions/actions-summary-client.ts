@@ -40,7 +40,9 @@ export class ActionsSummary extends EntityListClient {
     this.dateRange = dateRange;
     this.store = store;
     this.dateParam = dateParam;
-    this.query$ = this.store.select(fromRoot.getActionsSummaryQuery);
+    this.query$ = this.store.select(fromRoot.getActionsListQuery) as Observable<
+      object | null
+      >;
     this.active$ = this.store.select(fromRoot.getActionsSummaryActive);
     this.data$ = this.store.select(fromRoot.getActionsSummary);
     this.summaryChart$ = this.getSummaryChart();
@@ -61,7 +63,7 @@ export class ActionsSummary extends EntityListClient {
   }
 
   setQuery(query) {
-    this.store.dispatch(new fromActions.SetSummaryQuery(query))
+    this.store.dispatch(new fromActions.SetListQuery(query))
   };
 
   getSummaryChart() {

@@ -37,11 +37,11 @@ export class HtActionsClient {
     this.store = store;
     let dateRange = config.dateRange;
     let dateParam = 'created_at';
-    this.graph = new ActionsGraphClient({dateRange, dateParam, api});
+    this.graph = new ActionsGraphClient({dateRange, dateParam, api, store});
     this.list = new ActionsListClient({dateRange, store, dateParam, api});
-    this.listAll = new ActionsIndexAllClient({dateRange, dateParam, api});
+    this.listAll = new ActionsIndexAllClient({dateRange, dateParam, api, store});
     this.summary = new ActionsSummaryClient({dateRange, store, dateParam, api});
-    this.heatmap = new ActionsHeatmapClient({dateRange, dateParam: 'completed_at', api});
+    this.heatmap = new ActionsHeatmapClient({dateRange, dateParam: 'completed_at', api, store});
     this.initEffects();
   };
 

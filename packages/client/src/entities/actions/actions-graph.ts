@@ -30,7 +30,7 @@ export class ActionsGraph {
     this.query$ = store.select(fromRoot.getActionsGraphQuery) as Observable<
       object | null
       >;
-    this.active$ = this.store(fromRoot.getActionsGraphActive);
+    this.active$ = this.store.select(fromRoot.getActionsGraphActive);
     this.loading$ = store.select(fromRoot.getActionsGraphLoading);
     this.data$ = store.select(fromRoot.getActionsGraph);
     this.api$ = (query) => api.graph(query);

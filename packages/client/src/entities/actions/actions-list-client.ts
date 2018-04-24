@@ -22,6 +22,9 @@ export class ActionsList extends EntityListClient {
   api$: (query) => Observable<Page<IAction>>;
   dataSub: Subscription;
   dateParam: string;
+  defaultQuery = {
+    ordering: '-created_at'
+  };
   constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     super();
     this.api$ = (query): Observable<Page<IAction>> =>
@@ -41,6 +44,11 @@ export class ActionsList extends EntityListClient {
     // this.init()
   }
 
+  getDefaultQuery() {
+    return { ...super.getDefaultQuery(), ...this.defaultQuery };
+    // return {...this.defaultQuery}
+  }
+
   setActive(active = true) {
     this.store.dispatch(new fromAction.SetListActive(active))
   }
@@ -55,6 +63,9 @@ export class ActionsList extends EntityListClient {
 
   setQuery(query) {
     this.store.dispatch(new fromAction.SetListQuery(query))
+  }
+  clearQueryKey(key: string) {
+    this.store.dispatch(new fromAction.ClearQueryKey(key))
   }
 };
 

@@ -6,9 +6,18 @@ List
  */
 export const SET_ACTIONS_LIST = "[ACTIONS] set actions list";
 export const SET_ACTIONS_LIST_QUERY = "[ACTIONS] set actions list query";
+export const CLEAR_ACTION_QUERY_KEY = "[ACTIONS] clear list query key";
 export const ADD_ACTIONS_LIST_QUERY = "[ACTIONS] add actions list query";
 export const SET_ACTIONS_LIST_ACTIVE = "[ACTIONS] set actions list active";
 export const SET_ACTIONS_LIST_LOADING = "[ACTIONS] set actions list loading";
+
+/*
+List all
+ */
+export const SET_ACTIONS_LIST_ALL = "[ACTIONS] set actions list all";
+export const SET_ACTIONS_LIST_ALL_ACTIVE = "[ACTIONS] set actions list all active";
+export const SET_ACTIONS_LIST_ALL_LOADING = "[ACTIONS] set actions list all loading";
+export const SET_ACTIONS_LIST_ALL_DATA_MAP = "[ACTIONS] set actions list all data map";
 
 /*
 Graph
@@ -54,6 +63,11 @@ export class AddListQuery implements Action {
   constructor(public payload: object) {}
 }
 
+export class ClearQueryKey implements Action {
+  readonly type = CLEAR_ACTION_QUERY_KEY;
+  constructor(public payload: string) {}
+}
+
 export class SetListActive implements Action {
   readonly type = SET_ACTIONS_LIST_ACTIVE;
   constructor(public payload: boolean | string = true) {}
@@ -62,6 +76,26 @@ export class SetListActive implements Action {
 export class SetListLoading implements Action {
   readonly type = SET_ACTIONS_LIST_LOADING;
   constructor(public payload: boolean | string = true) {}
+}
+
+export class SetListAll implements Action {
+  readonly type = SET_ACTIONS_LIST_ALL;
+  constructor(public payload: Page<IAction>) {}
+}
+
+export class SetListAllLoading implements Action {
+  readonly type = SET_ACTIONS_LIST_ALL_LOADING;
+  constructor(public payload: boolean) {}
+}
+
+export class SetListAllActive implements Action {
+  readonly type = SET_ACTIONS_LIST_ALL_ACTIVE;
+  constructor(public payload: boolean | string) {}
+}
+
+export class SetListAllDataMap implements Action {
+  readonly type = SET_ACTIONS_LIST_ALL_DATA_MAP;
+  constructor(public payload: (data) => any) {}
 }
 
 export class SetGraph implements Action {
@@ -118,7 +152,12 @@ export type All = SetList
   | SetListQuery
   | SetListActive
   | AddListQuery
+  | ClearQueryKey
   | SetListLoading
+  | SetListAll
+  | SetListAllLoading
+  | SetListAllActive
+  | SetListAllDataMap
   | SetGraph
   | SetGraphLoading
   | SetGraphQuery

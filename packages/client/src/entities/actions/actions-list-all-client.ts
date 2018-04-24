@@ -15,26 +15,29 @@ import * as fromUsersDispatcher from "../../dispatchers/user-dispatcher";
 import {getAnalyticsAll, getMarkerDataMap} from "../../reducers/user-reducer";
 import {combineLatest} from "rxjs/observable/combineLatest";
 import {map} from "rxjs/operators";
+import * as fromRoot from "../../reducers";
+import * as fromAction from "../../dispatchers/actions-dispatcher";
 
 export class ActionsIndexAll extends EntityAllItemsClient {
-  dataBehaviour$: BehaviorSubject<AllData<IAction> | null> = new BehaviorSubject(null);
-  loadingBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  loading$ = this.loadingBehaviour$.asObservable();
-  activeBehaviour$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  query$: BehaviorSubject<object>;
+  loading$: Observable<boolean>;
+  query$: Observable<object>;
   api$: (query) => Observable<Page<IAction>>;
   dataSub: Subscription;
   dataEntities$;
   dateParam: string;
-  filterBehviour$: BehaviorSubject<(action: any) => any | null> = new BehaviorSubject(null);
-  filter$ = this.filterBehviour$.asObservable();
+  store;
   constructor({ dateRange, store, dateParam, api }: IPageClientConfig<HtActionsApi>) {
     super();
+    this.store = store;
     this.api$ = (query) => api.allPages(api.index(query));
     this.dateRange = dateRange;
     this.dateParam = dateParam;
-    this.query$ = new BehaviorSubject(this.getDefaultQuery());
-    this.active$ = this.activeBehaviour$.asObservable();
+    this.query$ = this.store.select(fromRoot.getActionsListQuery) as Observable<
+      object | null
+      >;
+    this.dataEntities$ = this.store.select(fromRoot.getActionsListAllFiltered);
+    this.active$ = this.store.select(fromRoot.getActionsListAllActive);
+    this.loading$ = this.store.select(fromRoot.getActionsListAllLoading);
     // this.data$ = combineLatest(
     //   this.dataBehaviour$.asObservable(),
     //   this.filter$
@@ -47,34 +50,29 @@ export class ActionsIndexAll extends EntityAllItemsClient {
   }
 
   setActive(isActive: boolean = true) {
-    this.activeBehaviour$.next(isActive)
+    this.store.dispatch(new fromAction.SetListAllActive(isActive))
   }
 
   setQuery(query) {
-    this.query$.next(query)
+    this.store.dispatch(new fromAction.SetListQuery(query))
   }
 
-  get data$() {
-    return this.dataBehaviour$.asObservable()
-  }
   addData(data) {
-    this.dataBehaviour$.next(data)
+    this.store.dispatch(new fromAction.SetListAll(data))
   };
 
   setData(data) {
-    this.dataBehaviour$.next(data)
+    this.store.dispatch(new fromAction.SetListAll(data))
   }
 
   setLoading(loading) {
-    this.loadingBehaviour$.next(loading);
+    this.store.dispatch(new fromAction.SetListAllLoading(loading))
   }
   clearQueryKey(key: string) {
-    let query = {...this.query$.getValue()};
-    delete query[key];
-    this.query$.next(query);
+    this.store.dispatch(new fromAction.ClearQueryKey(key))
   }
   setDataMap(mapFunc) {
-    this.filterBehviour$.next(mapFunc)
+    this.store.dispatch(new fromAction.SetListAllDataMap(mapFunc))
   }
 
   clearData() {
