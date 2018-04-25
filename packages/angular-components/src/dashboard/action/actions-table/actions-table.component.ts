@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router"
+import {ActionService} from "../action.service";
 import {actionTableFormat} from "ht-data";
 import {HtActionsService} from "ht-angular";
 import {config} from "../../config";
@@ -37,10 +39,13 @@ export class ActionsTableComponent implements OnInit {
   selectedActionId$;
   showReplay$
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private containerService: ContainerService,
     private actionsService: HtActionsService,
     private usersService: HtUsersService,
-    public userTraceService: UserTraceService
+    public userTraceService: UserTraceService,
+    private innerActionsService: ActionService
   ) { }
 
   ngOnInit() {
@@ -59,6 +64,18 @@ export class ActionsTableComponent implements OnInit {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
       })
     );
+
+    this.setInitialQuery();
+    this.innerActionsService.getQueryForRoute().subscribe((query) => {
+      this.router.navigate([query], {relativeTo: this.route})
+    })
+  }
+
+  setInitialQuery() {
+    const actionId = this.route.snapshot.params['id'];
+    const query = this.innerActionsService.getQueryFromRoute(this.route.snapshot.params);
+    if (actionId) this.selectAction({id: actionId});
+    if (query && Object.keys(query).length) this.setQuery(query);
   }
 
   setQuery(query) {
