@@ -1,7 +1,7 @@
 <div *ngIf="!open" (click)="open = true" class="has-text-centered">
   <ng-content select=".action-open"></ng-content>
 </div>
-<div *ngIf="open && showClose" class="has-text-centered" (click)="open = false">
+<div *ngIf="open && showClose" class="has-text-centered col-action" (click)="open = false">
   <!--<div class="icon auto">-->
     <!--<div class="fa fa-times-circle fa-2x"></div>-->
   <!--</div>-->

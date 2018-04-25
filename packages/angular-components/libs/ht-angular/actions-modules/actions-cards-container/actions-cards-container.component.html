@@ -13,7 +13,7 @@
   <div class="action-detail flex-column" *ngIf="selectedId">
     <ht-collapsable>
       <button class="button is-rounded auto action-open">Show details</button>
-      <div class="flex-column ht-data">
+      <div class="flex-column ht-data auto" style="max-width: 80%;">
         <ht-action-details [action]="actions[0]"></ht-action-details>
       </div>
     </ht-collapsable>
