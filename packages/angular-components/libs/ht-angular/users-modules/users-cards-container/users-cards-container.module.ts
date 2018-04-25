@@ -5,6 +5,7 @@ import {SharedModule} from "../../shared/shared.module";
 import {UserCardModule} from "../user-card/user-card.module";
 import {ActionCardModule} from "../../actions-modules/action-card/action-card.module";
 import {CollapsableModule} from "../../common/collapsable/collapsable.module";
+import {UserDeviceModule} from "../user-device/user-device.module";
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import {CollapsableModule} from "../../common/collapsable/collapsable.module";
     UserCardModule,
     ActionCardModule,
     CollapsableModule,
+    UserDeviceModule
   ],
   declarations: [UsersCardsContainerComponent],
   exports: [UsersCardsContainerComponent]

@@ -32,6 +32,7 @@ export const bottomAppear = entryLeaveTransition('bottomAppear', {transform: "tr
 
 export const fadeAppear = entryLeaveTransition('fadeAppear', {opacity: 0}, '0.3s');
 
+export const expandAppear = entryLeaveTransition('expandAppear', {width: 0, opacity: 0, transform: "scaleX(0)"});
 
 export const summaryAnim = trigger('summaryAnim', [
   transition(':enter', [

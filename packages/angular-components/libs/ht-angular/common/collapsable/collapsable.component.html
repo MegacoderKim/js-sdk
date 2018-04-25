@@ -1,11 +1,16 @@
 <div *ngIf="!open" (click)="open = true">
   <ng-content select=".action-open"></ng-content>
 </div>
-<div *ngIf="open" class="flex-column card-content is-small" (click)="open = false">
-  <div class="icon auto">
-    <div class="fa fa-times-circle fa-2x"></div>
-  </div>
+<div *ngIf="open && showClose" class="has-text-centered" (click)="open = false">
+  <!--<div class="icon auto">-->
+    <!--<div class="fa fa-times-circle fa-2x"></div>-->
+  <!--</div>-->
+  <button class="button is-rounded auto">
+    <span class="icon">
+      <i class="fa fa-close"></i>
+    </span>
+  </button>
 </div>
-<div *ngIf="open">
+<div *ngIf="open" [@summaryAnim]>
   <ng-content select=".ht-data"></ng-content>
 </div>
