@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {IUserAnalytics, IUserAnalyticsPage} from "ht-models";
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output, OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
+import {IUserAnalytics, IAction, Page, IUserPlaceline} from "ht-models";
 // import {entryLeaveTransition} from "../../animations/appear";
 // import {anim} from "../../animations/appear";
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
@@ -33,9 +33,10 @@ import {cardStackFn, shuffle} from "../common/animations";
     cardStackFn('user'),
   ]
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent implements OnInit, OnDestroy, OnChanges {
   // userCardAction;
-  @Input() users: IUserAnalytics[];
+  @Input() usersPage: Page<IUserAnalytics>;
+  @Input() userPlaceline: IUserPlaceline;
   @Input() selectedUserId: string | null;
   @Input() selectedUserDataId: string | null;
   @Input() loadingUserDataId: string | null;
@@ -44,12 +45,35 @@ export class UsersComponent implements OnInit, OnDestroy {
   @Output() onSelectUser: EventEmitter<string | null> = new EventEmitter();
   @Output() onAction: EventEmitter<string | null> = new EventEmitter();
   @Output() onHover: EventEmitter<string | null> = new EventEmitter();
+  displayUsers: IUserAnalytics[];
+  actions: IAction[];
   constructor() { }
 
   ngOnInit() {
 
   }
 
+  ngOnChanges(changes) {
+    if (this.usersPage) {
+      if (this.userPlaceline || this.selectedUserId) {
+        this.displayUsers = this.usersPage.results.reduce((users, user) => {
+          return user.id == this.selectedUserId ?
+            this.userPlaceline ?
+              [this.userPlaceline] : [user] : users
+        }, [])
+      } else {
+        this.displayUsers = this.usersPage.results;
+      }
+      if (changes.userPlaceline || changes.usersPage) {
+        // const usersPlaceline = changes.userPlaceline
+        if (this.userPlaceline) {
+          this.actions = this.userPlaceline.actions
+        } else {
+          this.actions = []
+        }
+      }
+    }
+  }
 
 
   getAction(user) {

@@ -1,5 +1,5 @@
-<div class="card-stack" *ngIf="users" [@cardStack]="users.length">
-  <ng-container *ngFor="let user of users; let i = index; trackBy:indexId">
+<div class="card-stack" *ngIf="displayUsers" [@cardStack]="displayUsers.length">
+  <ng-container *ngFor="let user of displayUsers; let i = index; trackBy:indexId">
     <ht-user-card
       [@shuffle]="i"
       class="user"
@@ -10,5 +10,22 @@
       [user]="user">
     </ht-user-card>
   </ng-container>
+  <div class="user-detail flex-column column-gap-10" *ngIf="userPlaceline">
+    <div class="flex-row space-around wrap">
+      <ht-collapsable>
+        <button class="button is-rounded is-outlined auto action-open">Show {{userPlaceline.actions.length}} actions</button>
+        <div class="flex-column ht-data">
+          <ht-action-card [action]="action" *ngFor="let action of actions"></ht-action-card>
+        </div>
+      </ht-collapsable>
+      <ht-collapsable>
+        <button class="button is-rounded is-outlined auto action-open">Show {{userPlaceline.actions.length}} actions</button>
+        <div class="flex-column ht-data">
+          <ht-action-card [action]="action" *ngFor="let action of actions"></ht-action-card>
+        </div>
+      </ht-collapsable>
+    </div>
 
+
+  </div>
 </div>
