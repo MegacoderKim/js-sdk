@@ -27,14 +27,15 @@ export class ActionsCardsContainerComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.actionsPage) {
+    if (this.userPlaceline && this.selectedId) {
+      this.actions = this.userPlaceline.actions.filter((userAction) => {
+        return userAction.id == this.selectedId
+      })
+    } else if (this.actionsPage) {
       if (this.userPlaceline || this.selectedId) {
         this.actions = this.actionsPage.results.reduce((actions, action) => {
           return action.id == this.selectedId ?
-            this.userPlaceline ?
-              this.userPlaceline.actions.filter((userAction) => {
-                return userAction.id == this.selectedId
-              }) : [action] : actions
+            [action] : actions
         }, [])
       } else {
         this.actions = this.actionsPage.results;
