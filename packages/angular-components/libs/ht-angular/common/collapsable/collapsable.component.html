@@ -1,4 +1,4 @@
-<div *ngIf="!open" (click)="open = true">
+<div *ngIf="!open" (click)="open = true" class="has-text-centered">
   <ng-content select=".action-open"></ng-content>
 </div>
 <div *ngIf="open && showClose" class="has-text-centered" (click)="open = false">
