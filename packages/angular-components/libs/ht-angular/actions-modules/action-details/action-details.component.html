@@ -1,3 +1,28 @@
-<p>
-  action-details works!
-</p>
+<table class="table">
+  <tbody>
+  <tr>
+    <td>Created at</td>
+    <td>{{action.created_at | timeString}}</td>
+  </tr>
+  <tr *ngIf="action.expected_at">
+    <td>Expected at</td>
+    <td>{{action.expected_at | timeString}}</td>
+  </tr>
+  <tr *ngIf="action.expected_place">
+    <td>Expected place</td>
+    <td>{{action.expected_place.address}}</td>
+  </tr>
+  <tr *ngIf="action.eta">
+    <td>ETA</td>
+    <td>{{action.eta | timeString}}</td>
+  </tr>
+  <tr *ngIf="action.completed_place">
+    <td>Completed place</td>
+    <td>{{action.completed_place.address}}</td>
+  </tr>
+  <tr *ngFor="let item of action.metadata | objectToArray">
+    <td>{{item[0]}}</td>
+    <td>{{item[1]}}</td>
+  </tr>
+  </tbody>
+</table>
