@@ -20,4 +20,5 @@ export * from "./url-helps";
 export * from "./string-helpers";
 export * from "./custom-events";
 export * from "./timezone";
+export * from "./object-helpers";
 
