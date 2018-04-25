@@ -1,0 +1,16 @@
+<div class="card-stack" *ngIf="actions" [@cardStack]="actions.length">
+  <ng-container *ngFor="let action of actions; let i = index; trackBy:indexId">
+    <ht-action-card
+      [@shuffle]="i"
+      class="ht-action"
+      [class.card-selected]="selectedId == action.id"
+      (mouseenter)="hover(action.id)"
+      (mouseleave)="hover(null)"
+      (click)="selectAction(action)"
+      [action]="action">
+    </ht-action-card>
+    <div class="action-detail" *ngIf="selectedId">
+      <button class="button is-rounded is-outlined is-info is-small auto">Show details</button>
+    </div>
+  </ng-container>
+</div>

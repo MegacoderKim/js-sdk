@@ -56,6 +56,7 @@ export {PlacelineMapContainerModule} from "./placeline-map-container/placeline-m
 export {PlacelineMapContainerComponent} from "./placeline-map-container/placeline-map-container.component";
 
 export { ActionCardModule } from "./actions-modules/action-card/action-card.module";
+export { ActionsCardsContainerModule } from "./actions-modules/actions-cards-container/actions-cards-container.module";
 export { ActionDotModule } from "./actions-modules/action-dot/action-dot.module";
 export { ActionsPlacelineContainerModule } from "./actions-modules/actions-placeline-container/actions-placeline-container.module";
 export { ActionsFiltersModule } from "./actions-modules/actions-filters/actions-filters.module";
