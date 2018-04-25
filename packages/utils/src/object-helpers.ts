@@ -7,10 +7,11 @@ import { propToString } from "./string-helpers";
  * currently only included string/number/boolean values to depth 1
  */
 export const objectToStringArray = (obj: object, separator?: string): [string, string][] => {
+  if (!obj) return [];
     const keys = Object.keys(obj);
     return keys.reduce((acc, key: string): [string, string][] => {
         const value = obj[key];
-        const typeOfValue = typeof value
+        const typeOfValue = typeof value;
         return typeOfValue == 'string' || typeOfValue == 'number' || typeOfValue == 'boolean' ? 
             [...acc, [propToString(key), obj[key]]] : acc
     }, [])

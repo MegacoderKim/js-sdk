@@ -11,6 +11,7 @@ import { Subscription } from "rxjs/Subscription";
 import { IUserPlaceline } from "ht-models";
 import { getFirstDataMixin } from "../../mixins/get-first-data";
 import {HtUsersApi} from "ht-api";
+import {distinctUntilChanged, map} from "rxjs/operators";
 
 export class UsersPlaceline extends EntityItemClient {
   name = "users placeline";
@@ -22,12 +23,18 @@ export class UsersPlaceline extends EntityItemClient {
   segmentsState$;
   segmentSelectedId$;
   segmentResetId$;
-
+  actionId$;
   constructor({ store, api }: IClientConfig<HtUsersApi>) {
     super();
     this.api$ = (id, query) => api.placeline(id, query);
     this.store = store;
     this.query$ = this.store.select(fromRoot.getUsersPlacelineQuery);
+    this.actionId$ = this.query$.pipe(
+      map(query => {
+        return query ? query['action_id'] : null
+      }),
+      distinctUntilChanged()
+    );
     this.data$ = this.store.select(fromRoot.getUsersUsersData);
     this.loading$ = this.store.select(fromRoot.getUsersPlacelineLoading);
     this.id$ = this.store.select(fromRoot.getUsersPlacelineId);

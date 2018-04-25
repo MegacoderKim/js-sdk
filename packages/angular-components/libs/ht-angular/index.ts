@@ -12,10 +12,10 @@ export { UsersSummaryContainerComponent } from "./users-summary-container/users-
 
 export {ContainerModule} from "./container/container.module";
 
-export {UserCardModule} from "./user-card/user-card.module";
-export {UserCardComponent} from "./user-card/user-card.component";
-export {UsersComponent} from "./users/users.component";
-export {UsersModule} from "./users/users.module";
+export {UserCardModule} from "./users-modules/user-card/user-card.module";
+export {UserCardComponent} from "./users-modules/user-card/user-card.component";
+export {UsersCardsContainerComponent} from "./users-modules/users-cards-container/users-cards-container.component";
+export {UsersCardsContainerModule} from "./users-modules/users-cards-container/users-cards-container.module";
 export {UsersContainerModule} from "./users-container/users-container.module";
 export {UsersContainerComponent} from "./users-container/users-container.component";
 
@@ -25,7 +25,7 @@ export {UsersMapContainerComponent} from "./users-map-container/users-map-contai
 export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-chart.component"
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
 
-export { UserDeviceModule } from "./user-device/user-device.module"
+export { UserDeviceModule } from "./users-modules/user-device/user-device.module"
 
 export { UsersSummaryModule } from "./users-summary/users-summary.module"
 export { UsersFilterModule } from "./filters/users-filter/users-filter.module"
@@ -47,14 +47,20 @@ export {MapContainerComponent} from "./map-container/map-container.component";
 export {SharedModule} from "./shared/shared.module";
 export { PaginationModule } from "./pagination/pagination.module"
 export { PaginationComponent } from "./pagination/pagination.component"
-export {PlacelineContainerModule} from "./placeline-container/placeline-container.module";
-export {PlacelineContainerComponent} from "./placeline-container/placeline-container.component";
+export {UsersPlacelineContainerModule} from "./users-modules/users-placeline-container/users-placeline-container.module";
+export {UsersPlacelineContainerComponent} from "./users-modules/users-placeline-container/users-placeline-container.component";
 export {PlacelineDateModule} from "./placeline-date/placeline-date.module";
 export {PlacelineModule} from "./placeline/placeline.module";
 export {PlacelineComponent} from "./placeline/placeline.component";
 export {PlacelineMapContainerModule} from "./placeline-map-container/placeline-map-container.module";
 export {PlacelineMapContainerComponent} from "./placeline-map-container/placeline-map-container.component";
 
+export { ActionCardModule } from "./actions-modules/action-card/action-card.module";
+export { ActionsCardsContainerModule } from "./actions-modules/actions-cards-container/actions-cards-container.module";
+export { ActionDotModule } from "./actions-modules/action-dot/action-dot.module";
+export { ActionsPlacelineContainerModule } from "./actions-modules/actions-placeline-container/actions-placeline-container.module";
+export { ActionsFiltersModule } from "./actions-modules/actions-filters/actions-filters.module";
+export { ActionsSummaryContainerModule } from "./actions-modules/actions-summary-container/actions-summary-container.module";
 export { ActionsStatusGraphModule } from "./actions-status-graph/actions-status-graph.module"
 export { ActionsStatusGraphComponent } from "./actions-status-graph/actions-status-graph.component"
 export { UserTableModule } from "./user-table/user-table.module"

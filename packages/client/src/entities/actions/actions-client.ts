@@ -1,5 +1,5 @@
 import {Observable} from "rxjs/Observable";
-import {IDateRange} from "../../interfaces";
+import {IDateRange, QueryLabel} from "../../interfaces";
 import {DateRange, dateRangeService} from "../../global/date-range";
 import {ActionsGraphClient, ActionsGraph} from "./actions-graph";
 import { DateRangeToQuery$ } from "ht-data";
@@ -12,12 +12,13 @@ import {ActionsHeatmapClient, ActionsHeatmap} from "./actions-heatmap-client";
 import {ActionsIndexAll, ActionsIndexAllClient} from "./actions-list-all-client"
 import {HtApi, HtActionsApi} from "ht-api";
 import {htClientService} from "../../global/client";
-import {pluck} from "rxjs/operators";
+import {distinctUntilChanged, map, pluck} from "rxjs/operators";
 import {filter} from "rxjs/operators/filter";
 import {scan} from "rxjs/operators/scan";
 import {AllData, IAction} from "ht-models";
 import {htAction} from "ht-data";
 import * as _ from "underscore";
+
 
 export class HtActionsClient {
   // item: HtActionsGetClient;
@@ -37,11 +38,11 @@ export class HtActionsClient {
     this.store = store;
     let dateRange = config.dateRange;
     let dateParam = 'created_at';
-    this.graph = new ActionsGraphClient({dateRange, dateParam, api});
+    this.graph = new ActionsGraphClient({dateRange, dateParam, api, store});
     this.list = new ActionsListClient({dateRange, store, dateParam, api});
-    this.listAll = new ActionsIndexAllClient({dateRange, dateParam, api});
+    this.listAll = new ActionsIndexAllClient({dateRange, dateParam, api, store});
     this.summary = new ActionsSummaryClient({dateRange, store, dateParam, api});
-    this.heatmap = new ActionsHeatmapClient({dateRange, dateParam: 'completed_at', api});
+    this.heatmap = new ActionsHeatmapClient({dateRange, dateParam: 'completed_at', api, store});
     this.initEffects();
   };
 
@@ -116,6 +117,45 @@ export class HtActionsClient {
       return { ...allResults, resultsEntity };
     };
     this.listAll.setDataMap(dataMap);
+  }
+
+  get queryLabel$() {
+    let query$ = this.list.getApiQuery$().pipe(filter(data => !!data));
+    return query$.pipe(
+      map(query => {
+        // console.log("cl", query);
+        let queryLabel = this.filters.getQueryLabel(query);
+        return queryLabel;
+      })
+    );
+  }
+
+  get ordering$() {
+    return this.list.getApiQuery$().pipe(
+      filter(data => !!data),
+      map(query => {
+        let ordering = query ? query["ordering"] : null;
+        let orderingMod = this.getOrderingMod(ordering);
+        return {
+          string: this.filters.sortingQueryMap[orderingMod.string],
+          sign: orderingMod.sign
+        };
+      }),
+      distinctUntilChanged()
+    );
+  }
+
+  private getOrderingMod(ordering: string) {
+    let string = ordering;
+    let sign = 1;
+    if (ordering.includes("-")) {
+      string = ordering.substring(1);
+      sign = 0;
+    }
+    return {
+      string,
+      sign
+    };
   }
 }
 

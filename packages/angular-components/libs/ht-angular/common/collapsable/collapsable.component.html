@@ -1,0 +1,16 @@
+<div *ngIf="!open" (click)="open = true" class="has-text-centered">
+  <ng-content select=".action-open"></ng-content>
+</div>
+<div *ngIf="open && showClose" class="has-text-centered col-action" (click)="open = false">
+  <!--<div class="icon auto">-->
+    <!--<div class="fa fa-times-circle fa-2x"></div>-->
+  <!--</div>-->
+  <button class="button is-rounded auto">
+    <span class="icon">
+      <i class="fa fa-close"></i>
+    </span>
+  </button>
+</div>
+<div *ngIf="open" [@summaryAnim]>
+  <ng-content select=".ht-data"></ng-content>
+</div>

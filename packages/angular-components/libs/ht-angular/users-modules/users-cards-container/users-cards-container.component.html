@@ -1,0 +1,33 @@
+<div class="card-stack" *ngIf="displayUsers" [@cardStack]="displayUsers.length">
+  <ng-container *ngFor="let user of displayUsers; let i = index; trackBy:indexId">
+    <ht-user-card
+      [@shuffle]="i"
+      class="user"
+      [class.card-selected]="selectedUserDataId == user.id"
+      (mouseenter)="hover(user.id)"
+      (mouseleave)="hover(null)"
+      (click)="selectUser(user)"
+      [user]="user">
+    </ht-user-card>
+  </ng-container>
+  <div class="user-detail flex-column column-gap-10" *ngIf="userPlaceline">
+    <div class="flex-row space-around wrap column-gap-20 collapsables-container">
+      <ht-collapsable>
+        <button class="button is-rounded is-outlined auto action-open">Show {{userPlaceline.actions.length}} actions</button>
+        <div class="flex-column ht-data">
+          <ht-action-card [action]="action" *ngFor="let action of actions"></ht-action-card>
+        </div>
+      </ht-collapsable>
+      <ht-collapsable #c1 [class.data-full]="c1.open" [showClose]="false">
+        <button class="button is-rounded is-outlined auto action-open">Show device info</button>
+        <div class="flex-column ht-data">
+          <div class="card-content is-small">
+            <ht-user-device [userId]="selectedUserDataId"></ht-user-device>
+          </div>
+        </div>
+      </ht-collapsable>
+    </div>
+
+
+  </div>
+</div>

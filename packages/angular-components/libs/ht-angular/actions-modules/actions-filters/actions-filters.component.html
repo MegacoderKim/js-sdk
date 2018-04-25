@@ -1,0 +1,78 @@
+<div class="card" style="z-index: 1001">
+  <div class="card-content flex-row row-gap-10">
+    <ng-content select=".start"></ng-content>
+    <ht-entity-search (onSearchQuery)="onQuery($event)"></ht-entity-search>
+    <div class="dropdown" htDropdown *ngIf="ordering$ | async as ordering">
+      <button type="button" class="button dropdown-trigger flex-row row-gap-4">
+        <ng-container *ngIf="!isMobile">
+          <span>Sorting</span>
+          <span>: {{ordering.string}}</span>
+        </ng-container>
+        <i [ngClass]="ordering.sign ? 'fa-sort-amount-asc' : 'fa-sort-amount-desc'" class="fa"></i>
+        <!--<span *ngIf="ordering$ | async as ordering"></span>-->
+        <!--<i class="fa fa-filter"></i>-->
+      </button>
+      <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+        <div class="dropdown-content sorting-menu">
+          <div class="dropdown-item sort-header sort-items text-muted">
+            <div class="sort-item flex flex-row space-between">
+              <span>ORDERING</span>
+              <span>DESC</span>
+            </div>
+            <div class="text-center"  style="flex-basis: 40px">ASC</div>
+          </div>
+          <div class="dropdown-item" *ngFor="let sorting of sortingLabels">
+            <div class="level">
+              <div class="level-left">
+                <span class="level-item">{{sorting.label}}</span>
+              </div>
+              <div class="level-right">
+                <button [class.is-primary]="ordering.string == sorting.label && !ordering?.sign" class="button is-small level-item" (click)="setOrdering(sorting.value, 0)">
+                <span class="icon">
+                  <i class="fa fa-sort-amount-desc"></i>
+                </span>
+                </button>
+                <button [class.is-primary]="ordering.type == sorting.key && ordering.sign" class="button is-small level-item" (click)="setOrdering(sorting.value)">
+                <span class="icon">
+                  <i class="fa fa-sort-amount-asc"></i>
+                </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--<a class="dropdown-item" (click)="setOrdering(sort.value)" *ngFor="let sort of sortingLabels">{{sort.label}}</a>-->
+        </div>
+      </div>
+    </div>
+    <div class="dropdown is-hoverable">
+      <button id="dropdown-keyboard-access" type="button" class="button flex-row row-gap-4">
+        <span *ngIf="!isMobile">Filters</span> <i class="fa fa-filter"></i>
+      </button>
+      <div class="dropdown-menu" role="menu" aria-labelledby="dropdown-keyboard-access">
+        <div class="dropdown-content">
+          <a class="dropdown-item" (click)="setStatus(filter.values.toString(), $event)" *ngFor="let filter of statusFiltes">{{filter.label}}</a>
+        </div>
+
+      </div>
+    </div>
+    <div class="flex flex-row row-gap-4" *ngIf="query$ && !isMobile">
+      <div class="" *ngFor="let query of query$ | async as queries">
+        <div class="tags has-addons">
+          <div class="tag is-medium is-primary">{{query.label}}</div>
+          <a (click)="clearQuery(query.value)" class="tag is-medium is-primary is-delete"></a>
+        </div>
+      </div>
+    </div>
+    <div class="flex"></div>
+    <ht-date-range [options]="datePickerOptions" *ngIf="!isMobile"></ht-date-range>
+    <ng-content select=".end"></ng-content>
+  </div>
+  <div class="card-overlay card-content flex-row row-gap-10 align-center" *ngIf="selectedId$ | async">
+    <div style="width: 340px;">
+      <ng-content select=".selected-start"></ng-content>
+    </div>
+    <ng-content select=".selected-end"></ng-content>
+  </div>
+  <ht-loading-bar *ngIf="loading$ | async"></ht-loading-bar>
+
+</div>

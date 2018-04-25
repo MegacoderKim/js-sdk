@@ -14,6 +14,8 @@ export const mainRoutes: Routes = [
   { path: 'analytics', loadChildren: "../analytics/analytics.module#AnalyticsModule"},
   { path: 'users', loadChildren: "../users-map/users-map.module#UsersMapModule"},
   { path: 'users', loadChildren: "../users-list/users-list.module#UsersListModule"},
+  { path: 'actions', loadChildren: '../action/actions-table/actions-table.module#ActionsTableModule'},
+  { path: 'actions', loadChildren: '../action/actions-map/actions-map.module#ActionsMapModule'},
   {path: '', loadChildren: "../settings/settings.module#SettingsModule"},
   {path: '', loadChildren: "../container/container.module#ContainerModule", canActivate: [ContainerGuardGuard]},
 ];

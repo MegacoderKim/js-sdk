@@ -1,0 +1,24 @@
+<div class="flex-column column-gap-10" [@bottomAppear] *ngIf="data$ | async as userData">
+  <ng-container *ngIf="actionId && action$ | async as action">
+    <ht-action-card [action]="action"></ht-action-card>
+    <div class="action-detail flex-column">
+      <ht-collapsable>
+        <button class="button is-rounded auto action-open">Show details</button>
+        <div class="flex-column ht-data auto" style="max-width: 80%;">
+          <ht-action-details [action]="action"></ht-action-details>
+        </div>
+      </ht-collapsable>
+
+    </div>
+  </ng-container>
+  <ht-user-card [user]="userData"></ht-user-card>
+  <div ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></div>
+  <ng-template #placeline>
+    <ht-placeline
+      [selectedSegmentId]="selectedSegmentId$ | async"
+      (selectedSegment)="onSelectSegmentId($event)"
+      (highlightedSegmentId)="onHighlightSegment($event)"
+      [userPlaceline]="userData"></ht-placeline>
+  </ng-template>
+
+</div>

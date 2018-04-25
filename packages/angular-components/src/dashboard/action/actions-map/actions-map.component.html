@@ -1,0 +1,49 @@
+<ht-actions-filters>
+  <div class="start" *ngIf="!isMobile">
+    <div class="field has-addons">
+      <p class="control">
+        <a class="button" [routerLink]="[baseUrl, 'actions', 'list']">
+      <span class="icon is-small">
+        <i class="fa fa-list"></i>
+      </span>
+          <span>List</span>
+        </a>
+      </p>
+      <p class="control">
+        <a class="button is-primary">
+      <span class="icon is-small">
+        <i class="fa fa-map-o"></i>
+      </span>
+          <span>Map</span>
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="end">
+    <app-csv-download [client]="client" api="v2/actions/" filename="actions.csv"></app-csv-download>
+  </div>
+  <div (click)="closeUser()"
+       class="is-size-7 is-text-centered flex-row align-center selected-start">
+    <span class="delete-container icon"> <i class="fa fa-arrow-circle-left fa-3x"></i></span>
+  </div>
+  <div class="selected-end flex">
+    <ht-replay *ngIf="!isMobile && showReplay$ | async" [replayTrace]="userTraceService.segmentsTrace"></ht-replay>
+  </div>
+</ht-actions-filters>
+<ht-map-container>
+  <ht-actions-summary-container
+    [@summaryAnim] class="card-content is-small flex-column"
+    *ngIf="!(selectedActionId$ | async)"></ht-actions-summary-container>
+  <div *ngIf="data$ | async as actionsPage">
+    <ht-actions-cards-container
+      [userPlaceline]="userPlaceline$ | async"
+      [selectedId]="selectedActionId$ | async"
+      [actionsPage]="actionsPage"
+      (onSelectAction)="selectAction($event)"></ht-actions-cards-container>
+    <ht-pagination *ngIf="!(selectedActionId$ | async)" (fetchPage)="fetchPage($event)" [pageDate]="actionsPage"></ht-pagination>
+  </div>
+  <ng-container  *ngIf="(userPlaceline$ | async) && (selectedActionId$ | async)">
+    <ht-actions-placeline-container></ht-actions-placeline-container>
+
+  </ng-container>
+</ht-map-container>

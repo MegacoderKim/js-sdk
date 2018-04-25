@@ -25,38 +25,80 @@ export const tableFormat = (data: object, config: ITableFormatConfig) => {
 };
 
 export const actionTableFormat = {
+  "unique_id": {
+    label: "Unique ID",
+    key: "unique_id",
+    selector(action: IAction) {
+      return action.unique_id
+    }
+  },
+  "user": {
+    label: "User",
+    key: "user__name",
+    selector(action: IAction) {
+      return NameCase(action.user.name)
+    }
+  },
+  "status": {
+    label: "Status",
+    key: "status",
+    selector(action: IAction) {
+      return NameCase(action.status)
+    }
+  },
+  "status_dot": {
+    label: "",
+    key: "",
+    isDot: true,
+    selector(action: IAction) {
+      return null
+    }
+  },
   "assigned_at": {
     label: "Assigned at",
+    key: "assigned_at",
     selector(action: IAction) {
       return dateTimeString(action.created_at)
     }
   },
   "created_at": {
     label: "Created at",
+    key: "created_at",
     selector(action: IAction) {
       return dateTimeString(action.created_at)
     }
   },
   "expected_at": {
     label: "Expected at",
+    key: "expected_at",
     selector(action: IAction) {
       return action.expected_at ? dateTimeString(action.expected_at) : "--"
     }
   },
   "completed_at": {
     label: "Completed at",
+    key: "completed_at",
     selector(action: IAction) {
       return dateTimeString(action.completed_at)
     }
   },
+  "completed_at__eta": {
+    label: "Completed at / ETA",
+    key: "completed_at",
+    selector(action: IAction) {
+      return action.completed_at ? dateTimeString(action.completed_at) : dateTimeString(action.eta || action.expected_at)
+    }
+  },
   "distance": {
     label: "Distance",
+    key: "distance",
     selector(action: IAction) {
       return action.distance || action.distance == 0 ? DistanceLocale(action.distance) : "--";
     }
   },
   "duration": {
     label: "Duration",
+    key: "duration",
     selector(action: IAction) {
       return action.duration || action.duration == 0 ? HMString(action.duration, 60) : "--";
     }
@@ -75,6 +117,7 @@ export const actionTableFormat = {
   },
   "type": {
     label: "Type",
+    key: "type",
     selector(action: IAction) {
       return NameCase(DotString(action.type))
     }

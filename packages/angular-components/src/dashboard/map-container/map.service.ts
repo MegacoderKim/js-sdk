@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {Observable} from "rxjs/Observable";
+import {CombineLoadings$} from "../../../../data";
 import { environment } from '../../environments/environment';
 import * as fromRoot from "../reducers";
 import {Store} from "@ngrx/store";
@@ -9,7 +11,7 @@ import {ActionTraceService} from "../action/action-trace.service";
 import {ActivatedRoute} from "@angular/router";
 import {config} from "../config";
 import {HtActionsService, HtMapService, HtUsersService} from "ht-angular";
-import {debounceTime} from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, map} from "rxjs/operators";
 // import {control, Control, DomUtil, Map} from "leaflet";
 // import * as L from "leaflet";
 
@@ -71,6 +73,31 @@ export class InnerMapService {
     this.htMapService.actionsHeatmap.setPageData$(this.htActionsService.heatmap.data$, {
       hide$: this.store.select(fromRoot.getUserSelectedUserId)
     })
+    /*
+    Set loading
+     */
+    const loading$1 = this.htUsersService.placeline.loading$
+      .pipe(
+        map((data) => !!data),
+        distinctUntilChanged()
+      );
+
+    const loading$2 = this.htUsersService.listAll.loading$
+      .pipe(
+        map((data) => !!data),
+        distinctUntilChanged()
+      );
+
+    const loadingHeat$ = this.htUsersService.heatmap.loading$;
+
+    const loadingActionsAll$ = this.htActionsService.listAll.loading$;
+
+    const mapLoading$: Observable<boolean> = CombineLoadings$(loading$1, loading$2, loadingHeat$, loadingActionsAll$).pipe(
+      map(data => {
+        return !!data
+      })
+    );
+    this.htMapService.mapInstance.loading$ = mapLoading$
   }
 
   setMapStyle() {

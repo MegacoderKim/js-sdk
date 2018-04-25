@@ -48,7 +48,7 @@ export class ClientTableComponent implements OnInit, OnChanges {
   }
 
   setOrdering(key) {
-    if (!this.ordering) return false;
+    // if (!this.ordering) return false;
     const sign = key == this.ordering ? !this.sign : false;
     const ordering = `${sign ? '' : '-'}${key}`;
     this.setQuery.next({...this.query, ordering})

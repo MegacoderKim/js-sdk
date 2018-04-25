@@ -234,6 +234,26 @@ export const getActionsListQuery = createSelector(
   fromActions.getListQuery
 );
 
+export const getActionsListAll = createSelector(
+  getActionsState,
+  fromActions.getListAll
+);
+
+export const getActionsListAllActive = createSelector(
+  getActionsState,
+  fromActions.getListAllActive
+);
+
+export const getActionsListAllLoading = createSelector(
+  getActionsState,
+  fromActions.getListAllLoading
+);
+
+export const getActionsListAllFiltered = createSelector(
+  getActionsState,
+  fromActions.getListAllFiltered
+);
+
 export const getActionsSummary = createSelector(
   getActionsState,
   fromActions.getSummary
@@ -262,6 +282,11 @@ export const getActionsGraph = createSelector(
 export const getActionsGraphLoading = createSelector(
   getActionsState,
   fromActions.getGraphLoading
+);
+
+export const getActionsGraphActive = createSelector(
+  getActionsState,
+  fromActions.getGraphActive
 );
 
 export const getActionsGraphQuery = createSelector(

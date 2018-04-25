@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
       map(state => {
         return {
           users: ['/users', state],
-          actions: ['/' + state, 'actions']
+          actions: ['/actions', state, ]
         }
       })
     );

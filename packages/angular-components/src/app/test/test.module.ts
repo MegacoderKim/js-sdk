@@ -10,7 +10,7 @@ import {UsersContainerModule} from "ht-angular";
 import {UserCardModule} from "ht-angular";
 import {PlacelineModule} from "ht-angular";
 import {UsersMapContainerModule} from "ht-angular";
-import {PlacelineContainerModule} from "ht-angular";
+import {UsersPlacelineContainerModule} from "ht-angular";
 import {PlacelineMapContainerModule} from "ht-angular";
 import {UsersSummaryContainerModule} from "ht-angular";
 import {UsersListContainerModule} from "ht-angular";
@@ -27,7 +27,7 @@ import {UsersListContainerModule} from "ht-angular";
     UsersSummaryContainerModule,
     PlacelineModule,
     UsersMapContainerModule,
-    PlacelineContainerModule,
+    UsersPlacelineContainerModule,
     PlacelineMapContainerModule,
     UsersListContainerModule
   ],
