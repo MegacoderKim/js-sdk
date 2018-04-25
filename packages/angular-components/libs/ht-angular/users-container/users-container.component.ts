@@ -41,6 +41,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   loadingUserDataId$;
   loadingUsers$;
   loading$;
+  data$;
   // todo infer has map from mapInstance
   @Input() hasMap: boolean = false;
   @Input() userId: string;
@@ -98,6 +99,8 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
         return pageData ? pageData.results : pageData
       })
     );
+
+    this.data$ = this.userService.list.data$;
 
     this.loadingUsers$ = this.userService.getLoading$();
 
