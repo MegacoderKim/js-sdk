@@ -4,12 +4,12 @@ import {IUserAnalytics, IAction, Page, IUserPlaceline} from "ht-models";
 // import {anim} from "../../animations/appear";
 import {animate, keyframes, query, stagger, state, style, transition, trigger} from "@angular/animations";
 import {Observable} from "rxjs/Observable";
-import {cardStackFn, shuffle} from "../common/animations";
+import {cardStackFn, shuffle} from "../../common/animations";
 
 @Component({
-  selector: 'ht-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.less'],
+  selector: 'ht-users-cards-container',
+  templateUrl: './users-cards-container.component.html',
+  styleUrls: ['./users-cards-container.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     shuffle,
@@ -33,7 +33,7 @@ import {cardStackFn, shuffle} from "../common/animations";
     cardStackFn('user'),
   ]
 })
-export class UsersComponent implements OnInit, OnDestroy, OnChanges {
+export class UsersCardsContainerComponent implements OnInit, OnDestroy, OnChanges {
   // userCardAction;
   @Input() usersPage: Page<IUserAnalytics>;
   @Input() userPlaceline: IUserPlaceline;

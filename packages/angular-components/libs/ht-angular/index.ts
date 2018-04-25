@@ -14,8 +14,8 @@ export {ContainerModule} from "./container/container.module";
 
 export {UserCardModule} from "./user-card/user-card.module";
 export {UserCardComponent} from "./user-card/user-card.component";
-export {UsersComponent} from "./users/users.component";
-export {UsersModule} from "./users/users.module";
+export {UsersCardsContainerComponent} from "./users-modules/users-cards-container/users-cards-container.component";
+export {UsersCardsContainerModule} from "./users-modules/users-cards-container/users-cards-container.module";
 export {UsersContainerModule} from "./users-container/users-container.module";
 export {UsersContainerComponent} from "./users-container/users-container.component";
 
