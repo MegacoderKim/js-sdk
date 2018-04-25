@@ -32,6 +32,17 @@ export const bottomAppear = entryLeaveTransition('bottomAppear', {transform: "tr
 
 export const fadeAppear = entryLeaveTransition('fadeAppear', {opacity: 0}, '0.3s');
 
+
+export const summaryAnim = trigger('summaryAnim', [
+  transition(':enter', [
+    style({transform: 'translateX(-100px) scaleY(0)', height: 0, opacity: 0}),
+    animate('0.3s' + ' ease-out')
+  ]),
+  transition(':leave', [
+    animate('0.3s' + ' ease-in', style({transform: 'translateX(-100px)', height: 0, opacity: 0}))
+  ])]);
+
+
 export function entryLeaveTransition(name: string, entryStyle: {[key: string]: string | number}, duration: string = '0.4s') {
   return trigger(name, [
     transition(':enter', [
