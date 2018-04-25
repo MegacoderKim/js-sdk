@@ -31,11 +31,19 @@
   </div>
 </ht-actions-filters>
 <ht-map-container>
-  <ht-actions-summary-container class="card-content is-small"></ht-actions-summary-container>
-  <div *ngIf="!(selectedActionId$ | async) && data$ | async as data">
-    <ng-container *ngFor="let action of data.results">
-      <ht-action-card (click)="selectAction(action)" [action]="action"></ht-action-card>
-    </ng-container>
+  <ht-actions-summary-container
+    [@summaryAnim] class="card-content is-small flex-column"
+    *ngIf="!(selectedActionId$ | async)"></ht-actions-summary-container>
+  <div *ngIf="data$ | async as actionsPage">
+    <ht-actions-cards-container
+      [userPlaceline]="userPlaceline$ | async"
+      [selectedId]="selectedActionId$ | async"
+      [actionsPage]="actionsPage"
+      (onSelectAction)="selectAction($event)"></ht-actions-cards-container>
+    <ht-pagination (fetchPage)="fetchPage($event)" [pageDate]="actionsPage"></ht-pagination>
   </div>
-  <ht-actions-placeline-container *ngIf="selectedActionId$ | async"></ht-actions-placeline-container>
+  <ng-container  *ngIf="(userPlaceline$ | async) && (selectedActionId$ | async)">
+    <ht-actions-placeline-container></ht-actions-placeline-container>
+
+  </ng-container>
 </ht-map-container>

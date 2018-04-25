@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {HtActionsService, HtUsersService} from "ht-angular";
+import {HtActionsService, HtUsersService, summaryAnim} from "ht-angular";
 import {config} from "../../config";
 import {ContainerService} from "../../container/container.service";
 import {UserTraceService} from "../../users/user-trace.service";
-import {map} from "rxjs/operators";
+import {map, share} from "rxjs/operators";
+import {Observable} from "rxjs/Observable";
+import {IAction, Page} from "ht-models";
 
 @Component({
   selector: 'app-actions-map',
   templateUrl: './actions-map.component.html',
-  styleUrls: ['./actions-map.component.scss']
+  styleUrls: ['./actions-map.component.scss'],
+  animations: [
+    summaryAnim
+  ]
 })
 export class ActionsMapComponent implements OnInit {
   loading$;
@@ -19,6 +24,7 @@ export class ActionsMapComponent implements OnInit {
   client;
   selectedActionId$;
   showReplay$;
+  userPlaceline$;
   constructor(
     private containerService: ContainerService,
     private usersService: HtUsersService,
@@ -30,7 +36,9 @@ export class ActionsMapComponent implements OnInit {
     this.containerService.setEntity('actions');
     this.containerService.setView('map');
 
-    this.selectedActionId$ = this.usersService.placeline.actionId$;
+    this.selectedActionId$ = this.usersService.placeline.actionId$.pipe(
+      // share()
+    );
 
     this.client = this.actionsService.list;
     this.loading$ = this.actionsService.list.loading$;
@@ -39,11 +47,23 @@ export class ActionsMapComponent implements OnInit {
     this.actionsService.list.setActive();
     this.actionsService.listAll.setActive();
 
+    this.userPlaceline$ = this.usersService.placeline.data$.pipe(
+      // share()
+    );
+
     this.showReplay$ = this.userTraceService.segmentsTrace.timelineSegment.getReplayStats().pipe(
       map((stats) => {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
       })
     );
+  };
+
+  fetchPage(page) {
+    this.setQuery({page})
+  }
+
+  setQuery(query) {
+    this.actionsService.list.setQuery(query)
   }
 
 

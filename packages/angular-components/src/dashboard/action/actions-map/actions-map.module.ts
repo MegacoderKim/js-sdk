@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ActionsMapRoutingModule } from './actions-map-routing.module';
 import { ActionsMapComponent } from './actions-map.component';
-import {MapContainerModule, ActionCardModule, ActionsFiltersModule, ActionsSummaryContainerModule, ActionsPlacelineContainerModule, ReplayModule} from "ht-angular";
+import {MapContainerModule, ActionCardModule, ActionsFiltersModule, ActionsSummaryContainerModule, ActionsPlacelineContainerModule, ReplayModule, ActionsCardsContainerModule, UserCardModule, PaginationModule} from "ht-angular";
 import {CsvDownloadModule} from "../../shared/csv-download/csv-download.module";
 
 @NgModule({
@@ -16,7 +16,10 @@ import {CsvDownloadModule} from "../../shared/csv-download/csv-download.module";
     ActionsSummaryContainerModule,
     CsvDownloadModule,
     ActionsPlacelineContainerModule,
-    ReplayModule
+    ReplayModule,
+    ActionsCardsContainerModule,
+    UserCardModule,
+    PaginationModule
   ],
   declarations: [ActionsMapComponent]
 })
