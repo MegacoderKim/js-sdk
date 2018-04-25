@@ -77,7 +77,7 @@ export class ActionsIndexAll extends EntityAllItemsClient {
 
   clearData() {
     this.setActive(false);
-    this.setData(null);
+    this.setLoading(false);
   }
 };
 

@@ -67,6 +67,11 @@ export class ActionsList extends EntityListClient {
   clearQueryKey(key: string) {
     this.store.dispatch(new fromAction.ClearQueryKey(key))
   }
+
+  clearData() {
+    this.setActive(false);
+    this.setLoading(false);
+  }
 };
 
 export const ActionsListClient = clientSubMixin(
