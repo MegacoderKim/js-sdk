@@ -1,0 +1,11 @@
+<div *ngIf="!open" (click)="open = true">
+  <ng-content select=".action-open"></ng-content>
+</div>
+<div *ngIf="open" class="flex-column card-content is-small" (click)="open = false">
+  <div class="icon auto">
+    <div class="fa fa-times-circle fa-2x"></div>
+  </div>
+</div>
+<div *ngIf="open">
+  <ng-content select=".ht-data"></ng-content>
+</div>
