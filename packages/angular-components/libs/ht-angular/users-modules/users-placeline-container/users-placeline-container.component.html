@@ -1,5 +1,25 @@
-<div class="flex-column column-gap-10" [@slide] *ngIf="userData$ | async as userData">
-  <ht-user-card *ngIf="showUserCard" [user]="userData"></ht-user-card>
+<div class="flex-column column-gap-20" [@slide] *ngIf="userData$ | async as userData">
+  <div *ngIf="showUserCard">
+    <ht-user-card [user]="userData"></ht-user-card>
+    <div class="user-detail flex-column column-gap-10">
+      <div class="flex-row space-around wrap column-gap-20 collapsables-container">
+        <ht-collapsable>
+          <button class="button is-rounded is-outlined auto action-open">Show {{userData.actions.length}} {{'action' | pluralize: userData.actions.length}}</button>
+          <div class="flex-column ht-data">
+            <ht-action-card [action]="action" *ngFor="let action of userData.actions"></ht-action-card>
+          </div>
+        </ht-collapsable>
+        <ht-collapsable #c1 [class.data-full]="c1.open" [showClose]="false">
+          <button class="button is-rounded is-outlined auto action-open">Show device info</button>
+          <div class="flex-column ht-data">
+            <div class="card-content is-small">
+              <ht-user-device [userId]="userData.id"></ht-user-device>
+            </div>
+          </div>
+        </ht-collapsable>
+      </div>
+    </div>
+  </div>
   <!--<ht-user-device class="card-content" [userId]="userData.id"></ht-user-device>-->
   <div ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></div>
   <ng-template #placeline>
