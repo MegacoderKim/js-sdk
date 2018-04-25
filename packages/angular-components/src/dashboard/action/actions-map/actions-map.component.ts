@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router"
 import {HtActionsService, HtUsersService, summaryAnim} from "ht-angular";
 import {config} from "../../config";
 import {ContainerService} from "../../container/container.service";
@@ -6,6 +7,7 @@ import {UserTraceService} from "../../users/user-trace.service";
 import {map, share} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
 import {IAction, Page} from "ht-models";
+import {ActionService} from "../action.service";
 
 @Component({
   selector: 'app-actions-map',
@@ -29,7 +31,10 @@ export class ActionsMapComponent implements OnInit {
     private containerService: ContainerService,
     private usersService: HtUsersService,
     public userTraceService: UserTraceService,
-    private actionsService: HtActionsService
+    private route: ActivatedRoute,
+    private router: Router,
+    private actionsService: HtActionsService,
+    private innerActionsService: ActionService
   ) { }
 
   ngOnInit() {
@@ -56,7 +61,20 @@ export class ActionsMapComponent implements OnInit {
         return stats && stats.timeAwarePolylineArray && stats.timeAwarePolylineArray.length > 1
       })
     );
+
+    this.setInitialQuery();
+    this.innerActionsService.getQueryForRoute().subscribe((query) => {
+      this.router.navigate([query], {relativeTo: this.route})
+    })
   };
+
+
+  setInitialQuery() {
+    const actionId = this.route.snapshot.params['id'];
+    const query = this.innerActionsService.getQueryFromRoute(this.route.snapshot.params);
+    if (actionId) this.selectAction({id: actionId});
+    if (query && Object.keys(query).length) this.setQuery(query);
+  }
 
   fetchPage(page) {
     this.setQuery({page})

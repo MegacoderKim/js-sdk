@@ -4,15 +4,17 @@ import {PageService} from "../core/page.service";
 import {IActionMapPage, IActionMap, IAction, IUserPlaceline} from "ht-models";
 import {Observable} from "rxjs/Observable";
 import {GetActionDateRangeQuery} from "../../utils/actions-helpers";
-import {GetDateRangeQuery} from "ht-utility";
+import {GetDateRangeQuery, getMergedParams} from "ht-utility";
 import {HttpClient} from "@angular/common/http";
-import {HtActionsService} from 'ht-angular';
+import {HtActionsService, HtUsersService} from 'ht-angular';
 import {empty} from "rxjs/observable/empty";
 import * as fromQuery from "../actions/query";
 import * as fromRoot from "../reducers";
 import * as fromUser from "../actions/user";
 import * as fromAction from "../actions/action";
 import {Store} from "@ngrx/store";
+import {map} from "rxjs/operators";
+import {combineLatest} from "rxjs/observable/combineLatest";
 
 @Injectable()
 export class ActionService {
@@ -22,7 +24,8 @@ export class ActionService {
       private page: PageService,
       private client: HtActionsService,
       private store: Store<fromRoot.State>,
-      private htActionsService: HtActionsService
+      private htActionsService: HtActionsService,
+      private htUsersService: HtUsersService
   ) { }
 
   indexOnDate(query) {
@@ -102,5 +105,28 @@ export class ActionService {
     return this.client.api.summary(query);
     // return this.http.get(`app/actions/summary/?${string}`)
   }
+
+  getQueryForRoute(): Observable<object> {
+    let query$ = combineLatest(
+      this.htUsersService.placeline.actionId$,
+      this.htActionsService.list.query$
+    ).pipe(
+      map(([id, query]) => {
+        return getMergedParams({...query, id})
+      })
+    );
+    return  query$
+  }
+
+  getQueryFromRoute(route) {
+    let query = {
+      'status': route['status'],
+      'type': route['type'],
+      'ordering': route['ordering'],
+      'search': route['search']
+    };
+    return getMergedParams(query)
+  };
+
 
 }
