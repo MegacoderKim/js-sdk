@@ -170,26 +170,6 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
     //   resetMap$: this.userService.placeline.segmentResetId$
     // });
 
-    const loading$1 = this.userService.placeline.loading$
-      .pipe(
-        map((data) => !!data && this.showMapLoading),
-        distinctUntilChanged()
-      );
-
-    const loading$2 = this.userService.listAll.loading$
-      .pipe(
-        map((data) => !!data),
-        distinctUntilChanged()
-      );
-
-    const loadingHeat$ = this.userService.heatmap.loading$;
-
-    const mapLoading$: Observable<boolean> = CombineLoadings$(loading$1, loading$2, loadingHeat$).pipe(
-      map(data => {
-        return !!data
-      })
-    );
-    this.mapService.mapInstance.loading$ = mapLoading$
   };
 
   private showCluster() {
