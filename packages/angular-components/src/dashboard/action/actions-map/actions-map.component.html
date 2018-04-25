@@ -40,7 +40,7 @@
       [selectedId]="selectedActionId$ | async"
       [actionsPage]="actionsPage"
       (onSelectAction)="selectAction($event)"></ht-actions-cards-container>
-    <ht-pagination (fetchPage)="fetchPage($event)" [pageDate]="actionsPage"></ht-pagination>
+    <ht-pagination *ngIf="!(selectedActionId$ | async)" (fetchPage)="fetchPage($event)" [pageDate]="actionsPage"></ht-pagination>
   </div>
   <ng-container  *ngIf="(userPlaceline$ | async) && (selectedActionId$ | async)">
     <ht-actions-placeline-container></ht-actions-placeline-container>
