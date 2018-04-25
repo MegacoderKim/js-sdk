@@ -1,4 +1,5 @@
 <div class="flex-column column-gap-10" [@bottomAppear] *ngIf="data$ | async as userData">
+  <ht-user-card [user]="userData"></ht-user-card>
   <div ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></div>
   <ng-template #placeline>
     <ht-placeline
