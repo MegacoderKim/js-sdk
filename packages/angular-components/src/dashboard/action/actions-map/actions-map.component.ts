@@ -97,7 +97,9 @@ export class ActionsMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.usersService.listAll.setData(null)
+    this.actionsService.listAll.clearData();
+    this.actionsService.list.clearData();
+    this.actionsService.listAll.setData(null)
   }
 
 }

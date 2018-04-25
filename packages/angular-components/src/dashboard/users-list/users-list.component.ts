@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
@@ -20,7 +20,7 @@ import {map} from "rxjs/operators";
     fadeAppear
   ]
 })
-export class UsersListComponent implements OnInit {
+export class UsersListComponent implements OnInit, OnDestroy {
   data$: Observable<Page<IUserAnalytics>>;
   loading$: Observable<boolean | string>;
   userId: string | null = null;
@@ -102,4 +102,9 @@ export class UsersListComponent implements OnInit {
   closeUser() {
     this.htUsersService.placeline.setId(null);
   };
+
+  ngOnDestroy() {
+    this.htUsersService.list.clearData();
+    this.htUsersService.placeline.clearData();
+  }
 }

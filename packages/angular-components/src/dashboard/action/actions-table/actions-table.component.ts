@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {ActionService} from "../action.service";
 import {actionTableFormat} from "ht-data";
@@ -18,7 +18,7 @@ import {UserTraceService} from "../../users/user-trace.service";
     fadeAppear
   ]
 })
-export class ActionsTableComponent implements OnInit {
+export class ActionsTableComponent implements OnInit, OnDestroy {
   tableFormat = [
     actionTableFormat.unique_id,
     actionTableFormat.type,
@@ -92,6 +92,12 @@ export class ActionsTableComponent implements OnInit {
 
   closeUser() {
     this.usersService.placeline.setQuery({})
+  }
+
+  ngOnDestroy() {
+    this.actionsService.listAll.clearData();
+    this.actionsService.list.clearData();
+    this.actionsService.listAll.setData(null)
   }
 
 }

@@ -133,6 +133,10 @@ export class UsersMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.htUsersService.list.clearData();
+    this.htUsersService.summary.clearData();
+    this.htUsersService.listAll.clearData();
+    this.htUsersService.listAll.setData(null)
     // if (this.sub) this.sub.unsubscribe();
   }
 
