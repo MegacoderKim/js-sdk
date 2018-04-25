@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 import {IUserDevice} from "ht-models";
 import {NameCase} from "ht-utility";
 import {map} from "rxjs/operators";
-import {HtUsersService} from "../ht/ht-users.service";
+import {HtUsersService} from "../../ht/ht-users.service";
 
 @Component({
   selector: 'ht-user-device',

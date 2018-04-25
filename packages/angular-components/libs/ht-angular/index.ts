@@ -12,8 +12,8 @@ export { UsersSummaryContainerComponent } from "./users-summary-container/users-
 
 export {ContainerModule} from "./container/container.module";
 
-export {UserCardModule} from "./user-card/user-card.module";
-export {UserCardComponent} from "./user-card/user-card.component";
+export {UserCardModule} from "./users-modules/user-card/user-card.module";
+export {UserCardComponent} from "./users-modules/user-card/user-card.component";
 export {UsersCardsContainerComponent} from "./users-modules/users-cards-container/users-cards-container.component";
 export {UsersCardsContainerModule} from "./users-modules/users-cards-container/users-cards-container.module";
 export {UsersContainerModule} from "./users-container/users-container.module";
@@ -25,7 +25,7 @@ export {UsersMapContainerComponent} from "./users-map-container/users-map-contai
 export { UsersSummaryChartComponent } from "./users-summary-chart/users-summary-chart.component"
 export { UsersSummaryChartModule } from "./users-summary-chart/users-summary-chart.module"
 
-export { UserDeviceModule } from "./user-device/user-device.module"
+export { UserDeviceModule } from "./users-modules/user-device/user-device.module"
 
 export { UsersSummaryModule } from "./users-summary/users-summary.module"
 export { UsersFilterModule } from "./filters/users-filter/users-filter.module"
