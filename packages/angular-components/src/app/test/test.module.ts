@@ -13,7 +13,6 @@ import {UsersMapContainerModule} from "ht-angular";
 import {UsersPlacelineContainerModule} from "ht-angular";
 import {PlacelineMapContainerModule} from "ht-angular";
 import {UsersSummaryContainerModule} from "ht-angular";
-import {UsersListContainerModule} from "ht-angular";
 
 @NgModule({
   imports: [
@@ -29,7 +28,6 @@ import {UsersListContainerModule} from "ht-angular";
     UsersMapContainerModule,
     UsersPlacelineContainerModule,
     PlacelineMapContainerModule,
-    UsersListContainerModule
   ],
   declarations: [TestComponent]
 })

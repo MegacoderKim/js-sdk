@@ -32,7 +32,6 @@ export { UsersFilterModule } from "./filters/users-filter/users-filter.module"
 
 export { UsersAnalyticsListModule } from "./users-analytics-list/users-analytics-list.module"
 export { UsersAnalyticsListComponent } from "./users-analytics-list/users-analytics-list.component"
-export { UsersListContainerModule } from "./users-list-container/users-list-container.module"
 
 export {GroupsModule} from "./groups/groups.module";
 export {GroupsComponent} from "./groups/groups.component";
