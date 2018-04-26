@@ -6,7 +6,7 @@ export class DebugPolyline {
   trace: (data: {encodedPolyline: string, id: string}[]) => void;
 
   styleFunct: StyleFunct = {
-    get(type) {
+    get(type, data) {
       switch (type) {
         case "google": {
           return {
@@ -31,7 +31,7 @@ export class DebugPolyline {
           return {
             default: {
               weight: 5,
-              color: Color.red,
+              color: data ? data.color : Color.red,
               opacity: 1
             },
             highlight: {

@@ -69,7 +69,7 @@
       </div>
       <button class="button" *ngIf="!showDevice" (click)="showDevice = true">Show device detail</button>
       <div *ngIf="showDevice">
-        <app-user-device *ngIf="userId$ | async as userId" [debug]="true" [userId]="userId"></app-user-device>
+        <ht-user-device *ngIf="userId$ | async as userId" [debug]="true" [userId]="userId"></ht-user-device>
       </div>
 
       <div class="flex-column">
@@ -84,6 +84,29 @@
         </div>
 
       </div>
+      <div *ngIf="actionDebug$ | async as actionDebug">
+        <ht-action-card [action]="actionDebug"></ht-action-card>
+        <!--<ht-user-card [user]="actionDebug.user"></ht-user-card>-->
+        <div class="flex-row wrap row-gap-10">
+          <button class="button" *ngFor="let polyline of polylineTypes"
+
+           (click)="setPolyline(actionDebug.polylines[polyline], polyline)">
+           <span class="icon" *ngIf="eventTraceService.hasPolylineType(polyline)"><i class="fa fa-circle" [style.color]="polylinesData[polyline].color"></i></span>
+           <span>{{polyline | nameCase}}</span>
+          </button>
+        </div>
+        <table class="table auto">
+          <tbody>
+          <tr *ngFor="let distance of actionDebugDistance">
+            <td class="has-text-weight-bold">{{distance | nameCase}}</td>
+            <td>{{actionDebug.polylines[distance]}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <pre>
+        {{actionDebug$ | async | json}}
+      </pre>
       <div class="flex-column" *ngIf="debugPolyline">
         <h4 class="is-text-5">Polylines</h4>
         <div class="field is-grouped">
