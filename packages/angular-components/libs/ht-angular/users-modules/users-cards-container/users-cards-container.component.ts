@@ -45,7 +45,7 @@ export class UsersCardsContainerComponent implements OnInit, OnDestroy, OnChange
   @Output() onSelectUser: EventEmitter<string | null> = new EventEmitter();
   @Output() onAction: EventEmitter<string | null> = new EventEmitter();
   @Output() onHover: EventEmitter<string | null> = new EventEmitter();
-  displayUsers: IUserAnalytics[];
+  displayUsers: IUserAnalytics[] | IUserPlaceline[];
   actions: IAction[];
   constructor() { }
 
@@ -54,7 +54,9 @@ export class UsersCardsContainerComponent implements OnInit, OnDestroy, OnChange
   }
 
   ngOnChanges(changes) {
-    if (this.usersPage) {
+    if (this.userPlaceline) {
+      this.displayUsers = [this.userPlaceline]
+    } else if (this.usersPage) {
       if (this.userPlaceline || this.selectedUserId) {
         this.displayUsers = this.usersPage.results.reduce((users, user) => {
           return user.id == this.selectedUserId ?
