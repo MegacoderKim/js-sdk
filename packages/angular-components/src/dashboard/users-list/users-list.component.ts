@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
+import {DebuggerService} from "../core/debugger.service";
 import {UserService} from "../users/user.service";
 import {UserTraceService} from "../users/user-trace.service";
 import {HtMapService, HtUsersService} from "ht-angular";
@@ -49,7 +50,14 @@ export class UsersListComponent implements OnInit, OnDestroy {
     public htUsersService: HtUsersService,
     private containerService: ContainerService,
     private mapService: HtMapService,
+    private debuggerService: DebuggerService
   ) { }
+
+  @HostListener('dblclick', ['$event'])
+  openDebugger(e) {
+    console.log(e,  "debug");
+    this.debuggerService.open()
+  }
 
   ngOnInit() {
     this.containerService.setEntity('users');
