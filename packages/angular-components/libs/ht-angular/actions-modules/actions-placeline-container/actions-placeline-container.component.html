@@ -1,6 +1,6 @@
 <div class="flex-column column-gap-10" [@bottomAppear] *ngIf="data$ | async as userData">
-  <ng-container *ngIf="actionId && action$ | async as action">
-    <ht-action-card [action]="action"></ht-action-card>
+  <ng-container *ngIf="action$ | async as action">
+    <ht-action-card *ngIf="actionId" [action]="action"></ht-action-card>
     <div class="action-detail flex-column">
       <ht-collapsable>
         <button class="button is-rounded auto action-open">Show details</button>
@@ -11,7 +11,6 @@
 
     </div>
   </ng-container>
-  <ht-user-card [user]="userData"></ht-user-card>
   <div ht-loading-dots *ngIf="loading$ | async; else placeline" class="is-size-1 text-center flex-row"></div>
   <ng-template #placeline>
     <ht-placeline
