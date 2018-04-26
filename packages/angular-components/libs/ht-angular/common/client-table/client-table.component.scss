@@ -1,4 +1,4 @@
-table {
+.table {
   border: 1px solid #E9E9E9;
   thead {
     tr {
@@ -38,5 +38,15 @@ table {
       }
     }
   }
-
+  td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .clickable-head {
+    cursor: pointer;
+    &:hover {
+      color: #0b0b0b;
+    }
+  }
 }
+

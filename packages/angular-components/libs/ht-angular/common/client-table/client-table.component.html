@@ -1,7 +1,7 @@
 <table class="table is-striped is-hoverable is-fullwidth">
   <thead>
   <tr>
-    <th class="clickable" *ngFor="let item of tableFormat" (click)="setOrdering(item.key)">
+    <th [class.clickable-head]="item.key" *ngFor="let item of tableFormat" (click)="setOrdering(item.key)">
       <span>{{item.label}}</span>
       <span class="icon" *ngIf="item.key == ordering && item.key">
         <i class="fa" [ngClass]="sign ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
