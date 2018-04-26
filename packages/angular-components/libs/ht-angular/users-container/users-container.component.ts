@@ -44,6 +44,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   data$;
   // todo infer has map from mapInstance
   @Input() hasMap: boolean = false;
+  @Input() showUserCard: boolean = true;
   @Input() userId: string;
   @Input() query: object;
   @Input() showStatusSummary: boolean = true;
