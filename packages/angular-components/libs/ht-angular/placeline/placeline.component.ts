@@ -19,8 +19,10 @@ export class PlacelineComponent implements OnInit {
   @Output() highlightedSegmentId: EventEmitter<string> = new EventEmitter();
   @Output() hoveredAction = new EventEmitter();
   @Output() selectedSegment: EventEmitter<string | null> = new EventEmitter();
+  @Output() selectUser: EventEmitter<string | null> = new EventEmitter();
   @Input() userPlaceline: IUserPlaceline;
   @Input() selectedSegmentId: string = "__";
+  @Input() showUser: boolean = true;
   @Input() isMobile: boolean = false;
   @Input() timezone: string;
   selectedAction: string | null = null;
