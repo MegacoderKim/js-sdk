@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
 import {HtActionsService, HtMapService, HtUsersService, summaryAnim} from "ht-angular";
 import {config} from "../../config";
 import {ContainerService} from "../../container/container.service";
+import {DebuggerService} from "../../core/debugger.service";
 import {UserTraceService} from "../../users/user-trace.service";
 import {filter, map, share, take} from "rxjs/operators";
 import {Observable} from "rxjs/Observable";
@@ -35,8 +36,16 @@ export class ActionsMapComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private actionsService: HtActionsService,
-    private innerActionsService: ActionService
+    private innerActionsService: ActionService,
+    private debuggerService: DebuggerService
   ) { }
+
+
+  @HostListener('dblclick', ['$event'])
+  openDebugger(e) {
+    console.log(e,  "debug");
+    this.debuggerService.open()
+  }
 
   ngOnInit() {
     this.containerService.setEntity('actions');

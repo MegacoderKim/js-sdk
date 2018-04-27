@@ -1,5 +1,5 @@
 <div class="flex-column column-gap-20">
-  <ht-user-card *ngIf="showUser" [user]="userPlaceline"></ht-user-card>
+  <ht-user-card *ngIf="showUser" (click)="selectUser.next(userPlaceline.id)" [user]="userPlaceline"></ht-user-card>
   <ng-content></ng-content>
   <div class="flex-column">
     <div

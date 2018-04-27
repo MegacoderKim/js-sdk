@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {config} from "../config";
 import {InnerMapService} from "../map-container/map.service";
 // import {DebugPolylineColorMap, ISdkEvent} from "./trace-events/trace-events.component";
 import * as _ from "underscore";
@@ -27,11 +29,19 @@ export class EventTraceService {
   events = SdkEvents;
 //   popup: L.Popup = popup();
   constructor(
-
+    private http: HttpClient
   ) {
     this.markers = new EventMarkersTrace(this.mapInstance);
     this.polyline = new EventPolylineTrace(this.mapInstance);
     this.debugPolylines = new DebugPolylineTrace(this.mapInstance)
+  }
+
+  getActionDebug(id: string) {
+    return this.http.get(`app/v2/actions/${id}/debug/`, this.adminReqOpt())
+  }
+
+  private adminReqOpt() {
+    return {headers: {'Authorization': `token ${config.adminToken}`}}
   }
 
   traceEvents(events: ISdkEvent[]) {
@@ -100,22 +110,29 @@ export class EventTraceService {
   }
 
   renderPolyline(encodedPolyline: string, type: string) {
-    console.log("enc", encodedPolyline, type);
-    let debugPolyline = this.debugPolylinesData[type];
-    if(debugPolyline) {
+    // console.log("enc", encodedPolyline, type);
+    const toReset = Object.keys(this.debugPolylinesData).length ? false : true
+    const debugPolyline = this.debugPolylinesData[type];
+    if (debugPolyline) {
       delete this.debugPolylinesData[type];
     } else {
-      this.debugPolylinesData[type] = encodedPolyline;
+      this.debugPolylinesData[type] = {
+        id: type,
+        color: polylinesData[type].color,
+        encodedPolyline
+      };
     }
     const keys = Object.keys(this.debugPolylinesData);
-    const data = keys.map((key) => {
-      return {
-        id: key,
-        encodedPolyline: this.debugPolylinesData[key]
-      }
-    });
+    // const data = keys.map((key) => {
+    //   return {
+    //     id: type,
+    //     encodedPolyline: encodedPolyline,
+    //     color: polylinesData[key].color
+    //   }
+    // });
+    const data = Object.keys(this.debugPolylinesData).map((key) => this.debugPolylinesData[key])
     this.debugPolylines.trace(data);
-    this.setBounds();
+    if (toReset) this.setBounds();
   }
 
   hasPolylineType(type): boolean {
@@ -158,7 +175,26 @@ export class EventTraceService {
   }
 }
 
-
+export const polylinesData = {
+  // 'raw_location_time_series': {
+  //   color: "red"
+  // },
+  'raw_route': {
+    color: 'blue'
+  },
+  // 'merged_location_time_series': {
+  //   color: 'grey'
+  // },
+  'merged_route': {
+    color: 'green'
+  },
+  'filtered_route': {
+    color: 'red'
+  },
+  // 'filtered_location_time_series': {
+  //   color: 'orange'
+  // }
+}
 
 export interface IDebugPolylines {
   time_aware_polyline: string,

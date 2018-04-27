@@ -4,7 +4,7 @@ import * as _ from "underscore";
 import {Subject} from "rxjs/Subject";
 import {HtQuerySerialize} from "../../../utils/query-serializer";
 import {PageService} from "../../core/page.service";
-import {EventTraceService, IDebugPolylines} from "../event-trace.service";
+import { EventTraceService, IDebugPolylines, polylinesData as polylinesDataMap} from "../event-trace.service";
 import {BroadcastService} from "../../core/broadcast.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {config} from "../../config";
@@ -54,6 +54,14 @@ export class TraceEventsComponent {
   showEvents: boolean = false;
   $dateRange;
   showDevice: boolean = false;
+  actionDebug$;
+  polylinesData = polylinesDataMap
+  polylineTypes = Object.keys(this.polylinesData);
+  actionDebugDistance = [
+    'filtered_distance',
+    'raw_distance',
+    'merged_distance'
+  ];
   constructor(
     private page: PageService,
     public eventTraceService: EventTraceService,
@@ -136,12 +144,13 @@ export class TraceEventsComponent {
       this.filteredEvents = this.getFilteredEvents(this.currentEvents);
       this.renderEvents(this.filteredEvents)
     });
+    // if (this.route.snapshot.params['action_id']) this.actionDebug$ = this.eventTraceService.getActionDebug(this.route.snapshot.params['action_id']);
 
     this.subs.push(sub, sub2, sub3)
   };
 
   setEventType(event) {
-    if(this.selectedEvents.indexOf(event) > -1) {
+    if (this.selectedEvents.indexOf(event) > -1) {
       this.selectedEvents = _.reject(this.selectedEvents, (currentEvent) => currentEvent == event)
     } else {
       this.selectedEvents.push(event);
@@ -167,13 +176,14 @@ export class TraceEventsComponent {
   }
 
   setPolyline(encodedPolyline: string, type: string) {
-    if(!encodedPolyline) return false;
+    if (!encodedPolyline) return false;
     this.eventTraceService.renderPolyline(encodedPolyline, type)
   }
 
   getPrimaryQuery(query) {
     if(this.primaryQueryType == 'action_id') {
-      this.fetchActionPolyline(query)
+      this.actionDebug$ = this.eventTraceService.getActionDebug(this.route.snapshot.params['action_id']);
+      // this.fetchActionPolyline(query)
     }
     if(this.primaryQueryType == 'activity_id' || this.primaryQueryType === 'trip_id') {
       this.fetchTripPolyline(query)

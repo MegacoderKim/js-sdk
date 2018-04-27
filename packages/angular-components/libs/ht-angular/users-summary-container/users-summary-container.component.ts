@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from "@angular/animations";
+import {summaryAnim} from "../common/animations";
 import {HtUsersService} from "../ht/ht-users.service";
 import {QueryLabel} from "ht-client";
 
@@ -8,14 +9,7 @@ import {QueryLabel} from "ht-client";
   templateUrl: './users-summary-container.component.html',
   styleUrls: ['./users-summary-container.component.less'],
   animations: [
-    trigger('summaryAnim', [
-      transition(':enter', [
-        style({transform: 'translateX(-100px) scaleY(0)', height: 0, opacity: 0}),
-        animate('0.3s' + ' ease-out')
-      ]),
-      transition(':leave', [
-        animate('0.3s' + ' ease-in', style({transform: 'translateX(-100px)', height: 0, opacity: 0}))
-      ])])
+    summaryAnim
   ]
 })
 export class UsersSummaryContainerComponent implements OnInit, OnDestroy {

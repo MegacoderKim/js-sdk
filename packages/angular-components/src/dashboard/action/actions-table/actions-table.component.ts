@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router"
+import {DebuggerService} from "../../core/debugger.service";
 import {ActionService} from "../action.service";
 import {actionTableFormat} from "ht-data";
 import {HtActionsService} from "ht-angular";
@@ -45,8 +46,15 @@ export class ActionsTableComponent implements OnInit, OnDestroy {
     private actionsService: HtActionsService,
     private usersService: HtUsersService,
     public userTraceService: UserTraceService,
-    private innerActionsService: ActionService
+    private innerActionsService: ActionService,
+    private debuggerService: DebuggerService
   ) { }
+
+  @HostListener('dblclick', ['$event'])
+  openDebugger(e) {
+    console.log(e,  "debug");
+    this.debuggerService.open()
+  }
 
   ngOnInit() {
     this.containerService.setEntity('actions');

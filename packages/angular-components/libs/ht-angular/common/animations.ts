@@ -40,7 +40,7 @@ export const summaryAnim = trigger('summaryAnim', [
     animate('0.3s' + ' ease-out')
   ]),
   transition(':leave', [
-    animate('0.3s' + ' ease-in', style({transform: 'translateX(-100px)', height: 0, opacity: 0}))
+    animate('0.3s' + ' ease-in-out', style({transform: 'translateX(-100px) scaleY(0)', height: 0, opacity: 0}))
   ])]);
 
 

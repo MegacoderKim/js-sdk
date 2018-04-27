@@ -36,8 +36,8 @@ export class MainRedirectComponent implements OnInit {
         if (!account) {
           // this.accountService.logout()
         }
-        if(account.card) {
-          this.router.navigate(['/', defaultView, 'actions'], {relativeTo: this.route})
+        if(account.card && !config.isMobile) {
+          this.router.navigate(['/', 'actions', defaultView], {relativeTo: this.route})
         } else {
           this.router.navigate(['/', 'users', defaultView], {relativeTo: this.route})
         }
