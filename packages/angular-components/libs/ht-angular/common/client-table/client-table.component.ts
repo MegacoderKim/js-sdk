@@ -17,7 +17,7 @@ export class ClientTableComponent implements OnInit, OnChanges {
   @Input() tableFormat: TableFormat[] = [];
   @Input() showSorting: boolean;
   @Input() query: object = {};
-  @Output() setQuery: EventEmitter<object> = new EventEmitter<object>();
+  @Output() addQuery: EventEmitter<object> = new EventEmitter<object>();
   @Output() onSelectData: EventEmitter<any> = new EventEmitter<any>();
   ordering: string;
   sign: boolean;
@@ -51,7 +51,7 @@ export class ClientTableComponent implements OnInit, OnChanges {
     // if (!this.ordering) return false;
     const sign = key == this.ordering ? !this.sign : false;
     const ordering = `${sign ? '' : '-'}${key}`;
-    this.setQuery.next({...this.query, ordering})
+    this.addQuery.next({ordering})
   }
 
   ngOnInit() {
