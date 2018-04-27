@@ -103,6 +103,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
     // )
   }
 
+  addQuery(query) {
+    this.htUsersService.list.addQuery(query)
+  }
+
   setQuery(query) {
     this.htUsersService.list.setQuery(query)
   }

@@ -33,7 +33,7 @@
         [tableFormat]="tableFormat"
         [loading]="!!(loading$ | async)"
         [query]="query$ | async"
-        (setQuery)="setQuery($event)"
+        (addQuery)="addQuery($event)"
         (onSelectData)="selectUser($event)"
         [data]="data$ | async">
         <ht-loading-data class="is-size-4 loading-state"></ht-loading-data>

@@ -90,6 +90,10 @@ export class ActionsTableComponent implements OnInit, OnDestroy {
     this.actionsService.list.setQuery(query)
   }
 
+  addQuery(query) {
+    this.actionsService.list.addQuery(query)
+  }
+
   setPage(page) {
     this.actionsService.list.addQuery({page});
   }
