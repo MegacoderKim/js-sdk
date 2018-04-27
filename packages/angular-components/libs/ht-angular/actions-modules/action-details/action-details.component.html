@@ -2,11 +2,15 @@
   <tbody>
   <tr>
     <td class="has-text-weight-bold">Created at</td>
-    <td>{{action.created_at | timeString}}</td>
+    <td>{{action.created_at | timeString}}, {{action.created_at | dateString:'short'}}</td>
+  </tr>
+  <tr>
+    <td class="has-text-weight-bold">Tracking url</td>
+    <td><a href="{{action.tracking_url}}" target="_blank">{{action.tracking_url}}</a></td>
   </tr>
   <tr *ngIf="action.expected_at">
     <td class="has-text-weight-bold">Expected at</td>
-    <td>{{action.expected_at | timeString}}</td>
+    <td>{{action.expected_at | timeString}}, {{action.expected_at | dateString:'short'}}</td>
   </tr>
   <tr *ngIf="action.expected_place">
     <td class="has-text-weight-bold">Expected place</td>
@@ -14,7 +18,7 @@
   </tr>
   <tr *ngIf="action.eta">
     <td class="has-text-weight-bold">ETA</td>
-    <td>{{action.eta | timeString}}</td>
+    <td>{{action.eta | timeString}}, {{action.eta | dateString:'short'}}</td>
   </tr>
   <tr *ngIf="action.completed_place">
     <td class="has-text-weight-bold">Completed place</td>
