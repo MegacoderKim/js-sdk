@@ -64,7 +64,10 @@ export class ActionsCluster {
     return htAction(data).getPosition();
   }
   getDivContent(action) {
-    let icon = `<div class="action-marker flex-row">
+    let actionClass = "";
+    if (action.completed_at) actionClass = 'action-marker-filled';
+    if (action.display.is_late) actionClass = actionClass + " is-late";
+    let icon = `<div class="action-marker ${actionClass} flex-row">
 <span style="margin: auto">${NameCase(action.type[0])}</span>
 </div>`;
     return icon

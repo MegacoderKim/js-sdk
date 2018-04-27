@@ -21,4 +21,8 @@ export class ActionsSummaryContainerComponent implements OnInit, OnDestroy {
     this.actionsService.summary.setActive(false)
   }
 
+  addQuery(query) {
+    this.actionsService.list.addQuery(query);
+  }
+
 }

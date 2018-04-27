@@ -185,11 +185,11 @@ export const polylinesData = {
   // 'merged_location_time_series': {
   //   color: 'grey'
   // },
-  'merged_route': {
-    color: 'green'
-  },
   'filtered_route': {
     color: 'red'
+  },
+  'merged_route': {
+    color: 'green'
   },
   // 'filtered_location_time_series': {
   //   color: 'orange'

@@ -7,7 +7,6 @@
     color: #4e4d58;
   }
 }
-
 .m-box {
   width: 30px;
   height: 30px;
@@ -19,6 +18,8 @@
   background-size: cover;
 }
 
+@green: #00a748;
+@red: #E6413E;
 .action-marker {
   width: 25px;
   height: 25px;
@@ -26,9 +27,21 @@
   text-align: center;
   border-radius: 50%;
   display: flex;
-  border: 1px solid #b4b4b4;
+  border: 2px solid @green;
   // box-shadow: 0px 0px 4px 3px #c9c6c6;
   font-weight: 700;
+  color: @green;
+}
+.action-marker-filled {
+  background: @green;
+  color: white;
+}
+.action-marker.is-late {
+  border-color: @red;
+  color: @red
+}
+.action-marker-filled.is-late {
+  background: @red;
 }
 
 .box-12 {
