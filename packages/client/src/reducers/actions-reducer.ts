@@ -64,7 +64,10 @@ export function actionsReducer(
     }
     case ActionsDispatcher.CLEAR_ACTION_QUERY_KEY: {
       let listQuery = { ...state.listQuery };
-      if (listQuery) delete listQuery[action.payload];
+      if (listQuery) {
+        delete listQuery[action.payload];
+        delete listQuery['page'];
+      }
       return { ...state, listQuery: listQuery };
     }
     case ActionsDispatcher.ADD_ACTIONS_LIST_QUERY: {
