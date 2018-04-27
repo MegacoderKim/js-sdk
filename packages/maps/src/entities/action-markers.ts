@@ -1,6 +1,6 @@
 import { Color } from "ht-utility";
 import { htAction } from "ht-data";
-import { HtPosition } from "ht-models";
+import { HtPosition, IAction } from "ht-models";
 import {
   ItemClassFactoryConfig,
   itemsFactory,
@@ -66,8 +66,11 @@ export class ActionMarkers {
 
   }
 
-  getDivContent(action) {
-    let icon = `<div class="action-marker flex-row">
+  getDivContent(action: IAction) {
+    let actionClass = "";
+    if (action.completed_at) actionClass = 'action-marker-filled';
+    if (action.display.is_late) actionClass = actionClass + " is-late";
+    let icon = `<div class="action-marker ${actionClass} flex-row">
 <span style="margin: auto">${NameCase(action.type[0])}</span>
 </div>`;
     return icon
