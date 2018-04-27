@@ -77,7 +77,7 @@ export class HtAction {
       if (filter) {
         return filter;
       } else {
-        return () => false;
+        return (action) => key.includes(action.status);
       }
     } else {
       return () => true;
