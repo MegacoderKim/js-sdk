@@ -110,7 +110,10 @@ export function usersReducer(
     }
     case UserDispatch.CLEAR_QUERY_KEY: {
       let listQuery = { ...state.listQuery };
-      if (listQuery) delete listQuery[action.payload];
+      if (listQuery) {
+        delete listQuery[action.payload];
+        delete listQuery['page'];
+      }
       return { ...state, listQuery: listQuery };
     }
     /*

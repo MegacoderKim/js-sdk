@@ -61,6 +61,10 @@ export class ActionsList extends EntityListClient {
     this.store.dispatch(new fromAction.SetList(data))
   };
 
+  addQuery(query) {
+    this.store.dispatch(new fromAction.AddListQuery(query))
+  }
+
   setQuery(query) {
     this.store.dispatch(new fromAction.SetListQuery(query))
   }
