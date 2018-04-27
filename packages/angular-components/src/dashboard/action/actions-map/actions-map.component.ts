@@ -87,7 +87,7 @@ export class ActionsMapComponent implements OnInit, OnDestroy {
   }
 
   fetchPage(page) {
-    this.setQuery({page})
+    this.actionsService.list.addQuery({page})
   }
 
   setQuery(query) {

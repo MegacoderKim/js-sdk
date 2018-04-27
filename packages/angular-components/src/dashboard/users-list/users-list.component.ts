@@ -94,7 +94,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   }
 
   setPage(page) {
-    this.setQuery({page});
+    this.htUsersService.list.addQuery({page});
     // this.htUsersService.list.loading$.pipe(
     //   filter((loading) => !loading),
     //   take(1)
