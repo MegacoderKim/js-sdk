@@ -144,7 +144,7 @@ export class TraceEventsComponent {
       this.filteredEvents = this.getFilteredEvents(this.currentEvents);
       this.renderEvents(this.filteredEvents)
     });
-    if (this.route.snapshot.params['action_id']) this.actionDebug$ = this.eventTraceService.getActionDebug(this.route.snapshot.params['action_id']);
+    // if (this.route.snapshot.params['action_id']) this.actionDebug$ = this.eventTraceService.getActionDebug(this.route.snapshot.params['action_id']);
 
     this.subs.push(sub, sub2, sub3)
   };
@@ -182,7 +182,8 @@ export class TraceEventsComponent {
 
   getPrimaryQuery(query) {
     if(this.primaryQueryType == 'action_id') {
-      this.fetchActionPolyline(query)
+      this.actionDebug$ = this.eventTraceService.getActionDebug(this.route.snapshot.params['action_id']);
+      // this.fetchActionPolyline(query)
     }
     if(this.primaryQueryType == 'activity_id' || this.primaryQueryType === 'trip_id') {
       this.fetchTripPolyline(query)

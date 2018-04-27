@@ -111,6 +111,7 @@ export class EventTraceService {
 
   renderPolyline(encodedPolyline: string, type: string) {
     // console.log("enc", encodedPolyline, type);
+    const toReset = Object.keys(this.debugPolylinesData).length ? false : true
     const debugPolyline = this.debugPolylinesData[type];
     if (debugPolyline) {
       delete this.debugPolylinesData[type];
@@ -131,7 +132,7 @@ export class EventTraceService {
     // });
     const data = Object.keys(this.debugPolylinesData).map((key) => this.debugPolylinesData[key])
     this.debugPolylines.trace(data);
-    this.setBounds();
+    if (toReset) this.setBounds();
   }
 
   hasPolylineType(type): boolean {

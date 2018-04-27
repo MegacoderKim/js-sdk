@@ -84,7 +84,7 @@
         </div>
 
       </div>
-      <div *ngIf="actionDebug$ | async as actionDebug">
+      <div *ngIf="actionDebug$ | async as actionDebug" class="flex-column column-gap-20">
         <ht-action-card [action]="actionDebug"></ht-action-card>
         <!--<ht-user-card [user]="actionDebug.user"></ht-user-card>-->
         <div class="flex-row wrap row-gap-10">
@@ -104,9 +104,6 @@
           </tbody>
         </table>
       </div>
-      <pre>
-        {{actionDebug$ | async | json}}
-      </pre>
       <div class="flex-column" *ngIf="debugPolyline">
         <h4 class="is-text-5">Polylines</h4>
         <div class="field is-grouped">

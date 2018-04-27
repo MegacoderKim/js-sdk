@@ -32,7 +32,7 @@ export class DebugPolyline {
             default: {
               weight: 5,
               color: data ? data.color : Color.red,
-              opacity: 1
+              opacity: 0.7
             },
             highlight: {
               weight: 5,
